@@ -48,7 +48,7 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
                 	String message = "IOC init: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
                 	Object iocBean = null;
                 	if(iocType.isInterface()) {
-                		List<Class<?>> clazzList = ClassUtils.findClassesByInterfaces(iocType);
+                		List<Class<?>> clazzList = ClassUtils.findClassesByInterfaces(iocType,"com.meizu");
                 		int clazzSize = clazzList.size();
                 		if(clazzSize>1) {
                 			throw new UncheckedException("接口："+iocType.getName()+"不允许有多个实现类");
@@ -56,9 +56,9 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
                 		if(clazzSize<1) {
                 			throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
                 		}
-                	} else {
-                		iocBean = BeanFactory.getBean(iocType);
+                		iocType = clazzList.get(0);
                 	}
+                	iocBean = BeanFactory.getBean(iocType);
                 	try {
                 		field.setAccessible(true);
 						field.set(beanObj, iocBean);

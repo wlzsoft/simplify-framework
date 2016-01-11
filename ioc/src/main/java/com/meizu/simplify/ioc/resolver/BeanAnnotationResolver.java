@@ -5,11 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtils;
 
 /**
@@ -36,11 +37,23 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		for (Class<?> clazz : resolveList) {
 			LOGGER.info("Bean init:{}",clazz.getName());
 			try {
-				Object beanObj = clazz.newInstance();
-//				如果指定单例的情况，是不允许new多个实现，表现在创建和调用时做出错误提示
-//				Bean beanAnnotation = beanClass.getAnnotation(Bean.class);
-//        		&&beanAnnotation.type().equals(BeanTypeEnum.SINGLE)
-				BeanFactory.addBean(beanObj);
+				Bean beanAnnotation = clazz.getAnnotation(Bean.class);
+        		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
+        			List<Class<?>> hookList = ClassUtils.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
+        			for (Class<?> hookClazz : hookList) {
+						BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
+						Class<?> serviceClass = hookBeanAnno.value();
+						if(serviceClass.equals(clazz)) {
+							Object hookObj = hookClazz.newInstance();
+							List<?> listObj = ((IBeanPrototypeHook)hookObj).hook(clazz);
+							BeanFactory.addBeanList(listObj);
+						}
+					}
+        		} else {
+        			Object beanObj = clazz.newInstance();
+        			BeanFactory.addBean(beanObj);
+        		}
+				
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 				LOGGER.debug("bean:"+clazz.getName()+"初始化失败");

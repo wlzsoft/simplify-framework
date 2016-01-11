@@ -40,7 +40,7 @@ public  class BeanFactoryTest {
 	
 	@Test
 	public void getBeanByInterface() {
-		ITestService obj = BeanFactory.getBean(ITestService.class);
+		ITestService obj = BeanFactory.getBean(TestService.class);
 		LOGGER.debug(obj.getDemoService().getName()+"");
 	}
 }

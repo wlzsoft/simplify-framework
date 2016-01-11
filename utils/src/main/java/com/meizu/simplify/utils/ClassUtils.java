@@ -58,6 +58,20 @@ public class ClassUtils {
 		}
 		return classes;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 通过类型为Interface的class来查找其实现类列表<br>
+	 * 操作步骤: TODO<br>
+	 * @param clazz
+	 * @return
+	 */
+	public static List<Class<?>> findClassesByInterfaces(Class<?> clazz,String... packageNames) {
+		if(!clazz.isInterface()) {
+			throw new UncheckedException("类型异常，必须是接口");
+		}
+		return findClassesByParentClass(clazz,packageNames);
+	}
 
 	/**
 	 * 
@@ -231,20 +245,7 @@ public class ClassUtils {
 		return classNames;
 	}
 
-	/**
-	 * 
-	 * 方法用途: 通过类型为Interface的class来查找其实现类列表<br>
-	 * 操作步骤: TODO<br>
-	 * @param clazz
-	 * @return
-	 */
-	public static List<Class<?>> findClassesByInterfaces(Class<?> clazz) {
-		if(!clazz.isInterface()) {
-			throw new UncheckedException("类型异常，必须是接口");
-		}
-		//TODO
-		return null;
-	}
+	
 	
 
 }

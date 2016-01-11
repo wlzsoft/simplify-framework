@@ -36,8 +36,8 @@ public class BeanContainer {
 	 */
 	public <T extends Object> void add(T beanObj) {
 		String beanName = beanObj.getClass().getName();
-		LOGGER.debug(beanName);
 		mapContainer.put(beanName, beanObj);
+		LOGGER.debug("成功添加bean实例到容器中:"+beanObj);
 	}
 	
 	
