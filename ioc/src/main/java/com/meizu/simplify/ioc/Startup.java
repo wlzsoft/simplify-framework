@@ -3,7 +3,6 @@ package com.meizu.simplify.ioc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class Startup {
 			LOGGER.info("resolver invoke:{}",clazz.getName());
 			try {
 				Object obj = clazz.newInstance();
-				ReflectionUtils.invokeMethod(obj, "resolve", null, new Class[]{List.class}, new Object[]{new ArrayList()});
+				ReflectionUtils.invokeMethod(obj, "resolve", new Class[]{List.class}, new Object[]{new ArrayList<>()});
 			} catch (InstantiationException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

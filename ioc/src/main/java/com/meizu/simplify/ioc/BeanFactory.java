@@ -41,6 +41,7 @@ public class BeanFactory {
 	 * @param beanClassName
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public  static <T> T getBean(String beanClassName) {
 		return (T) beanContainer.getMapContainer().get(beanClassName);
 	}
