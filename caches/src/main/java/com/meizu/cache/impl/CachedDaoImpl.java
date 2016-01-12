@@ -129,9 +129,9 @@ public class CachedDaoImpl implements ICacheDao {
 	@Override
 	@Cacheable(value="session",key="#key")
 	public Object get(String key) throws UncheckedException {
-		Cache cache = cacheManager.getCache("session");
+		ICacheDao cache = cacheManager.getCache("session");
 		if(cache != null) {
-//			return cache.get(key);
+			return cache.get(key);
 		} 
 		return null;
 	} 
@@ -145,9 +145,9 @@ public class CachedDaoImpl implements ICacheDao {
 	@Override
 	@CacheEvict(value="session",key="#key")
 	public boolean delete(String key) throws UncheckedException {
-		Cache cache = cacheManager.getCache("session");
+		ICacheDao cache = cacheManager.getCache("session");
 		if(cache != null) {
-//			cache.evict(key);
+			cache.evict(key);
 		} 
 		return true;
 	}

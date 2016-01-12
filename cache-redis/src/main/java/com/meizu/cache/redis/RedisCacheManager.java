@@ -1,13 +1,6 @@
 package com.meizu.cache.redis;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import com.meizu.cache.ICacheManager;
-import com.meizu.cache.impl.Cache;
 
 
 
@@ -28,7 +21,7 @@ public class RedisCacheManager implements ICacheManager {
 
 
 	@Override
-	public Cache getCache(String name) {
+	public RedisClient getCache(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

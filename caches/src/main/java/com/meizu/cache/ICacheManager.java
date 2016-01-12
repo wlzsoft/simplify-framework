@@ -19,6 +19,6 @@ import com.meizu.cache.impl.Cache;
  */
 public interface ICacheManager {
 
-	Cache getCache(String name);
+	ICacheDao getCache(String name);
 
 }
