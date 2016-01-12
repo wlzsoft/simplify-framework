@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>caches</artifactId>
+  <name>缓存组件</name>
+  <description>定义一套缓存操作通用api，并考虑jvm缓存方案，并考虑可拆卸集成redis，优先使用本地jvm缓存</description>
+  <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>ioc</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+  </dependencies>
+</project>

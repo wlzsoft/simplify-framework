@@ -88,4 +88,5 @@ public class StringUtilsTest {
 	public void capitalizeForNotBlankAndTrim() {
 		Assert.assertEquals(StringUtils.capitalize(" chuangye lcy "),"Chuangye lcy");
 	}
+	
 }

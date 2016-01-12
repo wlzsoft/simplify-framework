@@ -1,4 +1,7 @@
 package com.meizu.simplify.utils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.meizu.simplify.exception.UncheckedException;
 /**
  * 
@@ -22,7 +25,7 @@ public class StringUtils {
 	 * @param str 待判断的字符串
 	 * @return
 	 */
-	public static boolean isNull(String str) {
+	public static boolean isNull(Object str) {
 		return str == null ? true : false;
 	}
 	
@@ -61,8 +64,8 @@ public class StringUtils {
 	 * @param str 一个或多个待判断的字符串
 	 * @return 
 	 */
-	public static boolean isNull(String... str) {
-		for (String s : str) {
+	public static boolean isNull(Object... str) {
+		for (Object s : str) {
 			if (StringUtils.isNotNull(s)) {
 				return false;
 			}
@@ -106,7 +109,7 @@ public class StringUtils {
 	 * @param str 待判断的字符串
 	 * @return
 	 */
-	public static boolean isNotNull(String str) {
+	public static boolean isNotNull(Object str) {
 		return !isNull(str);
 	}
 	
@@ -216,5 +219,62 @@ public class StringUtils {
 		}
 		return str.substring(pos + separator.length());
 	}
+	/**
+	 * 
+	 * 方法用途: 根据正则表达式匹配类替换内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param fileContent 内容
+	 * @param patternString 匹配的正则表达式
+	 * @param replace 替换的内容
+	 * @return
+	 */
+	public static String replaceAll(String fileContent, String patternString,
+			String replace) {
+		String str = "";
+		Matcher m = null;
+		Pattern p = null;
+		try {
+			p = Pattern.compile(patternString);
+			m = p.matcher(fileContent);
+			str = m.replaceAll(replace);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			m = null;
+			p = null;
+		}
+		// 获得匹配器对象
+		return str;
 
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 去除空格<br>
+	 * 操作步骤: TODO<br>
+	 * @param content
+	 * @return
+	 */
+	public static String removeSpace(String content) {
+		if (null == content) return "";
+		return content.replaceAll("\\s*(\\r\\n)\\s*", "").replaceAll(">(\\s+)", ">").replaceAll("(\\s+)<", "<");
+	}
+	
+	/**
+	 * bytes to hex string
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static String bytes2Hex(byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		for (byte b : bytes) {
+			int i = b & 0xFF;
+			if (i <= 0xF) {
+				sb.append("0");
+			}
+			sb.append(Integer.toHexString(i));
+		}
+		return sb.toString();
+	}
 }

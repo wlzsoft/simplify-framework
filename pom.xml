@@ -9,12 +9,23 @@
   <modules>
   	<module>iocc</module>
   	<module>utils</module>
+  	<module>caches</module>
+  	<module>webcache</module>
+  	<module>mvc</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
+  		<!-- 签名加密 -->
+  		<dependency>
+			<groupId>com.meizu</groupId>
+			<artifactId>encrypt</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- 日志相关 begin -->
+		<!-- slf4j启用彩色日志jansi -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -41,6 +52,14 @@
 		
 		<!-- 日志相关 end -->
 	    <!-- 测试相关start -->
+	    <!-- 压力测试 -->
+	    <dependency>
+			<groupId>com.meizu</groupId>
+			<artifactId>stress-tester</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+	    <!-- 单元测试 -->
   		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
