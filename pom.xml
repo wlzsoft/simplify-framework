@@ -12,6 +12,8 @@
   	<module>caches</module>
   	<module>webcache</module>
   	<module>mvc</module>
+  	<module>cache-redis</module>
+  	<module>dao</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

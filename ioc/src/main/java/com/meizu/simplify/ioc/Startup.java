@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.StartupTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
-import com.meizu.simplify.utils.ClassUtils;
-import com.meizu.simplify.utils.CollectionUtils;
-import com.meizu.simplify.utils.ReflectionUtils;
+import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -33,18 +33,18 @@ public class Startup {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
 	public static StartupTypeEnum start() {
 		
-		List<Class<?>> resolveList = ClassUtils.findClassesByParentClass(IAnnotationResolver.class, "com.meizu");
+		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, "com.meizu");
 		Map<Integer,Class<?>> mapResolve = new ConcurrentHashMap<Integer, Class<?>>();
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
 			mapResolve.put(init.value(), clazz);
 		}
-		mapResolve = CollectionUtils.sortMapByKey(mapResolve, true);
+		mapResolve = CollectionUtil.sortMapByKey(mapResolve, true);
 		for (Class<?> clazz : mapResolve.values()) {
 			LOGGER.info("resolver invoke:{}",clazz.getName());
 			try {
 				Object obj = clazz.newInstance();
-				ReflectionUtils.invokeMethod(obj, "resolve", new Class[]{List.class}, new Object[]{new ArrayList<>()});
+				ReflectionUtil.invokeMethod(obj, "resolve", new Class[]{List.class}, new Object[]{new ArrayList<>()});
 			} catch (InstantiationException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

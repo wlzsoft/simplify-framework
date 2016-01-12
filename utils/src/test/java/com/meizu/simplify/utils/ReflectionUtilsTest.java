@@ -22,6 +22,6 @@ public class ReflectionUtilsTest {
 	@Test
 	public void invokeMethod() {
 		Object obj = new DemoService();
-		Assert.assertEquals("lcy",ReflectionUtils.invokeMethod(obj, "demoMessage"));
+		Assert.assertEquals("lcy",ReflectionUtil.invokeMethod(obj, "demoMessage"));
 	}
 }

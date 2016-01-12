@@ -26,4 +26,6 @@ public @interface Bean {
 
 	BeanTypeEnum type() default BeanTypeEnum.SINGLE;
 
+	String value() default "";
+
 }

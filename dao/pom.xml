@@ -5,13 +5,7 @@
     <artifactId>simplify-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>utils</artifactId>
-  
-  <dependencies>
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.7</version>
-		</dependency>
-  </dependencies>
+  <artifactId>dao</artifactId>
+  <name>关系型数据库持久化共用组件</name>
+  <description>封装数据库操作相关api，及通用实现</description>
 </project>

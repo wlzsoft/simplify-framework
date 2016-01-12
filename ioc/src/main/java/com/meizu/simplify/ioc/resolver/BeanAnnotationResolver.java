@@ -11,7 +11,7 @@ import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
-import com.meizu.simplify.utils.ClassUtils;
+import com.meizu.simplify.utils.ClassUtil;
 
 /**
   * <p><b>Title:</b><i>对象创建处理解析器</i></p>
@@ -33,13 +33,13 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		resolveList = ClassUtils.findClassesByAnnotationClass(Bean.class, "com.meizu");
+		resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, "com.meizu");
 		for (Class<?> clazz : resolveList) {
 			LOGGER.info("Bean init:{}",clazz.getName());
 			try {
 				Bean beanAnnotation = clazz.getAnnotation(Bean.class);
         		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
-        			List<Class<?>> hookList = ClassUtils.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
+        			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
         			for (Class<?> hookClazz : hookList) {
 						BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
 						Class<?> serviceClass = hookBeanAnno.value();

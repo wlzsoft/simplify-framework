@@ -20,7 +20,7 @@ public class ClearCommentTest {
 	public void deepDir () {
 		String rootDir = "E:\\workspace\\project\\src\\main\\java\\com";
 		try {
-			ClearComment.deepDir(rootDir);
+			ClearCommentUtil.deepDir(rootDir);
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

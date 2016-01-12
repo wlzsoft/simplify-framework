@@ -29,64 +29,74 @@ public class StringUtilsTest {
 	@Test
 	public void isNull() {
 		String str = null;
-		Assert.assertTrue(StringUtils.isNull(str));
+		Assert.assertTrue(StringUtil.isNull(str));
 	}
 	
 	@Test
 	public void isEmpty() {
-		Assert.assertTrue(StringUtils.isEmpty(""));
+		Assert.assertTrue(StringUtil.isEmpty(""));
 	}
 
 	@Test
 	public void isBlank() {
-		Assert.assertTrue(StringUtils.isBlank("    "));
+		Assert.assertTrue(StringUtil.isBlank("    "));
 	}
 	
 	@Test
 	public void isNulls() {
 		String str = null;
-		Assert.assertTrue(StringUtils.isNull(str,null));
+		Assert.assertTrue(StringUtil.isNull(str,null));
 	}
 	
 	@Test
 	public void isEmptys() {
-		Assert.assertTrue(StringUtils.isEmpty("","","",null));
+		Assert.assertTrue(StringUtil.isEmpty("","","",null));
 	}
 	
 	@Test
 	public void isBlanks() {
-		Assert.assertTrue(StringUtils.isBlank("    ","   ","",null));
+		Assert.assertTrue(StringUtil.isBlank("    ","   ","",null));
 	}
 	
 	@Test
 	public void capitalizeForNull() {
 		thrown.expect(UncheckedException.class);  
         thrown.expectMessage(capitalizeExpectMessage);  
-		StringUtils.capitalize(null);
+		StringUtil.capitalize(null);
 	}
 	
 	@Test
 	public void capitalizeForEmpty() {
 		thrown.expect(UncheckedException.class);  
         thrown.expectMessage(capitalizeExpectMessage);  
-		StringUtils.capitalize("");
+		StringUtil.capitalize("");
 	}
 	
 	@Test
 	public void capitalizeForBlank() {
 		thrown.expect(UncheckedException.class);  
         thrown.expectMessage(capitalizeExpectMessage);  
-		StringUtils.capitalize("  ");
+		StringUtil.capitalize("  ");
 	}
 	
 	@Test
 	public void capitalizeForNotBlank() {
-		Assert.assertEquals(StringUtils.capitalize("chuangye lcy"),"Chuangye lcy");
+		Assert.assertEquals(StringUtil.capitalize("chuangye lcy"),"Chuangye lcy");
 	}
 	
 	@Test
 	public void capitalizeForNotBlankAndTrim() {
-		Assert.assertEquals(StringUtils.capitalize(" chuangye lcy "),"Chuangye lcy");
+		Assert.assertEquals(StringUtil.capitalize(" chuangye lcy "),"Chuangye lcy");
+	}
+	
+	@Test
+	public void format() {
+		Assert.assertEquals(StringUtil.format("Chuangye{0} lcy{1}","a","b"),"Chuangyea lcyb");
+	}
+	@Test
+	public void formatByNull() {
+//		不支持这个格式
+//		Assert.assertEquals(StringUtil.format("Chuangye{} lcy{}","a","b"),"Chuangyea lcyb");
 	}
 	
 }

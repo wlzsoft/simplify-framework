@@ -13,7 +13,7 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.utils.ClassUtils;
+import com.meizu.simplify.utils.ClassUtil;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -45,7 +45,7 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
                 	String message = "IOC init: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
                 	Object iocBean = null;
                 	if(iocType.isInterface()) {
-                		List<Class<?>> clazzList = ClassUtils.findClassesByInterfaces(iocType,"com.meizu");
+                		List<Class<?>> clazzList = ClassUtil.findClassesByInterfaces(iocType,"com.meizu");
                 		int clazzSize = clazzList.size();
                 		if(clazzSize>1) {
                 			throw new UncheckedException("接口："+iocType.getName()+"不允许有多个实现类");

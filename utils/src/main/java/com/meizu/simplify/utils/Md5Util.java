@@ -5,7 +5,7 @@ import java.io.UnsupportedEncodingException;
 public class Md5Util {
 
 	public static String md5(String string) {
-		if (StringUtils.isBlank(string)) {
+		if (StringUtil.isBlank(string)) {
 			return null;
 		}
 		try {
