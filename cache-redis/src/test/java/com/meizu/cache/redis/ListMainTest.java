@@ -2,7 +2,7 @@ package com.meizu.cache.redis;
 
 import java.io.Serializable;
 
-import com.meizu.cache.redis.ListCacheClient;
+import com.meizu.cache.redis.client.impl.ListCacheClient;
 import com.meizu.stresstester.StressTestUtils;
 import com.meizu.stresstester.core.StressTask;
 

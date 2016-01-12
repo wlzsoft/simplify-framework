@@ -10,7 +10,8 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.redis.HostAndPortUtil.HostAndPort;
+import com.meizu.cache.redis.util.HostAndPortUtil;
+import com.meizu.cache.redis.util.HostAndPortUtil.HostAndPort;
 
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;

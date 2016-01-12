@@ -1,6 +1,6 @@
 package com.meizu.cache.redis;
 
-import com.meizu.cache.redis.JsonCacheClient;
+import com.meizu.cache.redis.client.impl.JsonCacheClient;
 
 public class BorrowObject implements Runnable {
 	 private JsonCacheClient client = new JsonCacheClient("redis_ref_hosts")  ;

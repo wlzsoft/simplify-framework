@@ -15,9 +15,9 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.CacheException;
 import com.meizu.cache.Constants;
 import com.meizu.cache.ICacheDao;
+import com.meizu.cache.exception.CacheException;
 import com.meizu.cache.impl.Cache;
 import com.meizu.cache.impl.ValueWrapper;
 import com.meizu.simplify.exception.UncheckedException;

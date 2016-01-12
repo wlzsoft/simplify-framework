@@ -3,11 +3,11 @@
 import java.util.Comparator;
 import java.util.List;
 
+import com.meizu.cache.redis.client.impl.ListCacheClient;
+import com.meizu.cache.redis.client.impl.OriginalCacheClient;
+
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.ShardedJedis;
-
-import com.meizu.cache.redis.ListCacheClient;
-import com.meizu.cache.redis.OriginalCacheClient;
 public class RedisTest {
 
 	public static void main(String[] args) {

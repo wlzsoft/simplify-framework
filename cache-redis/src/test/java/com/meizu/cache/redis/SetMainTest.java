@@ -3,7 +3,7 @@ package com.meizu.cache.redis;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.meizu.cache.redis.HashCacheClient;
+import com.meizu.cache.redis.client.impl.HashCacheClient;
 
 
 public class SetMainTest {
