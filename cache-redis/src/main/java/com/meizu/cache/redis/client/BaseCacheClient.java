@@ -3,6 +3,7 @@ package com.meizu.cache.redis.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.impl.Cache;
 import com.meizu.cache.redis.RedisClientPool;
 import com.meizu.cache.util.DefaultCodec;
 
@@ -12,12 +13,15 @@ import redis.clients.jedis.ShardedJedis;
  * 缓存操作基类
  *
  */
-public abstract class BaseCacheClient {
+public abstract class BaseCacheClient implements Cache{
 	private static final Logger log = LoggerFactory.getLogger(BaseCacheClient.class);
     //序列化
     protected DefaultCodec codec = new DefaultCodec();
     private String mod_name;
     
+    public String getName() {
+    	return mod_name;	
+    }
     
     public BaseCacheClient(String mod_name){
     	this.mod_name = mod_name;

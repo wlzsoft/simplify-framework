@@ -1,7 +1,6 @@
 package com.meizu.cache;
 
 
-import com.meizu.cache.impl.ValueWrapper;
 import com.meizu.simplify.exception.UncheckedException;
 
 
@@ -97,7 +96,7 @@ public interface ICacheDao extends java.io.Serializable{
 	boolean isMutex(String key, int export) throws UncheckedException;
 	
 
-	ValueWrapper get(Object key);
+	Object get(Object key);
 
 	/**
 	 * 

@@ -21,6 +21,4 @@ public interface ICacheManager {
 
 	Cache getCache(String name);
 
-	Collection<? extends Cache> loadCaches();
-
 }

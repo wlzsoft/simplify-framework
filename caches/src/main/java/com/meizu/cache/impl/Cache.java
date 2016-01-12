@@ -17,6 +17,4 @@ public interface Cache {
 
 	String getName();
 
-	Object getNativeCache();
-
 }

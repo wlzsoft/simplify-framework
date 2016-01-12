@@ -177,7 +177,7 @@ public class CachedDaoImpl implements ICacheDao {
 
 
 	@Override
-	public ValueWrapper get(Object key) {
+	public Object get(Object key) {
 		// TODO Auto-generated method stub
 		return null;
 	}
