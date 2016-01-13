@@ -14,8 +14,8 @@ import java.util.jar.JarFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.enums.Chars;
-import com.meizu.simplify.enums.Encoding;
+import com.meizu.simplify.enums.SpecialCharacterEnum;
+import com.meizu.simplify.enums.EncodingEnum;
 import com.meizu.simplify.exception.UncheckedException;
 
 /**
@@ -122,7 +122,7 @@ public class ClassUtil {
 		List<String> classNames = new ArrayList<String>();
 		try {
 			for (String packageName : packageNames) {
-				String packagePath = packageName.replace(".", Chars.BACKSLASH.toString());
+				String packagePath = packageName.replace(".", SpecialCharacterEnum.BACKSLASH.toString());
 				Enumeration<URL> packageUrls = Thread.currentThread()
 						.getContextClassLoader().getResources(packagePath);
 				while (packageUrls.hasMoreElements()) {
@@ -154,7 +154,7 @@ public class ClassUtil {
 		List<String> classNames = new ArrayList<String>();
 		try {
 			String jarPath = URLDecoder.decode(url.toExternalForm(),
-					Encoding.UTF_8.toString());
+					EncodingEnum.UTF_8.toString());
 			LOGGER.debug("开始获取[{}]中的类名...", jarPath);
 			jarPath = StringUtil.substringAfter(jarPath, "jar:file:");
 			jarPath = StringUtil.substringBeforeLast(jarPath, "!");
@@ -203,7 +203,7 @@ public class ClassUtil {
 	 */
 	private static List<String> getClassNamesFromDir(URL url, String packageName) {
 		try {
-			String dirPath = URLDecoder.decode(url.getFile(), Encoding.UTF_8.toString());
+			String dirPath = URLDecoder.decode(url.getFile(), EncodingEnum.UTF_8.toString());
 			LOGGER.debug("开始获取[{}]中的类名...", dirPath);
 			return getClassNamesFromDir(new File(dirPath), packageName);
 		} catch (Exception e) {

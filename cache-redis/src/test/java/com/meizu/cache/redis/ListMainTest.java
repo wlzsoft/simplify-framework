@@ -2,12 +2,12 @@ package com.meizu.cache.redis;
 
 import java.io.Serializable;
 
-import com.meizu.cache.redis.dao.impl.ListCacheDao;
+import com.meizu.cache.redis.dao.impl.ListRedisDao;
 import com.meizu.stresstester.StressTestUtils;
 import com.meizu.stresstester.core.StressTask;
 
 public class ListMainTest {
-	public static ListCacheDao client = new ListCacheDao("redis_ref_hosts");
+	public static ListRedisDao client = new ListRedisDao("redis_ref_hosts");
 	
 	/**
 	 * @param args

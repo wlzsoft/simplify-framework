@@ -3,10 +3,12 @@ package com.meizu.cache;
 
 import java.util.concurrent.TimeUnit;
 
+import com.meizu.cache.enums.CacheExpireTimeEnum;
+
 
 /**
  * 
- * <p><b>Title:</b><i>缓存DAO类</i></p>
+ * <p><b>Title:</b><i>缓存操作接口</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>

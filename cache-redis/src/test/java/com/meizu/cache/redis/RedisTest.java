@@ -3,8 +3,8 @@
 import java.util.Comparator;
 import java.util.List;
 
-import com.meizu.cache.redis.dao.impl.ListCacheDao;
-import com.meizu.cache.redis.dao.impl.OriginalCacheDao;
+import com.meizu.cache.redis.dao.impl.ListRedisDao;
+import com.meizu.cache.redis.dao.impl.SearchRedisDao;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.ShardedJedis;
@@ -17,7 +17,7 @@ public class RedisTest {
 	}
 	
 	public static void testConnect(){
-		ListCacheDao client = new ListCacheDao("redis_ref_hosts");
+		ListRedisDao client = new ListRedisDao("redis_ref_hosts");
 		client.lpush("test", "test211112223", 60);
 		String value = client.lpop("test");
 		System.out.println(value);
@@ -25,7 +25,7 @@ public class RedisTest {
 	}
 	
 	public static void performance1(){
-		ListCacheDao client = new ListCacheDao("redis_ref_hosts");
+		ListRedisDao client = new ListRedisDao("redis_ref_hosts");
 		long begin = System.currentTimeMillis();
 		for(int i=0;i<10000;i++){
 			client.lpush("test", "test"+i, 60);
@@ -35,8 +35,21 @@ public class RedisTest {
 		
 	}
 	
+	 public static void originalCache(){
+		 RedisManager client = new RedisManager("redis_ref_hosts");
+	    	ShardedJedis jedis = client.getClient();
+	    	String key = "aaa";
+	    	for(int i=0;i<10;i++){
+	    		jedis.sadd(key, String.valueOf(i));
+	    	}
+	    	System.out.println(jedis.scard(key));
+	    	client.returnClient(jedis);
+	    	System.out.println("ok");
+	    	
+	    }
+	
 	public static void performance2(){
-		OriginalCacheDao client = new OriginalCacheDao("redis_ref_hosts");
+		RedisManager client = new RedisManager("redis_ref_hosts");
 		ShardedJedis jedis =  client.getClient();
 		long begin = System.currentTimeMillis();
 		for(int i=0;i<10000;i++){
@@ -51,7 +64,7 @@ public class RedisTest {
 	
 	
 	public static void testBinarySearch(){
-		OriginalCacheDao client = new OriginalCacheDao("redis_ref_hosts");
+		RedisManager client = new RedisManager("redis_ref_hosts");
 		ShardedJedis jedis =  client.getClient();
 		String key = "test";
 		long begin = System.currentTimeMillis();
@@ -61,7 +74,7 @@ public class RedisTest {
 		jedis.expire(key, 60*5);
 		
 		long length = jedis.llen(key);
-		long index = RedisUtil.findCacheIndex(key,jedis,9,0L,length-1,new Comparator<Long>(){
+		long index = SearchRedisDao.findCacheIndex(key,jedis,9,0L,length-1,new Comparator<Long>(){
 
 			@Override
 			public int compare(Long o1, Long o2) {
@@ -84,7 +97,7 @@ public class RedisTest {
 	
 	public static void testPushListCache(){
 		Long[] values = {1L,4L,5L,2L,4L};
-		OriginalCacheDao client = new OriginalCacheDao("redis_ref_hosts");
+		RedisManager client = new RedisManager("redis_ref_hosts");
 		ShardedJedis jedis =  client.getClient();
 		String key = "test";
 		String tmp = jedis.lindex(key, 0);
@@ -107,7 +120,7 @@ public class RedisTest {
 				if(endIndex>1){
 					endIndex = endIndex - 1;
 				}
-				long beforeValue = RedisUtil.findCacheValueForInsert(key, jedis, sid, 0, endIndex);
+				long beforeValue = SearchRedisDao.findCacheValueForInsert(key, jedis, sid, 0, endIndex);
 //				System.out.println(beforeValue);
 				if(beforeValue!=-1){
 					jedis.linsert (key, LIST_POSITION.AFTER,String.valueOf(beforeValue), String.valueOf(sid));

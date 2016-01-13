@@ -1,7 +1,7 @@
 package com.meizu.cache;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>缓存管理接口</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -15,6 +15,6 @@ package com.meizu.cache;
  */
 public interface ICacheManager {
 
-	ICacheDao getCache(String name);
+	ICacheDao<?,?> getCache(String name);
 
 }
