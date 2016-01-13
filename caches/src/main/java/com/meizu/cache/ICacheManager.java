@@ -1,9 +1,5 @@
 package com.meizu.cache;
 
-import java.util.Collection;
-
-import com.meizu.cache.impl.Cache;
-
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

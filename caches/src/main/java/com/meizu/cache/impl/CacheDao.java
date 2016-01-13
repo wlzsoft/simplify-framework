@@ -32,7 +32,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
  *
  */
 @Bean("cachedDao")
-public class CachedDaoImpl implements ICacheDao {
+public class CacheDao implements ICacheDao {
 	
 	/**
 	 * serialVersionUID

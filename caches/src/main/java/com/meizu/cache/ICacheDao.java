@@ -18,7 +18,7 @@ import com.meizu.simplify.exception.UncheckedException;
  * @version Version 0.1
  *
  */
-public interface ICacheDao extends java.io.Serializable{
+public interface ICacheDao {
 	
 	/** 
 	 * 方法用途: 添加值
