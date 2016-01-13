@@ -3,8 +3,8 @@
 import java.util.Comparator;
 import java.util.List;
 
-import com.meizu.cache.redis.client.impl.ListCacheClient;
-import com.meizu.cache.redis.client.impl.OriginalCacheClient;
+import com.meizu.cache.redis.dao.impl.ListCacheDao;
+import com.meizu.cache.redis.dao.impl.OriginalCacheDao;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.ShardedJedis;
@@ -17,7 +17,7 @@ public class RedisTest {
 	}
 	
 	public static void testConnect(){
-		ListCacheClient client = new ListCacheClient("redis_ref_hosts");
+		ListCacheDao client = new ListCacheDao("redis_ref_hosts");
 		client.lpush("test", "test211112223", 60);
 		String value = client.lpop("test");
 		System.out.println(value);
@@ -25,7 +25,7 @@ public class RedisTest {
 	}
 	
 	public static void performance1(){
-		ListCacheClient client = new ListCacheClient("redis_ref_hosts");
+		ListCacheDao client = new ListCacheDao("redis_ref_hosts");
 		long begin = System.currentTimeMillis();
 		for(int i=0;i<10000;i++){
 			client.lpush("test", "test"+i, 60);
@@ -36,7 +36,7 @@ public class RedisTest {
 	}
 	
 	public static void performance2(){
-		OriginalCacheClient client = new OriginalCacheClient("redis_ref_hosts");
+		OriginalCacheDao client = new OriginalCacheDao("redis_ref_hosts");
 		ShardedJedis jedis =  client.getClient();
 		long begin = System.currentTimeMillis();
 		for(int i=0;i<10000;i++){
@@ -51,7 +51,7 @@ public class RedisTest {
 	
 	
 	public static void testBinarySearch(){
-		OriginalCacheClient client = new OriginalCacheClient("redis_ref_hosts");
+		OriginalCacheDao client = new OriginalCacheDao("redis_ref_hosts");
 		ShardedJedis jedis =  client.getClient();
 		String key = "test";
 		long begin = System.currentTimeMillis();
@@ -84,7 +84,7 @@ public class RedisTest {
 	
 	public static void testPushListCache(){
 		Long[] values = {1L,4L,5L,2L,4L};
-		OriginalCacheClient client = new OriginalCacheClient("redis_ref_hosts");
+		OriginalCacheDao client = new OriginalCacheDao("redis_ref_hosts");
 		ShardedJedis jedis =  client.getClient();
 		String key = "test";
 		String tmp = jedis.lindex(key, 0);

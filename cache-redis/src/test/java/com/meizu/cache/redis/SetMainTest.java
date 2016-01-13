@@ -3,11 +3,11 @@ package com.meizu.cache.redis;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.meizu.cache.redis.client.impl.HashCacheClient;
+import com.meizu.cache.redis.dao.impl.HashCacheDao;
 
 
 public class SetMainTest {
-	public static HashCacheClient client = new HashCacheClient("redis_ref_hosts");
+	public static HashCacheDao client = new HashCacheDao("redis_ref_hosts");
 	private static final String LIST_KEY = "appMgr:domainhost:list";
 	/**
 	 * @param args
