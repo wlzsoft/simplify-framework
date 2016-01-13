@@ -1,12 +1,10 @@
 package com.meizu.cache.redis;
 
-import com.meizu.cache.Constants;
 import com.meizu.cache.redis.dao.impl.StringCacheDao;
 import com.meizu.cache.util.IdentifierGenerator;
 
 public class RedisGenerator implements IdentifierGenerator {
-	private static StringCacheDao client = new StringCacheDao(
-			Constants.REDIS_INDEX_MOD);
+	private static StringCacheDao client = new StringCacheDao("redis_index_hosts");
 
 	
 	/**
