@@ -1,5 +1,6 @@
 package com.meizu.cache.redis;
 
+import com.meizu.cache.ICacheDao;
 import com.meizu.cache.ICacheManager;
 
 
@@ -21,7 +22,7 @@ public class RedisCacheManager implements ICacheManager {
 
 
 	@Override
-	public RedisClient getCache(String name) {
+	public ICacheDao getCache(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
