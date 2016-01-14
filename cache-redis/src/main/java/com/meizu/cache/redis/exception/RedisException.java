@@ -1,7 +1,5 @@
 package com.meizu.cache.redis.exception;
 
-import redis.clients.jedis.exceptions.JedisException;
-
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

@@ -5,26 +5,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.meizu.cache.redis.dao.impl.StringRedisDao;
+import com.meizu.simplify.utils.AssertUtil;
+import com.meizu.simplify.utils.DataUtil;
+import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 import redis.clients.jedis.Protocol;
 
 public class HostAndPortUtil {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
 	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
-	private static final PropertieUtils propertieUtils = new PropertieUtils(
-			REDIS_CONFIG_FILE);
+	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
 	static {
-		Set<String> set = propertieUtils.stringPropertyNames();
+		Set<Entry<Object, Object>> set = propertieUtils.propertys();
 		if (set.size() == 0) {
-			throw new IllegalArgumentException("args is null !");
+			throw new IllegalArgumentException("redis集群节点信息：["+REDIS_CONFIG_FILE+"]配置文件为空 !");
 		}
-
-		for (Iterator<String> it = set.iterator(); it.hasNext();) {
-			String key = it.next();
-			String value = propertieUtils.getProperty(key);
+		for (Entry<Object, Object> property : set) {
+			String value = StringUtil.parseString(property.getValue(),"");
 			String[] envHosts = value.split(",|，");
 			if (envHosts.length == 0) {
 				continue;
@@ -43,7 +50,7 @@ public class HostAndPortUtil {
 				} catch (final NumberFormatException nfe) {
 					hnp.port = Protocol.DEFAULT_PORT;
 					throw new IllegalArgumentException(StringUtil.format(
-							" ip : {0} port {1} is error !",
+							" ip : {0} 端口 {1} 错误 !",
 							hostAndPort[0], hostAndPort[1]));
 				}
 				
@@ -54,35 +61,30 @@ public class HostAndPortUtil {
 				hostList.add(hnp);
 			
 			}
+			String key = StringUtil.parseString(property.getValue(),"");
+			AssertUtil.notBlank("key不能为空");
 			hostAndPortMap.put(key, hostList);
 
 		}
 
-		final StringBuilder strb = new StringBuilder(
-				"Redis hosts to be used : ");
+		final StringBuilder strb = new StringBuilder("redis集群节点信息 被启用列表 : ");
 
-		for (Iterator<String> it = hostAndPortMap.keySet().iterator(); it
-				.hasNext();) {
-			String key = it.next();
+		for (String key : hostAndPortMap.keySet()) {
 			strb.append(" key : " + key);
 			strb.append("[");
 			List<HostAndPort> hostList = hostAndPortMap.get(key);
 			for (HostAndPort hnp : hostList) {
 				if(hnp.pwd != null && hnp.pwd.length() > 0){
-					strb.append(hnp.host + ":" +hnp.port+ ":" +hnp.pwd+",");
+					strb.append(hnp.host).append(":").append(hnp.port).append(":").append(hnp.pwd+",");
 				}else{
-					strb.append(hnp.host + ":" +hnp.port+",");
+					strb.append(hnp.host).append(":").append(hnp.port).append(",");
 				}
 			}
 			strb.append("]");
 		}
-		// for (HostAndPort hnp : hostList) {
-		// strb.append('[').append(hnp.host).append(':').append(hnp.port)
-		// .append(']').append(' ');
-		// }
-		System.out.println(strb);
+		LOGGER.info(strb.toString());
+		
 	}
- 
 	
 	public static Map<String, List<HostAndPort>> getRedisServers() {
 		return hostAndPortMap;
@@ -94,10 +96,4 @@ public class HostAndPortUtil {
 		public String pwd;
 	}
 
-	public static void main(String[] args) {
-		//HostAndPortUtil.getRedisServers();
-		
-		String str = "192.168.168.208:6379";
-		System.out.println(str.split("\\|").length);
-	}
 }
