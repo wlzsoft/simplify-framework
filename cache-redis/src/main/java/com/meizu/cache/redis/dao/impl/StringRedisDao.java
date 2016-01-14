@@ -50,7 +50,6 @@ public class StringRedisDao extends BaseRedisDao {
 			return jedis.getSet(key, value);
 		} catch (Exception e) {
 			LOGGER.error("getAndSet error!", e);
-			 client.returnBrokenResource(jedis);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -68,7 +67,6 @@ public class StringRedisDao extends BaseRedisDao {
 			return jedis.get(key);
 		} catch (Exception e) {
 			LOGGER.error("get error!", e);
-			 client.returnBrokenResource(jedis);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -92,7 +90,6 @@ public class StringRedisDao extends BaseRedisDao {
 			return ret.equalsIgnoreCase("OK");
 		} catch (Exception e) {
 			LOGGER.error("set error!", e);
-			 client.returnBrokenResource(jedis);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -116,7 +113,6 @@ public class StringRedisDao extends BaseRedisDao {
             return ret > 0;
         } catch (Exception e) {
             LOGGER.error("setnx error!", e);
-            client.returnBrokenResource(jedis);
             return false;
         } finally {
             client.returnClient(jedis);
@@ -139,7 +135,6 @@ public class StringRedisDao extends BaseRedisDao {
             return ret.equalsIgnoreCase("OK");
         } catch (Exception e) {
             LOGGER.error("setex error!", e);
-            client.returnBrokenResource(jedis);
             return false;
         } finally {
             client.returnClient(jedis);

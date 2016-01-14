@@ -100,11 +100,13 @@ public class RedisPool {
 	 * @param shardedJedis
 	 */
 	public static void returnJedisClient(String mod_name,ShardedJedis shardedJedis) {
-		redisPools.get(mod_name).returnResource(shardedJedis);
+//		redisPools.get(mod_name).returnResource(shardedJedis);
+		shardedJedis.close();
 	}
 
 	public static void returnBrokenResource(String mod_name,ShardedJedis shardedJedis){
 		redisPools.get(mod_name).returnBrokenResource(shardedJedis);
+		shardedJedis.close();
 	}
 	
 }

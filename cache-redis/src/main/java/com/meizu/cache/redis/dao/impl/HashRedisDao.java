@@ -27,7 +27,7 @@ import redis.clients.jedis.ShardedJedis;
  *
  */
 public class HashRedisDao extends BaseRedisDao {
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public HashRedisDao(String mod_name) {
 		super(mod_name);
 	}
@@ -53,8 +53,7 @@ public class HashRedisDao extends BaseRedisDao {
 				return true;
 			}
 		} catch (Exception e) {
-			log.error("set error!", e);
-			client.returnBrokenResource(jedis);
+			LOGGER.error("set error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}
@@ -77,8 +76,7 @@ public class HashRedisDao extends BaseRedisDao {
 				return JsonUtil.JsonToObject(str);
 			}
 		} catch (Exception e) {
-			log.error("get error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("get error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}
@@ -106,8 +104,7 @@ public class HashRedisDao extends BaseRedisDao {
 				return true;
 			}
 		} catch (Exception e) {
-			log.error("hsetnx error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("hsetnx error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}
@@ -143,8 +140,7 @@ public class HashRedisDao extends BaseRedisDao {
 			}
 			return ret.equalsIgnoreCase("OK");
 		} catch (Exception e) {
-			log.error("hmset error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("hmset error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}
@@ -169,8 +165,7 @@ public class HashRedisDao extends BaseRedisDao {
 			}
 			return ret;
 		} catch (Exception e) {
-			log.error("hdel error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("hdel error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}
@@ -189,8 +184,7 @@ public class HashRedisDao extends BaseRedisDao {
 		try {
 			return jedis.hlen(key);
 		} catch (Exception e) {
-			log.error("hlen error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("hlen error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}
@@ -210,8 +204,7 @@ public class HashRedisDao extends BaseRedisDao {
 		try {
 			 return jedis.hexists(key, field);
 		} catch (Exception e) {
-			log.error("hlen error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("hlen error!", e);
 		} finally {
 			client.returnClient(jedis);
 		}

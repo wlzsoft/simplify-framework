@@ -44,7 +44,6 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 			return jedis.incr(key);
 		} catch (Exception e) {
 			LOGGER.error("incr error!", e);
-			 client.returnBrokenResource(jedis);
 			return 0L;
 		} finally {
 			client.returnClient(jedis);
@@ -64,7 +63,6 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 			return jedis.incrBy(getByteKey(key), value);
 		} catch (Exception e) {
 			LOGGER.error("incrBy error!", e);
-			 client.returnBrokenResource(jedis);
 			return 0L;
 		} finally {
 			client.returnClient(jedis);

@@ -24,8 +24,7 @@ import redis.clients.jedis.ShardedJedis;
  *
  */
 public class ListRedisDao extends BaseRedisDao {
-	private static final Logger log = LoggerFactory
-			.getLogger(ListRedisDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ListRedisDao.class);
 
 	public ListRedisDao(String mod_name) {
 		super(mod_name);
@@ -61,8 +60,7 @@ public class ListRedisDao extends BaseRedisDao {
 			}
 			return length > 0;
 		} catch (Exception e) {
-			log.error("lpush error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lpush error!", e);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -89,8 +87,7 @@ public class ListRedisDao extends BaseRedisDao {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("lpush error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lpush error!", e);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -122,8 +119,7 @@ public class ListRedisDao extends BaseRedisDao {
 			}
 			return true;
 		}catch(Exception e){
-			log.error("lpush error!", e);
-			client.returnBrokenResource(jedis);
+			LOGGER.error("lpush error!", e);
 			return false;
 		}finally{
 			client.returnClient(jedis);
@@ -161,8 +157,7 @@ public class ListRedisDao extends BaseRedisDao {
 			}
 			return length > 0;
 		} catch (Exception e) {
-			log.error("rpush error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("rpush error!", e);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -193,8 +188,7 @@ public class ListRedisDao extends BaseRedisDao {
 				jedis.expire(key, seconds);
 			}
 		}catch(Exception e){
-			log.error("rpush error!", e);
-			client.returnBrokenResource(jedis);
+			LOGGER.error("rpush error!", e);
 			return false;
 		}finally{
 			client.returnClient(jedis);
@@ -215,8 +209,7 @@ public class ListRedisDao extends BaseRedisDao {
 		try {
 			return jedis.lpop(key);
 		} catch (Exception e) {
-			log.error("lpop error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lpop error!", e);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -235,8 +228,7 @@ public class ListRedisDao extends BaseRedisDao {
 		try {
 			return jedis.rpop(key);
 		} catch (Exception e) {
-			log.error("rpop error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("rpop error!", e);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -256,8 +248,7 @@ public class ListRedisDao extends BaseRedisDao {
 			long length = jedis.llen(key);
 			return length;
 		} catch (Exception e) {
-			log.error("llen error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("llen error!", e);
 			return -1;
 		} finally {
 			client.returnClient(jedis);
@@ -281,8 +272,7 @@ public class ListRedisDao extends BaseRedisDao {
 			List<String> list = jedis.lrange(key, start, end);
 			return list;
 		} catch (Exception e) {
-			log.error("lrange error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lrange error!", e);
 			return null;
 		} finally {
 		   // begin = System.currentTimeMillis();
@@ -333,8 +323,7 @@ public class ListRedisDao extends BaseRedisDao {
 			long ret = jedis.lrem(key, count, value);
 			return ret;
 		} catch (Exception e) {
-			log.error("lrem error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lrem error!", e);
 			return 0;
 		} finally {
 			client.returnClient(jedis);
@@ -357,8 +346,7 @@ public class ListRedisDao extends BaseRedisDao {
 					.lset(key, index, value);
 			return ret.equalsIgnoreCase("ok");
 		} catch (Exception e) {
-			log.error("lset error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lset error!", e);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -380,8 +368,7 @@ public class ListRedisDao extends BaseRedisDao {
 			String ret = jedis.ltrim(key, start, stop);
 			return ret.equalsIgnoreCase("ok");
 		} catch (Exception e) {
-			log.error("ltrim error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("ltrim error!", e);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -404,8 +391,7 @@ public class ListRedisDao extends BaseRedisDao {
 		try {
 			return jedis.lindex(key, index);
 		} catch (Exception e) {
-			log.error("lindex error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("lindex error!", e);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -435,8 +421,7 @@ public class ListRedisDao extends BaseRedisDao {
 			long length = jedis.linsert(key, position,pivot, value);
 			return length;
 		} catch (Exception e) {
-			log.error("linsert error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("linsert error!", e);
 			return -1;
 		} finally {
 			client.returnClient(jedis);

@@ -9,79 +9,19 @@ import org.slf4j.LoggerFactory;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.enums.CacheExpireTimeEnum;
 import com.meizu.cache.exception.CacheException;
-import com.meizu.cache.redis.RedisManager;
-import com.meizu.cache.util.DefaultCodec;
+import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.utils.ReflectionUtil;
 
 import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.ShardedJedisPool;
 
-/**
- * <p><b>Title:</b><i>简单缓存操作类</i></p>
- * <p>Desc: TODO</p>
- * <p>source folder:{@docRoot}</p>
- * <p>Copyright:Copyright(c)2014</p>
- * <p>Company:meizu</p>
- * <p>Create Date:2016年1月13日 下午6:03:32</p>
- * <p>Modified By:luchuangye-</p>
- * <p>Modified Date:2016年1月13日 下午6:03:32</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
- * @version Version 0.1
- *
- */
+
 //@Component
-public class CommonRedisDao<K extends Serializable,V,T extends Serializable> implements ICacheDao<K,V>{
-	private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
-  //序列化
-  protected DefaultCodec codec = new DefaultCodec();
-  public RedisManager client = null;
-  private ShardedJedisPool shardedJedisPool;
-  protected Class<? extends CommonRedisDao> entityClass;
-
-  public CommonRedisDao(){
-      this.entityClass = ReflectionUtil.getSuperClassGenricTypeForFirst(getClass());
-  }
-//public RedisDao(String name, int expire, RedisClient redisClient) {
-//	    this.name = name;
-//	    this.expire = expire;
-//		this.redisClient = redisClient;
-//	}
-  
+public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao implements ICacheDao<K,V>{
+	
+  private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
   public CommonRedisDao(String mod_name) {
-  	client = new RedisManager(mod_name);
-	}
-
-	protected byte[] getByteKey(K key){
-  	if(key == null){
-  		return null;
-  	}
-  	return ((String) key).getBytes();
+		super(mod_name);
   }
-  public void setShardedJedisPool(ShardedJedisPool shardedJedisPool) {
-      this.shardedJedisPool = shardedJedisPool;
-  }
-
-  public ShardedJedis getConnection() {
-      ShardedJedis jedis=null;
-      try {
-          jedis=shardedJedisPool.getResource();
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
-      return jedis;
-  }
-
-  public void closeConnection(ShardedJedis jedis) {
-      if (null != jedis) {
-          try {
-              shardedJedisPool.returnResource(jedis);
-          } catch (Exception e) {
-              e.printStackTrace();
-          }
-      }
-  }
-  
 
   /**
    * 缓存里面是否存在该key
@@ -95,8 +35,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
        try {
            return jedis.exists(key.toString());
        } catch (Exception e) {
-      	 LOGGER.error("exists error  key["+key+"]", e);
-      	 client.returnBrokenResource(jedis);
+      	   LOGGER.error("exists error  key["+key+"]", e);
            return false;
        } finally {
       	 client.returnClient(jedis);
@@ -135,7 +74,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
 //		}
       } catch (Exception e) {
           LOGGER.error("get error!", e);
-          client.returnBrokenResource(jedis);
           return null;
       } finally {
       	client.returnClient(jedis);
@@ -153,8 +91,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
 	public  V get(K key, Class<T> type) {
 	    Object cacheValue;
 		try {
-			ShardedJedis jedis = null;
-          jedis=shardedJedisPool.getResource();
+			ShardedJedis jedis =getConnection();
 			cacheValue = jedis.get(key.toString());
 			Object value = (cacheValue != null ? cacheValue : null);
 			if (type != null && !type.isInstance(value)) {
@@ -223,7 +160,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
           return ret.equalsIgnoreCase("OK");
       } catch (Exception e) {
           LOGGER.error("set error!", e);
-          client.returnBrokenResource(jedis);
           return false;
       } finally {
       	client.returnClient(jedis);
@@ -268,7 +204,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
           return null;
       } catch (Exception e) {
           LOGGER.error("getAndSet error!", e);
-          client.returnBrokenResource(jedis);
           return null;
       } finally {
           client.returnClient(jedis);
@@ -299,7 +234,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
 //   		}
        } catch (Exception e) {
       	 LOGGER.error("del error  key["+key+"]", e);
-      	 client.returnBrokenResource(jedis);
        } finally {
       	 client.returnClient(jedis);
        }
@@ -363,7 +297,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
           return ret > 0;
       } catch (Exception e) {
           LOGGER.error("setnx error!", e);
-          client.returnBrokenResource(jedis);
           return false;
       } finally {
           client.returnClient(jedis);
@@ -386,7 +319,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
           return ret.equalsIgnoreCase("OK");
       } catch (Exception e) {
           LOGGER.error("setex error!", e);
-          client.returnBrokenResource(jedis);
           return false;
       } finally {
           client.returnClient(jedis);
@@ -404,4 +336,5 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> imp
 		// TODO Auto-generated method stub
 		return null;
 	}	
+	
 }

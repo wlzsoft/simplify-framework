@@ -25,7 +25,7 @@ import redis.clients.jedis.ShardedJedis;
  *
  */
 public class SetRedisDao extends BaseRedisDao {
-	private static final Logger log = LoggerFactory.getLogger(SetRedisDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SetRedisDao.class);
     public SetRedisDao(String mod_name) {
 		super(mod_name);
 	}
@@ -59,8 +59,7 @@ public class SetRedisDao extends BaseRedisDao {
 			}
             return ret > 0;
         } catch (Exception e) {
-            log.error("sadd error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("sadd error!", e);
             return false;
         } finally {
             client.returnClient(jedis);
@@ -80,8 +79,7 @@ public class SetRedisDao extends BaseRedisDao {
             long ret = jedis.srem(getByteKey(key), codec.encode(member));
             return ret > 0;
         } catch (Exception e) {
-            log.error("srem error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("srem error!", e);
             return false;
         } finally {
             client.returnClient(jedis);
@@ -109,8 +107,7 @@ public class SetRedisDao extends BaseRedisDao {
             }
             return result;
         } catch (Exception e) {
-            log.error("smembers error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("smembers error!", e);
             return null;
         } finally {
             client.returnClient(jedis);
@@ -131,8 +128,7 @@ public class SetRedisDao extends BaseRedisDao {
         try {
             return jedis.sismember(getByteKey(key), codec.encode(member));
         } catch (Exception e) {
-            log.error("sismember error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("sismember error!", e);
             return false;
         } finally {
             client.returnClient(jedis);
@@ -151,8 +147,7 @@ public class SetRedisDao extends BaseRedisDao {
             long size = jedis.scard(getByteKey(key));
             return size;
         } catch (Exception e) {
-            log.error("scard error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("scard error!", e);
             return -1;
         } finally {
             client.returnClient(jedis);
@@ -172,8 +167,7 @@ public class SetRedisDao extends BaseRedisDao {
             byte[] bytes = jedis.spop(getByteKey(key));
             return codec.decode(bytes);
         } catch (Exception e) {
-            log.error("spop error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("spop error!", e);
             return null;
         } finally {
             client.returnClient(jedis);
@@ -192,8 +186,7 @@ public class SetRedisDao extends BaseRedisDao {
             byte bytes[] = jedis.srandmember(getByteKey(key));
             return codec.decode(bytes);
         } catch (Exception e) {
-            log.error("srandmember error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("srandmember error!", e);
             return -1;
         } finally {
             client.returnClient(jedis);

@@ -30,8 +30,7 @@ public abstract class BaseRedisDao<K extends Serializable,V,T extends Serializab
 	protected DefaultCodec codec = new DefaultCodec();
     public RedisManager client = null;
 	private int expire;
-
-	
+	private ShardedJedisPool shardedJedisPool;
     
     public BaseRedisDao(int expire, RedisManager redisClient) {
 	    this.expire = expire;
@@ -49,5 +48,29 @@ public abstract class BaseRedisDao<K extends Serializable,V,T extends Serializab
     	return ((String) key).getBytes();
     }
 	
+	public void setShardedJedisPool(ShardedJedisPool shardedJedisPool) {
+	      this.shardedJedisPool = shardedJedisPool;
+	  }
+
+	  public ShardedJedis getConnection() {
+	      ShardedJedis jedis=null;
+	      try {
+	          jedis=shardedJedisPool.getResource();
+	      } catch (Exception e) {
+	          e.printStackTrace();
+	      }
+	      return jedis;
+	  }
+
+	  public void closeConnection(ShardedJedis jedis) {
+	      if (null != jedis) {
+	          try {
+	        	  shardedJedisPool.returnResource(jedis);
+	        	  jedis.close();
+	          } catch (Exception e) {
+	              e.printStackTrace();
+	          }
+	      }
+	  }
 	
 }

@@ -23,7 +23,7 @@ import redis.clients.jedis.ShardedJedis;
  *
  */
 public class JsonRedisDao extends BaseRedisDao {
-	private static final Logger log = LoggerFactory.getLogger(JsonRedisDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsonRedisDao.class);
 	
 	public JsonRedisDao(String mod_name) {
 		super(mod_name);
@@ -47,8 +47,7 @@ public class JsonRedisDao extends BaseRedisDao {
 			}
 			return null;
 		} catch (Exception e) {
-			log.error("getAndSet error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("getAndSet error!", e);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -71,8 +70,7 @@ public class JsonRedisDao extends BaseRedisDao {
 			}
 			return null;
 		} catch (Exception e) {
-			log.error("get error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("get error!", e);
 			return null;
 		} finally {
 			client.returnClient(jedis);
@@ -97,8 +95,7 @@ public class JsonRedisDao extends BaseRedisDao {
 			}
 			return ret.equalsIgnoreCase("OK");
 		} catch (Exception e) {
-			log.error("set error!", e);
-			 client.returnBrokenResource(jedis);
+			LOGGER.error("set error!", e);
 			return false;
 		} finally {
 			client.returnClient(jedis);
@@ -121,8 +118,7 @@ public class JsonRedisDao extends BaseRedisDao {
             long ret = jedis.setnx(key, JsonUtil.ObjectToJson(value));
             return ret > 0;
         } catch (Exception e) {
-            log.error("setnx error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("setnx error!", e);
             return false;
         } finally {
             client.returnClient(jedis);
@@ -145,8 +141,7 @@ public class JsonRedisDao extends BaseRedisDao {
             String ret = jedis.setex(key, seconds, JsonUtil.ObjectToJson(value));
             return ret.equalsIgnoreCase("OK");
         } catch (Exception e) {
-            log.error("setex error!", e);
-            client.returnBrokenResource(jedis);
+            LOGGER.error("setex error!", e);
             return false;
         } finally {
             client.returnClient(jedis);

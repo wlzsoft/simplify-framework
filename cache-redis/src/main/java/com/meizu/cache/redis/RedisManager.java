@@ -42,12 +42,6 @@ public class RedisManager implements ICacheManager {
     	RedisPool.returnJedisClient(mod_name, shardedJedis);
     }
     
-    public void returnBrokenResource(ShardedJedis shardedJedis){
-    	RedisPool.returnBrokenResource(mod_name, shardedJedis);
-    }
-    
-   
-    
     
     @Override
 	public ICacheDao getCache(String name) {
