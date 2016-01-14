@@ -4,6 +4,7 @@ import com.meizu.cache.ICacheDao;
 import com.meizu.cache.ICacheManager;
 
 import redis.clients.jedis.ShardedJedis;
+import redis.clients.jedis.ShardedJedisPool;
 
 
 
@@ -22,27 +23,6 @@ import redis.clients.jedis.ShardedJedis;
  */
 public class RedisManager implements ICacheManager {
 
-	private String mod_name;
-    public String getName() {
-    	return mod_name;	
-    } 
-    private String getKey(String key) {
-		return "name" + "_" + key;
-	}
-	
-	public RedisManager(String mod_name) {
-		this.mod_name = mod_name;
-	}
-    
-    public ShardedJedis getClient(){
-		return RedisPool.getJedisClient(mod_name);
-    }
-    
-    public void returnClient(ShardedJedis shardedJedis){
-    	RedisPool.returnJedisClient(mod_name, shardedJedis);
-    }
-    
-    
     @Override
 	public ICacheDao getCache(String name) {
 		// TODO Auto-generated method stub

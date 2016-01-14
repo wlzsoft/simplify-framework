@@ -3,6 +3,8 @@ package com.meizu.cache.redis.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.dao.IJsonCacheDao;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.utils.JsonUtil;
 
@@ -22,7 +24,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class JsonRedisDao extends BaseRedisDao {
+public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonRedisDao.class);
 	
 	public JsonRedisDao(String mod_name) {
@@ -39,7 +41,7 @@ public class JsonRedisDao extends BaseRedisDao {
 	 * @return
 	 */
 	public Object getAndSet(String key, Object value) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String str = jedis.getSet(key, JsonUtil.ObjectToJson(value));
 			if(str != null && str.length() > 0){
@@ -50,7 +52,7 @@ public class JsonRedisDao extends BaseRedisDao {
 			LOGGER.error("getAndSet error!", e);
 			return null;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 
@@ -62,7 +64,7 @@ public class JsonRedisDao extends BaseRedisDao {
 	 * @return
 	 */
 	public Object get(String key) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String str =  jedis.get(key);
 			if(str != null && str.length() > 0){
@@ -73,7 +75,7 @@ public class JsonRedisDao extends BaseRedisDao {
 			LOGGER.error("get error!", e);
 			return null;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 
@@ -87,7 +89,7 @@ public class JsonRedisDao extends BaseRedisDao {
 	 * @return
 	 */
 	public boolean set(String key, Object value,int seconds) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String ret = jedis.set(key, JsonUtil.ObjectToJson(value));
 			if(seconds > 0){
@@ -98,7 +100,7 @@ public class JsonRedisDao extends BaseRedisDao {
 			LOGGER.error("set error!", e);
 			return false;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 	  
@@ -113,7 +115,7 @@ public class JsonRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean setnx(String key, Object value) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             long ret = jedis.setnx(key, JsonUtil.ObjectToJson(value));
             return ret > 0;
@@ -121,7 +123,7 @@ public class JsonRedisDao extends BaseRedisDao {
             LOGGER.error("setnx error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 
@@ -136,7 +138,7 @@ public class JsonRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean setex(String key, int seconds, Object value) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             String ret = jedis.setex(key, seconds, JsonUtil.ObjectToJson(value));
             return ret.equalsIgnoreCase("OK");
@@ -144,7 +146,7 @@ public class JsonRedisDao extends BaseRedisDao {
             LOGGER.error("setex error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
     

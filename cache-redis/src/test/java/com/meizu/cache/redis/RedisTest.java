@@ -36,27 +36,25 @@ public class RedisTest {
 	}
 	
 	 public static void originalCache(){
-		 RedisManager client = new RedisManager("redis_ref_hosts");
-	    	ShardedJedis jedis = client.getClient();
+	    	ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
 	    	String key = "aaa";
 	    	for(int i=0;i<10;i++){
 	    		jedis.sadd(key, String.valueOf(i));
 	    	}
 	    	System.out.println(jedis.scard(key));
-	    	client.returnClient(jedis);
+	    	jedis.close();
 	    	System.out.println("ok");
 	    	
 	    }
 	
 	public static void performance2(){
-		RedisManager client = new RedisManager("redis_ref_hosts");
-		ShardedJedis jedis =  client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
 		long begin = System.currentTimeMillis();
 		for(int i=0;i<10000;i++){
 			jedis.lpush("test", "test"+i);
 		}
 		jedis.expire("test", 60);
-		client.returnClient(jedis);
+		jedis.close();
 		long end = System.currentTimeMillis();
 		System.out.println(end-begin);
 		
@@ -64,8 +62,7 @@ public class RedisTest {
 	
 	
 	public static void testBinarySearch(){
-		RedisManager client = new RedisManager("redis_ref_hosts");
-		ShardedJedis jedis =  client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
 		String key = "test";
 		long begin = System.currentTimeMillis();
 		for(int i=0;i<20;i++){
@@ -74,7 +71,7 @@ public class RedisTest {
 		jedis.expire(key, 60*5);
 		
 		long length = jedis.llen(key);
-		long index = SearchRedisDao.findCacheIndex(key,jedis,9,0L,length-1,new Comparator<Long>(){
+		long index = new SearchRedisDao("redis_ref_hosts").findCacheIndex(key,9,0L,length-1,new Comparator<Long>(){
 
 			@Override
 			public int compare(Long o1, Long o2) {
@@ -92,13 +89,12 @@ public class RedisTest {
 		System.out.println(index);
 		
 		jedis.del(key);
-		client.returnClient(jedis);
+		jedis.close();
 	}
 	
 	public static void testPushListCache(){
 		Long[] values = {1L,4L,5L,2L,4L};
-		RedisManager client = new RedisManager("redis_ref_hosts");
-		ShardedJedis jedis =  client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
 		String key = "test";
 		String tmp = jedis.lindex(key, 0);
 		long begin =  tmp == null ? 0 : Long.valueOf(tmp);
@@ -120,7 +116,7 @@ public class RedisTest {
 				if(endIndex>1){
 					endIndex = endIndex - 1;
 				}
-				long beforeValue = SearchRedisDao.findCacheValueForInsert(key, jedis, sid, 0, endIndex);
+				long beforeValue = new SearchRedisDao("redis_ref_hosts").findCacheValueForInsert(key, sid, 0, endIndex);
 //				System.out.println(beforeValue);
 				if(beforeValue!=-1){
 					jedis.linsert (key, LIST_POSITION.AFTER,String.valueOf(beforeValue), String.valueOf(sid));
@@ -133,7 +129,7 @@ public class RedisTest {
 			System.out.println(v);
 		}
 		jedis.del(key);
-		client.returnClient(jedis);
+		jedis.close();
 	}
 	
 }

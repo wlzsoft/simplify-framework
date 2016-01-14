@@ -25,20 +25,16 @@ import redis.clients.jedis.ShardedJedisPool;
  */
 //@Component
 public abstract class BaseRedisDao<K extends Serializable,V,T extends Serializable> {
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseRedisDao.class);
+	
 	//序列化
 	protected DefaultCodec codec = new DefaultCodec();
-    public RedisManager client = null;
-	private int expire;
-	private ShardedJedisPool shardedJedisPool;
+
+	public String mod_name;
     
-    public BaseRedisDao(int expire, RedisManager redisClient) {
-	    this.expire = expire;
-		this.client = redisClient;
-	}
-    
-    public BaseRedisDao(String mod_name) {
-    	client = new RedisManager(mod_name);
+	public BaseRedisDao(String mod_name) {
+    	this.mod_name = mod_name;
 	}
 
 	protected byte[] getByteKey(K key){
@@ -48,29 +44,5 @@ public abstract class BaseRedisDao<K extends Serializable,V,T extends Serializab
     	return ((String) key).getBytes();
     }
 	
-	public void setShardedJedisPool(ShardedJedisPool shardedJedisPool) {
-	      this.shardedJedisPool = shardedJedisPool;
-	  }
-
-	  public ShardedJedis getConnection() {
-	      ShardedJedis jedis=null;
-	      try {
-	          jedis=shardedJedisPool.getResource();
-	      } catch (Exception e) {
-	          e.printStackTrace();
-	      }
-	      return jedis;
-	  }
-
-	  public void closeConnection(ShardedJedis jedis) {
-	      if (null != jedis) {
-	          try {
-	        	  shardedJedisPool.returnResource(jedis);
-	        	  jedis.close();
-	          } catch (Exception e) {
-	              e.printStackTrace();
-	          }
-	      }
-	  }
 	
 }

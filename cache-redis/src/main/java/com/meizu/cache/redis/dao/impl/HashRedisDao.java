@@ -8,6 +8,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.dao.IHashCacheDao;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.utils.JsonUtil;
 
@@ -26,7 +28,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class HashRedisDao extends BaseRedisDao {
+public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public HashRedisDao(String mod_name) {
 		super(mod_name);
@@ -43,7 +45,7 @@ public class HashRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean set(String key,  String field, Object value,int seconds){
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long status = jedis.hset(key, field, JsonUtil.ObjectToJson(value));
 			if(seconds > 0){
@@ -55,7 +57,7 @@ public class HashRedisDao extends BaseRedisDao {
 		} catch (Exception e) {
 			LOGGER.error("set error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return false;
     }
@@ -69,7 +71,7 @@ public class HashRedisDao extends BaseRedisDao {
      * @return
      */
     public Object get(String key,  String field){
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String str = jedis.hget(key,field);
 			if(str != null && str.length() > 0){
@@ -78,7 +80,7 @@ public class HashRedisDao extends BaseRedisDao {
 		} catch (Exception e) {
 			LOGGER.error("get error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return null;
     }
@@ -94,7 +96,7 @@ public class HashRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean hsetnx(String key,  String field, Object value,int seconds){
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long status = jedis.hsetnx(key, field, JsonUtil.ObjectToJson(value));
 			if(seconds > 0){
@@ -106,7 +108,7 @@ public class HashRedisDao extends BaseRedisDao {
 		} catch (Exception e) {
 			LOGGER.error("hsetnx error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return false;
     }
@@ -132,7 +134,7 @@ public class HashRedisDao extends BaseRedisDao {
     		map.put(k, JsonUtil.ObjectToJson(value));
     	}
     	
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String ret = jedis.hmset(key, map);
 			if(seconds > 0){
@@ -142,7 +144,7 @@ public class HashRedisDao extends BaseRedisDao {
 		} catch (Exception e) {
 			LOGGER.error("hmset error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return false;
     }
@@ -157,7 +159,7 @@ public class HashRedisDao extends BaseRedisDao {
      * @return
      */
     public long hdel(String key,int seconds,String ... fields){
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long ret = jedis.hdel(key, fields);
 			if(seconds > 0){
@@ -167,7 +169,7 @@ public class HashRedisDao extends BaseRedisDao {
 		} catch (Exception e) {
 			LOGGER.error("hdel error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return 0;
     }
@@ -180,13 +182,13 @@ public class HashRedisDao extends BaseRedisDao {
      * @return
      */
     public long hlen(String key){
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.hlen(key);
 		} catch (Exception e) {
 			LOGGER.error("hlen error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return 0;
     }
@@ -200,13 +202,13 @@ public class HashRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean hexists(String key,String field){
-    	ShardedJedis jedis = client.getClient();
+    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			 return jedis.hexists(key, field);
 		} catch (Exception e) {
 			LOGGER.error("hlen error!", e);
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 		return false;
     }

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.dao.IGeneratorCacheDao;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 
 import redis.clients.jedis.ShardedJedis;
@@ -39,14 +40,14 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	 * @return
 	 */
 	public long incr(String key) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.incr(key);
 		} catch (Exception e) {
 			LOGGER.error("incr error!", e);
 			return 0L;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 
@@ -58,14 +59,14 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	 * @return
 	 */
 	public long incrBy(String key, long value) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.incrBy(getByteKey(key), value);
 		} catch (Exception e) {
 			LOGGER.error("incrBy error!", e);
 			return 0L;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 }

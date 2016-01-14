@@ -6,6 +6,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.dao.ISetCacheDao;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.utils.CollectionUtil;
 
@@ -24,7 +26,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class SetRedisDao extends BaseRedisDao {
+public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(SetRedisDao.class);
     public SetRedisDao(String mod_name) {
 		super(mod_name);
@@ -51,7 +53,7 @@ public class SetRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean sadd(String key, Object value,int seconds) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             long ret = jedis.sadd(getByteKey(key), codec.encode(value));
             if(seconds > 0){
@@ -62,7 +64,7 @@ public class SetRedisDao extends BaseRedisDao {
             LOGGER.error("sadd error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 
@@ -74,7 +76,7 @@ public class SetRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean srem(String key, Object member) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             long ret = jedis.srem(getByteKey(key), codec.encode(member));
             return ret > 0;
@@ -82,7 +84,7 @@ public class SetRedisDao extends BaseRedisDao {
             LOGGER.error("srem error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 
@@ -93,7 +95,7 @@ public class SetRedisDao extends BaseRedisDao {
      * @return
      */
     public Set<Object> smembers(String key) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         Set<byte[]> set = null;
         try {
             set = jedis.smembers(getByteKey(key));
@@ -110,7 +112,7 @@ public class SetRedisDao extends BaseRedisDao {
             LOGGER.error("smembers error!", e);
             return null;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
     
@@ -124,14 +126,14 @@ public class SetRedisDao extends BaseRedisDao {
      */
 
     public boolean sismember(String key, Object member) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             return jedis.sismember(getByteKey(key), codec.encode(member));
         } catch (Exception e) {
             LOGGER.error("sismember error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 
@@ -142,7 +144,7 @@ public class SetRedisDao extends BaseRedisDao {
      * @return
      */
     public long scard(String key) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             long size = jedis.scard(getByteKey(key));
             return size;
@@ -150,7 +152,7 @@ public class SetRedisDao extends BaseRedisDao {
             LOGGER.error("scard error!", e);
             return -1;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
     
@@ -162,7 +164,7 @@ public class SetRedisDao extends BaseRedisDao {
      * @return
      */
     public Object spop(String key) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             byte[] bytes = jedis.spop(getByteKey(key));
             return codec.decode(bytes);
@@ -170,7 +172,7 @@ public class SetRedisDao extends BaseRedisDao {
             LOGGER.error("spop error!", e);
             return null;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 
@@ -181,7 +183,7 @@ public class SetRedisDao extends BaseRedisDao {
      * @return
      */
     public Object srandmember(String key) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             byte bytes[] = jedis.srandmember(getByteKey(key));
             return codec.decode(bytes);
@@ -189,7 +191,7 @@ public class SetRedisDao extends BaseRedisDao {
             LOGGER.error("srandmember error!", e);
             return -1;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
     

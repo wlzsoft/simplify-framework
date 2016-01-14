@@ -83,30 +83,13 @@ public class RedisPool {
 
 	/**
 	 * 
-	 * 方法用途: getConnection<br>
+	 * 方法用途: <br>
 	 * 操作步骤: TODO<br>
 	 * @param mod_name
 	 * @return
 	 */
-	public static ShardedJedis getJedisClient(String mod_name) {
+	public static ShardedJedis getConnection(String mod_name) {
 		return redisPools.get(mod_name).getResource();
 	}
 
-	/**
-	 * 
-	 * 方法用途: closeConnection<br>
-	 * 操作步骤: TODO<br>
-	 * @param mod_name
-	 * @param shardedJedis
-	 */
-	public static void returnJedisClient(String mod_name,ShardedJedis shardedJedis) {
-//		redisPools.get(mod_name).returnResource(shardedJedis);
-		shardedJedis.close();
-	}
-
-	public static void returnBrokenResource(String mod_name,ShardedJedis shardedJedis){
-		redisPools.get(mod_name).returnBrokenResource(shardedJedis);
-		shardedJedis.close();
-	}
-	
 }

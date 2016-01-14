@@ -3,6 +3,8 @@ package com.meizu.cache.redis.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.dao.IStringCacheDao;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 
 import redis.clients.jedis.ShardedJedis;
@@ -20,7 +22,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class StringRedisDao extends BaseRedisDao {
+public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
 
@@ -45,14 +47,14 @@ public class StringRedisDao extends BaseRedisDao {
 	 * @return
 	 */
 	public String getAndSet(String key, String value) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.getSet(key, value);
 		} catch (Exception e) {
 			LOGGER.error("getAndSet error!", e);
 			return null;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 
@@ -62,14 +64,14 @@ public class StringRedisDao extends BaseRedisDao {
 	 * @return
 	 */
 	public String get(String key) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.get(key);
 		} catch (Exception e) {
 			LOGGER.error("get error!", e);
 			return null;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 
@@ -81,7 +83,7 @@ public class StringRedisDao extends BaseRedisDao {
 	 * @return
 	 */
 	public boolean set(String key, String value,int seconds) {
-		ShardedJedis jedis = client.getClient();
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String ret = jedis.set(key, value);
 			if(seconds > 0){
@@ -92,7 +94,7 @@ public class StringRedisDao extends BaseRedisDao {
 			LOGGER.error("set error!", e);
 			return false;
 		} finally {
-			client.returnClient(jedis);
+			jedis.close();
 		}
 	}
 	
@@ -107,7 +109,7 @@ public class StringRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean setnx(String key, String value) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             long ret = jedis.setnx(key, value);
             return ret > 0;
@@ -115,7 +117,7 @@ public class StringRedisDao extends BaseRedisDao {
             LOGGER.error("setnx error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 
@@ -129,7 +131,7 @@ public class StringRedisDao extends BaseRedisDao {
      * @return
      */
     public boolean setex(String key, int seconds, String value) {
-        ShardedJedis jedis = client.getClient();
+        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             String ret = jedis.setex(key, seconds, value);
             return ret.equalsIgnoreCase("OK");
@@ -137,7 +139,7 @@ public class StringRedisDao extends BaseRedisDao {
             LOGGER.error("setex error!", e);
             return false;
         } finally {
-            client.returnClient(jedis);
+            jedis.close();
         }
     }
 

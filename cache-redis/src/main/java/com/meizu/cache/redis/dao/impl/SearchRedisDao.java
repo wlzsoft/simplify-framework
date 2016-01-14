@@ -1,6 +1,11 @@
 package com.meizu.cache.redis.dao.impl;
 
+import java.io.Serializable;
 import java.util.Comparator;
+
+import com.meizu.cache.dao.ISearchCacheDao;
+import com.meizu.cache.redis.RedisPool;
+import com.meizu.cache.redis.dao.BaseRedisDao;
 
 import redis.clients.jedis.ShardedJedis;
 /**
@@ -16,23 +21,27 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class SearchRedisDao {
+public class SearchRedisDao<K,V,T> extends BaseRedisDao<Serializable, V, Serializable> implements ISearchCacheDao{
 
 	
+	public SearchRedisDao(String mod_name) {
+		super(mod_name);
+	}
+
 	/**
 	 * 
 	 * 方法用途: 二分查找缓存下标<br>
 	 * 操作步骤: TODO<br>
 	 * @param key 缓存list key
-	 * @param jedis
 	 * @param data 需要查找的数据
 	 * @param beginIndex 开始下标
 	 * @param endIndex 结束下标
 	 * @param c
 	 * @return
 	 */
-	public static long findCacheIndex(String key, ShardedJedis jedis, long data,
+	public  long findCacheIndex(String key,  long data,
 			long beginIndex, long endIndex, Comparator<Long> c) {
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		if (jedis == null) {
 			return -1;
 		}
@@ -75,9 +84,9 @@ public class SearchRedisDao {
 		}
 		
 		if(c.compare(data, midIndexValue) < 0){
-			return findCacheIndex(key,jedis,data,midIndex + 1,endIndex,c);
+			return findCacheIndex(key,data,midIndex + 1,endIndex,c);
 		}else if(c.compare(data, midIndexValue) > 0){ 
-			return findCacheIndex(key,jedis,data,beginIndex,midIndex-1,c); 
+			return findCacheIndex(key,data,beginIndex,midIndex-1,c); 
 		}else{
 			return midIndex;
 		}
@@ -87,14 +96,14 @@ public class SearchRedisDao {
 	 * 方法用途: 二分查找缓存大于目标值最近的下标<br>
 	 * 操作步骤: TODO<br>  
 	 * @param key   缓存list key
-	 * @param jedis 
 	 * @param data  需要查找的数据
 	 * @param beginIndex 开始下标
 	 * @param endIndex   结束下标
 	 * @return
 	 */
-	public static long findCacheThanIndex(String key, ShardedJedis jedis, long data,
+	public  long findCacheThanIndex(String key, long data,
 			long beginIndex, long endIndex, Comparator<Long> c) {
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		if (jedis == null) {
 			return -1;
 		}
@@ -157,15 +166,15 @@ public class SearchRedisDao {
 //		}
 		
 		if(c.compare(beginIndexValue, data) > 0 && c.compare(midIndexValue, data) > 0 ){
-			return findCacheThanIndex(key, jedis, data, midIndex + 1, endIndex, c);
+			return findCacheThanIndex(key, data, midIndex + 1, endIndex, c);
 		}else if(c.compare(beginIndexValue, data) > 0 && c.compare(midIndexValue, data) < 0){
 			
 		}
 		
 		if(c.compare(data, midIndexValue) < 0){
-			return findCacheIndex(key,jedis,data,midIndex + 1,endIndex,c);
+			return findCacheIndex(key,data,midIndex + 1,endIndex,c);
 		}else if(c.compare(data, midIndexValue) > 0){ 
-			return findCacheIndex(key,jedis,data,beginIndex,midIndex-1,c); 
+			return findCacheIndex(key,data,beginIndex,midIndex-1,c); 
 		}else{
 			return midIndex;
 		}
@@ -174,14 +183,14 @@ public class SearchRedisDao {
 	 * 方法用途: 二分查找紧挨data缓存前一个值(插入用)
 	 * 操作步骤: TODO<br>  
 	 * @param key   缓存list key
-	 * @param jedis 
 	 * @param data  需要查找的数据
 	 * @param beginIndex 开始下标
 	 * @param endIndex   结束下标
 	 * @return
 	 */
-	public static long findCacheValueForInsert(String key, ShardedJedis jedis, long data,
+	public  long findCacheValueForInsert(String key, long data,
 			long beginIndex, long endIndex) {
+		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		if (jedis == null) {
 			return -1;
 		}
@@ -229,10 +238,9 @@ public class SearchRedisDao {
 		}
 		
 		if(midIndexValue>data){
-			return findCacheValueForInsert(key, jedis, data, midIndex, endIndex);
+			return findCacheValueForInsert(key, data, midIndex, endIndex);
 		}else{
-			return findCacheValueForInsert(key, jedis, data, beginIndex, midIndex);
+			return findCacheValueForInsert(key, data, beginIndex, midIndex);
 		}
 	}
-
 }
