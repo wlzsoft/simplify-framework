@@ -9,7 +9,12 @@ import com.meizu.cache.enums.CacheExpireTimeEnum;
 /**
  * 
  * <p><b>Title:</b><i>缓存操作接口</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 
+                           序列化选型，序列化后的体积，压缩对象，序列化速度和性能
+                           序列化支持的数据类型，是否支持复杂类型
+                           被动失效，设置过期策略
+                           主动更新，并发更新问题
+                           成本问题：并发量估算，内存量估算，对缓存数据的优化达到最小空间占用</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
