@@ -18,6 +18,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 public class JsonUtil {
 	/**
 	 * 
+	 * 方法用途: JSON转换成字符串<br>
+	 * 操作步骤: TODO<br>
 	 * @param obj
 	 * @return
 	 */
@@ -26,7 +28,8 @@ public class JsonUtil {
     }
     
 	/**
-	 * 字符还原成JSON
+	 * 方法用途: 字符还原成JSON<br>
+	 * 操作步骤: TODO<br>
 	 * @param str
 	 * @return
 	 */

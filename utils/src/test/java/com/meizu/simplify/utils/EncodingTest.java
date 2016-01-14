@@ -17,7 +17,7 @@ import com.meizu.simplify.enums.EncodingEnum;
  */
 
 public class EncodingTest {
-	 public static void main(String[] args) {
+	 public void test() {
 	    	System.out.println(EncodingEnum.UTF_8);
 		}
 }

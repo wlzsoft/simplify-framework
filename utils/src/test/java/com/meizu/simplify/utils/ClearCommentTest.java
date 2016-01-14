@@ -1,7 +1,11 @@
 package com.meizu.simplify.utils;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+
+import org.junit.Test;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -17,12 +21,17 @@ import java.io.UnsupportedEncodingException;
  *
  */
 public class ClearCommentTest {
+	
+	@Test
 	public void deepDir () {
-		String rootDir = "E:\\workspace\\project\\src\\main\\java\\com";
 		try {
-			ClearCommentUtil.deepDir(rootDir);
+			
+				URL packageUrl = getClass().getResource(".");
+				String rootDir = packageUrl.getFile();
+				ClearCommentUtil.deepDir(rootDir);
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
