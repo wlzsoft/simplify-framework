@@ -6,6 +6,9 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 
@@ -22,6 +25,8 @@ import java.util.Set;
  *
  */
 public class PropertieUtil {
+	
+	private Logger LOGGER = LoggerFactory.getLogger(PropertieUtil.class);
 	private Properties props = new Properties();
 	private InputStream jndiInput = null;
 
@@ -29,6 +34,9 @@ public class PropertieUtil {
 		try {
 			jndiInput = PropertieUtil.class.getClassLoader().getResourceAsStream(fileName);
 			props.load(jndiInput);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			LOGGER.info("配置文件["+fileName+"]不存在");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

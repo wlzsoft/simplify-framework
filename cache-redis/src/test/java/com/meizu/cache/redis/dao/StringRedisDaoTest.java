@@ -1,4 +1,4 @@
-package com.meizu.cache.redis;
+package com.meizu.cache.redis.dao;
 
 import com.meizu.cache.redis.dao.impl.StringRedisDao;
 

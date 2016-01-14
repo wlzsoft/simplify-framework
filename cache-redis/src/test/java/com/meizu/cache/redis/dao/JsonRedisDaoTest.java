@@ -1,4 +1,4 @@
-package com.meizu.cache.redis;
+package com.meizu.cache.redis.dao;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

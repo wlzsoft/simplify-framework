@@ -1,9 +1,12 @@
-package com.meizu.cache.redis;
+package com.meizu.cache.redis.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.meizu.cache.enums.CacheExpireTimeEnum;
+import com.meizu.cache.enums.TimeEnum;
 import com.meizu.cache.redis.dao.impl.ListRedisDao;
 import com.meizu.stresstester.StressTestUtils;
 import com.meizu.stresstester.core.StressTask;
@@ -12,30 +15,29 @@ public class ListRedisDaoTest {
 	public static ListRedisDao client = new ListRedisDao("redis_ref_hosts");
 	
 	@Test
-	public void test() {
+	public void testListInsertStress() {
 		StressTestUtils.testAndPrint(100, 1000, new StressTask(){
-
 			@Override
 			public Object doTask() throws Exception {
 				testListInsert();
 				return null;
 			}
-			
 		});
-
 	}
 	
-	public static void testListGet(){
+	@Test
+	public void testListGet(){
 		String key = "producer_list1";
-		//long begin = System.currentTimeMil	lis();
-	//	List list = client.lrange(key,0,100);
-//		client.lpop(key);
+		long begin = System.currentTimeMillis();
+		List list = client.lrange(key,0,100);
+		client.lpop(key);
 		System.out.println(client.lpop(key));
-		//System.out.println(list.size());
-		//System.out.println("time:"+(System.currentTimeMillis()-begin));
+		System.out.println(list.size());
+		System.out.println("time:"+(System.currentTimeMillis()-begin));
 	}
 	
-	public static void testListInsert(){
+	@Test
+	public  void testListInsert(){
 		
 		String key = "producer_list";
 		User usr = new User("101001","testname");
@@ -44,7 +46,7 @@ public class ListRedisDaoTest {
 		client.lpush(key, "{'name':'lcy',id:1}");
 	}
 	
-	private static class User implements Serializable{
+	private  class User implements Serializable{
 		private String id;
 		private String name;
 		private String addr;
@@ -79,23 +81,30 @@ public class ListRedisDaoTest {
 		}
 	}
 	
-	public static void testConnect(){
-		ListRedisDao client = new ListRedisDao("redis_ref_hosts");
+	@Test
+	public  void testConnect(){
 		client.lpush("test", "test211112223", 60);
 		String value = client.lpop("test");
 		System.out.println(value);
-		System.out.println("-----------------------");
 	}
 	
-	public static void performance1(){
-		ListRedisDao client = new ListRedisDao("redis_ref_hosts");
+	
+	
+	@Test
+	public  void testLpushStress(){
 		long begin = System.currentTimeMillis();
-		for(int i=0;i<10000;i++){
-			client.lpush("test", "test"+i, 60);
-		}
+		StressTestUtils.testAndPrint(100, 10000, new StressTask(){
+			int i=0;
+			@Override
+			public Object doTask() throws Exception {
+				client.lpush("test", "test"+i++);
+				client.expire("test", CacheExpireTimeEnum.CACHE_EXP_SENDCONDs,TimeEnum.SECONDS);
+				return null;
+			}
+			
+		});
 		long end = System.currentTimeMillis();
 		System.out.println(end-begin);
-		
 	}
 
 }

@@ -96,17 +96,6 @@ public class DefaultCacheDao<K,V> implements ICacheDao<K,V> {
 		return false;
 	}
 
-	@Override
-	public String expire(K key, CacheExpireTimeEnum export, TimeUnit seconds) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getExpire(K key, TimeUnit seconds) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }

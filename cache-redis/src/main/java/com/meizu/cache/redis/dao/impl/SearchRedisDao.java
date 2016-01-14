@@ -41,7 +41,7 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 	 */
 	public  long findCacheIndex(String key,  long data,
 			long beginIndex, long endIndex, Comparator<Long> c) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		if (jedis == null) {
 			return -1;
 		}
@@ -103,7 +103,7 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 	 */
 	public  long findCacheThanIndex(String key, long data,
 			long beginIndex, long endIndex, Comparator<Long> c) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		if (jedis == null) {
 			return -1;
 		}
@@ -190,7 +190,7 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 	 */
 	public  long findCacheValueForInsert(String key, long data,
 			long beginIndex, long endIndex) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		if (jedis == null) {
 			return -1;
 		}

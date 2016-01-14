@@ -46,7 +46,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public boolean set(String key,  String field, Object value,int seconds){
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			long status = jedis.hset(key, field, JsonUtil.ObjectToJson(value));
 			if(seconds > 0){
@@ -70,7 +70,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public Object get(String key,  String field){
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			String str = jedis.hget(key,field);
 			if(str != null && str.length() > 0){
@@ -93,7 +93,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public boolean hsetnx(String key,  String field, Object value,int seconds){
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			long status = jedis.hsetnx(key, field, JsonUtil.ObjectToJson(value));
 			if(seconds > 0){
@@ -129,7 +129,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
     		map.put(k, JsonUtil.ObjectToJson(value));
     	}
     	
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			String ret = jedis.hmset(key, map);
 			if(seconds > 0){
@@ -152,7 +152,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public long hdel(String key,int seconds,String ... fields){
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			long ret = jedis.hdel(key, fields);
 			if(seconds > 0){
@@ -173,7 +173,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public long hlen(String key){
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			return jedis.hlen(key);
 		} catch (Exception e) {
@@ -191,7 +191,7 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public boolean hexists(String key,String field){
-    	ShardedJedis jedis = RedisPool.getConnection(mod_name);
+    	
 		try {
 			 return jedis.hexists(key, field);
 		} catch (Exception e) {

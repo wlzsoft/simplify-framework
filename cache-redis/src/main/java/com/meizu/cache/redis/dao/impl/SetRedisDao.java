@@ -55,7 +55,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      * @return
      */
     public boolean sadd(String key, Object value,int seconds) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             long ret = jedis.sadd(DefaultSerialize.encode(key), DefaultSerialize.encode(value));
             if(seconds > 0){
@@ -76,7 +76,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      * @return
      */
     public boolean srem(String key, Object member) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             long ret = jedis.srem(DefaultSerialize.encode(key), DefaultSerialize.encode(member));
             return ret > 0;
@@ -93,7 +93,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      * @return
      */
     public Set<Object> smembers(String key) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         Set<byte[]> set = null;
         try {
             set = jedis.smembers(DefaultSerialize.encode(key));
@@ -122,7 +122,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      */
 
     public boolean sismember(String key, Object member) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             return jedis.sismember(DefaultSerialize.encode(key), DefaultSerialize.encode(member));
         } catch (Exception e) {
@@ -138,7 +138,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      * @return
      */
     public long scard(String key) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             long size = jedis.scard(DefaultSerialize.encode(key));
             return size;
@@ -156,7 +156,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      * @return
      */
     public Object spop(String key) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             byte[] bytes = jedis.spop(DefaultSerialize.encode(key));
             return DefaultSerialize.decode(bytes);
@@ -173,7 +173,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
      * @return
      */
     public Object srandmember(String key) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             byte bytes[] = jedis.srandmember(DefaultSerialize.encode(key));
             return DefaultSerialize.decode(bytes);

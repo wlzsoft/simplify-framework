@@ -61,7 +61,7 @@ public class HostAndPortUtil {
 				hostList.add(hnp);
 			
 			}
-			String key = StringUtil.parseString(property.getValue(),"");
+			String key = StringUtil.parseString(property.getKey(),"");
 			AssertUtil.notBlank("key不能为空");
 			hostAndPortMap.put(key, hostList);
 

@@ -1,8 +1,9 @@
-package com.meizu.cache.redis;
+package com.meizu.cache.redis.dao;
 
 import java.util.Comparator;
 import java.util.List;
 
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.impl.SearchRedisDao;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;

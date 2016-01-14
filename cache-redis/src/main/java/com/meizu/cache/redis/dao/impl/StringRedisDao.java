@@ -39,7 +39,7 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 	 * @return
 	 */
 	public String getAndSet(String key, String value) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		try {
 			return jedis.getSet(key, value);
 		} catch (Exception e) {
@@ -54,7 +54,7 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 	 * @return
 	 */
 	public String get(String key) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		try {
 			return jedis.get(key);
 		} catch (Exception e) {
@@ -71,7 +71,7 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 	 * @return
 	 */
 	public boolean set(String key, String value,int seconds) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		try {
 			String ret = jedis.set(key, value);
 			if(seconds > 0){
@@ -95,7 +95,7 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
      * @return
      */
     public boolean setnx(String key, String value) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             long ret = jedis.setnx(key, value);
             return ret > 0;
@@ -115,7 +115,7 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
      * @return
      */
     public boolean setex(String key, int seconds, String value) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
+        
         try {
             String ret = jedis.setex(key, seconds, value);
             return ret.equalsIgnoreCase("OK");

@@ -1,6 +1,5 @@
 package com.meizu.cache.redis.dao.impl;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,9 +25,9 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
+public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListRedisDao.class);
-
+	
 	public ListRedisDao(String mod_name) {
 		super(mod_name);
 	}
@@ -55,7 +54,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public boolean lpush(String key, String value,int seconds) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long length = jedis.lpush(key, value);
 			if(seconds > 0){
@@ -78,7 +76,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public boolean lpush(String[] keys,String[] values,int seconds){
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			for(int i=0,len=keys.length;i<len;i++){
 				jedis.lpush(keys[i], values[i]);
@@ -107,7 +104,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 			return true;
 		}
 		
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try{
 			for(int i=0,len=values.size();i<len;i++){
 				String value = values.get(i);
@@ -146,7 +142,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public boolean rpush(String key, String value,int seconds) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long length = jedis.rpush(key, value);
 			if(seconds > 0){
@@ -173,7 +168,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 			return true;
 		}
 		
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try{
 			for(int i=0,len=values.size();i<len;i++){
 				String value = values.get(i);
@@ -198,7 +192,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public String lpop(String key) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.lpop(key);
 		} catch (Exception e) {
@@ -215,7 +208,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public Object rpop(String key) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.rpop(key);
 		} catch (Exception e) {
@@ -232,7 +224,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public long llen(String key) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long length = jedis.llen(key);
 			return length;
@@ -253,7 +244,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 */
 	public List<String> lrange(String key, int start, int end) {
 		//long begin = System.currentTimeMillis();
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		//System.out.println("1:"+(System.currentTimeMillis() - begin));
 		try {
 			List<String> list = jedis.lrange(key, start, end);
@@ -299,7 +289,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public long lrem(String key, int count, String value) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long ret = jedis.lrem(key, count, value);
 			return ret;
@@ -319,7 +308,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public boolean lset(String key, int index, String value) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String ret = jedis
 					.lset(key, index, value);
@@ -340,7 +328,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public boolean ltrim(String key, int start, int stop) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String ret = jedis.ltrim(key, start, stop);
 			return ret.equalsIgnoreCase("ok");
@@ -362,7 +349,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return
 	 */
 	public Object lindex(String key, int index) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			return jedis.lindex(key, index);
 		} catch (Exception e) {
@@ -388,7 +374,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @return 如果命令执行成功，返回插入操作完成之后，列表的长度。 如果没有找到pivot，返回-1。 如果key不存在或为空列表，返回0
 	 */
 	public long linsert(String key, LIST_POSITION position, String pivot,String value) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long length = jedis.linsert(key, position,pivot, value);
 			return length;

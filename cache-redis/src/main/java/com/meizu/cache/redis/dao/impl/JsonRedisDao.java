@@ -43,7 +43,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	 * @return
 	 */
 	public Object getAndSet(String key, Object value) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String str = jedis.getSet(key, JsonUtil.ObjectToJson(value));
 			if(str != null && str.length() > 0){
@@ -64,7 +63,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	 * @return
 	 */
 	public Object get(String key) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String str =  jedis.get(key);
 			if(str != null && str.length() > 0){
@@ -87,7 +85,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	 * @return
 	 */
 	public boolean set(String key, Object value,int seconds) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			String ret = jedis.set(key, JsonUtil.ObjectToJson(value));
 			if(seconds > 0){
@@ -111,7 +108,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
      * @return
      */
     public boolean setnx(String key, Object value) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             long ret = jedis.setnx(key, JsonUtil.ObjectToJson(value));
             return ret > 0;
@@ -132,7 +128,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
      * @return
      */
     public boolean setex(String key, int seconds, Object value) {
-        ShardedJedis jedis = RedisPool.getConnection(mod_name);
         try {
             String ret = jedis.setex(key, seconds, JsonUtil.ObjectToJson(value));
             return ret.equalsIgnoreCase("OK");

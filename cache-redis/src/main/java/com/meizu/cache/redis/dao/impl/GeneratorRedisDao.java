@@ -43,7 +43,7 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	 * @return
 	 */
 	public long incr(String key) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		try {
 			return jedis.incr(key);
 		} catch (Exception e) {
@@ -60,7 +60,7 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	 * @return
 	 */
 	public long incrBy(String key, long value) {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		try {
 			return jedis.incrBy(DefaultSerialize.encode(key), value);
 		} catch (Exception e) {

@@ -1,6 +1,14 @@
 package com.meizu.cache.redis;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.junit.Test;
+
+import com.meizu.cache.redis.util.HostAndPortUtil;
+import com.meizu.cache.redis.util.HostAndPortUtil.HostAndPort;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -19,9 +27,11 @@ import org.junit.Test;
 public class HostAndPortUtilTest {
 	@Test
 	public  void test() {
-		//HostAndPortUtil.getRedisServers();
-		
-		String str = "192.168.168.208:6379";
-		System.out.println(str.split("\\|").length);
+//		redis_ref_hosts=192.168.168.208:6379:foobared,192.168.1.218:6379:foobared,192.168.168.208:6379:foobared,ros.meizu.com:6379:foobared
+		Map<String, List<HostAndPort>> map =HostAndPortUtil.getRedisServers();
+		Set<Entry<String, List<HostAndPort>>> set = map.entrySet();
+		for (Entry<String, List<HostAndPort>> entry : set) {
+			System.out.println(entry.getKey()+":[size:"+entry.getValue().size()+"]");
+		}
 	}
 }

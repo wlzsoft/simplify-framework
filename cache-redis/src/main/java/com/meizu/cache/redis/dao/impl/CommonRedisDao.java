@@ -54,7 +54,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   @Override
   public boolean exists(K key){
   	
-  	 ShardedJedis jedis = RedisPool.getConnection(mod_name);
+  	 
        try {
            return jedis.exists(key.toString());
        } catch (Exception e) {
@@ -71,7 +71,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
   @Override
   public V get(K key) {
-      ShardedJedis jedis = RedisPool.getConnection(mod_name);
+      
       try {
           byte[] ret = jedis.get(DefaultSerialize.encode(key));
           if (ret != null && ret.length > 0) {
@@ -104,9 +104,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   //@Override
 	public  V get(K key, Class<T> type) {
 	    Object cacheValue;
-	    ShardedJedis jedis = null;
 		try {
-			jedis =RedisPool.getConnection(mod_name);
 			cacheValue = jedis.get(key.toString());
 			Object value = (cacheValue != null ? cacheValue : null);
 			if (type != null && !type.isInstance(value)) {
@@ -139,6 +137,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public void add(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
+		
 	}
 	
 	/** 
@@ -165,37 +164,16 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
 		
-		
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
       try {
           String ret = jedis.set(DefaultSerialize.encode(key), DefaultSerialize.encode(value));
           if(export.timesanmp() > 0){
-				jedis.expire((String) key, export.timesanmp());
+				jedis.expire(DefaultSerialize.encode(key), export.timesanmp());
 			}
           return ret.equalsIgnoreCase("OK");
       } catch (Exception e) {
           LOGGER.error("set error!", e);
           return false;
       }
-		
-		
-		
-//		if(export.timesanmp()>0) {
-//			LOGGER.info("会话超时设置(默认30分钟)：");
-//			LOGGER.info("会话过期时间倒计时(秒)：");
-//			ShardedJedis jedis= null;
-//			try {
-//				jedis=shardedJedisPool.getResource();
-//				jedis.set((byte[]) key, ByteUtil.ObjectToByte(value));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}finally{
-//				this.returnClient(jedis);
-//			}
-//		}
-//		return true;
-		
-		
 	}
 	
 	
@@ -208,7 +186,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
    * @return
    */
   public Object getAndSet(K key, Object value) {
-      ShardedJedis jedis = RedisPool.getConnection(mod_name);
+      
       try {
           byte[] bytes = jedis.getSet(DefaultSerialize.encode(key),DefaultSerialize.encode(value));
           if (bytes != null && bytes.length > 0) {
@@ -231,7 +209,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean delete(K key) throws UncheckedException {
-		ShardedJedis jedis = RedisPool.getConnection(mod_name);
+		
 		Long res = null;
        try {
       	 res = jedis.del(key.toString());
@@ -300,7 +278,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
    * @return
    */
   public boolean setnx(K key, Object value) {
-      ShardedJedis jedis = RedisPool.getConnection(mod_name);
+      
       try {
           long ret = jedis.setnx(DefaultSerialize.encode(key), DefaultSerialize.encode(value));
           return ret > 0;
@@ -320,7 +298,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
    * @return
    */
   public boolean setex(K key, int seconds, Object value) {
-      ShardedJedis jedis = RedisPool.getConnection(mod_name);
+      
       try {
           String ret = jedis.setex(DefaultSerialize.encode(key), seconds, DefaultSerialize.encode(value));
           return ret.equalsIgnoreCase("OK");
@@ -330,16 +308,5 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
       }
   }
 
-	@Override
-	public String expire(K key, CacheExpireTimeEnum export, TimeUnit seconds) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getExpire(K key, TimeUnit seconds) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
 	
 }

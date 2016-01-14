@@ -28,7 +28,7 @@ import com.meizu.simplify.utils.DataUtil;
 public class PropertieUtilTest {
 	@Test
 	public void test(){
-		PropertieUtil util = new PropertieUtil("redis-cfg.properties");
+		PropertieUtil util = new PropertieUtil("redis.properties");
 		Set<String> set = util.stringPropertyNames();
 		for(Iterator<String> it = set.iterator();it.hasNext();){
 			System.out.println(it.next());

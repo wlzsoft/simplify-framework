@@ -1,5 +1,7 @@
 package com.meizu.cache.redis.exception;
 
+import com.meizu.simplify.exception.BaseException;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -13,12 +15,15 @@ package com.meizu.cache.redis.exception;
  * @version Version 0.1
  *
  */
-public class RedisException extends RuntimeException {
+public class RedisException extends BaseException {
 
 
 	private static final long serialVersionUID = 7608271882621064719L;
 	public RedisException(Exception e) {
 		super(e);
+	}
+	public RedisException(String message) {
+		super(message);
 	}
 
 }
