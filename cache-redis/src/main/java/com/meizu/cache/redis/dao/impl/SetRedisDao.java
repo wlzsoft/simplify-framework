@@ -1,6 +1,5 @@
 package com.meizu.cache.redis.dao.impl;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,12 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.dao.ISetCacheDao;
-import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.utils.CollectionUtil;
-import com.meizu.simplify.utils.DefaultSerialize;
-
-import redis.clients.jedis.ShardedJedis;
+import com.meizu.simplify.utils.SerializeUtil;
 
 /**
  * <p><b>Title:</b><i>redis SET 操作集合</i></p>
@@ -57,7 +53,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public boolean sadd(String key, Object value,int seconds) {
         
         try {
-            long ret = jedis.sadd(DefaultSerialize.encode(key), DefaultSerialize.encode(value));
+            long ret = jedis.sadd(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
             if(seconds > 0){
 				jedis.expire(key, seconds);
 			}
@@ -78,7 +74,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public boolean srem(String key, Object member) {
         
         try {
-            long ret = jedis.srem(DefaultSerialize.encode(key), DefaultSerialize.encode(member));
+            long ret = jedis.srem(SerializeUtil.serialize(key), SerializeUtil.serialize(member));
             return ret > 0;
         } catch (Exception e) {
             LOGGER.error("srem error!", e);
@@ -96,13 +92,13 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
         
         Set<byte[]> set = null;
         try {
-            set = jedis.smembers(DefaultSerialize.encode(key));
+            set = jedis.smembers(SerializeUtil.serialize(key));
             //序列化
             Set<Object> result = null;
             if (CollectionUtil.isNotEmpty(set)) {
                 result = new HashSet<Object>();
                 for (byte[] bytes : set) {
-                    result.add(DefaultSerialize.decode(bytes));
+                    result.add(SerializeUtil.jdkDeserialize(bytes));
                 }
             }
             return result;
@@ -124,7 +120,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public boolean sismember(String key, Object member) {
         
         try {
-            return jedis.sismember(DefaultSerialize.encode(key), DefaultSerialize.encode(member));
+            return jedis.sismember(SerializeUtil.serialize(key), SerializeUtil.serialize(member));
         } catch (Exception e) {
             LOGGER.error("sismember error!", e);
             return false;
@@ -140,7 +136,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public long scard(String key) {
         
         try {
-            long size = jedis.scard(DefaultSerialize.encode(key));
+            long size = jedis.scard(SerializeUtil.serialize(key));
             return size;
         } catch (Exception e) {
             LOGGER.error("scard error!", e);
@@ -158,8 +154,8 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public Object spop(String key) {
         
         try {
-            byte[] bytes = jedis.spop(DefaultSerialize.encode(key));
-            return DefaultSerialize.decode(bytes);
+            byte[] bytes = jedis.spop(SerializeUtil.serialize(key));
+            return SerializeUtil.jdkDeserialize(bytes);
         } catch (Exception e) {
             LOGGER.error("spop error!", e);
             return null;
@@ -175,8 +171,8 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public Object srandmember(String key) {
         
         try {
-            byte bytes[] = jedis.srandmember(DefaultSerialize.encode(key));
-            return DefaultSerialize.decode(bytes);
+            byte bytes[] = jedis.srandmember(SerializeUtil.serialize(key));
+            return SerializeUtil.jdkDeserialize(bytes);
         } catch (Exception e) {
             LOGGER.error("srandmember error!", e);
             return -1;

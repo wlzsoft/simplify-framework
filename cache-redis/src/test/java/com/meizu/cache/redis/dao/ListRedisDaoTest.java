@@ -1,6 +1,5 @@
 package com.meizu.cache.redis.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.junit.Test;
@@ -8,6 +7,7 @@ import org.junit.Test;
 import com.meizu.cache.enums.CacheExpireTimeEnum;
 import com.meizu.cache.enums.TimeEnum;
 import com.meizu.cache.redis.dao.impl.ListRedisDao;
+import com.meizu.simplify.utils.entity.User;
 import com.meizu.stresstester.StressTestUtils;
 import com.meizu.stresstester.core.StressTask;
 
@@ -46,40 +46,7 @@ public class ListRedisDaoTest {
 		client.lpush(key, "{'name':'lcy',id:1}");
 	}
 	
-	private  class User implements Serializable{
-		private String id;
-		private String name;
-		private String addr;
-		private String phone;
-		public String getAddr() {
-			return addr;
-		}
-		public void setAddr(String addr) {
-			this.addr = addr;
-		}
-		public String getPhone() {
-			return phone;
-		}
-		public void setPhone(String phone) {
-			this.phone = phone;
-		}
-		public User(String id,String name){
-			this.id = id;
-			this.name = name;
-		}
-		public String getId() {
-			return id;
-		}
-		public void setId(String id) {
-			this.id = id;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-	}
+	
 	
 	@Test
 	public  void testConnect(){

@@ -1,9 +1,6 @@
 package com.meizu.cache.redis.dao.impl;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +8,11 @@ import org.slf4j.LoggerFactory;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.enums.CacheExpireTimeEnum;
 import com.meizu.cache.exception.CacheException;
-import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.cache.redis.exception.RedisException;
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.utils.DefaultSerialize;
+import com.meizu.simplify.utils.SerializeUtil;
 
-import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.exceptions.JedisException;
 
 
@@ -73,16 +68,12 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public V get(K key) {
       
       try {
-          byte[] ret = jedis.get(DefaultSerialize.encode(key));
+          byte[] ret = jedis.get(SerializeUtil.serialize(key));
           if (ret != null && ret.length > 0) {
-				return (V) DefaultSerialize.decode(ret);
+				return (V) SerializeUtil.unserialize(ret);
           }
           return null;
-        } catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new RedisException(e);
-//        } catch (TimeoutException e) {  
+//      } catch (TimeoutException e) {  
 //        	LOGGER.warn("获取 redis 缓存超时", e);
 //			throw new RedisException(e);
 //		} catch (InterruptedException e) {
@@ -165,9 +156,9 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
 		
       try {
-          String ret = jedis.set(DefaultSerialize.encode(key), DefaultSerialize.encode(value));
+          String ret = jedis.set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
           if(export.timesanmp() > 0){
-				jedis.expire(DefaultSerialize.encode(key), export.timesanmp());
+				jedis.expire(SerializeUtil.serialize(key), export.timesanmp());
 			}
           return ret.equalsIgnoreCase("OK");
       } catch (Exception e) {
@@ -188,9 +179,9 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public Object getAndSet(K key, Object value) {
       
       try {
-          byte[] bytes = jedis.getSet(DefaultSerialize.encode(key),DefaultSerialize.encode(value));
+          byte[] bytes = jedis.getSet(SerializeUtil.serialize(key),SerializeUtil.serialize(value));
           if (bytes != null && bytes.length > 0) {
-              return DefaultSerialize.decode(bytes);
+              return SerializeUtil.unserialize(bytes);
           }
           return null;
       } catch (Exception e) {
@@ -280,7 +271,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public boolean setnx(K key, Object value) {
       
       try {
-          long ret = jedis.setnx(DefaultSerialize.encode(key), DefaultSerialize.encode(value));
+          long ret = jedis.setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
           return ret > 0;
       } catch (Exception e) {
           LOGGER.error("setnx error!", e);
@@ -300,7 +291,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public boolean setex(K key, int seconds, Object value) {
       
       try {
-          String ret = jedis.setex(DefaultSerialize.encode(key), seconds, DefaultSerialize.encode(value));
+          String ret = jedis.setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
           return ret.equalsIgnoreCase("OK");
       } catch (Exception e) {
           LOGGER.error("setex error!", e);

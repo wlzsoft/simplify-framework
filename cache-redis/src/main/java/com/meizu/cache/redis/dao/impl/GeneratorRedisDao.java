@@ -1,16 +1,11 @@
 package com.meizu.cache.redis.dao.impl;
 
-import java.io.Serializable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.dao.IGeneratorCacheDao;
-import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
-import com.meizu.simplify.utils.DefaultSerialize;
-
-import redis.clients.jedis.ShardedJedis;
+import com.meizu.simplify.utils.SerializeUtil;
 
 /**
  * <p><b>Title:</b><i>redis整型数值递增器</i></p>
@@ -62,7 +57,7 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	public long incrBy(String key, long value) {
 		
 		try {
-			return jedis.incrBy(DefaultSerialize.encode(key), value);
+			return jedis.incrBy(SerializeUtil.serialize(key), value);
 		} catch (Exception e) {
 			LOGGER.error("incrBy error!", e);
 			return 0L;
