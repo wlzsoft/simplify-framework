@@ -24,15 +24,15 @@ public class ClearCommentTest {
 	
 	@Test
 	public void deepDir () {
-		try {
-			
-				URL packageUrl = getClass().getResource(".");
-				String rootDir = packageUrl.getFile();
-				ClearCommentUtil.deepDir(rootDir);
-		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			
+//				URL packageUrl = getClass().getResource(".");
+//				String rootDir = packageUrl.getFile();
+//				ClearCommentUtil.deepDir(rootDir);
+//		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 }
