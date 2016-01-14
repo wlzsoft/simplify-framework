@@ -1,6 +1,7 @@
 package com.meizu.cache.redis.dao.impl;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -56,8 +57,6 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			}
 		} catch (Exception e) {
 			LOGGER.error("set error!", e);
-		} finally {
-			jedis.close();
 		}
 		return false;
     }
@@ -79,8 +78,6 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			}
 		} catch (Exception e) {
 			LOGGER.error("get error!", e);
-		} finally {
-			jedis.close();
 		}
 		return null;
     }
@@ -107,8 +104,6 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			}
 		} catch (Exception e) {
 			LOGGER.error("hsetnx error!", e);
-		} finally {
-			jedis.close();
 		}
 		return false;
     }
@@ -143,8 +138,6 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			return ret.equalsIgnoreCase("OK");
 		} catch (Exception e) {
 			LOGGER.error("hmset error!", e);
-		} finally {
-			jedis.close();
 		}
 		return false;
     }
@@ -168,8 +161,6 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			return ret;
 		} catch (Exception e) {
 			LOGGER.error("hdel error!", e);
-		} finally {
-			jedis.close();
 		}
 		return 0;
     }
@@ -187,8 +178,6 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			return jedis.hlen(key);
 		} catch (Exception e) {
 			LOGGER.error("hlen error!", e);
-		} finally {
-			jedis.close();
 		}
 		return 0;
     }
@@ -207,12 +196,8 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
 			 return jedis.hexists(key, field);
 		} catch (Exception e) {
 			LOGGER.error("hlen error!", e);
-		} finally {
-			jedis.close();
 		}
 		return false;
     }
-
-	
 	
 }

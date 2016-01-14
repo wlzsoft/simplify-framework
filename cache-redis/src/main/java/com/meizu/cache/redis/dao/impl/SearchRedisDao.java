@@ -21,7 +21,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class SearchRedisDao<K,V,T> extends BaseRedisDao<Serializable, V, Serializable> implements ISearchCacheDao{
+public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 
 	
 	public SearchRedisDao(String mod_name) {

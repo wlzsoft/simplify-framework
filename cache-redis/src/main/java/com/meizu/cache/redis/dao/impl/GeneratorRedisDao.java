@@ -1,11 +1,14 @@
 package com.meizu.cache.redis.dao.impl;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.dao.IGeneratorCacheDao;
 import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.utils.DefaultSerialize;
 
 import redis.clients.jedis.ShardedJedis;
 
@@ -22,7 +25,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheDao {
+public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheDao<String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
 
@@ -46,8 +49,6 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 		} catch (Exception e) {
 			LOGGER.error("incr error!", e);
 			return 0L;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -61,12 +62,10 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	public long incrBy(String key, long value) {
 		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
-			return jedis.incrBy(getByteKey(key), value);
+			return jedis.incrBy(DefaultSerialize.encode(key), value);
 		} catch (Exception e) {
 			LOGGER.error("incrBy error!", e);
 			return 0L;
-		} finally {
-			jedis.close();
 		}
 	}
 }

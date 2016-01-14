@@ -1,5 +1,6 @@
 package com.meizu.cache.redis.dao.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -64,8 +65,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lpush error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 	
@@ -91,8 +90,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lpush error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 	
@@ -123,8 +120,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		}catch(Exception e){
 			LOGGER.error("lpush error!", e);
 			return false;
-		}finally{
-			jedis.close();
 		}
 		
 	}
@@ -161,8 +156,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("rpush error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 	
@@ -192,8 +185,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		}catch(Exception e){
 			LOGGER.error("rpush error!", e);
 			return false;
-		}finally{
-			jedis.close();
 		}
 		return true;
 		
@@ -213,8 +204,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lpop error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -232,8 +221,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("rpop error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -252,8 +239,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("llen error!", e);
 			return -1;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -276,10 +261,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lrange error!", e);
 			return null;
-		} finally {
-		   // begin = System.currentTimeMillis();
-			jedis.close();
-			//System.out.println("3:"+(System.currentTimeMillis() - begin));
 		}
 	}
 //	public List<Object> lrange(String key, int start, int end) {
@@ -302,8 +283,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 //		} catch (Exception e) {
 //			log.error("lrange error!", e);
 //			return null;
-//		} finally {
-//			jedis.close();
 //		}
 //	}
 
@@ -327,8 +306,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lrem error!", e);
 			return 0;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -350,8 +327,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lset error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -372,8 +347,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("ltrim error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -395,8 +368,6 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("lindex error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -416,8 +387,7 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 	 * @param value
 	 * @return 如果命令执行成功，返回插入操作完成之后，列表的长度。 如果没有找到pivot，返回-1。 如果key不存在或为空列表，返回0
 	 */
-	public long linsert(String key, LIST_POSITION position, String pivot,
-			String value) {
+	public long linsert(String key, LIST_POSITION position, String pivot,String value) {
 		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 		try {
 			long length = jedis.linsert(key, position,pivot, value);
@@ -425,10 +395,7 @@ public class ListRedisDao extends BaseRedisDao implements IListCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("linsert error!", e);
 			return -1;
-		} finally {
-			jedis.close();
 		}
 	}
-	
 
 }

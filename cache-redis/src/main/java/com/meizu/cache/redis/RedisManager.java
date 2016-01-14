@@ -3,9 +3,6 @@ package com.meizu.cache.redis;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.ICacheManager;
 
-import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.ShardedJedisPool;
-
 
 
 /**
@@ -24,7 +21,7 @@ import redis.clients.jedis.ShardedJedisPool;
 public class RedisManager implements ICacheManager {
 
     @Override
-	public ICacheDao getCache(String name) {
+	public ICacheDao<?,?> getCache(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -2,17 +2,17 @@ package com.meizu.cache.redis;
 
 import java.io.Serializable;
 
+import org.junit.Test;
+
 import com.meizu.cache.redis.dao.impl.ListRedisDao;
 import com.meizu.stresstester.StressTestUtils;
 import com.meizu.stresstester.core.StressTask;
 
-public class ListMainTest {
+public class ListRedisDaoTest {
 	public static ListRedisDao client = new ListRedisDao("redis_ref_hosts");
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	@Test
+	public void test() {
 		StressTestUtils.testAndPrint(100, 1000, new StressTask(){
 
 			@Override
@@ -77,6 +77,25 @@ public class ListMainTest {
 		public void setName(String name) {
 			this.name = name;
 		}
+	}
+	
+	public static void testConnect(){
+		ListRedisDao client = new ListRedisDao("redis_ref_hosts");
+		client.lpush("test", "test211112223", 60);
+		String value = client.lpop("test");
+		System.out.println(value);
+		System.out.println("-----------------------");
+	}
+	
+	public static void performance1(){
+		ListRedisDao client = new ListRedisDao("redis_ref_hosts");
+		long begin = System.currentTimeMillis();
+		for(int i=0;i<10000;i++){
+			client.lpush("test", "test"+i, 60);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println(end-begin);
+		
 	}
 
 }

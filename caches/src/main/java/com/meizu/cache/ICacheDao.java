@@ -10,6 +10,7 @@ import com.meizu.cache.enums.CacheExpireTimeEnum;
  * 
  * <p><b>Title:</b><i>缓存操作接口</i></p>
  * <p>Desc: 
+ *         伪分布式redis，需要自己实现一致性hash算法
                            序列化选型，序列化后的体积，压缩对象，序列化速度和性能
                            序列化支持的数据类型，是否支持复杂类型
                            被动失效，设置过期策略
@@ -104,7 +105,24 @@ public interface ICacheDao<K,V> {
 	 */
     public boolean isMutex(K key, CacheExpireTimeEnum export);
     
+	/**
+	 * 
+	 * 方法用途: 指定key设置过期时间<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param export
+	 * @param seconds
+	 * @return
+	 */
 	public String expire(K key, CacheExpireTimeEnum export, TimeUnit seconds);
+	/**
+	 * 
+	 * 方法用途: 获取指定key的剩余过期时间<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param seconds
+	 * @return
+	 */
 	public String getExpire(K key, TimeUnit seconds);
 
 }

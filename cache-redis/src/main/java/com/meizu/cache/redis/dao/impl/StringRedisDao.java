@@ -30,14 +30,6 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 		super(mod_name);
 	}
 
-	public static void main(String[] args) {
-		StringRedisDao client = new StringRedisDao("redis_ref_hosts");
-		// client.set("vip_send_mail_max_msgid", 20L);
-		// long max = (Long) client.get("vip_send_mail_max_msgid");
-		// System.out.println(max);
-	}
-	
-
 	/**
 	 * 方法用途: <p>将给定key的值设为value，并返回key的旧值。 </p>
 	 * <p>当key存在但不是字符串类型时，返回一个错误。 </p>
@@ -53,8 +45,6 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("getAndSet error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -70,8 +60,6 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("get error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -93,8 +81,6 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("set error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 	
@@ -116,8 +102,6 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
         } catch (Exception e) {
             LOGGER.error("setnx error!", e);
             return false;
-        } finally {
-            jedis.close();
         }
     }
 
@@ -138,8 +122,6 @@ public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
         } catch (Exception e) {
             LOGGER.error("setex error!", e);
             return false;
-        } finally {
-            jedis.close();
         }
     }
 

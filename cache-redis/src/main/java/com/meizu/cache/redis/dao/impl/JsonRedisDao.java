@@ -1,5 +1,7 @@
 package com.meizu.cache.redis.dao.impl;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,8 +53,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("getAndSet error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -74,8 +74,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("get error!", e);
 			return null;
-		} finally {
-			jedis.close();
 		}
 	}
 
@@ -99,8 +97,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 		} catch (Exception e) {
 			LOGGER.error("set error!", e);
 			return false;
-		} finally {
-			jedis.close();
 		}
 	}
 	  
@@ -122,8 +118,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
         } catch (Exception e) {
             LOGGER.error("setnx error!", e);
             return false;
-        } finally {
-            jedis.close();
         }
     }
 
@@ -145,8 +139,6 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
         } catch (Exception e) {
             LOGGER.error("setex error!", e);
             return false;
-        } finally {
-            jedis.close();
         }
     }
     

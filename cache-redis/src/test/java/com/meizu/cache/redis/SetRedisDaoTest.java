@@ -6,7 +6,7 @@ import java.util.Map;
 import com.meizu.cache.redis.dao.impl.HashRedisDao;
 
 
-public class SetMainTest {
+public class SetRedisDaoTest {
 	public static HashRedisDao client = new HashRedisDao("redis_ref_hosts");
 	private static final String LIST_KEY = "appMgr:domainhost:list";
 	/**

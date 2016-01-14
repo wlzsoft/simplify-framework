@@ -1,4 +1,5 @@
 package com.meizu.cache.redis;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -14,10 +15,4 @@ package com.meizu.cache.redis;
  */
 
 public class JsonRedisDaoTest {
-	public static void main(String[] args) {
-			//JsonCacheClient client = new JsonCacheClient("redis_ref_hosts");
-			// client.set("vip_send_mail_max_msgid", 20L);
-			// long max = (Long) client.get("vip_send_mail_max_msgid");
-			// System.out.println(max);
-		}
 }

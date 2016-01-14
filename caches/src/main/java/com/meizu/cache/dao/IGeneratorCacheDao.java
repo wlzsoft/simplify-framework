@@ -1,5 +1,7 @@
 package com.meizu.cache.dao;
 
+import java.io.Serializable;
+
 /**
  * <p><b>Title:</b><i>整型数值递增器</i></p>
  * <p>Desc: TODO</p>
@@ -13,7 +15,7 @@ package com.meizu.cache.dao;
  * @version Version 0.1
  *
  */
-public interface IGeneratorCacheDao {
+public interface IGeneratorCacheDao<K extends Serializable> {
 	/**
 	 * 
 	 * 方法用途: key中存储的值每次递增1<br>
@@ -21,7 +23,7 @@ public interface IGeneratorCacheDao {
 	 * @param key
 	 * @return
 	 */
-	public long incr(String key); 
+	public long incr(K key); 
 	
 	/**
 	 * 
@@ -31,5 +33,5 @@ public interface IGeneratorCacheDao {
 	 * @param value
 	 * @return
 	 */
-	public long incrBy(String key, long value);
+	public long incrBy(K key, long value);
 }
