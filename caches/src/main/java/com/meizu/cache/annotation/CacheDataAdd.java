@@ -14,10 +14,10 @@ package com.meizu.cache.annotation;
  */
 public @interface CacheDataAdd {
 
-	String key();
+	String key() default "";
 
 	String condition() default "";
 
-	String value();
+	String value() default "";
 
 }

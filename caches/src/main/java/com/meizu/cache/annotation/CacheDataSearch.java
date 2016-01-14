@@ -14,8 +14,8 @@ package com.meizu.cache.annotation;
  */
 public @interface CacheDataSearch {
 
-	String value();
+	String value() default "";
 
-	String key();
+	String key() default "";
 
 }

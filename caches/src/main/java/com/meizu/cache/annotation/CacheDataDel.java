@@ -14,7 +14,7 @@ package com.meizu.cache.annotation;
  */
 public @interface CacheDataDel {
 
-	String value();
+	String value() default "";
 
 	String key() default "";
 
