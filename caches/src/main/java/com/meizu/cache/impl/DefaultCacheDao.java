@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.ICacheManager;
-import com.meizu.cache.annotation.CacheEvict;
-import com.meizu.cache.annotation.CachePut;
-import com.meizu.cache.annotation.Cacheable;
+import com.meizu.cache.annotation.CacheDataDel;
+import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.annotation.CacheDataSearch;
 import com.meizu.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;

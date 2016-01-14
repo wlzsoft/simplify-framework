@@ -1,7 +1,7 @@
 package com.meizu.cache.annotation;
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>数据集缓存查询标识</i></p>
+ * <p>Desc: 如果第一次查询发现数据未被缓存，那么直接缓存，具体CacheDataAdd注解的功能</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -12,7 +12,7 @@ package com.meizu.cache.annotation;
  * @version Version 0.1
  *
  */
-public @interface Cacheable {
+public @interface CacheDataSearch {
 
 	String value();
 

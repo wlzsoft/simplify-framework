@@ -6,9 +6,9 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.annotation.CacheEvict;
-import com.meizu.cache.annotation.CachePut;
-import com.meizu.cache.annotation.Cacheable;
+import com.meizu.cache.annotation.CacheDataDel;
+import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 
@@ -57,7 +57,7 @@ public class MapCache<T> {
 //	@CachePut(value = "sys_map", key = "#menu.id",condition = "#sys_map != null")
 //	@CachePut(value = {"sys_map1","sys_map2"}, key = "#key",condition = "#sys_map != null")
 //	@CachePut(value = "sys_map", key = "#p0.id",condition = "#sys_map != null")
-	@Cacheable(value = "sys_map",key="#key")
+	@CacheDataSearch(value = "sys_map",key="#key")
 	public T get(String key) {
 		return (T) map.get(key);
 	}
@@ -70,12 +70,12 @@ public class MapCache<T> {
 	 * @param perm 必须有这个返回值，才能缓存存put的数据
 	 * @return
 	 */
-	@CachePut(value = "sys_map", key = "#key")
+	@CacheDataAdd(value = "sys_map", key = "#key")
 	public T put(String key,T perm) {
 		map.put(key, perm);
 		return perm;
 	}
-	@CacheEvict(value = "sys_map", key="#key")
+	@CacheDataDel(value = "sys_map", key="#key")
 	public void remove(String key) {
 		map.remove(key);
 	}
@@ -84,7 +84,7 @@ public class MapCache<T> {
 	 * 操作步骤: beforeInvocation 属性默认是 false，如果map的clear方法抛异常，那么清楚缓存失败，如果想确保，无论如何，都清楚缓存成功，那么需要设置为true<br>
 	 */
 //	@CacheEvict(value = "sys_map", allEntries = true,beforeInvocation=true)
-	@CacheEvict(value = "sys_map", allEntries = true)
+	@CacheDataDel(value = "sys_map", allEntries = true)
 	public void clear() {
 		map.clear();
 	}

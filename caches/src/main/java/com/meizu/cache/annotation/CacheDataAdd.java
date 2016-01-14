@@ -1,6 +1,6 @@
 package com.meizu.cache.annotation;
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>数据缓存添加标识</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -12,7 +12,7 @@ package com.meizu.cache.annotation;
  * @version Version 0.1
  *
  */
-public @interface CachePut {
+public @interface CacheDataAdd {
 
 	String key();
 
