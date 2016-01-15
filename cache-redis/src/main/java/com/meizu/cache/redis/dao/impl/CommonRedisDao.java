@@ -32,7 +32,7 @@ import redis.clients.jedis.exceptions.JedisException;
  * @param <V>
  * @param <T>
  */
-public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao implements ICacheDao<K,V>{
+public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao<K> implements ICacheDao<K,V>{
 	
   private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
   
