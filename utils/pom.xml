@@ -35,6 +35,7 @@
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo-shaded</artifactId>
 			<version>3.0.3</version>
+			<scope>test</scope>
 		</dependency>
   </dependencies>
 </project>
