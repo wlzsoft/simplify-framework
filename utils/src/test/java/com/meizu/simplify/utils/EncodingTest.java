@@ -1,5 +1,7 @@
 package com.meizu.simplify.utils;
 
+import org.junit.Test;
+
 import com.meizu.simplify.utils.enums.EncodingEnum;
 
 /**
@@ -17,7 +19,9 @@ import com.meizu.simplify.utils.enums.EncodingEnum;
  */
 
 public class EncodingTest {
-	 public void test() {
-	    	System.out.println(EncodingEnum.UTF_8);
-		}
+	
+	@Test
+	public void test() {
+	   	System.out.println(EncodingEnum.UTF_8);
+	}
 }

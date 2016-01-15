@@ -18,18 +18,26 @@
 			<artifactId>jackson-core</artifactId>
 			<version>2.7.0</version>
 		</dependency>
-		<!-- 使用开源工具reflectasm进行反射而非java本身的反射
-使用objenesis来创建无默认构造函数的类的对象 -->
+		<!-- 使用objenesis来创建无默认构造函数的类的对象 -->
 		<dependency>
 			<groupId>org.objenesis</groupId>
 			<artifactId>objenesis</artifactId>
 			<version>2.2</version>
 		</dependency>
+		<!-- 使用开源工具reflectasm进行反射而非java本身的反射 -->
 		<!-- <dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>reflectasm</artifactId>
 			<version>1.11.0</version>
 		</dependency> -->
+		
+		<!-- 字节码操作工具 -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.20.0-GA</version>
+		</dependency>
+		
 		<!-- 序列化框架 -->
 		<dependency>
 		    <groupId>de.ruedigermoeller</groupId>

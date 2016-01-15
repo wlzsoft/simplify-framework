@@ -34,7 +34,7 @@ public class SerialTest {
 				FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 				byte barray[] = conf.asByteArray(usr);
 				User object = (User) conf.asObject(barray);
-				System.out.println(object.getName());
+//				System.out.println(object.getName());
 				return null;
 			}
 		});
@@ -51,7 +51,7 @@ public class SerialTest {
 				ISerialize<User> serial = new DefaultSerialize<>();
 				byte barray[] = serial.serialize(usr);
 				User object = serial.unserialize(barray);
-				System.out.println(object.getName());
+//				System.out.println(object.getName());
 				return null;
 			}
 		});
@@ -69,7 +69,7 @@ public class SerialTest {
 			public Object doTask() throws Exception {
 				byte barray[] = SerializeUtil.serialize(usr);
 				User object = SerializeUtil.unserialize(barray);
-				System.out.println(object.getName());
+//				System.out.println(object.getName());
 				return null;
 			}
 		});
@@ -103,18 +103,18 @@ public class SerialTest {
 	    }
 	    System.out.println("fst序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time2) + "ms size:=" + size);
-	    size = 0;
+	    
+	    /*size = 0;
 	    long time3 = System.currentTimeMillis();
 	    serial = new KryoSerialize<>();
 	    for (int i = 0; i < 10000; i++) {
 	      byte[] serialize = serial.serialize(bean);
 	      size += serialize.length;
 	      User u = serial.unserialize(serialize);
-//	      System.out.println(u.getName());
 	    }
 	    System.out.println("kryo序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time3) + "ms size:=" + size);
-
+*/
 		
 	}
 }
