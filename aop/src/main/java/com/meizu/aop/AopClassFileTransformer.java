@@ -13,7 +13,7 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 
 /**
- * 字节码转换器
+ * 字节码转换器 依赖于Instrumentation来实现
  * 
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
