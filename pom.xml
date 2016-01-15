@@ -68,6 +68,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<!-- 测试相关end -->
   </dependencies>
   <build>

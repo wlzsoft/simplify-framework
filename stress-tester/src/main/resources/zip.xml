@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>release</id>
+	<!-- 打包的文件格式:tar.zip war zip -->
+	<formats>
+		<format>zip</format>
+	</formats>
+	<!-- <includeBaseDirectory>false</includeBaseDirectory> -->
+	<fileSets>
+		<fileSet><!-- 打包路径 -->
+			<directory>${project.basedir}\src\main\config</directory>
+			<!-- 过滤 ：打包需要包含的文件-->
+		 	<excludes>
+		        <!-- <exclude>junit:junit</exclude>
+		        <exclude>commons-lang:commons-lang</exclude>
+		        <exclude>commons-logging:commons-logging</exclude> -->
+				<exclude>*.xml</exclude>
+			</excludes>
+			<!-- 打包后输出路径 -->
+			<outputDirectory>\</outputDirectory>
+		</fileSet>
+		<!-- <fileSet>
+            <directory>src/main/bin</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet> -->
+	</fileSets>
+	
+	<dependencySets>
+		<dependencySet>
+			<!-- 当前项目构件是否包含在这个依赖集合里 -->
+			<useProjectArtifact>true</useProjectArtifact>
+			<outputDirectory>lib</outputDirectory><!-- 将scope为runtime的依赖包打包到lib目录下。 -->
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+</assembly>

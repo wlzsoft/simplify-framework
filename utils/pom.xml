@@ -13,6 +13,11 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.7</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.7.0</version>
+		</dependency>
 		<!-- 使用开源工具reflectasm进行反射而非java本身的反射
 使用objenesis来创建无默认构造函数的类的对象 -->
 		<dependency>
@@ -20,22 +25,26 @@
 			<artifactId>objenesis</artifactId>
 			<version>2.2</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>reflectasm</artifactId>
 			<version>1.11.0</version>
-		</dependency>
+		</dependency> -->
 		<!-- 序列化框架 -->
 		<dependency>
 		    <groupId>de.ruedigermoeller</groupId>
 		    <artifactId>fst</artifactId>
 		    <version>2.43</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo-shaded</artifactId>
 			<version>3.0.3</version>
-			<scope>test</scope>
+		</dependency> --> 
+		<dependency>
+			<groupId>com.meizu</groupId>
+			<artifactId>encrypt</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
   </dependencies>
 </project>
