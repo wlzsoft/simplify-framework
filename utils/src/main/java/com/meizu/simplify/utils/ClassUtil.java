@@ -14,9 +14,9 @@ import java.util.jar.JarFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.enums.SpecialCharacterEnum;
-import com.meizu.simplify.enums.EncodingEnum;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.enums.EncodingEnum;
+import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
 
 /**
   * <p><b>Title:</b><i>类查找加载工具类</i></p>
