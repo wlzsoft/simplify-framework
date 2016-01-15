@@ -51,7 +51,6 @@ public class SerialTest {
 				ISerialize<User> serial = new DefaultSerialize<>();
 				byte barray[] = serial.serialize(usr);
 				User object = serial.unserialize(barray);
-//				System.out.println(object.getName());
 				return null;
 			}
 		});
@@ -69,7 +68,6 @@ public class SerialTest {
 			public Object doTask() throws Exception {
 				byte barray[] = SerializeUtil.serialize(usr);
 				User object = SerializeUtil.unserialize(barray);
-//				System.out.println(object.getName());
 				return null;
 			}
 		});
