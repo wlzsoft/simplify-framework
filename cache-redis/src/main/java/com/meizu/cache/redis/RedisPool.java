@@ -43,7 +43,7 @@ public class RedisPool {
 
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 		config.setMaxWaitMillis(10000);
-		config.setMaxIdle(100);
+		config.setMaxIdle(1000);
 		config.setMaxTotal(5000);
 		config.setTestOnBorrow(true);
 		config.setTestWhileIdle(false);
