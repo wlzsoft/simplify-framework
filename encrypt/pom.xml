@@ -61,43 +61,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- 是maven中针对打包任务而提供的标准插件 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<executions><!--执行器 mvn assembly:assembly-->  
-					<execution>
-						<!-- <id>make-assembly</id> -->
-						<id>assembly</id>
-						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->   
-						<goals>
-							<goal>single</goal><!-- 只运行一次 --> 
-						</goals>
-						<configuration>
-							<descriptors><!--描述文件路径-->  
-								<descriptor>src/main/resources/zip.xml</descriptor>
-							</descriptors>
-							<archiverConfig>
-						        <encoding>utf-8</encoding>
-						    </archiverConfig>
-						</configuration>
-					</execution>
-				</executions>
-			  	<dependencies>
-			          <dependency>
-			              <groupId>org.codehaus.plexus</groupId>
-			              <artifactId>plexus-archiver</artifactId>
-			              <version>2.4.4</version>
-			              <exclusions>
-			                  <exclusion>
-			                      <groupId>org.codehaus.plexus</groupId>
-			                      <artifactId>plexus-component-api</artifactId>
-			                  </exclusion>
-			              </exclusions>
-			          </dependency>
-			     </dependencies>
-			</plugin>
 		</plugins>
 	</build>
 </project>
