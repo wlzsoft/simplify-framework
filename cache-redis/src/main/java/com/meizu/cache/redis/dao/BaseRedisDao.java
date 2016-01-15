@@ -13,7 +13,7 @@ import redis.clients.jedis.ShardedJedis;
  * 缓存操作基类
  *
  */
-public abstract class BaseRedisDao<K extends Serializable> {
+public abstract class BaseRedisDao<K extends Serializable>  {
 	
 	public ShardedJedis jedis = null;
 	public BaseRedisDao(String mod_name) {
