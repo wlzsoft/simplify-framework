@@ -73,38 +73,38 @@ public class Init extends MvcInit {
 	}
 	
 	static {
-		hibernate = config.getBoolean("system.hibernate", false);
-		
-		cache = config.getBoolean("memcached.switch", false);
-		if (!cache) cache = (ehcache = config.getBoolean("ehcached.switch", false));
-		
-		memcached_servers = config.getString("memcached.servers");
-		memcached_cacheTimeSeconds = config.getString("memcached.cacheTimeSeconds", "300");
-		
-		lucene_switch = config.getBoolean("lucene.switch", false);
-		lucene_indexBase = config.getString("lucene.indexBase");
-		directory_provider = config.getString("lucene.directory_provider", "org.hibernate.search.store.FSDirectoryProvider");
-		
-		mergeFactor = config.getString("lucene.mergeFactor", mergeFactor);
-		minMergeDocs = config.getString("lucene.minMergeDocs", minMergeDocs);
-		maxMergeDocs = config.getString("lucene.maxMergeDocs", maxMergeDocs);
-		limitExecutionTime = config.getInteger("lucene.limitExecutionTime", limitExecutionTime);
-		
-		batchSize = config.getString("lucene.batchSize", batchSize);
-		operationLimit = config.getString("lucene.operationLimit", operationLimit);
-		transactionLimit = config.getString("lucene.transactionLimit", transactionLimit);
-		
-		authorization_user = config.getString("authorization.user");
-		authorization_password = config.getString("authorization.password");
-		
-		hibernate_shards = config.getString("hibernate.shards", "");
-		hibernate_selectionstrategy = config.getString("hibernate.selectionstrategy", "");
-		hibernate_resolutionstrategy = config.getString("hibernate.resolutionstrategy", "");
-		hibernate_accessstrategy = config.getString("hibernate.accessstrategy", "");
-		
-		hibernate_configfiles = config.getString("hibernate.configfiles", "/hibernate.cfg.xml");
-		
-		test_switch = config.getBoolean("system.test_switch", false);
+//		hibernate = config.getBoolean("system.hibernate", false);
+//		
+//		cache = config.getBoolean("memcached.switch", false);
+//		if (!cache) cache = (ehcache = config.getBoolean("ehcached.switch", false));
+//		
+//		memcached_servers = config.getString("memcached.servers");
+//		memcached_cacheTimeSeconds = config.getString("memcached.cacheTimeSeconds", "300");
+//		
+//		lucene_switch = config.getBoolean("lucene.switch", false);
+//		lucene_indexBase = config.getString("lucene.indexBase");
+//		directory_provider = config.getString("lucene.directory_provider", "org.hibernate.search.store.FSDirectoryProvider");
+//		
+//		mergeFactor = config.getString("lucene.mergeFactor", mergeFactor);
+//		minMergeDocs = config.getString("lucene.minMergeDocs", minMergeDocs);
+//		maxMergeDocs = config.getString("lucene.maxMergeDocs", maxMergeDocs);
+//		limitExecutionTime = config.getInteger("lucene.limitExecutionTime", limitExecutionTime);
+//		
+//		batchSize = config.getString("lucene.batchSize", batchSize);
+//		operationLimit = config.getString("lucene.operationLimit", operationLimit);
+//		transactionLimit = config.getString("lucene.transactionLimit", transactionLimit);
+//		
+//		authorization_user = config.getString("authorization.user");
+//		authorization_password = config.getString("authorization.password");
+//		
+//		hibernate_shards = config.getString("hibernate.shards", "");
+//		hibernate_selectionstrategy = config.getString("hibernate.selectionstrategy", "");
+//		hibernate_resolutionstrategy = config.getString("hibernate.resolutionstrategy", "");
+//		hibernate_accessstrategy = config.getString("hibernate.accessstrategy", "");
+//		
+//		hibernate_configfiles = config.getString("hibernate.configfiles", "/hibernate.cfg.xml");
+//		
+//		test_switch = config.getBoolean("system.test_switch", false);
 		if (cache) {
 			if (ehcache) {
 //				PrintHelper.getPrint().log(ControlPrint.LOG_SET, "Framework ehcached -> ok.");

@@ -5,9 +5,8 @@ import java.lang.reflect.Method;
 import javax.annotation.Resource;
 
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.utils.ClearComment;
-import com.meizu.simplify.utils.Md5Util;
-import com.meizu.simplify.utils.StringUtils;
+import com.meizu.simplify.utils.ClearCommentUtil;
+import com.meizu.simplify.utils.StringUtil;
 import com.meizu.webcache.annotation.Aspect;
 import com.meizu.webcache.annotation.CacheSet;
 import com.meizu.webcache.web.Cache;
@@ -104,15 +103,15 @@ public class CacheAspect {
 				String content = "test"; // TODO 
 				// 是否去除空格
 				if(cacheSet.removeSpace()) {
-					content = ClearComment.clear(content);
-					content = StringUtils.removeSpace(content);
+					content = ClearCommentUtil.clear(content);
+					content = StringUtil.removeSpace(content);
 				}
 				Cache cache = CacheBase.getCache(cacheSet);
-				String url = request.getServerName() + request.getRequestURI() + StringUtils.isNotNull(request.getQueryString());
-				String staticName = Md5Util.md5(url) + ".lv";
-				if(cache != null && cache.doCache(cacheSet, staticName, content,null)){
-					// 缓存成功.
-				}
+//				String url = request.getServerName() + request.getRequestURI() + StringUtils.isNotNull(request.getQueryString());
+//				String staticName = Md5Util.md5(url) + ".lv";
+//				if(cache != null && cache.doCache(cacheSet, staticName, content,null)){
+//					// 缓存成功.
+//				}
 			}
 		}
 	}

@@ -5,6 +5,9 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import com.meizu.mvc.SecurityFilter.RequestSet;
+import com.meizu.simplify.utils.PropertieUtil;
+
 
 /**
  * 
@@ -23,9 +26,9 @@ import java.util.HashMap;
  */
 @Deprecated
 public class MvcInit {
-	protected static PropertieUtils config = new PropertieUtils("properties/config.properties");
+	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
 	
-	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
+//	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
 	public static boolean debug = false;
 	public static String charSet = null;
@@ -63,11 +66,11 @@ public class MvcInit {
 		
 		class_path = config.getString("system.classpath", null);
 		directives = config.getString("system.directives", null);
-		urlCache = new FiFoMap<String, Object[]>((urlcacheCount = config.getInteger("system.urlcacheCount", 100)));
+//		urlCache = new FiFoMap<String, Object[]>((urlcacheCount = config.getInteger("system.urlcacheCount", 100)));
 		
 		// 查找指定class路径
 		if (class_path != null) {
-			String path = StringUtils.format("{0}/{1}", getPath(), class_path.replaceAll("\\.", "/"));
+			String path = null;//StringUtils.format("{0}/{1}", getPath(), class_path.replaceAll("\\.", "/"));
 			File file = new File(path);
 			File[] fns = file.listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
@@ -77,8 +80,9 @@ public class MvcInit {
 			if (fns != null) {
 				for (int i = 0; i < fns.length; i++) {
 					String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
-					try {
-						Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
+//					try {
+//						Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
+						Class<?> entityClass = null;
 						for (Method method : entityClass.getMethods()) {
 							if (method != null && method.getName().indexOf("do") == 0) {
 								// 检查annotation 设置
@@ -87,14 +91,14 @@ public class MvcInit {
 									for (String _path : rset.path().split("\\s+", -1)) {
 										if (_path != null && _path.length() > 0) {
 //											PrintHelper.getPrint().debug("ADDED " + class_path + " -> " + _path);
-											servletMap.put(_path, new ServletModel(entityClass, method.getName()));
+//											servletMap.put(_path, new ServletModel(entityClass, method.getName()));
 										}
 									}
 								}
 							}
 						}
-					} catch (ClassNotFoundException e) {
-					}
+//					} catch (ClassNotFoundException e) {
+//					}
 				}
 			}
 		}

@@ -5,10 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-
-import com.meizu.mvc.MvcInit;
-import com.meizu.util.web.BrowserUtil;
+//import javax.servlet.http.HttpServletResponse;
+//
+//import com.meizu.mvc.MvcInit;
+//import com.meizu.util.web.BrowserUtil;
 import com.meizu.webcache.annotation.CacheSet;
 
 
@@ -29,7 +29,7 @@ public class FileCache implements Cache {
 	
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
-		Object[] values = MvcInit.urlCache.get(staticName);
+		/*Object[] values = MvcInit.urlCache.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
 			File directory = new File(MvcInit.getPath());
@@ -48,13 +48,13 @@ public class FileCache implements Cache {
 				
 				e.printStackTrace();
 			}
-		}
+		}*/
 		return null;
 	}
 	
 	@Override
 	public boolean doCache(CacheSet cacheSet, String staticName, String content,Object obj) {
-		try{
+		/*try{
 			if(obj!=null&&cacheSet.enableBrowerCache()) {
 				HttpServletResponse response = (HttpServletResponse) obj;
 				BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
@@ -70,7 +70,8 @@ public class FileCache implements Cache {
 			return true;
 		} catch(Exception e){
 			return false;
-		}
+		}*/
+		return false;
 	}
 	
 }

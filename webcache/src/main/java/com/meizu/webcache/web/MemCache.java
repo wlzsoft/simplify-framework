@@ -1,9 +1,9 @@
 package com.meizu.webcache.web;
 
-import com.meizu.mvc.HttpServletResponse;
-import com.meizu.mvc.MvcInit;
+//import com.meizu.mvc.HttpServletResponse;
+//import com.meizu.mvc.MvcInit;
 import com.meizu.webcache.annotation.CacheSet;
-import com.meizu.webcache.util.BrowserUtil;
+//import com.meizu.webcache.util.BrowserUtil;
 
 
 /**
@@ -23,7 +23,7 @@ public class MemCache implements Cache {
 	
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
-		System.out.println(MvcInit.charSet);
+		/*System.out.println(MvcInit.charSet);
 		try {
 			Object[] values = MvcInit.urlCache.get(staticName);
 			long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
@@ -35,17 +35,17 @@ public class MemCache implements Cache {
 				}
 				return values[0].toString();
 			}
-		} catch (Exception e) { }
+		} catch (Exception e) { }*/
 		return null;
 	}
 	@Override
 	public boolean doCache(CacheSet cacheSet, String staticName, String content,Object obj) {
-		if(obj!=null&&cacheSet.enableBrowerCache()) {
+		/*if(obj!=null&&cacheSet.enableBrowerCache()) {
 			HttpServletResponse response = (HttpServletResponse) obj;
 			BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
 		}
 		System.out.println(MvcInit.charSet);
-		MvcInit.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });
+		MvcInit.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });*/
 		return true;
 	}
 	
