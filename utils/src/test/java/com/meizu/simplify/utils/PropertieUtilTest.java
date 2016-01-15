@@ -1,14 +1,9 @@
 package com.meizu.simplify.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Set;
 
 import org.junit.Test;
-
-import com.meizu.simplify.utils.DataUtil;
 
 
 /**

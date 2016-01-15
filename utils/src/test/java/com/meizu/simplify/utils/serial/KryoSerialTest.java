@@ -1,7 +1,6 @@
 package com.meizu.simplify.utils.serial;
 
 import org.junit.Test;
-import org.nustaq.serialization.FSTConfiguration;
 
 import com.meizu.simplify.utils.entity.User;
 
@@ -21,14 +20,13 @@ import com.meizu.simplify.utils.entity.User;
 public class KryoSerialTest {
 	@Test
 	public void testFstSet() {
-		FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
-
 		User usr = new User("101001", "testname");
 		usr.setAddr("sfsdfsfff");
 		usr.setPhone("131321324234324");
-
-		byte barray[] = conf.asByteArray(usr);
-		User object = (User) conf.asObject(barray);
+		
+		ISerialize<User> serial = new FstSerialize<>();
+		byte barray[] = serial.serialize(usr);
+		User object = serial.unserialize(barray);
 		System.out.println(object.getName());
 	}
 }

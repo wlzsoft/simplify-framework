@@ -1,7 +1,6 @@
 package com.meizu.simplify.utils;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Rule;

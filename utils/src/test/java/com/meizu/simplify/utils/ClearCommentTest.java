@@ -1,10 +1,5 @@
 package com.meizu.simplify.utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-
 import org.junit.Test;
 
 /**

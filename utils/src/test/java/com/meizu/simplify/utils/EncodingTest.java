@@ -1,6 +1,6 @@
 package com.meizu.simplify.utils;
 
-import com.meizu.simplify.enums.EncodingEnum;
+import com.meizu.simplify.utils.enums.EncodingEnum;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
