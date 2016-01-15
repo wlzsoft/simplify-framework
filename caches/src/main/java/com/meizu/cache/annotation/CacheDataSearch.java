@@ -1,4 +1,11 @@
 package com.meizu.cache.annotation;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 /**
   * <p><b>Title:</b><i>数据集缓存查询标识</i></p>
  * <p>Desc: 如果第一次查询发现数据未被缓存，那么直接缓存，具体CacheDataAdd注解的功能</p>
@@ -12,6 +19,8 @@ package com.meizu.cache.annotation;
  * @version Version 0.1
  *
  */
+@Target(METHOD)
+@Retention(RUNTIME)
 public @interface CacheDataSearch {
 
 	String value() default "";

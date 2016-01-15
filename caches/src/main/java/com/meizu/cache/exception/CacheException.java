@@ -1,4 +1,7 @@
 package com.meizu.cache.exception;
+
+import com.meizu.simplify.exception.BaseException;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -12,6 +15,12 @@ package com.meizu.cache.exception;
  * @version Version 0.1
  *
  */
-public class CacheException extends RuntimeException {
+public class CacheException extends BaseException {
+
+	private static final long serialVersionUID = 7647494863484027485L;
+
+	public CacheException(String message) {
+		super(message);
+	}
 
 }

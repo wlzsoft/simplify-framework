@@ -35,7 +35,7 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	public void resolve(List<Class<?>> resolveList) {
 		resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, "com.meizu");
 		for (Class<?> clazz : resolveList) {
-			LOGGER.info("Bean init:{}",clazz.getName());
+			LOGGER.info("Bean 初始化:{}",clazz.getName());
 			try {
 				Bean beanAnnotation = clazz.getAnnotation(Bean.class);
         		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {

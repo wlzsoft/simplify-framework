@@ -6,9 +6,6 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.annotation.CacheDataDel;
-import com.meizu.cache.annotation.CacheDataAdd;
-import com.meizu.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 
@@ -25,7 +22,7 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
  * @version Version 0.1
  *
  */
-@Bean(type=BeanTypeEnum.SINGLE)
+//@Bean(type=BeanTypeEnum.SINGLE)
 public class MapCache<T> {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	//TODO 需要优化，通过内存系统来存储和获取，后续把这个map单独抽取成一个类，在类中，map的来源是通过缓存配置得到的
@@ -57,7 +54,7 @@ public class MapCache<T> {
 //	@CachePut(value = "sys_map", key = "#menu.id",condition = "#sys_map != null")
 //	@CachePut(value = {"sys_map1","sys_map2"}, key = "#key",condition = "#sys_map != null")
 //	@CachePut(value = "sys_map", key = "#p0.id",condition = "#sys_map != null")
-	@CacheDataSearch(value = "sys_map",key="#key")
+//	@CacheDataSearch(value = "sys_map",key="#key")
 	public T get(String key) {
 		return (T) map.get(key);
 	}
@@ -70,12 +67,12 @@ public class MapCache<T> {
 	 * @param perm 必须有这个返回值，才能缓存存put的数据
 	 * @return
 	 */
-	@CacheDataAdd(value = "sys_map", key = "#key")
+//	@CacheDataAdd(value = "sys_map", key = "#key")
 	public T put(String key,T perm) {
 		map.put(key, perm);
 		return perm;
 	}
-	@CacheDataDel(value = "sys_map", key="#key")
+//	@CacheDataDel(value = "sys_map", key="#key")
 	public void remove(String key) {
 		map.remove(key);
 	}
@@ -84,7 +81,7 @@ public class MapCache<T> {
 	 * 操作步骤: beforeInvocation 属性默认是 false，如果map的clear方法抛异常，那么清楚缓存失败，如果想确保，无论如何，都清楚缓存成功，那么需要设置为true<br>
 	 */
 //	@CacheEvict(value = "sys_map", allEntries = true,beforeInvocation=true)
-	@CacheDataDel(value = "sys_map", allEntries = true)
+//	@CacheDataDel(value = "sys_map", allEntries = true)
 	public void clear() {
 		map.clear();
 	}

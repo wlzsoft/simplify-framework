@@ -1,6 +1,6 @@
-package com.meizu.simplify.ioc.resolver;
+package com.meizu.cache.resolver;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +8,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.exception.CacheException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
-import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -28,9 +28,9 @@ import com.meizu.simplify.utils.ClassUtil;
  * @version Version 0.1
  *
  */
-@Init(2)
-public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
-	private static final Logger LOGGER = LoggerFactory.getLogger(IocAnnotationResolver.class);
+@Init(3)
+public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
+	private static final Logger LOGGER = LoggerFactory.getLogger(CacheAnnotationResolver.class);
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -38,11 +38,20 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		Collection<Object> containerCollection = mapContainer.values();
 		for (Object beanObj : containerCollection) {
 			Class<?> beanClass = beanObj.getClass();
-			Field[] fieldArr = beanClass.getDeclaredFields();
-			for (Field field : fieldArr) {
-                if (field.isAnnotationPresent(Resource.class)) {
-                	Class<?> iocType = field.getType();
-                	String message = "依赖注入属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
+			Method[] methodArr = null;
+			try {
+				methodArr = beanClass.getDeclaredMethods();
+			} catch(NoClassDefFoundError e) {
+				e.printStackTrace();
+				throw new CacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+			}
+			
+			for (Method method : methodArr) {
+                if (method.isAnnotationPresent(CacheDataAdd.class)) {
+                	CacheDataAdd cacheDataAdd = method.getDeclaredAnnotation(CacheDataAdd.class);
+                	LOGGER.debug(cacheDataAdd.key());
+                	System.out.println(cacheDataAdd.key());
+/*                	String message = "缓存初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
                 	Object iocBean = null;
                 	if(iocType.isInterface()) {
                 		List<Class<?>> clazzList = ClassUtil.findClassesByInterfaces(iocType,"com.meizu");
@@ -64,7 +73,7 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 						e.printStackTrace();
 					}
                 	LOGGER.debug(message);
-                }
+*/                }
 			}
 		}
 	}
