@@ -98,7 +98,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
             if (CollectionUtil.isNotEmpty(set)) {
                 result = new HashSet<Object>();
                 for (byte[] bytes : set) {
-                    result.add(SerializeUtil.jdkDeserialize(bytes));
+                    result.add(SerializeUtil.unserialize(bytes));
                 }
             }
             return result;
@@ -155,7 +155,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
         
         try {
             byte[] bytes = jedis.spop(SerializeUtil.serialize(key));
-            return SerializeUtil.jdkDeserialize(bytes);
+            return SerializeUtil.unserialize(bytes);
         } catch (Exception e) {
             LOGGER.error("spop error!", e);
             return null;
@@ -172,7 +172,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
         
         try {
             byte bytes[] = jedis.srandmember(SerializeUtil.serialize(key));
-            return SerializeUtil.jdkDeserialize(bytes);
+            return SerializeUtil.unserialize(bytes);
         } catch (Exception e) {
             LOGGER.error("srandmember error!", e);
             return -1;
