@@ -8,4 +8,11 @@
   <artifactId>aop</artifactId>
   <name>切面组件</name>
   <description>动态字节码生成方式</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.meizu</groupId>
+  		<artifactId>utils</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
