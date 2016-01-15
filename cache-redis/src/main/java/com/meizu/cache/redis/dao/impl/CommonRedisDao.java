@@ -13,6 +13,7 @@ import com.meizu.cache.redis.exception.RedisException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.SerializeUtil;
 
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisException;
 
 
@@ -161,10 +162,12 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 				jedis.expire(SerializeUtil.serialize(key), export.timesanmp());
 			}
           return ret.equalsIgnoreCase("OK");
+      } catch(JedisConnectionException e) {
+    	  LOGGER.error("并发导致连接异常被服务端丢弃和重置!", e);
       } catch (Exception e) {
           LOGGER.error("set error!", e);
-          return false;
       }
+      return false;
 	}
 	
 	
