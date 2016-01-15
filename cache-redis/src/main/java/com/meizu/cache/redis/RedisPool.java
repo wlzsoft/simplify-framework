@@ -83,7 +83,8 @@ public class RedisPool {
 
 	/**
 	 * 
-	 * 方法用途: <br>
+	 * 方法用途: Connection reset by peer: socket write error 问题分析和定位解决
+	 *          1.并发量过大，连接数不够导致服务器主动关闭部分连接<br>
 	 * 操作步骤: TODO<br>
 	 * @param mod_name
 	 * @return
