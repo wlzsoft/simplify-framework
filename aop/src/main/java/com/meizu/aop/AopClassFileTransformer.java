@@ -5,6 +5,8 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.List;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -13,53 +15,94 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 
 /**
- * ×Ö½ÚÂë×ª»»Æ÷ ÒÀÀµÓÚInstrumentationÀ´ÊµÏÖ
- * 
+ * å­—èŠ‚ç ç¼–è¾‘æ¤å…¥å¤„ç†ç±»
+ * @author Administrator
+ *javaå‘½ä»¤å¯ç”¨çš„å‚æ•°ï¼š -javaagent:E:/workspace-new/simplify-framework/aop/target/aop-0.0.1-SNAPSHOT.jar -Daop.conf=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.conf
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
 
+    final static List<String> methodList = new ArrayList<String>();
+    public AopClassFileTransformer(){
+        String methodStr = Config.getUtil().getProperty("methodList");
+        String[] it = methodStr.split(";");
+    	for (String itor : it) {
+    		methodList.add(itor); 
+		}
+    }
+	
     /**
-     * ×Ö½ÚÂë¼ÓÔØµ½ĞéÄâ»úÇ°»á½øÈëÕâ¸ö·½·¨
+     * å­—èŠ‚ç åŠ è½½åˆ°è™šæ‹Ÿæœºå‰ä¼šè¿›å…¥è¿™ä¸ªæ–¹æ³•
      */
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer)
             throws IllegalClassFormatException {
-        System.out.println(className);
-        //Èç¹û¼ÓÔØBusinessÀà²ÅÀ¹½Ø
-        if (!"model/Business".equals(className)) {
-            return null;
-        }
+    	CtClass ctclass = buildClazz(className);
+        try {
+			return ctclass.toBytecode();
+		} catch (IOException | CannotCompileException e) {
+			e.printStackTrace();
+		}
+        
+        return null;
+    }
 
-        //javassistµÄ°üÃûÊÇÓÃµã·Ö¸îµÄ£¬ĞèÒª×ª»»ÏÂ
+
+	public CtClass buildClazz(String className) {
+		System.out.println(className);
+		
+        if(!className.startsWith("com/meizu/aop/service")){
+        	return null;
+        }
+        
         if (className != null && className.indexOf("/") != -1) {
             className = className.replaceAll("/", ".");
         }
         try {
-            //Í¨¹ı°üÃû»ñÈ¡ÀàÎÄ¼ş
-            CtClass cc = ClassPool.getDefault().get(className);
-            //»ñµÃÖ¸¶¨·½·¨ÃûµÄ·½·¨
-            CtMethod m = cc.getDeclaredMethod("doSomeThing");
-            //ÔÚ·½·¨Ö´ĞĞÇ°²åÈë´úÂë
-            m.insertBefore("{ System.out.println(\"¼ÇÂ¼ÈÕÖ¾\"); }");
-            return cc.toBytecode();
-        } catch (NotFoundException e) {
+//        	é€šè¿‡ç±»å…¨è·¯å¾„åè·å–classå­—èŠ‚ç æ–‡ä»¶æ•°æ®
+        	CtClass ctclass = ClassPool.getDefault().get(className);
+	        for(String method : methodList){
+	            if (method.startsWith(className)){
+                    String methodName = method.split(":")[1];
+                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
+                	ctmethod.addLocalVariable("startTime", CtClass.longType);
+                	ctmethod.addLocalVariable("endTime", CtClass.longType);
+                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
+                	ctmethod.insertBefore("System.out.println(\"è®°å½•æ—¥å¿—1\");");
+                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
+                	ctmethod.insertAfter("System.out.println(\"this method "+methodName+" cost:\" +(endTime - startTime) +\"ms.\");");
+	            }
+	        }     
+	        return ctclass;
         } catch (CannotCompileException e) {
-        } catch (IOException e) {
-            //ºöÂÔÒì³£´¦Àí
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return null;
-    }
+	}
 
     /**
-     * ÔÚmainº¯ÊıÖ´ĞĞÇ°£¬Ö´ĞĞµÄº¯Êı
-     * 
+     * åœ¨mainæ–¹æ³•æ‰§è¡Œåï¼Œæ‰§è¡Œæœ¬æ–¹æ³•
+     * @param agentArgs
+     * @param inst
+     */
+    public static void agentmain (String agentArgs, Instrumentation inst) {
+    	System.out.println("mainæ–¹æ³•å¯åŠ¨äº†");
+    }
+    
+    /**
+     * åœ¨mainå‡½æ•°æ‰§è¡Œå‰ï¼Œæ‰§è¡Œæœ¬æ–¹æ³•
+     * æ·»åŠ æ–°çš„å­—èŠ‚ç è½¬æ¢å™¨ï¼Œæ¥ä¿®æ”¹å­—èŠ‚ç 
      * @param options
      * @param ins
      */
     public static void premain(String options, Instrumentation ins) {
-        //×¢²áÎÒ×Ô¼ºµÄ×Ö½ÚÂë×ª»»Æ÷
         ins.addTransformer(new AopClassFileTransformer());
     }
+    
+   
 
 }

@@ -15,4 +15,32 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
+  <build>
+  	<plugins>
+  		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<configuration>
+				<archive>
+				    <manifestFile>src/main/resources/META-INF/MAINIFEST.MF</manifestFile>
+                    <manifest>
+                        <!-- <addClasspath>true</addClasspath> -->
+                        <!-- <classpathPrefix>lib/</classpathPrefix> -->
+                        <!-- <mainClass>com.meizu.aop.AopClassFileTransformer</mainClass> -->
+						<useUniqueVersions>false</useUniqueVersions>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+					</manifest>
+					<manifestEntries>
+						<Copyright>meizu 2015</Copyright>
+						<Project-name>${project.name}</Project-name>
+						<Project-version>${project.version}</Project-version>
+						<Build-Time>${current.timestamp}</Build-Time>
+					</manifestEntries>
+				</archive>
+				<!-- <skip>true</skip> -->
+				</configuration>
+		</plugin>
+  	</plugins>
+  </build>
 </project>
