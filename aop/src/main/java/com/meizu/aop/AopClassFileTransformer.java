@@ -21,12 +21,12 @@ import javassist.NotFoundException;
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
 
-    final static List<String> methodList = new ArrayList<String>();
+    final static List<String> filterList = new ArrayList<String>();
     public AopClassFileTransformer(){
-        String methodStr = Config.getUtil().getProperty("methodList");
+        String methodStr = Config.getUtil().getProperty("cacheInfos");
         String[] it = methodStr.split(";");
     	for (String itor : it) {
-    		methodList.add(itor); 
+    		filterList.add(itor); 
 		}
     }
 	
@@ -61,16 +61,18 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         try {
 //        	通过类全路径名获取class字节码文件数据
         	CtClass ctclass = ClassPool.getDefault().get(className);
-	        for(String method : methodList){
+	        for(String method : filterList){
 	            if (method.startsWith(className)){
                     String methodName = method.split(":")[1];
                     CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
                 	ctmethod.addLocalVariable("startTime", CtClass.longType);
                 	ctmethod.addLocalVariable("endTime", CtClass.longType);
                 	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
-                	ctmethod.insertBefore("System.out.println(\"记录日志1\");");
+//                	ctmethod.insertBefore("System.out.println(\"记录日志1\");");
+                	ctmethod.insertBefore("com.meizu.aop.IInterceptor.initBefore(\""+method+"\",this,$args);");
+                	ctmethod.insertAfter("com.meizu.aop.IInterceptor.initAfter(\""+method+"\",this,$args);");
                 	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
-                	ctmethod.insertAfter("System.out.println(\"this method "+methodName+" cost:\" +(endTime - startTime) +\"ms.\");");
+                	ctmethod.insertAfter("System.out.println(\"方法 ["+className+":"+methodName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");
 	            }
 	        }     
 	        return ctclass;

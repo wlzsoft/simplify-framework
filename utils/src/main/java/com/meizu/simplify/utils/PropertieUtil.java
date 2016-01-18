@@ -1,5 +1,8 @@
 package com.meizu.simplify.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map.Entry;
@@ -40,6 +43,17 @@ public class PropertieUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public PropertieUtil(File file) {
+			try {
+				jndiInput = new FileInputStream(file);
+				props.load(jndiInput);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				LOGGER.info("配置文件["+file.getName()+"]不存在");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 
 	public String getProperty(String name) {

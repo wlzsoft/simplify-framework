@@ -15,7 +15,7 @@ public class AopClassFileTransformerTest {
 //		new AopClassFileTransformer().transformInit("com/meizu/aop/service/TestService");
 		long start = System.currentTimeMillis();
 		try {
-			((TestService)(cc.toClass().newInstance())).doSomeThing();
+			((TestService)(cc.toClass().newInstance())).doSomeThing("oo");
 		} catch (InstantiationException | IllegalAccessException | CannotCompileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
