@@ -3,6 +3,8 @@ package com.meizu.aop;
 import org.junit.Test;
 
 import com.meizu.aop.service.TestService;
+import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.ioc.Startup;
 
 import javassist.CannotCompileException;
 import javassist.CtClass;
@@ -21,6 +23,13 @@ public class AopClassFileTransformerTest {
 			e.printStackTrace();
 		}
 //		new TestService().doSomeThing();
+		System.out.println(System.currentTimeMillis()-start);
+	}
+	@Test
+	public void testAll() {
+		Startup.start();
+		long start = System.currentTimeMillis();
+		BeanFactory.getBean(TestService.class).doSomeThing("oo");
 		System.out.println(System.currentTimeMillis()-start);
 	}
 }

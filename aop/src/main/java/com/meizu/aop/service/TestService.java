@@ -1,7 +1,9 @@
 package com.meizu.aop.service;
 
 import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.simplify.ioc.annotation.Bean;
 
+@Bean
 public class TestService {
 
 	@CacheDataAdd
