@@ -1,4 +1,7 @@
 package com.meizu.cache.dto;
+
+import java.lang.annotation.Annotation;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -14,4 +17,16 @@ package com.meizu.cache.dto;
  */
 public class CacheAnnotationInfo {
 
+	/**
+	 * annotation类型
+	 */
+	private Annotation annotatoionType;
+
+	public Annotation getAnnotatoionType() {
+		return annotatoionType;
+	}
+
+	public void setAnnotatoionType(Annotation annotatoionType) {
+		this.annotatoionType = annotatoionType;
+	}
 }

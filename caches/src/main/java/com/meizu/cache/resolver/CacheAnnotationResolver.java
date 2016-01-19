@@ -1,5 +1,6 @@
 package com.meizu.cache.resolver;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.annotation.CacheDataDel;
+import com.meizu.cache.annotation.CacheDataSearch;
 import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.exception.CacheException;
 import com.meizu.simplify.ioc.BeanContainer;
@@ -52,35 +55,22 @@ public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			
 			for (Method method : methodArr) {
                 if (method.isAnnotationPresent(CacheDataAdd.class)) {
-                	CacheDataAdd cacheDataAdd = method.getDeclaredAnnotation(CacheDataAdd.class);
-                	
-                	LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 注解cacheDataAdd的key值为"+cacheDataAdd.key());
-                	CacheAnnotationInfo cai = new CacheAnnotationInfo();
-                	cacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);
-/*                	String message = "缓存初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
-                	Object iocBean = null;
-                	if(iocType.isInterface()) {
-                		List<Class<?>> clazzList = ClassUtil.findClassesByInterfaces(iocType,"com.meizu");
-                		int clazzSize = clazzList.size();
-                		if(clazzSize>1) {
-                			throw new UncheckedException("接口："+iocType.getName()+"不允许有多个实现类");
-                		}
-                		if(clazzSize<1) {
-                			throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
-                		}
-                		iocType = clazzList.get(0);
-                	}
-                	iocBean = BeanFactory.getBean(iocType);
-                	try {
-                		field.setAccessible(true);
-						field.set(beanObj, iocBean);
-					} catch (IllegalArgumentException | IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                	LOGGER.debug(message);
-*/                }
+                	resolveAnno(beanClass, method,CacheDataAdd.class);
+                }
+                if (method.isAnnotationPresent(CacheDataDel.class)) {
+                	resolveAnno(beanClass, method,CacheDataDel.class);
+                }
+                if (method.isAnnotationPresent(CacheDataSearch.class)) {
+                	resolveAnno(beanClass, method,CacheDataSearch.class);
+                }
 			}
 		}
+	}
+	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
+		T cacheDataAdd = method.getDeclaredAnnotation(clazzAnno);
+		LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		CacheAnnotationInfo cai = new CacheAnnotationInfo();
+		cai.setAnnotatoionType(cacheDataAdd);
+		cacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);
 	}
 }
