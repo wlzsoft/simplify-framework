@@ -1,5 +1,6 @@
 package com.meizu.aop.service;
 
+import com.meizu.aop.User;
 import com.meizu.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.ioc.annotation.Bean;
 
@@ -7,7 +8,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 public class TestService {
 
 	@CacheDataAdd(key="aaa")
-    public Object doSomeThing(String bb) {
+    public Object doSomeThing(User bb) {
         System.out.println("ִtest2测试");
         return true;
     }
@@ -21,7 +22,9 @@ public class TestService {
     public static void main(String[] args) {
     	long start = System.currentTimeMillis();
         TestService h = new TestService();
-        h.doSomeThing("cc");
+        User bb = new User();
+        bb.setName("yyyyy");
+        h.doSomeThing(bb);
         System.out.println(System.currentTimeMillis()-start);
     }
 

@@ -17,7 +17,9 @@ public class AopClassFileTransformerTest {
 //		new AopClassFileTransformer().transformInit("com/meizu/aop/service/TestService");
 		long start = System.currentTimeMillis();
 		try {
-			((TestService)(cc.toClass().newInstance())).doSomeThing("oo");
+			 User bb = new User();
+		        bb.setName("yyyyy");
+			((TestService)(cc.toClass().newInstance())).doSomeThing(bb);
 		} catch (InstantiationException | IllegalAccessException | CannotCompileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -29,7 +31,9 @@ public class AopClassFileTransformerTest {
 	public void testAll() {
 		Startup.start();
 		long start = System.currentTimeMillis();
-		BeanFactory.getBean(TestService.class).doSomeThing("oo");
+		User bb = new User();
+        bb.setName("yyyyy");
+		BeanFactory.getBean(TestService.class).doSomeThing(bb);
 		System.out.println((System.currentTimeMillis()-start)+"ms");
 	}
 }

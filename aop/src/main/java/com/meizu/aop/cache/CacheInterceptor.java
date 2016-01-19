@@ -43,7 +43,10 @@ public class CacheInterceptor implements IInterceptor{
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
 			ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
-			boolean isOk = commonRedisDao.set("age", cacheDataAdd.key());
+			//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
+			String key = methodFullName+"id";//需要想方法获取id的值
+			boolean isOk = commonRedisDao.set(key, args[0]);
+			Object obj = commonRedisDao.get(key);
 			LOGGER.debug("key:"+cacheDataAdd.key()+"]"+isOk);
 		}
 	}

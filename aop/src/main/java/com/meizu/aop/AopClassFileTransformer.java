@@ -84,6 +84,10 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		String methodNameStr = classInfo.split(":")[1];
         		String[] methodArr = methodNameStr.split(",");
         		 try {
+//        			CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
+//        			再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
+        			ClassPool.doPruning = true;//减少对象内存占用
+        			LOGGER.debug("AOP：javasist开始精简["+className+"]对象字节码");
 //        	                    通过类全路径名获取class字节码文件数据
     	        	CtClass ctclass = ClassPool.getDefault().get(className);
     		        for(String methodName : methodArr){
@@ -92,14 +96,12 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
     	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
     	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
-    	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
-//        	                	ctmethod.insertBefore("System.out.println(\"记录日志1\");");
     	                	ctmethod.insertBefore("com.meizu.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);");
+    	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
     	                	ctmethod.insertAfter("com.meizu.aop.IInterceptor.initAfter(\""+methodFullName+"\",this,$args);");
     	                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
     	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");
-    		        }     
-    		        LOGGER.debug("AOP：javasist开始精简["+className+"]对象字节码");
+    		        }
     		        return ctclass;
     	        } catch (CannotCompileException e) {
     	            // TODO Auto-generated catch block

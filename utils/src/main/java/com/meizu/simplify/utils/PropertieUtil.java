@@ -162,4 +162,9 @@ public class PropertieUtil {
 		}
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return "[" + props +"]";
+	}
 }
