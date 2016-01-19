@@ -19,9 +19,9 @@ import com.meizu.simplify.utils.StringUtil;
 
 import redis.clients.jedis.Protocol;
 
-public class HostAndPortUtil {
+public class RedisHostAndPortProperties {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RedisHostAndPortProperties.class);
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
 	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
