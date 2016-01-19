@@ -4,11 +4,13 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.exception.CacheException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -31,6 +33,8 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 @Init(3)
 public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheAnnotationResolver.class);
+	
+	public static final Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -49,7 +53,10 @@ public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			for (Method method : methodArr) {
                 if (method.isAnnotationPresent(CacheDataAdd.class)) {
                 	CacheDataAdd cacheDataAdd = method.getDeclaredAnnotation(CacheDataAdd.class);
-                	LOGGER.debug(cacheDataAdd.key()+":key");
+                	
+                	LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 注解cacheDataAdd的key值为"+cacheDataAdd.key());
+                	CacheAnnotationInfo cai = new CacheAnnotationInfo();
+                	cacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);
 /*                	String message = "缓存初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
                 	Object iocBean = null;
                 	if(iocType.isInterface()) {

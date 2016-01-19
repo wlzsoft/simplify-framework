@@ -6,7 +6,7 @@ import com.meizu.cache.redis.dao.impl.CommonRedisDao;
 
 /**
  * <p><b>Title:</b><i>拦截器接口</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 责任链方式处理，串联所有的拦截器实现</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
