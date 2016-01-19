@@ -10,8 +10,10 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.redis.properties.RedisPoolProperties;
 import com.meizu.cache.redis.util.RedisHostAndPortUtil;
 import com.meizu.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
+import com.meizu.cache.redis.util.RedisPoolUtil;
 
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
@@ -41,6 +43,7 @@ public class RedisPool {
 
 	static {
 
+		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 		config.setMaxWaitMillis(10000);
 		config.setMaxIdle(1000);

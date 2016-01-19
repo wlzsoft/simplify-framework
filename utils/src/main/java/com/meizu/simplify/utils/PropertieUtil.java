@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
@@ -117,5 +118,46 @@ public class PropertieUtil {
 	 */
 	public Set<Entry<Object, Object>> propertys(){
 		return props.entrySet();
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 转换属性文件为pojo对象<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public <T> T toClass(Class<T> clazz){
+		try {
+			Object obj = clazz.newInstance();
+			Method[] methodArr = clazz.getMethods();
+			
+			for (Method method : methodArr) {
+				String methodName = method.getName();
+				if(methodName.startsWith("set")) {
+					for (String name : stringPropertyNames()) {
+						if(methodName.substring(3).equalsIgnoreCase(name)) {
+							Object arg= null;
+							Class<?> type = null;
+							try {
+								arg = getInteger(name);
+								type = Integer.class;
+							} catch(Exception ex) {
+								try {
+									arg = getBoolean(name);
+									type = Boolean.class;
+								} catch (Exception e) {
+									arg = getString(name);
+									type = String.class;
+								}
+							} 
+							ReflectionUtil.invokeMethod(obj, methodName,new Class<?>[]{type},new Object[]{arg});
+						}
+					}
+				}
+			}
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
