@@ -69,6 +69,7 @@ class StressThreadWorker implements Runnable {
 				service.doTask();
 			} catch (Throwable e) {
 				failedCounter.incrementAndGet();
+				log.error("Test exception", e);
 				// throw e;
 			} finally {
 				long stop = System.nanoTime();
