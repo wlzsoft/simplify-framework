@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.meizu.aop.IInterceptor;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.annotation.CacheDataDel;
+import com.meizu.cache.annotation.CacheDataSearch;
 import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.cache.resolver.CacheAnnotationResolver;
@@ -37,17 +39,24 @@ public class CacheInterceptor implements IInterceptor{
 	@Override
 	public void before(String methodFullName,Object o,Object... args) {
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
+		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
+		String key = methodFullName+"id";//需要想方法获取id的值
+		ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
-			ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
-			//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
-			String key = methodFullName+"id";//需要想方法获取id的值
 			boolean isOk = commonRedisDao.set(key, args[0]);
+			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
+		} else if(anno.annotationType().equals(CacheDataSearch.class)) {
+			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
 			Object obj = commonRedisDao.get(key);
-			LOGGER.debug("key:"+cacheDataAdd.key()+"]"+isOk);
+			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
+		} else if(anno.annotationType().equals(CacheDataDel.class)) {
+			CacheDataDel cacheDataDel = (CacheDataDel)anno;
+			Object obj = commonRedisDao.delete(key);
+			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
 		}
 	}
 	
