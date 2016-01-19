@@ -21,7 +21,7 @@ public class RedisPoolUtil {
 			throw new IllegalArgumentException("redis连接池信息：["+REDIS_CONFIG_FILE+"]配置文件为空 !");
 		}
 		redisPoolProperties = propertieUtils.toClass(RedisPoolProperties.class);
-		LOGGER.info("初始化连接池信息");
+		LOGGER.info("初始化redis连接池信息:"+propertieUtils.toString());
 	}
 	public static RedisPoolProperties getRedisPoolProperties() {
 		return redisPoolProperties;
