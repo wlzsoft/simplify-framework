@@ -127,8 +127,8 @@ public class RedisPool {
 	 * 操作步骤: TODO<br>
 	 * @param mod_name
 	 */
-	public static void init(String mod_name) {
-		redisPools.get(mod_name);
+	public static ShardedJedisPool init(String mod_name) {
+		return redisPools.get(mod_name);
 	}
 	
 	/**

@@ -11,11 +11,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.cache.redis.RedisPool;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+import redis.clients.jedis.ShardedJedisPool;
 
 /**
  * <p><b>Title:</b><i>字节码编辑植入处理类</i></p>
@@ -40,6 +43,13 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	for (String itor : it) {
     		filterList.add(itor); 
 		}
+    	//初始化连接池
+    	ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
+    	for(int i=0; i<10; i++) {
+    		pool.getResource();
+    	}
+        LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
+//        pool.returnResourceObject(resource);
     }
 	
     /**

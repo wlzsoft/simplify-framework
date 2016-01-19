@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.enums.CacheExpireTimeEnum;
 import com.meizu.cache.exception.CacheException;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.cache.redis.dao.BaseRedisDao;
 import com.meizu.cache.redis.exception.RedisException;
 import com.meizu.simplify.exception.UncheckedException;
@@ -37,8 +38,10 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	
   private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
   
+  private String mod_name;
   public CommonRedisDao(String mod_name) {
 		super(mod_name);
+		this.mod_name = mod_name;
   }
 
   /**
@@ -83,6 +86,8 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		} catch (JedisException e) {
 			LOGGER.warn("获取 redis 缓存错误", e);
 			throw new RedisException(e);
+        } finally {
+        	RedisPool.init(mod_name).returnResourceObject(jedis);
         }
      }
 	/**
@@ -166,6 +171,8 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
     	  LOGGER.error("并发导致连接异常被服务端丢弃和重置!", e);
       } catch (Exception e) {
           LOGGER.error("set error!", e);
+      } finally {
+      	RedisPool.init(mod_name).returnResourceObject(jedis);
       }
       return false;
 	}
