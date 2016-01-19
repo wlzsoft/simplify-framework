@@ -32,13 +32,14 @@ public class CacheInterceptor implements IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
 	
+	//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
+	ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
+	
 	@Override
 	public void before(String methodFullName,Object o,Object... args) {
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 		String key = methodFullName+"id";//需要想方法获取id的值
-		//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
-		ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
@@ -54,8 +55,6 @@ public class CacheInterceptor implements IInterceptor{
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 		String key = methodFullName+"id";//需要想方法获取id的值
-		//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
-		ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
