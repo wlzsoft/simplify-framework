@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.utils.PropertieUtil;
 
-public class RedisPoolProperties {
+public class RedisPoolUtil {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(RedisPoolProperties.class);
-	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
+	private static final Logger LOGGER = LoggerFactory.getLogger(RedisPoolUtil.class);
+	private static final String REDIS_CONFIG_FILE = "redis-pool.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
 	static {
 		Set<Entry<Object, Object>> set = propertieUtils.propertys();

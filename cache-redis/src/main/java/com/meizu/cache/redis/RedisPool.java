@@ -10,8 +10,8 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.redis.util.RedisHostAndPortProperties;
-import com.meizu.cache.redis.util.RedisHostAndPortProperties.HostAndPort;
+import com.meizu.cache.redis.util.RedisHostAndPortUtil;
+import com.meizu.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
 
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
@@ -51,7 +51,7 @@ public class RedisPool {
 		//config.timeBetweenEvictionRunsMillis = 30000;
 		//config.numTestsPerEvictionRun= 10000;
 
-		hostAndPortMap = RedisHostAndPortProperties.getRedisServers();
+		hostAndPortMap = RedisHostAndPortUtil.getRedisServers();
 		if (hostAndPortMap.isEmpty())
 			throw new RuntimeException(" redis config error !!! ");
 		
