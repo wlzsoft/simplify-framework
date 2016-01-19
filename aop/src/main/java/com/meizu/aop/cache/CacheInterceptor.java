@@ -1,8 +1,17 @@
 package com.meizu.aop.cache;
 
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.aop.IInterceptor;
 import com.meizu.cache.ICacheDao;
+import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.redis.dao.impl.CommonRedisDao;
+import com.meizu.cache.resolver.CacheAnnotationResolver;
 
 /**
  * <p><b>Title:</b><i>缓存拦截器</i></p>
@@ -19,16 +28,24 @@ import com.meizu.cache.redis.dao.impl.CommonRedisDao;
  */
 public class CacheInterceptor implements IInterceptor{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
 	@Override
-	public void after(Object... args) {
-		System.out.println("cacheAfter");
+	public void after(String methodFullName,Object o,Object... args) {
+		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
 	}
 
 	@Override
-	public void before(Object... args) {
-		ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
-		commonRedisDao.set("age", 2);
-		System.out.println("cacheBefore");
+	public void before(String methodFullName,Object o,Object... args) {
+		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
+		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		if(anno.annotationType().equals(CacheDataAdd.class)) {
+			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
+			ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
+			boolean isOk = commonRedisDao.set("age", cacheDataAdd.key());
+			LOGGER.debug("key:"+cacheDataAdd.key()+"]"+isOk);
+		}
 	}
 	
 }

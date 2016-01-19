@@ -21,15 +21,15 @@ public interface IInterceptor {
 
 	public static Object initBefore(String methodFullName,Object o,Object... args ) {
 //		o.getClass().isAnnotationPresent(CacheDataAdd.class);
-		new CacheInterceptor().before(args);
+		new CacheInterceptor().before(methodFullName,o,args);
 		return -1;
 	}
 	
 	public static Object initAfter(String methodFullName,Object o,Object... args ) {
-		new CacheInterceptor().after(args);
+		new CacheInterceptor().after(methodFullName,o,args);
 		return -1;
 	}
 	
-	void before(Object... args);
-	void after(Object... args);
+	void before(String methodFullName,Object o,Object... args);
+	void after(String methodFullName,Object o,Object... args);
 }

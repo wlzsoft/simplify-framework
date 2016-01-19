@@ -9,16 +9,16 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean
 public class UserService {
 		
-		@CacheDataSearch
+		@CacheDataSearch(key="ttt3")
 		public User getUser(Integer id) {
 			User user = new User();
 			return user;
 		}
-		@CacheDataAdd(key="#id")
+		@CacheDataAdd(key="ttt2")
 		public void addUser(User user) {
 
 		}
-		@CacheDataDel
+		@CacheDataDel(key="ttt")
 		public void delUser(Integer id) {
 
 		}

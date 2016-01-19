@@ -21,6 +21,12 @@ public class CacheAnnotationInfo {
 	 * annotation类型
 	 */
 	private Annotation annotatoionType;
+	
+	private Class<?> returnType;
+
+	public Class<?> getReturnType() {
+		return returnType;
+	}
 
 	public Annotation getAnnotatoionType() {
 		return annotatoionType;
@@ -28,5 +34,9 @@ public class CacheAnnotationInfo {
 
 	public void setAnnotatoionType(Annotation annotatoionType) {
 		this.annotatoionType = annotatoionType;
+	}
+
+	public void setReturnType(Class<?> returnType) {
+		this.returnType = returnType;
 	}
 }

@@ -71,6 +71,7 @@ public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 		CacheAnnotationInfo cai = new CacheAnnotationInfo();
 		cai.setAnnotatoionType(cacheDataAdd);
+		cai.setReturnType(method.getReturnType());
 		cacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);
 	}
 }

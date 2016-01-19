@@ -6,14 +6,14 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean
 public class TestService {
 
-	@CacheDataAdd
+	@CacheDataAdd(key="aaa")
     public Object doSomeThing(String bb) {
-        System.out.println("ִtest测试");
+        System.out.println("ִtest2测试");
         return true;
     }
-	@CacheDataAdd
+	@CacheDataAdd(key="bbb")
     public Object doSomeThing2(String aa) {
-        System.out.println("ִtest测试2");
+        System.out.println("ִtest2测试2");
         return true;
     }
 
