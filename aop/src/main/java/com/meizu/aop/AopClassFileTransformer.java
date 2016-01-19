@@ -8,6 +8,9 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -29,6 +32,7 @@ import javassist.NotFoundException;
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AopClassFileTransformer.class);
     final static List<String> filterList = new ArrayList<String>();
     public AopClassFileTransformer(){
         String methodStr = Config.getUtil().getProperty("cacheInfos");
@@ -64,39 +68,47 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	 * @return
 	 */
 	public CtClass buildClazz(String className) {
-		System.out.println(className);
 		
-        if(!className.startsWith("com/meizu/aop/service")){
+		if (className == null || className.indexOf("/") == -1) {
+			return null;
+		}
+		
+        if(!className.startsWith("com/meizu")){
         	return null;
         }
+        className = className.replaceAll("/", ".");
         
-        if (className != null && className.indexOf("/") != -1) {
-            className = className.replaceAll("/", ".");
-        }
-        try {
-//        	通过类全路径名获取class字节码文件数据
-        	CtClass ctclass = ClassPool.getDefault().get(className);
-	        for(String method : filterList){
-	            if (method.startsWith(className)){
-                    String methodName = method.split(":")[1];
-                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
-                	ctmethod.addLocalVariable("startTime", CtClass.longType);
-                	ctmethod.addLocalVariable("endTime", CtClass.longType);
-                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
-//                	ctmethod.insertBefore("System.out.println(\"记录日志1\");");
-                	ctmethod.insertBefore("com.meizu.aop.IInterceptor.initBefore(\""+method+"\",this,$args);");
-                	ctmethod.insertAfter("com.meizu.aop.IInterceptor.initAfter(\""+method+"\",this,$args);");
-                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
-                	ctmethod.insertAfter("System.out.println(\"方法 ["+className+":"+methodName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");
-	            }
-	        }     
-	        return ctclass;
-        } catch (CannotCompileException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        for(String classInfo : filterList){
+        	if (classInfo.startsWith(className)){
+        		LOGGER.debug("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
+        		String methodNameStr = classInfo.split(":")[1];
+        		String[] methodArr = methodNameStr.split(",");
+        		 try {
+//        	                    通过类全路径名获取class字节码文件数据
+    	        	CtClass ctclass = ClassPool.getDefault().get(className);
+    		        for(String methodName : methodArr){
+    		        	String methodFullName = className+":"+methodName;
+    		        	LOGGER.debug("AOP：对方法["+methodFullName+"]进行逻辑切入");
+    	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
+    	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
+    	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
+    	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
+//        	                	ctmethod.insertBefore("System.out.println(\"记录日志1\");");
+    	                	ctmethod.insertBefore("com.meizu.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);");
+    	                	ctmethod.insertAfter("com.meizu.aop.IInterceptor.initAfter(\""+methodFullName+"\",this,$args);");
+    	                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
+    	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");
+    		        }     
+    		        return ctclass;
+    	        } catch (CannotCompileException e) {
+    	            // TODO Auto-generated catch block
+    	            e.printStackTrace();
+    	        } catch (NotFoundException e) {
+    	            // TODO Auto-generated catch block
+    	            e.printStackTrace();
+    	        }
+        		break;
+        	}
         }
         return null;
 	}

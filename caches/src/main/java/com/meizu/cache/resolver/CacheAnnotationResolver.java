@@ -49,7 +49,7 @@ public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			for (Method method : methodArr) {
                 if (method.isAnnotationPresent(CacheDataAdd.class)) {
                 	CacheDataAdd cacheDataAdd = method.getDeclaredAnnotation(CacheDataAdd.class);
-                	LOGGER.debug(cacheDataAdd.key());
+                	LOGGER.debug(cacheDataAdd.key()+":key");
 /*                	String message = "缓存初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
                 	Object iocBean = null;
                 	if(iocType.isInterface()) {
