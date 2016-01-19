@@ -24,9 +24,7 @@ import java.lang.annotation.Target;
 public @interface CacheDataDel {
 
 	String value() default "";
-
 	String key() default "";
-
 	boolean allEntries() default false;
 
 }

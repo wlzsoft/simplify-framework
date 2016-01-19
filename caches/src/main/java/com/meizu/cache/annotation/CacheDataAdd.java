@@ -23,10 +23,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface CacheDataAdd {
 
-	String key() default "";
-
-	String condition() default "";
-
 	String value() default "";
-
+	String key() default "";
+	String condition() default "";
 }

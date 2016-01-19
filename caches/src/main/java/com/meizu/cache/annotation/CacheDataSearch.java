@@ -24,7 +24,5 @@ import java.lang.annotation.Target;
 public @interface CacheDataSearch {
 
 	String value() default "";
-
 	String key() default "";
-
 }
