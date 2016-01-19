@@ -16,6 +16,7 @@ public class RedisPoolProperties {
 	private Integer maxWaitMillis;
 	private Integer maxIdle;
 	private Integer maxTotal;
+	private Integer minIdle;
 	private Boolean testOnBorrow;
 	private Boolean testWhileIdle;
 //	private Integer timeBetweenEvictionRunsMillis = 30000;
@@ -49,6 +50,12 @@ public class RedisPoolProperties {
 	}
 	public void setTestWhileIdle(Boolean testWhileIdle) {
 		this.testWhileIdle = testWhileIdle;
+	}
+	public Integer getMinIdle() {
+		return minIdle;
+	}
+	public void setMinIdle(Integer minIdle) {
+		this.minIdle = minIdle;
 	}
 
 }

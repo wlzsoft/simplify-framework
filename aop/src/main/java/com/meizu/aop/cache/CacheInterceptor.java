@@ -31,14 +31,27 @@ import com.meizu.cache.resolver.CacheAnnotationResolver;
 public class CacheInterceptor implements IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
-	@Override
-	public void after(String methodFullName,Object o,Object... args) {
-		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
-	}
-
+	
 	@Override
 	public void before(String methodFullName,Object o,Object... args) {
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
+		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
+		String key = methodFullName+"id";//需要想方法获取id的值
+		//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
+		ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
+		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		if(anno.annotationType().equals(CacheDataSearch.class)) {
+			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
+			Object obj = commonRedisDao.get(key);
+			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
+		} 
+	}
+	
+	@Override
+	public void after(String methodFullName,Object o,Object... args) {
+		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 		String key = methodFullName+"id";//需要想方法获取id的值
 		//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
@@ -51,15 +64,13 @@ public class CacheInterceptor implements IInterceptor{
 			//TODO　这块的操作要控制的2ms以内
 			boolean isOk = commonRedisDao.set(key, args[0]);
 			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
-		} else if(anno.annotationType().equals(CacheDataSearch.class)) {
-			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
-			Object obj = commonRedisDao.get(key);
-			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
 		} else if(anno.annotationType().equals(CacheDataDel.class)) {
 			CacheDataDel cacheDataDel = (CacheDataDel)anno;
 			Object obj = commonRedisDao.delete(key);
 			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
 		}
 	}
+
+	
 	
 }
