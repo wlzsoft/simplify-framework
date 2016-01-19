@@ -43,7 +43,7 @@ public class RedisPool {
 
 	static {
 
-		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
+//		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
 		config.setMaxWaitMillis(10000);
 		config.setMaxIdle(1000);
