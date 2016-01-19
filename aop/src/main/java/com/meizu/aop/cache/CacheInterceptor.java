@@ -10,10 +10,10 @@ import com.meizu.cache.redis.dao.impl.CommonRedisDao;
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
- * <p>Create Date:2016年1月18日 下午5:29:05</p>
- * <p>Modified By:Administrator-</p>
- * <p>Modified Date:2016年1月18日 下午5:29:05</p>
- * @author <a href="mailto:Administrator@meizu.com" title="邮箱地址">Administrator</a>
+ * <p>Create Date:2016年1月19日 上午10:13:18</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月19日 上午10:13:18</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version Version 0.1
  *
  */

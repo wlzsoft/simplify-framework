@@ -5,15 +5,15 @@ import com.meizu.cache.ICacheDao;
 import com.meizu.cache.redis.dao.impl.CommonRedisDao;
 
 /**
-  * <p><b>Title:</b><i>拦截器接口</i></p>
+ * <p><b>Title:</b><i>拦截器接口</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
- * <p>Create Date:2016年1月18日 下午5:30:30</p>
- * <p>Modified By:Administrator-</p>
- * <p>Modified Date:2016年1月18日 下午5:30:30</p>
- * @author <a href="mailto:Administrator@meizu.com" title="邮箱地址">Administrator</a>
+ * <p>Create Date:2016年1月19日 上午10:14:23</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月19日 上午10:14:23</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version Version 0.1
  *
  */

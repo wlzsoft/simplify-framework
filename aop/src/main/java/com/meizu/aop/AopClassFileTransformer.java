@@ -15,9 +15,17 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 
 /**
- * 字节码编辑植入处理类
- * @author Administrator
- *java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/aop/target/aop-0.0.1-SNAPSHOT.jar -Daop.conf=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.conf
+ * <p><b>Title:</b><i>字节码编辑植入处理类</i></p>
+ * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/aop/target/aop-0.0.1-SNAPSHOT.jar -Daop.conf=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年1月19日 上午10:13:47</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月19日 上午10:13:47</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
 
@@ -48,6 +56,13 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     }
 
 
+	/**
+	 * 
+	 * 方法用途: 第三方逻辑切入<br>
+	 * 操作步骤: TODO<br>
+	 * @param className
+	 * @return
+	 */
 	public CtClass buildClazz(String className) {
 		System.out.println(className);
 		
@@ -87,7 +102,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	}
 
     /**
-     * 在main方法执行后，执行本方法
+     * 
+     * 方法用途: 在main方法执行后，执行本方法<br>
+     * 操作步骤: TODO<br>
      * @param agentArgs
      * @param inst
      */
@@ -96,8 +113,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     }
     
     /**
-     * 在main函数执行前，执行本方法
-     * 添加新的字节码转换器，来修改字节码
+     * 
+     * 方法用途: 在main函数执行前，执行本方法<br>
+     * 操作步骤: 添加新的字节码转换器，来修改字节码<br>
      * @param options
      * @param ins
      */
