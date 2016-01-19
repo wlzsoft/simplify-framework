@@ -30,6 +30,6 @@ public class AopClassFileTransformerTest {
 		Startup.start();
 		long start = System.currentTimeMillis();
 		BeanFactory.getBean(TestService.class).doSomeThing("oo");
-		System.out.println(System.currentTimeMillis()-start);
+		System.out.println((System.currentTimeMillis()-start)+"ms");
 	}
 }

@@ -99,6 +99,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
     	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");
     		        }     
+    		        LOGGER.debug("AOP：javasist开始精简["+className+"]对象字节码");
     		        return ctclass;
     	        } catch (CannotCompileException e) {
     	            // TODO Auto-generated catch block
