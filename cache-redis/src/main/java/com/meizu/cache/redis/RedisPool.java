@@ -43,16 +43,15 @@ public class RedisPool {
 
 	static {
 
-//		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
+		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-		config.setMaxWaitMillis(10000);
-		config.setMaxIdle(1000);
-		config.setMaxTotal(5000);
-		config.setTestOnBorrow(true);
-		config.setTestWhileIdle(false);
-		
-		//config.timeBetweenEvictionRunsMillis = 30000;
-		//config.numTestsPerEvictionRun= 10000;
+		config.setMaxWaitMillis(redisPoolProperties.getMaxWaitMillis());
+		config.setMaxIdle(redisPoolProperties.getMaxIdle());
+		config.setMaxTotal(redisPoolProperties.getMaxTotal());
+		config.setTestOnBorrow(redisPoolProperties.getTestOnBorrow());
+		config.setTestWhileIdle(redisPoolProperties.getTestWhileIdle());
+//		config.setTimeBetweenEvictionRunsMillis(30000);
+//		config.setNumTestsPerEvictionRun(10000);
 
 		hostAndPortMap = RedisHostAndPortUtil.getRedisServers();
 		if (hostAndPortMap.isEmpty())

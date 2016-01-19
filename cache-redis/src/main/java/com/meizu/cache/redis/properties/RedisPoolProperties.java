@@ -13,5 +13,42 @@ package com.meizu.cache.redis.properties;
  *
  */
 public class RedisPoolProperties {
+	private Integer maxWaitMillis;
+	private Integer maxIdle;
+	private Integer maxTotal;
+	private Boolean testOnBorrow;
+	private Boolean testWhileIdle;
+//	private Integer timeBetweenEvictionRunsMillis = 30000;
+//	private Integer numTestsPerEvictionRun= 10000;
+	public Integer getMaxWaitMillis() {
+		return maxWaitMillis;
+	}
+	public void setMaxWaitMillis(Integer maxWaitMillis) {
+		this.maxWaitMillis = maxWaitMillis;
+	}
+	public Integer getMaxIdle() {
+		return maxIdle;
+	}
+	public void setMaxIdle(Integer maxIdle) {
+		this.maxIdle = maxIdle;
+	}
+	public Integer getMaxTotal() {
+		return maxTotal;
+	}
+	public void setMaxTotal(Integer maxTotal) {
+		this.maxTotal = maxTotal;
+	}
+	public Boolean getTestOnBorrow() {
+		return testOnBorrow;
+	}
+	public void setTestOnBorrow(Boolean testOnBorrow) {
+		this.testOnBorrow = testOnBorrow;
+	}
+	public Boolean getTestWhileIdle() {
+		return testWhileIdle;
+	}
+	public void setTestWhileIdle(Boolean testWhileIdle) {
+		this.testWhileIdle = testWhileIdle;
+	}
 
 }

@@ -79,9 +79,9 @@ public class PropertieUtil {
 		return val == null ? df : Boolean.valueOf(val);
 	}
 	
-	public Boolean getInteger(String name) {
+	public Integer getInteger(String name) {
 		String val = props.getProperty(name);
-		return val == null ? null : Boolean.valueOf(val);
+		return val == null ? null : Integer.parseInt(val);
 	}
 	
 	public Integer getInteger(String name, Integer df) {
@@ -151,10 +151,12 @@ public class PropertieUtil {
 								}
 							} 
 							ReflectionUtil.invokeMethod(obj, methodName,new Class<?>[]{type},new Object[]{arg});
+							break;
 						}
 					}
 				}
 			}
+			return (T) obj;
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
