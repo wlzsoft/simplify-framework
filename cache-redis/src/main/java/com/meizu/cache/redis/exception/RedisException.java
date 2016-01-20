@@ -3,7 +3,7 @@ package com.meizu.cache.redis.exception;
 import com.meizu.simplify.exception.BaseException;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>redis异常</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>

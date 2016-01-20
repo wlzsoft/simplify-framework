@@ -19,6 +19,19 @@ import com.meizu.simplify.utils.StringUtil;
 
 import redis.clients.jedis.Protocol;
 
+/**
+ * <p><b>Title:</b><i>redis分片服务信息配置工具</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年1月20日 上午11:11:51</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月20日 上午11:11:51</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
 public class RedisHostAndPortUtil {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisHostAndPortUtil.class);
