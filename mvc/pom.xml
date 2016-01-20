@@ -19,5 +19,22 @@
 	    <artifactId>aop</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
+	  <!-- 以下两个jar后续要删除，不应该出现在mvc模块中，开发阶段为了测试，所以加上 -->
+	  <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+            <scope>provided</scope>
+		</dependency>
+		<dependency>
+		  	<groupId>com.meizu</groupId>
+		    <artifactId>webcache</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		  </dependency>
+		  <dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
   </dependencies>
 </project>
