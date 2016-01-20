@@ -25,22 +25,9 @@ import java.lang.annotation.Target;
  */
 public class SecurityFilter /*implements Filter*/ {
 
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Inherited
-	public @interface RequestSet {
-		String path();
-	}
 
-	@Target(ElementType.PARAMETER)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Inherited
-	public @interface QueryParam {
-		String defaultValue();
-		String param();
-	}
+
+	
 
 	public void destroy() {
 

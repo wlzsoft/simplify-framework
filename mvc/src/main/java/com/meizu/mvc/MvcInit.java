@@ -5,7 +5,7 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import com.meizu.mvc.SecurityFilter.RequestSet;
+import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.simplify.utils.PropertieUtil;
 
 
@@ -69,8 +69,8 @@ public class MvcInit {
 					for (Method method : entityClass.getMethods()) {
 						if (method != null && method.getName().indexOf("do") == 0) {
 							// 检查annotation 设置
-							if (method.isAnnotationPresent(RequestSet.class)) {
-								RequestSet rset = (RequestSet) method.getAnnotation(RequestSet.class);
+							if (method.isAnnotationPresent(RequestMap.class)) {
+								RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
 								for (String _path : rset.path().split("\\s+", -1)) {
 									if (_path != null && _path.length() > 0) {
 //											PrintHelper.getPrint().debug("ADDED " + class_path + " -> " + _path);

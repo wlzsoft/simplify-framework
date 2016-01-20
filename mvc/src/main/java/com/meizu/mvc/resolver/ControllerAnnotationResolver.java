@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.annotation.CacheDataAdd;
-import com.meizu.cache.annotation.CacheDataDel;
-import com.meizu.cache.annotation.CacheDataSearch;
 import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.exception.CacheException;
+import com.meizu.mvc.annotation.RequestMap;
+import com.meizu.mvc.annotation.RequestParam;
+import com.meizu.mvc.dto.MappingAnnotationInfo;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
@@ -37,7 +37,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	
-	public static final Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = new ConcurrentHashMap<>();
+	public static final Map<String,MappingAnnotationInfo> mappingAnnotationInfo = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -54,24 +54,21 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			}
 			
 			for (Method method : methodArr) {
-                if (method.isAnnotationPresent(CacheDataAdd.class)) {
-                	resolveAnno(beanClass, method,CacheDataAdd.class);
+                if (method.isAnnotationPresent(RequestMap.class)) {
+                	resolveAnno(beanClass, method,RequestMap.class);
                 }
-                if (method.isAnnotationPresent(CacheDataDel.class)) {
-                	resolveAnno(beanClass, method,CacheDataDel.class);
-                }
-                if (method.isAnnotationPresent(CacheDataSearch.class)) {
-                	resolveAnno(beanClass, method,CacheDataSearch.class);
+                if (method.isAnnotationPresent(RequestParam.class)) {
+                	resolveAnno(beanClass, method,RequestParam.class);
                 }
 			}
 		}
 	}
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
-		T cacheDataAdd = method.getDeclaredAnnotation(clazzAnno);
-		LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
-		CacheAnnotationInfo cai = new CacheAnnotationInfo();
-		cai.setAnnotatoionType(cacheDataAdd);
+		T requestInfo = method.getDeclaredAnnotation(clazzAnno);
+		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		MappingAnnotationInfo cai = new MappingAnnotationInfo();
+		cai.setAnnotatoionType(requestInfo);
 		cai.setReturnType(method.getReturnType());
-		cacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);
+		mappingAnnotationInfo.put(beanClass.getName()+":"+method.getName(), cai);
 	}
 }
