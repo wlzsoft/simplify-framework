@@ -6,8 +6,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.aop.Context;
 import com.meizu.aop.Handler;
 import com.meizu.aop.IInterceptor;
+import com.meizu.aop.enums.ContextTypeEnum;
+import com.meizu.aop.log.LogInterceptor;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.annotation.CacheDataAdd;
 import com.meizu.cache.annotation.CacheDataDel;
@@ -32,6 +35,14 @@ import com.meizu.cache.resolver.CacheAnnotationResolver;
 public class CacheInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
+	
+	private static final CacheInterceptor CACHE_INTERCEPTOR = new CacheInterceptor(); 
+	private CacheInterceptor() {
+		
+	}
+	public static CacheInterceptor getInstance() {
+		return CACHE_INTERCEPTOR;
+	}
 	
 	//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
 	ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
@@ -72,8 +83,12 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	}
 
 	@Override
-	public boolean handle(Object... obj) {
-		// TODO Auto-generated method stub
+	public boolean handle(Context context,Object... obj) {
+		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
+			before(context.getMethodFullName(),context.getThiz(),obj);
+		} else {
+			after(context.getMethodFullName(),context.getThiz(),obj);
+		}
 		return false;
 	}
 

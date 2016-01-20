@@ -1,6 +1,7 @@
 package com.meizu.aop;
 
 import com.meizu.aop.cache.CacheInterceptor;
+import com.meizu.aop.enums.ContextTypeEnum;
 import com.meizu.aop.log.LogInterceptor;
 
 /**
@@ -17,18 +18,27 @@ import com.meizu.aop.log.LogInterceptor;
  *
  */
 public interface IInterceptor {
-
 	public static Object initBefore(String methodFullName,Object o,Object... args ) {
-		new CacheInterceptor().before(methodFullName,o,args);
-		Handler handle = new CacheInterceptor();
-		handle.setNextHandler(new LogInterceptor())
-		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
-		handle.invoke();//无需指定参数，暂无传递参数，后续有需要再添加
+		Handler handle = CacheInterceptor.getInstance();
+//		handle.setNextHandler(new LogInterceptor())//业务处理成功后才需要记录日志，这里无需设置日志过滤器
+//		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
+		Context context = new Context();
+		context.setMethodFullName(methodFullName);
+		context.setThis(o);
+		context.setType(ContextTypeEnum.BEFORE);
+		handle.invoke(context,args);//无需指定参数，暂无传递参数，后续有需要再添加
 		return -1;
 	}
 	
 	public static Object initAfter(String methodFullName,Object o,Object... args ) {
-		new CacheInterceptor().after(methodFullName,o,args);
+		Handler handle = CacheInterceptor.getInstance();
+		handle.setNextHandler(LogInterceptor.getInstance())
+		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
+		Context context = new Context();
+		context.setMethodFullName(methodFullName);
+		context.setThis(o);
+		context.setType(ContextTypeEnum.AFTER);
+		handle.invoke(context,args);//无需指定参数，暂无传递参数，后续有需要再添加
 		return -1;
 	}
 	

@@ -3,8 +3,11 @@ package com.meizu.aop.log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.aop.Context;
 import com.meizu.aop.Handler;
 import com.meizu.aop.IInterceptor;
+import com.meizu.aop.cache.CacheInterceptor;
+import com.meizu.aop.enums.ContextTypeEnum;
 
 /**
  * <p><b>Title:</b><i>日志拦截器</i></p>
@@ -21,6 +24,14 @@ import com.meizu.aop.IInterceptor;
  */
 public class LogInterceptor extends Handler implements  IInterceptor{
 
+	private static final LogInterceptor LOG_INTERCEPTOR = new LogInterceptor(); 
+	private LogInterceptor() {
+		
+	}
+	public static LogInterceptor getInstance() {
+		return LOG_INTERCEPTOR;
+	}
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LogInterceptor.class);
 	
 	
@@ -35,8 +46,12 @@ public class LogInterceptor extends Handler implements  IInterceptor{
 	}
 
 	@Override
-	public boolean handle(Object... obj) {
-		// TODO Auto-generated method stub
+	public boolean handle(Context context,Object... obj) {
+		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
+			before(context.getMethodFullName(),context.getThiz(),obj);
+		} else {
+			after(context.getMethodFullName(),context.getThiz(),obj);
+		}
 		return false;
 	}
 

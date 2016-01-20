@@ -14,7 +14,7 @@ package com.meizu.aop;
  *
  */
 public abstract class Handler {
-	abstract public boolean handle(Object... obj);
+	abstract public boolean handle(Context context,Object... obj);
 	
 	/**
 	 * 下一个处理器
@@ -27,10 +27,10 @@ public abstract class Handler {
      * 操作步骤: TODO<br>
      * @param obj
      */
-    public void invoke(Object... obj) {
-    	boolean b = handle(obj);
+    public void invoke(Context context,Object... obj) {
+    	boolean b = handle(context,obj);
     	if(b) {
-    		next(obj);
+    		next(context,obj);
     	}
     }
 
@@ -52,9 +52,9 @@ public abstract class Handler {
 	 * 操作步骤: TODO<br>
 	 * @param obj
 	 */
-	protected void next(Object... obj) {
+	protected void next(Context context,Object... obj) {
 		if (handler != null) {
-			handler.invoke(obj);
+			handler.invoke(context,obj);
 		} else {
 			System.out.println("过滤器执行结束.");
 		}
