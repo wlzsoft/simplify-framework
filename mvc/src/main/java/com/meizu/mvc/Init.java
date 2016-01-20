@@ -1,38 +1,20 @@
 package com.meizu.mvc;
 
+
 /**
- * 
  * <p><b>Title:</b><i>框架初始化</i></p>
- * <p>Desc: 框架初始化</p>
+ * <p>Desc: 框架初始化
+ * 对urlcache的缓存记录方式做了先进先出模式</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
- * <p>Create Date:2015年2月14日 上午11:45:49</p>
- * <p>Modified By:lcy-</p>
- * <p>Modified Date:2015年2月14日 上午11:45:49</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * <p>Create Date:2016年1月20日 下午5:11:35</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月20日 下午5:11:35</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version Version 0.1
- * @version 2014-12 v1.0 版本生成
- * @version 2014-12 v1.1 扩展表单获取方式, 增加对URL做Cached
- * @version 2014-12 v1.2 扩展标签，增加对数组迭代、增加对全区取对象，对print标签增加format功能
- * @version 2015-01 v1.2.2 扩展Ehcached配置支持
- * @version 2015-02 v1.2.3 扩展Client，json远程对象调用
- * @version 2015-02 v1.2.4 扩展表单获取，对浮点类型支持
- * @version 2015-02 v1.3 扩展filter方式,并支持requestset路径
- * @version 2015-02 v1.3.5 扩展filter方式对参数支持
- * @version 2015-02 v1.4 对urlcache的缓存记录方式做了先进先出模式
- * @version 2015-02 v1.4.5 对hibernate扩展，支持动态设置表名, 对标签功能扩展
- * @version 2015-02 v1.4.8 对hibernateSearch建立索引缓存开放配置
- * @version 2015-02 v1.4.9 对lucene接口提供过滤器功能, 解决lucene由于第一次取大小会被执行2次的问题.
- * @version 2015-02 v1.5 增加对batch支持, 增加优化批量添加删除接口, 以及修复一些其它bug.
- * @version 2015-02 v1.5.5 进行了一些Search相关优化操作
- * @version 2015-02 v1.5.6 优化MVC表单取值的处理过程
- * @version 2015-02 v1.5.7 对获取表单参数值增加了对ec参数支持，能指定参数编码
- * @version 2015-02 v1.5.8 修正CreateIndex的pushbug.
- * @version 2015-02 v1.5.9 调整切片策略支持和一些兼容性和稳定性优化
- * @version 2015-02 v1.6 支持多SessionFactory管理</p>
+ *
  */
-
 public class Init extends MvcInit {
 	
 	public static boolean cache = false;

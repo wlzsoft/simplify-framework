@@ -24,7 +24,6 @@ import com.meizu.simplify.utils.PropertieUtil;
  * @version Version 0.1
  *
  */
-@Deprecated
 public class MvcInit {
 	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
 	
