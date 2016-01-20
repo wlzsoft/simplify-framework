@@ -24,7 +24,7 @@ import com.meizu.simplify.utils.PropertieUtil;
  *
  */
 public class MvcInit {
-	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
+	protected static PropertieUtil config = null;//new PropertieUtil("properties/config.properties");
 	
 //	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
@@ -44,12 +44,12 @@ public class MvcInit {
 	}
 	
 	static {
-		debug = config.getBoolean("system.debug", false);
-		charSet = config.getString("system.charset", null);
-		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
-		
-		class_path = config.getString("system.classpath", null);
-		directives = config.getString("system.directives", null);
+//		debug = config.getBoolean("system.debug", false);
+//		charSet = config.getString("system.charset", null);
+//		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
+//		
+//		class_path = config.getString("system.classpath", null);
+//		directives = config.getString("system.directives", null);
 //		urlCache = new FiFoMap<String, Object[]>((urlcacheCount = config.getInteger("system.urlcacheCount", 100)));
 		
 		// 查找指定class路径

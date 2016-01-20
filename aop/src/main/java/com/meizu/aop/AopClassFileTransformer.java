@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.cache.redis.RedisPool;
+import com.meizu.simplify.ioc.annotation.Bean;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -100,6 +101,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         			LOGGER.debug("AOP：javasist开始精简["+className+"]对象字节码");
 //        	                    通过类全路径名获取class字节码文件数据
     	        	CtClass ctclass = ClassPool.getDefault().get(className);
+    	        	if(!ctclass.hasAnnotation(Bean.class)) {
+    	        		return ctclass;
+    	        	}
     		        for(String methodName : methodArr){
     		        	String methodFullName = className+":"+methodName;
     		        	LOGGER.debug("AOP：对方法["+methodFullName+"]进行逻辑切入");
