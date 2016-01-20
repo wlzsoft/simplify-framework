@@ -1,6 +1,6 @@
 package com.meizu.aop.enums;
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>上下文枚举类型</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -13,5 +13,14 @@ package com.meizu.aop.enums;
  *
  */
 public enum ContextTypeEnum {
-	BEFORE,AFTER;
+	
+	/**
+	 *过滤之前 
+	 */
+	BEFORE,
+	
+	/**
+	 * 过滤之后
+	 */
+	AFTER;
 }
