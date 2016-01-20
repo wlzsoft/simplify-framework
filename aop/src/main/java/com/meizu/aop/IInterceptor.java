@@ -1,8 +1,7 @@
 package com.meizu.aop;
 
 import com.meizu.aop.cache.CacheInterceptor;
-import com.meizu.cache.ICacheDao;
-import com.meizu.cache.redis.dao.impl.CommonRedisDao;
+import com.meizu.aop.log.LogInterceptor;
 
 /**
  * <p><b>Title:</b><i>拦截器接口</i></p>
@@ -20,8 +19,11 @@ import com.meizu.cache.redis.dao.impl.CommonRedisDao;
 public interface IInterceptor {
 
 	public static Object initBefore(String methodFullName,Object o,Object... args ) {
-//		o.getClass().isAnnotationPresent(CacheDataAdd.class);
 		new CacheInterceptor().before(methodFullName,o,args);
+		Handler handle = new CacheInterceptor();
+		handle.setNextHandler(new LogInterceptor())
+		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
+		handle.invoke();//无需指定参数，暂无传递参数，后续有需要再添加
 		return -1;
 	}
 	

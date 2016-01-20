@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.aop.Handler;
 import com.meizu.aop.IInterceptor;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.annotation.CacheDataAdd;
@@ -28,7 +29,7 @@ import com.meizu.cache.resolver.CacheAnnotationResolver;
  * @version Version 0.1
  *
  */
-public class CacheInterceptor implements IInterceptor{
+public class CacheInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
 	
@@ -68,6 +69,12 @@ public class CacheInterceptor implements IInterceptor{
 			Object obj = commonRedisDao.delete(key);
 			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
 		}
+	}
+
+	@Override
+	public boolean handle(Object... obj) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	
