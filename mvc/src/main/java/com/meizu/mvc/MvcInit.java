@@ -43,7 +43,7 @@ public class MvcInit {
 	}
 	
 	public static String getPath() {
-		String path = MvcInit.class.getResource("/properties/config.properties").getPath();
+		String path = MvcInit.class.getResource("/config.properties").getPath();
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	
