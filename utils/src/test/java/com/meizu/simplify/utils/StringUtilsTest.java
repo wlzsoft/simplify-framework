@@ -26,11 +26,6 @@ public class StringUtilsTest {
 	private String capitalizeExpectMessage = "字符串为空，无法转换为第一个字母为大写";
 	
 	
-	@Test
-	public void isNull() {
-		String str = null;
-		Assert.assertTrue(StringUtil.isNull(str));
-	}
 	
 	@Test
 	public void isEmpty() {
@@ -42,11 +37,6 @@ public class StringUtilsTest {
 		Assert.assertTrue(StringUtil.isBlank("    "));
 	}
 	
-	@Test
-	public void isNulls() {
-		String str = null;
-		Assert.assertTrue(StringUtil.isNull(str,null));
-	}
 	
 	@Test
 	public void isEmptys() {
