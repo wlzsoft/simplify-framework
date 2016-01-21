@@ -4,6 +4,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import com.meizu.mvc.MvcInit;
+import com.meizu.simplify.ioc.Startup;
+
 /**
  * <p><b>Title:</b><i>系统初始化</i></p>
  * <p>Desc: TODO</p>
@@ -23,6 +26,8 @@ public class StartUpServlet extends HttpServlet {
 
 	@Override
 	public final void init(final ServletConfig _config) throws ServletException {
+		MvcInit.init();
+		Startup.start();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");
 //		StringUtils.format("Current path -> {0}", systemConfig.getAppPath()));

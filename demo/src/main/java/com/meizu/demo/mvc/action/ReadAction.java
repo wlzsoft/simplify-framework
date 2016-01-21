@@ -13,11 +13,17 @@ import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.controller.ActionForward;
 import com.meizu.mvc.controller.IForward;
 import com.meizu.mvc.controller.MessageForward;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.utils.StringUtil;
 
-public class ReadAction extends BaseServlet<ReadModel> {
-	private static final long serialVersionUID = 4769858916633847282L;
 
+@Bean
+public class ReadAction extends BaseServlet<ReadModel> {
+
+	@Resource
+	private TestService testService;
+	
 //	@@RequestMap(path = "/d/(.+)/(.+)$")
 	@RequestMap(path = "/(.+)/(.+)/tags$ /manage/discuss_(.+).shtml$ /manage/login.shtml$ /manage/$")
 	public IForward doTags(HttpServletRequest request, HttpServletResponse response, final ReadModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
@@ -33,6 +39,7 @@ public class ReadAction extends BaseServlet<ReadModel> {
 //		} else {
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 //		}
+		System.out.println(testService+"HHHHHHHHHHHHHHHHHHHHHHHH");
 		request.setAttribute("userName", "lcy19870112@126.com");
 		return new ActionForward("/index.jsp");
 //		return new RedirectForward("/index.jsp");
