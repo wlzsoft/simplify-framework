@@ -426,4 +426,45 @@ public class StringUtil {
 		}
 		return res;
 	}
+	
+	
+	/**
+	 * 
+	 * 方法用途: 字符编码转换，默认ISO-8859-1转换成utf-8<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @return
+	 */
+	public static String coding(String str) {
+		return coding(str, "ISO-8859-1");
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 字符编码转换，默认charset转换成utf-8<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @param charset 待转换字符编码
+	 * @return
+	 */
+	public static String coding(String str, String charset) {
+		return coding(str, charset, "UTF-8");
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 字符编码转换<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @param charset 待转换字符编码
+	 * @param tocharset 目标字符编码
+	 * @return
+	 */
+	public static String coding(String str, String charset, String tocharset) {
+		try {
+			return str == null ? "" : new String(str.getBytes(charset), tocharset);
+		} catch (Exception E) {
+			return str;
+		}
+	}
 }

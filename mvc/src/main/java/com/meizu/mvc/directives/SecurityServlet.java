@@ -18,6 +18,7 @@ import com.meizu.mvc.directives.Model.Passme;
 import com.meizu.mvc.directives.Model.StringFilter;
 import com.meizu.mvc.directives.SecurityFilter.QueryParam;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.Md5Util;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.webcache.annotation.CacheSet;
@@ -94,7 +95,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 			}
 		};
 		T model = setRequestModel(request);
-		this.staticName = MD5.calcMD5(request.getServerName() + request.getRequestURI() + StringUtil.notNull(request.getQueryString())) + ".lv";
+		this.staticName = Md5Util.md5(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
 			IForward AF = execute(request, response, model);
@@ -188,7 +189,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 							if (value == null) break;
 
 							// 将值进行格式化后注入
-							parameValue[i] = ClassHelper.formatof(doMethod.getParameterTypes()[i], value.toString());
+							/*parameValue[i] = ClassHelper.formatof(doMethod.getParameterTypes()[i], value.toString());*/
 						}
 					}
 				}
@@ -311,9 +312,9 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 						if (type.isArray()) {
 							String[] pars = request.getParameterValues(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
 							if (pars != null && pars.length == 1) pars = pars[0].split(",");
-							method2.invoke(model, new Object[] { ClassHelper.formatof(type, pars) });
+							/*method2.invoke(model, new Object[] { ClassHelper.formatof(type, pars) });*/
 						} else {
-							method2.invoke(model, new Object[] { ClassHelper.formatof(type, par) });
+							/*method2.invoke(model, new Object[] { ClassHelper.formatof(type, par) });*/
 						}
 					}
 				}
