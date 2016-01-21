@@ -21,7 +21,11 @@ import com.meizu.cache.resolver.CacheAnnotationResolver;
 
 /**
  * <p><b>Title:</b><i>缓存拦截器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 注意： 1.考虑使用观察者模式替代责任连模式
+ *                2.目前的责任连实现方案，有个bug，before和after共用了一个对象，在并发情况下会导致链条关系互串，要改成两个对象
+ *                责任连有以下问题：1.链条断裂，2.排队问题（性能问题），3.并发问题
+ *                3.修改成两个对象后，考虑以后优化，减少冗余代码，暂不实现要做标记，考虑和ioc框架集成4，考虑修改成责任连对业务的影响，
+ *                4.cache和log类的handler实现类，都调整成有直接后继的方式，都返回true</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -36,12 +40,16 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
 	
-	private static final CacheInterceptor CACHE_INTERCEPTOR = new CacheInterceptor(); 
+	private static final CacheInterceptor CACHE_BEFORE_INTERCEPTOR = new CacheInterceptor();
+	private static final CacheInterceptor CACHE_AFTER_INTERCEPTOR = new CacheInterceptor(); 
 	private CacheInterceptor() {
 		
 	}
-	public static CacheInterceptor getInstance() {
-		return CACHE_INTERCEPTOR;
+	public static CacheInterceptor getBeforeInstance() {
+		return CACHE_BEFORE_INTERCEPTOR;
+	}
+	public static CacheInterceptor getAfterInstance() {
+		return CACHE_AFTER_INTERCEPTOR;
 	}
 	
 	//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
@@ -89,7 +97,7 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		} else {
 			after(context.getMethodFullName(),context.getThiz(),obj);
 		}
-		return false;
+		return true;
 	}
 
 	

@@ -52,7 +52,7 @@ public class LogInterceptor extends Handler implements  IInterceptor{
 		} else {
 			after(context.getMethodFullName(),context.getThiz(),obj);
 		}
-		return false;
+		return true;
 	}
 
 	
