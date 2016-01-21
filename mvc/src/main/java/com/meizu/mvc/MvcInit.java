@@ -70,22 +70,9 @@ public class MvcInit {
 					String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
 					try {
 						Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
-						for (Method method : entityClass.getMethods()) {
-							if (method != null && method.getName().indexOf("do") == 0) {
-								// 检查annotation 设置
-								if (method.isAnnotationPresent(RequestMap.class)) {
-									RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
-									for (String _path : rset.path().split("\\s+", -1)) {
-										if (_path != null && _path.length() > 0) {
-	//											LOGGER.debug("ADDED " + class_path + " -> " + _path);
-												servletMap.put(_path, new ServletModel(entityClass, method.getName()));
-										}
-									}
-								}
-							}
-						}
+						resolverRequestInfo(entityClass);
 					} catch (ClassNotFoundException e) {
-						
+						e.printStackTrace();
 					}
 			}
 		}
@@ -96,5 +83,28 @@ public class MvcInit {
 //		LOGGER.log("Framework v0.0.1-SNAPSHOT Init.");
 	}
 	
+	}
+
+	/**
+	 * 
+	 * 方法用途: 解析请求元数据信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 */
+	public static void resolverRequestInfo(Class<HttpServlet> entityClass) {
+		for (Method method : entityClass.getMethods()) {
+			if (method != null && method.getName().indexOf("do") == 0) {
+				// 检查annotation 设置
+				if (method.isAnnotationPresent(RequestMap.class)) {
+					RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
+					for (String _path : rset.path().split("\\s+", -1)) {
+						if (_path != null && _path.length() > 0) {
+//											LOGGER.debug("ADDED " + class_path + " -> " + _path);
+								servletMap.put(_path, new ServletModel(entityClass, method.getName()));
+						}
+					}
+				}
+			}
+		}
 	}
 }
