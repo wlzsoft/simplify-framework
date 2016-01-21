@@ -51,7 +51,7 @@ public class VelocityForward implements IForward {
 		Velocity.setProperty("file.resource.loader.cache", MvcInit.debug ? "false" : "true");
 		Velocity.setProperty("file.resource.loader.modificationCheckInterval", "5");
 		
-		String directives = "com.duxiu.framework.mvc.directives.DesDecDirective";
+		String directives = "com.meizu.mvc.directives.DesDecDirective";
 		if(!StringUtil.isEmpty(MvcInit.directives)) directives += "," + MvcInit.directives;
 		Velocity.setProperty("userdirective", directives);
 

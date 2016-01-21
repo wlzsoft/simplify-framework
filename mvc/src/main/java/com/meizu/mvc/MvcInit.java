@@ -43,7 +43,7 @@ public class MvcInit {
 	}
 	
 	public static String getPath() {
-		String path = MvcInit.class.getResource("/properties/config.properties").getPath();
+		String path = MvcInit.class.getResource("/").getPath();
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	
@@ -68,25 +68,25 @@ public class MvcInit {
 			if (fns != null) {
 				for (int i = 0; i < fns.length; i++) {
 					String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
-				try {
-					Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
-					for (Method method : entityClass.getMethods()) {
-						if (method != null && method.getName().indexOf("do") == 0) {
-							// 检查annotation 设置
-							if (method.isAnnotationPresent(RequestMap.class)) {
-								RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
-								for (String _path : rset.path().split("\\s+", -1)) {
-									if (_path != null && _path.length() > 0) {
-//											LOGGER.debug("ADDED " + class_path + " -> " + _path);
-											servletMap.put(_path, new ServletModel(entityClass, method.getName()));
+					try {
+						Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
+						for (Method method : entityClass.getMethods()) {
+							if (method != null && method.getName().indexOf("do") == 0) {
+								// 检查annotation 设置
+								if (method.isAnnotationPresent(RequestMap.class)) {
+									RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
+									for (String _path : rset.path().split("\\s+", -1)) {
+										if (_path != null && _path.length() > 0) {
+	//											LOGGER.debug("ADDED " + class_path + " -> " + _path);
+												servletMap.put(_path, new ServletModel(entityClass, method.getName()));
+										}
 									}
 								}
 							}
 						}
+					} catch (ClassNotFoundException e) {
+						
 					}
-				} catch (ClassNotFoundException e) {
-					
-				}
 			}
 		}
 		
