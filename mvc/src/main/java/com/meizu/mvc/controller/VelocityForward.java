@@ -108,7 +108,7 @@ public class VelocityForward implements IForward {
 				// 是否去除空格
 				if(cacheSet.removeSpace()) content = StringUtil.removeSpace(content);
 				Cache cache = CacheBase.getCache(cacheSet);
-				if(cache != null && cache.doCache(cacheSet, staticName, content)){
+				if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
 					// 缓存成功.
 				}
 			}

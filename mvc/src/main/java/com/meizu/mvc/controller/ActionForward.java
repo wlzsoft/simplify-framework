@@ -40,7 +40,7 @@ public class ActionForward implements IForward {
 			if(cacheSet.removeSpace()) content = StringUtil.removeSpace(content);
 
 			Cache cache = CacheBase.getCache(cacheSet);
-			if(cache != null && cache.doCache(cacheSet, staticName, content)){
+			if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
 				// 缓存成功.
 			}
 			response.setCharacterEncoding(MvcInit.charSet);

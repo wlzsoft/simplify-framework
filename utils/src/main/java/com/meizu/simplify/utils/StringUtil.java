@@ -19,15 +19,6 @@ import com.meizu.simplify.exception.UncheckedException;
  */
 public class StringUtil {
 
-	/**
-	 * 方法用途: 是否为空指针<br>
-	 * 操作步骤: TODO<br>
-	 * @param str 待判断的字符串
-	 * @return
-	 */
-	public static boolean isNull(Object str) {
-		return str == null ? true : false;
-	}
 	
 	/**
 	 * 方法用途: 判断指定字符串是否为空字符串，不去掉空白字符<br>
@@ -36,7 +27,7 @@ public class StringUtil {
 	 * @return 
 	 */
 	public static Boolean isEmpty(String str) {
-		if(isNull(str)) {
+		if(ObjectUtil.isNull(str)) {
 			return true;
 		}
 		return str.isEmpty();
@@ -58,20 +49,7 @@ public class StringUtil {
 		return false;
 	}
 	
-	/**
-	 * 方法用途: 不定长参数,其中所有参数为null，则返回true,否则返回false<br>
-	 * 操作步骤: TODO<br>
-	 * @param str 一个或多个待判断的字符串
-	 * @return 
-	 */
-	public static boolean isNull(Object... str) {
-		for (Object s : str) {
-			if (StringUtil.isNotNull(s)) {
-				return false;
-			}
-		}
-		return true;
-	}
+	
 	
 	/**
 	 * 方法用途: 不定长参数,其中所有参数为null或空字符串，则返回true,否则返回false<br>
@@ -103,15 +81,7 @@ public class StringUtil {
 		return true;
 	}
 	
-	/**
-	 * 方法用途: 是否不为空，是为true，否为false<br>
-	 * 操作步骤: TODO<br>
-	 * @param str 待判断的字符串
-	 * @return
-	 */
-	public static boolean isNotNull(Object str) {
-		return !isNull(str);
-	}
+	
 	
 	/**
 	 * 
@@ -248,6 +218,91 @@ public class StringUtil {
 
 	}
 	
+	
+	/**
+	 * 
+	 * 方法用途: 清除所有html标签<br>
+	 * 操作步骤: TODO<br>
+	 * @param content
+	 * @return
+	 */
+	public static String removeHtml(String content) {
+		if (null == content) return "";
+		java.util.regex.Pattern p_html;
+		java.util.regex.Matcher m_html;
+		try {
+			p_html = Pattern.compile("<[^>]+>", Pattern.CASE_INSENSITIVE);
+			m_html = p_html.matcher(content);
+			content = m_html.replaceAll("");
+		} catch (Exception e) {
+			return "";
+		}
+		return content;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 删除所有iframe，清除所有iframe<br>
+	 * 操作步骤: TODO<br>
+	 * @param content
+	 * @return
+	 */
+	public static String removeIframe(String content) {
+		if (null == content) return "";
+		java.util.regex.Pattern p_html;
+		java.util.regex.Matcher m_html;
+		try {
+			p_html = Pattern.compile("<iframe[^>]+>", Pattern.CASE_INSENSITIVE);
+			m_html = p_html.matcher(content);
+			content = m_html.replaceAll("");
+		} catch (Exception e) {
+			return "";
+		}
+		return content;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 删除样式，过滤掉样式内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param content
+	 * @return
+	 */
+	public static String removeStyle(String content) {
+		if (null == content) return "";
+		java.util.regex.Pattern p_html;
+		java.util.regex.Matcher m_html;
+		try {
+			p_html = Pattern.compile("<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>", Pattern.CASE_INSENSITIVE);
+			m_html = p_html.matcher(content);
+			content = m_html.replaceAll("");
+		} catch (Exception e) {
+			return "";
+		}
+		return content;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 删除脚本，过滤掉脚本内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param content
+	 * @return
+	 */
+	public static String removeScript(String content) {
+		if (null == content) return "";
+		java.util.regex.Pattern p_html;
+		java.util.regex.Matcher m_html;
+		try {
+			p_html = Pattern.compile("<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>", Pattern.CASE_INSENSITIVE);
+			m_html = p_html.matcher(content);
+			content = m_html.replaceAll("");
+		} catch (Exception e) {
+			return "";
+		}
+		return content;
+	}
+	
 	/**
 	 * 
 	 * 方法用途: 去除空格<br>
@@ -261,9 +316,10 @@ public class StringUtil {
 	}
 	
 	/**
-	 * bytes to hex string
 	 * 
-	 * @param bytes
+	 * 方法用途: 字节数组转换成16进制字符串<br>
+	 * 操作步骤: TODO<br>
+	 * @param bytes 字节数组
 	 * @return
 	 */
 	public static String bytes2Hex(byte[] bytes) {
@@ -307,7 +363,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String parseString(Object obj,String rep) {
-		if(isNull(obj)) {
+		if(ObjectUtil.isNull(obj)) {
 			return rep;
 		} 
 		String res = null;

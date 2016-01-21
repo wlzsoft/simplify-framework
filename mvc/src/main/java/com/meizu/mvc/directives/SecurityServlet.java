@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ObjectUtils;
-
 import com.meizu.mvc.annotation.AjaxAccess;
 import com.meizu.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.mvc.controller.IForward;
@@ -20,6 +18,7 @@ import com.meizu.mvc.directives.Model.Passme;
 import com.meizu.mvc.directives.Model.StringFilter;
 import com.meizu.mvc.directives.SecurityFilter.QueryParam;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.webcache.annotation.CacheSet;
 import com.meizu.webcache.web.Cache;
@@ -67,7 +66,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 					System.out.println(new String(param.getBytes("GBK"), "ISO-8859-1"));
 					System.out.println(new String(param.getBytes("ISO-8859-1"), "ISO-8859-1"));*/
 					
-					String enc = StringUtil.notNull(super.getParameter("ec"), MvcInit.charSet); 
+					String enc = StringUtil.parseString(super.getParameter("ec"), MvcInit.charSet); 
 					if (enc.equalsIgnoreCase(super.getCharacterEncoding())) {
 						return param;
 					} else {
@@ -181,7 +180,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 							Object value = null;
 							if (!StringUtil.isEmpty(request.getParameter(param))) {
 								value = request.getParameter(param);
-							} else if (ObjectUtils.isInt(param)) {
+							} else if (ObjectUtil.isInt(param)) {
 								int index = Integer.valueOf(param);
 								value = index < t.getPrarms().length ? t.getPrarms()[index] : null;
 							} else value = defaultValue;
@@ -221,7 +220,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 					this.cacheSet = (CacheSet) doMethod.getAnnotation(CacheSet.class);
 					Cache cache = CacheBase.getCache(cacheSet);
 					if(cache != null){
-						String cacheContent = cache.readCache(cacheSet, staticName);
+						String cacheContent = cache.readCache(cacheSet, staticName,response);
 						if(cacheContent != null){
 							response.setCharacterEncoding(MvcInit.charSet);
 							response.setContentType("text/html; charset=" + MvcInit.charSet);
@@ -295,7 +294,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 								} else if(StringFilter.Filter.iframe == filter){
 									par = StringUtil.removeIframe(par);
 								} else if(StringFilter.Filter.trim == filter){
-									par = StringUtil.notNull(par).trim();
+									par = StringUtil.removeSpace(par);
 								}
 							}
 						}
