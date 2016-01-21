@@ -118,10 +118,8 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 	 * @param t
 	 */
 	public void actionDestroy(HttpServletRequest request, HttpServletResponse response, T t){
-		if (MvcInit.hibernate) {    
-//			MultiHibernateDAO.closeSession(0);
-//			PrintHelper.getPrint().debug("Hibernate Session[0]  closed.");
-		}
+//			DAO.closeSession(0);
+//			PrintHelper.getPrint().debug("dao Session[0]  closed.");
 	}
 	
 	/**

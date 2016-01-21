@@ -39,17 +39,6 @@ public class MvcInit {
 	public static String directives; // velocity自定义Directive
 	
 	
-	public static boolean hibernate = false;
-	
-	public static String authorization_user = "";
-	public static String authorization_password = "";
-	
-	public static String hibernate_shards;
-	public static String hibernate_selectionstrategy;
-	public static String hibernate_resolutionstrategy;
-	
-	public static int limitExecutionTime = 0;
-	
 	public MvcInit() {
 	}
 	
