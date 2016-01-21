@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServlet;
 
 import com.meizu.mvc.FiFoMap;
+import com.meizu.mvc.ServletModel;
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;

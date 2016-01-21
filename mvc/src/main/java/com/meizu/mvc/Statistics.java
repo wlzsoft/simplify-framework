@@ -18,7 +18,7 @@ public class Statistics {
 	private static long readcount = 0;
 	private static long readMaxTime = 0;
 	private static String readMaxTimeUrl;
-//	private static FiFoMap<String, Integer> readMap = new FiFoMap<String, Integer>(128);
+	private static FiFoMap<String, Integer> readMap = new FiFoMap<String, Integer>(128);
 	
 	private Statistics() {
 		
@@ -59,8 +59,8 @@ public class Statistics {
 		}
 	}
 	
-//	public static FiFoMap<String, Integer> getReadMap() {
-//		return readMap;
-//	}
+	public static FiFoMap<String, Integer> getReadMap() {
+		return readMap;
+	}
 	
 }

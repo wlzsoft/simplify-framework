@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.mvc.directives.MvcInit;
-import com.meizu.mvc.directives.ServletModel;
-import com.meizu.mvc.directives.Statistics;
 import com.meizu.simplify.exception.UncheckedException;
 
 
