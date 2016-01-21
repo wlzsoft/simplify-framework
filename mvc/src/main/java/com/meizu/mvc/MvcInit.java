@@ -68,7 +68,7 @@ public class MvcInit {
 			if (fns != null) {
 				for (int i = 0; i < fns.length; i++) {
 					String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
-					try {
+				try {
 					Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
 					for (Method method : entityClass.getMethods()) {
 						if (method != null && method.getName().indexOf("do") == 0) {
@@ -85,6 +85,7 @@ public class MvcInit {
 						}
 					}
 				} catch (ClassNotFoundException e) {
+					
 				}
 			}
 		}
