@@ -45,19 +45,6 @@ public class SecurityServlet<T extends Model> {
 			
 			private String encode(String param){
 				try {
-					/*System.out.println(param);
-					
-					System.out.println(new String(param.getBytes("UTF-8"), "UTF-8"));
-					System.out.println(new String(param.getBytes("GBK"), "UTF-8"));
-					System.out.println(new String(param.getBytes("ISO-8859-1"), "UTF-8"));
-					
-					System.out.println(new String(param.getBytes("UTF-8"), "GBK"));
-					System.out.println(new String(param.getBytes("GBK"), "GBK"));
-					System.out.println(new String(param.getBytes("ISO-8859-1"), "GBK"));
-					
-					System.out.println(new String(param.getBytes("UTF-8"), "ISO-8859-1"));
-					System.out.println(new String(param.getBytes("GBK"), "ISO-8859-1"));
-					System.out.println(new String(param.getBytes("ISO-8859-1"), "ISO-8859-1"));*/
 					
 					String enc = StringUtil.parseString(super.getParameter("ec"), MvcInit.charSet); 
 					if (enc.equalsIgnoreCase(super.getCharacterEncoding())) {
