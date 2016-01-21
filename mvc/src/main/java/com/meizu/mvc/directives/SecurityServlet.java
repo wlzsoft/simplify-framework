@@ -31,20 +31,11 @@ import com.meizu.webcache.web.CacheBase;
  * 验证Servlet
  * 
  */
-public class SecurityServlet<T extends Model> extends HttpServlet {
-	private static final long serialVersionUID = 8160874454429513848L;
+public class SecurityServlet<T extends Model> {
 	protected CacheSet cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
 
-	public void destroy() {
-		super.destroy();
-	}
-
-	public SecurityServlet() {}
-
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
-	}
+	
 
 	/**
 	 * 递交业务处理逻辑
@@ -119,9 +110,10 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 	 */
 	public void actionDestroy(HttpServletRequest request, HttpServletResponse response, T t){
 //			DAO.closeSession(0);
-//			PrintHelper.getPrint().debug("dao Session[0]  closed.");
+//			LOGGER.debug("dao Session[0]  closed.");
 	}
-	
+	public void destroy() {
+	}
 	/**
 	 * 安全权限过程检查
 	 * 
@@ -239,7 +231,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 		return null;
 	}
 
-	public void init() throws ServletException {}
+	public void init() {}
 
 	@SuppressWarnings("unchecked")
 	private Class<T> getEntityClass() {
