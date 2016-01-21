@@ -23,7 +23,7 @@ import com.meizu.simplify.utils.demo.DemoService;
  * @version Version 0.1
  *
  */
-public class ReflectionUtilsTest  {
+public class ReflectionUtilTest  {
 	
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();

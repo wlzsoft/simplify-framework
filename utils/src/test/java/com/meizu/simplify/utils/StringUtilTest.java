@@ -20,7 +20,7 @@ import com.meizu.simplify.exception.UncheckedException;
  * @version Version 0.1
  *
  */
-public class StringUtilsTest {
+public class StringUtilTest {
 	@Rule  
     public ExpectedException thrown= ExpectedException.none();  
 	private String capitalizeExpectMessage = "字符串为空，无法转换为第一个字母为大写";
