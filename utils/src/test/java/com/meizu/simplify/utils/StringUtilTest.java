@@ -103,6 +103,10 @@ public class StringUtilTest {
 	public void trim() {
 		Assert.assertEquals(StringUtil.trim("  Chuangye lcy  "),"Chuangye lcy");
 	}
+	@Test
+	public void clearHTML() {
+		Assert.assertEquals(StringUtil.clearHTML("\r\n<a>Chuangye lcy</a>"),"Chuangye lcy");
+	}
 	
 	
 }

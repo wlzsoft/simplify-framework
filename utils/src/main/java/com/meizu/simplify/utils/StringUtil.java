@@ -467,4 +467,22 @@ public class StringUtil {
 			return str;
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * 方法用途: 过滤掉所有的html字符，包含script，style,Iframe,html空格字符<br>
+	 * 操作步骤: TODO 已测试，待验证可用性<br>
+	 * @param content
+	 * @return
+	 */
+	public static String clearHTML(String content) {
+		if (null == content) return "";
+		content = removeScript(content);
+		content = removeStyle(content);
+		content = removeIframe(content);
+		content = removeHtmlSpace(content);
+		content = removeHtmlLabel(content);
+		return content;
+	}
 }

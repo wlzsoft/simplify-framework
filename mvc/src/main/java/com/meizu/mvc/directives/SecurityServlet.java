@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.mvc.annotation.AjaxAccess;
 import com.meizu.mvc.annotation.AjaxAccess.Methods;
+import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.controller.IForward;
 import com.meizu.mvc.directives.Model.ModelSet;
 import com.meizu.mvc.directives.Model.Passme;
 import com.meizu.mvc.directives.Model.StringFilter;
-import com.meizu.mvc.directives.SecurityFilter.QueryParam;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.Md5Util;
 import com.meizu.simplify.utils.ObjectUtil;
@@ -173,10 +173,10 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 				parameValue[2] = t;
 				for ( int i = 3; i < doMethod.getParameterTypes().length; i++ ) {
 					for ( int j = 0; j < doMethod.getParameterAnnotations()[i].length; j++ ) {
-						if (doMethod.getParameterAnnotations()[i][j].annotationType() == QueryParam.class) {
+						if (doMethod.getParameterAnnotations()[i][j].annotationType() == RequestParam.class) {
 							parameValue[i] = null;
-							String param = ((QueryParam) doMethod.getParameterAnnotations()[i][j]).param();
-							String defaultValue = ((QueryParam) doMethod.getParameterAnnotations()[i][j]).defaultValue();
+							String param = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).param();
+							String defaultValue = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).defaultValue();
 							defaultValue = "null".equals(defaultValue) ? null : defaultValue;
 							Object value = null;
 							if (!StringUtil.isEmpty(request.getParameter(param))) {
