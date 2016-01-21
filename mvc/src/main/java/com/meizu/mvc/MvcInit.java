@@ -47,7 +47,7 @@ public class MvcInit {
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	
-	static {
+	public static void init() {
 		debug = config.getBoolean("system.debug", false);
 		charSet = config.getString("system.charset", null);
 		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
