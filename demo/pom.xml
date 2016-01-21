@@ -31,5 +31,108 @@
   </dependencies>
   <build>
     <finalName>demo</finalName>
+    <plugins>
+    	<!-- 运行命令 mvn jetty:run 或    mvn -Djetty.port=9999 jetty:run -->
+		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
+		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
+		<plugin>
+
+		  <groupId>org.eclipse.jetty</groupId>
+		  <artifactId>jetty-maven-plugin</artifactId>
+		  <version>9.3.0.M2</version>
+			<configuration>
+				<contextXml>src/test/java/jetty-config.xml</contextXml>
+				<!--<war>${project.basedir}/${project.build.directory}/${project.artifactId}-${project.version}</war>-->
+				<!--<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>-->
+				<webApp>
+					<!-- <defaultsDescriptor>src/test/java/webdefault.xml</defaultsDescriptor> -->
+                       <contextPath>/</contextPath>
+					<!--<baseResource>${project.basedir}/src/main/webapp</baseResource>-->
+                   </webApp>
+                   <httpConnector>
+                   	<!-- 注意：这个端口的优先级最高，高于‘-Djetty.port’,如果这里指定了端口，那么‘-Djetty.port’指定的端口是无效的 -->
+                   	<!-- <port>8080</port> -->
+                   	<idleTimeout>60000</idleTimeout>
+                       <!-- <maxIdleTime>120000</maxIdleTime>  -->
+                   </httpConnector>
+				<stopKey>stop_jetty_dev</stopKey>
+				<stopPort>9099</stopPort>
+				<!-- <scanIntervalSeconds>3</scanIntervalSeconds> -->
+				<!-- <scanTargetPatterns> 
+                    <scanTargetPattern> 
+                         <directory>src/main/webapp/WEB-INF</directory> 
+                         <excludes> 
+                              <exclude>**/*.jsp</exclude> 
+                              <exclude>**/*.js</exclude> 
+                              <exclude>**/*.css</exclude> 
+                         </excludes> 
+                         <includes> 
+                              <include>**/*.properties</include> 
+                              <include>**/*.xml</include> 
+                         </includes> 
+                    </scanTargetPattern> 
+                    <scanTargetPattern> 
+                         <directory>src/main/resources</directory> 
+                         <includes> 
+                              <include>**/*.properties</include> 
+                              <include>**/*.xml</include> 
+                         </includes> 
+                    </scanTargetPattern> 
+                    <scanTargetPattern> 
+                         <directory>src/main/java</directory> 
+                         <includes> 
+                              <include>**/*.java</include> 
+                              <include>**/*.xml</include> 
+                         </includes> 
+                    </scanTargetPattern> 
+               </scanTargetPatterns> -->
+				<!--<reload>manual</reload>-->
+				<!--<reload>automatic</reload>-->
+				<daemon>true</daemon>
+				<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+                       <filename>${project.build.directory}/access.log</filename>
+                       <retainDays>90</retainDays>
+                       <append>false</append>
+                       <extended>false</extended>
+                       <logTimeZone>GMT+8:00</logTimeZone>
+                   </requestLog>
+                   <!-- <systemProperties>
+                   	<systemProperty>
+                   		<name>productionMode</name>
+                       	<value>${productionMode}</value>
+                       </systemProperty>
+                   </systemProperties> -->
+			</configuration>
+			<!--executions 在install时会起作用执行  -->
+			<!-- 集成测试 -->
+			<executions>
+				<execution>
+					<id>start-jetty</id>
+					<phase>pre-integration-test</phase>
+					<goals>
+						<goal>start</goal>
+						<!--<goal>run</goal>-->
+					</goals>
+					<configuration>
+						<httpConnector>
+	                    	<port>8040</port>
+	                    	<idleTimeout>60000</idleTimeout>
+	                    </httpConnector>
+	                    <!-- <stopKey>stop-jetty</stopKey>
+						<stopPort>9098</stopPort> -->
+						<scanIntervalSeconds>0</scanIntervalSeconds>
+						<!--<daemon>true</daemon>-->
+					</configuration>
+				</execution>
+				<execution>
+					<id>stop-jetty</id>
+					<phase>post-integration-test</phase>
+					<goals>
+						<goal>stop</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+    </plugins>
   </build>
 </project>
