@@ -3,12 +3,12 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>startup</servlet-name>
-    <servlet-class>com.chaoxing.home.system.StartUpServlet</servlet-class>
+    <servlet-class>com.meizu.demo.system.StartUpServlet</servlet-class>
     <load-on-startup>0</load-on-startup>
   </servlet>
   <filter>
     <filter-name>SecurityFilter</filter-name>
-    <filter-class>com.duxiu.framework.mvc.SecurityFilter</filter-class>
+    <filter-class>com.meizu.mvc.SecurityFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>SecurityFilter</filter-name>
