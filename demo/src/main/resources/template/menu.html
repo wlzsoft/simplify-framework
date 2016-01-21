@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+</HEAD>
+<BODY>
+<TABLE height="100%" cellSpacing=0 cellPadding=0 width=170  border=0>
+  <TR>
+    <TD vAlign=top align=middle>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        
+        <TR>
+          <TD height=10></TD></TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        
+        <TR height=22>
+          <TD style="PADDING-LEFT: 30px"><A 
+            class=menuParent onclick=expand(1) 
+            href="javascript:void(0);">评论服务数据管理</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child1 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="discussAll.shtml" 
+            target=main>所有评论数据</A></TD></TR>
+             <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="discussObjectId.shtml" 
+            target=main>所有点数据</A></TD></TR>
+            #foreach($point in $pointMap.entrySet())
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="discuss_$!{point.key}.shtml" 
+            target=main>$!point.value</A></TD></TR>
+            #end
+        
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TABLE>
+     
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        
+        <TR height=22>
+          <TD style="PADDING-LEFT: 30px" background=images/menu_bt.jpg><A 
+            class=menuParent onclick=expand(0) 
+            href="javascript:void(0);">个人管理</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child0 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            href="#" 
+            target=main>修改口令</A></TD></TR>
+        <TR height=20>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            onclick="if (confirm('确定要退出吗？')) return true; else return false;" 
+            href="loginout.jsp" 
+            target=_top>退出系统</A></TD></TR></TABLE></TD>
+    <TD width=1 bgColor=#d1e6f7></TD></TR></TABLE></BODY></HTML>

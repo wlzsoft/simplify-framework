@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+</HEAD>
+<BODY>
+<form action="discussAll.shtml" method="get">
+<TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+
+  <TR height=28>
+    <TD>当前位置: $!point</TD></TR>
+    <TR height=22>
+    <TD style="COLOR: #ffffff"><span>
+	    	搜索： 
+	    	点：<input name="point" type="text" value="$!{param_point}"/>
+	    	对象id：<input name="objectid" type="text" value="$!{param_objectid}"/>
+	    	评论内容：<input name="content" type="text" value="$!{param_content}"/>
+	    	评论人：<input name="username" type="text" value="$!{param_username}"/>
+	    	<input type="submit" value="查询"/>
+	    	</span></TD></TR>
+  <TR>
+    <TD bgColor=#b1ceef height=1></TD></TR>
+  <TR height=20>
+    <TD background=images/shadow_bg.jpg></TD></TR></TABLE>
+</form>
+<a href="discussObjectId.shtml?point=$!{param_point}&objectid=$!{param_objectid}" style="background: red;color: white;">回到点数据页面</a>&nbsp;&nbsp;
+&nbsp;<a href="/dquerypage?start=$!{param_start}&point=$!{param_point}&objectid=$!{param_objectid}&content=$!{param_content}&username=$!{param_username}" style="background: red;color: white;" onclick="if (confirm('注意，以下列表的内容将永久被删除，确认删除？')) return true; else return false;" >删除查询结果中的本页数据</a>
+&nbsp;&nbsp;
+&nbsp;<a href="/dquery?point=$!{param_point}&objectid=$!{param_objectid}&content=$!{param_content}&username=$!{param_username}" style="background: red;color: white;" onclick="if (confirm('注意，以下列表以及其他分页的内容将永久被删除，确认删除？')) return true; else return false;" >删除查询结果中的所有数据</a>
+<TABLE cellSpacing=0 cellPadding=2 width="95%" align=center border=0>
+  <TR>
+    <TD height="50" width="50" style="COLOR: #880000">回复数量-点击查看</TD>
+    <TD height="50" style="COLOR: #880000">评论人</TD>
+    <TD height="50" style="COLOR: #880000">评论标题</TD>
+    <TD height="50" style="COLOR: #220000">评论的内容</TD>
+    <TD height="50" style="COLOR: #660000">评论的标签</TD>
+    <TD height="50" style="COLOR: #880000">评分</TD>
+    <TD height="50" style="COLOR: #220000">创建时间</TD>
+    <TD height="50" style="COLOR: #880000">更新时间</TD>
+    <TD height="50" style="COLOR: #880000">点id</TD>
+    <TD colspan="2" height="50" style="COLOR: #880000">数据操作</TD>
+    <TD height="50" style="COLOR: #880000">查看回复信息</TD>
+  </TR>
+ #foreach($content in $pageUtil.datas)
+ 
+  <TR #if($velocityCount%2 == 0) style="background:#FFF38F;" #else style="background:#FFFFEE;" #end>
+    <TD height="50" style="COLOR: #880000"><a title="点击查看回复信息" href="javascript:;" onclick="isDisplayReply('content_$!{content.id}')">$!content.replys.size()</a></TD>
+    <TD height="50" style="COLOR: #880000">#if($content.member.uname == '') $!content.member.uid #else $!content.member.uname #end</TD>
+    <TD height="50" style="COLOR: #880000">$!content.title</TD>
+    <TD height="50" style="COLOR: #220000">$!content.context</TD>
+    <TD height="50" style="COLOR: #660000">$!content.tag.tags</TD>
+    <TD height="50" style="COLOR: #880000">$!content.score</TD>
+    <TD height="50" style="COLOR: #220000">$!content.createDate</TD>
+    <TD height="50" style="COLOR: #880000">$!content.lastDate</TD>
+    <TD height="50" style="COLOR: #880000">$!content.tag.pointer</TD>
+    <TD height="50" style="COLOR: #880000"><a href="/manage/discuss_$!{content.tag.pointer.point}.shtml?objectid=$!{content.tag.pointer.objectId}">查看该点评论及回复</a></TD>
+    #if($objectid)
+    <TD height="50" style="COLOR: #880000"><a href="/dcontent/$!{content.tag.pointer.point}/$!{content.tag.pointer.objectId}/$!{content.id}?groupby=1&point=$!{param_point}&objectid=$!{param_objectid}&content=$!{param_content}&username=$!{param_username}">删除本评论及回复</a></TD>
+    #else
+    <TD height="50" style="COLOR: #880000"><a href="/dcontent/$!{content.tag.pointer.point}/$!{content.tag.pointer.objectId}/$!{content.id}?point=$!{param_point}&objectid=$!{param_objectid}&content=$!{param_content}&username=$!{param_username}">删除本评论及回复</a></TD>
+    #end
+  </TR>
+  <tr id="content_$!{content.id}" style="display: none;"><td colspan="10">
+  <div style="margin-left: 100px;background-color:#111;color: white;">
+    #if($!content.replys.size() > 0) 
+        <table style="color: white;"> 
+        	<tr>
+                  <td>回复内容</td>
+                  <td>回复人</td>
+                  <td>回复日期</td>
+                  <td>数据操作</td>
+               </tr> 
+            #foreach($replycontent in $!content.replys) 
+               <tr>
+                  <td>$!replycontent.context</td>
+                  <td>$!replycontent.uname</td>
+                  <td>$!replycontent.createDate</td>
+                  <td><a style="color: red;" href="/dreply/$!{content.tag.pointer.point}/$!{content.tag.pointer.objectId}/$!{replycontent.id}">删除该回复及其所有回复</a></td>
+               </tr> 
+            #end 
+        </table> #else 没有回复信息
+    #end
+    </div>
+    </td></tr>
+  #end
+ </TABLE>
+总共$!pageUtil.maxCount条记录
+$!pages
+</BODY></HTML>
