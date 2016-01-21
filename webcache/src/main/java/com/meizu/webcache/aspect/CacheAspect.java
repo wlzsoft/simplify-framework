@@ -104,7 +104,7 @@ public class CacheAspect {
 				// 是否去除空格
 				if(cacheSet.removeSpace()) {
 					content = ClearCommentUtil.clear(content);
-					content = StringUtil.removeSpace(content);
+					content = StringUtil.removeHtmlSpace(content);
 				}
 				Cache cache = CacheBase.getCache(cacheSet);
 //				String url = request.getServerName() + request.getRequestURI() + StringUtils.isNotNull(request.getQueryString());

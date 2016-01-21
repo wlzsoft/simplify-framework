@@ -37,7 +37,7 @@ public class ActionForward implements IForward {
 			String content = getPageContent(request, response, rd);
 			
 			// 是否去除空格
-			if(cacheSet.removeSpace()) content = StringUtil.removeSpace(content);
+			if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
 
 			Cache cache = CacheBase.getCache(cacheSet);
 			if(cache != null && cache.doCache(cacheSet, staticName, content,response)){

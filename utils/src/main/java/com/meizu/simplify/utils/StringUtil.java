@@ -127,17 +127,13 @@ public class StringUtil {
 		return str;
 	}
 	
-
-	
-
 	/**
-	 * 截取最后一个分隔符前的字符串内容。
 	 * 
-	 * @param str
-	 *            待截取的字符串
-	 * @param separator
-	 *            分隔符
-	 * @return 返回最后一个分隔符前的字符串内容。
+	 * 方法用途: 截取最后一个分隔符前的字符串内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param str 待截取的字符串
+	 * @param separator 分隔符
+	 * @return 返回最后一个分隔符前的字符串内容
 	 */
 	public static String substringBeforeLast(String str, String separator) {
 		AssertUtil.notNull(str);
@@ -151,13 +147,12 @@ public class StringUtil {
 	}
 
 	/**
-	 * 截取指定分隔符后的字符串内容。
 	 * 
-	 * @param str
-	 *            待截取的字符串
-	 * @param separator
-	 *            分隔符
-	 * @return 返回指定分隔符后的字符串内容。
+	 * 方法用途: 截取指定分隔符后的字符串内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param str 待截取的字符串
+	 * @param separator 分隔符
+	 * @return 返回指定分隔符后的字符串内容
 	 */
 	public static String substringAfter(String str, String separator) {
 		AssertUtil.notEmpty(str);
@@ -171,13 +166,12 @@ public class StringUtil {
 	}
 
 	/**
-	 * 截取最后一个分隔符后的字符串内容。
 	 * 
-	 * @param str
-	 *            待截取的字符串
-	 * @param separator
-	 *            分隔符
-	 * @return 返回最后一个分隔符后的字符串内容。
+	 * 方法用途: 截取最后一个分隔符后的字符串内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param str 待截取的字符串
+	 * @param separator 分隔符
+	 * @return 返回最后一个分隔符后的字符串内容
 	 */
 	public static String substringAfterLast(String str, String separator) {
 		AssertUtil.notEmpty(str);
@@ -221,12 +215,12 @@ public class StringUtil {
 	
 	/**
 	 * 
-	 * 方法用途: 清除所有html标签<br>
+	 * 方法用途: 清除所有html标签,保留标签中包裹的内容<br>
 	 * 操作步骤: TODO<br>
 	 * @param content
 	 * @return
 	 */
-	public static String removeHtml(String content) {
+	public static String removeHtmlLabel(String content) {
 		if (null == content) return "";
 		java.util.regex.Pattern p_html;
 		java.util.regex.Matcher m_html;
@@ -305,14 +299,72 @@ public class StringUtil {
 	
 	/**
 	 * 
-	 * 方法用途: 去除空格<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: 去除html页面中的所有空格<br>
+	 * 操作步骤: 注意，不是普通空格，而是html标准中，可以被浏览器解析的空格标记，主要是\r\n和\s标记<br>
 	 * @param content
 	 * @return
 	 */
-	public static String removeSpace(String content) {
+	public static String removeHtmlSpace(String content) {
 		if (null == content) return "";
 		return content.replaceAll("\\s*(\\r\\n)\\s*", "").replaceAll(">(\\s+)", ">").replaceAll("(\\s+)<", "<");
+	}
+
+	/**
+	 * 
+	 * 方法用途: 去除两边空格（包括全角空格）, null 值以空字符代替<br>
+	 * 操作步骤: TODO<br>
+	 * @param s
+	 * @return
+	 */
+	public static String trim(String s) {
+		if (s == null) {
+			return "";
+		} else {
+			return s.trim();
+		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 去除右边的空格<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @return
+	 */
+	public static String rightTrim(String str) {
+		if (str == null) {
+			return "";
+		}
+		int length = str.length();
+		for (int i = length - 1; i >= 0; --i) {
+			if (str.charAt(i) != ' ') {
+				break;
+			}
+			--length;
+		}
+		return str.substring(0, length);
+	}
+
+	/**
+	 * 
+	 * 方法用途: 去除左边的空格<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @return
+	 */
+	public static String leftTrim(String str) {
+		if (str == null) {
+			return "";
+		}
+		int start = 0;
+		int i = 0;
+		for (int n = str.length(); i < n; ++i) {
+			if (str.charAt(i) != ' ') {
+				break;
+			}
+			++start;
+		}
+		return str.substring(start);
 	}
 	
 	/**

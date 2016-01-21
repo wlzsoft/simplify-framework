@@ -286,7 +286,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 						if(stringFilter.filters() != null){
 							for(StringFilter.Filter filter : stringFilter.filters()){
 								if(StringFilter.Filter.Html == filter){
-									par = StringUtil.removeHtml(par);
+									par = StringUtil.removeHtmlLabel(par);
 								} else if(StringFilter.Filter.Script == filter){
 									par = StringUtil.removeScript(par);
 								} else if(StringFilter.Filter.Style == filter){
@@ -294,7 +294,7 @@ public class SecurityServlet<T extends Model> extends HttpServlet {
 								} else if(StringFilter.Filter.iframe == filter){
 									par = StringUtil.removeIframe(par);
 								} else if(StringFilter.Filter.trim == filter){
-									par = StringUtil.removeSpace(par);
+									par = StringUtil.removeHtmlSpace(par);
 								}
 							}
 						}

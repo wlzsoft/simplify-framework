@@ -89,4 +89,20 @@ public class StringUtilTest {
 //		Assert.assertEquals(StringUtil.format("Chuangye{} lcy{}","a","b"),"Chuangyea lcyb");
 	}
 	
+	@Test
+	public void removeHtml() {
+		Assert.assertEquals(StringUtil.removeHtmlLabel("  Chuangye <a>sdd<span>333</span></a> lcy  "),"  Chuangye sdd333 lcy  ");
+	}
+	
+	@Test
+	public void removeSpace() {
+		Assert.assertEquals(StringUtil.removeHtmlSpace("\r\nChuangye lcy"),"Chuangye lcy");
+	}
+	
+	@Test
+	public void trim() {
+		Assert.assertEquals(StringUtil.trim("  Chuangye lcy  "),"Chuangye lcy");
+	}
+	
+	
 }
