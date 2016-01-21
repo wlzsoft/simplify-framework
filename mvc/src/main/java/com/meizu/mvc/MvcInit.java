@@ -5,8 +5,11 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServlet;
+
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.StringUtil;
 
 
 /**
@@ -26,7 +29,7 @@ import com.meizu.simplify.utils.PropertieUtil;
 public class MvcInit {
 	protected static PropertieUtil config = null;//new PropertieUtil("properties/config.properties");
 	
-//	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
+	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
 	public static boolean debug = false;
 	public static String charSet = null;
@@ -34,6 +37,18 @@ public class MvcInit {
 	public static Integer urlcacheCount = 100;
 	public static String class_path; // class位置
 	public static String directives; // velocity自定义Directive
+	
+	
+	public static boolean hibernate = false;
+	
+	public static String authorization_user = "";
+	public static String authorization_password = "";
+	
+	public static String hibernate_shards;
+	public static String hibernate_selectionstrategy;
+	public static String hibernate_resolutionstrategy;
+	
+	public static int limitExecutionTime = 0;
 	
 	public MvcInit() {
 	}
@@ -44,17 +59,17 @@ public class MvcInit {
 	}
 	
 	static {
-//		debug = config.getBoolean("system.debug", false);
-//		charSet = config.getString("system.charset", null);
-//		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
-//		
-//		class_path = config.getString("system.classpath", null);
-//		directives = config.getString("system.directives", null);
-//		urlCache = new FiFoMap<String, Object[]>((urlcacheCount = config.getInteger("system.urlcacheCount", 100)));
+		debug = config.getBoolean("system.debug", false);
+		charSet = config.getString("system.charset", null);
+		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
+		
+		class_path = config.getString("system.classpath", null);
+		directives = config.getString("system.directives", null);
+		urlCache = new FiFoMap<String, Object[]>((urlcacheCount = config.getInteger("system.urlcacheCount", 100)));
 		
 		// 查找指定class路径
 		if (class_path != null) {
-			String path = null;//StringUtils.format("{0}/{1}", getPath(), class_path.replaceAll("\\.", "/"));
+			String path = StringUtil.format("{0}/{1}", getPath(), class_path.replaceAll("\\.", "/"));
 			File file = new File(path);
 			File[] fns = file.listFiles(new FilenameFilter() {
 				public boolean accept(File dir, String name) {
@@ -64,8 +79,8 @@ public class MvcInit {
 			if (fns != null) {
 				for (int i = 0; i < fns.length; i++) {
 					String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
-//					Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
-					Class<?> entityClass = null;
+					try {
+					Class<HttpServlet> entityClass = (Class<HttpServlet>) Class.forName(class_path + "." + name);
 					for (Method method : entityClass.getMethods()) {
 						if (method != null && method.getName().indexOf("do") == 0) {
 							// 检查annotation 设置
@@ -73,13 +88,14 @@ public class MvcInit {
 								RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
 								for (String _path : rset.path().split("\\s+", -1)) {
 									if (_path != null && _path.length() > 0) {
-//											PrintHelper.getPrint().debug("ADDED " + class_path + " -> " + _path);
-//											servletMap.put(_path, new ServletModel(entityClass, method.getName()));
+//											LOGGER.debug("ADDED " + class_path + " -> " + _path);
+											servletMap.put(_path, new ServletModel(entityClass, method.getName()));
 									}
 								}
 							}
 						}
 					}
+				} catch (ClassNotFoundException e) {
 				}
 			}
 		}
@@ -88,5 +104,7 @@ public class MvcInit {
 //		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
 //		LOGGER.log("Framework Charset -> " + charSet);
 //		LOGGER.log("Framework v0.0.1-SNAPSHOT Init.");
+	}
+	
 	}
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.mvc.MvcInit;
 import com.meizu.mvc.annotation.AjaxAccess;
 import com.meizu.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.mvc.annotation.RequestParam;
