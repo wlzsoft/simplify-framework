@@ -12,6 +12,7 @@ import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.controller.IForward;
 import com.meizu.mvc.controller.MessageForward;
+import com.meizu.mvc.controller.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
 
 public class ReadAction extends BaseServlet<ReadModel> {
@@ -32,9 +33,11 @@ public class ReadAction extends BaseServlet<ReadModel> {
 //		} else {
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 //		}
-//		return new ActionForward("/read.jsp");
-		return new MessageForward("测试中");
-//		return new VelocityForward("/manage/login.html");
+//		return new ActionForward("/index.jsp");
+//		return new RedirectForward("/index.jsp");
+//		return new MessageForward("测试中");
+		request.setAttribute("userName", "lcy19870112@126.com");
+		return new VelocityForward("/template/login.html");
 //		return new RedirectForward("/manage/discuss_" + point + ".shtml");
 //		return new MessageForward(StringUtil.format("{0}", "result"));
 	}
