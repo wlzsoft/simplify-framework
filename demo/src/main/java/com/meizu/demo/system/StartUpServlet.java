@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServlet;
  */
 public class StartUpServlet extends HttpServlet {
 	private static final long serialVersionUID = -3818664573588631645L;
-	private SystemConfig systemConfig = SystemConfig.getInstance(); 
+//	private SystemConfig systemConfig = SystemConfig.getInstance(); 
 
 	@Override
 	public final void init(final ServletConfig _config) throws ServletException {
-		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
+//		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");
 //		StringUtils.format("Current path -> {0}", systemConfig.getAppPath()));
 //		"Start in " + DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));

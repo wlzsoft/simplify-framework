@@ -1,7 +1,5 @@
 package com.meizu.demo.system;
 
-import java.util.Properties;
-
 import com.meizu.simplify.utils.PropertieUtil;
 
 /**
@@ -20,7 +18,7 @@ public final class SystemConfig {
 
 	private SystemConfig() {};
 
-	private PropertieUtil config = new PropertieUtil("config.properties");
+	private PropertieUtil config = null;//new PropertieUtil("config.properties");
 
 	private String appPath = "";
 

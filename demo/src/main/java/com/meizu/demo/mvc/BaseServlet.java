@@ -13,7 +13,7 @@ import com.meizu.mvc.directives.SecurityServlet;
 
 public class BaseServlet<T extends Model> extends SecurityServlet<T> {
 	private static final long serialVersionUID = 8160874454429513848L;
-	protected SystemConfig systemConfig = SystemConfig.getInstance();
+//	protected SystemConfig systemConfig = SystemConfig.getInstance();
 	protected static final String X_REQUESTED_WITH = "x-requested-with";
 	protected static final int errorCode = 403;
 	
