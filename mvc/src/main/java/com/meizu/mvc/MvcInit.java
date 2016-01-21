@@ -27,7 +27,7 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 public class MvcInit {
-	protected static PropertieUtil config = null;//new PropertieUtil("properties/config.properties");
+	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
 	
 	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
