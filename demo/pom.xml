@@ -32,6 +32,14 @@
   <build>
     <finalName>demo</finalName>
     <plugins>
+    	<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+			<source>1.8</source>
+			<target>1.8</target>
+			</configuration>
+		</plugin>
     	<!-- 运行命令 mvn jetty:run 或    mvn -Djetty.port=9999 jetty:run -->
 		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
 		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->

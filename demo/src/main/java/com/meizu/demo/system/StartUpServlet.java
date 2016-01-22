@@ -2,6 +2,7 @@ package com.meizu.demo.system;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
 import com.meizu.mvc.MvcInit;
@@ -20,6 +21,7 @@ import com.meizu.simplify.ioc.Startup;
  * @version Version 0.1
  *
  */
+@WebServlet(loadOnStartup=0,urlPatterns="/initservlet")
 public class StartUpServlet extends HttpServlet {
 	private static final long serialVersionUID = -3818664573588631645L;
 //	private SystemConfig systemConfig = SystemConfig.getInstance(); 
