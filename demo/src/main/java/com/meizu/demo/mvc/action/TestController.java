@@ -19,7 +19,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 
 @Bean
-public class ReadAction extends BaseController<ReadModel> {
+public class TestController extends BaseController<ReadModel> {
 
 	@Resource
 	private TestService testService;
