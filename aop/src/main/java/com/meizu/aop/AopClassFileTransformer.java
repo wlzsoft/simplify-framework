@@ -65,6 +65,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			return ctclass.toBytecode();
 		} catch (IOException | CannotCompileException e) {
 			e.printStackTrace();
+			System.out.println("framework:transform");
 		}
         
         return null;
@@ -120,6 +121,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	        } catch (CannotCompileException e) {
     	            // TODO Auto-generated catch block
     	            e.printStackTrace();
+    	            System.out.println("framework:buildClazz");
     	        } catch (NotFoundException e) {
     	            // TODO Auto-generated catch block
     	            e.printStackTrace();

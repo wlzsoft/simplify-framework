@@ -7,7 +7,9 @@ import com.meizu.simplify.ioc.Startup;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: -javaagent:E:/workspace-new/simplify-framework/aop/target/aop-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
+ * <p>Desc:-verbose:class -javaagent:E:/workspace-new/simplify-framework/aop/target/aop-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties
+ *   通过verbose:class 可以打印详细的classload所load的class有哪些，和整个loaded的过程
+ * </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
