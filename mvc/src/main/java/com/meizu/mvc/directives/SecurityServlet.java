@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -27,19 +26,15 @@ import com.meizu.webcache.web.Cache;
 import com.meizu.webcache.web.CacheBase;
 
 
-/**
- * 验证Servlet
- * 
- */
 public class SecurityServlet<T extends Model> {
 	protected CacheSet cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
-
+//	protected static final String X_REQUESTED_WITH = "x-requested-with";
+//	protected static final int errorCode = 403;
 	
-
-	/**
-	 * 递交业务处理逻辑
-	 */
+	public void init() {}
+	public void destroy() {
+	}
 	public void doPost(HttpServletRequest request2, HttpServletResponse response) throws ServletException, IOException {
 		HttpServletRequest request = new HttpServletRequestWrapper(request2){
 			
@@ -99,8 +94,7 @@ public class SecurityServlet<T extends Model> {
 //			DAO.closeSession(0);
 //			LOGGER.debug("dao Session[0]  closed.");
 	}
-	public void destroy() {
-	}
+	
 	/**
 	 * 安全权限过程检查
 	 * 
@@ -218,7 +212,7 @@ public class SecurityServlet<T extends Model> {
 		return null;
 	}
 
-	public void init() {}
+	
 
 	@SuppressWarnings("unchecked")
 	private Class<T> getEntityClass() {
