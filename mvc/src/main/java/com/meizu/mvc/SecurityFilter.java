@@ -62,8 +62,6 @@ public class SecurityFilter implements Filter {
 					request.setAttribute("params", params);
 					String parName = model.getMethod().substring(2, model.getMethod().length());
 					request.setAttribute("cmd", Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
-//					Method method = model.getCls().getMethod("doPost", new Class[] { HttpServletRequest.class, HttpServletResponse.class });
-//					method.invoke(model.getObj(), new Object[] { request, response });
 					SecurityServlet<?> bs = (SecurityServlet<?>)model.getObj();
 					bs.doPost(request, response);
 					

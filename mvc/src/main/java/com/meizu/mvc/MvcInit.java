@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -95,12 +96,8 @@ public class MvcInit {
 	 * @param entityClass
 	 */
 	public static void resolverRequestInfo(Class<?> entityClass) {
-		Object obj = null;
-		try {
-			obj = entityClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Object obj = getInstance(entityClass);
+		if(obj == null) {
 			return;
 		}
 		for (Method method : entityClass.getMethods()) {
@@ -117,5 +114,24 @@ public class MvcInit {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 获取工厂中的bean实例<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @return
+	 */
+	private static Object getInstance(Class<?> entityClass) {
+		Object obj = null;
+		obj = BeanFactory.getBean(entityClass);//和ioc框架集成，需要使用这个方式获取实体
+	    /*try {
+			obj = entityClass.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		return obj;
 	}
 }
