@@ -10,9 +10,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * 
@@ -30,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PropertieUtil {
 	
-	private Logger LOGGER = LoggerFactory.getLogger(PropertieUtil.class);
+//	private Logger LOGGER = LoggerFactory.getLogger(PropertieUtil.class);
 	private Properties props = new Properties();
 	private InputStream jndiInput = null;
 
@@ -40,7 +37,8 @@ public class PropertieUtil {
 			props.load(jndiInput);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-			LOGGER.info("配置文件["+fileName+"]不存在");
+//			LOGGER.info("配置文件["+fileName+"]不存在");
+			System.out.println("配置文件["+fileName+"]不存在");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,7 +49,8 @@ public class PropertieUtil {
 				props.load(jndiInput);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-				LOGGER.info("配置文件["+file.getName()+"]不存在");
+//				LOGGER.info("配置文件["+file.getName()+"]不存在");
+				System.out.println("配置文件["+file.getName()+"]不存在");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
