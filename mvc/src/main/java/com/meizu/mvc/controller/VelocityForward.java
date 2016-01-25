@@ -27,7 +27,7 @@ import com.meizu.webcache.web.CacheBase;
 public class VelocityForward implements IForward {
 	//private static SimplePool writerPool = new SimplePool(64);
 	private String str = null;
-	static {
+	public static void init() {
 		String classPath = MvcInit.getPath();
 
 		Velocity.setProperty(Velocity.INPUT_ENCODING, MvcInit.charSet);
