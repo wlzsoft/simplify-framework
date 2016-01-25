@@ -43,7 +43,7 @@ public class TestController extends BaseController<ReadModel> {
 		if(testService != null) {
 			 User bb = new User();
 		        bb.setName("yyyyy2");
-			testService.doSomeThing(bb);
+			testService.doSomeThing2("basdfsd");
 		}
 		request.setAttribute("userName", "lcy19870112@126.com");
 		return new ActionForward("/index.jsp");
