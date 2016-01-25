@@ -100,7 +100,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         			ClassPool pool = ClassPool.getDefault();
 //        			pool.insertClassPath(className);
 //        			pool.insertClassPath(new ClassClassPath(this.getClass())); 
-//        			pool.insertClassPath("E:/workspace-new/demo/target/classes"); 
+        			//TODO 改成配置入口的形式
+        			pool.insertClassPath("E:/workspace-new/demo/target/classes"); 
 //        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
 //        			InputStream ins = null; 
 //        			CtClass ctclass = pool.makeClass(ins); 
