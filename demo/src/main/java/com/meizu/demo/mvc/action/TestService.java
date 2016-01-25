@@ -8,7 +8,7 @@ public class TestService {
 
 	@CacheDataAdd(key="aaa")
     public Object doSomeThing(User bb) {
-        System.out.println("ִtest2测试");
+        System.out.println("2test2d测试");
         return true;
     }
 	@CacheDataAdd(key="bbb")

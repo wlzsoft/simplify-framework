@@ -40,6 +40,11 @@ public class TestController extends BaseController<ReadModel> {
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 //		}
 		System.out.println(testService+"HHHHHHHHHHHHHHHHHHHHHHHH");
+		if(testService != null) {
+			 User bb = new User();
+		        bb.setName("yyyyy2");
+			testService.doSomeThing(bb);
+		}
 		request.setAttribute("userName", "lcy19870112@126.com");
 		return new ActionForward("/index.jsp");
 //		return new RedirectForward("/index.jsp");
