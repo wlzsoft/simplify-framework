@@ -14,11 +14,11 @@
 	    <artifactId>utils</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
-	  <dependency>
+	  <!-- <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>aop</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
-	  </dependency>
+	  </dependency> -->
 	  <!-- 以下两个jar后续要删除，不应该出现在mvc模块中，开发阶段为了测试，所以加上 -->
 	  <dependency>
 			<groupId>javax.servlet</groupId>

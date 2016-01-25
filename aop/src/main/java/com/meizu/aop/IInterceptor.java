@@ -32,8 +32,8 @@ public interface IInterceptor {
 	
 	public static Object initAfter(String methodFullName,Object o,Object... args ) {
 		Handler handle = CacheInterceptor.getAfterInstance();
-		handle.setNextHandler(LogInterceptor.getInstance())
-		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
+		handle.setNextHandler(LogInterceptor.getInstance());
+//		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
 		Context context = new Context();
 		context.setMethodFullName(methodFullName);
 		context.setThis(o);

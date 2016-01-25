@@ -172,7 +172,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
       } catch (Exception e) {
           LOGGER.error("set error!", e);
       } finally {
-      	RedisPool.init(mod_name).returnResourceObject(jedis);
+//      	RedisPool.init(mod_name).returnResourceObject(jedis);
       }
       return false;
 	}

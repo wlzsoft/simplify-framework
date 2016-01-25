@@ -11,7 +11,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.redis.RedisPool;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 import javassist.CannotCompileException;
@@ -19,7 +18,6 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
-import redis.clients.jedis.ShardedJedisPool;
 
 /**
  * <p><b>Title:</b><i>字节码编辑植入处理类</i></p>
@@ -44,12 +42,12 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	for (String itor : it) {
     		filterList.add(itor); 
 		}
-    	//初始化连接池
-    	ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
-    	for(int i=0; i<10; i++) {
-    		pool.getResource();
-    	}
-        LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
+    	//初始化连接池  TODO 需要迁移到非javaagent的位置
+//    	ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
+//    	for(int i=0; i<10; i++) {
+//    		pool.getResource();
+//    	}
+//        LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
 //        pool.returnResourceObject(resource);
     }
 	
@@ -101,10 +99,17 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         			ClassPool.doPruning = true;//减少对象内存占用
         			LOGGER.debug("AOP：javasist开始精简["+className+"]对象字节码");
 //        	                    通过类全路径名获取class字节码文件数据
-    	        	CtClass ctclass = ClassPool.getDefault().get(className);
-    	        	if(!ctclass.hasAnnotation(Bean.class)) {
-    	        		return ctclass;
-    	        	}
+        			ClassPool pool = ClassPool.getDefault();
+//        			pool.insertClassPath(className);
+//        			pool.insertClassPath(new ClassClassPath(this.getClass())); 
+//        			pool.insertClassPath("E:/workspace-new/demo/target/classes"); 
+//        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
+//        			InputStream ins = null; 
+//        			CtClass ctclass = pool.makeClass(ins); 
+    	        	CtClass ctclass = pool.get(className);
+//    	        	if(!ctclass.hasAnnotation(Bean.class)) {
+//    	        		return ctclass;
+//    	        	}
     		        for(String methodName : methodArr){
     		        	String methodFullName = className+":"+methodName;
     		        	LOGGER.debug("AOP：对方法["+methodFullName+"]进行逻辑切入");
