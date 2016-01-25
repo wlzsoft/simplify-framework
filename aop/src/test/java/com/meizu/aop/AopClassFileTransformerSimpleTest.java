@@ -4,19 +4,17 @@ import java.lang.annotation.Annotation;
 
 import org.junit.Test;
 
-import com.meizu.aop.service.TestService;
 import com.meizu.cache.annotation.CacheDataAdd;
 import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.resolver.CacheAnnotationResolver;
 
 import javassist.CannotCompileException;
-import javassist.CtClass;
 
 public class AopClassFileTransformerSimpleTest {
 
 	@Test
 	public void test() throws InstantiationException, IllegalAccessException, CannotCompileException {
-		CtClass cc = new AopClassFileTransformer().buildClazz("com/meizu/aop/service/TestService");
+//		CtClass cc = new AopClassFileTransformer().buildClazz("com/meizu/aop/service/TestService");
 //		new AopClassFileTransformer().transformInit("com/meizu/aop/service/TestService");
 		long start = System.currentTimeMillis();
 			CacheAnnotationInfo cai = new CacheAnnotationInfo();

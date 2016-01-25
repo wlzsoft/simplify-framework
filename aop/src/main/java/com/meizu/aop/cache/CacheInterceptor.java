@@ -10,7 +10,6 @@ import com.meizu.aop.Context;
 import com.meizu.aop.Handler;
 import com.meizu.aop.IInterceptor;
 import com.meizu.aop.enums.ContextTypeEnum;
-import com.meizu.aop.log.LogInterceptor;
 import com.meizu.cache.ICacheDao;
 import com.meizu.cache.annotation.CacheDataAdd;
 import com.meizu.cache.annotation.CacheDataDel;
@@ -20,12 +19,13 @@ import com.meizu.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.cache.resolver.CacheAnnotationResolver;
 
 /**
- * <p><b>Title:</b><i>缓存拦截器</i></p>
+ * <p><b>Title:</b><i>缓存拦截器-后期剥离成一个插件</i></p>
  * <p>Desc: 注意： 1.考虑使用观察者模式替代责任连模式
  *                2.目前的责任连实现方案，有个bug，before和after共用了一个对象，在并发情况下会导致链条关系互串，要改成两个对象
  *                责任连有以下问题：1.链条断裂，2.排队问题（性能问题），3.并发问题
  *                3.修改成两个对象后，考虑以后优化，减少冗余代码，暂不实现要做标记，考虑和ioc框架集成4，考虑修改成责任连对业务的影响，
- *                4.cache和log类的handler实现类，都调整成有直接后继的方式，都返回true</p>
+ *                4.cache和log类的handler实现类，都调整成有直接后继的方式，都返回true
+ *                </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

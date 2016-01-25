@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.aop.Context;
 import com.meizu.aop.Handler;
 import com.meizu.aop.IInterceptor;
-import com.meizu.aop.cache.CacheInterceptor;
 import com.meizu.aop.enums.ContextTypeEnum;
 
 /**
