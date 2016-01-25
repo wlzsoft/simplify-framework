@@ -1,6 +1,5 @@
 package com.meizu.demo.mvc.action;
 
-import com.meizu.cache.ICacheDao;
 import com.meizu.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.ioc.annotation.Bean;
 

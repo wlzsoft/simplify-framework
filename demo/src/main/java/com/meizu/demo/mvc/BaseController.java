@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.demo.system.SystemConfig;
 import com.meizu.mvc.controller.IForward;
 import com.meizu.mvc.directives.Model;
 import com.meizu.mvc.directives.SecurityContoller;
