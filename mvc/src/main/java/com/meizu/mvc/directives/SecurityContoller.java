@@ -26,7 +26,7 @@ import com.meizu.webcache.web.Cache;
 import com.meizu.webcache.web.CacheBase;
 
 
-public class SecurityServlet<T extends Model> {
+public class SecurityContoller<T extends Model> {
 	protected CacheSet cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";

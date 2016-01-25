@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.mvc.directives.SecurityServlet;
+import com.meizu.mvc.directives.SecurityContoller;
 import com.meizu.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.exception.UncheckedException;
 
@@ -62,7 +62,7 @@ public class SecurityFilter implements Filter {
 					request.setAttribute("params", params);
 					String parName = model.getMethod().substring(2, model.getMethod().length());
 					request.setAttribute("cmd", Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
-					SecurityServlet<?> bs = (SecurityServlet<?>)model.getObj();
+					SecurityContoller<?> bs = (SecurityContoller<?>)model.getObj();
 					bs.doPost(request, response);
 					
 					long readtime = System.currentTimeMillis() - time;
