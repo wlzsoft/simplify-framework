@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.demo.mvc.BaseServlet;
+import com.meizu.demo.mvc.BaseController;
 import com.meizu.demo.mvc.model.ReadModel;
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.annotation.RequestParam;
@@ -19,7 +19,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 
 @Bean
-public class ReadAction extends BaseServlet<ReadModel> {
+public class ReadAction extends BaseController<ReadModel> {
 
 	@Resource
 	private TestService testService;

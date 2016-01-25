@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.demo.system.SystemConfig;
 import com.meizu.mvc.controller.IForward;
 import com.meizu.mvc.directives.Model;
-import com.meizu.mvc.directives.SecurityServlet;
+import com.meizu.mvc.directives.SecurityContoller;
 
-public class BaseServlet<T extends Model> extends SecurityServlet<T> {
+public class BaseController<T extends Model> extends SecurityContoller<T> {
 	
-	public BaseServlet() {}
+	public BaseController() {}
 
 	@Override
 	public final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
