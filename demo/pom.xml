@@ -18,7 +18,7 @@
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
-	    <artifactId>caches</artifactId>
+	    <artifactId>aop</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
