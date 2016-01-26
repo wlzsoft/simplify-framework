@@ -56,7 +56,7 @@ public abstract class Handler {
 		if (handler != null) {
 			handler.invoke(context,obj);
 		} else {
-			System.out.println("过滤器执行结束.");
+			System.out.println("filter end [过滤器执行结束].");
 		}
 	}
 }
