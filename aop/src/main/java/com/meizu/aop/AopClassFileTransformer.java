@@ -60,7 +60,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     		filterList.add(filterMetaInfo); 
 		}
     	
-    	injectionTargetClassPaths = Config.getUtil().getProperty("injectionTargetClassPath");
+    	injectionTargetClassPaths = Config.getUtil().getProperty("injectionTargetClassPaths");
     	if(injectionTargetClassPaths == null || injectionTargetClassPaths.equals("")) {
     		throw new UncheckedException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
     	}
