@@ -15,11 +15,11 @@ public class BaseController<T extends Model> extends SecurityContoller<T> {
 	public BaseController() {}
 
 	@Override
-	public final void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	public final void process(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 		request.setAttribute("url", request.getRequestURI());
-		super.doPost(request, response);
+		super.process(request, response);
 	}
 	
 	@Override
