@@ -1,4 +1,4 @@
-package com.meizu.demo.mvc.action;
+package com.meizu.demo.mvc.entity;
 
 import java.io.Serializable;
 

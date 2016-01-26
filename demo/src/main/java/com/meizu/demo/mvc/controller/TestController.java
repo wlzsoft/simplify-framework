@@ -1,4 +1,4 @@
-package com.meizu.demo.mvc.action;
+package com.meizu.demo.mvc.controller;
 
 import java.io.IOException;
 
@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.demo.mvc.BaseController;
+import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
+import com.meizu.demo.mvc.service.TestService;
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.controller.ActionForward;

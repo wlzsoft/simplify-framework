@@ -1,6 +1,7 @@
-package com.meizu.demo.mvc.action;
+package com.meizu.demo.mvc.service;
 
 import com.meizu.cache.annotation.CacheDataAdd;
+import com.meizu.demo.mvc.entity.User;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 @Bean
