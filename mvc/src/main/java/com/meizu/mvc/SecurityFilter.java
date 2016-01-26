@@ -1,6 +1,7 @@
 package com.meizu.mvc;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,41 +50,62 @@ public class SecurityFilter implements Filter {
 //		if (StringUtils.notNull(request.getQueryString()).length() > 0) {
 //			thisUrl += "?" + request.getQueryString();
 //	 	}
-		
-		for ( String key : MvcInit.controllerMap.keySet() ) {
-			Pattern pattern = Pattern.compile("^" + key);
-			Matcher matcher = pattern.matcher(thisUrl);
-			if (matcher.find()) {
-				String[] params = new String[matcher.groupCount() + 1];
-				for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
-				ControllerAnnotationInfo model = MvcInit.controllerMap.get(key);
-				try {
-					long time = System.currentTimeMillis();
-					
-					Statistics.getReadMap().put(thisUrl, 0);
-					
-					request.setAttribute("params", params);
-					String parName = model.getMethod().substring(2, model.getMethod().length());
-					request.setAttribute("cmd", Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
-					SecurityContoller<?> bs = (SecurityContoller<?>)model.getObj();
-					bs.process(request, response);
-					
-					long readtime = System.currentTimeMillis() - time;
-//					LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
-					
-					// 记录统计信息
-					Statistics.incReadcount();
-					Statistics.setReadMaxTime(readtime, thisUrl);
-					Statistics.getReadMap().remove(thisUrl);
-					
-				} catch ( Exception e ) {
-					e.printStackTrace();
-					throw new UncheckedException(e);
+		ControllerAnnotationInfo controllerAnnotationInfo = MvcInit.controllerMap.get(thisUrl);
+		if(controllerAnnotationInfo !=null) {
+			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
+		} else {
+			for ( String key : MvcInit.controllerMap.keySet() ) {//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型
+				Pattern pattern = Pattern.compile("^" + key);
+				Matcher matcher = pattern.matcher(thisUrl);
+				if (matcher.find()) {
+					String[] params = new String[matcher.groupCount() + 1];
+					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
+					controllerAnnotationInfo = MvcInit.controllerMap.get(key);
+					analysisAndProcess(request, response, thisUrl,controllerAnnotationInfo, params);
+					break;
 				}
-				return;
 			}
 		}
+		
 		chain.doFilter(req, res);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 分析请求地址最终调用分发处理业务<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @param response
+	 * @param thisUrl
+	 * @param key
+	 * @param params
+	 */
+	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String thisUrl,ControllerAnnotationInfo controllerAnnotationInfo,
+			String[] params) {
+		
+		try {
+			long time = System.currentTimeMillis();
+			
+			Statistics.getReadMap().put(thisUrl, 0);
+			
+			request.setAttribute("params", params);
+			String parName = controllerAnnotationInfo.getMethod().substring(2, controllerAnnotationInfo.getMethod().length());
+			request.setAttribute("cmd", Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
+			SecurityContoller<?> bs = (SecurityContoller<?>)controllerAnnotationInfo.getObj();
+			bs.process(request, response);
+			
+			long readtime = System.currentTimeMillis() - time;
+//					LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
+			
+			// 记录统计信息
+			Statistics.incReadcount();
+			Statistics.setReadMaxTime(readtime, thisUrl);
+			Statistics.getReadMap().remove(thisUrl);
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			throw new UncheckedException(e);
+		}
 	}
 
 	@Override
