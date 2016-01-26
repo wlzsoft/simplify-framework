@@ -7,6 +7,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import com.meizu.aop.AopClassFileTransformer;
+import com.meizu.cache.redis.RedisPool;
 import com.meizu.mvc.MvcInit;
 import com.meizu.mvc.controller.VelocityForward;
 import com.meizu.simplify.ioc.Startup;
@@ -31,6 +33,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext context = sce.getServletContext();
 		context.setInitParameter("type", "ALL");
+		RedisPool.initCachePool();
 		Startup.start();
 		MvcInit.init();
 		VelocityForward.init();
