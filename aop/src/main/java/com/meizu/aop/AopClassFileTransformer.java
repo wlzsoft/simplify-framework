@@ -8,6 +8,8 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.meizu.simplify.exception.UncheckedException;
+
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -48,6 +50,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	}
 //	private static final Logger LOGGER = LoggerFactory.getLogger(AopClassFileTransformer.class);
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
+    private String injectionTargetClassPaths = null;
     public AopClassFileTransformer(){
         String methodStr = Config.getUtil().getProperty("cacheInfos");
         String[] it = methodStr.split(";");
@@ -56,12 +59,18 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     		filterMetaInfo.setFilterName(itor);
     		filterList.add(filterMetaInfo); 
 		}
+    	
+    	injectionTargetClassPaths = Config.getUtil().getProperty("injectionTargetClassPath");
+    	if(injectionTargetClassPaths == null || injectionTargetClassPaths.equals("")) {
+    		throw new UncheckedException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
+    	}
+    	
     }
 
 	
 	
     /**
-     * 字节码加载到虚拟机前会进入这个方法
+     * 字节码加载到虚拟机前调用这个方法来修改字节码，达到aop织入
      */
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
@@ -74,7 +83,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			e.printStackTrace();
 			System.out.println("framework:transform");
 		}
-        
         return null;
     }
 
@@ -115,8 +123,10 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         			ClassPool pool = ClassPool.getDefault();
 //        			pool.insertClassPath(className);
 //        			pool.insertClassPath(new ClassClassPath(this.getClass())); 
-        			//TODO 改成配置入口的形式
-        			pool.insertClassPath("E:/workspace-new/demo/target/classes"); 
+        			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
+        			for (String targetClassPath : targetClassPathArr) {
+        				pool.insertClassPath(targetClassPath); 
+					}
 //        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
 //        			InputStream ins = null; 
 //        			CtClass ctclass = pool.makeClass(ins); 
@@ -149,7 +159,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		break;
         	}
         }
-        
+//        printAopMappingInfo();
         return null;
 	}
 
