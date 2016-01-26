@@ -6,7 +6,8 @@ import com.meizu.aop.log.LogInterceptor;
 
 /**
  * <p><b>Title:</b><i>拦截器接口</i></p>
- * <p>Desc: 责任链方式处理，串联所有的拦截器实现</p>
+ * <p>Desc: 责任链方式处理，串联所有的拦截器实现
+ *  缓存类似slf4j的实现机制，抽取出aop模块，独立出来，从缓存剥离开始</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

@@ -2,7 +2,7 @@ package com.meizu.cache;
 
 /**
   * <p><b>Title:</b><i>缓存管理接口</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: volite，读写锁，分布式锁实现，和使用利弊</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
