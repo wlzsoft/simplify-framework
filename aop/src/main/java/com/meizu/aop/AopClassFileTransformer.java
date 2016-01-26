@@ -154,13 +154,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		break;
         	}
         }
-        String messageFilter = "注意：以下信息在aop.properties中配置的拦截信息没有被注入，请检查是否有配置有误：\r\n";
-        for(FilterMetaInfo filterMetaInfo : filterList){
-        	if(!filterMetaInfo.getIsMatch()) {
-        		messageFilter += filterMetaInfo.getFilterName();
-        	}
-        }
-        System.out.println(messageFilter);
+        
         return null;
 	}
 
@@ -169,9 +163,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      * 方法用途: 在main方法执行后，执行本方法<br>
      * 操作步骤: TODO<br>
      * @param agentArgs
-     * @param inst
+     * @param ins
      */
-    public static void agentmain (String agentArgs, Instrumentation inst) {
+    public static void agentmain (String agentArgs, Instrumentation ins) {
     	System.out.println("main方法启动了");
     }
     
@@ -179,11 +173,23 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      * 
      * 方法用途: 在main函数执行前，执行本方法<br>
      * 操作步骤: 添加新的字节码转换器，来修改字节码<br>
-     * @param options
+     * @param agentArgs
      * @param ins
      */
-    public static void premain(String options, Instrumentation ins) {
+    public static void premain(String agentArgs, Instrumentation ins) {
         ins.addTransformer(new AopClassFileTransformer());
+      //TODO
+        String messageFilter = "注意：以下信息在aop.properties中配置的拦截信息没有被注入，请检查是否有配置有误：\r\n";
+        boolean isNoMatch = false;
+        for(FilterMetaInfo filterMetaInfo : filterList){
+        	if(!filterMetaInfo.getIsMatch()) {
+        		isNoMatch = true;
+        		messageFilter += filterMetaInfo.getFilterName();
+        	}
+        }
+        if(isNoMatch) {
+        	System.out.println(messageFilter);
+        }
     }
     
    
