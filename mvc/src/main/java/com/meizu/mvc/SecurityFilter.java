@@ -43,8 +43,12 @@ public class SecurityFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) res;
 		
 		String thisUrl = request.getRequestURI().substring(request.getContextPath().length());// 当前地址
-		while ( thisUrl.indexOf("//") != -1 ) thisUrl = thisUrl.replace("//", "/"); // 防止用户避过正则
-		//if (StringUtils.notNull(request.getQueryString()).length() > 0) thisUrl += "?" + request.getQueryString();
+		while ( thisUrl.indexOf("//") != -1 ) {
+			thisUrl = thisUrl.replace("//", "/"); // 防止用户避过正则
+		}
+//		if (StringUtils.notNull(request.getQueryString()).length() > 0) {
+//			thisUrl += "?" + request.getQueryString();
+//	 	}
 		
 		for ( String key : MvcInit.controllerMap.keySet() ) {
 			Pattern pattern = Pattern.compile("^" + key);
@@ -67,7 +71,7 @@ public class SecurityFilter implements Filter {
 					long readtime = System.currentTimeMillis() - time;
 //					LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
 					
-					// STATISTICS
+					// 记录统计信息
 					Statistics.incReadcount();
 					Statistics.setReadMaxTime(readtime, thisUrl);
 					Statistics.getReadMap().remove(thisUrl);
