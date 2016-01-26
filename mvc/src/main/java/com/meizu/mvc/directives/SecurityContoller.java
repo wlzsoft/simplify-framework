@@ -68,7 +68,9 @@ public class SecurityContoller<T extends Model> {
 					} else {
 						return new String(param.getBytes(MvcInit.webcharSet), enc.toUpperCase());
 					}
-				} catch ( Exception e ) {}
+				} catch ( Exception e ) {
+					e.printStackTrace();
+				}
 				return param;
 			}
 			
@@ -158,8 +160,12 @@ public class SecurityContoller<T extends Model> {
 						}
 					}
 				}
-				if (doMethod == null) { throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); }
-				if (doMethod.getParameterTypes().length < 3) { throw new IllegalArgumentException("The method named, " + doCmd + ", parameter length is not enough by " + this.getClass()); }
+				if (doMethod == null) { 
+					throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
+				}
+				if (doMethod.getParameterTypes().length < 3) { 
+					throw new IllegalArgumentException("The method named, " + doCmd + ", parameter length is not enough by " + this.getClass()); 
+				}
 
 				// 设置参数值
 				Object[] parameValue = new Object[doMethod.getParameterTypes().length];
@@ -181,7 +187,9 @@ public class SecurityContoller<T extends Model> {
 								value = index < t.getPrarms().length ? t.getPrarms()[index] : null;
 							} else value = defaultValue;
 
-							if (value == null) break;
+							if (value == null) {
+								break;
+							}
 
 							// 将值进行格式化后注入
 							/*parameValue[i] = ClassHelper.formatof(doMethod.getParameterTypes()[i], value.toString());*/
@@ -204,7 +212,9 @@ public class SecurityContoller<T extends Model> {
 							for (Methods method : ajaxAccess.allowMethods()) {
 								sb_methods.append(method.name()).append(",");
 							}
-							if (sb_methods.length() > 0) sb_methods.delete(sb_methods.length() - 1, sb_methods.length());
+							if (sb_methods.length() > 0) {
+								sb_methods.delete(sb_methods.length() - 1, sb_methods.length());
+							}
 							response.addHeader("Access-Control-Allow-Methods", sb_methods.toString());
 						}
 						response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
@@ -221,7 +231,7 @@ public class SecurityContoller<T extends Model> {
 							response.setCharacterEncoding(MvcInit.charSet);
 							response.setContentType("text/html; charset=" + MvcInit.charSet);
 							response.getWriter().print(cacheContent);
-//							PrintHelper.getPrint().debug("UrlCache -> read Cache.");
+//							LOGGER.debug("UrlCache -> read Cache.");
 							return null;
 						}
 					}

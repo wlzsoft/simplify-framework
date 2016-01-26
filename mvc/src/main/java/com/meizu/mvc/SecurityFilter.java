@@ -66,7 +66,7 @@ public class SecurityFilter implements Filter {
 					bs.process(request, response);
 					
 					long readtime = System.currentTimeMillis() - time;
-//					PrintHelper.getPrint().debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
+//					LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
 					
 					// STATISTICS
 					Statistics.incReadcount();
