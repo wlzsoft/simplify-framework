@@ -158,16 +158,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         return null;
 	}
 
-    /**
-     * 
-     * 方法用途: 在main方法执行后，执行本方法<br>
-     * 操作步骤: TODO<br>
-     * @param agentArgs
-     * @param ins
-     */
-    public static void agentmain (String agentArgs, Instrumentation ins) {
-    	System.out.println("main方法启动了");
-    }
     
     /**
      * 
