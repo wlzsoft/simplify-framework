@@ -30,13 +30,11 @@ public class SecurityContoller<T extends Model> {
 	protected CacheSet cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";
-//	protected static final int errorCode = 403;
 	
 	public void init() {}
-	public void destroy() {
-	}
-	public void doPost(HttpServletRequest request2, HttpServletResponse response) throws ServletException, IOException {
-		HttpServletRequest request = new HttpServletRequestWrapper(request2){
+	
+	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+		HttpServletRequest request = new HttpServletRequestWrapper(req){
 			
 			private String encode(String param){
 				try {
@@ -79,18 +77,18 @@ public class SecurityContoller<T extends Model> {
 			}
 		}
 		// 逻辑递交执行完成, 关闭session
-		actionDestroy(request, response, model);
+		destroy(request, response, model);
 		
 	}
 
 	/**
-	 * Action释放
+	 * controller 注销相关处理
 	 * 
 	 * @param request
 	 * @param response
 	 * @param t
 	 */
-	public void actionDestroy(HttpServletRequest request, HttpServletResponse response, T t){
+	public void destroy(HttpServletRequest request, HttpServletResponse response, T t){
 //			DAO.closeSession(0);
 //			LOGGER.debug("dao Session[0]  closed.");
 	}

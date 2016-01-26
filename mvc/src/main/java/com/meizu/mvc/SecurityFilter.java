@@ -63,7 +63,7 @@ public class SecurityFilter implements Filter {
 					String parName = model.getMethod().substring(2, model.getMethod().length());
 					request.setAttribute("cmd", Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
 					SecurityContoller<?> bs = (SecurityContoller<?>)model.getObj();
-					bs.doPost(request, response);
+					bs.process(request, response);
 					
 					long readtime = System.currentTimeMillis() - time;
 //					PrintHelper.getPrint().debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
