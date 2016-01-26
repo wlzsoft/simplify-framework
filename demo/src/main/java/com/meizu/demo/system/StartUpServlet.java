@@ -1,9 +1,21 @@
 package com.meizu.demo.system;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
+import javax.servlet.AsyncContext;
+import javax.servlet.AsyncEvent;
+import javax.servlet.AsyncListener;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.mvc.MvcInit;
 import com.meizu.mvc.controller.VelocityForward;
@@ -23,10 +35,10 @@ import com.meizu.simplify.ioc.Startup;
  *
  */
 @WebServlet(loadOnStartup=0,urlPatterns="/initservlet")
+@WebInitParam(name = "type", value = "ALL")
 public class StartUpServlet extends HttpServlet {
 	private static final long serialVersionUID = -3818664573588631645L;
 //	private SystemConfig systemConfig = SystemConfig.getInstance(); 
-
 	@Override
 	public final void init(final ServletConfig _config) throws ServletException {
 		Startup.start();
@@ -41,5 +53,9 @@ public class StartUpServlet extends HttpServlet {
 	@Override
 	public void destroy() {
 	}
+	
 
 }
+
+
+   
