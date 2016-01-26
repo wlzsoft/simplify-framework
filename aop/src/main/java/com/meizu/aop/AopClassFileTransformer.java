@@ -56,14 +56,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     		filterMetaInfo.setFilterName(itor);
     		filterList.add(filterMetaInfo); 
 		}
-    	//初始化连接池  TODO 需要迁移到非javaagent的位置
-//    	ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
-//    	for(int i=0; i<10; i++) {
-//    		pool.getResource();
-//    	}
-//        LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
-//        pool.returnResourceObject(resource);
     }
+
+	
 	
     /**
      * 字节码加载到虚拟机前会进入这个方法
@@ -168,7 +163,15 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      */
     public static void premain(String agentArgs, Instrumentation ins) {
         ins.addTransformer(new AopClassFileTransformer());
-      //TODO
+      
+    }
+    
+    /**
+     * 
+     * 方法用途: 打印Aop映射信息<br>
+     * 操作步骤: 用于输出aop.properties文件中配置的切面类，是否被注入业务逻辑<br>
+     */
+    public static void printAopMappingInfo() {
         String messageFilter = "注意：以下信息在aop.properties中配置的拦截信息没有被注入，请检查是否有配置有误：\r\n";
         boolean isNoMatch = false;
         for(FilterMetaInfo filterMetaInfo : filterList){
@@ -181,7 +184,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         	System.out.println(messageFilter);
         }
     }
-    
    
 
 }
