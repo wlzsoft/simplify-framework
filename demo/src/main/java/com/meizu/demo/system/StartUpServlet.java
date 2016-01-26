@@ -31,6 +31,7 @@ public class StartUpServlet extends HttpServlet {
 
 	@Override
 	public void destroy() {
+		System.out.println("Servlet开始销毁，系统即将停止运行");
 	}
 	
 

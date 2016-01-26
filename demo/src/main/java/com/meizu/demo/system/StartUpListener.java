@@ -43,7 +43,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// TODO Auto-generated method stub
+		System.out.println("系统停止运行");
 		
 	}
 
