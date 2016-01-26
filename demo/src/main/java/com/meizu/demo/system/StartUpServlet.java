@@ -1,28 +1,13 @@
 package com.meizu.demo.system;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
-import javax.servlet.AsyncContext;
-import javax.servlet.AsyncEvent;
-import javax.servlet.AsyncListener;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.meizu.mvc.MvcInit;
-import com.meizu.mvc.controller.VelocityForward;
-import com.meizu.simplify.ioc.Startup;
 
 /**
- * <p><b>Title:</b><i>系统初始化</i></p>
+ * <p><b>Title:</b><i>系统初始化servlet</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -38,16 +23,10 @@ import com.meizu.simplify.ioc.Startup;
 @WebInitParam(name = "type", value = "ALL")
 public class StartUpServlet extends HttpServlet {
 	private static final long serialVersionUID = -3818664573588631645L;
-//	private SystemConfig systemConfig = SystemConfig.getInstance(); 
+
 	@Override
 	public final void init(final ServletConfig _config) throws ServletException {
-		Startup.start();
-		MvcInit.init();
-		VelocityForward.init();
-//		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
-//		"meizu demo Services v1.0.0.0 Start");
-//		StringUtils.format("Current path -> {0}", systemConfig.getAppPath()));
-//		"Start in " + DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
+		System.out.println("initservlet");
 	}
 
 	@Override
