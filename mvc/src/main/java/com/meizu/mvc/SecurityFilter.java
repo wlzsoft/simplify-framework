@@ -1,7 +1,6 @@
 package com.meizu.mvc;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,10 +82,11 @@ public class SecurityFilter implements Filter {
 		chain.doFilter(req, res);
 	}
 
-	
+	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
 	
+	@Override
 	public void destroy() {
 	}
 }
