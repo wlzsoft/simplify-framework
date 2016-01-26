@@ -20,13 +20,30 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.utils.StringUtil;
 
 
+/**
+ * <p><b>Title:</b><i>TODO</i></p>
+ * <p>Desc: 对参数@RequestParam的解析的测试
+ *          对非正则表达式的url的映射解析的404问题的解决
+ *          第一次性能耗费了800ms左右的时间，排查和解决
+ *          dao模块的开发
+ *          aop日志打印太过详细的问题</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年1月26日 下午6:17:24</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月26日 下午6:17:24</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
 @Bean
 public class TestController extends BaseController<TestModel> {
 
 	@Resource
 	private TestService testService;
 	
-	@RequestMap(path = "/(.+)/(.+)/testpage$ /test/demo_(.+).html$ /test/login.html$ /test/$ /testa/(.+)/(.+)$")
+	@RequestMap(path = "/(.+)/(.+)/testpage$ /test/demo_(.+).html$ /test/login.html$ /web/$ /test/ /testa/(.+)/(.+)$")
 	public IForward doTest(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
 //		String domain = CookiesUtil.getDomain(request);
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
