@@ -54,6 +54,9 @@ public class SecurityFilter implements Filter {
 			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
 		} else {
 			for ( String key : MvcInit.controllerMap.keySet() ) {//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型,不过由于正则无法确定具体值的访问，所以也没法比较
+				if(!key.contains("$")) {
+					continue;
+				}
 				Pattern pattern = Pattern.compile("^" + key);
 				Matcher matcher = pattern.matcher(thisUrl);
 				if (matcher.find()) {

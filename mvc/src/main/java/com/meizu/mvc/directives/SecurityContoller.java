@@ -325,9 +325,10 @@ public class SecurityContoller<T extends Model> {
 					}
 				}
 			}
-			String[] params = (String[]) request.getAttribute("params");
 			String cmd = (String) request.getAttribute("cmd");
-			if (params != null && cmd != null) {
+			Object paramObj = request.getAttribute("params");
+			if (paramObj != null&& cmd != null) {
+				String[] params = (String[])paramObj;
 				Method method = entityClass.getMethod("setPrarms", new Class[] { String[].class });
 				method.invoke(model, new Object[] { params });
 
