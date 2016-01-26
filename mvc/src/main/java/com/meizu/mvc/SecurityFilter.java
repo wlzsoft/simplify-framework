@@ -23,7 +23,7 @@ import com.meizu.simplify.exception.UncheckedException;
 
 
 /**
- * <p><b>Title:</b><i>验证Servlet过滤器</i></p>
+ * <p><b>Title:</b><i>安全过滤器</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
