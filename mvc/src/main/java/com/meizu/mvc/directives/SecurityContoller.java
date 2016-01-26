@@ -26,6 +26,20 @@ import com.meizu.webcache.web.Cache;
 import com.meizu.webcache.web.CacheBase;
 
 
+/**
+ * <p><b>Title:</b><i>安全控制器</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年1月26日 下午3:24:15</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月26日 下午3:24:15</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ * @param <T>
+ */
 public class SecurityContoller<T extends Model> {
 	protected CacheSet cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
@@ -33,6 +47,15 @@ public class SecurityContoller<T extends Model> {
 	
 	public void init() {}
 	
+	/**
+	 * 
+	 * 方法用途: 拦截处理所有请求<br>
+	 * 操作步骤: TODO<br>
+	 * @param req
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
 		HttpServletRequest request = new HttpServletRequestWrapper(req){
 			
@@ -94,12 +117,13 @@ public class SecurityContoller<T extends Model> {
 	}
 	
 	/**
-	 * 安全权限过程检查
 	 * 
+	 * 方法用途: 安全权限过程检查<br>
+	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
 	 * @param t
-	 * @return boolean
+	 * @return
 	 * @throws ServletException
 	 * @throws IOException
 	 */
@@ -108,8 +132,9 @@ public class SecurityContoller<T extends Model> {
 	}
 
 	/**
-	 * 执行逻辑
 	 * 
+	 * 方法用途: 执行逻辑<br>
+	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
 	 * @param t
@@ -218,8 +243,9 @@ public class SecurityContoller<T extends Model> {
 	}
 
 	/**
-	 * 获取表单数据
 	 * 
+	 * 方法用途: 获取表单数据<br>
+	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @return
 	 */
