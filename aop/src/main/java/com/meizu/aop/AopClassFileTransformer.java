@@ -28,14 +28,33 @@ import javassist.NotFoundException;
  *
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
-
+	private class FilterMetaInfo {
+		private String filterName;
+		//默认不匹配
+		private Boolean isMatch = false;
+		public String getFilterName() {
+			return filterName;
+		}
+		public void setFilterName(String filterName) {
+			this.filterName = filterName;
+		}
+		public Boolean getIsMatch() {
+			return isMatch;
+		}
+		public void setIsMatch(Boolean isMatch) {
+			this.isMatch = isMatch;
+		}
+		
+	}
 //	private static final Logger LOGGER = LoggerFactory.getLogger(AopClassFileTransformer.class);
-    final static List<String> filterList = new ArrayList<String>();
+    final static List<FilterMetaInfo> filterList = new ArrayList<>();
     public AopClassFileTransformer(){
         String methodStr = Config.getUtil().getProperty("cacheInfos");
         String[] it = methodStr.split(";");
     	for (String itor : it) {
-    		filterList.add(itor); 
+    		FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
+    		filterMetaInfo.setFilterName(itor);
+    		filterList.add(filterMetaInfo); 
 		}
     	//初始化连接池  TODO 需要迁移到非javaagent的位置
 //    	ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
@@ -83,8 +102,10 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         }
         className = className.replaceAll("/", ".");
         
-        for(String classInfo : filterList){
+        for(FilterMetaInfo filterMetaInfo : filterList){
+        	String classInfo = filterMetaInfo.getFilterName();
         	if (classInfo.startsWith(className)){
+        		filterMetaInfo.setIsMatch(true);
 //        		LOGGER.debug("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
         		System.out.println("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
         		String methodNameStr = classInfo.split(":")[1];
@@ -133,6 +154,13 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		break;
         	}
         }
+        String messageFilter = "注意：以下信息在aop.properties中配置的拦截信息没有被注入，请检查是否有配置有误：\r\n";
+        for(FilterMetaInfo filterMetaInfo : filterList){
+        	if(!filterMetaInfo.getIsMatch()) {
+        		messageFilter += filterMetaInfo.getFilterName();
+        	}
+        }
+        System.out.println(messageFilter);
         return null;
 	}
 

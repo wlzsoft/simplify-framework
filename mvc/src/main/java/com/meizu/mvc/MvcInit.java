@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -70,21 +71,23 @@ public class MvcInit {
 					return name.endsWith(".class");
 				}
 			});
-			if (fns != null) {
-				for (int i = 0; i < fns.length; i++) {
-					String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
-					try {
-						Class<?> entityClass = (Class<?>) Class.forName(class_path + "." + name);
-						resolverRequestInfo(entityClass);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					}
+			
+			if (fns == null) {
+				throw new UncheckedException("没有扫描到配置的路径["+path+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
+			}
+			for (int i = 0; i < fns.length; i++) {
+				String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
+				try {
+					Class<?> entityClass = (Class<?>) Class.forName(class_path + "." + name);
+					resolverRequestInfo(entityClass);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
 				}
 			}
-		//		LOGGER.log("Framework Debug -> " + debug);
-		//		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
-		//		LOGGER.log("Framework Charset -> " + charSet);
-		//		LOGGER.log("Framework v0.0.1-SNAPSHOT Init.");
+	//		LOGGER.log("Framework Debug -> " + debug);
+	//		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
+	//		LOGGER.log("Framework Charset -> " + charSet);
+	//		LOGGER.log("Framework v0.0.1-SNAPSHOT Init.");
 		}
 	
 	}
