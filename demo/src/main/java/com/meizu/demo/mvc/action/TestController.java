@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.demo.mvc.BaseController;
-import com.meizu.demo.mvc.model.ReadModel;
+import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.controller.ActionForward;
@@ -19,14 +19,14 @@ import com.meizu.simplify.utils.StringUtil;
 
 
 @Bean
-public class TestController extends BaseController<ReadModel> {
+public class TestController extends BaseController<TestModel> {
 
 	@Resource
 	private TestService testService;
 	
 //	@@RequestMap(path = "/d/(.+)/(.+)$")
 	@RequestMap(path = "/(.+)/(.+)/tags$ /manage/discuss_(.+).shtml$ /manage/login.shtml$ /manage/$")
-	public IForward doTags(HttpServletRequest request, HttpServletResponse response, final ReadModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
+	public IForward doTags(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
 //		String domain = CookiesUtil.getDomain(request);
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 		// 判断当前访问站点来源
@@ -55,7 +55,7 @@ public class TestController extends BaseController<ReadModel> {
 	}
 	
 	@RequestMap(path = "/(.+)/(.+)/w/(.+)$")
-	public IForward doW(HttpServletRequest request, HttpServletResponse response, ReadModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid, @RequestParam(defaultValue = "0", param = "3") String id) throws ServletException, IOException, InterruptedException {
+	public IForward doW(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid, @RequestParam(defaultValue = "0", param = "3") String id) throws ServletException, IOException, InterruptedException {
  
 		
 		// 检查是否id为空
@@ -82,7 +82,7 @@ public class TestController extends BaseController<ReadModel> {
 	 * 检查权限
 	 */
 	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, ReadModel model) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, TestModel model) throws ServletException, IOException {
 		// 检查管理员是否登录
 //		if (!"login".equals(model.getCmd()) && request.getSession().getAttribute("SystemCons.SYSTEM_MANAGE_LOGIN_FLAG") == null) {
 //			response.sendRedirect("/manage/login.shtml");
