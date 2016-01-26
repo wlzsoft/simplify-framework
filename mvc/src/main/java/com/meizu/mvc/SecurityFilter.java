@@ -1,7 +1,6 @@
 package com.meizu.mvc;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,14 +46,14 @@ public class SecurityFilter implements Filter {
 		while ( thisUrl.indexOf("//") != -1 ) {
 			thisUrl = thisUrl.replace("//", "/"); // 防止用户避过正则
 		}
-//		if (StringUtils.notNull(request.getQueryString()).length() > 0) {
+//		if (StringUtil.parseString(request.getQueryString(),"").length() > 0) {
 //			thisUrl += "?" + request.getQueryString();
 //	 	}
 		ControllerAnnotationInfo controllerAnnotationInfo = MvcInit.controllerMap.get(thisUrl);
 		if(controllerAnnotationInfo !=null) {
 			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
 		} else {
-			for ( String key : MvcInit.controllerMap.keySet() ) {//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型
+			for ( String key : MvcInit.controllerMap.keySet() ) {//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型,不过由于正则无法确定具体值的访问，所以也没法比较
 				Pattern pattern = Pattern.compile("^" + key);
 				Matcher matcher = pattern.matcher(thisUrl);
 				if (matcher.find()) {
@@ -95,7 +94,7 @@ public class SecurityFilter implements Filter {
 			bs.process(request, response);
 			
 			long readtime = System.currentTimeMillis() - time;
-//					LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
+//			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
 			
 			// 记录统计信息
 			Statistics.incReadcount();
