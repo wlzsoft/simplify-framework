@@ -1,4 +1,4 @@
-package com.meizu.demo.mvc;
+package com.meizu.demo.system;
 
 import java.io.IOException;
 

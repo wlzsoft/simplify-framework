@@ -1,4 +1,4 @@
-package com.meizu.demo.mvc.model;
+package com.meizu.demo.system.model;
 
 import com.meizu.mvc.directives.Model;
 
