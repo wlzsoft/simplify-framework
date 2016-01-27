@@ -44,7 +44,7 @@ public class TestController extends BaseController<TestModel> {
 	private TestService testService;
 	
 	@RequestMap(path = "/(.+)/(.+)/testpage$ /test/demo_(.+).html$ /test/login.html$ /web/$ /test/ /testa/(.+)/(.+)$")
-	public IForward doTest(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1",name="a3") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
+	public IForward doTest(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1",name="3") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
 //		String domain = CookiesUtil.getDomain(request);
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 		// 判断当前访问站点来源
