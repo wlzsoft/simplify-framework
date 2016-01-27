@@ -37,41 +37,6 @@
   <build>
     <finalName>demo</finalName>
     <plugins>
-    	<!-- 单元测试开始-集成javaangent-未测试 -->
-	    <!-- mvn surefire:test或者mvn test 运行单元测试 -->
-	    <plugin>
-	      <groupId>org.apache.maven.plugins</groupId>
-	      <artifactId>maven-surefire-plugin</artifactId>
-	      <configuration>
-	        <forkMode>pertest</forkMode>
-	        <argLine>-javaagent:${project.basedir}/target/aop-0.0.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
-	        <workingDirectory>${project.basedir}/target</workingDirectory>
-	      </configuration>
-	    </plugin>
-	    <!-- <plugin>
-	      <groupId>org.apache.maven.plugins</groupId>
-	      <artifactId>maven-dependency-plugin</artifactId>
-	      <executions>
-	        <execution>
-	          <id>copy</id>
-	          <phase>process-resources</phase>
-	          <goals>
-	            <goal>copy</goal>
-	          </goals>
-	          <configuration>
-	            <artifactItems>
-	              <artifactItem>
-	                <groupId>com.meizu</groupId>
-	                <artifactId>aop</artifactId>
-	                <version>0.0.1-SNAPSHOT</version>
-	                <outputDirectory>${project.build.directory}</outputDirectory>
-	              </artifactItem>
-	            </artifactItems>
-	          </configuration>
-	        </execution>
-	      </executions>
-	    </plugin> -->
-	    <!-- 单元测试结束 -->
     	<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
@@ -182,6 +147,41 @@
 				</execution>
 			</executions>
 		</plugin>
+		<!-- 单元测试开始-集成javaangent-未测试 -->
+	    <!-- mvn surefire:test或者mvn test 运行单元测试 -->
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-surefire-plugin</artifactId>
+	      <configuration>
+	        <forkMode>pertest</forkMode>
+	        <argLine>-javaagent:${project.basedir}/target/aop-0.0.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
+	        <workingDirectory>${project.basedir}/target</workingDirectory>
+	      </configuration>
+	    </plugin>
+	    <!-- <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-dependency-plugin</artifactId>
+	      <executions>
+	        <execution>
+	          <id>copy</id>
+	          <phase>process-resources</phase>
+	          <goals>
+	            <goal>copy</goal>
+	          </goals>
+	          <configuration>
+	            <artifactItems>
+	              <artifactItem>
+	                <groupId>com.meizu</groupId>
+	                <artifactId>aop</artifactId>
+	                <version>0.0.1-SNAPSHOT</version>
+	                <outputDirectory>${project.build.directory}</outputDirectory>
+	              </artifactItem>
+	            </artifactItems>
+	          </configuration>
+	        </execution>
+	      </executions>
+	    </plugin> -->
+	    <!-- 单元测试结束 -->
     </plugins>
   </build>
 </project>
