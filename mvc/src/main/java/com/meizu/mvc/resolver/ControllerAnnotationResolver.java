@@ -15,6 +15,7 @@ import com.meizu.cache.exception.CacheException;
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.dto.MappingAnnotationInfo;
+import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -88,13 +89,13 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 					String paramStr = param.name();
 					String exceptionMessage = beanClass.getName()+":"+method.getName()+"方法的第"+(i+1)+"个参数，参数类型为["+paramType.getName()+"]的参数名：只能是字符串，不可以是["+paramStr+"]";
 					if(ObjectUtil.isInt(paramStr)) {
-						throw new UncheckedException(exceptionMessage+"的整型值");
+						throw new StartupErrorException(exceptionMessage+"的整型值");
 					} else if(ObjectUtil.isBoolean(paramStr)) {
-						throw new UncheckedException(exceptionMessage+"的布尔值");
+						throw new StartupErrorException(exceptionMessage+"的布尔值");
 					} else if(ObjectUtil.isFloat(paramStr)) {
-						throw new UncheckedException(exceptionMessage+"的单精度浮点型值");
+						throw new StartupErrorException(exceptionMessage+"的单精度浮点型值");
 					} else if(ObjectUtil.isLong(paramStr)) {
-						throw new UncheckedException(exceptionMessage+"的长整型值");
+						throw new StartupErrorException(exceptionMessage+"的长整型值");
 					}
 				}
 			}

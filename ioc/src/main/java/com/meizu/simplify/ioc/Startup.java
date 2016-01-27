@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.StartupTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
@@ -32,7 +33,6 @@ public class Startup {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
 	public static StartupTypeEnum start() {
-		
 		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, "com.meizu");
 		Map<Integer,Class<?>> mapResolve = new ConcurrentHashMap<Integer, Class<?>>();
 		for (Class<?> clazz : resolveList) {
@@ -48,7 +48,12 @@ public class Startup {
 			} catch (InstantiationException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch(StartupException ex) {
+				ex.printStackTrace();
+			} catch(Exception ex) {
+				ex.printStackTrace();
 			}
+				
 		}
 		return StartupTypeEnum.SUCCESS;
 	}
