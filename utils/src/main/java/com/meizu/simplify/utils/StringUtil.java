@@ -1,4 +1,6 @@
 package com.meizu.simplify.utils;
+import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -484,5 +486,21 @@ public class StringUtil {
 		content = removeHtmlSpace(content);
 		content = removeHtmlLabel(content);
 		return content;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 集合中的各个元素转换成字符串，并以指定字符隔开，拼接成一个长字符串<br>
+	 * 操作步骤: TODO:还未实现，待实现<br>
+	 * @param collection
+	 * @param separator
+	 * @return
+	 */
+	public static String join(Collection<?> collection, String separator) {
+		if(collection == null) {
+			return null;
+		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

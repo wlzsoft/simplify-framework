@@ -96,7 +96,7 @@ public class SQLBuilder<T> {
                 e.printStackTrace();
             }
             
-            if(StringUtil.equalsIgnoreCase(column, pkName) &&  null == value){
+            if(column.equalsIgnoreCase(pkName) &&  null == value){
                 value = seq;
             }else{
             	if(value != null) {
