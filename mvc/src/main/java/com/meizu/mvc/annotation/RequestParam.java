@@ -25,7 +25,27 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 public @interface RequestParam {
+	
+	/**
+	 * 
+	 * 方法用途: 默认参数值<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	String defaultValue();
-
+	
+	/**
+	 * 
+	 * 方法用途: 参数索引位置<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	String param();
+	/**
+	 * 
+	 * 方法用途: 参数名称<br>
+	 * 操作步骤: 设置请求参数的名称<br>
+	 * @return
+	 */
+	String name() default "";
 }

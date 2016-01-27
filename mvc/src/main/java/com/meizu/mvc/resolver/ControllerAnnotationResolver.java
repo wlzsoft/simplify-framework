@@ -2,6 +2,7 @@ package com.meizu.mvc.resolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -10,15 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.cache.dto.CacheAnnotationInfo;
 import com.meizu.cache.exception.CacheException;
 import com.meizu.mvc.annotation.RequestMap;
 import com.meizu.mvc.annotation.RequestParam;
 import com.meizu.mvc.dto.MappingAnnotationInfo;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.utils.ObjectUtil;
 
 /**
   * <p><b>Title:</b><i>mvc请求地址解析器</i></p>
@@ -70,5 +72,33 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		cai.setAnnotatoionType(requestInfo);
 		cai.setReturnType(method.getReturnType());
 		mappingAnnotationInfo.put(beanClass.getName()+":"+method.getName(), cai);
+		
+//		TypeVariable<?>[] tv = method.getTypeParameters();//泛型方法才会使用到
+//		@RequestParam解析开始
+		
+		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等
+		Class<?>[] paramTypeClazz = method.getParameterTypes();
+		Annotation[][] annotationTwoArr = method.getParameterAnnotations();
+		for (int i=0; i< paramTypeClazz.length;i++) {
+			Class<?> paramType = paramTypeClazz[i];
+			Annotation[] annotationsParamType = annotationTwoArr[i];
+			for (Annotation annotation : annotationsParamType) {//这里的循环次数是0到1次，包含@RequestParam的会循环一次，因为目前参数上只会有RequestParam注解
+				if(annotation.annotationType() == RequestParam.class) {
+					RequestParam param = (RequestParam)annotation;
+					String paramStr = param.name();
+					String exceptionMessage = beanClass.getName()+":"+method.getName()+"方法的第"+(i+1)+"个参数，参数类型为["+paramType.getName()+"]的参数名：只能是字符串，不可以是["+paramStr+"]";
+					if(ObjectUtil.isInt(paramStr)) {
+						throw new UncheckedException(exceptionMessage+"的整型值");
+					} else if(ObjectUtil.isBoolean(paramStr)) {
+						throw new UncheckedException(exceptionMessage+"的布尔值");
+					} else if(ObjectUtil.isFloat(paramStr)) {
+						throw new UncheckedException(exceptionMessage+"的单精度浮点型值");
+					} else if(ObjectUtil.isLong(paramStr)) {
+						throw new UncheckedException(exceptionMessage+"的长整型值");
+					}
+				}
+			}
+		}
+//		@RequestParam解析结束
 	}
 }

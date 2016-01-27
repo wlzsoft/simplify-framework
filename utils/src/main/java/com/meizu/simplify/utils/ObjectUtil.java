@@ -108,10 +108,10 @@ public class ObjectUtil {
 	 */
 	public static boolean isBoolean(Object s) {
 		try {
-			Boolean.valueOf(s.toString());
+			Boolean o = Boolean.valueOf(s.toString());
+			return o;
 		} catch ( Exception e ) {
 			return false;
 		}
-		return true;
 	}
 }

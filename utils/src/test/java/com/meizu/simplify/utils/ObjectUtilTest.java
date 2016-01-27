@@ -35,4 +35,34 @@ public class ObjectUtilTest {
 		Assert.assertTrue(ObjectUtil.isNull(str,null));
 	}
 	
+	@Test
+	public void isBooleanByOtherChar() {
+		String str = "asdfasdf";
+		Assert.assertFalse(ObjectUtil.isBoolean(str));
+	}
+	
+	@Test
+	public void isBooleanByZero() {
+		String str = "0";
+		Assert.assertFalse(ObjectUtil.isBoolean(str));
+	}
+	
+	@Test
+	public void isBooleanByOne() {
+		String str = "1";
+		Assert.assertFalse(ObjectUtil.isBoolean(str));
+	}
+	
+	@Test
+	public void isBoolean() {
+		String str = "true";
+		Assert.assertTrue(ObjectUtil.isBoolean(str));
+	}
+	
+	@Test
+	public void isLong() {
+		String str = "1";
+		Assert.assertTrue(ObjectUtil.isLong(str));
+	}
+	
 }
