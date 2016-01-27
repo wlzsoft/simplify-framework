@@ -58,40 +58,41 @@ public class SecurityContoller<T extends Model> {
 	 * @throws IOException
 	 */
 	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-		HttpServletRequest request = new HttpServletRequestWrapper(req){
-			
-			private String encode(String param){
-				try {
-					
-					String enc = StringUtil.parseString(super.getParameter("ec"), MvcInit.charSet); 
-					if (enc.equalsIgnoreCase(super.getCharacterEncoding())) {
-						return param;
-					} else {
-						return new String(param.getBytes(MvcInit.webcharSet), enc.toUpperCase());
-					}
-				} catch ( Exception e ) {
-					e.printStackTrace();
-				}
-				return param;
-			}
-			
-			@Override
-			public String getParameter(String name) {
-				return encode(super.getParameter(name)); 
-			}
-			
-			@Override
-			public String[] getParameterValues(String parameter){
-				String[] results = super.getParameterValues(parameter);
-				if (results == null)return null;
-				int count = results.length;
-				String[] trimResults = new String[count];
-				for (int i = 0; i < count; i++) {
-				  trimResults[i] = encode(results[i]);
-				}
-				return trimResults; 
-			}
-		};
+		HttpServletRequest request = req;
+//		HttpServletRequest request = new HttpServletRequestWrapper(req){
+//			
+//			private String encode(String param){
+//				try {
+//					
+//					String enc = StringUtil.parseString(super.getParameter("ec"), MvcInit.charSet); 
+//					if (enc.equalsIgnoreCase(super.getCharacterEncoding())) {
+//						return param;
+//					} else {
+//						return new String(param.getBytes(MvcInit.webcharSet), enc.toUpperCase());
+//					}
+//				} catch ( Exception e ) {
+//					e.printStackTrace();
+//				}
+//				return param;
+//			}
+//			
+//			@Override
+//			public String getParameter(String name) {
+//				return encode(super.getParameter(name)); 
+//			}
+//			
+//			@Override
+//			public String[] getParameterValues(String parameter){
+//				String[] results = super.getParameterValues(parameter);
+//				if (results == null)return null;
+//				int count = results.length;
+//				String[] trimResults = new String[count];
+//				for (int i = 0; i < count; i++) {
+//				  trimResults[i] = encode(results[i]);
+//				}
+//				return trimResults; 
+//			}
+//		};
 		T model = setRequestModel(request);
 		this.staticName = Md5Util.md5(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
