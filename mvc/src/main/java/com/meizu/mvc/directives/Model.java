@@ -55,7 +55,7 @@ public abstract class Model {
 	public @interface Passme {
 	}
 	
-	private String[] prarms = new String[] {}; // 过滤器模式的参数值
+	private String[] params = new String[] {}; // 过滤器模式的参数值
 	
 	private String cmd = "view";
 	
@@ -67,11 +67,11 @@ public abstract class Model {
 		this.cmd = cmd;
 	}
 	
-	public String[] getPrarms() {
-		return prarms;
+	public String[] getParams() {
+		return params;
 	}
 	
-	public void setPrarms(String[] prarms) {
-		this.prarms = prarms;
+	public void setParams(String[] params) {
+		this.params = params;
 	}
 }

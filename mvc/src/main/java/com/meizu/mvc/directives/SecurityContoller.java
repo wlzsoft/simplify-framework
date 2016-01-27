@@ -178,16 +178,24 @@ public class SecurityContoller<T extends Model> {
 					for ( int j = 0; j < doMethod.getParameterAnnotations()[i].length; j++ ) {
 						if (doMethod.getParameterAnnotations()[i][j].annotationType() == RequestParam.class) {
 							parameValue[i] = null;
-							String param = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).param();
+							RequestParam requestParam = ((RequestParam) doMethod.getParameterAnnotations()[i][j]);
+							String param = requestParam.param();
+							String name = requestParam.name();
 							String defaultValue = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).defaultValue();
 							defaultValue = "null".equals(defaultValue) ? null : defaultValue;
 							Object value = null;
-							if (!StringUtil.isEmpty(request.getParameter(param))) {
-								value = request.getParameter(param);
+							
+							//RequestParam的param有两个作用，一个是参数索引值，一个是参数名称，后续要拆分，不要一个参数两个含义，增加一个name属性就可以
+							if (!StringUtil.isEmpty(request.getParameter(name))) {
+								value = request.getParameter(name);
 							} else if (ObjectUtil.isInt(param)) {
 								int index = Integer.valueOf(param);
-								value = index < t.getPrarms().length ? t.getPrarms()[index] : null;
-							} else value = defaultValue;
+								if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
+									value = t.getParams()[index];
+								}
+							} else {
+								value = defaultValue;
+							}
 
 							if (value == null) {
 								break;

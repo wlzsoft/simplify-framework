@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p><b>Title:</b><i>依附于RequestMap,对请求参数做解析</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: TODO:注意目前的param和name是二选一的状态，后续会独立使用</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
