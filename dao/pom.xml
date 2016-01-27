@@ -8,4 +8,11 @@
   <artifactId>dao</artifactId>
   <name>关系型数据库持久化共用组件</name>
   <description>封装数据库操作相关api，及通用实现</description>
+  <dependencies>
+  	<dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>ioc</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+  </dependencies>
 </project>
