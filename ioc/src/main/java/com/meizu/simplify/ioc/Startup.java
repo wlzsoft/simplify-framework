@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.StartupTypeEnum;
@@ -49,7 +50,12 @@ public class Startup {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch(StartupException ex) {
-				ex.printStackTrace();
+				Throwable target = ex.getTargetException();
+				if(target.getClass() == StartupErrorException.class) {
+					System.err.println("系统终止服务，有致命异常 ==>>\r\n"+target.getMessage());
+					System.exit(-1);
+				}
+//				ex.printStackTrace();
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
