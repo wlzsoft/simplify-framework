@@ -22,7 +22,7 @@ import java.util.Set;
  */
 //@Service
 //@Scope("prototype")
-public class MybatisQuery /*implements Query*/ {
+public class MybatisQuery implements Query {
 	private Dao<?,?> dao;
 	private String key;
 	private Object sql;

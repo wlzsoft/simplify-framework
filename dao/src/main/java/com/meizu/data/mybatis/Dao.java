@@ -10,9 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.management.Query;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +24,9 @@ import com.meizu.data.mybatis.base.WhereDTO;
 import com.meizu.data.util.BuildInfo;
 import com.meizu.data.util.Page;
 import com.meizu.entity.baseEntity.IdEntity;
+import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.utils.ReflectionUtil;
+import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.exception.BaseDaoException;
 //import com.meizu.util.BeanUtils;
 
@@ -311,8 +311,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				columnName = null;
 			}
 			// 如果未标识特殊的列名，默认取字段名
-			columnName = (StringUtils.isEmpty(columnName) ? org.apache.commons.lang.StringUtils
-					.upperCase(fieldName) : columnName);
+			columnName = (StringUtil.isEmpty(columnName) ? fieldName.toUpperCase() : columnName);
 			currentColumnFieldNames.put(columnName, fieldName);
 			if (field.isAnnotationPresent(Key.class)) {
 				// 取得ID的列名
@@ -348,7 +347,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			String key = entry.getKey();
 			key = currentColumnFieldNames.get(key);
 			Object val = entry.getValue();
-			ReflectionUtils.invokeSetterMethod(t, key, val);
+//			ReflectionUtil.invokeSetterMethod(t, key, val);
 		}
 		return t;
 	}
@@ -433,7 +432,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	//@Override
 	public Serializable getId(T entity) {
-		return (Serializable) BeanUtils.getField(entity, getIdName());
+//		return (Serializable) BeanUtils.getField(entity, getIdName());
+		return null;
 	}
 	
 	/**
@@ -480,7 +480,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int i=0; i < list.size(); i++) {
 			T t = list.get(i);
 			if (i == 0) {
-				pkVal = ReflectionUtils.invokeGetterMethod(t, idName);
+//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
 			}
 
 			temp.add(t);
@@ -508,7 +508,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int i=0; i < list.size(); i++) {
 			T t = list.get(i);
 			if (i == 0) {
-				pkVal = ReflectionUtils.invokeGetterMethod(t, idName);
+//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
 			}
 
 			temp.add(t);
@@ -533,7 +533,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			T t = list.get(i);
 			if (i == 0) {
 //				        BeanMapUtil.bean2Map(t); //用法类似
-				pkVal = ReflectionUtils.invokeGetterMethod(t, idName);
+//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
 			}
 
 			temp.add(t);
@@ -559,12 +559,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	public Integer saveMeta(T t) {
-		if (StringUtils.isEmpty(seq)) {
+		if (StringUtil.isEmpty(seq)) {
 			return this.create(t);
 		}
 		//生成序列:oracle的seq，或是mysql等数据库模拟的序列的生成,暂时不用，采用数据库自增
-		Long nextval = sqlSessionTemplate.selectOne(getSqlName(SQL_FETCHSEQNEXTVAL),"SELECT ".concat(seq).concat(" FROM DUAL"));
-		ReflectionUtils.invokeSetterMethod(t, idName, nextval);
+//		Long nextval = sqlSessionTemplate.selectOne(getSqlName(SQL_FETCHSEQNEXTVAL),"SELECT ".concat(seq).concat(" FROM DUAL"));
+//		ReflectionUtil.invokeSetterMethod(t, idName, nextval);
 		return this.create(t);
 	}
 	
@@ -587,7 +587,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-		if (StringUtils.isEmpty(seq)) {
+		if (StringUtil.isEmpty(seq)) {
 			this.create(list);
 			return;
 		}
@@ -595,7 +595,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		for (T t : list) {
 //			Long nextval = sqlSessionTemplate.selectOne(getSqlName(SQL_FETCHSEQNEXTVAL),
 //					"SELECT ".concat(seq).concat(" FROM DUAL"));
-//			ReflectionUtils.invokeSetterMethod(t, idName, nextval);
+//			ReflectionUtil.invokeSetterMethod(t, idName, nextval);
 //		}
 //		logger.info("生成序列结束:---------- end ----------");
 
@@ -610,7 +610,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-		if (StringUtils.isEmpty(seq)) {
+		if (StringUtil.isEmpty(seq)) {
 			this.createByMycat(list);
 			return;
 		}
@@ -815,11 +815,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public List<T> findBy(T param, String sort, String orderBy) {
 		Map<String, Object> paramMap = null;
-		try{
-			paramMap = ReflectionUtils.bean2Map(param);
-		}catch(Exception e){
-			throw new BaseDaoException("获取参数失败", e);
-		}
+//		try{
+//			paramMap = ReflectionUtil.bean2Map(param);
+//		}catch(Exception e){
+//			throw new BaseDaoException("获取参数失败", e);
+//		}
 		// Where过滤条件
 //		paramMap.put("param", param);
 		// 排序条件
@@ -827,7 +827,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			// 排序字段不为空，过滤其中可能存在的非法字符
 			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
 		}
-		if (StringUtils.isEmpty(sort) || StringUtils.isEmpty(orderBy)) {
+		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
 //			paramMap.put("sort", null);
 //			paramMap.put("orderBy", null);
 		} else {
@@ -850,7 +850,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> findBy(String sqlName, Object param,int pageNo, int pageSize,String sort,String orderBy){
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("param", param);
-		if (StringUtils.isEmpty(sort) || StringUtils.isEmpty(orderBy))
+		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy))
 		{
 			paramMap.put("sort", null);
 			paramMap.put("orderBy", null);
@@ -979,8 +979,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		java.util.HashMap<String,Object> a = sqlSessionTemplate.selectOne(getSqlName(SQL_FINDBYPAGE),dto);
 //		Integer count = DataUtil.parseInt(a.get("count(1)"));
 		//bugs fix by lcy 2015/05/26
-		Integer count = sqlSessionTemplate.selectOne(getSqlName(SQL_COUNT),dto);
-		return count;
+//		Integer count = sqlSessionTemplate.selectOne(getSqlName(SQL_COUNT),dto);
+//		return count;
+		return 0;
 	}
 	
 	
@@ -998,11 +999,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public Integer count(T param) {
 		Map<String, Object> paramMap = null;
-		try{
-			paramMap = ReflectionUtils.bean2Map(param);
-		}catch(Exception e){
-			throw new BaseDaoException("获取参数失败", e);
-		}
+//		try{
+//			paramMap = ReflectionUtil.bean2Map(param);
+//		}catch(Exception e){
+//			throw new BaseDaoException("获取参数失败", e);
+//		}
 //		paramMap.put("param", param);
 		return (Integer)sqlSessionTemplate.selectOne(
 				getSqlName(SQL_COUNT), paramMap);
@@ -1079,7 +1080,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	public Query createQuery(String sql, Object[] values) {
-		MybatisQuery query = new MybatisQuery(this,getSqlName(SQL_FINDBYPAGE),sql,values);
+		Query query = new MybatisQuery(this,getSqlName(SQL_FINDBYPAGE),sql,values);
 		return query;
 	}
 	/* (non-Javadoc)
@@ -1158,11 +1159,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 
 			Map<String, Object> paramMap = null;
-			try{
-				paramMap = ReflectionUtils.bean2Map(param);
-			}catch(Exception e){
-				throw new BaseDaoException("获取参数失败", e);
-			}
+//			try{
+//				paramMap = ReflectionUtil.bean2Map(param);
+//			}catch(Exception e){
+//				throw new BaseDaoException("获取参数失败", e);
+//			}
 			// Where过滤条件
 //						paramMap.put("param", param);
 			// 排序条件
@@ -1170,7 +1171,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				// 排序字段不为空，过滤其中可能存在的非法字符
 				sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
 			}
-			if (StringUtils.isEmpty(sort) || StringUtils.isEmpty(orderBy)) {
+			if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
 //							paramMap.put("sort", null);
 //							paramMap.put("orderBy", null);
 			} else {
