@@ -1,5 +1,7 @@
 package com.meizu.simplify.utils;
 
+import java.io.Serializable;
+
 /**
  * <p><b>Title:</b><i>参数解析工具。</i></p>
  * <p>Desc: 提供各种对数据进行处理的方法,待优化和调整  TODO</p>
@@ -15,9 +17,6 @@ package com.meizu.simplify.utils;
  */
 public class DataUtil {
 
-	/**
-	 * 构造方法，禁止实例化
-	 */
 	private DataUtil() {
 	}
 	
@@ -50,6 +49,22 @@ public class DataUtil {
         } catch (NumberFormatException e) {
             return defaultValue;
         }
+	}
+
+
+	/**
+	 * 
+	 * 方法用途: 未知类型转换成具体类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param classType
+	 * @param value
+	 * @return
+	 */
+	public static <T extends Serializable> T convertType(Class<?> classType, Object value) {
+		if(classType == Integer.class) {
+			return (T) parseInt(value);
+		}
+		return (T)value;
 	}
 
 }

@@ -18,6 +18,7 @@ import com.meizu.mvc.directives.Model.ModelSet;
 import com.meizu.mvc.directives.Model.Passme;
 import com.meizu.mvc.directives.Model.StringFilter;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.Md5Util;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -192,7 +193,7 @@ public class SecurityContoller<T extends Model> {
 							}
 
 							// 将值进行格式化后注入
-							/*parameValue[i] = ClassHelper.formatof(doMethod.getParameterTypes()[i], value.toString());*/
+							parameValue[i] = DataUtil.convertType(doMethod.getParameterTypes()[i], value.toString());
 						}
 					}
 				}
@@ -231,7 +232,7 @@ public class SecurityContoller<T extends Model> {
 							response.setCharacterEncoding(MvcInit.charSet);
 							response.setContentType("text/html; charset=" + MvcInit.charSet);
 							response.getWriter().print(cacheContent);
-//							LOGGER.debug("UrlCache -> read Cache.");
+							System.out.println("UrlCache -> read Cache.");
 							return null;
 						}
 					}
@@ -318,20 +319,24 @@ public class SecurityContoller<T extends Model> {
 						if (type.isArray()) {
 							String[] pars = request.getParameterValues(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
 							if (pars != null && pars.length == 1) pars = pars[0].split(",");
-							/*method2.invoke(model, new Object[] { ClassHelper.formatof(type, pars) });*/
+							method2.invoke(model, new Object[] { DataUtil.convertType(type, pars) });
 						} else {
-							/*method2.invoke(model, new Object[] { ClassHelper.formatof(type, par) });*/
+							method2.invoke(model, new Object[] { DataUtil.convertType(type, par) });
 						}
 					}
 				}
 			}
-			String cmd = (String) request.getAttribute("cmd");
+			Method method = entityClass.getMethod("setPrarms", new Class[] { String[].class });
 			Object paramObj = request.getAttribute("params");
-			if (paramObj != null&& cmd != null) {
+			if(paramObj != null) {
 				String[] params = (String[])paramObj;
-				Method method = entityClass.getMethod("setPrarms", new Class[] { String[].class });
 				method.invoke(model, new Object[] { params });
+			} else {
+				method.invoke(model, new Object[] { null });
+			}
 
+			String cmd = (String) request.getAttribute("cmd");
+			if (cmd != null) {
 				method = entityClass.getMethod("setCmd", new Class[] { String.class });
 				method.invoke(model, new Object[] { cmd });
 			}
