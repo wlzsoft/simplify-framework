@@ -34,6 +34,7 @@ public class BeanFactory {
 		return getBean(beanClassName);
 	}
 	
+	
 	/**
 	 * 
 	 * 方法用途: 从容器中获取bean对象<br>

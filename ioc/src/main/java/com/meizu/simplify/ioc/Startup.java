@@ -18,8 +18,9 @@ import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>bean管理容器启动器</i></p>
+ * <p>Desc: TODO 1.在第一次启动时，初始化到内存中，下次直接启动，无需重新执行一次分析：A.可以把容器序列化到磁盘上，B.可以序列化到redis中
+ *          2.容器运行中，修改部分配置文件,一般指的的properties配置文件的修改，主要存在于properties目录下，A.通过reload指令触发重新加载配置,B.自动加载</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
