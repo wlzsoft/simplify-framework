@@ -40,13 +40,13 @@ public class ReflectionGenericUtil {
     
     /**
      * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
-     * 操作步骤: TODO <br>
+     * 操作步骤: final Class<T> clazz 替换成了 final Class<?> clazz <br>
      * @param 需要解析的class类型
      * @param 指定实现父类的泛型的参数的位置
      * @return 返回具体指定index值位置的泛型的class
      */
     @SuppressWarnings("unchecked")
-	public  static <T> Class<T> getSuperClassGenricType(final Class<T> clazz, final int index) {
+	public  static <T> Class<T> getSuperClassGenricType(final Class<?> clazz, final int index) {
 
         Type[] params = getSuperClassGenricType(clazz);
 
@@ -85,5 +85,5 @@ public class ReflectionGenericUtil {
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 		return params;
 	}
-
+	
 }

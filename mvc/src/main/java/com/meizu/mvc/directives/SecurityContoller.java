@@ -2,11 +2,9 @@ package com.meizu.mvc.directives;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.mvc.MvcInit;
@@ -21,6 +19,7 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.Md5Util;
 import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.webcache.annotation.CacheSet;
 import com.meizu.webcache.web.Cache;
@@ -257,10 +256,6 @@ public class SecurityContoller<T extends Model> {
 
 	
 
-	@SuppressWarnings("unchecked")
-	private Class<T> getEntityClass() {
-		return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-	}
 
 	/**
 	 * 
@@ -271,7 +266,7 @@ public class SecurityContoller<T extends Model> {
 	 */
 	private T setRequestModel(HttpServletRequest request) {
 		try {
-			Class<T> entityClass = getEntityClass();
+			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass(),0);
 			T model = entityClass.newInstance();
 			for ( Method method : entityClass.getMethods() ) {
 				if (method != null && method.getName().indexOf("set") == 0) {
