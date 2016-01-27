@@ -491,7 +491,7 @@ public class StringUtil {
 	/**
 	 * 
 	 * 方法用途: 集合中的各个元素转换成字符串，并以指定字符隔开，拼接成一个长字符串<br>
-	 * 操作步骤: TODO:还未实现，待实现<br>
+	 * 操作步骤: TODO<br>
 	 * @param collection
 	 * @param separator
 	 * @return
@@ -500,7 +500,25 @@ public class StringUtil {
 		if(collection == null) {
 			return null;
 		}
-		// TODO Auto-generated method stub
-		return null;
+		return join(collection.toArray(),separator);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 集合中的各个元素转换成字符串，并以指定字符隔开，拼接成一个长字符串<br>
+	 * 操作步骤: TODO:还未实现，待实现<br>
+	 * @param collection
+	 * @param separator
+	 * @return
+	 */
+	public static String join(Object[] arr, String separator) {
+		if(arr == null) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Object obj : arr) {
+			sb.append(separator).append(obj);
+		}
+		return sb.toString().substring(1);
 	}
 }

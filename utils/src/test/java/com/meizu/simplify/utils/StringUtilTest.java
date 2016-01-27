@@ -1,5 +1,8 @@
 package com.meizu.simplify.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -108,5 +111,15 @@ public class StringUtilTest {
 		Assert.assertEquals(StringUtil.clearHTML("\r\n<a>Chuangye lcy</a>"),"Chuangye lcy");
 	}
 	
+	@Test
+	public void join() {
+		List<String> list = new ArrayList<>();
+		list.add("sdf");
+		list.add("sd23f");
+		list.add("sasdf");
+		list.add("234sdf");
+		String joinStr = StringUtil.join(list, ",");
+		Assert.assertEquals("sdf,sd23f,sasdf,234sdf", joinStr);
+	}
 	
 }

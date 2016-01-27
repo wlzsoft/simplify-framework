@@ -17,6 +17,7 @@ import com.meizu.data.mybatis.base.SaveDTO;
 import com.meizu.data.mybatis.base.WhereDTO;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.DataUtil;
+import com.meizu.simplify.utils.DateUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
  
@@ -129,8 +130,8 @@ public class SQLBuilder<T> {
         } else if (value instanceof Date||value instanceof java.sql.Date) {//对应实体中sql。Date的属性处理
             Date date = (Date) value;
             
-//            String dateStr = DateUtils.getDate(date,"YYYY-MM-DD HH24:MI:SS.FF3");
-            String dateStr = DataUtil.getDate(date,"yyyy-MM-dd HH:mm:ss");
+//          String dateStr = DateUtils.getDate(date,"YYYY-MM-DD HH24:MI:SS.FF3");
+            String dateStr = DateUtil.formatDate(date);
             value = "'"+dateStr+"'";//"TO_TIMESTAMP('" + dateStr+ "','YYYY-MM-DD HH24:MI:SS.FF3')";
         } else if (value instanceof Boolean) {
             Boolean v = (Boolean) value;
@@ -154,7 +155,7 @@ public class SQLBuilder<T> {
         for (String column : columns) {
             Object value = ReflectionUtil.obtainFieldValue(t,
                     currentColumnFieldNames.get(column));
-            if (value != null && !StringUtil.equalsIgnoreCase(column, pkName)) {
+            if (value != null && !column.equalsIgnoreCase(pkName)) {
                 colVals.add(column + "=" + handleValue(value));
             }
         }
@@ -697,7 +698,7 @@ public class SQLBuilder<T> {
 		if(value instanceof String) {
 			value = "'"+value +"'";
 		} else if(value instanceof Boolean) {
-			if(DataUtil.parseBool(value)) {
+			if(DataUtil.parseBoolean(value)) {
 				value = 1;
 			} else {
 				value = 0;
