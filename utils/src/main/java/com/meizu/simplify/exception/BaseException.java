@@ -21,6 +21,12 @@ public class BaseException extends RuntimeException{
 	 */
 	private  int errorCode; 
 	
+	
+	/**
+	 * 目标异常
+	 */
+	private Throwable target;
+	
 	/**
 	 * 构造一个基本异常
 	 * @param message 异常信息
@@ -30,10 +36,11 @@ public class BaseException extends RuntimeException{
 	}
 	
 	/**
-	 * @param cause 异常对象
+	 * @param target 异常对象
 	 */
-	public BaseException(Throwable cause) {
-		super(cause);
+	public BaseException(Throwable target) {
+		super(target);
+		this.target = target;
 	}
 
 	/**
@@ -57,19 +64,20 @@ public class BaseException extends RuntimeException{
 	 * 构造一个基本异常
 	 * @param errorCode 错误编码
 	 * @param message 异常信息
+	 * @param target target
 	 */
-	public BaseException(int errorCode,String message,Throwable cause) {
-		super(message, cause);
+	public BaseException(int errorCode,String message,Throwable target) {
+		super(message, target);
 		this.setErrorCode(errorCode);
 	}
 	
 	/**
 	 * 构造一个基本异常
 	 * @param message 异常信息
-	 * @param cause 根异常类（可以存入任何异常）
+	 * @param target 目标异常
 	 */
-	public BaseException(String message, Throwable cause) {
-		super(message, cause);
+	public BaseException(String message, Throwable target) {
+		super(message, target);
 	}
 
 	public int getErrorCode() {
@@ -79,5 +87,15 @@ public class BaseException extends RuntimeException{
 	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取目标异常<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public Throwable getTargetException() {
+        return target;
+    }
 
 }

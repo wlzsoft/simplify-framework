@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.exception.UncheckedException;
 
 
@@ -71,6 +72,8 @@ public class ReflectionUtil {
             throw new UncheckedException("参数类型不匹配！");//后续再补充提示信息，指明源数据类型和目录属性类型 TODO
         } catch (InvocationTargetException e) {
             e.printStackTrace();
+            LOGGER.error("反射方法调用异常",e.getTargetException());
+            throw new StartupException(e.getTargetException());
         }
         return null;
     }
