@@ -20,7 +20,17 @@ public class DataUtil {
 	private DataUtil() {
 	}
 	
-
+	/**
+	 * 
+	 * 方法用途: 解析参数为布尔类型，<br>
+	 * 操作步骤: TODO:如果value值非false或是true的情况下，会返回false，比如value=selsd的时候，会返回false<br>
+	 * @param value
+	 * @return
+	 */
+	public static Boolean parseBoolean(Object value) {
+		return ObjectUtil.isBoolean(value);
+	}
+	
 	/**
 	 * 
 	 * 方法用途: 将参数解析为int类型，为空时返回0<br>
@@ -55,7 +65,7 @@ public class DataUtil {
 	/**
 	 * 
 	 * 方法用途: 未知类型转换成具体类型<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: TODO:暂未完全实现<br>
 	 * @param classType
 	 * @param value
 	 * @return

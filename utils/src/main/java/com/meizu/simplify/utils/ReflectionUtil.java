@@ -14,7 +14,7 @@ import com.meizu.simplify.exception.UncheckedException;
 
 
 /**
- * <p><b>Title:</b><i>反射工具类.</i></p>
+ * <p><b>Title:</b><i>反射工具类</i></p>
  * <p>Desc:  反射的Utils函数集合. 提供访问私有变量,获取泛型类型Class,提取集合中元素的属性等Utils函数.
  * 提供访问私有变量,获取泛型类型Class, 提取集合中元素的属性, 转换字符串到对象等Util函数.</p>
  * <p>source folder:{@docRoot}</p>
@@ -224,64 +224,5 @@ public class ReflectionUtil {
     }
  
     
-    /**
-     * 
-     * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
-     * 操作步骤: TODO <br>
-     * @param 需要解析的class类型
-     * @return 返回第一个位置的泛型的class
-     */
-    public static <T> Class<T> getSuperClassGenricTypeForFirst(final Class<T> clazz) {
-        return getSuperClassGenricType(clazz, 0);
-    }
     
-   
-    /**
-     * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
-     * 操作步骤: TODO <br>
-     * @param 需要解析的class类型
-     * @param 指定实现父类的泛型的参数的位置
-     * @return 返回具体指定index值位置的泛型的class
-     */
-    @SuppressWarnings("unchecked")
-	public  static <T> Class<T> getSuperClassGenricType(final Class<T> clazz, final int index) {
-
-        Type[] params = getSuperClassGenricType(clazz);
-
-        if (index >= params.length || index < 0) {
-            LOGGER.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
-                    + params.length);
-            throw new UncheckedException("你输入的索引" + (index < 0 ? "不能小于0" : "超出了参数的总数")); 
-        }
-        if (!(params[index] instanceof Class)) {
-            LOGGER.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
-            throw new UncheckedException(clazz.getSimpleName() + " 超类的泛型参数没有指定具体类类型"); 
-        }
-
-        return (Class<T>) params[index];
-    }
-
-
-	/**
-	 * 
-	 * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
-	 * 操作步骤: TODO<br>
-	 * @param clazz 需要解析的class类型
-	 * @return 返回泛型的class 列表
-	 */
-	public static <T> Type[] getSuperClassGenricType(final Class<T> clazz) {
-		Type genType = clazz.getGenericSuperclass();// 得到泛型父类
-        if (genType.getTypeName().equals("java.lang.Object")) {
-        	throw new UncheckedException(clazz.getSimpleName() + "的父类是Object"); 
-        }
-        if (!(genType instanceof ParameterizedType)) {
-            LOGGER.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
-//            如果没有实现ParameterizedType接口，即不支持泛型，抛异常
-            throw new UncheckedException(clazz.getSimpleName() + "没有指定实现父类的泛型参数"); 
-        }
-        // 返回表示此类型实际类型参数的Type对象的数组,数组里放的都是对应类型的Class, 如public class ExpireRedisDao<K,V> extends BaseRedisDao<Integer,Serializable>就返回Integer和Serializable类型
-        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-		return params;
-	}
-
 }

@@ -40,7 +40,7 @@ public class ReflectionUtilTest  {
 		class SuperClassGenricType {
 			public Class<? extends SuperClassGenricType> entityClass;
 		    public void getBaseRedisDao(){
-		        this.entityClass = ReflectionUtil.getSuperClassGenricType(getClass(),0);
+		        this.entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass(),0);
 		    }
 		    public  String test() {
 		    	getBaseRedisDao();
@@ -61,7 +61,7 @@ public class ReflectionUtilTest  {
 		class SuperClassGenricType extends ParentCen<Integer,Boolean> {
 			public Class<? extends SuperClassGenricType> entityClass;
 		    public void getBaseRedisDao(){
-		        this.entityClass = ReflectionUtil.getSuperClassGenricTypeForFirst(getClass());
+		        this.entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());
 		    }
 		    public  String test() {
 		    	getBaseRedisDao();
@@ -82,7 +82,7 @@ public class ReflectionUtilTest  {
 		class SuperClassGenricType extends ParentCen<Integer,Boolean> {
 			public Type[] entityClass;
 		    public void getBaseRedisDao(){
-		        this.entityClass = ReflectionUtil.getSuperClassGenricType(getClass());
+		        this.entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass());
 		    }
 		    public  int test() {
 		    	getBaseRedisDao();

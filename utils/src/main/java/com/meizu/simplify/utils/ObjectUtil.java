@@ -55,12 +55,12 @@ public class ObjectUtil {
 	 * 
 	 * 方法用途: 是否是Int类型<br>
 	 * 操作步骤: TODO<br>
-	 * @param s
+	 * @param value
 	 * @return
 	 */
-	public static boolean isInt(Object s) {
+	public static boolean isInt(Object value) {
 		try {
-			Integer.valueOf(s.toString());
+			Integer.valueOf(value.toString());
 		} catch ( Exception e ) {
 			return false;
 		}
@@ -71,12 +71,12 @@ public class ObjectUtil {
 	 * 
 	 * 方法用途: 是否是Float类型<br>
 	 * 操作步骤: TODO<br>
-	 * @param s
+	 * @param value
 	 * @return
 	 */
-	public static boolean isFloat(Object s) {
+	public static boolean isFloat(Object value) {
 		try {
-			Float.valueOf(s.toString());
+			Float.valueOf(value.toString());
 		} catch ( Exception e ) {
 			return false;
 		}
@@ -87,12 +87,12 @@ public class ObjectUtil {
 	 * 
 	 * 方法用途: 是否是Long类型<br>
 	 * 操作步骤: TODO<br>
-	 * @param s
+	 * @param value
 	 * @return
 	 */
-	public static boolean isLong(Object s) {
+	public static boolean isLong(Object value) {
 		try {
-			Long.valueOf(s.toString());
+			Long.valueOf(value.toString());
 		} catch ( Exception e ) {
 			return false;
 		}
@@ -103,12 +103,12 @@ public class ObjectUtil {
 	 * 
 	 * 方法用途: 是否是Boolean类型<br>
 	 * 操作步骤: TODO<br>
-	 * @param s
+	 * @param value
 	 * @return
 	 */
-	public static boolean isBoolean(Object s) {
+	public static boolean isBoolean(Object value) {
 		try {
-			Boolean o = Boolean.valueOf(s.toString());
+			Boolean o = Boolean.valueOf(value.toString());
 			return o;
 		} catch ( Exception e ) {
 			return false;
