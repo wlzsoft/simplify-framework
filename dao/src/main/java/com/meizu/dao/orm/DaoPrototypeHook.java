@@ -15,15 +15,16 @@ package com.meizu.dao.orm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.dao.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
-import com.meizu.simplify.utils.DataUtil;
+import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.PropertieUtil;
 
 @BeanHook(Dao.class)
 public class DaoPrototypeHook implements IBeanPrototypeHook {
@@ -36,40 +37,30 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 	@Override
 	public List<?> hook(Class<?> clazz) {
 		
-		
-		BeanFactory beanFactory = null;
-		Properties obj = (Properties) beanFactory.getBean("config");
-		if(obj!=null) {
-			initBean = DataUtil.parseBoolean(obj.get("system.init.bean"));
+		PropertiesConfig obj = (PropertiesConfig) BeanFactory.getBean(PropertiesConfig.class);
+		PropertieUtil propertieUtil = obj.getProperties();
+		if(propertieUtil!=null) {
+			initBean = propertieUtil.getBoolean("system.init.bean");
 		}
 		if(initBean !=null && !initBean) {
 			return null;
 		}
-		/*if (CollectionUtil.isNotEmpty(entityClasses)) {
+		LOGGER.debug("开始初始化Dao实例....");
+		List<Object> list = new ArrayList<>();
+		List<Class<?>> entityClasses = null;//TODO 扫描Entity注解的实体，获取实体列表
+//		循环ORM对象列表
+		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {
-				AnnotatedGenericBeanDefinition daoDefinition = new AnnotatedGenericBeanDefinition(
-						Dao.class);
-
-				ConstructorArgumentValues av = new ConstructorArgumentValues();
-				av.addGenericArgumentValue(entityClass);
-//				av.addGenericArgumentValue(1);
-				daoDefinition.setConstructorArgumentValues(av);
 
 				String beanName = entityClass.getSimpleName();
 				char[] chars = beanName.toCharArray();
 				chars[0] = Character.toLowerCase(chars[0]);
 				beanName = new String(chars) + "BaseDao";
-				((DefaultListableBeanFactory) beanFactory)
-						.registerBeanDefinition(beanName, daoDefinition);
-				log.info("已注入bean[{}]", beanName);
+				list.add(new Dao(this.getClass()));//TODO 改造,支持beanname的定义
+				LOGGER.info("已注入bean:DAO[{}]", beanName);
 			}
-		}*/
+		}
 		
-		
-		
-		List<Object> list = new ArrayList<>();
-		list.add(new Dao(this.getClass()));
-		list.add(new Dao(this.getClass()));
 		return list;
 	}
 
