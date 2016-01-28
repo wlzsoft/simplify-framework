@@ -8,8 +8,8 @@ import com.meizu.simplify.ioc.BeanFactory;
 
 /**
  * 
- * <p><b>Title:</b><i> 基于Mybatis的基础泛型DAO实现类--已经废弃，替换为Dao这个类来实现</i></p>
- * <p>Desc: SqlSessionTemplate的实现方式</p>
+ * <p><b>Title:</b><i>sql数据库Dao操作基类</i></p>
+ * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
