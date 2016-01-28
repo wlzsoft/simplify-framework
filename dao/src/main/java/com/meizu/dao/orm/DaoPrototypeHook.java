@@ -59,7 +59,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 				char[] chars = beanName.toCharArray();
 				chars[0] = Character.toLowerCase(chars[0]);
 				beanName = new String(chars) + "BaseDao";
-				list.add(new Dao(this.getClass()));//TODO 改造,支持beanname的定义
+//				list.add(new Dao(this.getClass()));//TODO 改造,支持beanname的定义
 				LOGGER.info("已注入bean:DAO[{}]", beanName);
 			}
 		}
