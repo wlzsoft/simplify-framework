@@ -18,5 +18,7 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
  */
 @Bean(type=BeanTypeEnum.PROTOTYPE)
 public class Dao {
-
+	public String getSql() {
+		return "select * from table;";
+	}
 }

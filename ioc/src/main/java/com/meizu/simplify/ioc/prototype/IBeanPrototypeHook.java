@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
   * <p><b>Title:</b><i>bean多例钩子处理</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 用于bean的多实例创建定制操作</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

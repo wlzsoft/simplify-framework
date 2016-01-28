@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.ioc.dao.Dao;
 import com.meizu.simplify.ioc.service.ITestService;
 import com.meizu.simplify.ioc.service.TestService;
 
@@ -42,5 +43,16 @@ public  class BeanFactoryTest {
 	public void getBeanByInterface() {
 		ITestService obj = BeanFactory.getBean(TestService.class);
 		LOGGER.debug(obj.getDemoService().getName()+"");
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 多实例bean获取<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void getBeanByPrototype() {
+		Dao obj = BeanFactory.getBean(Dao.class);
+		LOGGER.debug(obj.getSql()+"|"+obj.toString());
 	}
 }
