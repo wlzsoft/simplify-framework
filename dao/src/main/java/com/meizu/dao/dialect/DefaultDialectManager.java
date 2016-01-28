@@ -27,10 +27,6 @@ public class DefaultDialectManager implements IDialectManager {
 
 	private Map<String, IDialect> dialects;
 
-	/**
-	 * set the dialects
-	 * @param dialects the dialects to set
-	 */
 	public void setDialects(Map<String, IDialect> dialects) {
 		this.dialects = dialects;
 		initDialects();
@@ -45,9 +41,7 @@ public class DefaultDialectManager implements IDialectManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.dialect.IDialectManager#getDialect(java.lang.String)
-	 */
+	@Override
 	public IDialect getDialect(String dialectName) {
 		IDialect dialect = dialects.get(dialectName);
 		if (dialect == null) {

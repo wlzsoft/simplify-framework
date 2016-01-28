@@ -2,7 +2,7 @@ package com.meizu.dao.dialect;
 
 /**
  * 
- * <p><b>Title:</b><i>数据库方言基础实现类，此类不支持分页处理。</i></p>
+ * <p><b>Title:</b><i>数据库方言基础实现类，此类不支持分页处理</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -16,35 +16,35 @@ package com.meizu.dao.dialect;
  */
 public class Dialect implements IDialect {
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.dialect.IDialect#supportsLimit()
-	 */
+	@Override
 	public boolean supportsLimit(){
     	return false;
     }
 
-    /* (non-Javadoc)
-     * @see com.meizu.data.dialect.IDialect#supportsLimitOffset()
-     */
+	@Override
     public boolean supportsLimitOffset() {
     	return supportsLimit();
     }
     
-    /* (non-Javadoc)
-     * @see com.meizu.data.dialect.IDialect#getLimitString(java.lang.String, int, int)
-     */
+	@Override
     public String getLimitString(String sql, int offset, int limit) {
     	return getLimitString(sql,offset,Integer.toString(offset),limit,Integer.toString(limit));
     }
     
     /**
-     * 将sql变成分页sql语句,提供将offset及limit使用占位符(placeholder)替换。
-     * 需要由子类重写此方法实现sql语句分页处理拼装以及占位符替换
+     * 
+     * 方法用途: 将sql变成分页sql语句,提供将offset及limit使用占位符(placeholder)替换<br>
+     * 操作步骤: 需要由子类重写此方法实现sql语句分页处理拼装以及占位符替换
      * <pre>
      * 如mysql
      * dialect.getLimitString("select * from user", 12, ":offset",0,":limit") 将返回
      * select * from user limit :offset,:limit
-     * </pre>
+     * </pre><br>
+     * @param sql
+     * @param offset
+     * @param offsetPlaceholder
+     * @param limit
+     * @param limitPlaceholder
      * @return 包含占位符的分页sql
      */
     protected String getLimitString(String sql, int offset,String offsetPlaceholder, int limit,String limitPlaceholder) {

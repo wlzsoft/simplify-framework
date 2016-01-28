@@ -17,9 +17,11 @@ package com.meizu.dao.dialect;
 public interface IDialectManager {
 
 	/**
-	 * 根据方言名称获取方言对象
+	 * 
+	 * 方法用途: 根据方言名称获取方言对象<br>
+	 * 操作步骤: TODO<br>
 	 * @param dialectName 方言名称
-	 * @return 方言对象
+	 * @return
 	 */
 	IDialect getDialect(String dialectName);
 
