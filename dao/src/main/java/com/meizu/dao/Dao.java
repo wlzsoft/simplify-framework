@@ -1406,39 +1406,34 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public KeyHolder saveRePrimarykey(String sql, Object[] args) {
+	public T findUnique(String sql, Object[] args, RowMapper<T> rowMapper) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<T> queryForList(String sql, Object[] args, RowMapper<T> rowMapper) {
+	public T findUnique(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<T> queryForList(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
+	public List<T> find(String sql, Object[] args, RowMapper<T> rowMapper) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public T queryForObject(String sql, Object[] args, RowMapper<T> rowMapper) {
+	public List<T> find(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public T queryForObject(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
+	public List<T> find(String sql) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public List<T> queryForList(String sql) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

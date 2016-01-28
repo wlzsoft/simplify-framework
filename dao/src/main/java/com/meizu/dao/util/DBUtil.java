@@ -1,11 +1,7 @@
 package com.meizu.dao.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.annotation.Resource;
-
 import com.meizu.dao.ICommonDao;
+import com.meizu.simplify.ioc.annotation.Resource;
 
 
 /**
@@ -22,24 +18,20 @@ import com.meizu.dao.ICommonDao;
  *
  */
 public class DBUtil  {
-	@Resource
-	private ICommonDao dao;
 	
-	public static String getMysqlDbDateByString(){
-		//ICommonDao commonDao = (ICommonDao)SpringContext.getBean("ICommonDao");
-//		return commonDao.getMysqlDbDate();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(new Date());
-	}
+	@Resource
+	private static ICommonDao dao;
 	
 	/**
 	 * 方法用途: 获取系统当前时间<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	/*public static Date getMysqlDbDate(){
-		//String dateStr = SpringContext.getInstance(ICommonDao.class).getMysqlDbDate();
-		return DateUtil.getCurrentDate();
-	}*/
+	public static String getMysqlDbDateByString(){
+		String dateStr = dao.getMysqlDbDate();
+		return dateStr;
+	}
+	
+	
 	
 }

@@ -50,15 +50,15 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 	public void execute(String sql, Object[] args, int[] types);
 	
 	/**
-	 * 方法用途: 批量插入<br>
-	 * 操作步骤: <br>
+	 * 方法用途: 批量处理<br>
+	 * 操作步骤: 更新，删除，修改<br>
 	 * @param sql SQL语句
 	 * @param batchArgs 参数对象列表
 	 */
 	public void executeBatch(String sql, List<Object[]> batchArgs);
 	
 	/**
-	 * 方法用途: 批量插入<br>
+	 * 方法用途: 批量处理<br>
 	 * 操作步骤: <br>
 	 * @param sql SQL语句
 	 * @param batchArgs 参数对象列表
@@ -66,67 +66,6 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 	 */
 	public void executeBatch(String sql, List<Object[]> batchArgs, int[] types);
 	
-	/**
-	 * 方法用途: 保存记录返回主键<br>
-	 * 操作步骤: <br>
-	 * @param sql SQL语句
-	 * @param objs 参数对象
-	 * @return 返回主键
-	 */
-	public KeyHolder saveRePrimarykey(String sql, Object[] args);
-	
-	/**
-	 * 方法用途: 列表查询<br>
-	 * 操作步骤: <br>
-	 * @param sql SQL语句
-	 * @param objs 参数对象
-	 * @param rowMapper 对象结果映射
-	 * @return 结果列表
-	 */
-	public List<T> queryForList(String sql, Object[] args, RowMapper<T> rowMapper);
-	
-	/**
-	 * 方法用途: 列表查询<br>
-	 * 操作步骤: <br>
-	 * @param sql SQL语句
-	 * @param objs 参数对象
-	 * @param types 参数映射类型
-	 * @param rowMapper 对象结果映射
-	 * @return 结果列表
-	 */
-	public List<T> queryForList(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
-	
-	/**
-	 * 方法用途: 查询返回单个对象<br>
-	 * 操作步骤: <br>
-	 * @param sql SQL语句
-	 * @param objs 参数对象
-	 * @param rowMapper 对象结果映射
-	 * @return 结果对象
-	 */
-	public T queryForObject(String sql, Object[] args, RowMapper<T> rowMapper);
-	
-	/**
-	 * 方法用途: 查询返回单个对象<br>
-	 * 操作步骤: <br>
-	 * @param sql SQL语句
-	 * @param objs 参数对象
-	 * @param types 参数映射类型
-	 * @param rowMapper 对象结果映射
-	 * @return 结果对象
-	 */
-	public T queryForObject(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
-
-	/**
-	 * 
-	 * 方法用途: 待实现，待测试<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @return
-	 */
-	public List<T> queryForList(String sql);
-	
-//	--------------------------------------------------------
 	/**
 	 * 已测试
      * 方法用途: 新增(不会将序列生成的ID注入)<br>
@@ -146,18 +85,18 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
      */
     void create(List<T> list);
      
+    
 	/**
-	 * 已测试
-	 * 方法用途: 新增(会将序列生成的ID,注入)
-     * 保存（持久化）对象<br>
-	 * 操作步骤: TODO<br>
-	 * @param ob 要持久化的对象
+	 * 
+	 * 方法用途: 新增记录(会将序列生成的ID,注入)<br>
+	 * 操作步骤: 保存（持久化）对象<br>
+	 * @param ob  要持久化的对象
 	 * @return 执行成功的记录个数
 	 */
 	Integer save(T ob);
     /**
      * 未测试
-     * 方法用途: 批量新增(会将序列生成的ID,注入)<br>
+     * 方法用途: 批量新增记录(会将序列生成的ID,注入)<br>
      * 操作步骤: TODO<br>
      * @param list
      */
@@ -359,6 +298,28 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 	 * @return  返回唯一业务实体，如果没有找到返回null。
 	 */
 	T findUnique(Criteria criteria);
+	
+	/**
+	 * 方法用途: 查询返回单个对象<br>
+	 * 操作步骤: <br>
+	 * @param sql SQL语句
+	 * @param objs 参数对象
+	 * @param rowMapper 对象结果映射
+	 * @return 结果对象
+	 */
+	public T findUnique(String sql, Object[] args, RowMapper<T> rowMapper);
+	
+	/**
+	 * 方法用途: 查询返回单个对象<br>
+	 * 操作步骤: <br>
+	 * @param sql SQL语句
+	 * @param objs 参数对象
+	 * @param types 参数映射类型
+	 * @param rowMapper 对象结果映射
+	 * @return 结果对象
+	 */
+	public T findUnique(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
+	
 	/**
 	 * 未测试
 	 * 方法用途: 判断是否存在属性重复的业务实体。<br>
@@ -535,6 +496,35 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 	 * @return
 	 */
 	List<T> find(Page<T> page, Object... values);
+	
+	/**
+	 * 方法用途: 列表查询<br>
+	 * 操作步骤: <br>
+	 * @param sql SQL语句
+	 * @param objs 参数对象
+	 * @param rowMapper 对象结果映射
+	 * @return 结果列表
+	 */
+	public List<T> find(String sql, Object[] args, RowMapper<T> rowMapper);
+	
+	/**
+	 * 方法用途: 列表查询<br>
+	 * 操作步骤: <br>
+	 * @param sql SQL语句
+	 * @param objs 参数对象
+	 * @param types 参数映射类型
+	 * @param rowMapper 对象结果映射
+	 * @return 结果列表
+	 */
+	public List<T> find(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
+	/**
+	 * 
+	 * 方法用途: 待实现，待测试<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @return
+	 */
+	public List<T> find(String sql);
 
 	void saveByMycat(List<T> list);
 
