@@ -1,4 +1,4 @@
-package com.meizu.dao.springjdbc;
+package com.meizu.dao;
 
 import com.meizu.dao.util.DynamicDataSourceHolder;
 import com.meizu.simplify.ioc.annotation.Bean;

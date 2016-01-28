@@ -1,4 +1,4 @@
-package com.meizu.dao.springjdbc;
+package com.meizu.dao;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

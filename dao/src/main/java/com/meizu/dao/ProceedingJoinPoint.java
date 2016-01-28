@@ -1,4 +1,4 @@
-package com.meizu.dao.springjdbc;
+package com.meizu.dao;
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
