@@ -29,7 +29,9 @@ import com.meizu.dao.dto.SaveDTO;
 import com.meizu.dao.dto.WhereDTO;
 import com.meizu.dao.util.Page;
 import com.meizu.entity.IdEntity;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.exception.BaseDaoException;
 //import com.meizu.util.BeanUtils;
@@ -50,7 +52,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @param <T> 业务实体类型 
  * @param <PK>  PK类型 ，如：String、Long、Integer 等
  */
-//@Repository//不建议这样创建实例，因为是未定义类型的泛型类
+@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializable>   implements IBaseDao<T, PK> {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
