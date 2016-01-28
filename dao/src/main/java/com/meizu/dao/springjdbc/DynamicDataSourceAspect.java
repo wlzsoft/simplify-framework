@@ -1,8 +1,9 @@
 package com.meizu.dao.springjdbc;
 
 import com.meizu.dao.util.DynamicDataSourceHolder;
+import com.meizu.simplify.ioc.annotation.Bean;
 /**
- * <p><b>Title:</b><i>TODO</i></p>
+ * <p><b>Title:</b><i>动态数据源切面</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -15,12 +16,9 @@ import com.meizu.dao.util.DynamicDataSourceHolder;
  *
  */
 //@Aspect  
-//@Component
+@Bean
 public class DynamicDataSourceAspect {
-//	@Pointcut("execution (public com.meizu.*.service..*.*(..))")
-	public void serviceExe() {
-	}
-
+	
 
 	/**
 	 * 
@@ -30,7 +28,6 @@ public class DynamicDataSourceAspect {
 	 * @return
 	 * @throws Throwable
 	 */
-//	@Around("serviceExe()")
 	public Object interceptor(ProceedingJoinPoint pjp) throws Throwable {
 		
 		// 根据具体情况，自动解析，通过DynamicDataSourceHolder.setDataSourceName() 指定不同数据源   
