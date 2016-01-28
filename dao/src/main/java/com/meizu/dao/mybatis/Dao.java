@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.dao.Constant;
 import com.meizu.dao.annotations.Column;
 import com.meizu.dao.annotations.Key;
+import com.meizu.dao.annotations.Table;
 import com.meizu.dao.annotations.Transient;
 import com.meizu.dao.mybatis.base.BaseDTO;
 import com.meizu.dao.mybatis.base.BaseDTO.LinkType;
