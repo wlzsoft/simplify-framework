@@ -102,6 +102,7 @@ public interface Query<T> {
 	public Map<String, Object> selectOne(String sqlName, BaseDTO dto);
 
 	public Integer selectOne(String sqlName, Map<String, Object> paramMap);
+	
 	public List<Map<String, Object>> selectList(String sqlName, BaseDTO dto);
 
 	public Integer delete(String sqlName, BaseDTO removeById);
