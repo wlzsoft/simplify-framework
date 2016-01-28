@@ -1,4 +1,4 @@
-package com.meizu.dao.mybatis.interceptor;
+package com.meizu.dao;
  
 import java.text.DateFormat;
 import java.util.Date;
