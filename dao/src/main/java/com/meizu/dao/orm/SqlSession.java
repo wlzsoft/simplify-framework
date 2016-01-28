@@ -21,17 +21,17 @@ import com.meizu.dao.dto.SaveDTO;
  * @version Version 0.1
  *
  */
-public interface Query<T> {
+public interface SqlSession<T> {
 	
-	public Query setMaxResults(int maxResult);
+	public SqlSession setMaxResults(int maxResult);
 	
 	public int getMaxResults();
 
-	public Query setFirstResult(int startPosition);
+	public SqlSession setFirstResult(int startPosition);
 
 	public int getFirstResult();
 
-	public Query setHint(String hintName, Object value);
+	public SqlSession setHint(String hintName, Object value);
 
 //	public Map<String, Object> getHints();
 
@@ -41,13 +41,13 @@ public interface Query<T> {
 
 //	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
 	
-	public Query setParameter(String name, Object value); 
+	public SqlSession setParameter(String name, Object value); 
 	
 //	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
 	
 //	public Query setParameter(String name, Date value, TemporalType temporalType);
 	
-	public Query setParameter(int position, Object value);
+	public SqlSession setParameter(int position, Object value);
 	
 //	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
 	

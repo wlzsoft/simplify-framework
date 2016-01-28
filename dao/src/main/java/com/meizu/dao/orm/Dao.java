@@ -89,7 +89,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 配置文件中，有bean的注入,和上面共用,下面的是对SqlSession经过了一层的封装--推荐使用
 	 */
 	@Resource(name = "sqlSession")
-	private Query sqlSessionTemplate;
+	private SqlSession sqlSessionTemplate;
 	
 	private Class<T> entityClass;
 	/**
@@ -119,15 +119,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	
-	public void setSqlSession(Query sqlSessionTemplate) {
+	public void setSqlSession(SqlSession sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 
-	public Query getSqlSessionTemplate() {
+	public SqlSession getSqlSessionTemplate() {
 		return sqlSessionTemplate;
 	}
 
-	public void setSqlSessionTemplate(Query sqlSessionTemplate) {
+	public void setSqlSessionTemplate(SqlSession sqlSessionTemplate) {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 	
@@ -203,7 +203,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 操作步骤: TODO<br>
 	 * @return  返回mybatis的Session。
 	 */
-	public Query getSession() {
+	public SqlSession getSession() {
 		return sqlSessionTemplate;
 	}
 
