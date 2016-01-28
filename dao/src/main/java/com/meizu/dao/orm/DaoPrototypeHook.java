@@ -19,11 +19,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.dao.annotations.Entity;
 import com.meizu.dao.annotations.Value;
 import com.meizu.dao.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
+import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 
@@ -48,7 +50,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 		}
 		LOGGER.debug("开始初始化Dao实例....");
 		List<Object> list = new ArrayList<>();
-		List<Class<?>> entityClasses = null;//TODO 扫描Entity注解的实体，获取实体列表
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, "com.meizu");//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {

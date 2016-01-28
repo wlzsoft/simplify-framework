@@ -1,4 +1,9 @@
 package com.meizu.dao;
+
+import org.junit.Test;
+
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -13,5 +18,8 @@ package com.meizu.dao;
  *
  */
 public class DaoTest {
-
+	@Test
+	public void resolve() {
+		new BeanAnnotationResolver().resolve(null);
+	}
 }
