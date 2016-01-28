@@ -19,4 +19,9 @@ public class HttpServletRequest {
 		return null;
 	}
 
+	public Object getParameter(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
