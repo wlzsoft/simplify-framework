@@ -41,10 +41,14 @@ import com.meizu.simplify.utils.StringUtil;
 public class TestController extends BaseController<TestModel> {
 
 	@Resource
+	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要 
+	
+	@Resource
 	private TestService testService;
 	
 	@RequestMap(path = "/(.+)/(.+)/testpage$ /test/demo_(.+).html$ /test/login.html$ /web/$ /test/ /testa/(.+)/(.+)$")
 	public IForward doTest(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1",name="a3") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
+//		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
 //		String domain = CookiesUtil.getDomain(request);
 //			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 		// 判断当前访问站点来源
