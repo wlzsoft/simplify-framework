@@ -1,4 +1,4 @@
-package com.meizu.dao;
+package com.meizu.dao.orm;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +10,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.dao.Constant;
 import com.meizu.dao.annotations.Key;
 import com.meizu.dao.dto.BaseDTO;
 import com.meizu.dao.dto.SaveDTO;

@@ -1,4 +1,4 @@
-package com.meizu.dao;
+package com.meizu.dao.orm;
 
 import java.util.Properties;
 

@@ -1,4 +1,4 @@
-package com.meizu.dao;
+package com.meizu.dao.orm;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -13,6 +13,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.dao.Constant;
+import com.meizu.dao.Criteria;
+import com.meizu.dao.Restrictions;
+import com.meizu.dao.ResultHandler;
+import com.meizu.dao.RowBounds;
+import com.meizu.dao.RowMapper;
 import com.meizu.dao.annotations.Column;
 import com.meizu.dao.annotations.Key;
 import com.meizu.dao.annotations.Table;

@@ -1,8 +1,10 @@
-package com.meizu.dao;
+package com.meizu.dao.orm;
 
 import java.util.List;
 import java.util.Map;
 
+import com.meizu.dao.ResultHandler;
+import com.meizu.dao.RowBounds;
 import com.meizu.dao.dto.BaseDTO;
 import com.meizu.dao.dto.SaveDTO;
 
