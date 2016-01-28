@@ -1,4 +1,4 @@
-package com.meizu.dao.util;
+package com.meizu.dao;
 /**
  * <p><b>Title:</b><i>动态数据源处理类</i></p>
  * <p>Desc: 用法：需要在具体的dao实现类中按情况调用DynamicDataSourceHolder.setMaster();或是setSlave(),或是setDataSourceName("master")

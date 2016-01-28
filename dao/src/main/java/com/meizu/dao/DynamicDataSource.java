@@ -1,4 +1,4 @@
-package com.meizu.dao.util;
+package com.meizu.dao;
 
 import java.util.Map;
 

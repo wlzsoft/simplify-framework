@@ -1,6 +1,5 @@
 package com.meizu.dao;
 
-import com.meizu.dao.util.DynamicDataSourceHolder;
 import com.meizu.simplify.ioc.annotation.Bean;
 /**
  * <p><b>Title:</b><i>动态数据源切面</i></p>
