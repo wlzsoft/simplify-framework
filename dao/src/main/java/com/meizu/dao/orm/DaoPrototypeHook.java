@@ -19,6 +19,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.dao.annotations.Value;
 import com.meizu.dao.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.BeanHook;

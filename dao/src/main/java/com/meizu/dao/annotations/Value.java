@@ -1,7 +1,7 @@
-package com.meizu.dao.orm;
+package com.meizu.dao.annotations;
 /**
   * <p><b>Title:</b><i>配置信息依赖注入标记</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: TODO:后续迁移到其他位置</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
