@@ -1,4 +1,4 @@
-package com.meizu.dao.mybatis;
+package com.meizu.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -13,8 +13,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.dao.Constant;
-import com.meizu.dao.Query;
 import com.meizu.dao.annotations.Column;
 import com.meizu.dao.annotations.Key;
 import com.meizu.dao.annotations.Table;
@@ -23,6 +21,7 @@ import com.meizu.dao.dto.BaseDTO;
 import com.meizu.dao.dto.SaveDTO;
 import com.meizu.dao.dto.WhereDTO;
 import com.meizu.dao.dto.BaseDTO.LinkType;
+import com.meizu.dao.mybatis.IBaseDao;
 import com.meizu.dao.util.BuildInfo;
 import com.meizu.dao.util.Page;
 import com.meizu.entity.IdEntity;

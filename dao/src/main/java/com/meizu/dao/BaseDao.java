@@ -1,4 +1,4 @@
-package com.meizu.dao.mybatis;
+package com.meizu.dao;
 
 import java.io.Serializable;
 

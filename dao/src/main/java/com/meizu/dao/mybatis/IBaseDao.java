@@ -2,6 +2,7 @@ package com.meizu.dao.mybatis;
 import java.io.Serializable;
 import java.util.List;
 
+import com.meizu.dao.Criteria;
 import com.meizu.dao.util.Page;
 import com.meizu.entity.IdEntity;
  

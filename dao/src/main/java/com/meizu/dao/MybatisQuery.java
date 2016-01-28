@@ -1,12 +1,10 @@
-package com.meizu.dao.mybatis;
+package com.meizu.dao;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.meizu.dao.Query;
 
 
 /**
