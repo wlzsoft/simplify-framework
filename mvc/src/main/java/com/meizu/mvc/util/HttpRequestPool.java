@@ -14,4 +14,26 @@ package com.meizu.mvc.util;
  */
 public class HttpRequestPool {
 
+	/**
+	 * 
+	 * 方法用途: 从池中获取request对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param clazz
+	 * @return
+	 */
+	public static <T>  T getRequest(Class<T> clazz) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 从池中获取request对象，默认Object类型<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static Object getRequest() {
+		return getRequest(Object.class);
+	}
+
 }
