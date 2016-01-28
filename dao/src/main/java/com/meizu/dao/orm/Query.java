@@ -1,4 +1,13 @@
 package com.meizu.dao.orm;
+
+import java.util.List;
+import java.util.Map;
+
+import com.meizu.dao.ResultHandler;
+import com.meizu.dao.RowBounds;
+import com.meizu.dao.dto.BaseDTO;
+import com.meizu.dao.dto.SaveDTO;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -12,7 +21,7 @@ package com.meizu.dao.orm;
  * @version Version 0.1
  *
  */
-public interface Query {
+public interface Query<T> {
 	
 	public Query setMaxResults(int maxResult);
 
@@ -99,4 +108,33 @@ public interface Query {
 
 	
 	public <T> T unwrap(Class<T> cls);
+	
+	public void select(String sqlName, Object parameter, RowBounds rowBounds, ResultHandler handler);
+
+	public Integer insert(String sqlName, SaveDTO dto);
+
+	public void insert(String sqlName, String createOfBatch);
+
+	public void flushStatements();
+
+	public List<T> selectList(String sqlName, Map<String, Object> paramMap, RowBounds rowBound);
+
+	public Map<Object, Object> selectMap(String sqlName, Object parameter, String mapKey, RowBounds rowBounds);
+
+	public List<Map<String, Object>> selectList(String sqlName, String findBy);
+
+	public Integer selectOne(String sqlName, String findAllCount);
+
+	public Map<String, Object> selectOne(String sqlName, BaseDTO dto);
+
+	public Integer selectOne(String sqlName, Map<String, Object> paramMap);
+	public List<Map<String, Object>> selectList(String sqlName, BaseDTO dto);
+
+	public Integer delete(String sqlName, BaseDTO removeById);
+
+	public Integer delete(String sqlName, String removeAll);
+
+	public Integer update(String sqlName, String update);
+
+	public List<T> selectList(String sqlName, Map<String, Object> paramMap);
 }
