@@ -1,6 +1,6 @@
 package com.meizu.dao.util;
 
-import com.meizu.dao.exception.HttpServletRequest;
+import com.meizu.dao.HttpServletRequest;
 
 public class AjaxUtils {
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";

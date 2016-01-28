@@ -3,7 +3,7 @@ package com.meizu.dao.util;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.meizu.dao.exception.HttpServletRequest;
+import com.meizu.dao.HttpServletRequest;
 import com.meizu.entity.IdEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
