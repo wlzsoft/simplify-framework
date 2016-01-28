@@ -23,4 +23,12 @@ import com.meizu.entity.BaseEntity;
 @Transient({"delFlag"})
 public class Test extends BaseEntity {
 
+	private static final long serialVersionUID = 246628316050179125L;
+	private String name;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }
