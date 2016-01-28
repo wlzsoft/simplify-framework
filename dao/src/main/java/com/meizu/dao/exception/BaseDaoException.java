@@ -1,6 +1,6 @@
-package com.meizu.dao;
+package com.meizu.dao.exception;
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>sql数据库操作异常</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -12,10 +12,13 @@ package com.meizu.dao;
  * @version Version 0.1
  *
  */
-public class BaseDaoException extends Exception {
+public class BaseDaoException extends DataAccessException {
 
-	public BaseDaoException(String string, Exception e) {
-		// TODO Auto-generated constructor stub
+	private static final long serialVersionUID = -8493853380933833778L;
+	public BaseDaoException(int code) {
+		super(code);
 	}
+
+
 
 }
