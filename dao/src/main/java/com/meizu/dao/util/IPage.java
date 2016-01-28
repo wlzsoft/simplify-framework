@@ -26,7 +26,7 @@ public interface IPage<T> extends Serializable {
 	 * 
 	 * 方法用途: 是否为第一页<br>
 	 * 操作步骤: TODO<br>
-	 * @return 是否为第一页
+	 * @return 
 	 */
 	boolean isFirstPage();
 
@@ -34,7 +34,7 @@ public interface IPage<T> extends Serializable {
 	 * 
 	 * 方法用途: 是否为最后一页 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 是否为最后一页 
+	 * @return  
 	 */
 	boolean isLastPage();
 
@@ -42,7 +42,7 @@ public interface IPage<T> extends Serializable {
 	 * 
 	 * 方法用途:  有无下一页 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 真(true)为有下一页，假(false)为无
+	 * @return 
 	 */
 	boolean isHasNextPage();
 
@@ -50,32 +50,29 @@ public interface IPage<T> extends Serializable {
 	 * 
 	 * 方法用途: 有无上一页 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 真(true)为有上一页，假(false)为无
+	 * @return 
 	 */
-	boolean isHasPreviousPage();
+	boolean isHasPrevPage();
 
 	/**
 	 * 
-	 * 方法用途: 得到最后一页的页号 <br>
+	 * 方法用途: 获取最后一页的页码 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 最后一页的页号 
+	 * @return 
 	 */
 	int getLastPageNo();
-
-	
-
 	/**
 	 * 
-	 * 方法用途: 得到数据总个数<br>
+	 * 方法用途: 获取总记录数<br>
 	 * 操作步骤: TODO<br>
-	 * @return 数据总个数
+	 * @return 
 	 */
 	int getTotalRecord();
 	/**
 	 * 
 	 * 方法用途: 获取当前页第一条记录在所有记录的编号，即数据项范围上标<br>
 	 * 操作步骤: TODO<br>
-	 * @return 当前页第一条记录在所有记录的编号
+	 * @return 
 	 */
 	int getThisPageFirstElementNumber();
 
@@ -83,46 +80,46 @@ public interface IPage<T> extends Serializable {
 	 * 
 	 * 方法用途: 获取当前页最后一条记录在所有记录的编号 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 当前页最后一条记录在所有记录的编号
+	 * @return 
 	 */
 	int getThisPageLastElementNumber();
     
 	/**
 	 * 
-	 * 方法用途: 得到下一页的页号<br>
+	 * 方法用途: 获取下一页的页码<br>
 	 * 操作步骤: TODO<br>
-	 * @return 下一页的页号
+	 * @return 
 	 */
 	int getNextPageNo();
 
 	/**
 	 * 
-	 * 方法用途: 得到前一页的页号 <br>
+	 * 方法用途: 获取前一页的页码 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 前一页的页号
+	 * @return 
 	 */
-	int getPreviousPageNo();
+	int getPrevPageNo();
 
 	/**
 	 * 
-	 * 方法用途: 得到设定的页大小（每页数据个数） <br>
+	 * 方法用途: 获取每页记录数<br>
 	 * 操作步骤: TODO<br>
-	 * @return 页大小 （每页数据个数）
+	 * @return 
 	 */
 	int getPageSize();
 
 	/**
 	 * 
-	 * 方法用途: 得到当前页的页号 <br>
+	 * 方法用途: 获取当前页的页码 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 当前页的页号 
+	 * @return  
 	 */
-	int getPageNo();
+	int getCurrentPage();
 	/**
 	 * 
-	 * 方法用途: 得到总页数<br>
+	 * 方法用途: 获取总页数<br>
 	 * 操作步骤: TODO<br>
-	 * @return 总页数
+	 * @return 
 	 */
 	int getTotalPage();
 
@@ -130,8 +127,9 @@ public interface IPage<T> extends Serializable {
 	 * 
 	 * 方法用途: 获取当前页中包含的数据<br>
 	 * 操作步骤: TODO<br>
-	 * @return 当前页中包含的数据
+	 * @return 
 	 */
 	List<T> getResults();
+
 
 }
