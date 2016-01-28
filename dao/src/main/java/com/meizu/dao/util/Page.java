@@ -26,14 +26,15 @@ import com.meizu.simplify.exception.UncheckedException;
  *
  * @param <T> 分页对象中包含内容的对象类型
  */
-public class Page<T> extends AbstractPage<T> implements IPage<T>{  
+public class Page<T>  implements IPage<T>{  
    
+	private static final long serialVersionUID = 528967450681022746L;
+
 	static String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|"  
             + "(\\b(and|exec|execute|insert|select|delete|update|count|drop|\\*|%|chr|mid|master|truncate|char|declare|sitename|net user|xp_cmdshell|;|or|-|\\+|,|like'|and|exec|execute|insert|create|drop|table|from|grant|use|group_concat|column_name|information_schema.columns|table_schema|union|where|select|delete|update|order|by|count|chr|mid|master|truncate|char|declare|or|;|-|--|,|like|//|/|%|#)\\b)";  
   
     static Pattern sqlPattern = Pattern.compile(reg, Pattern.CASE_INSENSITIVE);  
 
-	private static final long serialVersionUID = -1096861038358450099L;
 	//js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 start
 //	@JsonIgnore
 	private boolean isFirstPage;

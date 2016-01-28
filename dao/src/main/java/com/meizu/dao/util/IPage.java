@@ -2,6 +2,7 @@ package com.meizu.dao.util;
 
 
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public interface IPage<T> {
+public interface IPage<T> extends Serializable {
 	
 	/**
 	 * 
