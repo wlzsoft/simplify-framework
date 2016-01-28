@@ -3,8 +3,8 @@ package com.meizu.dao.mybatis;
 import java.util.List;
 import java.util.Map;
 
-import com.meizu.dao.mybatis.base.BaseDTO;
-import com.meizu.dao.mybatis.base.SaveDTO;
+import com.meizu.dao.dto.BaseDTO;
+import com.meizu.dao.dto.SaveDTO;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

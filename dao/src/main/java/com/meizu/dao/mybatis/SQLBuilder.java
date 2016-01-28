@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.dao.Constant;
 import com.meizu.dao.annotations.Key;
-import com.meizu.dao.mybatis.base.BaseDTO;
-import com.meizu.dao.mybatis.base.SaveDTO;
-import com.meizu.dao.mybatis.base.WhereDTO;
+import com.meizu.dao.dto.BaseDTO;
+import com.meizu.dao.dto.SaveDTO;
+import com.meizu.dao.dto.WhereDTO;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.DateUtil;

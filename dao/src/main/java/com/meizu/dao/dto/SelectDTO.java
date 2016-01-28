@@ -1,4 +1,4 @@
-package com.meizu.dao.mybatis.base;
+package com.meizu.dao.dto;
 
 import com.meizu.dao.util.Page;
 
