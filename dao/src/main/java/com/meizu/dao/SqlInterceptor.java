@@ -8,6 +8,10 @@ import java.util.Properties;
  
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.meizu.aop.IInterceptor;
+import com.meizu.dao.dialect.IDialectManager;
+import com.meizu.simplify.ioc.annotation.Resource;
  
 /**
  * 
@@ -25,13 +29,21 @@ import org.slf4j.LoggerFactory;
  * @version Version 0.1
  *
  */
-//@Intercepts({
-//        @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }),
-//        @Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
-//                RowBounds.class, ResultHandler.class }) })
-public class MybatisInterceptor /*implements Interceptor*/ {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+public class SqlInterceptor implements IInterceptor {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SqlInterceptor.class);
     private Properties properties;
+    
+    
+    @Resource
+	private IDialectManager dialectManager;
+
+
+	private String dialectName;
+
+	public void setDialectName(String dialectName) {
+		this.dialectName = dialectName;
+	}
+
  
    /* public Object intercept(Invocation invocation) throws Throwable {
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
@@ -66,7 +78,7 @@ public class MybatisInterceptor /*implements Interceptor*/ {
         str.append("ms");
         return str.toString();
     }
- */
+
     private static String getParameterValue(Object obj) {
         String value = null;
         if (obj instanceof String) {
@@ -117,7 +129,31 @@ public class MybatisInterceptor /*implements Interceptor*/ {
         return Plugin.wrap(target, this);
     }*/
  
-    public void setProperties(Properties properties0) {
-        this.properties = properties0;
+    
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+//		String dialectClass =   properties.getProperty("dialect");   
+//		
+//		try {
+//			dialect = (IDialect) Class.forName(dialectClass).newInstance();
+//		} catch (Exception e) {
+//			throw new RuntimeException(
+//					"cannot create dialect instance by dialectClass:"
+//							+ dialectClass, e);
+//		}
     }
+
+
+	@Override
+	public void before(String methodFullName, Object o, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void after(String methodFullName, Object o, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
 }
