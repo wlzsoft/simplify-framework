@@ -21,7 +21,6 @@ import com.meizu.dao.dto.BaseDTO;
 import com.meizu.dao.dto.BaseDTO.LinkType;
 import com.meizu.dao.dto.SaveDTO;
 import com.meizu.dao.dto.WhereDTO;
-import com.meizu.dao.util.BuildInfo;
 import com.meizu.dao.util.Page;
 import com.meizu.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -79,8 +78,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public static final String SQL_FINDLISTBY = "findListBy";
 	public static final String SQL_COUNT = "count";
 	
-	@Resource
-	private BuildInfo<T> buildInfo;
+//	@Resource
+//	private BuildInfo<T> buildInfo;
 	/**
 	 * 配置文件中，有bean的注入
 	 */
@@ -199,8 +198,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 如果需要生成主键，需要由子类重写此方法根据需要的方式生成主键值<br>
 	 * @param t 要持久化的对象
 	 */
+	@Deprecated
 	protected void generateId(T t) {
-		buildInfo.buildId(t);
+//		buildInfo.buildId(t);
 	}
 	
 	/**
@@ -567,9 +567,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return this.create(t);
 	}
 	
+	@Deprecated//TODO 考虑buildInfo移除后的影响
 	@Override
 	public Integer saveOrUpdate(T t) {
-		buildInfo.buildId(t);
+//		buildInfo.buildId(t);
 		if(t.getId()!=null) {
 			return updateMeta(t);
 		} else {
