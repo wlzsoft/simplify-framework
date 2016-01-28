@@ -9,7 +9,7 @@ import com.meizu.dao.dto.BaseDTO;
 import com.meizu.dao.dto.SaveDTO;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>未测试，待优化，替换sqlsession和sqlsessiontemplate</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c);2014</p>
@@ -108,6 +108,10 @@ public interface Query<T> {
 
 	
 	public <T> T unwrap(Class<T> cls);
+	
+	
+	
+	
 	
 	public void select(String sqlName, Object parameter, RowBounds rowBounds, ResultHandler handler);
 
