@@ -1,4 +1,4 @@
-package com.meizu.dao.dto;
+package com.meizu.dto;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

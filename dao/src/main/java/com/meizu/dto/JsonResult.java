@@ -1,4 +1,4 @@
-package com.meizu.dao.dto;
+package com.meizu.dto;
 
 /**
  * 

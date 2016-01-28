@@ -1,6 +1,6 @@
 package com.meizu.dao.exception;
 
-import com.meizu.dao.dto.Result;
+import com.meizu.dto.Result;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
