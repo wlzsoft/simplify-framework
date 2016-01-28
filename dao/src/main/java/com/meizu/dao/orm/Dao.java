@@ -52,8 +52,7 @@ import com.meizu.simplify.utils.StringUtil;
  */
 //@Repository//不建议这样创建实例，因为是未定义类型的泛型类
 public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializable>   implements IBaseDao<T, PK> {
-	//需要考虑是使用abstract或不是
-	//public abstract class Dao<T extends BaseEntity<T>, PK extends Serializable>  implements IBaseDao<T, PK> {
+	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	/**
