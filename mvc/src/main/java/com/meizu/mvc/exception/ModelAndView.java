@@ -1,4 +1,4 @@
-package com.meizu.dao;
+package com.meizu.mvc.exception;
 
 import com.meizu.dto.Result;
 

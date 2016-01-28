@@ -1,4 +1,4 @@
-package com.meizu.dao.exception;
+package com.meizu.mvc.exception;
 
 
 

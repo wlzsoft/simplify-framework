@@ -1,12 +1,11 @@
-package com.meizu.dao.exception;
+package com.meizu.mvc.exception;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.meizu.dao.HttpServletRequest;
-import com.meizu.dao.HttpServletResponse;
-import com.meizu.dao.ModelAndView;
 
 /**
  * 
