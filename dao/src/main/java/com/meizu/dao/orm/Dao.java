@@ -1081,14 +1081,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return MapToEntity(resultMap, this.entityClass);
 		
 	}
-
 	
 	
-	
-	public Query createQuery(String sql, Object[] values) {
-		Query query = new MybatisQuery(this,getSqlName(SQL_FINDBYPAGE),sql,values);
-		return query;
-	}
 	/* (non-Javadoc)
 	 * @see com.meizu.data.mybatis.IBaseDao#findPage(com.meizu.util.Page, java.lang.Object[])
 	 */
