@@ -1,11 +1,11 @@
 package com.meizu.dao.util;
 
-import com.meizu.dao.ICommonDao;
+import com.meizu.dao.IDBUtilDao;
 import com.meizu.simplify.ioc.annotation.Resource;
 
 
 /**
- * <p><b>Title:</b><i>数据库工具类</i></p>
+ * <p><b>Title:</b><i>数据库函数工具类</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -20,16 +20,15 @@ import com.meizu.simplify.ioc.annotation.Resource;
 public class DBUtil  {
 	
 	@Resource
-	private static ICommonDao dao;
+	private static IDBUtilDao dao;
 	
 	/**
-	 * 方法用途: 获取系统当前时间<br>
+	 * 方法用途: 获取数据库系统当前时间<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static String getMysqlDbDateByString(){
-		String dateStr = dao.getMysqlDbDate();
-		return dateStr;
+		return dao.getDbDate();
 	}
 	
 	
