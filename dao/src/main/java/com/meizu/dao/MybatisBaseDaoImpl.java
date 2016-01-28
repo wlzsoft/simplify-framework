@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.annotation.Resource;
 
-import com.meizu.dao.mybatis.IBaseDao;
 import com.meizu.entity.IdEntity;
 /**
  * 

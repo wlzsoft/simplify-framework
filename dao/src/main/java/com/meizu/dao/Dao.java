@@ -18,10 +18,9 @@ import com.meizu.dao.annotations.Key;
 import com.meizu.dao.annotations.Table;
 import com.meizu.dao.annotations.Transient;
 import com.meizu.dao.dto.BaseDTO;
+import com.meizu.dao.dto.BaseDTO.LinkType;
 import com.meizu.dao.dto.SaveDTO;
 import com.meizu.dao.dto.WhereDTO;
-import com.meizu.dao.dto.BaseDTO.LinkType;
-import com.meizu.dao.mybatis.IBaseDao;
 import com.meizu.dao.util.BuildInfo;
 import com.meizu.dao.util.Page;
 import com.meizu.entity.IdEntity;
@@ -1225,6 +1224,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 
 	
+
+	
 	
 	
 	
@@ -1373,5 +1374,71 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //	}
 
 	////全文检索功能end--------------------------未实现---------------------------------------------
+	
+	@Override
+	public void execute(String sql) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void execute(String sql, Object[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void execute(String sql, Object[] args, int[] types) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void executeBatch(String sql, List<Object[]> batchArgs) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void executeBatch(String sql, List<Object[]> batchArgs, int[] types) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public KeyHolder saveRePrimarykey(String sql, Object[] args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> queryForList(String sql, Object[] args, RowMapper<T> rowMapper) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> queryForList(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public T queryForObject(String sql, Object[] args, RowMapper<T> rowMapper) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public T queryForObject(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> queryForList(String sql) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
