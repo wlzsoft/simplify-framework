@@ -1,0 +1,37 @@
+package com.meizu.dao.springjdbc;
+/**
+  * <p><b>Title:</b><i>TODO</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年1月27日 下午3:53:52</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年1月27日 下午3:53:52</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
+public class ProceedingJoinPoint {
+
+	public Object[] getArgs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getTarget() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Class<? extends Object> getSignature() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object proceed() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
