@@ -37,7 +37,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 	@Override
 	public List<?> hook(Class<?> clazz) {
 		
-		PropertiesConfig obj = (PropertiesConfig) BeanFactory.getBean(PropertiesConfig.class);
+		PropertiesConfig obj = BeanFactory.getBean(PropertiesConfig.class);
 		PropertieUtil propertieUtil = obj.getProperties();
 		if(propertieUtil!=null) {
 			initBean = propertieUtil.getBoolean("system.init.bean");
