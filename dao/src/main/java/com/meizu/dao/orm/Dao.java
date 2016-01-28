@@ -33,10 +33,9 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.exception.BaseDaoException;
 //import com.meizu.util.BeanUtils;
-
 /**
  * 
- * <p><b>Title:</b><i> 基于Mybatis的基础泛型DAO实现类</i></p>
+ * <p><b>Title:</b><i> 基础泛型DAO实现类</i></p>
  * <p>Desc:1. SqlSessionTemplate的实现方式
  *         2. 注意sql注入的问题</p>
  * <p>source folder:{@docRoot}</p>
