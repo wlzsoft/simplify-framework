@@ -27,7 +27,7 @@ public class DBUtil  {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public static String getMysqlDbDateByString(){
+	public static String getDbDate(){
 		return dao.getDbDate();
 	}
 	

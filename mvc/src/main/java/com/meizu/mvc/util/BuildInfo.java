@@ -1,12 +1,13 @@
-package com.meizu.dao.util;
+package com.meizu.mvc.util;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.meizu.dao.HttpServletRequest;
-import com.meizu.entity.IdEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.utils.ReflectionUtil;
+
+import ch.qos.logback.core.db.dialect.DBUtil;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -23,28 +24,25 @@ import com.meizu.simplify.ioc.annotation.Bean;
  */
 @Bean
 public class BuildInfo<T extends IdEntity<Serializable,Integer>> {
-//	@Resource
-//	private HttpServletRequest request;
+
 	public void buildId(T t) {
 			HashMap<String,Object> params = new HashMap<String, Object>();
 			params.put("delFlag", true);
 			Object curUserObj = null;
 		    try {
-		    	HttpServletRequest request = null;//request池中获取request对象，而无需传参的方式 
-		    	Object bean = BeanFactory.getBean("systemService");//.getCurrentUser(request);
-//		    	curUserObj = ReflectionUtil.invokeMethod(bean, "getCurrentUser", null, new Class[]{HttpServletRequest.class}, new Object[]{request});
-		    	//curUserObj = request.getSession().getAttribute("curUser"); //TODO
+		    	Object request = HttpRequestPool.getRequest();
+		    	Object bean = BeanFactory.getBean("systemService");
+		    	curUserObj = ReflectionUtil.invokeMethod(bean, "getCurrentUser", new Class[]{Object.class}, new Object[]{request});
 		    } catch(Exception e) {
 		    	//e.printStackTrace();
-		    	
 		    }
 			if(t.getId()==null) {
-//				params.put("createTime", DBUtil.getMysqlDbDate());
+				params.put("createTime", DBUtil.getDbDate());
 				if(curUserObj != null) {
 					params.put("createId",  ((IdEntity<Serializable,Integer>)curUserObj).getId());
 				}
 			}
-//			params.put("updateTime", DBUtil.getMysqlDbDate());
+			params.put("updateTime", DBUtil.getDbDate());
 			if(curUserObj != null) {
 				params.put("updateId",  ((IdEntity<Serializable,Integer>)curUserObj).getId());
 			}

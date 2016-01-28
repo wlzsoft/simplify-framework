@@ -2,12 +2,9 @@ package com.meizu.dao;
 
 import java.io.Serializable;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.dao.util.BuildInfo;
 import com.meizu.entity.IdEntity;
 
 /**
@@ -30,9 +27,6 @@ import com.meizu.entity.IdEntity;
 public class Service<T extends IdEntity<Serializable,Integer>, PK extends Serializable>  {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
-	@Resource
-	private BuildInfo<T> buildInfo;
 	
 	public Integer save(T t) {
 		return null;
