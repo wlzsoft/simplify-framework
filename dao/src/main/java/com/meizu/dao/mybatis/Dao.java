@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.dao.Constant;
+import com.meizu.dao.Query;
 import com.meizu.dao.annotations.Column;
 import com.meizu.dao.annotations.Key;
 import com.meizu.dao.annotations.Table;

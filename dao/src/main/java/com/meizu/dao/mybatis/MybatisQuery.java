@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.meizu.dao.Query;
+
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>

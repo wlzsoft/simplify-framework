@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.dao.annotations.Reload;
+import com.meizu.dao.annotations.ReloadableResource;
 import com.meizu.dao.util.ResourceUtil;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;

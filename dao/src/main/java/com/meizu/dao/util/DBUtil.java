@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
-import com.meizu.dao.mybatis.ICommonDao;
+import com.meizu.dao.ICommonDao;
 
 
 /**
