@@ -6,9 +6,9 @@ import java.util.Date;
 import com.meizu.dao.annotations.Column;
 
 public class BaseEntity extends IdEntity<Serializable,Integer>{
-//public class BaseEntity<T extends Object> extends IdEntity<T>{
+	//public class BaseEntity<T extends Object> extends IdEntity<T>{
 	//@Transient
-	private static final long serialVersionUID = -5480206151290967747L;
+	private static final long serialVersionUID = -6176797953739560746L;
 	@Column(value="createId")
 //	@JsonSerialize(using=UserIdGenericSerializer.class)
 	private Integer createId;
