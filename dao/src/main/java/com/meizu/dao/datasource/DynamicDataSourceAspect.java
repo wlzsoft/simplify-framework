@@ -1,5 +1,6 @@
-package com.meizu.dao;
+package com.meizu.dao.datasource;
 
+import com.meizu.dao.ProceedingJoinPoint;
 import com.meizu.simplify.ioc.annotation.Bean;
 /**
  * <p><b>Title:</b><i>动态数据源切面</i></p>

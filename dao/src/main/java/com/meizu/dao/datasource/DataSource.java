@@ -1,4 +1,4 @@
-package com.meizu.dao;
+package com.meizu.dao.datasource;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
