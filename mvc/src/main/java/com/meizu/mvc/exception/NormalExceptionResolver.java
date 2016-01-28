@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * <p><b>Title:</b><i>安全异常处理</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: TODO：为测试，未使用</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

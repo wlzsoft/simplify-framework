@@ -1,7 +1,5 @@
 package com.meizu.mvc.exception;
 
-import com.meizu.dto.Result;
-
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -17,9 +15,5 @@ import com.meizu.dto.Result;
  */
 public class ModelAndView {
 
-	public void addObject(String string, Result error) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
