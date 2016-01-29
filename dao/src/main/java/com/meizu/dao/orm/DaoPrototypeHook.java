@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.dao.annotations.Entity;
 import com.meizu.dao.annotations.Value;
 import com.meizu.dao.config.PropertiesConfig;
-import com.meizu.dao.entity.Test;
 import com.meizu.dao.exception.BaseDaoException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
