@@ -74,7 +74,7 @@ public class Message {
 
 	@Reload
 	public void setBasenames(String... basenames) {
-		List<String> resourceBasenames = ResourceUtil.getResList(MESSAGE_DIR, basenames);
-		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
+//		List<String> resourceBasenames = ResourceUtil.getResList(MESSAGE_DIR, basenames);
+//		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
 	}
 }

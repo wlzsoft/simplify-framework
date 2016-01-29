@@ -2,6 +2,8 @@ package com.meizu.simplify.ioc.prototype;
 
 import java.util.List;
 
+import com.meizu.simplify.ioc.BeanEntity;
+
 /**
   * <p><b>Title:</b><i>bean多例钩子处理</i></p>
  * <p>Desc: 用于bean的多实例创建定制操作</p>
@@ -23,5 +25,5 @@ public interface IBeanPrototypeHook {
 	 * @param clazz
 	 * @return
 	 */
-	List<?> hook(Class<?> clazz);
+	List<BeanEntity<?>> hook(Class<?> clazz);
 }

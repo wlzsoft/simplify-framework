@@ -52,7 +52,17 @@ public  class BeanFactoryTest {
 	 */
 	@Test
 	public void getBeanByPrototype() {
+		//1.多例bean，无法通过这种方式获取到bean，应该有多个Dao实例，无法确定返回哪个bean
+        //2.可以通过getBeanByPrototypeForText的方式获取多例bean的具体实例，如果是Dao的话，可以通过二次封装的BaseDao，直接自动获取bean并操作
+		//3.可以通过注解标注的方式，来选择具体要返回的bean实例
 		Dao obj = BeanFactory.getBean(Dao.class);
 		LOGGER.debug(obj.getSql()+"|"+obj.toString());
+	}
+	@Test
+	public void getBeanByPrototypeForText() {
+		Dao obj = BeanFactory.getBean("test1BaseDao");
+		LOGGER.debug(obj.getSql()+"|"+obj.toString());
+		Dao obj2 = BeanFactory.getBean("test2BaseDao");
+		LOGGER.debug(obj2.getSql()+"|w"+obj2.toString());
 	}
 }

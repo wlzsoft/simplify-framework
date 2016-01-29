@@ -1,5 +1,6 @@
 package com.meizu.simplify.ioc;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,15 +57,29 @@ public class BeanFactory {
 	public static void addBean(Object beanObj) {
 		beanContainer.add(beanObj);
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 添加bean对象到容器中<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanName
+	 * @param beanObj
+	 */
+	public static void addBean(String beanName,Object beanObj) {
+		beanContainer.add(beanName,beanObj);
+	}
+	
+	
 	/**
 	 * 
 	 * 方法用途: 添加多个bean对象到容器中<br>
 	 * 操作步骤: TODO<br>
 	 * @param beanList
 	 */
-	public static void addBeanList(List<?> beanList) {
-		for (Object object : beanList) {
-			addBean(object);
+	public static void addBeanList(List<BeanEntity<?>> beanList) {
+		for (BeanEntity<?> beanEntity : beanList) {
+			addBean(beanEntity.getName(),beanEntity.getBeanObj());
 		}
 	}
+	
 }

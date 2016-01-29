@@ -36,8 +36,19 @@ public class BeanContainer {
 	 */
 	public <T extends Object> void add(T beanObj) {
 		String beanName = beanObj.getClass().getName();
+		add(beanName,beanObj);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 保存创建的bean对象到容器中<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanName
+	 * @param beanObj
+	 */
+	public <T extends Object> void add(String beanName,T beanObj) {
 		mapContainer.put(beanName, beanObj);
-		LOGGER.debug("成功添加bean实例到容器中:"+beanObj);
+		LOGGER.debug("成功添加bean实例["+beanName+"]到容器中:"+beanObj);
 	}
 	
 	

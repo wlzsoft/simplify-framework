@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.dao.annotations.Entity;
 import com.meizu.dao.annotations.Value;
 import com.meizu.dao.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
@@ -38,7 +39,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 	private Boolean initBean;
 	
 	@Override
-	public List<?> hook(Class<?> clazz) {
+	public List<BeanEntity<?>> hook(Class<?> clazz) {
 		
 		PropertiesConfig obj = BeanFactory.getBean(PropertiesConfig.class);
 		PropertieUtil propertieUtil = obj.getProperties();
@@ -49,7 +50,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 			return null;
 		}
 		LOGGER.debug("开始初始化Dao实例....");
-		List<Object> list = new ArrayList<>();
+		List<BeanEntity<?>> list = new ArrayList<>();
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, "com.meizu");//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
@@ -59,7 +60,10 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 				char[] chars = beanName.toCharArray();
 				chars[0] = Character.toLowerCase(chars[0]);
 				beanName = new String(chars) + "BaseDao";
-//				list.add(new Dao(this.getClass()));//TODO 改造,支持beanname的定义
+				BeanEntity<Object> beanEntity = new BeanEntity<>();
+				beanEntity.setName(beanName);
+				beanEntity.setBeanObj(new Dao(this.getClass()));
+				list.add(beanEntity);
 				LOGGER.info("已注入bean:DAO[{}]", beanName);
 			}
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.BeanHook;
@@ -45,7 +46,7 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 						Class<?> serviceClass = hookBeanAnno.value();
 						if(serviceClass.equals(clazz)) {
 							Object hookObj = hookClazz.newInstance();
-							List<?> listObj = ((IBeanPrototypeHook)hookObj).hook(clazz);
+							List<BeanEntity<?>> listObj = ((IBeanPrototypeHook)hookObj).hook(clazz);
 							BeanFactory.addBeanList(listObj);
 						}
 					}
