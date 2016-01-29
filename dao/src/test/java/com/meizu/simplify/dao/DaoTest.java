@@ -1,12 +1,11 @@
 package com.meizu.simplify.dao;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.meizu.simplify.dao.datasource.DruidPoolFactory;
-import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
+import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.ioc.Startup;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -23,5 +22,13 @@ import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
  */
 public class DaoTest {
 
+	@Before
+	public void before() {
+		Startup.start();
+	}
 	
+	@Test
+	public void baseDaoTest() {
+		Assert.assertEquals("hahah1", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(1).getName());
+	}
 }
