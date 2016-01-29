@@ -30,7 +30,36 @@ import com.meizu.simplify.exception.UncheckedException;
 public class ReflectionUtil {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ReflectionUtil.class);
+    
     private ReflectionUtil() {
+    }
+    
+    /**
+     * 
+     * 方法用途: 调用Get方法<br>
+     * 操作步骤: TODO<br>
+     * @param obj 对象
+     * @param propertyName 属性名
+     * @return
+     */
+    public static Object invokeGetterMethod(Object obj, String propertyName) {
+        String getterMethodName = "get" + StringUtil.capitalize(propertyName);
+        return invokeMethod(obj, getterMethodName);
+    }
+     
+     
+    
+    /**
+     * 
+     * 方法用途: 调用Set方法<br>
+     * 操作步骤: TODO<br>
+     * @param obj
+     * @param propertyName 属性名
+     * @param value
+     */
+    public static void invokeSetterMethod(Object obj, String propertyName, Object value) {
+    	String setterMethodName = "set" + StringUtil.capitalize(propertyName);
+        invokeMethod(obj, setterMethodName, new Class[]{value.getClass()}, new Object[]{value});
     }
     
     

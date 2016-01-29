@@ -32,6 +32,7 @@ import com.meizu.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.exception.BaseDaoException;
 //import com.meizu.util.BeanUtils;
@@ -333,7 +334,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			String key = entry.getKey();
 			key = currentColumnFieldNames.get(key);
 			Object val = entry.getValue();
-//			ReflectionUtil.invokeSetterMethod(t, key, val);
+			ReflectionUtil.invokeSetterMethod(t, key, val);
 		}
 		return t;
 	}
@@ -754,9 +755,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public T findById(PK id) {
-		Map<String, Object> resultMap = sqlSessionTemplate.selectOne(
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("name".toUpperCase(), "hahah"+id);
+/*		
+        //TODO 数据库中读取的数据 
+        resultMap = sqlSessionTemplate.selectOne(
 				getSqlName(SQL_FINDBYWHERE), sqlBuilder.findById(id));
-		return MapToEntity(resultMap, this.entityClass);
+*/		return MapToEntity(resultMap, this.entityClass);
 //		T t = sqlSessionTemplate.selectOne(
 //				getSqlName(SQL_FINDBYID), sqlBuilder.findById(id));
 //		return t;
