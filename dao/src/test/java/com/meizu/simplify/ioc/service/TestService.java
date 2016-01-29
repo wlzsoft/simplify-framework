@@ -1,5 +1,6 @@
 package com.meizu.simplify.ioc.service;
 
+import com.meizu.dao.entity.Test;
 import com.meizu.dao.orm.Dao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -32,12 +33,13 @@ public class TestService implements ITestService{
 	@Resource
 	private IDemoService demoService;
 	
-	@Resource(name="test1BaseDao")
-	private Dao dao;
+	@Resource(name="testBaseDao")
+	private Dao<Test,Integer> dao;
 
 	@Override
 	public IDemoService getDemoService() {
-		System.out.println(dao.getSqlNamespace()+":Resource(\"test1Dao\")");
+		System.out.println(dao.findById(1).getId()+":Resource2");
+		System.out.println(dao.findById(1).getName()+":Resource1");
 		return demoService;
 	}
 

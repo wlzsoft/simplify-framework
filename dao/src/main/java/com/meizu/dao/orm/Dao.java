@@ -757,6 +757,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public T findById(PK id) {
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("name".toUpperCase(), "hahah"+id);
+		resultMap.put("id".toUpperCase(), 222);
 /*		
         //TODO 数据库中读取的数据 
         resultMap = sqlSessionTemplate.selectOne(
