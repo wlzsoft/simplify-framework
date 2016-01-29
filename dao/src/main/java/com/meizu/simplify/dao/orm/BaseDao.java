@@ -19,12 +19,8 @@ import com.meizu.simplify.ioc.BeanFactory;
  * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
  * @version Version 0.1
  */
-//@Repository
 public class BaseDao  {
 
-	//@Resource
-	//private Dao<T, Integer> testDao;
-	
 	/**
 	 * 方法用途: 获取业务实体类对应的dao实例<br>
 	 * 操作步骤: 1.第一步：对于的实体类必须实现基于IdEntity的实体或是IdEntity本身
