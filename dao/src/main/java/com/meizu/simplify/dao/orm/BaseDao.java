@@ -46,7 +46,6 @@ public class BaseDao  {
 		char[] chars = className.toCharArray();
 		chars[0] = Character.toLowerCase(chars[0]);
 		className = new String(chars) + "BaseDao";
-//		return (Dao<T, Serializable>) SpringContext.getInstance(className);
 		Dao<T, Serializable> dao = BeanFactory.getBean(className);
 		if(dao == null) {
 			throw new UncheckedException("无法获取到"+className+"实体对应的dao，请检查下实体是否有标注注解：@Entity和@Table(name='demo')");
