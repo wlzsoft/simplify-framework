@@ -2,6 +2,7 @@ package com.meizu.simplify.ioc.service;
 
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.dao.Dao;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -30,9 +31,13 @@ public class TestService implements ITestService{
 
 	@Resource
 	private IDemoService demoService;
+	
+	@Resource(name="test1BaseDao")
+	private Dao dao;
 
 	@Override
 	public IDemoService getDemoService() {
+		System.out.println(dao.getSql()+":Resource(\"test1Dao\")");
 		return demoService;
 	}
 

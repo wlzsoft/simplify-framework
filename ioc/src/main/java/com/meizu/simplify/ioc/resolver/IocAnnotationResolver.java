@@ -14,6 +14,8 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -41,8 +43,17 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			Field[] fieldArr = beanClass.getDeclaredFields();
 			for (Field field : fieldArr) {
                 if (field.isAnnotationPresent(Resource.class)) {
+                	Resource resource = field.getAnnotation(Resource.class);
+                	String resourceName = resource.name();
+                	if(ObjectUtil.isNull(resourceName)) {
+                		resourceName = "";
+                	}
+                	
                 	Class<?> iocType = field.getType();
                 	String message = "依赖注入属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
+                	if(!resourceName.trim().equals("")) {
+                		message+="==>>注入多例中的["+resourceName+"]实例";
+                	}
                 	Object iocBean = null;
                 	if(iocType.isInterface()) {
                 		List<Class<?>> clazzList = ClassUtil.findClassesByInterfaces(iocType,"com.meizu");
@@ -55,7 +66,11 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
                 		}
                 		iocType = clazzList.get(0);
                 	}
-                	iocBean = BeanFactory.getBean(iocType);
+                	if(!resourceName.trim().equals("")) {
+                		iocBean = BeanFactory.getBean(resourceName);
+                	} else {
+                		iocBean = BeanFactory.getBean(iocType);
+                	}
                 	try {
                 		field.setAccessible(true);
 						field.set(beanObj, iocBean);

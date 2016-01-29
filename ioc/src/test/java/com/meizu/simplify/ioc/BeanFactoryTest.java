@@ -1,5 +1,6 @@
 package com.meizu.simplify.ioc;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -56,7 +57,7 @@ public  class BeanFactoryTest {
         //2.可以通过getBeanByPrototypeForText的方式获取多例bean的具体实例，如果是Dao的话，可以通过二次封装的BaseDao，直接自动获取bean并操作
 		//3.可以通过注解标注的方式，来选择具体要返回的bean实例
 		Dao obj = BeanFactory.getBean(Dao.class);
-		LOGGER.debug(obj.getSql()+"|"+obj.toString());
+		Assert.assertNull(obj);
 	}
 	@Test
 	public void getBeanByPrototypeForText() {
