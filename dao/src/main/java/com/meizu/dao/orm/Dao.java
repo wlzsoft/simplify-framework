@@ -74,7 +74,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public static final String SQL_FINDBYWHERE = "findByWhere";
 	private static final String SQL_FINDBY = "findBy";
 	private static final String SQL_CREATEOFBATCH = "createOfBatch";
-	private static final String SQL_FETCHSEQNEXTVAL = "fetchSeqNextval";
 	private static final String SQL_REMOVEBY = "removeBy";
 	private static final String SQL_REMOVEALL = "removeAll";
 	private static final String SQL_MODIFY = "modify";

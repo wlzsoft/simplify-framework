@@ -62,7 +62,9 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 				beanName = new String(chars) + "BaseDao";
 				BeanEntity<Object> beanEntity = new BeanEntity<>();
 				beanEntity.setName(beanName);
-				beanEntity.setBeanObj(new Dao(this.getClass()));
+				
+				//分析注解和泛型参数，并设置构造函数带泛型的参数值，最后初始化Dao，设置构造函数参数
+				beanEntity.setBeanObj(new Dao(entityClass));
 				list.add(beanEntity);
 				LOGGER.info("已注入bean:DAO[{}]", beanName);
 			}
