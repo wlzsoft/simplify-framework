@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+                        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+                        http://www.springframework.org/schema/context   
+                        http://www.springframework.org/schema/context/spring-context-3.2.xsd  
+                        http://www.springframework.org/schema/aop   
+                        http://www.springframework.org/schema/aop/spring-aop-3.2.xsd  
+                        http://www.springframework.org/schema/tx   
+                        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+                     
+	<!-- 会和其他配置文件发生冲突 -->
+	<!-- <context:property-placeholder location="classpath:properties/database.properties" /> -->
+	
+	
+	<!-- BoneCP 连接池，相对dbcp,c3p0,proxool更稳定，不建议使用-->
+	<!-- c3p0 连接池，相对dbcp更稳定，不建议使用-->
+	
+    <!-- dbcp连接池和weblogic连接池有同样的问题，就是强行关闭连接或数据库重启后，无法reconnect ，告诉连接被重置,这个设置可以解决,dbcp的bug多,完全不适用与生产环境 -->
+	<!-- 由proxool替代了 -->
+	<!-- <bean id="mySqlDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/rosdb?characterEncoding=utf8" />
+		<property name="username" value="root" />
+		<property name="password" value="ros123" />
+	</bean>	 -->
+  	<!-- dbcp end -->
+	<bean id="parentDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource" abstract="true">
+	</bean>
+	
+
+<!-- Druid针对Oracle和MySql做了特别优化，比如Oracle的PS Cache内存占用优化，MySql的ping检测优化。 Druid可与其他数据库连接池集成，druid只作为连接池代理-->
+<!--Druid 阿里连接池： 支持特性：LRU，PSCache,PSCache-Oracle-Optimized,ExceptionSorter,监控,扩展 ，推荐使用 -->
+<!-- 问题分析参考地址：https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98 -->
+<!-- 项目作者访谈问题解答地址：http://www.iteye.com/magazines/90 -->
+<bean id="master" class="com.alibaba.druid.pool.DruidDataSource"  parent="parentDataSource" init-method="init" destroy-method="close">
+  <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+  <property name="driverClassName" value="${java.driver.name}" />
+ 
+    <!-- 基本属性 url、user、password -->
+    <property name="url" value="${db.url}?useUnicode=true&amp;characterEncoding=UTF-8&amp;useCompression=true&amp;characterSetResults=utf8&amp;allowMultiQueries=true&amp;zeroDateTimeBehavior=convertToNull" />
+    <property name="username" value="${db.username}" />
+    <property name="password" value="${db.password}" />
+ 
+    <!-- 配置初始化大小、最小、最大 -->
+    <property name="initialSize" value="3" />
+    <property name="minIdle" value="3" />
+    <property name="maxActive" value="20" />
+ 
+    <!-- 配置获取连接等待超时的时间 -->
+    <property name="maxWait" value="60000" />
+ 
+    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+ 
+    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+    <property name="minEvictableIdleTimeMillis" value="300000" />
+ 
+ 	<!-- 验证连接有效与否的SQL，不同的数据配置不同 -->
+    <property name="validationQuery" value="SELECT 'x'" />
+    <!-- <property name="validationQuery" value="select 1 " />  -->
+    
+    <property name="testWhileIdle" value="true" />
+    <property name="testOnBorrow" value="false" />
+    <property name="testOnReturn" value="false" />
+ 
+    <!-- 打开PSCache，并且指定每个连接上PSCache的大小，如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。分库分表较多的数据库，建议配置为false-->
+    <property name="poolPreparedStatements" value="false" />
+    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> 
+ 
+    <!-- 配置监控统计拦截的filters -->
+  <property name="filters" value="stat" />
+  
+  <!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+  <!-- <property name="defaultAutoCommit" value="true" /> -->
+   
+   <!-- druid的插件机制，不同于其他数据源，这里配置对日志插件的处理 -->
+  <property name="proxyFilters"> 
+   <list> 
+    <ref bean="logFilter" /> 
+   </list> 
+  </property> 
+</bean>
+<bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter"> 
+  <property name="statementExecutableSqlLogEnable" value="false" /> 
+ </bean>
+
+	
+	<!-- proxool连接池-可以提供监控后台，监控连接池的情况-不建议使用-->
+	<!-- <bean id="master" parent="parentDataSource">
+		<property name="driverClassName">
+			<value>
+				org.logicalcobwebs.proxool.ProxoolDriver
+			</value>
+		</property>
+		<property name="url">
+			<value>
+				proxool.pool
+			</value>
+		</property>
+	</bean> -->
+	
+	
+	<!-- 需要调整这块逻辑，有问题 TODO -->
+	<bean id="mySqlDataSource" class="com.meizu.data.util.DynamicDataSource">   
+        <property name="targetDataSources">   
+            <map>   
+                <!-- <entry key="slave" value-ref="slave"/>   --> 
+                <entry key="master" value-ref="master"/>   
+            </map>   
+        </property>   
+        <property name="defaultTargetDataSource" ref="master"/>   
+    </bean> 
+
+	<!-- 配置sqlSessionFactory -->
+	<bean id="mysqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!--dataSource属性指定要用到的数据源-->
+		<property name="dataSource" ref="mySqlDataSource" />
+		<!-- 自动取对应包中不包括包名的类名作为类型别名，多个包之间可以用逗号或分号分开 -->
+		<!-- <property name="typeAliasesPackage" value="com.meizu.entity"/> -->
+		<!--configLocation属性指定mybatis的主配置文件-->
+		<property name="configLocation"	value="classpath:mybatis/mybatis-config.xml" />
+	 	<!-- 从类路径中加载映射文件，相对于类的根路径--> 
+		<property name="mapperLocations">
+            <list>
+                <value>classpath:com/meizu/log/dao/**/*Mapper.xml</value>
+                <value>classpath:com/meizu/security/dao/**/*Mapper.xml</value>
+                <value>classpath:com/meizu/data/mybatis/**/*Mapper.xml</value>
+                <!-- <value>classpath:com/meizu/ros/dao/**/*Mapper.xml</value>
+                <value>classpath:com/meizu/ros/util/dao/**/*Mapper.xml</value> -->
+                 <value>classpath:com/meizu/data/util/dao/**/*Mapper.xml</value>
+                <value>classpath:com/meizu/dao/**/*Mapper.xml</value>
+                <value>classpath:com/meizu/message/dao/*Mapper.xml</value>
+            </list>
+        </property>
+        <property name="plugins">  
+	     <array>  
+	         <bean id="mybatisInterceptor" class="com.meizu.data.mybatis.interceptor.MybatisInterceptor"/>  
+	     </array>  
+	    </property>   
+	</bean>
+
+<!-- mybatis 实现方式  start -->
+<!--1. SqlSessionTemplate  这个需要写配置文件，在实现类中注入sqlsession，再使用sqlsession,是细颗粒控制
+2.SqlSessionDaoSupport   这个只需要在实现类中继承特殊类就可以使用sqlsession-只需继承就可使用
+3.MapperFactoryBean  这个要写配置文件，把对应的所有接口在配置文件中引用即可，无需写实现类- 基本不使用，直接用MapperScannerConfigurer替代了
+4.MapperScannerConfigurer  这个要写配置文件，只要给出接口所在的包即可，会自动把包中的接口引入，无需写实现类 
+       注意：1,2,4是三种控制方式，目前使用第四种，只有需要特殊的控制，和细粒度的控制，才需要手动注入sqlsession，通过sqlsession来执行特定的操作-->
+
+
+	<!-- 获取使用sqlsession的方式是（第三种)，默认使用这种 -->
+ 	<bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="basePackage" value="com.meizu" />
+		<!-- 这个属性已经废弃，需要考虑调整修改成推荐的属性 -->
+		<property name="sqlSessionFactory" ref="mysqlSessionFactory" />
+	</bean>
+       
+       <!-- 获取使用sqlsession的方式是（第四种） 由上面的第三种替换了，上面的可以搜索到所有的mapper -->
+	  <!-- 
+	  <bean id="iUserOperation" class="org.mybatis.spring.mapper.MapperFactoryBean">     
+	     <property name="sqlSessionFactory" ref="sqlSessionFactory" />     
+	     <property name="mapperInterface" value="com.meizu.inter.IBaseDao" /> 
+	  </bean> 
+	  --> 
+       
+       
+       <!-- 获取使用sqlsession的方式是（第一种）：@Reasource //使用spring3的注解注入
+                                  private SqlSession sqlSession; -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="mysqlSessionFactory" />
+	  <!-- <constructor-arg index="1" value="BATCH" /> --><!--- 如果想要进行批量操作可加入这个属性,注意开启批量处理，会导致删除或保存的时候，返回负数，而非期望值 -->
+	</bean>
+	
+	<!-- 获取使用sqlsession的方式是（第二种），需要依赖第一种的SqlSessionTemplate实例：SqlSessionDaoSupport开启 -->
+	<!-- 注意：com.meizu.data.mybatis.MybatisBaseDaoImpl是抽象类，需要注意调整 -->
+	<!-- <bean id="mybatisBaseDao" class="com.meizu.data.mybatis.MybatisBaseDaoImpl">  
+	    <property name="sqlSessionFactory" ref="mysqlSessionFactory"/>  
+	</bean>  -->
+	
+	<!--  mybatis 实现方式   end -->
+	
+	
+	
+ 	<!-- jdbcTemplate：注意下面的constructor和property是二选一的配置   -->
+   <!--  <bean id="jdbcTemplate"  class="org.springframework.jdbc.core.JdbcTemplate">   
+         <constructor-arg>     
+              <ref bean="master" />     
+         </constructor-arg>    
+         <property name="dataSource">  
+	        <ref bean="master" />  
+	    </property> 
+    </bean>   -->
+    <!-- 注意：下面的baseDao不需要有dataSource属性，只需要指定jdbcTemplate，因为jdbcTempate已经指定了datasource了 -->
+    <!-- <bean id="baseDao" class="com.meizu.data.springjdbc.BaseDaoImpl">
+        <property name="dataSource" ref="master"/>
+        <property name="jdbcTemplate">  
+	        <ref bean="jdbcTemplate" />  
+	    </property>  
+    </bean> -->
+    <!--  <bean id="baseDaoProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">  
+	    <property name="transactionManager" ref="transactionManager" />  
+	    <property name="target" ref="baseDao" />  
+	    <property name="transactionAttributes">  
+	        <props>  
+	            <prop key="insert*">PROPAGATION_REQUIRED</prop>  
+	            <prop key="*">PROPAGATION_REQUIRED,readOnly</prop>  
+	        </props>  
+	    </property>  
+	</bean>   -->
+    
+	<!-- 配置事务 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="mySqlDataSource" />  
+    </bean>  
+ 
+ 
+	<!-- Hibernate时的事务管理 -->
+	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
+	    <property name="sessionFactory" ref="sessionFactory" />  
+	</bean> -->
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	<!-- 从数据库 -->
+</beans>

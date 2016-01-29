@@ -1,7 +1,11 @@
 package com.meizu.dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.junit.Test;
 
+import com.meizu.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 
 /**
@@ -19,4 +23,5 @@ import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
  */
 public class DaoTest {
 
+	
 }
