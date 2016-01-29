@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.entity.User;
-import com.meizu.stresstester.StressTestUtils;
-import com.meizu.stresstester.core.StressTask;
+import com.meizu.simplify.stresstester.StressTestUtils;
+import com.meizu.simplify.stresstester.core.StressTask;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>

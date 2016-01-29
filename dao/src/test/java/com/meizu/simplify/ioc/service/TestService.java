@@ -1,7 +1,7 @@
 package com.meizu.simplify.ioc.service;
 
-import com.meizu.dao.entity.Test;
-import com.meizu.dao.orm.Dao;
+import com.meizu.simplify.dao.entity.Test;
+import com.meizu.simplify.dao.orm.Dao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 
