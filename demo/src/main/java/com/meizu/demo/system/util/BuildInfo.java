@@ -3,11 +3,11 @@ package com.meizu.demo.system.util;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.meizu.dao.util.DBUtil;
-import com.meizu.entity.IdEntity;
-import com.meizu.mvc.util.HttpRequestPool;
+import com.meizu.simplify.dao.util.DBUtil;
+import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.util.HttpRequestPool;
 import com.meizu.simplify.utils.ReflectionUtil;
 
 /**

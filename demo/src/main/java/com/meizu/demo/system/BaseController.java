@@ -6,9 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.mvc.controller.IForward;
-import com.meizu.mvc.directives.Model;
-import com.meizu.mvc.directives.SecurityContoller;
+import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.directives.Model;
+import com.meizu.simplify.mvc.directives.SecurityContoller;
 
 public class BaseController<T extends Model> extends SecurityContoller<T> {
 	

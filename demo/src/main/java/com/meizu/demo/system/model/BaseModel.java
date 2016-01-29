@@ -1,6 +1,6 @@
 package com.meizu.demo.system.model;
 
-import com.meizu.mvc.directives.Model;
+import com.meizu.simplify.mvc.directives.Model;
 
 /**
  * 表单基础模型

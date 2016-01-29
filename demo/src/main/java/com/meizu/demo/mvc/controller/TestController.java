@@ -10,13 +10,13 @@ import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.BaseController;
-import com.meizu.mvc.annotation.RequestMap;
-import com.meizu.mvc.annotation.RequestParam;
-import com.meizu.mvc.controller.ActionForward;
-import com.meizu.mvc.controller.IForward;
-import com.meizu.mvc.controller.MessageForward;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.mvc.annotation.RequestMap;
+import com.meizu.simplify.mvc.annotation.RequestParam;
+import com.meizu.simplify.mvc.controller.ActionForward;
+import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.controller.MessageForward;
 import com.meizu.simplify.utils.StringUtil;
 
 

@@ -7,11 +7,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import com.meizu.aop.AopClassFileTransformer;
-import com.meizu.cache.redis.RedisPool;
-import com.meizu.mvc.MvcInit;
-import com.meizu.mvc.controller.VelocityForward;
+import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.ioc.Startup;
+import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.mvc.controller.VelocityForward;
 
 /**
   * <p><b>Title:</b><i>系统初始化监听器</i></p>
