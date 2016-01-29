@@ -21,6 +21,21 @@ public class DataAccessException extends BaseException{
 	public DataAccessException(int code) {
 		super(code);
 	}
+	public DataAccessException(int errorCode, String message, Throwable target) {
+		super(errorCode, message, target);
+	}
+	public DataAccessException(int errorCode, String message) {
+		super(errorCode, message);
+	}
+	public DataAccessException(String message, Throwable target) {
+		super(message, target);
+	}
+	public DataAccessException(String message) {
+		super(message);
+	}
+	public DataAccessException(Throwable target) {
+		super(target);
+	}
 
 
 }

@@ -15,6 +15,15 @@ package com.meizu.simplify.exception;
  */
 public class StartupException extends BaseException {
 	private static final long serialVersionUID = -5221776051533352501L;
+	
+	
+	/**
+	 * 异常class
+	 */
+	private Class<?> clazz;
+	public Class<?> getClazz() {
+		return clazz;
+	}
 
 	/**
 	 * @param message  异常信息
@@ -36,5 +45,14 @@ public class StartupException extends BaseException {
 	 */
 	public StartupException(String message, Throwable target) {
 		super(message, target);
+	}
+	
+	/**
+	 * @param message 异常信息
+	 * @param cause  目标异常
+	 */
+	public StartupException(String message, Throwable target,Class<?> clazz) {
+		super(message, target);
+		this.clazz = clazz;
 	}
 }

@@ -13,6 +13,7 @@ package com.meizu.dao.orm;
  *
  */
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import com.meizu.dao.annotations.Entity;
 import com.meizu.dao.annotations.Value;
 import com.meizu.dao.config.PropertiesConfig;
+import com.meizu.dao.entity.Test;
+import com.meizu.dao.exception.BaseDaoException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.BeanHook;
@@ -29,6 +32,7 @@ import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 
 @BeanHook(Dao.class)
 public class DaoPrototypeHook implements IBeanPrototypeHook {
@@ -62,9 +66,8 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 				beanName = new String(chars) + "BaseDao";
 				BeanEntity<Object> beanEntity = new BeanEntity<>();
 				beanEntity.setName(beanName);
-				
-				//分析注解和泛型参数，并设置构造函数带泛型的参数值，最后初始化Dao，设置构造函数参数
-				beanEntity.setBeanObj(new Dao(entityClass));
+				Object dao = buildDaoObject(clazz, entityClass);
+				beanEntity.setBeanObj(dao);
 				list.add(beanEntity);
 				LOGGER.info("已注入bean:DAO[{}]", beanName);
 			}
@@ -72,5 +75,26 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 		
 		return list;
 	}
+
+	/**
+	 * 
+	 * 方法用途: 构建dao对象<br>
+	 * 操作步骤: 分析注解和泛型参数，并设置构造函数带泛型的参数值，最后初始化Dao，设置构造函数参数<br>
+	 * @param clazz
+	 * @param entityClass
+	 * @return
+	 */
+	private Object buildDaoObject(Class<?> clazz, Class<?> entityClass) {
+		Object dao = null;
+		try {
+			Constructor<?> constructor = clazz.getDeclaredConstructor(Class.class);
+			dao = ReflectionUtil.instantiateClass(constructor,entityClass);
+		} catch (NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+			throw new BaseDaoException("构建dao对象失败",e);
+		}
+		return dao;
+	}
+	
 
 }

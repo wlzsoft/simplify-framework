@@ -15,6 +15,21 @@ package com.meizu.dao.exception;
 public class BaseDaoException extends DataAccessException {
 
 	private static final long serialVersionUID = -8493853380933833778L;
+	public BaseDaoException(int errorCode, String message, Throwable target) {
+		super(errorCode, message, target);
+	}
+	public BaseDaoException(int errorCode, String message) {
+		super(errorCode, message);
+	}
+	public BaseDaoException(String message, Throwable target) {
+		super(message, target);
+	}
+	public BaseDaoException(String message) {
+		super(message);
+	}
+	public BaseDaoException(Throwable target) {
+		super(target);
+	}
 	public BaseDaoException(int code) {
 		super(code);
 	}

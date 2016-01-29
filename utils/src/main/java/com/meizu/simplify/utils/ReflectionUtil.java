@@ -1,10 +1,10 @@
 package com.meizu.simplify.utils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.Modifier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -224,5 +224,39 @@ public class ReflectionUtil {
     }
  
     
+    
+    /**
+     * 
+     * 方法用途: 设置构造函数为可访问<br>
+     * 操作步骤: 可访问后，就可以设置构造函数的值<br>
+     * @param constructor
+     */
+    public static void makeAccessible(Constructor<?> constructor) {
+		if ((!Modifier.isPublic(constructor.getModifiers()) || !Modifier.isPublic(constructor.getDeclaringClass().getModifiers())) &&
+				!constructor.isAccessible()) {
+			constructor.setAccessible(true);
+		}
+	}
+    
+    /**
+     * 
+     * 方法用途: 反射创建对象<br>
+     * 操作步骤: 通过指定构造函数来反射创建对象
+     * 调用这个方法之前，如构造函数无访问权限，可以通过执行makeAccessible方法获取访问权限<br>
+     * @param constructor
+     * @param args
+     * @return
+     */
+    public static <T> T instantiateClass(Constructor<T> constructor, Object... args)  {
+		try {
+			makeAccessible(constructor);
+			return constructor.newInstance(args);
+		} catch (IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
     
 }

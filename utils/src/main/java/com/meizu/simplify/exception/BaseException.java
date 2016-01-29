@@ -97,5 +97,67 @@ public class BaseException extends RuntimeException{
 	public Throwable getTargetException() {
         return target;
     }
+	
+	
+	/*
+	 * 构建更友好的异常信息
+	 * @see java.lang.Throwable#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		return super.getMessage();
+	}
+
+
+	/**
+	 * 
+	 * 方法用途: 获取根级异常<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public Throwable getRootCause() {
+		Throwable rootCause = null;
+		Throwable cause = getCause();
+		while (cause != null && cause != rootCause) {
+			rootCause = cause;
+			cause = cause.getCause();
+		}
+		return rootCause;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 判断是否包含某异常类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param exType
+	 * @return
+	 */
+	public boolean contains(Class<?> exType) {
+		if (exType == null) {
+			return false;
+		}
+		if (exType.isInstance(this)) {
+			return true;
+		}
+		Throwable cause = getCause();
+		if (cause == this) {
+			return false;
+		}
+		if (cause instanceof BaseException) {
+			return ((BaseException) cause).contains(exType);
+		}
+		else {
+			while (cause != null) {
+				if (exType.isInstance(cause)) {
+					return true;
+				}
+				if (cause.getCause() == cause) {
+					break;
+				}
+				cause = cause.getCause();
+			}
+			return false;
+		}
+	}
 
 }
