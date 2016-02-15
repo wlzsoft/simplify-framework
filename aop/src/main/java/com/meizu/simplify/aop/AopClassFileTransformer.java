@@ -155,6 +155,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	        } catch (NotFoundException e) {
     	            // TODO Auto-generated catch block
     	            e.printStackTrace();
+    	            System.out.println("framework:NotFound(找不到相关class文件):1.请检查aop.properties中injectionTargetClassPaths属性是否有设置有误");
     	        }
         		break;
         	}
