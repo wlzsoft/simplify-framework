@@ -2,10 +2,13 @@ package com.meizu.simplify.dao;
 
 import java.sql.Connection;
 
+import org.junit.Test;
+
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 
 public class DruidPoolFactoryTest {
 
+	@Test
 	public void testPool() {
 		
 		Connection conn2 = DruidPoolFactory.getConnection();
