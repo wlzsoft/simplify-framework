@@ -27,7 +27,11 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	
 	public ShardedJedis jedis = null;
 	public BaseRedisDao(String mod_name) {
-    	jedis = RedisPool.getConnection(mod_name);
+		try {
+			jedis = RedisPool.getConnection(mod_name);
+		} catch(RedisException ex) {
+			ex.printStackTrace();
+		}
 	}
 	/**
 	 * 

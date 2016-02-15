@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.cache.redis.exception.RedisException;
 import com.meizu.simplify.cache.redis.properties.RedisPoolProperties;
 import com.meizu.simplify.cache.redis.util.RedisHostAndPortUtil;
 import com.meizu.simplify.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
@@ -19,6 +19,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.Hashing;
 
 
@@ -92,8 +93,9 @@ public class RedisPool {
 //		config.setLifo(true);
           
 		hostAndPortMap = RedisHostAndPortUtil.getRedisServers();
-		if (hostAndPortMap.isEmpty())
+		if (hostAndPortMap.isEmpty()) {
 			throw new RuntimeException(" redis config error !!! ");
+		}
 		
 		for (Iterator<String> it = hostAndPortMap.keySet().iterator(); it
 				.hasNext();) {
@@ -101,10 +103,8 @@ public class RedisPool {
 			List<HostAndPort> hostList = hostAndPortMap.get(mod_name);
 			List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
 			for (HostAndPort hnp : hostList) {
-				LOGGER.info("[redis - list],host:{},port:{}", new Object[] {
-						hnp.host, hnp.port });
-				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,
-						hnp.port);
+				LOGGER.info("[redis - list],host:{},port:{}", new Object[] {hnp.host, hnp.port });
+				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
 				
 				if(hnp.pwd != null && hnp.pwd.length() > 0){
 					jedisShardInfo.setPassword(hnp.pwd);
@@ -155,7 +155,23 @@ public class RedisPool {
 	 * @return
 	 */
 	public static ShardedJedis getConnection(String mod_name) {
-		return redisPools.get(mod_name).getResource();
+		ShardedJedisPool  pool = redisPools.get(mod_name);
+		ShardedJedis jedis = null;
+		try {
+			jedis = pool.getResource();
+		} catch(JedisConnectionException ex) {
+//			ex.printStackTrace();
+			if(jedis != null) {
+				pool.destroy();
+			}
+			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常");
+		} finally {
+//			TODO 是否回收到连接池中，等待验证
+//			if(jedis != null) {
+//				pool.returnResourceObject(jedis);
+//			}
+		}
+		return jedis;
 	}
 
 }
