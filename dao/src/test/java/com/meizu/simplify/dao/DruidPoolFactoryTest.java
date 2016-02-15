@@ -2,11 +2,20 @@ package com.meizu.simplify.dao;
 
 import java.sql.Connection;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
+import com.meizu.simplify.ioc.Startup;
 
 public class DruidPoolFactoryTest {
+	
+	
+	@Before
+	public void init() {
+		Startup.start();
+	}
+	
 
 	@Test
 	public void testPool() {

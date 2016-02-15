@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import com.meizu.simplify.exception.StartupErrorException;
+
 
 /**
  * 
@@ -37,8 +39,10 @@ public class PropertieUtil {
 			props.load(jndiInput);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
-//			LOGGER.info("配置文件["+fileName+"]不存在");
-			System.out.println("配置文件["+fileName+"]不存在");
+			String message = "配置文件["+fileName+"]不存在";
+//			LOGGER.info(message);
+			System.out.println(message);
+			throw new StartupErrorException(message);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

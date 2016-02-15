@@ -7,6 +7,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.dao.config.PropertiesConfig;
 import com.meizu.simplify.dao.exception.DataAccessException;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.utils.PropertieUtil;
 
 /**
@@ -25,68 +26,67 @@ import com.meizu.simplify.utils.PropertieUtil;
 public class DruidPoolFactory {
 	// 线程共享变量,用于事务管理
 	public static ThreadLocal<Connection> container = new ThreadLocal<Connection>();
-	private static class  DataSource {
-		private static DruidDataSource dataSource = null;
-		private DruidDataSource createDataSource() {
-			PropertieUtil result = new PropertiesConfig().getProperties();
-			try	{
-				dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(result.getProps());
-			} catch (Exception e){
-				try	{
-					if (dataSource != null) {
-						dataSource.close();
-					}
-				} catch (Exception ex)	{
-					ex.printStackTrace();
-				}
-				throw new DataAccessException(e);
-			}
-			if(dataSource == null) {
-				dataSource = new DruidDataSource(); 
-				dataSource.setDriverClassName("org.h2.Driver"); 
-//				数据库相关:1.数据库配置信息密码要经过加密，不能明文写在配置文件中
-//				dataSource.setUsername("root"); 
-//				dataSource.setPassword("root"); 
-				dataSource.setUrl("jdbc:h2:d:/ms_db/MESSAGE_DATA;MVCC\\=true"); 
-//				dataSource.setUrl("jdbc:mysql://182.92.222.140:3306/idotest?useUnicode=true&characterEncoding=UTF-8");
-				dataSource.setInitialSize(5); 
-				dataSource.setMinIdle(1); 
-				dataSource.setMaxActive(16); // 启用监控统计功能 
-				dataSource.setMaxWait(60000);
-				dataSource.setValidationQuery("SELECT 1");
-				dataSource.setTestOnBorrow(true);
-				dataSource.setTestWhileIdle(true);
-				
-				//start TODO
-				//设置开启后，从连接池获取一个连接，操作1800秒，就移除连接，终止sql执行处理
-				//这里设定租期，是为了防止长时间占用连接，忘记归还连接，导致连接池爆了导致连接不够用而设置的，
-				//如果有长时间处理的任务，要考虑设置这个时间，一般程序中不会考虑长时间任务，可以分批请求，或是使用其他程序处理
-//				dataSource.setRemoveAbandoned(true);
-//				dataSource.setRemoveAbandonedTimeout(1800);
-				//end
-				try {
-					dataSource.setFilters("stat");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-				dataSource.setPoolPreparedStatements(false);
-				
-			}
-			return dataSource;
-		}
-		
-		private DataSource() {
-			createDataSource();
-		}
-		public static DruidDataSource getDataSource() {
-			return dataSource;
-		}
+	
+	private static final DruidPoolFactory factory = new DruidPoolFactory();
+	
+	private DruidPoolFactory(){
+		createDataSource();
 	}
+	private DruidDataSource dataSource = null;
+	private DruidDataSource createDataSource() {
+		try	{
+			PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
+			dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(result.getProps());
+		} catch (Exception e){
+			try	{
+				if (dataSource != null) {
+					dataSource.close();
+				}
+			} catch (Exception ex)	{
+				ex.printStackTrace();
+			}
+			throw new DataAccessException(e);
+		}
+		if(dataSource == null) {
+			dataSource = new DruidDataSource(); 
+			dataSource.setDriverClassName("org.h2.Driver"); 
+//			数据库相关:1.数据库配置信息密码要经过加密，不能明文写在配置文件中
+//			dataSource.setUsername("root"); 
+//			dataSource.setPassword("root"); 
+			dataSource.setUrl("jdbc:h2:d:/ms_db/MESSAGE_DATA;MVCC\\=true"); 
+//			dataSource.setUrl("jdbc:mysql://182.92.222.140:3306/idotest?useUnicode=true&characterEncoding=UTF-8");
+			dataSource.setInitialSize(5); 
+			dataSource.setMinIdle(1); 
+			dataSource.setMaxActive(16); // 启用监控统计功能 
+			dataSource.setMaxWait(60000);
+			dataSource.setValidationQuery("SELECT 1");
+			dataSource.setTestOnBorrow(true);
+			dataSource.setTestWhileIdle(true);
+			
+			//start TODO
+			//设置开启后，从连接池获取一个连接，操作1800秒，就移除连接，终止sql执行处理
+			//这里设定租期，是为了防止长时间占用连接，忘记归还连接，导致连接池爆了导致连接不够用而设置的，
+			//如果有长时间处理的任务，要考虑设置这个时间，一般程序中不会考虑长时间任务，可以分批请求，或是使用其他程序处理
+//			dataSource.setRemoveAbandoned(true);
+//			dataSource.setRemoveAbandonedTimeout(1800);
+			//end
+			try {
+				dataSource.setFilters("stat");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+			dataSource.setPoolPreparedStatements(false);
+			
+		}
+		return dataSource;
+	}
+	
+	
 	public static Connection getConnection()   {
 		Connection connection = null;
 		try {
-			connection = DataSource.getDataSource().getConnection();
+			connection = factory.dataSource.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -175,3 +175,4 @@ public class DruidPoolFactory {
 		}
 	}
 }
+
