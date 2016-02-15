@@ -23,6 +23,7 @@ public class DruidPoolFactory {
 		private static DruidDataSource dataSource = new DruidDataSource(); 
 		private DataSource() {
 			dataSource.setDriverClassName("org.h2.Driver"); 
+//			数据库相关:1.数据库配置信息密码要经过加密，不能明文写在配置文件中
 //			dataSource.setUsername("root"); 
 //			dataSource.setPassword("root"); 
 			dataSource.setUrl("jdbc:h2:d:/ms_db/MESSAGE_DATA;MVCC\\=true"); 
