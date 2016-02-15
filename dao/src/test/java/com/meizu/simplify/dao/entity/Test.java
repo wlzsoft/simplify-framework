@@ -19,7 +19,7 @@ import com.meizu.simplify.entity.BaseEntity;
  *
  */
 @Entity
-@Table(name="sys_role")
+@Table(name="test_web")
 @Transient({"delFlag"})
 public class Test extends BaseEntity {
 
