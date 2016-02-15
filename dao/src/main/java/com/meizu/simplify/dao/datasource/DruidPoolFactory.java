@@ -7,7 +7,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: druid 整合dbcp活c3p0</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
