@@ -121,6 +121,16 @@ public class PropertieUtil {
 	
 	/**
 	 * 
+	 * 方法用途: 获取properties对象<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public Properties getProps() {
+		return props;
+	}
+	
+	/**
+	 * 
 	 * 方法用途: 转换属性文件为pojo对象<br>
 	 * 操作步骤: TODO<br>
 	 * @return
