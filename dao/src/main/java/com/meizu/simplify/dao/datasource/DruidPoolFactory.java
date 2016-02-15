@@ -92,7 +92,7 @@ public class DruidPoolFactory {
 			e.printStackTrace();
 			throw new DataAccessException(e.getMessage());
 		}
-		System.out.println(Thread.currentThread().getName() + "连接已经开启......");
+		System.out.println("线程["+Thread.currentThread().getName() + "]连接已经开启......");
 		container.set(connection);
 		return connection;
 	}

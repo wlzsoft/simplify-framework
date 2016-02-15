@@ -516,18 +516,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public Integer save(T t) {
 		generateId(t);
-		return saveMeta(t);
+		return create(t);
 	}
 
-	public Integer saveMeta(T t) {
-		if (StringUtil.isEmpty(seq)) {
-			return this.create(t);
-		}
-		//生成序列:oracle的seq，或是mysql等数据库模拟的序列的生成,暂时不用，采用数据库自增
-//		Long nextval = sqlSessionTemplate.selectOne(getSqlName(SQL_FETCHSEQNEXTVAL),"SELECT ".concat(seq).concat(" FROM DUAL"));
-//		ReflectionUtil.invokeSetterMethod(t, idName, nextval);
-		return this.create(t);
-	}
 	
 	@Deprecated//TODO 考虑buildInfo移除后的影响
 	@Override
@@ -536,7 +527,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(t.getId()!=null) {
 			return updateMeta(t);
 		} else {
-			return saveMeta(t);
+			return create(t);
 		}
 	}
 	
@@ -732,11 +723,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("name".toUpperCase(), "hahah"+id);
 		resultMap.put("id".toUpperCase(), 222);
-/*		
+		
         //TODO 数据库中读取的数据 
         resultMap = sqlSessionTemplate.selectOne(
 				 sqlBuilder.findById(id));
-*/		return MapToEntity(resultMap, this.entityClass);
+		return MapToEntity(resultMap, this.entityClass);
 //		T t = sqlSessionTemplate.selectOne(
 //				getSqlName(SQL_FINDBYID), sqlBuilder.findById(id));
 //		return t;

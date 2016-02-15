@@ -1,10 +1,15 @@
 package com.meizu.simplify.dao.orm;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.meizu.simplify.dao.ResultHandler;
 import com.meizu.simplify.dao.RowBounds;
+import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.SaveDTO;
 
@@ -91,8 +96,16 @@ public class SqlSessionTemplate<T> implements SqlSession<T>{
 
 	@Override
 	public Integer insert(SaveDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
+		int i = -1;
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
+			i = prepareStatement.executeUpdate();
+			System.out.println("插入："+i);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return i;
 	}
 
 	@Override
@@ -133,8 +146,19 @@ public class SqlSessionTemplate<T> implements SqlSession<T>{
 
 	@Override
 	public Map<String, Object> selectOne(BaseDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> map = new HashMap<>();
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
+			ResultSet rs = prepareStatement.executeQuery();
+			while(rs.next()) {
+				map.put("id", rs.getString(1));
+				map.put("name", rs.getString(2));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return map;
 	}
 
 	@Override
