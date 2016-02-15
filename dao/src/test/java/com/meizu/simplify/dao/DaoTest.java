@@ -28,6 +28,12 @@ public class DaoTest {
 	}
 	
 	@Test
+	public void insertTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
+	}
+	
+	@Test
 	public void baseDaoTest() {
 		Assert.assertEquals("hahah1", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(1).getName());
 	}

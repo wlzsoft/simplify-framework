@@ -83,33 +83,33 @@ public interface SqlSession<T> {
 	
 	
 	
-	public void select(String sqlName, Object parameter, RowBounds rowBounds, ResultHandler handler);
+	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler);
 
-	public Integer insert(String sqlName, SaveDTO dto);
+	public Integer insert(SaveDTO dto);
 
-	public void insert(String sqlName, String createOfBatch);
+	public void insert(String createOfBatch);
 
 	public void flushStatements();
 
-	public List<T> selectList(String sqlName, Map<String, Object> paramMap, RowBounds rowBound);
+	public List<T> selectList(Map<String, Object> paramMap, RowBounds rowBound);
 
-	public Map<Object, Object> selectMap(String sqlName, Object parameter, String mapKey, RowBounds rowBounds);
+	public Map<Object, Object> selectMap(Object parameter, String mapKey, RowBounds rowBounds);
 
-	public List<Map<String, Object>> selectList(String sqlName, String findBy);
+	public List<Map<String, Object>> selectList(String findBy);
 
-	public Integer selectOne(String sqlName, String findAllCount);
+	public Integer selectOne(String findAllCount);
 
-	public Map<String, Object> selectOne(String sqlName, BaseDTO dto);
+	public Map<String, Object> selectOne(BaseDTO dto);
 
-	public Integer selectOne(String sqlName, Map<String, Object> paramMap);
+	public Integer selectOne(Map<String, Object> paramMap);
 	
-	public List<Map<String, Object>> selectList(String sqlName, BaseDTO dto);
+	public List<Map<String, Object>> selectList(BaseDTO dto);
 
-	public Integer delete(String sqlName, BaseDTO removeById);
+	public Integer delete(BaseDTO removeById);
 
-	public Integer delete(String sqlName, String removeAll);
+	public Integer delete(String removeAll);
 
-	public Integer update(String sqlName, String update);
+	public Integer update(String update);
 
-	public List<T> selectList(String sqlName, Map<String, Object> paramMap);
+	public List<T> selectList(Map<String, Object> paramMap);
 }

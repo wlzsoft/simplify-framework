@@ -70,28 +70,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private static final String SORT_NAME = "SORT";
 	private static final String DIR_NAME = "DIR";
 	
-	public static final String SQL_CREATE = "create";   
-//	public static final String SQL_FINDBYID = "findById";
-	public static final String SQL_FINDBYWHERE = "findByWhere";
-	private static final String SQL_FINDBY = "findBy";
-	private static final String SQL_CREATEOFBATCH = "createOfBatch";
-	private static final String SQL_REMOVEBY = "removeBy";
-	private static final String SQL_REMOVEALL = "removeAll";
-	private static final String SQL_MODIFY = "modify";
-	private static final String SQL_FINDALL = "findAll";
-	private static final String SQL_FINDALLCOUNT = "findAllCount";
-	public static final String SQL_FINDBYPAGE = "findByPage";   
-	public static final String SQL_FINDLISTBY = "findListBy";
-	public static final String SQL_COUNT = "count";
-	
 //	@Resource
 //	private BuildInfo<T> buildInfo;
 	
 	/**
 	 * 配置文件中，有bean的注入,和上面共用,下面的是对SqlSession经过了一层的封装--推荐使用
 	 */
-	@Resource(name = "sqlSession")
-	private SqlSession sqlSessionTemplate;
+//	@Resource(name = "sqlSession")
+	private SqlSession sqlSessionTemplate = new SqlSessionTemplate<>();
 	
 	private Class<T> entityClass;
 	/**
@@ -121,17 +107,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	
-	public void setSqlSession(SqlSession sqlSessionTemplate) {
-		this.sqlSessionTemplate = sqlSessionTemplate;
-	}
-
-	public SqlSession getSqlSessionTemplate() {
-		return sqlSessionTemplate;
-	}
-
-	public void setSqlSessionTemplate(SqlSession sqlSessionTemplate) {
-		this.sqlSessionTemplate = sqlSessionTemplate;
-	}
 	
 	/**
 	 * 
@@ -389,7 +364,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			String statement, Object parameter, String mapKey,
 			RowBounds rowBounds) {
 		return sqlSessionTemplate.selectMap(
-				getSqlName(statement),
+				
 				parameter, mapKey, rowBounds);
 	}
 
@@ -406,7 +381,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			String statement, Object parameter, RowBounds rowBounds,
 			ResultHandler handler) {
 		sqlSessionTemplate.select(
-				getSqlName(statement),
+				
 				parameter, rowBounds, handler);
 	}
 	
@@ -445,8 +420,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Integer create(T t) {
 		SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
 		
-		Integer res = sqlSessionTemplate.insert(getSqlName(SQL_CREATE),
-				dto);
+		Integer res = sqlSessionTemplate.insert(dto);
 		t.setId(dto.getId());
 		return res;
 	}
@@ -473,12 +447,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			temp.add(t);
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
 //				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-				sqlSessionTemplate.insert(getSqlName(SQL_CREATEOFBATCH),sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
+				sqlSessionTemplate.insert(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
 				sqlSessionTemplate.flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		sqlSessionTemplate.insert(getSqlName(SQL_CREATEOFBATCH), sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
+		sqlSessionTemplate.insert( sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	/* (non-Javadoc)
@@ -501,12 +475,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			temp.add(t);
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
 //				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-				sqlSessionTemplate.insert(getSqlName(SQL_CREATEOFBATCH),sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
+				sqlSessionTemplate.insert(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
 				sqlSessionTemplate.flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		sqlSessionTemplate.insert(getSqlName(SQL_CREATEOFBATCH), sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
+		sqlSessionTemplate.insert( sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	public void createForOracle(List<T> list) {
@@ -525,14 +499,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 			temp.add(t);
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				sqlSessionTemplate.insert(getSqlName(SQL_CREATEOFBATCH),
+				sqlSessionTemplate.insert(
 						sqlBuilder.createOfBatch(temp,
 								currentColumnFieldNames, pkVal));
 				sqlSessionTemplate.flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		sqlSessionTemplate.insert(getSqlName(SQL_CREATEOFBATCH), sqlBuilder
+		sqlSessionTemplate.insert( sqlBuilder
 				.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
@@ -612,7 +586,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public Integer remove(PK id) {
-		return sqlSessionTemplate.delete(getSqlName(SQL_REMOVEBY),
+		return sqlSessionTemplate.delete(
 				sqlBuilder.removeById(id));
 	}
 	
@@ -652,12 +626,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				sqlSessionTemplate.delete(getSqlName(SQL_REMOVEBY),sqlBuilder.removeOfBatch(temp));
+				sqlSessionTemplate.delete(sqlBuilder.removeOfBatch(temp));
 				sqlSessionTemplate.flushStatements();
 				temp = new ArrayList<PK>();
 			}
 		}
-		return  sqlSessionTemplate.delete(getSqlName(SQL_REMOVEBY),sqlBuilder.removeOfBatch(temp));
+		return  sqlSessionTemplate.delete(sqlBuilder.removeOfBatch(temp));
 	}
 
 	
@@ -668,7 +642,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public Integer removeAll() {
-		return sqlSessionTemplate.delete(getSqlName(SQL_REMOVEALL), sqlBuilder.removeAll());
+		return sqlSessionTemplate.delete( sqlBuilder.removeAll());
 	}
 	
 	
@@ -682,7 +656,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		query.executeUpdate();
 		
 		Integer count = sqlSessionTemplate.delete(
-				getSqlName(SQL_REMOVEBY), sqlBuilder.remove(name,value));
+				 sqlBuilder.remove(name,value));
 		return count;
 	}
 	
@@ -699,7 +673,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	public Integer updateMeta(T t) {
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-		return sqlSessionTemplate.update(getSqlName(SQL_MODIFY),
+		return sqlSessionTemplate.update(
 				sqlBuilder.update(t, currentColumnFieldNames));
 	}
 	
@@ -761,7 +735,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 /*		
         //TODO 数据库中读取的数据 
         resultMap = sqlSessionTemplate.selectOne(
-				getSqlName(SQL_FINDBYWHERE), sqlBuilder.findById(id));
+				 sqlBuilder.findById(id));
 */		return MapToEntity(resultMap, this.entityClass);
 //		T t = sqlSessionTemplate.selectOne(
 //				getSqlName(SQL_FINDBYID), sqlBuilder.findById(id));
@@ -783,14 +757,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public List<T> findByIds(PK[] idArr) {
 		List<Map<String, Object>> listMap = sqlSessionTemplate.selectList(
-				getSqlName(SQL_FINDBY), sqlBuilder.findByIds(idArr));
+				 sqlBuilder.findByIds(idArr));
 		List<T> list = MapToList(listMap);
 		return list;
 	}
 	@Override
 	public List<T> findByMutil(String name, String values) {
 		List<Map<String, Object>> listMap = sqlSessionTemplate.selectList(
-				getSqlName(SQL_FINDBY), sqlBuilder.findByMutil(name,values));
+				 sqlBuilder.findByMutil(name,values));
 		List<T> list = MapToList(listMap);
 		return list;
 	}
@@ -828,7 +802,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			paramMap.put(DIR_NAME, orderBy);
 		}
 		List<T> lst = sqlSessionTemplate.selectList(
-				getSqlName(SQL_FINDLISTBY), paramMap);
+				 paramMap);
 		return lst;
 	}
 	
@@ -852,7 +826,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (pageNo > -1)
 			start = (pageNo - 1) * pageSize;
 		RowBounds rowBound = new RowBounds(start,pageSize);
-		List<T> lst = sqlSessionTemplate.selectList(getSqlName(sqlName), paramMap,rowBound);
+		List<T> lst = sqlSessionTemplate.selectList( paramMap,rowBound);
 		return lst;
 	}
 	
@@ -892,7 +866,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> findBy(String name,Object value) {
 		
 		List<Map<String, Object>> listMap = sqlSessionTemplate.selectList(
-				getSqlName(SQL_FINDBY), sqlBuilder.findBy(name,value));
+				 sqlBuilder.findBy(name,value));
 		List<T> list = MapToList(listMap);
 		return list;
 	}
@@ -910,7 +884,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public List<T> findAll() {
 		List<Map<String, Object>> resultMapList = sqlSessionTemplate
-				.selectList(getSqlName(SQL_FINDALL), sqlBuilder.findAll());
+				.selectList( sqlBuilder.findAll());
 		List<T> list = new ArrayList<T>(resultMapList.size());
 		for (Map<String, Object> resultMap : resultMapList) {
 			if(resultMap == null) {
@@ -927,7 +901,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public Integer findAllCount() {
-		Integer count = sqlSessionTemplate.selectOne(getSqlName(SQL_FINDALLCOUNT),
+		Integer count = sqlSessionTemplate.selectOne(
 				sqlBuilder.findAllCount());
 		return count;
 	}
@@ -969,10 +943,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		dto.setLimit("true");
 		//其他地方有冗余，需重构end
 		
-//		java.util.HashMap<String,Object> a = sqlSessionTemplate.selectOne(getSqlName(SQL_FINDBYPAGE),dto);
+//		java.util.HashMap<String,Object> a = sqlSessionTemplate.selectOne(dto);
 //		Integer count = DataUtil.parseInt(a.get("count(1)"));
 		//bugs fix by lcy 2015/05/26
-//		Integer count = sqlSessionTemplate.selectOne(getSqlName(SQL_COUNT),dto);
+//		Integer count = sqlSessionTemplate.selectOne(dto);
 //		return count;
 		return 0;
 	}
@@ -999,7 +973,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		}
 //		paramMap.put("param", param);
 		return (Integer)sqlSessionTemplate.selectOne(
-				getSqlName(SQL_COUNT), paramMap);
+				 paramMap);
 	}
 
 	
@@ -1064,7 +1038,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public T findUnique(String name, Object value) {
 		Map<String, Object> resultMap = sqlSessionTemplate.selectOne(
-				getSqlName(SQL_FINDBYWHERE), sqlBuilder.findByProperties(name, value));
+				 sqlBuilder.findByProperties(name, value));
 		return MapToEntity(resultMap, this.entityClass);
 		
 	}
@@ -1086,7 +1060,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		dto.setPage(page);
 		dto.setLimit("true");
 		List<Map<String, Object>> listMap = sqlSessionTemplate.selectList(
-				getSqlName(SQL_FINDBYPAGE), dto);
+				 dto);
 		List<T> list = MapToList(listMap);
 		//end		
 		
@@ -1125,7 +1099,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		dto.setLimit("true");
 //		SelectDTO selectDto = new SelectDTO(dto,page);
 		List<Map<String, Object>> listMap = sqlSessionTemplate.selectList(
-				getSqlName(SQL_FINDBYPAGE), dto);
+				 dto);
 		List<T> list = MapToList(listMap);
 		//end		
 		
@@ -1171,7 +1145,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			RowBounds rowBound = new RowBounds(start, pageSize);
 
 			List<T> lst = sqlSessionTemplate.selectList(
-					getSqlName(SQL_FINDBYPAGE),
+					
 					paramMap, rowBound);
 
 			return new Page<T>(pageNo, pageSize, lst, count);
