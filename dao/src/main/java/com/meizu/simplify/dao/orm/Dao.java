@@ -278,6 +278,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 		}
 	}
+	
 	/**
 	 * 方法用途: map转实体<br>
 	 * 操作步骤: TODO<br>
@@ -342,7 +343,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return list;
 	}
-	
 	
 	/**
 	 * 
@@ -424,12 +424,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		return meta.getIdentifierPropertyName();
 	}
 	
-		
-	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#create(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public Integer create(T t) {
 		SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
@@ -439,11 +433,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return res;
 	}
 	
-
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#create(java.util.List)
-	 */
 	@Override
 	public void create(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -469,9 +458,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		insert( sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#create(java.util.List)
-	 */
 	@Override
 	public void createByMycat(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -524,9 +510,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#save(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public Integer save(T t) {
 		generateId(t);
@@ -545,10 +528,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 	}
 	
-
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#save(java.util.List)
-	 */
 	@Override
 	public void save(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -569,9 +548,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		this.create(list);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#save(java.util.List)
-	 */
 	@Override
 	public void saveByMycat(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -583,30 +559,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 	}
 	
-
-	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#remove(java.io.Serializable)
-	 */
 	@Override
 	public Integer remove(PK id) {
 		return delete(
 				sqlBuilder.removeById(id));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#remove(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Integer remove(T entity) {
 		return remove((PK) entity.getId());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#remove(java.io.Serializable[])
-	 */
 	@Override
 	public Integer remove(PK[] ids) {
 		if(null == ids || ids.length<1) {
@@ -619,9 +583,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return remove(Arrays.asList(ids));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#remove(java.util.List)
-	 */
 	@Override
 	public Integer remove(List<PK> ids) {
 		if (null == ids || ids.isEmpty()) {
@@ -638,22 +599,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return  delete(sqlBuilder.removeOfBatch(temp));
 	}
-
 	
-	
-
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#removeAll()
-	 */
 	@Override
 	public Integer removeAll() {
 		return delete( sqlBuilder.removeAll());
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#remove(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public Integer remove(String name, Object value) {
 //		Query query = createQuery("delete from " + clazz.getName() + " where "
@@ -664,11 +615,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				 sqlBuilder.remove(name,value));
 		return count;
 	}
-	
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#update(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public Integer update(T t) {
 		generateId(t);
@@ -682,9 +629,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				sqlBuilder.update(t, currentColumnFieldNames));
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#update(java.util.List)
-	 */
 	@Override
 	public void update(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -697,41 +641,22 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 		}
 	}
-	
-	
-	
 
-
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#load(java.io.Serializable)
-	 */
 	@Override
 	public T load(PK id) {
 		return findById(id);
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#get(java.io.Serializable)
-	 */
 	@Override
 	public T get(PK id) {
 		return findById(id);
 	}
-
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#persist(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public void persist(T entity) {
 		save(entity);
 	}
-
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findById(java.io.Serializable)
-	 */
 	@Override
 	public T findById(PK id) {
 		Map<String, Object> resultMap = selectOne(
@@ -739,18 +664,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return MapToEntity(resultMap, this.entityClass);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findById(java.io.Serializable, java.lang.Class)
-	 */
 	@Deprecated
 	@Override
 	public T findById(PK id, Class<T> t) {
 		return findById(id);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findByIds(java.io.Serializable[])
-	 */
 	@Override
 	public List<T> findByIds(PK[] idArr) {
 		List<Map<String, Object>> listMap = selectList(
@@ -765,17 +684,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		List<T> list = MapToList(listMap);
 		return list;
 	}
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findBy(com.meizu.entity.baseEntity.IdEntity)
-	 */
+
 	@Override
 	public List<T> findBy(T param){
 		return findBy(param, null, null);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findBy(com.meizu.entity.baseEntity.IdEntity, java.lang.String, java.lang.String)
-	 */
 	@Override
 	public List<T> findBy(T param, String sort, String orderBy) {
 		Map<String, Object> paramMap = null;
@@ -803,13 +717,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return lst;
 	}
 	
-	
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findBy(java.lang.String, java.lang.Object, int, int, java.lang.String, java.lang.String)
-	 */
 	@Override
 	public List<T> findBy(String sqlName, Object param,int pageNo, int pageSize,String sort,String orderBy){
 		Map<String,Object> paramMap = new HashMap<String,Object>();
@@ -827,9 +734,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return lst;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findBy(java.lang.String, java.lang.Object, java.lang.String, boolean)
-	 */
 	@Override
 	public List<T> findBy(String name, Object value, String orderBy,boolean isAsc) {
 		Criteria criteria = new Criteria();
@@ -840,6 +744,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return criteria.list();
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 设置表的索引值，指定操作的具体分表<br>
@@ -856,9 +761,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return this;
 	}
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findBy(java.lang.String, java.lang.Object)
-	 */
+
 	@Override
 	public List<T> findBy(String name,Object value) {
 		
@@ -868,16 +771,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return list;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findAll(java.lang.String, java.lang.Boolean)
-	 */
 	@Override
 	public List<T> findAll(String orderBy, Boolean isAsc) {
 		return null;
 	}
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findAll()
-	 */
+
 	@Override
 	public List<T> findAll() {
 		List<Map<String, Object>> resultMapList = selectList( sqlBuilder.findAll());
@@ -892,9 +790,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return list;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findAllCount()
-	 */
 	@Override
 	public Integer findAllCount() {
 		Integer count = selectOne(
@@ -902,28 +797,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return count;
 	}
 	
-	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#count()
-	 */
 	@Override
 	public Integer count() {
 		return findAllCount();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#count(com.meizu.data.mybatis.Criteria)
-	 */
 	@Override
 	public Integer count(Criteria criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#count(com.meizu.data.mybatis.Criteria)
-	 */
 	@Override
 	public Integer count(Page<T> page) {
 		List<WhereDTO> listParam = new ArrayList<WhereDTO>();
@@ -947,18 +831,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return 0;
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#count(java.lang.String, java.lang.Object[])
-	 */
 	@Override
 	public Integer count(String sql, Object... values) {
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#count(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public Integer count(T param) {
 		Map<String, Object> paramMap = null;
@@ -971,78 +848,40 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return (Integer)selectOne(
 				 paramMap);
 	}
-
-	
-	
 	//-----------------------------------------------------------------------以下方法待实现
 	
-	
-	
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#merge(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public T merge(T entity) {
 		return null;
 	}
-
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#replicate(com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public void replicate(T entity) {
+		
 	}
-
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#clear()
-	 */
 	@Override
 	public void clear() {
 	}
-
-
 	
-
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#isUnique(com.meizu.entity.baseEntity.IdEntity, java.lang.String)
-	 */
 	@Override
 	public Boolean isUnique(T entity, String propNames) {
 		return false;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findUnique(com.meizu.data.mybatis.Criteria)
-	 */
 	@Override
 	public T findUnique(Criteria criteria) {
 //		return findUnique(name,value);
 		return criteria.uniqueResult();
 	}
-
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findUnique(java.lang.String, java.lang.Object)
-	 */
 	@Override
 	public T findUnique(String name, Object value) {
 		Map<String, Object> resultMap = selectOne(
 				 sqlBuilder.findByProperties(name, value));
 		return MapToEntity(resultMap, this.entityClass);
-		
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findPage(com.meizu.util.Page, java.lang.Object[])
-	 */
 	@Override
 	public List<T> find(Page<T> page,Object... values) {
 		
@@ -1063,9 +902,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return list;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findPage(com.meizu.util.Page, java.lang.Object[])
-	 */
 	@Override
 	public Page<T> findPage(Page<T> page,Object... values) {
 
@@ -1103,9 +939,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return page;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findPage(java.lang.String, java.lang.String, int, int, com.meizu.entity.baseEntity.IdEntity)
-	 */
 	@Override
 	public Page<T> findPage(String sort, String orderBy, int pageNo,
 			int pageSize, T param) {
@@ -1148,18 +981,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findPage(int, int, com.meizu.data.mybatis.Criteria)
-	 */
 	@Override
 	public Page<T> findPage(int pageNo, int pageSize, Criteria criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findPage(java.lang.String, java.lang.String, int, int, com.meizu.data.mybatis.Criteria)
-	 */
 	@Override
 	public Page<T> findPage(String sort, String orderBy, int pageNo,
 			int pageSize, Criteria criteria) {
@@ -1169,9 +996,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 
-	/* (non-Javadoc)
-	 * @see com.meizu.data.mybatis.IBaseDao#findPage(java.lang.String, java.lang.String, com.meizu.util.Page, java.lang.Object[])
-	 */
 	@Override
 	public Page<T> findPage(String sort, String orderBy, Page<T> page,
 			Object... values) {
@@ -1179,160 +1003,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 
-	
-
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-////全文检索功能start--------------------------未实现---------------------------------------------
-	
-	
-	/**
-	 * 
-	 * 方法用途: 获取mybatis的全文搜索Session。<br>
-	 * 操作步骤: TODO<br>
-	 * @return 返回mybatis的全文搜索Session。
-	 */
-//	public FullTextSession getFullTextSession() {
-//		return Search.getFullTextSession(getSession());
-//	}
-	
-	/**
-	 * 
-	 * 方法用途: 创建全文搜索查询条件<br>
-	 * 操作步骤: TODO<br>
-	 * @return 返回全文搜索查询条件。
-	 */
-//	@Override
-//	public FullTextCriteria createFullTextCriteria() {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 根据全文搜索查询条件进行全文搜索。<br>
-	 * 操作步骤: TODO<br>
-	 * @param criteria 全文搜索查询条件
-	 * @return 返回符合查询条件的业务实体列表。
-	 */
-//	@Override
-//	public List<T> searchBy(FullTextCriteria criteria) {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 全文搜索指定类型的所有业务实体。<br>
-	 * 操作步骤: TODO<br> 
-	 * @return 返回指定类型的所有业务实体。
-	 */
-//	@Override
-//	public List<T> searchAll() {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 全文搜索指定类型的所有业务实体并进行排序。<br>
-	 * 操作步骤: TODO<br>
-	 * @param orderBy 排序的属性名
-	 * @param isAsc  是否升序
-	 * @param type 类型
-	 * @return 返回排序后的指定类型的所有业务实体。
-	 */
-//	@Override
-//	public List<T> searchAll(String orderBy, Boolean isAsc, org.apache.lucene.search.SortField.Type type) {
-//	}
-//	@Deprecated
-//	public List<T> searchAll(String orderBy, Boolean isAsc, Integer type) {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 全文搜索唯一业务实体。<br>
-	 * 操作步骤: TODO<br>
-	 * @param criteria   全文搜索查询条件
-	 * @return 返回唯一业务实体，如果没有找到返回null。
-	 */
-//	@Override
-//	public T searchUnique(FullTextCriteria criteria) {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 根据属性的值全文搜索唯一的业务实体。<br>
-	 * 操作步骤: TODO<br>
-	 * @param name 属性名
-	 * @param value  属性值
-	 * @return 返回唯一业务实体，如果没有找到则返回null。
-	 */
-//	@Override
-//	public T searchUnique(String name, Object value) {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 根据全文搜索查询条件进行分页全文搜索。<br>
-	 * 操作步骤: TODO<br> 
-	 * @param criteria  全文搜索查询条件
-	 * @param pageNo 待获取的页数
-	 * @param pageSize 每页的记录数
-	 * @return 返回搜索得到的分页对象。
-	 */
-//	@Override
-//	public Page<T> searchPage(FullTextCriteria criteria, Integer pageNo,
-//			Integer pageSize) {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 重建全文索引。<br>
-	 * 操作步骤: TODO<br> 
-	 * @param sync 是否同步创建
-	 */
-//	@Override
-//	public void rebuildIndex(Boolean sync) {
-//	}
-
-	/**
-	 * 
-	 * 方法用途: 获取查询所能获得的对象总数。<br>
-	 * 操作步骤: TODO<br>  
-	 * @param criteria  全文搜索查询对象
-	 * @return 返回查询结果总数。
-	 */
-//	@Override
-//	public Integer count(FullTextCriteria criteria) {
-//	}
-
-	////全文检索功能end--------------------------未实现---------------------------------------------
-	
 	@Override
 	public void execute(String sql) {
 		// TODO Auto-generated method stub
@@ -1389,67 +1059,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	@Override
 	public List<T> find(String sql) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	@Override
-	public IDao<T,PK> setMaxResults(int maxResult) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getMaxResults() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public IDao<T,PK> setFirstResult(int startPosition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getFirstResult() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public IDao<T,PK> setHint(String hintName, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IDao<T,PK> setParameter(String name, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IDao<T,PK> setParameter(int position, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getParameterValue(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getParameterValue(int position) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <TT> TT unwrap(Class<TT> cls) {
 		// TODO Auto-generated method stub
 		return null;
 	}

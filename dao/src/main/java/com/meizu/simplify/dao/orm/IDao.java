@@ -536,10 +536,9 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	void saveByMycat(List<T> list);
 
 	void createByMycat(List<T> list);
-
 	
 	
-    public IDao<T,PK> setMaxResults(int maxResult);
+    /*public IDao<T,PK> setMaxResults(int maxResult);
 	
 	public int getMaxResults();
 
@@ -548,54 +547,16 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	public int getFirstResult();
 
 	public IDao<T,PK> setHint(String hintName, Object value);
-
-//	public Map<String, Object> getHints();
-
-//	public <T> Query setParameter(Parameter<T> param, T value);
-	
-//	public Query setParameter(Parameter<Calendar> param, Calendar value,TemporalType temporalType);
-
-//	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
 	
 	public IDao<T,PK> setParameter(String name, Object value); 
 	
-//	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
-	
-//	public Query setParameter(String name, Date value, TemporalType temporalType);
-	
 	public IDao<T,PK> setParameter(int position, Object value);
-	
-//	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
-	
-//	public Query setParameter(int position, Date value,	TemporalType temporalType);
-
-//	public Set<Parameter<?>> getParameters();
-
-//	public Parameter<?> getParameter(String name);
-
-//	public <T> Parameter<T> getParameter(String name, Class<T> type);
-	
-//	public Parameter<?> getParameter(int position);
-	
-//	public <T> Parameter<T> getParameter(int position, Class<T> type);
-	
-//	public boolean isBound(Parameter<?> param);
-	
-//	public <T> T getParameterValue(Parameter<T> param);
 	
 	public Object getParameterValue(String name);
 	
 	public Object getParameterValue(int position);
 	
-//	public Query setFlushMode(FlushModeType flushMode);
-	
-//	public FlushModeType getFlushMode();
-
-//	public Query setLockMode(LockModeType lockMode);
-	
-//	public LockModeType getLockMode();
-	
-	public <TT> TT unwrap(Class<TT> cls);
+	public <TT> TT unwrap(Class<TT> cls);*/
 	
 	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler);
 
@@ -627,5 +588,162 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 
 	public List<T> selectList(Map<String, Object> paramMap);
 	
+//	public Map<String, Object> getHints();
+
+//	public <T> Query setParameter(Parameter<T> param, T value);
+	
+//	public Query setParameter(Parameter<Calendar> param, Calendar value,TemporalType temporalType);
+
+//	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
+	
+//	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
+	
+//	public Query setParameter(String name, Date value, TemporalType temporalType);
+	
+//	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
+	
+//	public Query setParameter(int position, Date value,	TemporalType temporalType);
+
+//	public Set<Parameter<?>> getParameters();
+
+//	public Parameter<?> getParameter(String name);
+
+//	public <T> Parameter<T> getParameter(String name, Class<T> type);
+	
+//	public Parameter<?> getParameter(int position);
+	
+//	public <T> Parameter<T> getParameter(int position, Class<T> type);
+	
+//	public boolean isBound(Parameter<?> param);
+	
+//	public <T> T getParameterValue(Parameter<T> param);
+	
+//	public Query setFlushMode(FlushModeType flushMode);
+	
+//	public FlushModeType getFlushMode();
+
+//	public Query setLockMode(LockModeType lockMode);
+	
+//	public LockModeType getLockMode();
+	
+////全文检索功能start--------------------------未实现---------------------------------------------
+	
+	
+	/**
+	 * 
+	 * 方法用途: 获取mybatis的全文搜索Session。<br>
+	 * 操作步骤: TODO<br>
+	 * @return 返回mybatis的全文搜索Session。
+	 */
+//	public FullTextSession getFullTextSession() {
+//		return Search.getFullTextSession(getSession());
+//	}
+	
+	/**
+	 * 
+	 * 方法用途: 创建全文搜索查询条件<br>
+	 * 操作步骤: TODO<br>
+	 * @return 返回全文搜索查询条件。
+	 */
+//	@Override
+//	public FullTextCriteria createFullTextCriteria() {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 根据全文搜索查询条件进行全文搜索。<br>
+	 * 操作步骤: TODO<br>
+	 * @param criteria 全文搜索查询条件
+	 * @return 返回符合查询条件的业务实体列表。
+	 */
+//	@Override
+//	public List<T> searchBy(FullTextCriteria criteria) {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 全文搜索指定类型的所有业务实体。<br>
+	 * 操作步骤: TODO<br> 
+	 * @return 返回指定类型的所有业务实体。
+	 */
+//	@Override
+//	public List<T> searchAll() {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 全文搜索指定类型的所有业务实体并进行排序。<br>
+	 * 操作步骤: TODO<br>
+	 * @param orderBy 排序的属性名
+	 * @param isAsc  是否升序
+	 * @param type 类型
+	 * @return 返回排序后的指定类型的所有业务实体。
+	 */
+//	@Override
+//	public List<T> searchAll(String orderBy, Boolean isAsc, org.apache.lucene.search.SortField.Type type) {
+//	}
+//	@Deprecated
+//	public List<T> searchAll(String orderBy, Boolean isAsc, Integer type) {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 全文搜索唯一业务实体。<br>
+	 * 操作步骤: TODO<br>
+	 * @param criteria   全文搜索查询条件
+	 * @return 返回唯一业务实体，如果没有找到返回null。
+	 */
+//	@Override
+//	public T searchUnique(FullTextCriteria criteria) {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 根据属性的值全文搜索唯一的业务实体。<br>
+	 * 操作步骤: TODO<br>
+	 * @param name 属性名
+	 * @param value  属性值
+	 * @return 返回唯一业务实体，如果没有找到则返回null。
+	 */
+//	@Override
+//	public T searchUnique(String name, Object value) {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 根据全文搜索查询条件进行分页全文搜索。<br>
+	 * 操作步骤: TODO<br> 
+	 * @param criteria  全文搜索查询条件
+	 * @param pageNo 待获取的页数
+	 * @param pageSize 每页的记录数
+	 * @return 返回搜索得到的分页对象。
+	 */
+//	@Override
+//	public Page<T> searchPage(FullTextCriteria criteria, Integer pageNo,
+//			Integer pageSize) {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 重建全文索引。<br>
+	 * 操作步骤: TODO<br> 
+	 * @param sync 是否同步创建
+	 */
+//	@Override
+//	public void rebuildIndex(Boolean sync) {
+//	}
+
+	/**
+	 * 
+	 * 方法用途: 获取查询所能获得的对象总数。<br>
+	 * 操作步骤: TODO<br>  
+	 * @param criteria  全文搜索查询对象
+	 * @return 返回查询结果总数。
+	 */
+//	@Override
+//	public Integer count(FullTextCriteria criteria) {
+//	}
+
+	////全文检索功能end--------------------------未实现---------------------------------------------
 
 }
