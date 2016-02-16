@@ -30,7 +30,7 @@ import com.meizu.simplify.entity.IdEntity;
  * @param <T> 业务实体类型
  * @param <PK> PK类型 ，如：String、Long、Integer 等
  */
-public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends Serializable> {
+public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Serializable> {
 	
 	/**
 	 * 方法用途: 执行sql<br>
@@ -539,15 +539,15 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 
 	
 	
-    public IBaseDao setMaxResults(int maxResult);
+    public IDao setMaxResults(int maxResult);
 	
 	public int getMaxResults();
 
-	public IBaseDao setFirstResult(int startPosition);
+	public IDao setFirstResult(int startPosition);
 
 	public int getFirstResult();
 
-	public IBaseDao setHint(String hintName, Object value);
+	public IDao setHint(String hintName, Object value);
 
 //	public Map<String, Object> getHints();
 
@@ -557,13 +557,13 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 
 //	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
 	
-	public IBaseDao setParameter(String name, Object value); 
+	public IDao setParameter(String name, Object value); 
 	
 //	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
 	
 //	public Query setParameter(String name, Date value, TemporalType temporalType);
 	
-	public IBaseDao setParameter(int position, Object value);
+	public IDao setParameter(int position, Object value);
 	
 //	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
 	

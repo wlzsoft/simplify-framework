@@ -62,7 +62,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @param <PK>  PK类型 ，如：String、Long、Integer 等
  */
 @Bean(type=BeanTypeEnum.PROTOTYPE)
-public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializable>   implements IBaseDao<T, PK> {
+public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializable>   implements IDao<T, PK> {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -1395,7 +1395,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 	@Override
-	public IBaseDao setMaxResults(int maxResult) {
+	public IDao setMaxResults(int maxResult) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1407,7 +1407,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public IBaseDao setFirstResult(int startPosition) {
+	public IDao setFirstResult(int startPosition) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1419,19 +1419,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public IBaseDao setHint(String hintName, Object value) {
+	public IDao setHint(String hintName, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public IBaseDao setParameter(String name, Object value) {
+	public IDao setParameter(String name, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public IBaseDao setParameter(int position, Object value) {
+	public IDao setParameter(int position, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
