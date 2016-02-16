@@ -2,6 +2,7 @@ package com.meizu.simplify.dao.orm;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -150,9 +151,31 @@ public class SqlSessionTemplate<T> implements SqlSession<T>{
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
 			ResultSet rs = prepareStatement.executeQuery();
+			ResultSetMetaData metaData = rs.getMetaData();
 			while(rs.next()) {
-				map.put("id", rs.getString(1));
-				map.put("name", rs.getString(2));
+				for(int i=1; i <= metaData.getColumnCount(); i++) {
+					String columnLabel = metaData.getColumnLabel(i);
+//					String columnClassName = metaData.getColumnClassName(i);
+					map.put(columnLabel, rs.getObject(columnLabel));
+					
+				/*
+				System.out.println("请求sql的列名ColumnLabel:"+columnLabel);
+				System.out.println("java中列的类型ColumnClassName:"+columnClassName);
+				System.out.println("数据库中的列名ColumnName:"+metaData.getColumnName(i));
+				System.out.println("数据库中列的类型ColumnType:"+metaData.getColumnType(i));
+				System.out.println("数据库中列的类型的名字ColumnTypeName:"+metaData.getColumnTypeName(i));
+				System.out.println("整个数值长度ColumnDisplaySize:"+metaData.getColumnDisplaySize(i));
+				System.out.println("整数长度Precision:"+metaData.getPrecision(i));
+				
+				System.out.println("表名TableName:"+metaData.getTableName(i));
+				System.out.println("数据库名CatalogName:"+metaData.getCatalogName(i));
+				
+				System.out.println("小数长度Scale:"+metaData.getScale(i));
+				
+				System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
+				System.out.println("========================");
+				*/
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

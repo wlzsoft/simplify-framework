@@ -3,8 +3,10 @@ package com.meizu.simplify.dao.orm;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -309,9 +311,29 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			String key = entry.getKey();
 			key = currentColumnFieldNames.get(key);
 			Object val = entry.getValue();
-			ReflectionUtil.invokeSetterMethod(t, key, val);
+			try {
+				Class<?> valClazz = mapperOrmType(val);
+				ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+			} catch(IllegalArgumentException ex) {
+				throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
+			}
 		}
 		return t;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 匹配数据库字段类型和实体属性类型，并转换成实体类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param val
+	 * @return
+	 */
+	private Class<?> mapperOrmType(Object val) {
+		Class<?> valClazz = val.getClass();
+		if(valClazz == Timestamp.class) {
+			valClazz = Date.class;
+		}
+		return valClazz;
 	}
 	
 	/**
@@ -720,12 +742,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public T findById(PK id) {
-		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("name".toUpperCase(), "hahah"+id);
-		resultMap.put("id".toUpperCase(), 222);
-		
-        //TODO 数据库中读取的数据 
-        resultMap = sqlSessionTemplate.selectOne(
+		Map<String, Object> resultMap = sqlSessionTemplate.selectOne(
 				 sqlBuilder.findById(id));
 		return MapToEntity(resultMap, this.entityClass);
 //		T t = sqlSessionTemplate.selectOne(

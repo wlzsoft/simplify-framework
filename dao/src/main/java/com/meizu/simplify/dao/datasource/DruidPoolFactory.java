@@ -86,7 +86,12 @@ public class DruidPoolFactory {
 	public static Connection getConnection()   {
 		Connection connection = null;
 		try {
-			connection = factory.dataSource.getConnection();
+			if (factory.dataSource != null)  {
+				connection = factory.dataSource.getConnection();
+			}
+			if(connection.isClosed()) {
+				throw new DataAccessException("连接已关闭");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
