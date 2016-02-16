@@ -44,15 +44,12 @@ public class SQLBuilder<T> {
     private String        tableName;
     private String        columnsStr;
     private String        pkName;
-    private String        seq;
     private ThreadLocal<Integer> tableIndexLocal = new ThreadLocal<>();
-    public SQLBuilder(Set<String> columns, String tableName, String pkName,
-            String seq) {
+    public SQLBuilder(Set<String> columns, String tableName, String pkName) {
         super();
         this.columns = columns;
         this.tableName = tableName;
         this.pkName = pkName;
-        this.seq = seq;
         this.columnsStr = StringUtil.join(this.columns, ",");
     }
     
@@ -98,9 +95,6 @@ public class SQLBuilder<T> {
                 e.printStackTrace();
             }
             
-            if(column.equalsIgnoreCase(pkName) &&  null == value){
-                value = seq;
-            }else{
             	if(value != null) {
         			value = handleValue(value);
         		} else {
@@ -112,7 +106,6 @@ public class SQLBuilder<T> {
         	            value = "''";
         	        }
         		}
-            }
             values.add(value);
         }
         return values;
@@ -229,33 +222,6 @@ public class SQLBuilder<T> {
             Map<String, String> currentColumnFieldNames,Object pkVal) {
         StringBuilder sqlBuild = new StringBuilder();
          
-        if(StringUtil.isNotBlank(seq) && null == pkVal){
-            // ID使用序列
-            sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                    .append(columnsStr).append(")");
-            sqlBuild.append(" SELECT ").append(seq).append(" , a.* FROM ( ");
-            for (int i=0; i < list.size(); i++) {
-                T t = list.get(i);
-                List<Object> values = obtainFieldValues(t,
-                        currentColumnFieldNames,null);
-                values.remove(seq);
-                 
-                if (i == 0) {
-                    sqlBuild.append(" SELECT ");
-                } else {
-                    sqlBuild.append(" UNION ALL SELECT ");
-                }
-                int j = 0, vlen = values.size();
-                for (; j < vlen; j++) {
-                    sqlBuild.append(values.get(j)).append(" AS T").append(j);
-                    if (j != (vlen - 1)) {
-                        sqlBuild.append(",");
-                    }
-                }
-                sqlBuild.append(" FROM DUAL ");
-            }
-            sqlBuild.append(" ) a ");
-        } else {
         	List<String> columns = new ArrayList<String>();
             List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames,columns);
             //ID没有使用序列
@@ -277,7 +243,6 @@ public class SQLBuilder<T> {
                 	sqlBuild.append(")");
                 }
             }
-        }
          
         String sql = sqlBuild.toString();
          
@@ -297,33 +262,6 @@ public class SQLBuilder<T> {
             Map<String, String> currentColumnFieldNames,Object pkVal) {
         StringBuilder sqlBuild = new StringBuilder();
          
-        if(StringUtil.isNotBlank(seq) && null == pkVal){
-            // ID使用序列
-            sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/INSERT INTO ").append(tableName).append("(")
-                    .append(columnsStr).append(")");
-            sqlBuild.append(" SELECT ").append(seq).append(" , a.* FROM ( ");
-            for (int i=0; i < list.size(); i++) {
-                T t = list.get(i);
-                List<Object> values = obtainFieldValues(t,
-                        currentColumnFieldNames,null);
-                values.remove(seq);
-                 
-                if (i == 0) {
-                    sqlBuild.append(" SELECT ");
-                } else {
-                    sqlBuild.append(" UNION ALL SELECT ");
-                }
-                int j = 0, vlen = values.size();
-                for (; j < vlen; j++) {
-                    sqlBuild.append(values.get(j)).append(" AS T").append(j);
-                    if (j != (vlen - 1)) {
-                        sqlBuild.append(",");
-                    }
-                }
-                sqlBuild.append(" FROM DUAL ");
-            }
-            sqlBuild.append(" ) a ");
-        } else {
         	List<String> columns = new ArrayList<String>();
             List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames,columns);
             //ID没有使用序列
@@ -345,7 +283,6 @@ public class SQLBuilder<T> {
                 	sqlBuild.append(")");
                 }
             }
-        }
          
         String sql = sqlBuild.toString();
          
@@ -365,33 +302,6 @@ public class SQLBuilder<T> {
             Map<String, String> currentColumnFieldNames,Object pkVal) {
         StringBuilder sqlBuild = new StringBuilder();
          
-        if(StringUtil.isNotBlank(seq) && null == pkVal){
-            // ID使用序列
-            sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                    .append(columnsStr).append(")");
-            sqlBuild.append(" SELECT ").append(seq).append(" , a.* FROM ( ");
-            for (int i=0; i < list.size(); i++) {
-                T t = list.get(i);
-                List<Object> values = obtainFieldValues(t,
-                        currentColumnFieldNames,null);
-                values.remove(seq);
-                 
-                if (i == 0) {
-                    sqlBuild.append(" SELECT ");
-                } else {
-                    sqlBuild.append(" UNION ALL SELECT ");
-                }
-                int j = 0, vlen = values.size();
-                for (; j < vlen; j++) {
-                    sqlBuild.append(values.get(j)).append(" AS T").append(j);
-                    if (j != (vlen - 1)) {
-                        sqlBuild.append(",");
-                    }
-                }
-                sqlBuild.append(" FROM DUAL ");
-            }
-            sqlBuild.append(" ) a ");
-        } else {
             //ID没有使用序列
             sqlBuild.append("INSERT INTO ").append(tableName).append("(")
                     .append(columnsStr).append(")");
@@ -407,7 +317,6 @@ public class SQLBuilder<T> {
                 sqlBuild.append(StringUtil.join(values, ",")).append(
                         " FROM DUAL ");
             }
-        }
          
         String sql = sqlBuild.toString();
          

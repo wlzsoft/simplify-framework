@@ -40,6 +40,7 @@ import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.exception.BaseDaoException;
@@ -66,49 +67,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	/**
-	 * 作cache 结构{T类的镜像,{数据库列名,实体字段名}}
-	 */
-	private static final Map<Class<?>, Map<String, String>> classFieldMap = new HashMap<Class<?>, Map<String, String>>();
-	public static final String SQLNAME_SEPARATOR = ".";
-	/** 
-	 * 不能用于SQL中的非法字符（主要用于排序字段名） 
-	 */
-	public static final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-	private static final String SORT_NAME = "SORT";
-	private static final String DIR_NAME = "DIR";
-	
 //	@Resource
 //	private BuildInfo<T> buildInfo;
 	
 	private Class<T> entityClass;
-	/**
-	 * 实体类主键名称
-	 */
+	
+	//主键列名
 	private String pkName;
-	/**
-	 * 实体类ID字段名称
-	 */
-	private String idName;
-	/**
-	 * 主键的序列
-	 */
-	private String seq;
-	/**
-	 * 表名
-	 */
-	private String tableName;
 
-	private Map<String, String> currentColumnFieldNames;
+	private Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
 
 	private SQLBuilder<T> sqlBuilder;
-	/**
-	 * SqlMapping命名空间
-	 */
-	private String sqlNamespace;
-	
-	
-	
 	
 	/**
 	 * 
@@ -123,37 +92,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		String nameSpace = entityClass.getName();//注意：正式启用时，需要确保不同dao使用不用的namespace
 		nameSpace = "com.meizu.data.mybatis.BaseDao";
 		return nameSpace;
-	}
-
-	/**
-	 * 方法用途: 将SqlMapping命名空间与给定的SqlMapping名组合在一起<br>
-	 * 操作步骤: sqlName SqlMapping名<br>
-	 * @return 组合了SqlMapping命名空间后的完整SqlMapping名
-	 */
-	protected String getSqlName(String sqlName) {
-		return sqlNamespace + SQLNAME_SEPARATOR + sqlName;
-	}
-
-	
-	/**
-	 * 
-	 * 方法用途: 获取SqlMapping命名空间<br>
-	 * 操作步骤: TODO<br>
-	 * @return SqlMapping命名空间
-	 */
-	public String getSqlNamespace() {
-		return sqlNamespace;
-	}
-
-	/**
-	 * 
-	 * 方法用途: 设置SqlMapping命名空间<br>
-	 * 操作步骤: 此方法只用于注入SqlMapping命名空间，以改变默认的SqlMapping命名空间，
-	 * 不能滥用此方法随意改变SqlMapping命名空间<br>
-	 * @param sqlNamespace sqlNamespace SqlMapping命名空间
-	 */
-	public void setSqlNamespace(String sqlNamespace) {
-		this.sqlNamespace = sqlNamespace;
 	}
 	
 	/**
@@ -174,7 +112,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	public Dao(Class<T> entityClass) {
 		this.entityClass = entityClass;
-		sqlNamespace = getDefaultSqlNamespace(entityClass);
 		DaoInit(entityClass);
 	}
 
@@ -200,11 +137,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	private void DaoInit(Class<T> entityClass) {
 
-		currentColumnFieldNames = classFieldMap.get(entityClass);
-		if (null == currentColumnFieldNames) {
-			currentColumnFieldNames = new LinkedHashMap<String, String>();
-			classFieldMap.put(entityClass, currentColumnFieldNames);
-		}
 		Transient trans = entityClass.getAnnotation(Transient.class);
 		buildFieldInfo(entityClass,trans);
 		
@@ -213,10 +145,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			throw new RuntimeException("类" + entityClass
 					+ "需要指定@Table注解!");
 		}
-		tableName = table.name();
-
 		sqlBuilder = new SQLBuilder<T>(currentColumnFieldNames.keySet(),
-				tableName, pkName, seq);
+				table.name(), pkName);
 	}
 	
 	/**
@@ -231,52 +161,46 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(trans != null) {
 			transArr = trans.value();
 		}
-		String fieldName = null;
-		String columnName = null;
 		for (Field field : fields) {
-			
-			String preField = Modifier.toString(field.getModifiers());
-			if(preField.contains("final")) {
+			boolean isTransient = validTransient(transArr,field);
+			if(isTransient) {
 				continue;
 			}
 			
-//			Annotation[] anno = field.getAnnotations();
-//			for (int i = 0; i < anno.length; i++) {
-//				System.out.println(anno+"----test");
-//			}
-			if (field.isAnnotationPresent(Transient.class)) {
-				continue;
-			}
-			if(transArr != null) {
-				boolean isIgnore = false;
-				for (int i = 0; i < transArr.length; i++) {
-					if(field.getName().equals(transArr[i])) {
-						isIgnore = true;
-						break;
-					}
-				}
-				if(isIgnore) {
-					continue;
-				}
-			}
-			fieldName = field.getName();
+			String columnName = null;
 			Column tableColumn = field.getAnnotation(Column.class);
-			if (null != tableColumn) {
+//			如果没标示Column注解，那么默认使用全大写属性名，否知使用注解指定的值
+			if (null != tableColumn&&StringUtil.isNotBlank(tableColumn.value())) {
 				columnName = tableColumn.value();
 			} else {
-				columnName = null;
+				columnName = field.getName().toUpperCase();
 			}
-			// 如果未标识特殊的列名，默认取字段名
-			columnName = (StringUtil.isEmpty(columnName) ? fieldName.toUpperCase() : columnName);
-			currentColumnFieldNames.put(columnName, fieldName);
+			currentColumnFieldNames.put(columnName, field.getName());
 			if (field.isAnnotationPresent(Key.class)) {
 				// 取得ID的列名
-				idName = fieldName;
 				pkName = columnName;
 				Key primaryKey = field.getAnnotation(Key.class);
-				seq = primaryKey.seq();
 			}
 		}
+	}
+	
+	public boolean validTransient(String[] transArr,Field field) {
+		
+		String preField = Modifier.toString(field.getModifiers());
+		if(preField.contains("final")) {
+			return true;
+		}
+		if (field.isAnnotationPresent(Transient.class)) {
+			return true;
+		}
+		if(transArr != null) {
+			for (int i = 0; i < transArr.length; i++) {
+				if(field.getName().equals(transArr[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -528,10 +452,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-		if (StringUtil.isEmpty(seq)) {
 			this.create(list);
 			return;
-		}
 	}
 	
 	@Override
@@ -539,10 +461,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-		if (StringUtil.isEmpty(seq)) {
 			this.createByMycat(list);
 			return;
-		}
 	}
 	
 	@Override
@@ -666,6 +586,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public List<T> findBy(T param, String sort, String orderBy) {
+		/** 
+		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
+		 */
+		final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
+		final String SORT_NAME = "SORT";
+		final String DIR_NAME = "DIR";
 		Map<String, Object> paramMap = null;
 //		try{
 //			paramMap = ReflectionUtil.bean2Map(param);
@@ -886,6 +812,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public Page<T> findPage(String sort, String orderBy, int pageNo,
 			int pageSize, T param) {
+		
+			/** 
+			 * 不能用于SQL中的非法字符（主要用于排序字段名） 
+			 */
+			final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
+			final String SORT_NAME = "SORT";
+			final String DIR_NAME = "DIR";
+		
 		    // 获取满足条件的记录总数，没有记录时返回空页数据
 			int count = count(param);
 			if (count < 1) {
@@ -952,8 +886,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			while(rs.next()) {
 				for(int i=1; i <= metaData.getColumnCount(); i++) {
 					String columnLabel = metaData.getColumnLabel(i);
-//					String columnClassName = metaData.getColumnClassName(i);
 					map.put(columnLabel, rs.getObject(columnLabel));
+//					String columnClassName = metaData.getColumnClassName(i);
 					
 				/*
 				System.out.println("请求sql的列名ColumnLabel:"+columnLabel);
