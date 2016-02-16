@@ -350,7 +350,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Integer create(T t) {
 		SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
 		
-		Integer res = insert(dto);
+		Integer res = -1;
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
+			res = prepareStatement.executeUpdate();
+			System.out.println("插入："+res);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		t.setId(dto.getId());
 		return res;
 	}
@@ -562,8 +571,49 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findById(PK id) {
-		Map<String, Object> resultMap = selectOne(sqlBuilder.findById(id));
-		return MapToEntity(resultMap, this.entityClass);
+		
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sqlBuilder.findById(id).getSql());
+			ResultSet rs = prepareStatement.executeQuery();
+			ResultSetMetaData metaData = rs.getMetaData();
+			
+			T t = null;
+			try {
+				t = this.entityClass.newInstance();
+			} catch (InstantiationException e) {
+				logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
+						+ e.getMessage());
+			} catch (IllegalAccessException e) {
+				logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
+						+ e.getMessage());
+			}
+			
+			while(rs.next()) {
+				for(int i=1; i <= metaData.getColumnCount(); i++) {
+					String columnLabel = metaData.getColumnLabel(i);
+//					String columnClassName = metaData.getColumnClassName(i);
+						String key = currentColumnFieldNames.get(columnLabel);
+						Object val = rs.getObject(columnLabel);
+						try {
+							Class<?> valClazz = mapperOrmType(val);
+							ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+						} catch(IllegalArgumentException ex) {
+							throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
+						}
+					return t;
+					
+					
+				}
+			}
+			return t;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+//		以上修改代码待验证
+//		Map<String, Object> resultMap = selectOne(sqlBuilder.findById(id));
+//		return MapToEntity(resultMap, this.entityClass);
 	}
 	
 	@Override
@@ -860,38 +910,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 
 
-	@Override
-	public Integer insert(SaveDTO dto) {
-		int i = -1;
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
-			i = prepareStatement.executeUpdate();
-			System.out.println("插入："+i);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return i;
-	}
 
 
 
-	@Override
-	public Map<String, Object> selectOne(BaseDTO dto) {
-		Map<String,Object> map = new HashMap<>();
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
-			ResultSet rs = prepareStatement.executeQuery();
-			ResultSetMetaData metaData = rs.getMetaData();
-			while(rs.next()) {
-				for(int i=1; i <= metaData.getColumnCount(); i++) {
-					String columnLabel = metaData.getColumnLabel(i);
-					map.put(columnLabel, rs.getObject(columnLabel));
-//					String columnClassName = metaData.getColumnClassName(i);
-					
-				/*
-				System.out.println("请求sql的列名ColumnLabel:"+columnLabel);
-				System.out.println("java中列的类型ColumnClassName:"+columnClassName);
+	/*
+				System.out.println("请求sql的列名ColumnLabel:"+metaData.getColumnLabel(i));
+				System.out.println("java中列的类型ColumnClassName:"+metaData.getColumnClassName(i));
 				System.out.println("数据库中的列名ColumnName:"+metaData.getColumnName(i));
 				System.out.println("数据库中列的类型ColumnType:"+metaData.getColumnType(i));
 				System.out.println("数据库中列的类型的名字ColumnTypeName:"+metaData.getColumnTypeName(i));
@@ -905,7 +929,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				
 				System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
 				System.out.println("========================");
-				*/
+	*/
+	@Override
+	public Map<String, Object> selectOne(BaseDTO dto) {
+		Map<String,Object> map = new HashMap<>();
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
+			ResultSet rs = prepareStatement.executeQuery();
+			ResultSetMetaData metaData = rs.getMetaData();
+			while(rs.next()) {
+				for(int i=1; i <= metaData.getColumnCount(); i++) {
+					String columnLabel = metaData.getColumnLabel(i);
+					map.put(columnLabel, rs.getObject(columnLabel));
+//					String columnClassName = metaData.getColumnClassName(i);
 				}
 			}
 		} catch (SQLException e) {

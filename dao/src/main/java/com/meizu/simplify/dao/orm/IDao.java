@@ -550,8 +550,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	
 	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler);
 
-	public Integer insert(SaveDTO dto);
-
 	public void insert(String createOfBatch);
 
 	public void flushStatements();
