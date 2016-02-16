@@ -394,9 +394,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	protected void select(
 			String statement, Object parameter, RowBounds rowBounds,
 			ResultHandler handler) {
-		select(
-				
-				parameter, rowBounds, handler);
+		select(parameter, rowBounds, handler);
 	}
 	
 	/**
@@ -455,7 +453,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				temp = new ArrayList<T>();
 			}
 		}
-		insert( sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
+		insert(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	@Override
@@ -480,7 +478,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				temp = new ArrayList<T>();
 			}
 		}
-		insert( sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
+		insert(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	public void createForOracle(List<T> list) {
@@ -499,15 +497,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 			temp.add(t);
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				insert(
-						sqlBuilder.createOfBatch(temp,
-								currentColumnFieldNames, pkVal));
+				insert(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
 				flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		insert( sqlBuilder
-				.createOfBatch(temp, currentColumnFieldNames, pkVal));
+		insert(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	@Override
@@ -537,15 +532,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			this.create(list);
 			return;
 		}
-//		logger.info("生成序列开始:----------start----------");
-//		for (T t : list) {
-//			Long nextval = selectOne(getSqlName(SQL_FETCHSEQNEXTVAL),
-//					"SELECT ".concat(seq).concat(" FROM DUAL"));
-//			ReflectionUtil.invokeSetterMethod(t, idName, nextval);
-//		}
-//		logger.info("生成序列结束:---------- end ----------");
-
-//		this.create(list);
 	}
 	
 	@Override
@@ -561,8 +547,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer remove(PK id) {
-		return delete(
-				sqlBuilder.removeById(id));
+		return delete(sqlBuilder.removeById(id));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -602,7 +587,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer removeAll() {
-		return delete( sqlBuilder.removeAll());
+		return delete(sqlBuilder.removeAll());
 	}
 	
 	@Override
@@ -611,8 +596,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //				+ name + "=?", value);
 //		query.executeUpdate();
 		
-		Integer count = delete(
-				 sqlBuilder.remove(name,value));
+		Integer count = delete(sqlBuilder.remove(name,value));
 		return count;
 	}
 
@@ -625,8 +609,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	public Integer updateMeta(T t) {
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-		return update(
-				sqlBuilder.update(t, currentColumnFieldNames));
+		return update(sqlBuilder.update(t, currentColumnFieldNames));
 	}
 	
 	@Override
@@ -659,28 +642,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findById(PK id) {
-		Map<String, Object> resultMap = selectOne(
-				 sqlBuilder.findById(id));
+		Map<String, Object> resultMap = selectOne(sqlBuilder.findById(id));
 		return MapToEntity(resultMap, this.entityClass);
-	}
-	
-	@Deprecated
-	@Override
-	public T findById(PK id, Class<T> t) {
-		return findById(id);
 	}
 	
 	@Override
 	public List<T> findByIds(PK[] idArr) {
-		List<Map<String, Object>> listMap = selectList(
-				 sqlBuilder.findByIds(idArr));
+		List<Map<String, Object>> listMap = selectList(sqlBuilder.findByIds(idArr));
 		List<T> list = MapToList(listMap);
 		return list;
 	}
 	@Override
 	public List<T> findByMutil(String name, String values) {
-		List<Map<String, Object>> listMap = selectList(
-				 sqlBuilder.findByMutil(name,values));
+		List<Map<String, Object>> listMap = selectList( sqlBuilder.findByMutil(name,values));
 		List<T> list = MapToList(listMap);
 		return list;
 	}
@@ -772,11 +746,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public List<T> findAll(String orderBy, Boolean isAsc) {
-		return null;
-	}
-
-	@Override
 	public List<T> findAll() {
 		List<Map<String, Object>> resultMapList = selectList( sqlBuilder.findAll());
 		List<T> list = new ArrayList<T>(resultMapList.size());
@@ -792,9 +761,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	@Override
 	public Integer findAllCount() {
-		Integer count = selectOne(
-				sqlBuilder.findAllCount());
+		Integer count = selectOne(sqlBuilder.findAllCount());
 		return count;
+	}
+	
+	@Override
+	public Integer selectOne(String findAllCount) {
+		return 0;
 	}
 	
 	@Override
@@ -802,11 +775,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return findAllCount();
 	}
 	
-	@Override
-	public Integer count(Criteria criteria) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public Integer count(Page<T> page) {
@@ -831,10 +799,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return 0;
 	}
 	
-	@Override
-	public Integer count(String sql, Object... values) {
-		return null;
-	}
 	
 	@Override
 	public Integer count(T param) {
@@ -845,30 +809,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //			throw new BaseDaoException("获取参数失败", e);
 //		}
 //		paramMap.put("param", param);
-		return (Integer)selectOne(
-				 paramMap);
+		return (Integer)selectOne(paramMap);
 	}
 	//-----------------------------------------------------------------------以下方法待实现
 	
-	@Override
-	public T merge(T entity) {
-		return null;
-	}
 	
-	@Override
-	public void replicate(T entity) {
-		
-	}
-	
-	@Override
-	public void clear() {
-	}
-	
-	@Override
-	public Boolean isUnique(T entity, String propNames) {
-		return false;
-	}
-
 	@Override
 	public T findUnique(Criteria criteria) {
 //		return findUnique(name,value);
@@ -877,8 +822,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findUnique(String name, Object value) {
-		Map<String, Object> resultMap = selectOne(
-				 sqlBuilder.findByProperties(name, value));
+		Map<String, Object> resultMap = selectOne(sqlBuilder.findByProperties(name, value));
 		return MapToEntity(resultMap, this.entityClass);
 	}
 	
@@ -981,93 +925,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 
-	@Override
-	public Page<T> findPage(int pageNo, int pageSize, Criteria criteria) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Page<T> findPage(String sort, String orderBy, int pageNo,
-			int pageSize, Criteria criteria) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-
-	@Override
-	public Page<T> findPage(String sort, String orderBy, Page<T> page,
-			Object... values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void execute(String sql) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void execute(String sql, Object[] args) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void execute(String sql, Object[] args, int[] types) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void executeBatch(String sql, List<Object[]> batchArgs) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void executeBatch(String sql, List<Object[]> batchArgs, int[] types) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public T findUnique(String sql, Object[] args, RowMapper<T> rowMapper) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public T findUnique(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<T> find(String sql, Object[] args, RowMapper<T> rowMapper) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<T> find(String sql, Object[] args, int[] types, RowMapper<T> rowMapper) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<T> find(String sql) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Integer insert(SaveDTO dto) {
@@ -1083,41 +940,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return i;
 	}
 
-	@Override
-	public void insert(String createOfBatch) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void flushStatements() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<T> selectList(Map<String, Object> paramMap, RowBounds rowBound) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Map<Object, Object> selectMap(Object parameter, String mapKey, RowBounds rowBounds) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> selectList(String findBy) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer selectOne(String findAllCount) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Map<String, Object> selectOne(BaseDTO dto) {
@@ -1157,29 +980,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return map;
 	}
-
+	
 	@Override
-	public Integer selectOne(Map<String, Object> paramMap) {
+	public void flushStatements() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> selectList(BaseDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer delete(BaseDTO removeById) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer delete(String removeAll) {
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
@@ -1194,4 +999,57 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 
+	@Override
+	public void insert(String createOfBatch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Integer delete(String removeAll) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer delete(BaseDTO removeById) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectList(BaseDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectList(String findBy) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<T> selectList(Map<String, Object> paramMap, RowBounds rowBound) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<Object, Object> selectMap(Object parameter, String mapKey, RowBounds rowBounds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer selectOne(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

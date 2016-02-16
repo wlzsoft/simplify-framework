@@ -37,7 +37,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * 操作步骤: <br>
 	 * @param sql SQL语句
 	 */
-	public void execute(String sql);
+//	public void execute(String sql);
 
 	/**
 	 * 方法用途: 执行sql<br>
@@ -45,7 +45,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param sql SQL语句
 	 * @param args 参数对象
 	 */
-	public void execute(String sql, Object[] args);
+//	public void execute(String sql, Object[] args);
 	
 	/**
 	 * 方法用途: 执行sql <br>
@@ -54,7 +54,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param args 参数对象
 	 * @param types 参数映射类型
 	 */
-	public void execute(String sql, Object[] args, int[] types);
+//	public void execute(String sql, Object[] args, int[] types);
 	
 	/**
 	 * 方法用途: 批量处理<br>
@@ -62,7 +62,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param sql SQL语句
 	 * @param batchArgs 参数对象列表
 	 */
-	public void executeBatch(String sql, List<Object[]> batchArgs);
+//	public void executeBatch(String sql, List<Object[]> batchArgs);
 	
 	/**
 	 * 方法用途: 批量处理<br>
@@ -71,7 +71,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param batchArgs 参数对象列表
 	 * @param types 参数映射类型
 	 */
-	public void executeBatch(String sql, List<Object[]> batchArgs, int[] types);
+//	public void executeBatch(String sql, List<Object[]> batchArgs, int[] types);
 	
 	/**
 	 * 已测试
@@ -166,16 +166,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
     void update(List<T> list);
      
     /**
-     * 已测试 不建议使用方法
-     * 方法用途:根据ID获取对象<br>
-     * 操作步骤: TODO<br>
-     * @param id 指定的唯一标识符
-     * @param t  指定操作的实体类类型
-     * @return  指定的唯一标识符对应的持久化对象，如果没有对应的持久化对象，则返回null。
-     */
-    @Deprecated
-    T findById(PK id,Class<T> t);
-    /**
      * 已测试
      * 方法用途:根据ID获取对象<br>
      * 操作步骤: TODO<br>
@@ -213,7 +203,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param criteria
 	 * @return
 	 */
-	Integer count(Criteria criteria);
+//	Integer count(Criteria criteria);
 	/**
 	 * 
 	 * 暂未实现
@@ -244,7 +234,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param values 查询参数
 	 * @return 返回查询结果总数。
 	 */
-	Integer count(String sql, Object... values);
+//	Integer count(String sql, Object... values);
 
 	
 	/**
@@ -314,7 +304,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param rowMapper 对象结果映射
 	 * @return 结果对象
 	 */
-	public T findUnique(String sql, Object[] args, RowMapper<T> rowMapper);
+//	public T findUnique(String sql, Object[] args, RowMapper<T> rowMapper);
 	
 	/**
 	 * 方法用途: 查询返回单个对象<br>
@@ -325,7 +315,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param rowMapper 对象结果映射
 	 * @return 结果对象
 	 */
-	public T findUnique(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
+//	public T findUnique(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
 	
 	/**
 	 * 未测试
@@ -335,7 +325,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param propNames  属性名，可以多个属性名用","分割
 	 * @return 如果存在重复的业务实体返回false，否则返回true。
 	 */
-	Boolean isUnique(T entity, String propNames);
+//	Boolean isUnique(T entity, String propNames);
 	/**
 	 * 未测试
 	 * 方法用途: 根据属性的值查找业务实体并进行排序。<br>
@@ -364,20 +354,20 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param isAsc 是否升序
 	 * @return 返回排序后的指定类型的所有业务实体。
 	 */
-	List<T> findAll(String orderBy, Boolean isAsc);
+//	List<T> findAll(String orderBy, Boolean isAsc);
 	/**
 	 * 未实现
 	 * 方法用途: 清理当前Session。<br>
 	 * 操作步骤: TODO<br>
 	 */
-	void clear();
+//	void clear();
 	/**
 	 * 未实现
 	 * 方法用途: 保存业务实体。（复用已有的ID键值时使用）<br>
 	 * 操作步骤: TODO<br>
 	 * @param entity 待保存的业务实体
 	 */
-	void replicate(T entity);
+//	void replicate(T entity);
 	/**
 	 * 未实现
 	 * 方法用途: 合并业务实体。<br>
@@ -385,7 +375,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param entity 待更新业务实体
 	 * @return 返回更新后的业务实体（持久状态的）。
 	 */
-	T merge(T entity);
+//	T merge(T entity);
 
 	/**
 	 * 已测试
@@ -436,7 +426,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param criteria 查询条件
 	 * @return 返回查询得到的分页对象。
 	 */
-	Page<T> findPage(int pageNo, int pageSize,Criteria criteria);
+//	Page<T> findPage(int pageNo, int pageSize,Criteria criteria);
 	
 	/**
 	 * 未测试
@@ -449,7 +439,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param criteria 查询条件
 	 * @return 返回查询得到的分页对象。
 	 */
-	Page<T> findPage( String sort, String orderBy,int pageNo, int pageSize,Criteria criteria);
+//	Page<T> findPage( String sort, String orderBy,int pageNo, int pageSize,Criteria criteria);
 	
 	/**
 	 * 暂未实现
@@ -483,7 +473,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param values 查询条件
 	 * @return 返回查询得到的分页对象。
 	 */
-	Page<T> findPage(String sort, String orderBy,Page<T> page, Object... values);
+//	Page<T> findPage(String sort, String orderBy,Page<T> page, Object... values);
 
 	/**
 	 * 
@@ -512,7 +502,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param rowMapper 对象结果映射
 	 * @return 结果列表
 	 */
-	public List<T> find(String sql, Object[] args, RowMapper<T> rowMapper);
+//	public List<T> find(String sql, Object[] args, RowMapper<T> rowMapper);
 	
 	/**
 	 * 方法用途: 列表查询<br>
@@ -523,7 +513,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param rowMapper 对象结果映射
 	 * @return 结果列表
 	 */
-	public List<T> find(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
+//	public List<T> find(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
 	/**
 	 * 
 	 * 方法用途: 待实现，待测试<br>
@@ -531,7 +521,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param sql
 	 * @return
 	 */
-	public List<T> find(String sql);
+//	public List<T> find(String sql);
 
 	void saveByMycat(List<T> list);
 
