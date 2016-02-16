@@ -539,15 +539,15 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 
 	
 	
-    public IDao setMaxResults(int maxResult);
+    public IDao<T,PK> setMaxResults(int maxResult);
 	
 	public int getMaxResults();
 
-	public IDao setFirstResult(int startPosition);
+	public IDao<T,PK> setFirstResult(int startPosition);
 
 	public int getFirstResult();
 
-	public IDao setHint(String hintName, Object value);
+	public IDao<T,PK> setHint(String hintName, Object value);
 
 //	public Map<String, Object> getHints();
 
@@ -557,13 +557,13 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 
 //	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
 	
-	public IDao setParameter(String name, Object value); 
+	public IDao<T,PK> setParameter(String name, Object value); 
 	
 //	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
 	
 //	public Query setParameter(String name, Date value, TemporalType temporalType);
 	
-	public IDao setParameter(int position, Object value);
+	public IDao<T,PK> setParameter(int position, Object value);
 	
 //	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
 	
@@ -595,7 +595,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	
 //	public LockModeType getLockMode();
 	
-	public <T> T unwrap(Class<T> cls);
+	public <TT> TT unwrap(Class<TT> cls);
 	
 	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler);
 

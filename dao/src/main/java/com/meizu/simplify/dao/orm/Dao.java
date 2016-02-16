@@ -1395,7 +1395,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 	@Override
-	public IDao setMaxResults(int maxResult) {
+	public IDao<T,PK> setMaxResults(int maxResult) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1407,7 +1407,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public IDao setFirstResult(int startPosition) {
+	public IDao<T,PK> setFirstResult(int startPosition) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1419,19 +1419,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public IDao setHint(String hintName, Object value) {
+	public IDao<T,PK> setHint(String hintName, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public IDao setParameter(String name, Object value) {
+	public IDao<T,PK> setParameter(String name, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public IDao setParameter(int position, Object value) {
+	public IDao<T,PK> setParameter(int position, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1449,7 +1449,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public <T> T unwrap(Class<T> cls) {
+	public <TT> TT unwrap(Class<TT> cls) {
 		// TODO Auto-generated method stub
 		return null;
 	}
