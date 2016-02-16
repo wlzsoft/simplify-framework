@@ -47,7 +47,7 @@ import com.meizu.simplify.utils.StringUtil;
 /**
  * 
  * <p><b>Title:</b><i> 基础泛型DAO实现类</i></p>
- * <p>Desc:1. SqlSessionTemplate的实现方式
+ * <p>Desc:1. IBaseDaoTemplate的实现方式
  *         2. 注意sql注入的问题</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -1395,7 +1395,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 	@Override
-	public SqlSession setMaxResults(int maxResult) {
+	public IBaseDao setMaxResults(int maxResult) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1407,7 +1407,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public SqlSession setFirstResult(int startPosition) {
+	public IBaseDao setFirstResult(int startPosition) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1419,19 +1419,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public SqlSession setHint(String hintName, Object value) {
+	public IBaseDao setHint(String hintName, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SqlSession setParameter(String name, Object value) {
+	public IBaseDao setParameter(String name, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SqlSession setParameter(int position, Object value) {
+	public IBaseDao setParameter(int position, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}

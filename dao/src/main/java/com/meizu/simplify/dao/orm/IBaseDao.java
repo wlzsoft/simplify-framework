@@ -539,15 +539,15 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 
 	
 	
-    public SqlSession setMaxResults(int maxResult);
+    public IBaseDao setMaxResults(int maxResult);
 	
 	public int getMaxResults();
 
-	public SqlSession setFirstResult(int startPosition);
+	public IBaseDao setFirstResult(int startPosition);
 
 	public int getFirstResult();
 
-	public SqlSession setHint(String hintName, Object value);
+	public IBaseDao setHint(String hintName, Object value);
 
 //	public Map<String, Object> getHints();
 
@@ -557,13 +557,13 @@ public interface IBaseDao<T extends IdEntity<Serializable,Integer>, PK extends S
 
 //	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
 	
-	public SqlSession setParameter(String name, Object value); 
+	public IBaseDao setParameter(String name, Object value); 
 	
 //	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
 	
 //	public Query setParameter(String name, Date value, TemporalType temporalType);
 	
-	public SqlSession setParameter(int position, Object value);
+	public IBaseDao setParameter(int position, Object value);
 	
 //	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
 	
