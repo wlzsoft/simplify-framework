@@ -183,27 +183,18 @@ public class SQLBuilder<T> {
     	  else if(type.equals("delete")) {/*默认不需要处理*/}
         sqlBuild.append(type + " FROM ").append(getTableName());
         String sql = sqlBuild.toString();
-        return commonSql(sql,whereList);
-	}
-    
-
-
-
-	/**
-     * 
-     * 方法用途: TODO<br>
-     * 操作步骤: TODO<br>
-     * @param whereList
-     * @return
-     */
-    public BaseDTO commonSql(String sql , WhereDTO... whereList) {
-    	BaseDTO dto = new BaseDTO();
+        
+        BaseDTO dto = new BaseDTO();
     	dto.setPreSql(sql);
         dto.setSql(sql);
         dto.setWhereList(Arrays.asList(whereList));
         return dto;
+        
 	}
     
+
+
+
     /**
      * 生成新增的SQL
      * 
