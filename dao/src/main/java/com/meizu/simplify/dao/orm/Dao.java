@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -745,9 +746,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		Map<String, Object> resultMap = sqlSessionTemplate.selectOne(
 				 sqlBuilder.findById(id));
 		return MapToEntity(resultMap, this.entityClass);
-//		T t = sqlSessionTemplate.selectOne(
-//				getSqlName(SQL_FINDBYID), sqlBuilder.findById(id));
-//		return t;
 	}
 	
 	/* (non-Javadoc)
@@ -945,7 +943,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(params != null) {
 			listParam = (List<WhereDTO>) params;
 		}
-		BaseDTO dto = sqlBuilder.count(listParam);
+		BaseDTO dto = sqlBuilder.count(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");
@@ -1063,7 +1061,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(params != null) {
 			listParam = (List<WhereDTO>) params;
 		}
-		BaseDTO dto = sqlBuilder.findPage(listParam);
+		BaseDTO dto = sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");
@@ -1101,7 +1099,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //	        where.setOperator(" = ");
 //	        where.setValue("");
 //	     listParam.add(where);
-		BaseDTO dto = sqlBuilder.findPage(listParam);
+		BaseDTO dto = sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");

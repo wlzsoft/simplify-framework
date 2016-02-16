@@ -28,6 +28,7 @@ public class BaseDTO implements Serializable {
 //		this.table = table;
 //	}
 	private String sql;
+	private String preSql;
 	/**
 	 * 连接类型：or 或   and 
 	 */
@@ -38,7 +39,6 @@ public class BaseDTO implements Serializable {
 	private String orderBy;//格式 ："createTime,sort"
 	private String limit;
 	
-	
 	private Page page;
 	
 	public String getSql() {
@@ -47,6 +47,14 @@ public class BaseDTO implements Serializable {
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
+	
+	public String getPreSql() {
+		return preSql;
+	}
+	public void setPreSql(String preSql) {
+		this.preSql = preSql;
+	}
+	
 	public List<WhereDTO> getWhereList() {
 		return whereList;
 	}

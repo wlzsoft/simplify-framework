@@ -1,6 +1,7 @@
 package com.meizu.simplify.dao.orm;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,24 +169,11 @@ public class SQLBuilder<T> {
      * 
      * 方法用途: TODO<br>
      * 操作步骤: TODO<br>
-     * @param where
-     * @return
-     */
-    public BaseDTO commonSqlByType(String type,WhereDTO where) {
-        List<WhereDTO> list = new ArrayList<WhereDTO>();
-        list.add(where);
-        return commonSqlByType(type,list);
-	}
-    
-    /**
-     * 
-     * 方法用途: TODO<br>
-     * 操作步骤: TODO<br>
      * @param whereList
      * @param type 枚举  delete  select
      * @return
      */
-    public BaseDTO commonSqlByType(String type , List<WhereDTO> whereList) {
+    public BaseDTO commonSqlByType(String type , WhereDTO... whereList) {
     	StringBuilder sqlBuild = new StringBuilder();
     	if(type.equals("select")) {
     		type += " "+columnsStr;
@@ -208,10 +196,11 @@ public class SQLBuilder<T> {
      * @param whereList
      * @return
      */
-    public BaseDTO commonSql(String sql , List<WhereDTO> whereList) {
+    public BaseDTO commonSql(String sql , WhereDTO... whereList) {
     	BaseDTO dto = new BaseDTO();
+    	dto.setPreSql(sql);
         dto.setSql(sql);
-        dto.setWhereList(whereList);
+        dto.setWhereList(Arrays.asList(whereList));
         return dto;
 	}
     
@@ -233,6 +222,7 @@ public class SQLBuilder<T> {
          
         logger.debug("生成的SQL为: " + sql);
         SaveDTO dto = new SaveDTO();
+        dto.setPreSql(sql);
         dto.setSql(sql);
         return dto;
     }
@@ -468,7 +458,7 @@ public class SQLBuilder<T> {
          
         //logger.debug("生成的SQL为: " + sql);
         BaseDTO dto = new BaseDTO();
-        dto.setSql(sql);
+        dto.setPreSql(sql);
         List<WhereDTO> list = new ArrayList<WhereDTO>();
         WhereDTO where = new WhereDTO();
         where.setKey(pkName);
@@ -485,6 +475,7 @@ public class SQLBuilder<T> {
         //test end
         
         dto.setWhereList(list);
+        dto.setSql(sql+" where "+pkName+" = "+id);
         return dto;
     }
      
@@ -499,7 +490,7 @@ public class SQLBuilder<T> {
         sqlBuild.append("DELETE FROM ").append(getTableName());
         BaseDTO dto = new BaseDTO();
         String sql = sqlBuild.toString();
-        dto.setSql(sql);
+        dto.setPreSql(sql);
         
         List<WhereDTO> list = new ArrayList<WhereDTO>();
         WhereDTO where = new WhereDTO();
@@ -527,6 +518,7 @@ public class SQLBuilder<T> {
         list.add(where);
         //logger.debug("生成的SQL为: " + sql);
         dto.setWhereList(list);
+        dto.setSql(sql+" where "+pkName+" IN ("+value+")");
         return dto;
     }
      
@@ -578,12 +570,6 @@ public class SQLBuilder<T> {
      * @return
      */
     public <PK>  BaseDTO findById(PK id) {
-//        StringBuilder sqlBuild = new StringBuilder();
-//        sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ").append(getTableName());
-//        SelectDTO dto = new SelectDTO();
-//        dto.setSql(sqlBuild.toString());
-//        dto.setWhere(pkName);
-//        dto.setVal(id.toString());
         WhereDTO where = new WhereDTO();
         where.setKey(pkName);
         where.setOperator(" = ");
@@ -599,12 +585,6 @@ public class SQLBuilder<T> {
      * @return
      */
     public <V>  BaseDTO findByProperties(String key,V value) {
-//        StringBuilder sqlBuild = new StringBuilder();
-//        sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ").append(getTableName());
-//        SelectDTO dto = new SelectDTO();
-//        dto.setSql(sqlBuild.toString());
-//        dto.setWhere(pkName);
-//        dto.setVal(id.toString());
         WhereDTO where = new WhereDTO();
         where.setKey(key);
         where.setOperator(" = ");
@@ -715,11 +695,11 @@ public class SQLBuilder<T> {
          
         return sql;
 	}
-    public  BaseDTO findPage(List<WhereDTO> whereList) {
+    public  BaseDTO findPage(WhereDTO... whereList) {
         return commonSqlByType("select",whereList);
          
     }
-    public  BaseDTO count(List<WhereDTO> whereList) {
+    public  BaseDTO count(WhereDTO... whereList) {
         return commonSqlByType("count",whereList);
          
     }
