@@ -34,6 +34,25 @@ public class DaoTest {
 	}
 	
 	@Test
+	public void getIdNameTest() {
+		Assert.assertEquals("id", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getIdName());
+	}
+	
+	@Test
+	public void getIdValTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setId(1);//必须设置id的值
+		t.setName("lcy");
+		t.setCreateId(1);
+		t.setUpdateId(1);
+		t.setCreateTime(new Date());
+		t.setUpdateTime(new Date());
+		Integer key = (Integer) BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getId(t);
+		System.out.println(key);
+		Assert.assertTrue(key>0);
+	}
+	
+	@Test
 	public void s1_insertTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");

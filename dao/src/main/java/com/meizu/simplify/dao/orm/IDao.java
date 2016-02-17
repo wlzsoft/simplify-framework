@@ -96,6 +96,19 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
      * @param list
      */
     void save(List<T> list);
+    
+	/**
+	 * 
+	 * 方法用途: 更新或保存<br>
+	 * 操作步骤: TODO<br>
+	 * @param t
+	 * @return
+	 */
+	Integer saveOrUpdate(T t);
+    
+    void saveByMycat(List<T> list);
+
+	void createByMycat(List<T> list);
      
 	/**
 	 * 未实现
@@ -365,30 +378,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 //	T merge(T entity);
 
-	/**
-	 * 已测试
-	 * 方法用途: 持久化业务实体。<br>
-	 * 操作步骤: TODO<br>
-	 * @param entity 待持久化业务实体
-	 */
-	void persist(T entity);
-
-	 /**
-     * 已测试
-     * 方法用途:根据ID获取对象<br>
-     * 操作步骤: TODO<br>
-     * @param id 指定的唯一标识符
-     * @return  指定的唯一标识符对应的持久化对象，如果没有对应的持久化对象，则返回null。
-     */
-	T get(PK id);
-	/**
-     * 已测试
-     * 方法用途:根据ID获取对象<br>
-     * 操作步骤: TODO<br>
-     * @param id 指定的唯一标识符
-     * @return  指定的唯一标识符对应的持久化对象，如果没有对应的持久化对象，则返回null。
-     */
-	T load(PK id);
 
 	/**
 	 * 
@@ -463,14 +452,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 //	Page<T> findPage(String sort, String orderBy,Page<T> page, Object... values);
 
-	/**
-	 * 
-	 * 方法用途: 更新或保存<br>
-	 * 操作步骤: TODO<br>
-	 * @param t
-	 * @return
-	 */
-	Integer saveOrUpdate(T t);
 
 	/**
 	 * 
@@ -511,10 +492,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 //	public List<T> find(String sql);
 
-	void saveByMycat(List<T> list);
-
-	void createByMycat(List<T> list);
-	
+	public void flushStatements();
 	
     /*public IDao<T,PK> setMaxResults(int maxResult);
 	
@@ -536,14 +514,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	
 	public <TT> TT unwrap(Class<TT> cls);*/
 	
-	public void flushStatements();
-
-	public Integer delete(BaseDTO removeById);
-
-	public Integer delete(String removeAll);
-
-	public Integer update(String update);
-
 //	public Map<String, Object> getHints();
 
 //	public <T> Query setParameter(Parameter<T> param, T value);

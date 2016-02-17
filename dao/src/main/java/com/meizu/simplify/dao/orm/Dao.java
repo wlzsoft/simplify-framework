@@ -75,7 +75,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 	/**
-	 * 构造方法
 	 * @param clazz  业务实体类
 	 */
 	public Dao(Class<T> entityClass) {
@@ -165,21 +164,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 	}
 	
-	
-//	@Resource
-//	private BuildInfo<T> buildInfo;
 	/**
 	 * 
-	 * 方法用途: 生成主键值<br>
-	 * 操作步骤: 默认情况下什么也不做；
-	 * 如果需要生成主键，需要由子类重写此方法根据需要的方式生成主键值<br>
-	 * @param t 要持久化的对象
+	 * 方法用途: 验证Transient注解<br>
+	 * 操作步骤: TODO<br>
+	 * @param transArr
+	 * @param field
+	 * @return
 	 */
-	@Deprecated
-	protected void generateId(T t) {
-//		buildInfo.buildId(t);
-	}
-	
 	public boolean validTransient(String[] transArr,Field field) {
 		
 		String preField = Modifier.toString(field.getModifiers());
@@ -199,144 +191,36 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return false;
 	}
 	
-
-	/**
-	 * 
-	 * 方法用途: 匹配数据库字段类型和实体属性类型，并转换成实体类型<br>
-	 * 操作步骤: TODO<br>
-	 * @param val
-	 * @return
-	 */
-	private Class<?> mapperOrmType(Object val) {
-		Class<?> valClazz = val.getClass();
-		if(valClazz == Timestamp.class) {
-			valClazz = Date.class;
-		}
-		return valClazz;
-	}
-	
 	
 	/**
-	 * 
-	 * 方法用途: 从给定字符串中将指定的非法字符串数组中各字符串过滤掉。<br>
-	 * 操作步骤: TODO<br>
-	 * @param str 待过滤的字符串
-	 * @param filterChars 指定的非法字符串数组
-	 * @return 过滤后的字符串
-	 */
-	private String filterIllegalChars(String str, String[] filterChars) {
-		String rs = str;
-		if (rs != null && filterChars != null) {
-			for (String fc : filterChars) {
-				if (fc != null && fc.length() > 0) {
-					str = str.replaceAll(fc, ""); 
-				}
-			}
-		}
-		return rs;
-	}
-
-
-	/**
-	 * 方法用途: TODO<br>
-	 * 操作步骤: TODO<br>
-	 * @param statement 映射的语句ID
-	 * @param parameter 参数
-	 * @param mapKey 数据mapKey
-	 * @param rowBounds 用于分页查询的记录范围
-	 * @return 查询结果Map
-	 */
-	protected Map<Object,Object> selectMap(String statement, Object parameter, String mapKey,RowBounds rowBounds) {
-		return null;
-	}
-
-	/**
-	 * 
-	 * 方法用途: TODO<br>
-	 * 操作步骤: TODO<br>
-	 * @param statement 映射的语句ID
-	 * @param parameter 参数
-	 * @param rowBounds 用于分页查询的记录范围
-	 * @param handler 结果集处理器
-	 */
-	protected void select(String statement, Object parameter, RowBounds rowBounds,ResultHandler handler) {
-	}
-	
-	/**
-	 * 未测试
 	 * 方法用途: 获取实体类的主键值。<br>
 	 * 操作步骤: TODO<br>
 	 * @param entity 业务实体
 	 * @return 返回实体类的主键值。
 	 */
-	//@Override
 	public Serializable getId(T entity) {
-//		return (Serializable) BeanUtils.getField(entity, getIdName());
-		return null;
+		return (Serializable) ReflectionUtil.invokeGetterMethod(entity, getIdName());
 	}
 	
 	/**
-	 * 未实现
-	 * 方法用途: 获取实体类的主键名。<br>
+	 * 方法用途: 获取实体类的主键名<br>
 	 * 操作步骤: TODO<br>
-	 * @return 返回实体类的主键名。
+	 * @return 
 	 */
-	private String getIdName() {
-		return null;
-//		ClassMetadata meta = sessionFactory.getClassMetadata(clazz);
-//		return meta.getIdentifierPropertyName();
+	public String getIdName() {
+		return currentColumnFieldNames.get(pkName);
 	}
 	
 	
-	@Override
-	public void create(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		List<T> temp = new ArrayList<T>();
-		// 获取列表的第一个对象的pk的value
-		Object pkVal = null;
-		for (int i=0; i < list.size(); i++) {
-			T t = list.get(i);
-			if (i == 0) {
-//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
-			}
-
-			temp.add(t);
-			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-//				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
-				flushStatements();
-				temp = new ArrayList<T>();
-			}
-		}
-		executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
-	}
 	
-	@Override
-	public void createByMycat(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		List<T> temp = new ArrayList<T>();
-		// 获取列表的第一个对象的pk的value
-		Object pkVal = null;
-		for (int i=0; i < list.size(); i++) {
-			T t = list.get(i);
-			if (i == 0) {
-//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
-			}
-
-			temp.add(t);
-			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				executeUpdate(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
-				flushStatements();
-				temp = new ArrayList<T>();
-			}
-		}
-		executeUpdate(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
-	}
-	
+	/**
+	 * 未测试
+	 * 方法用途: 可执行insert和delete，update语句,支持预处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @param callback
+	 * @return
+	 */
 	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
@@ -350,6 +234,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 	
+	/**
+	 * 未测试
+	 * 方法用途: 可执行insert和delete，update语句,不支持预处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @return
+	 */
 	public Integer executeUpdate(String sql) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
@@ -363,25 +254,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 
-	@Override
-	public Integer update(String update) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer delete(String removeAll) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer delete(BaseDTO removeById) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	//--------------------------------保存操作-----------------------------------------------------------
 	
-	
+	/**
+	 * 
+	 * 方法用途: 可执行insert,支持预处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @param callback
+	 * @return
+	 */
 	public Integer executeInsert(String sql,IDataCallback<Integer> callback) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
@@ -456,8 +338,99 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
+	public void create(List<T> list) {
+		if (null == list || list.isEmpty()) {
+			return;
+		}
+		List<T> temp = new ArrayList<T>();
+		// 获取列表的第一个对象的pk的value
+		Object pkVal = null;
+		for (int i=0; i < list.size(); i++) {
+			T t = list.get(i);
+			if (i == 0) {
+//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
+			}
+
+			temp.add(t);
+			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
+//				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
+				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
+				flushStatements();
+				temp = new ArrayList<T>();
+			}
+		}
+		executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
+	}
+	
+	@Override
+	public void createByMycat(List<T> list) {
+		if (null == list || list.isEmpty()) {
+			return;
+		}
+		List<T> temp = new ArrayList<T>();
+		// 获取列表的第一个对象的pk的value
+		Object pkVal = null;
+		for (int i=0; i < list.size(); i++) {
+			T t = list.get(i);
+			if (i == 0) {
+//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
+			}
+
+			temp.add(t);
+			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
+				executeUpdate(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
+				flushStatements();
+				temp = new ArrayList<T>();
+			}
+		}
+		executeUpdate(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
+	}
+	//--------------------------------更新操作-----------------------------------------------------------
+	
+	public Integer update(String update) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Integer update(T t) {
+		generateId(t);
+		return updateMeta(t);
+
+	}
+
+	public Integer updateMeta(T t) {
+		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
+		return update(sqlBuilder.update(t, currentColumnFieldNames));
+	}
+	
+	@Override
+	public void update(List<T> list) {
+		if (null == list || list.isEmpty()) {
+			return;
+		}
+		for (int i=0; i <  list.size(); i++) {
+			this.update(list.get(i));
+			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
+				flushStatements();
+			}
+		}
+	}
+	//--------------------------------删除操作-----------------------------------------------------------
+	
+	public Integer remove(String removeAll) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Integer remove(BaseDTO removeById) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public Integer remove(PK id) {
-		return delete(sqlBuilder.removeById(id));
+		return remove(sqlBuilder.removeById(id));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -487,17 +460,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				delete(sqlBuilder.removeOfBatch(temp));
+				remove(sqlBuilder.removeOfBatch(temp));
 				flushStatements();
 				temp = new ArrayList<PK>();
 			}
 		}
-		return  delete(sqlBuilder.removeOfBatch(temp));
+		return  remove(sqlBuilder.removeOfBatch(temp));
 	}
 	
 	@Override
 	public Integer removeAll() {
-		return delete(sqlBuilder.removeAll());
+		return remove(sqlBuilder.removeAll());
 	}
 	
 	@Override
@@ -506,34 +479,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //				+ name + "=?", value);
 //		query.executeUpdate();
 		
-		Integer count = delete(sqlBuilder.remove(name,value));
+		Integer count = remove(sqlBuilder.remove(name,value));
 		return count;
 	}
-
-	@Override
-	public Integer update(T t) {
-		generateId(t);
-		return updateMeta(t);
-
-	}
-
-	public Integer updateMeta(T t) {
-		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-		return update(sqlBuilder.update(t, currentColumnFieldNames));
-	}
+//--------------------------------查询操作-----------------------------------------------------------
 	
-	@Override
-	public void update(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		for (int i=0; i <  list.size(); i++) {
-			this.update(list.get(i));
-			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				flushStatements();
-			}
-		}
-	}
 	
 	/**
 	 * 
@@ -585,6 +535,20 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return bList;
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 匹配数据库字段类型和实体属性类型，并转换成实体类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param val
+	 * @return
+	 */
+	private Class<?> mapperOrmType(Object val) {
+		Class<?> valClazz = val.getClass();
+		if(valClazz == Timestamp.class) {
+			valClazz = Date.class;
+		}
+		return valClazz;
+	}
 	
 	public List<T> find(String sql,Object... param) {
 		
@@ -658,21 +622,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public T load(PK id) {
-		return findById(id);
-	}
-
-	@Override
-	public T get(PK id) {
-		return findById(id);
-	}
-	
-	@Override
-	public void persist(T entity) {
-		save(entity);
-	}
-	
-	@Override
 	public T findById(PK id) {
 		return findOne(sqlBuilder.findById(),id);
 	}
@@ -690,6 +639,26 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public List<T> findBy(T param){
 		return findBy(param, null, null);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 从给定字符串中将指定的非法字符串数组中各字符串过滤掉。<br>
+	 * 操作步骤: TODO<br>
+	 * @param str 待过滤的字符串
+	 * @param filterChars 指定的非法字符串数组
+	 * @return 过滤后的字符串
+	 */
+	private String filterIllegalChars(String str, String[] filterChars) {
+		String rs = str;
+		if (rs != null && filterChars != null) {
+			for (String fc : filterChars) {
+				if (fc != null && fc.length() > 0) {
+					str = str.replaceAll(fc, ""); 
+				}
+			}
+		}
+		return rs;
 	}
 	
 	@Override
@@ -928,13 +897,37 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	
-	
-	
-	
 	@Override
 	public void flushStatements() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+//	@Resource
+//	private BuildInfo<T> buildInfo;
+	/**
+	 * 
+	 * 方法用途: 生成主键值<br>
+	 * 操作步骤: 默认情况下什么也不做；
+	 * 如果需要生成主键，需要由子类重写此方法根据需要的方式生成主键值<br>
+	 * @param t 要持久化的对象
+	 */
+	@Deprecated
+	protected void generateId(T t) {
+//		buildInfo.buildId(t);
+	}
+	
+
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param statement 映射的语句ID
+	 * @param parameter 参数
+	 * @param rowBounds 用于分页查询的记录范围
+	 * @param handler 结果集处理器
+	 */
+//	protected void select(String statement, Object parameter, RowBounds rowBounds,ResultHandler handler) {
+//	}
 
 }
