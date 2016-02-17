@@ -23,14 +23,6 @@ public interface ISqlCallback<T> {
 	 * @param object
 	 * @return
 	 */
-	T call(String columnLabel, Object object);
+	T call(Object object);
 
-	/**
-	 * 
-	 * 方法用途: 回调方法<br>
-	 * 操作步骤: 剥离到单独的接口中<br>
-	 * @param rs
-	 * @return
-	 */
-//	T call(ResultSet rs);
 }
