@@ -280,8 +280,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-			this.create(list);
-			return;
+		create(list);
+		return;
 	}
 	
 	@Override
@@ -289,8 +289,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-			this.createByMycat(list);
-			return;
+		createByMycat(list);
+		return;
 	}
 	
 	
