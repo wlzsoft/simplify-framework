@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,18 +37,22 @@ import com.meizu.simplify.utils.StringUtil;
  */
 public class SQLBuilder<T> {
      
-    protected Logger    logger    = LoggerFactory.getLogger(this.getClass());
-    private Set<String>    columns;
-    private String        tableName;
-    private String        columnsStr;
-    private String        pkName;
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    private List<String> columns;
+    private List<String> otherIdColumns;
+    private String tableName;
+    private String columnsStr;
+    private String otherIdColumnsStr;
+    private String pkName;
     private ThreadLocal<Integer> tableIndexLocal = new ThreadLocal<>();
-    public SQLBuilder(Set<String> columns, String tableName, String pkName) {
+    public SQLBuilder(List<String> otherIdColumns,List<String> columns, String tableName, String pkName) {
         super();
         this.columns = columns;
+        this.otherIdColumns = otherIdColumns;
         this.tableName = tableName;
         this.pkName = pkName;
-        this.columnsStr = StringUtil.join(this.columns, ",");
+        this.columnsStr = StringUtil.join(columns, ",");
+        this.otherIdColumnsStr = StringUtil.join(otherIdColumns, ",");
     }
     
     public String getTableName() {
@@ -69,22 +72,12 @@ public class SQLBuilder<T> {
      * @param columnsNames 
      * @return
      */
-    private List<Object> obtainFieldValues(T t,
-            Map<String, String> currentColumnFieldNames, List<String> columnsNames) {
+    public List<Object> obtainFieldValues(T t,
+            Map<String, String> currentColumnFieldNames) {
         List<Object> values = new LinkedList<Object>();
-        for (String column : columns) {
-//            Object value = ReflectionUtils.obtainFieldValue(t,
-//                    currentColumnFieldNames.get(column));
-            Field field = ReflectionUtil.getField(t,
-                  currentColumnFieldNames.get(column));
+        for (String column : otherIdColumns) {
+            Field field = ReflectionUtil.getField(t,currentColumnFieldNames.get(column));
             
-            Key primaryKey = field.getAnnotation(Key.class);
-    		if(primaryKey != null&&primaryKey.auto()) {
-    			continue;
-    		}
-    		if(columnsNames !=null) {
-    			columnsNames.add(column);
-    		}
             Object value = null;
             try {
             	value = field.get(t);
@@ -94,17 +87,17 @@ public class SQLBuilder<T> {
                 e.printStackTrace();
             }
             
-            	if(value != null) {
-        			value = handleValue(value);
-        		} else {
-        			if(field.getType().equals(Date.class)) {
-        				value = "null";
-        			} else if(field.getType().equals(Integer.class)){
-        				value = 0;
-        			} else {
-        	            value = "''";
-        	        }
-        		}
+        	if(value != null) {
+//        			value = handleValue(value);//TODO
+    		} else {
+    			if(field.getType().equals(Date.class)) {
+    				value = "null";
+    			} else if(field.getType().equals(Integer.class)){
+    				value = 0;
+    			} else {
+    	            value = "''";
+    	        }
+    		}
             values.add(value);
         }
         return values;
@@ -120,12 +113,10 @@ public class SQLBuilder<T> {
     private Object handleValue(Object value) {
         if (value instanceof String) {
             value = "\'" + value + "\'";
-        } else if (value instanceof Date||value instanceof java.sql.Date) {//对应实体中sql。Date的属性处理
+        } else if (value instanceof Date||value instanceof java.sql.Date) {//对应实体中java.sql.Date类型 的属性处理
             Date date = (Date) value;
-            
-//          String dateStr = DateUtils.getDate(date,"YYYY-MM-DD HH24:MI:SS.FF3");
             String dateStr = DateUtil.formatDate(date);
-            value = "'"+dateStr+"'";//"TO_TIMESTAMP('" + dateStr+ "','YYYY-MM-DD HH24:MI:SS.FF3')";
+            value = "'"+dateStr+"'";
         } else if (value instanceof Boolean) {
             Boolean v = (Boolean) value;
             value = v ? 1 : 0;
@@ -188,23 +179,50 @@ public class SQLBuilder<T> {
 
 
     /**
-     * 生成新增的SQL
+     * 生成新增的SQL--非预处理方式，statement方式
      * 
      * @param t
      * @param currentColumnFieldNames
      * @return
      */
     public String create(T t, Map<String, String> currentColumnFieldNames) {
-    	List<String> columns = new ArrayList<String>();
-        List<Object> values = obtainFieldValues(t, currentColumnFieldNames,columns);
+        List<Object> values = obtainFieldValues(t, currentColumnFieldNames);
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                .append(StringUtil.join(columns, ",")).append(")values(")
+                .append(otherIdColumnsStr).append(")values(")
                 .append(StringUtil.join(values, ",")).append(")");
         String sql = sqlBuild.toString();
          
         logger.debug("生成的SQL为: " + sql);
         return sql;
+    }
+    
+    /**
+     * 生成新增的SQL--预处理方式，prestatement方式
+     * 
+     * @param t
+     * @param currentColumnFieldNames
+     * @param values 
+     * @param columns 
+     * @return
+     */
+    public String preCreate(List<Object> values) {
+    	
+        StringBuilder sqlBuild = new StringBuilder();
+        String val = StringUtil.join(values, ",");
+        sqlBuild.append("INSERT INTO ").append(tableName).append("(")
+                .append(otherIdColumnsStr).append(") values(");
+        String sql = sqlBuild.toString();
+         
+        logger.debug("生成的SQL为: " + sql+""+val+")");
+        
+        String charValue="";
+        for(int i=0; i < values.size();i++) {
+        	charValue+=",?";
+        }
+        charValue = charValue.substring(1);
+        
+        return sql+""+charValue+")";
     }
      
     /**
@@ -218,16 +236,15 @@ public class SQLBuilder<T> {
             Map<String, String> currentColumnFieldNames,Object pkVal) {
         StringBuilder sqlBuild = new StringBuilder();
          
-        	List<String> columns = new ArrayList<String>();
-            List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames,columns);
+            List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames);
             //ID没有使用序列
             sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                    .append(StringUtil.join(columns, ",")).append(") values ");
+                    .append(otherIdColumnsStr).append(") values ");
             for (int i=0; i < list.size(); i++) {
                 T t = list.get(i);
                 //List<String> columns = new ArrayList<String>();
 //                List<Object> values = obtainFieldValues(t, currentColumnFieldNames,columns);
-                values = obtainFieldValues(t, currentColumnFieldNames,null);
+                values = obtainFieldValues(t, currentColumnFieldNames);
                  
                 if (i == 0) {
                     sqlBuild.append(" ( ");
@@ -258,16 +275,15 @@ public class SQLBuilder<T> {
             Map<String, String> currentColumnFieldNames,Object pkVal) {
         StringBuilder sqlBuild = new StringBuilder();
          
-        	List<String> columns = new ArrayList<String>();
-            List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames,columns);
+            List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames);
             //ID没有使用序列
             sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/INSERT INTO ").append(tableName).append("(")
-                    .append(StringUtil.join(columns, ",")).append(") values ");
+                    .append(otherIdColumnsStr).append(") values ");
             for (int i=0; i < list.size(); i++) {
                 T t = list.get(i);
                 //List<String> columns = new ArrayList<String>();
 //                List<Object> values = obtainFieldValues(t, currentColumnFieldNames,columns);
-                values = obtainFieldValues(t, currentColumnFieldNames,null);
+                values = obtainFieldValues(t, currentColumnFieldNames);
                  
                 if (i == 0) {
                     sqlBuild.append(" ( ");
@@ -287,39 +303,6 @@ public class SQLBuilder<T> {
         return sql;
     }
     
-    /**
-     * 生成批量新增的SQL
-     * 
-     * @param list
-     * @param currentColumnFieldNames
-     * @return
-     */
-    public String createOfBatchForOracle(List<T> list,
-            Map<String, String> currentColumnFieldNames,Object pkVal) {
-        StringBuilder sqlBuild = new StringBuilder();
-         
-            //ID没有使用序列
-            sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                    .append(columnsStr).append(")");
-            for (int i=0; i < list.size(); i++) {
-                T t = list.get(i);
-                List<Object> values = obtainFieldValues(t, currentColumnFieldNames,null);
-                 
-                if (i == 0) {
-                    sqlBuild.append(" SELECT ");
-                } else {
-                    sqlBuild.append(" UNION ALL SELECT ");
-                }
-                sqlBuild.append(StringUtil.join(values, ",")).append(
-                        " FROM DUAL ");
-            }
-         
-        String sql = sqlBuild.toString();
-         
-        //logger.debug("生成的SQL为: " + sql);
-         
-        return sql;
-    }
     
     
     /**

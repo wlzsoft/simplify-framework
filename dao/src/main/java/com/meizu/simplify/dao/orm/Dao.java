@@ -71,24 +71,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//主键列名
 	private String pkName;
 
+	//columnName=FieldName
 	private Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
 
 	private SQLBuilder<T> sqlBuilder;
 	
-	/**
-	 * 
-	 * 方法用途: 获取默认SqlMapping命名空间<br>
-	 * 操作步骤: 使用泛型参数中业务实体类型的全限定名作为默认的命名空间。
-	 * 如果实际应用中需要特殊的命名空间，可由子类重写该方法实现自己的命名空间规则<br>
-	 * @param entityClass
-	 * @return 返回命名空间字符串
-	 */
-	protected String getDefaultSqlNamespace(Class<?> entityClass) {
-		//Class<T> clazz = ReflectGeneric.getClassGenricType(entityClass);
-		String nameSpace = entityClass.getName();//注意：正式启用时，需要确保不同dao使用不用的namespace
-		nameSpace = "com.meizu.data.mybatis.BaseDao";
-		return nameSpace;
-	}
 	
 	/**
 	 * 
@@ -141,7 +128,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			throw new RuntimeException("类" + entityClass
 					+ "需要指定@Table注解!");
 		}
-		sqlBuilder = new SQLBuilder<T>(currentColumnFieldNames.keySet(),
+		
+		List<String> columnArr = new ArrayList<>(currentColumnFieldNames.keySet());
+		List<String> otherIdColumn = new ArrayList<>();
+		for (String columnName : columnArr) {
+			if(!columnName.equals(pkName)) {
+				otherIdColumn.add(columnName);
+			}
+		}
+		
+		sqlBuilder = new SQLBuilder<T>(otherIdColumn,columnArr,
 				table.name(), pkName);
 	}
 	
@@ -176,6 +172,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				// 取得ID的列名
 				pkName = columnName;
 				Key primaryKey = field.getAnnotation(Key.class);
+				if(primaryKey != null&&primaryKey.auto()) {
+					
+				}
 			}
 		}
 	}
@@ -388,9 +387,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			callback.call(prepareStatement);
 			prepareStatement.executeUpdate();
 			ResultSet rs = prepareStatement.getGeneratedKeys();
-			while(rs.next()) {
-				int num=rs.getInt(1);
-				return num;
+			if(rs.next()) {
+				int key=rs.getInt(1);
+				return key;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -400,12 +399,26 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public Integer save(T t) {
+	public boolean save(T t) {
 		generateId(t);
-		String sql = sqlBuilder.create(t, currentColumnFieldNames);
-		Integer res = executeUpdate(sql);
-		t.setId(1);//获取insert成功的key
-		return res;
+		
+        List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
+        
+		String sql = sqlBuilder.preCreate(values);
+		Integer key = executeInsert(sql,new IParamCallback<Integer>(){
+			@Override
+			public Integer call(PreparedStatement prepareStatement) throws SQLException {
+				for (int i=1; i <= values.size();i++) {
+					Object obj = values.get(i-1);
+					prepareStatement.setObject(i, obj);
+				}
+				return null;
+			}});
+		if(key<1) {
+			return false;
+		}
+		t.setId(key);
+		return true;
 	}
 
 	

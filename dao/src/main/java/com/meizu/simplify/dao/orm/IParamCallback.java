@@ -1,6 +1,7 @@
 package com.meizu.simplify.dao.orm;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
   * <p><b>Title:</b><i>sql语句回调接口-sql生成处理回调器</i></p>
@@ -24,6 +25,6 @@ public interface IParamCallback<T> {
 	 * @param prepareStatement
 	 * @return
 	 */
-	T call(PreparedStatement prepareStatement);
+	T call(PreparedStatement prepareStatement) throws SQLException;
 
 }

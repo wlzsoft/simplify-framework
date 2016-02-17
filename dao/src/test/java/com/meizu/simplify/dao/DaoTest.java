@@ -1,5 +1,7 @@
 package com.meizu.simplify.dao;
 
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,11 @@ public class DaoTest {
 	@Test
 	public void insertTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcy");
+		t.setCreateId(1);
+		t.setUpdateId(1);
+		t.setCreateTime(new Date());
+		t.setUpdateTime(new Date());
 		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
 	}
 	

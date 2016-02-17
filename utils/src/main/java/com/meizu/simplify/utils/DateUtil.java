@@ -22,7 +22,7 @@ public class DateUtil {
 	
 	/**
 	 * 
-	 * 方法用途: 格式化日期-Date转为指定格式字符串<br>
+	 * 方法用途: 格式化日期-Date转为[yyyy-MM-dd HH:mm:ss.SSS]格式字符串<br>
 	 * 操作步骤: TODO<br>
 	 * @param date
 	 * @return

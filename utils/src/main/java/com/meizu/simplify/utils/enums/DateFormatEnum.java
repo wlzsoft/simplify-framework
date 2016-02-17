@@ -41,7 +41,7 @@ public enum DateFormatEnum {
 	YEAR_TO_MINUTE("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH:mm"),
 	YEAR_TO_SECOND("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH:mm:ss"),
 	/**
-	 * 全日期:默认格式yyyy-MM-dd HH:mm:ss
+	 * 全日期:默认格式yyyy-MM-dd HH:mm:ss.SSS
 	 */
 	YEAR_TO_MILLISECOND("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH:mm:ss.SSS"),
 
