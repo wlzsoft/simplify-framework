@@ -384,7 +384,7 @@ public class SQLBuilder<T> {
             }
             value+=id;
             
-            if (i > 0 && i % (BatchOperator.DELETE_CRITICAL_VAL - 1) == 0) {
+            if (i > 0 && i % (BatchOperator.DELETE_CRITICAL_VAL.getSize() - 1) == 0) {
             	where.setValue(value.split(","));
                 list.add(where);
                 value = " 0 ";

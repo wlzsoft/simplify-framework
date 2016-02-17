@@ -279,7 +279,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 
 			temp.add(t);
-			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL == 0) {
+			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
 				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
 				flushStatements();
 				temp = new ArrayList<T>();
@@ -364,7 +364,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 
 			temp.add(t);
-			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL == 0) {
+			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
 				executeUpdate(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
 				flushStatements();
 				temp = new ArrayList<T>();
@@ -395,7 +395,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		for (int i=0; i <  list.size(); i++) {
 			this.update(list.get(i));
-			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL == 0) {
+			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
 				flushStatements();
 			}
 		}
@@ -443,7 +443,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		List<PK> temp = new ArrayList<PK>();
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
-			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL == 0) {
+			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
 				remove(sqlBuilder.removeOfBatch(temp));
 				flushStatements();
 				temp = new ArrayList<PK>();
