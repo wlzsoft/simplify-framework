@@ -213,6 +213,87 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	
+	//--------------------------------保存操作-----------------------------------------------------------
+	
+	/**
+	 * 
+	 * 方法用途: 可执行insert,支持预处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @param callback
+	 * @return
+	 */
+	public Integer executeInsert(String sql,IDataCallback<Integer> callback) {
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			callback.paramCall(prepareStatement);
+			prepareStatement.executeUpdate();
+			ResultSet rs = prepareStatement.getGeneratedKeys();
+			if(rs.next()) {
+				int key=rs.getInt(1);
+				return key;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean save(T t) {
+		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置
+		
+        List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
+        
+		String sql = sqlBuilder.preCreate(values);
+		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
+			@Override
+			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+				for (int i=1; i <= values.size();i++) {
+					Object obj = values.get(i-1);
+					prepareStatement.setObject(i, obj);
+				}
+				return null;
+			}});
+		if(key<1) {
+			return false;
+		}
+		t.setId(key);
+		return true;
+	}
+
+	
+	@Override
+	public boolean saveOrUpdate(T t) {
+		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
+		if(t.getId()!=null) {
+			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
+			return update(sqlBuilder.update(t, currentColumnFieldNames));
+		} else {
+			return save(t);
+		}
+	}
+	
+	@Override
+	public void save(List<T> list) {
+		if (null == list || list.isEmpty()) {
+			return;
+		}
+			this.create(list);
+			return;
+	}
+	
+	@Override
+	public void saveByMycat(List<T> list) {
+		if (null == list || list.isEmpty()) {
+			return;
+		}
+			this.createByMycat(list);
+			return;
+	}
+	
+	
 	/**
 	 * 未测试
 	 * 方法用途: 可执行insert和delete，update语句,支持预处理<br>
@@ -253,89 +334,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 	
-
-	//--------------------------------保存操作-----------------------------------------------------------
-	
-	/**
-	 * 
-	 * 方法用途: 可执行insert,支持预处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @param callback
-	 * @return
-	 */
-	public Integer executeInsert(String sql,IDataCallback<Integer> callback) {
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-			callback.paramCall(prepareStatement);
-			prepareStatement.executeUpdate();
-			ResultSet rs = prepareStatement.getGeneratedKeys();
-			if(rs.next()) {
-				int key=rs.getInt(1);
-				return key;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	@Override
-	public boolean save(T t) {
-		generateId(t);
-		
-        List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
-        
-		String sql = sqlBuilder.preCreate(values);
-		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
-			@Override
-			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
-				for (int i=1; i <= values.size();i++) {
-					Object obj = values.get(i-1);
-					prepareStatement.setObject(i, obj);
-				}
-				return null;
-			}});
-		if(key<1) {
-			return false;
-		}
-		t.setId(key);
-		return true;
-	}
-
-	
-	@Deprecated//TODO 考虑buildInfo移除后的影响
-	@Override
-	public Integer saveOrUpdate(T t) {
-//		buildInfo.buildId(t);
-		if(t.getId()!=null) {
-			return updateMeta(t);
-		} else {
-			String sql = sqlBuilder.create(t, currentColumnFieldNames);
-			Integer res = executeUpdate(sql);
-			t.setId(1);//获取insert成功的key
-			return res;
-		}
-	}
-	
-	@Override
-	public void save(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-			this.create(list);
-			return;
-	}
-	
-	@Override
-	public void saveByMycat(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-			this.createByMycat(list);
-			return;
-	}
 	
 	@Override
 	public void create(List<T> list) {
@@ -387,23 +385,20 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	//--------------------------------更新操作-----------------------------------------------------------
 	
-	public Integer update(String update) {
+	public boolean update(String update) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 	
 	@Override
-	public Integer update(T t) {
+	public boolean update(T t) {
 		generateId(t);
-		return updateMeta(t);
-
-	}
-
-	public Integer updateMeta(T t) {
+		
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
 		return update(sqlBuilder.update(t, currentColumnFieldNames));
+
 	}
-	
+
 	@Override
 	public void update(List<T> list) {
 		if (null == list || list.isEmpty()) {

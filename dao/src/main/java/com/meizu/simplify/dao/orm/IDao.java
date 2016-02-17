@@ -104,7 +104,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param t
 	 * @return
 	 */
-	Integer saveOrUpdate(T t);
+    boolean saveOrUpdate(T t);
     
     void saveByMycat(List<T> list);
 
@@ -156,7 +156,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
      * @param t 要持久化的对象
      * @return 执行成功的记录个数
      */
-    Integer update(T t);
+    boolean update(T t);
      
     /**
      * 未测试
