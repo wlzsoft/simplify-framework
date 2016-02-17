@@ -195,7 +195,7 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public SaveDTO create(T t, Map<String, String> currentColumnFieldNames) {
+    public String create(T t, Map<String, String> currentColumnFieldNames) {
     	List<String> columns = new ArrayList<String>();
         List<Object> values = obtainFieldValues(t, currentColumnFieldNames,columns);
         StringBuilder sqlBuild = new StringBuilder();
@@ -205,10 +205,7 @@ public class SQLBuilder<T> {
         String sql = sqlBuild.toString();
          
         logger.debug("生成的SQL为: " + sql);
-        SaveDTO dto = new SaveDTO();
-        dto.setPreSql(sql);
-        dto.setSql(sql);
-        return dto;
+        return sql;
     }
      
     /**

@@ -384,11 +384,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer save(T t) {
-//		return executeUpdate(sql);
 		generateId(t);
-		SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-		Integer res = executeUpdate(dto.getSql());
-		t.setId(dto.getId());
+		String sql = sqlBuilder.create(t, currentColumnFieldNames);
+		Integer res = executeUpdate(sql);
+		t.setId(1);//获取insert成功的key
 		return res;
 	}
 
@@ -400,9 +399,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(t.getId()!=null) {
 			return updateMeta(t);
 		} else {
-			SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-			Integer res = executeUpdate(dto.getSql());
-			t.setId(dto.getId());
+			String sql = sqlBuilder.create(t, currentColumnFieldNames);
+			Integer res = executeUpdate(sql);
+			t.setId(1);//获取insert成功的key
 			return res;
 		}
 	}
