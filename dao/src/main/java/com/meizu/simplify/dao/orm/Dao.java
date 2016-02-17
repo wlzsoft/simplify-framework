@@ -265,22 +265,27 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 	@Override
-	public boolean saveOrUpdate(T t) {
-		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
-		if(t.getId()!=null) {
-			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-			return update(sqlBuilder.update(t, currentColumnFieldNames));
-		} else {
-			return save(t);
-		}
-	}
-	
-	@Override
 	public void save(List<T> list) {
 		if (null == list || list.isEmpty()) {
 			return;
 		}
-		create(list);
+		List<T> temp = new ArrayList<T>();
+		// 获取列表的第一个对象的pk的value
+		Object pkVal = null;
+		for (int i=0; i < list.size(); i++) {
+			T t = list.get(i);
+			if (i == 0) {
+				pkVal = getId(t);
+			}
+
+			temp.add(t);
+			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
+				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
+				flushStatements();
+				temp = new ArrayList<T>();
+			}
+		}
+		executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
 		return;
 	}
 	
@@ -293,6 +298,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return;
 	}
 	
+	@Override
+	public boolean saveOrUpdate(T t) {
+		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
+		if(t.getId()!=null) {
+			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
+			return update(sqlBuilder.update(t, currentColumnFieldNames));
+		} else {
+			return save(t);
+		}
+	}
 	
 	/**
 	 * 未测试
@@ -334,32 +349,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 	
-	
-	@Override
-	public void create(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		List<T> temp = new ArrayList<T>();
-		// 获取列表的第一个对象的pk的value
-		Object pkVal = null;
-		for (int i=0; i < list.size(); i++) {
-			T t = list.get(i);
-			if (i == 0) {
-//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
-			}
-
-			temp.add(t);
-			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-//				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
-				flushStatements();
-				temp = new ArrayList<T>();
-			}
-		}
-		executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
-	}
-	
 	@Override
 	public void createByMycat(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -371,7 +360,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int i=0; i < list.size(); i++) {
 			T t = list.get(i);
 			if (i == 0) {
-//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
+				pkVal = getId(t);
 			}
 
 			temp.add(t);

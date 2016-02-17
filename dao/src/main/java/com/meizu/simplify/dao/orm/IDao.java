@@ -71,16 +71,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	public void executeBatch(String sql, List<Object[]> batchArgs, int[] types);
 	
      
-    /**
-     * 未测试
-     * 方法用途: 批量新增(不会将序列生成的ID注入)
-     *        效率较save(List<T> list)高<br>
-	 * 操作步骤: TODO<br>
-     * @param list
-     */
-    void create(List<T> list);
-     
-    
 	/**
 	 * 
 	 * 方法用途: 新增记录(会将序列生成的ID,注入)<br>
