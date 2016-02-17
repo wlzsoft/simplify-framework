@@ -31,7 +31,6 @@ import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
-import com.meizu.simplify.dao.dto.SaveDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;

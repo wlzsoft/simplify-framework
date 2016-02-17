@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.Constant;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.dto.BaseDTO;
-import com.meizu.simplify.dao.dto.SaveDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.DataUtil;
