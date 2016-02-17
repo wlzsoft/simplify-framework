@@ -330,33 +330,15 @@ public class SQLBuilder<T> {
      * @param id
      * @return
      */
-    public <PK> BaseDTO removeById(PK id) {
+    public <PK> String removeById() {
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("DELETE FROM ").append(getTableName());
          
         String sql = sqlBuild.toString();
          
         //logger.debug("生成的SQL为: " + sql);
-        BaseDTO dto = new BaseDTO();
-        dto.setPreSql(sql);
-        List<WhereDTO> list = new ArrayList<WhereDTO>();
-        WhereDTO where = new WhereDTO();
-        where.setKey(pkName);
-        where.setOperator(" = ");
-        where.setValue(id);
-        list.add(where);
         
-        //test start 测试用，后面删除
-//        where = new WhereDTO();
-//        where.setKey(pkName);
-//        where.setOperator(" = ");
-//        where.setValue("0");
-//        list.add(where);
-        //test end
-        
-        dto.setWhereList(list);
-        dto.setSql(sql+" where "+pkName+" = "+id);
-        return dto;
+        return sql+" where "+pkName+" = ?";
     }
      
     /**

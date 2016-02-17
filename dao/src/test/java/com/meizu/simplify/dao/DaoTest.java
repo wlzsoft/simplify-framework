@@ -64,8 +64,14 @@ public class DaoTest {
 		key = t.getId();
 	}
 	
+	
 	@Test
 	public void s2_findByIdTest() {
 		Assert.assertEquals("lcy", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(key).getName());
+	}
+	
+	@Test
+	public void s3_deleteTest() {
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(key));
 	}
 }

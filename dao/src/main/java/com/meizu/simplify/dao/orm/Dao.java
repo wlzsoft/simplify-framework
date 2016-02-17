@@ -211,7 +211,30 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return currentColumnFieldNames.get(pkName);
 	}
 	
-	
+	/**
+	 * 
+	 * 方法用途: 执行delete，update 根据param的where条件来更新或是删除<br>
+	 * 操作步骤: TODO<br>
+	 * @param param
+	 * @return
+	 */
+	public Integer executeUpdate(Object... param) {
+		if(param == null) {
+			return null;
+		}
+		return executeUpdate(sqlBuilder.removeById(),new IDataCallback<Integer>() {
+
+			@Override
+			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+				for (int i=1; i <= param.length;i++) {
+					Object obj = param[i-1];
+					prepareStatement.setObject(i, obj);
+				}
+				return IDataCallback.super.paramCall(prepareStatement);
+			}
+			
+		});
+	}
 	
 	//--------------------------------保存操作-----------------------------------------------------------
 	
@@ -402,19 +425,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	//--------------------------------删除操作-----------------------------------------------------------
 	
-	public Integer remove(String removeAll) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public Integer remove(BaseDTO removeById) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	
+	
+	
+	
 	@Override
 	public Integer remove(PK id) {
-		return remove(sqlBuilder.removeById(id));
+		return executeUpdate(id);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -454,7 +477,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer removeAll() {
-		return remove(sqlBuilder.removeAll());
+		return executeUpdate(sqlBuilder.removeAll());
 	}
 	
 	@Override
@@ -463,7 +486,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //				+ name + "=?", value);
 //		query.executeUpdate();
 		
-		Integer count = remove(sqlBuilder.remove(name,value));
+		Integer count = executeUpdate(sqlBuilder.remove(name,value));
 		return count;
 	}
 //--------------------------------查询操作-----------------------------------------------------------
