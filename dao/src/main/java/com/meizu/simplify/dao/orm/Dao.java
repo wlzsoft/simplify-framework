@@ -543,9 +543,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 					bList.add(b);
 				}
 			}
+//			查询无需事务处理
+//			DruidPoolFactory.startTransaction();
+//			DruidPoolFactory.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+//			DruidPoolFactory.rollback();
+		} finally {
+//			DruidPoolFactory.close();
 		}
 		return bList;
 	}
