@@ -1,5 +1,7 @@
 package com.meizu.simplify.dao.orm;
 
+import java.sql.PreparedStatement;
+
 /**
   * <p><b>Title:</b><i>sql语句回调接口-sql生成处理回调器</i></p>
  * <p>Desc: 获取数据库中数据之前，会回调次接口的call方法</p>
@@ -19,10 +21,9 @@ public interface IParamCallback<T> {
 	 * 
 	 * 方法用途: 回调方法<br>
 	 * 操作步骤: TODO<br>
-	 * @param columnLabel
-	 * @param object
+	 * @param prepareStatement
 	 * @return
 	 */
-	T call(Object object);
+	T call(PreparedStatement prepareStatement);
 
 }

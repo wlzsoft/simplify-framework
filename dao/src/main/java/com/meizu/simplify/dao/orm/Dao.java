@@ -288,23 +288,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		return meta.getIdentifierPropertyName();
 	}
 	
-	@Override
-	public Integer create(T t) {
-		SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-		
-		Integer res = -1;
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
-			res = prepareStatement.executeUpdate();
-			System.out.println("插入："+res);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		t.setId(dto.getId());
-		return res;
-	}
 	
 	@Override
 	public void create(List<T> list) {
@@ -323,12 +306,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			temp.add(t);
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
 //				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-				insert(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
+				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
 				flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		insert(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
+		executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	@Override
@@ -347,16 +330,28 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 			temp.add(t);
 			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-//				SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
-				insert(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
+				executeUpdate(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
 				flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		insert(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
+		executeUpdate(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
 	public Integer executeUpdate(String sql,IParamCallback<Integer> callback) {
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			callback.call(prepareStatement);
+			Integer rs = prepareStatement.executeUpdate();
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Integer executeUpdate(String sql) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
 			Integer rs = prepareStatement.executeUpdate();
@@ -368,10 +363,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 	
-	@Override
-	public Integer insert(String sql) {
-		return executeUpdate(sql, null);
-	}
 
 	@Override
 	public Integer update(String update) {
@@ -393,8 +384,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer save(T t) {
+//		return executeUpdate(sql);
 		generateId(t);
-		return create(t);
+		SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
+		Integer res = executeUpdate(dto.getSql());
+		t.setId(dto.getId());
+		return res;
 	}
 
 	
@@ -405,7 +400,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(t.getId()!=null) {
 			return updateMeta(t);
 		} else {
-			return create(t);
+			SaveDTO dto = sqlBuilder.create(t, currentColumnFieldNames);
+			Integer res = executeUpdate(dto.getSql());
+			t.setId(dto.getId());
+			return res;
 		}
 	}
 	
