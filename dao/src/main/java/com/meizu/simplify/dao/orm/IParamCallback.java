@@ -13,7 +13,7 @@ package com.meizu.simplify.dao.orm;
  * @version Version 0.1
  *
  */
-public interface ISqlCallback<T> {
+public interface IParamCallback<T> {
 
 	/**
 	 * 

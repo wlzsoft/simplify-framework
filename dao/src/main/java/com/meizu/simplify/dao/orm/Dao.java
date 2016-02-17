@@ -356,7 +356,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		insert(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
-	public Integer executeUpdate(String sql,ISqlCallback<Integer> callback) {
+	public Integer executeUpdate(String sql,IParamCallback<Integer> callback) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
 			Integer rs = prepareStatement.executeUpdate();
