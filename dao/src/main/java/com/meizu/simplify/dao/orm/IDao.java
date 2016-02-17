@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.meizu.simplify.dao.Criteria;
-import com.meizu.simplify.dao.ResultHandler;
-import com.meizu.simplify.dao.RowBounds;
 import com.meizu.simplify.dao.RowMapper;
 import com.meizu.simplify.dao.dto.BaseDTO;
-import com.meizu.simplify.dao.dto.SaveDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 
@@ -548,25 +545,9 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	
 	public <TT> TT unwrap(Class<TT> cls);*/
 	
-	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler);
-
 	public void insert(String createOfBatch);
 
 	public void flushStatements();
-
-	public List<T> selectList(Map<String, Object> paramMap, RowBounds rowBound);
-
-	public Map<Object, Object> selectMap(Object parameter, String mapKey, RowBounds rowBounds);
-
-	public List<Map<String, Object>> selectList(String findBy);
-
-	public Integer selectOne(String findAllCount);
-
-	public Map<String, Object> selectOne(BaseDTO dto);
-
-	public Integer selectOne(Map<String, Object> paramMap);
-	
-	public List<Map<String, Object>> selectList(BaseDTO dto);
 
 	public Integer delete(BaseDTO removeById);
 
@@ -574,8 +555,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 
 	public Integer update(String update);
 
-	public List<T> selectList(Map<String, Object> paramMap);
-	
 //	public Map<String, Object> getHints();
 
 //	public <T> Query setParameter(Parameter<T> param, T value);

@@ -40,6 +40,7 @@ import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -203,40 +204,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return false;
 	}
 	
-	/**
-	 * 方法用途: map转实体<br>
-	 * 操作步骤: TODO<br>
-	 * @param resultMap
-	 * @param tClazz
-	 * @return
-	 */
-	private T MapToEntity(Map<String, Object> resultMap, Class<T> tClazz) {
-		if(resultMap == null) {
-			return null;
-		}
-		T t = null;
-		try {
-			t = tClazz.newInstance();
-		} catch (InstantiationException e) {
-			logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
-					+ e.getMessage());
-		} catch (IllegalAccessException e) {
-			logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
-					+ e.getMessage());
-		}
-		for (Map.Entry<String, Object> entry : resultMap.entrySet()) {
-			String key = entry.getKey();
-			key = currentColumnFieldNames.get(key);
-			Object val = entry.getValue();
-			try {
-				Class<?> valClazz = mapperOrmType(val);
-				ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
-			} catch(IllegalArgumentException ex) {
-				throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
-			}
-		}
-		return t;
-	}
 
 	/**
 	 * 
@@ -253,20 +220,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return valClazz;
 	}
 	
-	/**
-	 * 
-	 * 方法用途: map转list<br>
-	 * 操作步骤: TODO<br>
-	 * @param listMap
-	 * @return
-	 */
-	public List<T> MapToList(List<Map<String, Object>> listMap) {
-		List<T> list= new ArrayList<T>();
-		for (Map<String, Object> map : listMap) {
-			list.add(MapToEntity(map, this.entityClass));
-		}
-		return list;
-	}
 	
 	/**
 	 * 
@@ -298,12 +251,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param rowBounds 用于分页查询的记录范围
 	 * @return 查询结果Map
 	 */
-	protected Map<Object,Object> selectMap(
-			String statement, Object parameter, String mapKey,
-			RowBounds rowBounds) {
-		return selectMap(
-				
-				parameter, mapKey, rowBounds);
+	protected Map<Object,Object> selectMap(String statement, Object parameter, String mapKey,RowBounds rowBounds) {
+		return null;
 	}
 
 	/**
@@ -315,10 +264,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param rowBounds 用于分页查询的记录范围
 	 * @param handler 结果集处理器
 	 */
-	protected void select(
-			String statement, Object parameter, RowBounds rowBounds,
-			ResultHandler handler) {
-		select(parameter, rowBounds, handler);
+	protected void select(String statement, Object parameter, RowBounds rowBounds,ResultHandler handler) {
 	}
 	
 	/**
@@ -414,29 +360,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		insert(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
-	public void createForOracle(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		List<T> temp = new ArrayList<T>();
-		// 获取列表的第一个对象的pk的value
-		Object pkVal = null;
-		for (int i=0; i < list.size(); i++) {
-			T t = list.get(i);
-			if (i == 0) {
-//				        BeanMapUtil.bean2Map(t); //用法类似
-//				pkVal = ReflectionUtil.invokeGetterMethod(t, idName);
-			}
-
-			temp.add(t);
-			if (i > 0 && i % Constant.FLUSH_CRITICAL_VAL == 0) {
-				insert(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
-				flushStatements();
-				temp = new ArrayList<T>();
-			}
-		}
-		insert(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
-	}
 	
 	@Override
 	public Integer save(T t) {
@@ -553,6 +476,107 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: <pre>
+	System.out.println("请求sql的列名ColumnLabel:"+metaData.getColumnLabel(i));
+	System.out.println("java中列的类型ColumnClassName:"+metaData.getColumnClassName(i));
+	System.out.println("数据库中的列名ColumnName:"+metaData.getColumnName(i));
+	System.out.println("数据库中列的类型ColumnType:"+metaData.getColumnType(i));
+	System.out.println("数据库中列的类型的名字ColumnTypeName:"+metaData.getColumnTypeName(i));
+	System.out.println("整个数值长度ColumnDisplaySize:"+metaData.getColumnDisplaySize(i));
+	System.out.println("整数长度Precision:"+metaData.getPrecision(i));
+	
+	System.out.println("表名TableName:"+metaData.getTableName(i));
+	System.out.println("数据库名CatalogName:"+metaData.getCatalogName(i));
+	
+	System.out.println("小数长度Scale:"+metaData.getScale(i));
+	
+	System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
+	System.out.println("========================");</pre><br>
+	 * @param sql
+	 * @param callback
+	 * @return
+	 */
+	public <B> List<B> executeQuery(String sql,IDataCallback<B> callback) {
+		List<B> bList= new ArrayList<B>();
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			ResultSet rs = prepareStatement.executeQuery();
+			ResultSetMetaData metaData = rs.getMetaData();
+			while(rs.next()) {
+				for(int i=1; i <= metaData.getColumnCount(); i++) {
+					String columnLabel = metaData.getColumnLabel(i);
+					B b = callback.call(columnLabel,rs.getObject(columnLabel));
+					bList.add(b);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bList;
+	}
+	
+	
+	public List<T> find(String sql) {
+		
+		try {
+			final T t = this.entityClass.newInstance();
+			List<T> tList = executeQuery(sql, new IDataCallback<T>() {
+				@Override
+				public T call(String columnLabel, Object val) {
+					String key = currentColumnFieldNames.get(columnLabel);
+					try {
+						Class<?> valClazz = mapperOrmType(val);
+						ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+					} catch(IllegalArgumentException ex) {
+						throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
+					}
+					return t;
+				}
+			});
+			return tList;
+		} catch (InstantiationException e) {
+			logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
+					+ e.getMessage());
+		} catch (IllegalAccessException e) {
+			logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
+					+ e.getMessage());
+		}
+		return null;
+		
+//		以上修改代码待验证
+//		Map<String, Object> resultMap = selectOne(sqlBuilder.findById(id));
+//		return MapToEntity(resultMap, this.entityClass);
+	}
+	
+	public Integer count(String sql) {
+		List<Integer> list = executeQuery(sql, new IDataCallback<Integer>() {
+			@Override
+			public Integer call(String columnLabel, Object object) {
+				return DataUtil.parseInt(object);
+			}
+		});
+		return list.get(0);
+	}
+	
+	public T findOne(String sql) {
+		return find(sql).get(0);
+	}
+	
+	@Override
+	public T findUnique(Criteria criteria) {
+//		return findUnique(name,value);
+		return criteria.uniqueResult();
+	}
+	
+	@Override
+	public T findUnique(String name, Object value) {
+		return findOne(sqlBuilder.findByProperties(name, value).getSql());
+	}
 
 	@Override
 	public T load(PK id) {
@@ -568,65 +592,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public void persist(T entity) {
 		save(entity);
 	}
-	
 	@Override
 	public T findById(PK id) {
-		
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sqlBuilder.findById(id).getSql());
-			ResultSet rs = prepareStatement.executeQuery();
-			ResultSetMetaData metaData = rs.getMetaData();
-			
-			T t = null;
-			try {
-				t = this.entityClass.newInstance();
-			} catch (InstantiationException e) {
-				logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
-						+ e.getMessage());
-			} catch (IllegalAccessException e) {
-				logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
-						+ e.getMessage());
-			}
-			
-			while(rs.next()) {
-				for(int i=1; i <= metaData.getColumnCount(); i++) {
-					String columnLabel = metaData.getColumnLabel(i);
-//					String columnClassName = metaData.getColumnClassName(i);
-						String key = currentColumnFieldNames.get(columnLabel);
-						Object val = rs.getObject(columnLabel);
-						try {
-							Class<?> valClazz = mapperOrmType(val);
-							ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
-						} catch(IllegalArgumentException ex) {
-							throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
-						}
-					return t;
-					
-					
-				}
-			}
-			return t;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-//		以上修改代码待验证
-//		Map<String, Object> resultMap = selectOne(sqlBuilder.findById(id));
-//		return MapToEntity(resultMap, this.entityClass);
+		return findOne(sqlBuilder.findById(id).getSql());
 	}
+	
 	
 	@Override
 	public List<T> findByIds(PK[] idArr) {
-		List<Map<String, Object>> listMap = selectList(sqlBuilder.findByIds(idArr));
-		List<T> list = MapToList(listMap);
-		return list;
+		return find(sqlBuilder.findByIds(idArr));
 	}
 	@Override
 	public List<T> findByMutil(String name, String values) {
-		List<Map<String, Object>> listMap = selectList( sqlBuilder.findByMutil(name,values));
-		List<T> list = MapToList(listMap);
-		return list;
+		return find(sqlBuilder.findByMutil(name,values));
 	}
 
 	@Override
@@ -662,8 +640,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			paramMap.put(SORT_NAME, sort);
 			paramMap.put(DIR_NAME, orderBy);
 		}
-		List<T> lst = selectList(
-				 paramMap);
+		List<T> lst = null;//find(paramMap);
 		return lst;
 	}
 	
@@ -680,7 +657,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (pageNo > -1)
 			start = (pageNo - 1) * pageSize;
 		RowBounds rowBound = new RowBounds(start,pageSize);
-		List<T> lst = selectList( paramMap,rowBound);
+		List<T> lst = null;//selectList( paramMap,rowBound);
 		return lst;
 	}
 	
@@ -714,37 +691,20 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	@Override
 	public List<T> findBy(String name,Object value) {
-		
-		List<Map<String, Object>> listMap = selectList(
-				 sqlBuilder.findBy(name,value));
-		List<T> list = MapToList(listMap);
-		return list;
+		return find(sqlBuilder.findBy(name,value));
 	}
 	
 	@Override
 	public List<T> findAll() {
-		List<Map<String, Object>> resultMapList = selectList( sqlBuilder.findAll());
-		List<T> list = new ArrayList<T>(resultMapList.size());
-		for (Map<String, Object> resultMap : resultMapList) {
-			if(resultMap == null) {
-				continue;
-			}
-			T t = MapToEntity(resultMap, this.entityClass);
-			list.add(t);
-		}
-		return list;
+		return find(sqlBuilder.findAll());
 	}
 
 	@Override
 	public Integer findAllCount() {
-		Integer count = selectOne(sqlBuilder.findAllCount());
+		Integer count = count(sqlBuilder.findAllCount());
 		return count;
 	}
 	
-	@Override
-	public Integer selectOne(String findAllCount) {
-		return 0;
-	}
 	
 	@Override
 	public Integer count() {
@@ -784,23 +744,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		}catch(Exception e){
 //			throw new BaseDaoException("获取参数失败", e);
 //		}
-//		paramMap.put("param", param);
-		return (Integer)selectOne(paramMap);
+		return null;//(Integer)count(paramMap);
 	}
 	//-----------------------------------------------------------------------以下方法待实现
 	
-	
-	@Override
-	public T findUnique(Criteria criteria) {
-//		return findUnique(name,value);
-		return criteria.uniqueResult();
-	}
-	
-	@Override
-	public T findUnique(String name, Object value) {
-		Map<String, Object> resultMap = selectOne(sqlBuilder.findByProperties(name, value));
-		return MapToEntity(resultMap, this.entityClass);
-	}
 	
 	@Override
 	public List<T> find(Page<T> page,Object... values) {
@@ -814,12 +761,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");
-		List<Map<String, Object>> listMap = selectList(
-				 dto);
-		List<T> list = MapToList(listMap);
-		//end		
 		
-		return list;
+		return find(dto.getSql());
 	}
 	
 	@Override
@@ -850,10 +793,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		dto.setPage(page);
 		dto.setLimit("true");
 //		SelectDTO selectDto = new SelectDTO(dto,page);
-		List<Map<String, Object>> listMap = selectList(
-				 dto);
-		List<T> list = MapToList(listMap);
-		//end		
+		
+		List<T> list = find(dto.getSql());
 		
 		page.setResults(list);
 		return page;
@@ -901,55 +842,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 					pageNo, pageSize) - 1;
 			RowBounds rowBound = new RowBounds(start, pageSize);
 
-			List<T> lst = selectList(
-					
-					paramMap, rowBound);
+			List<T> lst = null;//selectList(paramMap, rowBound);
 
 			return new Page<T>(pageNo, pageSize, lst, count);
 	}
 	
-
-
-
-
-
-	/*
-				System.out.println("请求sql的列名ColumnLabel:"+metaData.getColumnLabel(i));
-				System.out.println("java中列的类型ColumnClassName:"+metaData.getColumnClassName(i));
-				System.out.println("数据库中的列名ColumnName:"+metaData.getColumnName(i));
-				System.out.println("数据库中列的类型ColumnType:"+metaData.getColumnType(i));
-				System.out.println("数据库中列的类型的名字ColumnTypeName:"+metaData.getColumnTypeName(i));
-				System.out.println("整个数值长度ColumnDisplaySize:"+metaData.getColumnDisplaySize(i));
-				System.out.println("整数长度Precision:"+metaData.getPrecision(i));
-				
-				System.out.println("表名TableName:"+metaData.getTableName(i));
-				System.out.println("数据库名CatalogName:"+metaData.getCatalogName(i));
-				
-				System.out.println("小数长度Scale:"+metaData.getScale(i));
-				
-				System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
-				System.out.println("========================");
-	*/
-	@Override
-	public Map<String, Object> selectOne(BaseDTO dto) {
-		Map<String,Object> map = new HashMap<>();
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(dto.getSql());
-			ResultSet rs = prepareStatement.executeQuery();
-			ResultSetMetaData metaData = rs.getMetaData();
-			while(rs.next()) {
-				for(int i=1; i <= metaData.getColumnCount(); i++) {
-					String columnLabel = metaData.getColumnLabel(i);
-					map.put(columnLabel, rs.getObject(columnLabel));
-//					String columnClassName = metaData.getColumnClassName(i);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return map;
-	}
+	
+	
+	
 	
 	@Override
 	public void flushStatements() {
@@ -963,17 +863,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 
-	@Override
-	public List<T> selectList(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public void insert(String createOfBatch) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Integer delete(String removeAll) {
@@ -988,38 +878,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 
 	@Override
-	public List<Map<String, Object>> selectList(BaseDTO dto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> selectList(String findBy) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<T> selectList(Map<String, Object> paramMap, RowBounds rowBound) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void select(Object parameter, RowBounds rowBounds, ResultHandler handler) {
+	public void insert(String createOfBatch) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public Map<Object, Object> selectMap(Object parameter, String mapKey, RowBounds rowBounds) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Integer selectOne(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }
