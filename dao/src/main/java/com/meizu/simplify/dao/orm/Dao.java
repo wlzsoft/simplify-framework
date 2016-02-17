@@ -336,10 +336,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		executeUpdate(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
-	public Integer executeUpdate(String sql,IParamCallback<Integer> callback) {
+	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
-			callback.call(prepareStatement);
+			callback.paramCall(prepareStatement);
 			Integer rs = prepareStatement.executeUpdate();
 			return rs;
 		} catch (SQLException e) {
@@ -381,10 +381,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	
-	public Integer executeInsert(String sql,IParamCallback<Integer> callback) {
+	public Integer executeInsert(String sql,IDataCallback<Integer> callback) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-			callback.call(prepareStatement);
+			callback.paramCall(prepareStatement);
 			prepareStatement.executeUpdate();
 			ResultSet rs = prepareStatement.getGeneratedKeys();
 			if(rs.next()) {
@@ -405,9 +405,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
         List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
         
 		String sql = sqlBuilder.preCreate(values);
-		Integer key = executeInsert(sql,new IParamCallback<Integer>(){
+		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
 			@Override
-			public Integer call(PreparedStatement prepareStatement) throws SQLException {
+			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
 				for (int i=1; i <= values.size();i++) {
 					Object obj = values.get(i-1);
 					prepareStatement.setObject(i, obj);
@@ -566,7 +566,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			while(rs.next()) {
 				for(int i=1; i <= metaData.getColumnCount(); i++) {
 					String columnLabel = metaData.getColumnLabel(i);
-					B b = callback.call(columnLabel,rs.getObject(columnLabel));
+					B b = callback.resultCall(columnLabel,rs.getObject(columnLabel));
 					bList.add(b);
 				}
 			}
@@ -588,9 +588,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 		try {
 			final T t = this.entityClass.newInstance();
+			logger.info(sql);
 			List<T> tList = executeQuery(sql, new IDataCallback<T>() {
 				@Override
-				public T call(String columnLabel, Object val) {
+				public T resultCall(String columnLabel, Object val) {
 					String key = currentColumnFieldNames.get(columnLabel);
 					try {
 						Class<?> valClazz = mapperOrmType(val);
@@ -619,7 +620,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Integer count(String sql) {
 		List<Integer> list = executeQuery(sql, new IDataCallback<Integer>() {
 			@Override
-			public Integer call(String columnLabel, Object object) {
+			public Integer resultCall(String columnLabel, Object object) {
 				return DataUtil.parseInt(object);
 			}
 		});
@@ -639,7 +640,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findUnique(String name, Object value) {
-		return findOne(sqlBuilder.findByProperties(name, value).getSql());
+		return findOne(sqlBuilder.findByProperties(name, value));
 	}
 
 	@Override
@@ -658,7 +659,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	@Override
 	public T findById(PK id) {
-		return findOne(sqlBuilder.findById(id).getSql());
+		return findOne(sqlBuilder.findById(id));
 	}
 	
 	
@@ -785,7 +786,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(params != null) {
 			listParam = (List<WhereDTO>) params;
 		}
-		BaseDTO dto = sqlBuilder.count(listParam.toArray(new WhereDTO[listParam.size()]));
+		BaseDTO dto = null;//sqlBuilder.count(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");
@@ -821,7 +822,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(params != null) {
 			listParam = (List<WhereDTO>) params;
 		}
-		BaseDTO dto = sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
+		BaseDTO dto = null;//sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");
@@ -852,7 +853,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //	        where.setOperator(" = ");
 //	        where.setValue("");
 //	     listParam.add(where);
-		BaseDTO dto = sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
+		BaseDTO dto = null;//sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");

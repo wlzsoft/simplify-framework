@@ -27,6 +27,9 @@ public class BaseDTO implements Serializable {
 //	public void setTable(String table) {
 //		this.table = table;
 //	}
+	public BaseDTO() {
+		
+	}
 	private String sql;
 	private String preSql;
 	/**

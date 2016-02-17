@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.Constant;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.dto.BaseDTO;
+import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.DataUtil;
@@ -156,7 +157,7 @@ public class SQLBuilder<T> {
      * @param type 枚举  delete  select
      * @return
      */
-    public BaseDTO commonSqlByType(String type , WhereDTO... whereList) {
+    public String commonSqlByType(String type , WhereDTO... whereList) {
     	StringBuilder sqlBuild = new StringBuilder();
     	if(type.equals("select")) {
     		type += " "+columnsStr;
@@ -166,12 +167,12 @@ public class SQLBuilder<T> {
     	  else if(type.equals("delete")) {/*默认不需要处理*/}
         sqlBuild.append(type + " FROM ").append(getTableName());
         String sql = sqlBuild.toString();
-        
-        BaseDTO dto = new BaseDTO();
-    	dto.setPreSql(sql);
-        dto.setSql(sql);
-        dto.setWhereList(Arrays.asList(whereList));
-        return dto;
+        String whereSql = "";
+        for (WhereDTO whereDTO : whereList) {
+        	whereSql += LinkType.AND + " " + whereDTO.getKey() + whereDTO.getOperator()+ whereDTO.getValue();
+		}
+        whereSql = whereSql.substring(3);
+        return sql+" where "+whereSql;
         
 	}
     
@@ -313,7 +314,7 @@ public class SQLBuilder<T> {
      * @param value
      * @return
      */
-    public BaseDTO remove(String name, Object value) {
+    public String remove(String name, Object value) {
         WhereDTO where = new WhereDTO();
         where.setKey(name);
         where.setOperator(" = ");
@@ -448,7 +449,7 @@ public class SQLBuilder<T> {
      * @param id
      * @return
      */
-    public <PK>  BaseDTO findById(PK id) {
+    public <PK>  String findById(PK id) {
         WhereDTO where = new WhereDTO();
         where.setKey(pkName);
         where.setOperator(" = ");
@@ -463,7 +464,7 @@ public class SQLBuilder<T> {
      * @param id
      * @return
      */
-    public <V>  BaseDTO findByProperties(String key,V value) {
+    public <V>  String findByProperties(String key,V value) {
         WhereDTO where = new WhereDTO();
         where.setKey(key);
         where.setOperator(" = ");
@@ -574,11 +575,11 @@ public class SQLBuilder<T> {
          
         return sql;
 	}
-    public  BaseDTO findPage(WhereDTO... whereList) {
+    public  String findPage(WhereDTO... whereList) {
         return commonSqlByType("select",whereList);
          
     }
-    public  BaseDTO count(WhereDTO... whereList) {
+    public  String count(WhereDTO... whereList) {
         return commonSqlByType("count",whereList);
          
     }
