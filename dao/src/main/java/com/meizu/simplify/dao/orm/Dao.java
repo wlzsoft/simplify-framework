@@ -381,6 +381,24 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 	
+	
+	public Integer executeInsert(String sql,IParamCallback<Integer> callback) {
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			callback.call(prepareStatement);
+			prepareStatement.executeUpdate();
+			ResultSet rs = prepareStatement.getGeneratedKeys();
+			while(rs.next()) {
+				int num=rs.getInt(1);
+				return num;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public Integer save(T t) {
 		generateId(t);
@@ -547,7 +565,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			e.printStackTrace();
 //			DruidPoolFactory.rollback();
 		} finally {
-//			DruidPoolFactory.close();
+			DruidPoolFactory.close();//TODO 测试是否需要关闭，关闭是否回收到连接池，还是真正的关闭
 		}
 		return bList;
 	}
