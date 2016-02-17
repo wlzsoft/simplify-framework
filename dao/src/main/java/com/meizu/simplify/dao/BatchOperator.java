@@ -12,15 +12,22 @@ package com.meizu.simplify.dao;
  * @version Version 0.1
  *
  */
-public class Constant {
+public enum BatchOperator {
 
 	/**
 	 * 每次删除带or方式的次数间隔
 	 */
-	public static final int DELETE_CRITICAL_VAL = 25;
+	DELETE_CRITICAL_VAL(25),
 	/**
 	 * 每次刷新同步到数据库的间隔
 	 */
-	public static final int FLUSH_CRITICAL_VAL = 50;
-
+	FLUSH_CRITICAL_VAL(50);
+	
+	private Integer size;
+	private BatchOperator(Integer size) {
+		this.size = size;
+	}
+	public Integer getSize() {
+		return size;
+	}
 }

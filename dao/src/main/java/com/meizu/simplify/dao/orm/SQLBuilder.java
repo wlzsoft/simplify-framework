@@ -10,7 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.Constant;
+import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
@@ -384,7 +384,7 @@ public class SQLBuilder<T> {
             }
             value+=id;
             
-            if (i > 0 && i % (Constant.DELETE_CRITICAL_VAL - 1) == 0) {
+            if (i > 0 && i % (BatchOperator.DELETE_CRITICAL_VAL - 1) == 0) {
             	where.setValue(value.split(","));
                 list.add(where);
                 value = " 0 ";
