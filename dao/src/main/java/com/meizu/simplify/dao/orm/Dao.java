@@ -360,6 +360,40 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		insert(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
+	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			Integer rs = prepareStatement.executeUpdate();
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public Integer insert(String sql) {
+		return executeUpdate(sql, null);
+	}
+
+	@Override
+	public Integer update(String update) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer delete(String removeAll) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer delete(BaseDTO removeById) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	public Integer save(T t) {
@@ -562,6 +596,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		});
 		return list.get(0);
 	}
+	
 	
 	public T findOne(String sql) {
 		return find(sql).get(0);
@@ -856,33 +891,5 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public Integer update(String update) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public Integer delete(String removeAll) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer delete(BaseDTO removeById) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void insert(String createOfBatch) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 }

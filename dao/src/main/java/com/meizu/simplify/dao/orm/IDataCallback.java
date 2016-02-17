@@ -1,7 +1,7 @@
 package com.meizu.simplify.dao.orm;
 
 /**
-  * <p><b>Title:</b><i>数据回调接口</i></p>
+  * <p><b>Title:</b><i>数据回调接口-结果回调器</i></p>
  * <p>Desc: 获取数据库中数据后，会回调次接口的call方法</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>

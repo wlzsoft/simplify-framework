@@ -545,7 +545,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	
 	public <TT> TT unwrap(Class<TT> cls);*/
 	
-	public void insert(String createOfBatch);
+	public Integer insert(String sql);
 
 	public void flushStatements();
 
