@@ -63,9 +63,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-//	@Resource
-//	private BuildInfo<T> buildInfo;
-	
 	private Class<T> entityClass;
 	
 	//主键列名
@@ -75,19 +72,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
 
 	private SQLBuilder<T> sqlBuilder;
-	
-	
-	/**
-	 * 
-	 * 方法用途: 生成主键值<br>
-	 * 操作步骤: 默认情况下什么也不做；
-	 * 如果需要生成主键，需要由子类重写此方法根据需要的方式生成主键值<br>
-	 * @param t 要持久化的对象
-	 */
-	@Deprecated
-	protected void generateId(T t) {
-//		buildInfo.buildId(t);
-	}
+
 	
 	/**
 	 * 构造方法
@@ -98,19 +83,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		DaoInit(entityClass);
 	}
 
-	/**
-	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
-	 * 操作步骤: TODO<br>
-	 * @param class1
-	 * @param trans 
-	 */
-	private void buildFieldInfo(Class<? super T> class1, Transient trans) {
-		Field[] fields = class1.getDeclaredFields();
-		getFieldInfo(fields,trans);
-		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
-			buildFieldInfo(class1.getSuperclass(),trans);
-		}
-	}
 	
 	/**
 	 * 
@@ -120,8 +92,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	private void DaoInit(Class<T> entityClass) {
 
-		Transient trans = entityClass.getAnnotation(Transient.class);
-		buildFieldInfo(entityClass,trans);
+		buildFieldInfo(entityClass);
 		
 		Table table = entityClass.getAnnotation(Table.class);
 		if (null == table) {
@@ -139,6 +110,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 		sqlBuilder = new SQLBuilder<T>(otherIdColumn,columnArr,
 				table.name(), pkName);
+	}
+	
+	/**
+	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
+	 * 操作步骤: TODO<br>
+	 * @param class1
+	 * @param trans 
+	 */
+	private void buildFieldInfo(Class<? super T> class1) {
+		Transient trans = entityClass.getAnnotation(Transient.class);
+		Field[] fields = class1.getDeclaredFields();
+		getFieldInfo(fields,trans);
+		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
+			buildFieldInfo(class1.getSuperclass());
+		}
 	}
 	
 	/**
@@ -177,6 +163,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 			}
 		}
+	}
+	
+	
+//	@Resource
+//	private BuildInfo<T> buildInfo;
+	/**
+	 * 
+	 * 方法用途: 生成主键值<br>
+	 * 操作步骤: 默认情况下什么也不做；
+	 * 如果需要生成主键，需要由子类重写此方法根据需要的方式生成主键值<br>
+	 * @param t 要持久化的对象
+	 */
+	@Deprecated
+	protected void generateId(T t) {
+//		buildInfo.buildId(t);
 	}
 	
 	public boolean validTransient(String[] transArr,Field field) {
