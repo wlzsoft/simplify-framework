@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,7 +24,6 @@ import com.meizu.simplify.dao.Criteria;
 import com.meizu.simplify.dao.Restrictions;
 import com.meizu.simplify.dao.ResultHandler;
 import com.meizu.simplify.dao.RowBounds;
-import com.meizu.simplify.dao.RowMapper;
 import com.meizu.simplify.dao.annotations.Column;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.annotations.Table;
@@ -38,10 +36,8 @@ import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.DataUtil;
-import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.exception.BaseDaoException;
@@ -360,7 +356,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		insert(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
 	}
 	
-	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
+	public Integer executeUpdate(String sql,ISqlCallback<Integer> callback) {
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
 			Integer rs = prepareStatement.executeUpdate();
