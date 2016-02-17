@@ -561,6 +561,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		List<B> bList= new ArrayList<B>();
 		try {
 			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			callback.paramCall(prepareStatement);
 			ResultSet rs = prepareStatement.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			while(rs.next()) {
@@ -584,12 +585,24 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	
-	public List<T> find(String sql) {
+	public List<T> find(String sql,Object... param) {
 		
 		try {
 			final T t = this.entityClass.newInstance();
 			logger.info(sql);
 			List<T> tList = executeQuery(sql, new IDataCallback<T>() {
+				@Override
+				public T paramCall(PreparedStatement prepareStatement) throws SQLException {
+					if(param == null) {
+						return null;
+					}
+					for (int i=1; i <= param.length;i++) {
+						Object obj = param[i-1];
+						prepareStatement.setObject(i, obj);
+					}
+					return IDataCallback.super.paramCall(prepareStatement);
+				}
+
 				@Override
 				public T resultCall(String columnLabel, Object val) {
 					String key = currentColumnFieldNames.get(columnLabel);
@@ -628,8 +641,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	
-	public T findOne(String sql) {
-		return find(sql).get(0);
+	public T findOne(String sql,Object... param) {
+		return find(sql,param).get(0);
 	}
 	
 	@Override
@@ -640,7 +653,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findUnique(String name, Object value) {
-		return findOne(sqlBuilder.findByProperties(name, value));
+		return findOne(sqlBuilder.findByProperties(name, value),name,value);
 	}
 
 	@Override
@@ -657,9 +670,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public void persist(T entity) {
 		save(entity);
 	}
+	
 	@Override
 	public T findById(PK id) {
-		return findOne(sqlBuilder.findById(id));
+		return findOne(sqlBuilder.findById(),id);
 	}
 	
 	

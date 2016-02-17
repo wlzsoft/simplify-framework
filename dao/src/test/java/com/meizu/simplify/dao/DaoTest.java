@@ -4,7 +4,9 @@ import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.Startup;
@@ -22,15 +24,17 @@ import com.meizu.simplify.ioc.Startup;
  * @version Version 0.1
  *
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DaoTest {
 
+	private static Integer key;
 	@Before
 	public void before() {
 		Startup.start();
 	}
 	
 	@Test
-	public void insertTest() {
+	public void s1_insertTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");
 		t.setCreateId(1);
@@ -38,10 +42,11 @@ public class DaoTest {
 		t.setCreateTime(new Date());
 		t.setUpdateTime(new Date());
 		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
+		key = t.getId();
 	}
 	
 	@Test
-	public void baseDaoTest() {
-		Assert.assertEquals("hahah1", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(1).getName());
+	public void s2_findByIdTest() {
+		Assert.assertEquals("lcy", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(key).getName());
 	}
 }

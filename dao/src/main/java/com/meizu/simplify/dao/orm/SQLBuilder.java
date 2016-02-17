@@ -449,11 +449,11 @@ public class SQLBuilder<T> {
      * @param id
      * @return
      */
-    public <PK>  String findById(PK id) {
+    public <PK>  String findById() {
         WhereDTO where = new WhereDTO();
         where.setKey(pkName);
         where.setOperator(" = ");
-        where.setValue(id);
+        where.setValue("?");
         return commonSqlByType("select",where);
          
     }
