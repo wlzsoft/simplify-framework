@@ -59,9 +59,6 @@ public class Page<T> implements IPage<T> {
 	private String sortorder; // 排序属性
 	private List<T> results;// 对应的当前页存放记录
 	
-	@Deprecated
-	private Map<String, Object> params = new HashMap<String, Object>();// 其他的参数我们把它分装成一个Map对象 TODO:这个参数会增加分页实体的体积，并且携带无意义的数据，可能是只是为了后台查询参数的传递，要考虑删除
-
 	/**
 	 * 定义一空页
 	 * @see #emptyPage()
@@ -335,14 +332,6 @@ public class Page<T> implements IPage<T> {
 
 	public void setResults(List<T> results) {
 		this.results = results;
-	}
-	
-	public Map<String, Object> getParams() {
-		return params;
-	}
-
-	public void setParams(Map<String, Object> params) {
-		this.params = params;
 	}
 
 	public String getUrl() {

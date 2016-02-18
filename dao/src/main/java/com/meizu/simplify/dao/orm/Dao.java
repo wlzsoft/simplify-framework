@@ -703,12 +703,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	
 	@Override
-	public List<T> find(Page<T> page,Object... values) {
+	public List<T> find(Page<T> page,Object... params) {
 		
-		List<WhereDTO> listParam = new ArrayList<WhereDTO>();
-		Object params = page.getParams().get("where");
+		WhereDTO[] listParam = new WhereDTO[]{};
 		if(params != null) {
-			listParam = (List<WhereDTO>) params;
+			listParam = (WhereDTO[]) params;
 		}
 		BaseDTO dto = null;//sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
@@ -719,10 +718,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public Page<T> findPage(Page<T> page,Object... values) {
+	public Page<T> findPage(Page<T> page,Object... params) {
 
 		//方案一：start 推荐使用方式方案 
-//		Query query = createQuery("sql", values);
+//		Query query = createQuery("sql", params);
 //		List<T> list = query.setFirstResult((page.getNumber() - 1) * page.getPageSize())
 //				.setMaxResults(page.getPageSize())
 //				.getResultList();
@@ -730,11 +729,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 //		方案二：start 不推荐方案，后期替换
 
-		page.setTotalRecord(count(page));
-		List<WhereDTO> listParam = new ArrayList<WhereDTO>();
-		Object params = page.getParams().get("where");
+//		page.setTotalRecord(count(params));
+		WhereDTO[] listParam = new WhereDTO[]{};
 		if(params != null) {
-			listParam = (List<WhereDTO>) params;
+			listParam = (WhereDTO[]) params;
 		}
 //		 WhereDTO where = new WhereDTO();
 //	        where.setKey(pkName);
@@ -799,6 +797,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 			return new Page<T>(pageNo, pageSize, lst, count);
 	}
+	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
 	public Integer count(String sql,Object... params) {
 		List<Integer> list = executeQuery(sql, new IDataCallback<Integer>() {
@@ -821,37 +820,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
 	}
 	
-	@Override
-	public Integer count(Page<T> page) {
-		List<WhereDTO> listParam = new ArrayList<WhereDTO>();
-		
-		//其他地方有冗余，需重构start
-		Object params = page.getParams().get("where");
-		if(params != null) {
-			listParam = (List<WhereDTO>) params;
-		}
-		BaseDTO dto = null;//sqlBuilder.count(listParam.toArray(new WhereDTO[listParam.size()]));
-		dto.setLinkType(LinkType.AND);
-		dto.setPage(page);
-		dto.setLimit("true");
-		//其他地方有冗余，需重构end
-		
-//		java.util.HashMap<String,Object> a = selectOne(dto);
-//		Integer count = DataUtil.parseInt(a.get("count(1)"));
-		//bugs fix by lcy 2015/05/26
-//		Integer count = selectOne(dto);
-//		return count;
-		return 0;
-	}
-	
-	
-	
-	@Override
-	public void flushStatements() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	/**
 	 * 
 	 * 方法用途: 设置表的索引值，指定操作的具体分表<br>
@@ -868,6 +836,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return this;
 	}
+	
+	//--------------------------------未处理和实现的功能-----------------------------------------------------------
+	
+	@Override
+	public void flushStatements() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 //	@Resource
 //	private BuildInfo<T> buildInfo;

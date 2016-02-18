@@ -214,7 +214,8 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param page
 	 * @return 返回记录总数。
 	 */
-	Integer count(Page<T> page);
+//	Integer count(Page<T> page);
+	
 	/**
 	 * 已测试
 	 * 方法用途: 删除业务实体。<br>
