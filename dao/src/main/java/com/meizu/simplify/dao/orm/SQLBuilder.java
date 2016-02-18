@@ -431,11 +431,17 @@ public class SQLBuilder<T> {
      * @param idArr
      * @return
      */
-    public <PK> String findByIds(PK[] idArr) {
+    public <PK> String findByIds(int size) {
+    	String idArr = "";
+    	for (int i=0; i<size; i++) {
+			idArr += ",?";
+		}
+    	idArr = idArr.substring(1);
+    			
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ")
                 .append(getTableName())
-                .append(" WHERE " + pkName + " in (" + StringUtil.join(idArr, ",")+")");
+                .append(" WHERE " + pkName + " in (" + idArr+")");
         String sql = sqlBuild.toString();
         //logger.debug("生成的SQL为: " + sql);
          
@@ -450,8 +456,15 @@ public class SQLBuilder<T> {
      * @param values
      * @return
      */
-    public <PK> String findByMutil(String name, PK[] values) {
-    	return findByMutil(name,StringUtil.join(values, ","));
+    public <PK> String findByMutil(String name, int size) {
+    	
+    	String idArr = "";
+    	for (int i=0; i<size; i++) {
+			idArr += ",?";
+		}
+    	idArr = idArr.substring(1);
+    	
+    	return findByMutil(name,idArr);
     }
     /**
      * 
@@ -503,22 +516,12 @@ public class SQLBuilder<T> {
         return sql;
     }
 
-	public String findBy(String name, Object value) {
-		
-		if(value instanceof String) {
-			value = "'"+value +"'";
-		} else if(value instanceof Boolean) {
-			if(DataUtil.parseBoolean(value)) {
-				value = 1;
-			} else {
-				value = 0;
-			}
-		}
+	public String findBy(String name) {
 		
 		StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ")
                 .append(getTableName())
-                .append(" WHERE " + name + " = " + value);
+                .append(" WHERE " + name + " = ?");
         String sql = sqlBuild.toString();
          
         //logger.debug("生成的SQL为: " + sql);

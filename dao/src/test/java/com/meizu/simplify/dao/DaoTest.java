@@ -82,16 +82,24 @@ public class DaoTest {
 	}
 	@Test
 	public void s2_findByMutilTest() {
-		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByMutil("id","1,2,3");
+		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByMutil("name","lcy");
 		for (com.meizu.simplify.dao.entity.Test test : list) {
 			System.out.println(test.getId()+test.getName());
 		}
-		Assert.assertEquals(3, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByMutil("id","1,2,3").size());
+		Assert.assertEquals(2, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByMutil("name","lcy").size());
 	}
 	
 	@Test
 	public void s2_findByIdTest() {
 		Assert.assertEquals("lcy", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(key).getName());
+	}
+	@Test
+	public void s2_findAllTest() {
+		Assert.assertEquals(51, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findAll().size());
+	}
+	@Test
+	public void s2_findByTest() {
+		Assert.assertEquals(2, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findBy("name","lcy").size());
 	}
 	
 	@Test

@@ -32,6 +32,7 @@ import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
+import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -39,7 +40,6 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
-//import com.meizu.exception.BaseDaoException;
 //import com.meizu.util.BeanUtils;
 /**
  * 
@@ -248,8 +248,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new BaseDaoException("执行sql异常", e);
 		}
-		return null;
 	}
 	
 	/**
@@ -589,13 +589,24 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public List<T> findByIds(PK[] idArr) {
-		return find(sqlBuilder.findByIds(idArr));
+		return find(sqlBuilder.findByIds(idArr.length),idArr);
 	}
 	@Override
 	public List<T> findByMutil(String name, String values) {
-		return find(sqlBuilder.findByMutil(name,values));
+		String[] valueArr = values.split(",");
+		return find(sqlBuilder.findByMutil(name,valueArr.length),valueArr);
 	}
 
+	@Override
+	public List<T> findBy(String name,Object value) {
+		return find(sqlBuilder.findBy(name),value);
+	}
+	
+	@Override
+	public List<T> findAll() {
+		return find(sqlBuilder.findAll());
+	}
+	
 	@Override
 	public List<T> findBy(T param){
 		return findBy(param, null, null);
@@ -630,11 +641,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		final String SORT_NAME = "SORT";
 		final String DIR_NAME = "DIR";
 		Map<String, Object> paramMap = null;
-//		try{
 //			paramMap = ReflectionUtil.bean2Map(param);
-//		}catch(Exception e){
-//			throw new BaseDaoException("获取参数失败", e);
-//		}
 		// Where过滤条件
 //		paramMap.put("param", param);
 		// 排序条件
@@ -657,14 +664,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> findBy(String sqlName, Object param,int pageNo, int pageSize,String sort,String orderBy){
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("param", param);
-		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy))
-		{
+		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
 			paramMap.put("sort", null);
 			paramMap.put("orderBy", null);
 		}
 		int start =0;
-		if (pageNo > -1)
+		if (pageNo > -1) {
 			start = (pageNo - 1) * pageSize;
+		}
 		RowBounds rowBound = new RowBounds(start,pageSize);
 		List<T> lst = null;//selectList( paramMap,rowBound);
 		return lst;
@@ -681,16 +688,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return criteria.list();
 	}
 	
-
-	@Override
-	public List<T> findBy(String name,Object value) {
-		return find(sqlBuilder.findBy(name,value));
-	}
-	
-	@Override
-	public List<T> findAll() {
-		return find(sqlBuilder.findAll());
-	}
 
 	
 	@Override
@@ -712,14 +709,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Page<T> findPage(Page<T> page,Object... params) {
 
 		//方案一：start 推荐使用方式方案 
-//		Query query = createQuery("sql", params);
-//		List<T> list = query.setFirstResult((page.getNumber() - 1) * page.getPageSize())
-//				.setMaxResults(page.getPageSize())
-//				.getResultList();
+		/*Query query = createQuery("sql", params);
+		List<T> list = query.setFirstResult((page.getNumber() - 1) * page.getPageSize())
+				.setMaxResults(page.getPageSize())
+				.getResultList();*/
 		//end
 		
 //		方案二：start 不推荐方案，后期替换
-
 //		page.setTotalRecord(count(params));
 		WhereDTO[] listParam = new WhereDTO[]{};
 		if(params != null) {
@@ -737,56 +733,46 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		SelectDTO selectDto = new SelectDTO(dto,page);
 		
 		List<T> list = find(dto.getSql());
-		
 		page.setResults(list);
 		return page;
 	}
 	
 	@Override
-	public Page<T> findPage(String sort, String orderBy, int pageNo,
-			int pageSize, T param) {
-		
-			/** 
-			 * 不能用于SQL中的非法字符（主要用于排序字段名） 
-			 */
-			final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-			final String SORT_NAME = "SORT";
-			final String DIR_NAME = "DIR";
-		
-		    // 获取满足条件的记录总数，没有记录时返回空页数据
-			int count = count(param);
-			if (count < 1) {
-				return Page.emptyPage();
-			}
+	public Page<T> findPage(String sort, String orderBy, int pageNo,int pageSize, T param) {
+		/** 
+		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
+		 */
+		final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
+		final String SORT_NAME = "SORT";
+		final String DIR_NAME = "DIR";
+	
+	    // 获取满足条件的记录总数，没有记录时返回空页数据
+		int count = count(param);
+		if (count < 1) {
+			return Page.emptyPage();
+		}
 
-			Map<String, Object> paramMap = null;
-//			try{
-//				paramMap = ReflectionUtil.bean2Map(param);
-//			}catch(Exception e){
-//				throw new BaseDaoException("获取参数失败", e);
-//			}
-			// Where过滤条件
-//						paramMap.put("param", param);
-			// 排序条件
-			if (sort != null) {
-				// 排序字段不为空，过滤其中可能存在的非法字符
-				sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
-			}
-			if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
-//							paramMap.put("sort", null);
-//							paramMap.put("orderBy", null);
-			} else {
-				paramMap.put(SORT_NAME, sort);
-				paramMap.put(DIR_NAME, orderBy);
-			}
-			// 分页条件
-			int start = Page.getStartOfPage(
-					pageNo, pageSize) - 1;
-			RowBounds rowBound = new RowBounds(start, pageSize);
-
-			List<T> lst = null;//selectList(paramMap, rowBound);
-
-			return new Page<T>(pageNo, pageSize, lst, count);
+		Map<String, Object> paramMap = null;
+		//paramMap = ReflectionUtil.bean2Map(param);
+		// Where过滤条件
+		//			paramMap.put("param", param);
+		// 排序条件
+		if (sort != null) {
+			// 排序字段不为空，过滤其中可能存在的非法字符
+			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
+		}
+		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
+		//				paramMap.put("sort", null);
+		//				paramMap.put("orderBy", null);
+		} else {
+			paramMap.put(SORT_NAME, sort);
+			paramMap.put(DIR_NAME, orderBy);
+		}
+		// 分页条件
+		int start = Page.getStartOfPage(pageNo, pageSize) - 1;
+		RowBounds rowBound = new RowBounds(start, pageSize);
+		List<T> lst = null;//selectList(paramMap, rowBound);
+		return new Page<T>(pageNo, pageSize, lst, count);
 	}
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
