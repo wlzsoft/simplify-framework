@@ -114,7 +114,7 @@ public class SQLBuilder<T> {
      * @param columnsNames 
      * @return
      */
-    public SqlDTO countWhereValue(T t,Map<String, String> currentColumnFieldNames) {
+    public SqlDTO whereValue(T t,Map<String, String> currentColumnFieldNames) {
         
     	List<Object> values = new LinkedList<Object>();
         String whereName = "";
@@ -516,12 +516,12 @@ public class SQLBuilder<T> {
         return sql;
     }
 
-	public String findBy(String name) {
+	public String findBy(String where) {
 		
 		StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ")
                 .append(getTableName())
-                .append(" WHERE " + name + " = ?");
+        		.append(" WHERE " + where);
         String sql = sqlBuild.toString();
          
         //logger.debug("生成的SQL为: " + sql);
@@ -537,8 +537,7 @@ public class SQLBuilder<T> {
     	sqlBuild.append("select count(1) from ").append(getTableName());
         return sqlBuild.toString() +" where "+where;
     }
-
-
+    
 
 	public void setTableIndexLocal(Integer index) {
 		tableIndexLocal.set(index);

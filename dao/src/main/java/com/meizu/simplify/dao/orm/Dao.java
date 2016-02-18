@@ -599,7 +599,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	@Override
 	public List<T> findBy(String name,Object value) {
-		return find(sqlBuilder.findBy(name),value);
+		return find(sqlBuilder.findBy(name + " = ?"),value);
 	}
 	
 	@Override
@@ -631,33 +631,22 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return rs;
 	}
-	
+	/**
+	 * @param param where条件参数
+	 */
 	@Override
 	public List<T> findBy(T param, String sort, String orderBy) {
 		/** 
 		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
 		 */
 		final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-		final String SORT_NAME = "SORT";
-		final String DIR_NAME = "DIR";
-		Map<String, Object> paramMap = null;
-//			paramMap = ReflectionUtil.bean2Map(param);
-		// Where过滤条件
-//		paramMap.put("param", param);
 		// 排序条件
 		if (sort != null) {
 			// 排序字段不为空，过滤其中可能存在的非法字符
 			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
 		}
-		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
-//			paramMap.put("sort", null);
-//			paramMap.put("orderBy", null);
-		} else {
-			paramMap.put(SORT_NAME, sort);
-			paramMap.put(DIR_NAME, orderBy);
-		}
-		List<T> lst = null;//find(paramMap);
-		return lst;
+		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
+		return find(sqlBuilder.findBy(dto.getWhereName()),dto.getWhereValues());
 	}
 	
 	@Override
@@ -793,7 +782,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer count(T param) {
-		SqlDTO dto = sqlBuilder.countWhereValue(param, currentColumnFieldNames);
+		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
 		return count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
 	}
 	

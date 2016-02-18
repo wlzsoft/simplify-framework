@@ -154,5 +154,14 @@ public class DaoTest {
 		t.setName("lcy");
 		System.out.println("count============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).count(t));
 	}
+	@Test
+	public void s10_findByTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcy");
+		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findBy(t);
+		for (com.meizu.simplify.dao.entity.Test test : list) {
+			System.out.println(test.getId()+test.getName());
+		}
+	}
 	
 }
