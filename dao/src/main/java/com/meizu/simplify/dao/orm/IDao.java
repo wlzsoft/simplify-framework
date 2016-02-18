@@ -2,11 +2,8 @@ package com.meizu.simplify.dao.orm;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import com.meizu.simplify.dao.Criteria;
-import com.meizu.simplify.dao.RowMapper;
-import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 
@@ -96,8 +93,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
     boolean saveOrUpdate(T t);
     
-    void saveByMycat(List<T> list);
-
 	/**
 	 * 未实现
 	 * 方法用途: 根据属性批量删除业务实体<br>
@@ -475,63 +470,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 
 	public void flushStatements();
 	
-    /*public IDao<T,PK> setMaxResults(int maxResult);
-	
-	public int getMaxResults();
-
-	public IDao<T,PK> setFirstResult(int startPosition);
-
-	public int getFirstResult();
-
-	public IDao<T,PK> setHint(String hintName, Object value);
-	
-	public IDao<T,PK> setParameter(String name, Object value); 
-	
-	public IDao<T,PK> setParameter(int position, Object value);
-	
-	public Object getParameterValue(String name);
-	
-	public Object getParameterValue(int position);
-	
-	public <TT> TT unwrap(Class<TT> cls);*/
-	
-//	public Map<String, Object> getHints();
-
-//	public <T> Query setParameter(Parameter<T> param, T value);
-	
-//	public Query setParameter(Parameter<Calendar> param, Calendar value,TemporalType temporalType);
-
-//	public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
-	
-//	public Query setParameter(String name, Calendar value,TemporalType temporalType); 
-	
-//	public Query setParameter(String name, Date value, TemporalType temporalType);
-	
-//	public Query setParameter(int position, Calendar value,	TemporalType temporalType);
-	
-//	public Query setParameter(int position, Date value,	TemporalType temporalType);
-
-//	public Set<Parameter<?>> getParameters();
-
-//	public Parameter<?> getParameter(String name);
-
-//	public <T> Parameter<T> getParameter(String name, Class<T> type);
-	
-//	public Parameter<?> getParameter(int position);
-	
-//	public <T> Parameter<T> getParameter(int position, Class<T> type);
-	
-//	public boolean isBound(Parameter<?> param);
-	
-//	public <T> T getParameterValue(Parameter<T> param);
-	
-//	public Query setFlushMode(FlushModeType flushMode);
-	
-//	public FlushModeType getFlushMode();
-
-//	public Query setLockMode(LockModeType lockMode);
-	
-//	public LockModeType getLockMode();
+  
 	
 ////全文检索功能start--------------------------未实现---------------------------------------------
 	
@@ -652,5 +591,44 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	}
 
 	////全文检索功能end--------------------------未实现---------------------------------------------
+	
+	  /*public IDao<T,PK> setMaxResults(int maxResult);
+	
+		public int getMaxResults();
+
+		public IDao<T,PK> setFirstResult(int startPosition);
+
+		public int getFirstResult();
+
+		public IDao<T,PK> setHint(String hintName, Object value);
+		
+		public IDao<T,PK> setParameter(String name, Object value); 
+		
+		public IDao<T,PK> setParameter(int position, Object value);
+		
+		public Object getParameterValue(String name);
+		
+		public Object getParameterValue(int position);
+		
+		public <TT> TT unwrap(Class<TT> cls);*/
+		/*public Map<String, Object> getHints();
+		public <T> Query setParameter(Parameter<T> param, T value);
+		public Query setParameter(Parameter<Calendar> param, Calendar value,TemporalType temporalType);
+		public Query setParameter(Parameter<Date> param, Date value,TemporalType temporalType);
+		public Query setParameter(String name, Calendar value,TemporalType temporalType); 
+		public Query setParameter(String name, Date value, TemporalType temporalType);
+		public Query setParameter(int position, Calendar value,	TemporalType temporalType);
+		public Query setParameter(int position, Date value,	TemporalType temporalType);
+		public Set<Parameter<?>> getParameters();
+		public Parameter<?> getParameter(String name);
+		public <T> Parameter<T> getParameter(String name, Class<T> type);
+		public Parameter<?> getParameter(int position);
+		public <T> Parameter<T> getParameter(int position, Class<T> type);
+		public boolean isBound(Parameter<?> param);
+		public <T> T getParameterValue(Parameter<T> param);
+		public Query setFlushMode(FlushModeType flushMode);
+		public FlushModeType getFlushMode();
+		public Query setLockMode(LockModeType lockMode);
+		public LockModeType getLockMode();*/
 
 }

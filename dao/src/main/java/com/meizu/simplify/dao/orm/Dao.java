@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Criteria;
 import com.meizu.simplify.dao.Restrictions;
-import com.meizu.simplify.dao.ResultHandler;
 import com.meizu.simplify.dao.RowBounds;
 import com.meizu.simplify.dao.annotations.Column;
 import com.meizu.simplify.dao.annotations.Key;
@@ -305,13 +304,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public boolean save(T t) {
 		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置
-		
-        List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
-        
-		String sql = sqlBuilder.preCreate(values);
+		String sql = sqlBuilder.preCreate();
 		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+				List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
 				for (int i=1; i <= values.size();i++) {
 					Object obj = values.get(i-1);
 					prepareStatement.setObject(i, obj);
@@ -341,6 +338,23 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 	}
 	
+	private void preSave(String sql,List<T> list) {
+		List<T> tList = list;
+		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
+			@Override
+			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+				for(int j=0; j<tList.size();j++) {
+					T t = tList.get(j);
+					List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
+					for (int i=1; i <= values.size();i++) {
+						Object obj = values.get(i-1);
+						prepareStatement.setObject(i+values.size()*j, obj);
+					}
+				}
+				return null;
+			}});
+	}
+	
 	@Override
 	public void save(List<T> list) {
 		if (null == list || list.isEmpty()) {
@@ -351,36 +365,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			T t = list.get(i);
 			temp.add(t);
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				executeUpdate(sqlBuilder.createOfBatch(temp.size(),currentColumnFieldNames));
+				preSave(sqlBuilder.createOfBatch(temp.size(),currentColumnFieldNames),temp);
 				flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
 		if(temp.size()>0) {
-			executeUpdate(sqlBuilder.createOfBatch(temp.size(), currentColumnFieldNames));
+			preSave(sqlBuilder.createOfBatch(temp.size(), currentColumnFieldNames),temp);
 		}
 	}
 	
 	
-	@Override
-	public void saveByMycat(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		List<T> temp = new ArrayList<T>();
-		for (int i=0; i < list.size(); i++) {
-			T t = list.get(i);
-			temp.add(t);
-			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				executeUpdate(sqlBuilder.createOfBatchByMycat(temp.size(),currentColumnFieldNames));
-				flushStatements();
-				temp = new ArrayList<T>();
-			}
-		}
-		if(temp.size()>0) {
-			executeUpdate(sqlBuilder.createOfBatchByMycat(temp.size(), currentColumnFieldNames));
-		}
-	}
 	//--------------------------------更新操作-----------------------------------------------------------
 	
 	

@@ -1,6 +1,8 @@
 package com.meizu.simplify.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -89,7 +91,24 @@ public class DaoTest {
 	}
 	
 	@Test
-	public void s6_deleteTest() {
+	public void s6_insertTest() {
+		
+		List<com.meizu.simplify.dao.entity.Test> testList = new ArrayList<>();
+		for(int i=0; i<4; i++) {
+			com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+			t.setName("lcy"+i);
+			t.setCreateId(1);
+			t.setUpdateId(1);
+			t.setCreateTime(new Date());
+			t.setUpdateTime(new Date());
+			testList.add(t);
+		}
+		BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(testList);
+		System.out.println("save==all=============================");
+	}
+	
+	@Test
+	public void s7_deleteTest() {
 		Integer[] ids = new Integer[] {901,902,903,904,905};
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(ids));
 	}

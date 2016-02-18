@@ -1,7 +1,5 @@
 package com.meizu.simplify.dao.orm;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,8 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.BatchOperator;
-import com.meizu.simplify.dao.annotations.Key;
-import com.meizu.simplify.dao.dto.BaseDTO;
+import com.meizu.simplify.dao.annotations.Value;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.exception.UncheckedException;
@@ -189,25 +186,23 @@ public class SQLBuilder<T> {
      * @param columns 
      * @return
      */
-    public String preCreate(List<Object> values) {
+    public String preCreate() {
     	
         StringBuilder sqlBuild = new StringBuilder();
-        String val = StringUtil.join(values, ",");
         sqlBuild.append("INSERT INTO ").append(tableName).append("(")
                 .append(otherIdColumnsStr).append(") values(");
         String sql = sqlBuild.toString();
-         
-        logger.debug("生成的SQL为: " + sql+""+val+")");
-        
+        int size = otherIdColumns.size();
         String charValue="";
-        for(int i=0; i < values.size();i++) {
+        for(int i=0; i < size;i++) {
         	charValue+=",?";
         }
         charValue = charValue.substring(1);
         
         return sql+""+charValue+")";
     }
-     
+    @Value("{system.isMycat}")
+    private boolean isMycat = false;
     /**
      * 生成批量新增的SQL
      * 
@@ -217,7 +212,9 @@ public class SQLBuilder<T> {
      */
     public String createOfBatch(int size,Map<String, String> currentColumnFieldNames) {
         StringBuilder sqlBuild = new StringBuilder();
-         
+         	if(isMycat) {
+         		sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/");
+         	}
             sqlBuild.append("INSERT INTO ").append(tableName).append("(")
                     .append(otherIdColumnsStr).append(") values ");
             String values = "";
@@ -239,43 +236,7 @@ public class SQLBuilder<T> {
          
         String sql = sqlBuild.toString();
          
-        //logger.debug("生成的SQL为: " + sql);
-         
-        return sql;
-    }
-    
-    /**
-     * 生成批量新增的SQL
-     * 
-     * @param list
-     * @param currentColumnFieldNames
-     * @return
-     */
-    public String createOfBatchByMycat(int size,Map<String, String> currentColumnFieldNames) {
-        StringBuilder sqlBuild = new StringBuilder();
-         
-        sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/INSERT INTO ").append(tableName).append("(")
-        .append(otherIdColumnsStr).append(") values ");
-            String values = "";
-            for(int i=0; i<otherIdColumns.size();i++) {
-            	values += ",?";
-            }
-            values = values.substring(1);
-            for (int i=0; i < size; i++) {
-                if (i == 0) {
-                    sqlBuild.append(" ( ");
-                } else {
-                    sqlBuild.append(" ),( ");
-                }
-                sqlBuild.append(values);
-                if(i == size-1) {
-                	sqlBuild.append(")");
-                }
-            }
-         
-        String sql = sqlBuild.toString();
-         
-        //logger.debug("生成的SQL为: " + sql);
+        logger.debug("生成的SQL为: " + sql);
          
         return sql;
     }
