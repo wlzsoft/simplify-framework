@@ -215,26 +215,24 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String createOfBatch(List<T> list,Map<String, String> currentColumnFieldNames) {
+    public String createOfBatch(int size,Map<String, String> currentColumnFieldNames) {
         StringBuilder sqlBuild = new StringBuilder();
          
-            List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames);
-            //ID没有使用序列
             sqlBuild.append("INSERT INTO ").append(tableName).append("(")
                     .append(otherIdColumnsStr).append(") values ");
-            for (int i=0; i < list.size(); i++) {
-                T t = list.get(i);
-                //List<String> columns = new ArrayList<String>();
-//                List<Object> values = obtainFieldValues(t, currentColumnFieldNames,columns);
-                values = obtainFieldValues(t, currentColumnFieldNames);
-                 
+            String values = "";
+            for(int i=0; i<otherIdColumns.size();i++) {
+            	values += ",?";
+            }
+            values = values.substring(1);
+            for (int i=0; i < size; i++) {
                 if (i == 0) {
                     sqlBuild.append(" ( ");
                 } else {
                     sqlBuild.append(" ),( ");
                 }
-                sqlBuild.append(StringUtil.join(values, ","));
-                if(i == list.size()-1) {
+                sqlBuild.append(values);
+                if(i == size-1) {
                 	sqlBuild.append(")");
                 }
             }
@@ -253,26 +251,24 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String createOfBatchByMycat(List<T> list,Map<String, String> currentColumnFieldNames) {
+    public String createOfBatchByMycat(int size,Map<String, String> currentColumnFieldNames) {
         StringBuilder sqlBuild = new StringBuilder();
          
-            List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames);
-            //ID没有使用序列
-            sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/INSERT INTO ").append(tableName).append("(")
-                    .append(otherIdColumnsStr).append(") values ");
-            for (int i=0; i < list.size(); i++) {
-                T t = list.get(i);
-                //List<String> columns = new ArrayList<String>();
-//                List<Object> values = obtainFieldValues(t, currentColumnFieldNames,columns);
-                values = obtainFieldValues(t, currentColumnFieldNames);
-                 
+        sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/INSERT INTO ").append(tableName).append("(")
+        .append(otherIdColumnsStr).append(") values ");
+            String values = "";
+            for(int i=0; i<otherIdColumns.size();i++) {
+            	values += ",?";
+            }
+            values = values.substring(1);
+            for (int i=0; i < size; i++) {
                 if (i == 0) {
                     sqlBuild.append(" ( ");
                 } else {
                     sqlBuild.append(" ),( ");
                 }
-                sqlBuild.append(StringUtil.join(values, ","));
-                if(i == list.size()-1) {
+                sqlBuild.append(values);
+                if(i == size-1) {
                 	sqlBuild.append(")");
                 }
             }
@@ -283,7 +279,6 @@ public class SQLBuilder<T> {
          
         return sql;
     }
-    
     
     
     /**
