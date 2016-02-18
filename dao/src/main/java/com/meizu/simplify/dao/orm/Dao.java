@@ -365,7 +365,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
 		if(t.getId()!=null) {
 			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-			return update(sqlBuilder.update(t, currentColumnFieldNames));
+			Integer res = update(t);
+			if(res >0) {
+				return true;
+			} else {
+				return true;
+			}
 		} else {
 			return save(t);
 		}
@@ -397,17 +402,28 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	//--------------------------------更新操作-----------------------------------------------------------
 	
-	public boolean update(String update) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	@Override
-	public boolean update(T t) {
+	public Integer update(T t) {
 		generateId(t);
 		
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-		return update(sqlBuilder.update(t, currentColumnFieldNames));
+		if(t == null) {
+			return null;
+		}
+		String sql = sqlBuilder.update(t, currentColumnFieldNames);
+		return executeUpdate(sql,new IDataCallback<Integer>() {
+			@Override
+			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+				List<String> cList = sqlBuilder.getOtherIdColumns();
+				for (int i=0; i < cList.size(); i++) {
+					String columnName = cList.get(i);
+					prepareStatement.setObject(i,ReflectionUtil.invokeGetterMethod(t, columnName));
+				}
+				return IDataCallback.super.paramCall(prepareStatement);
+			}
+			
+		});
 
 	}
 
@@ -417,7 +433,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			return;
 		}
 		for (int i=0; i <  list.size(); i++) {
-			this.update(list.get(i));
+			update(list.get(i));
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
 				flushStatements();
 			}
@@ -437,6 +453,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return remove((PK) entity.getId());
 	}
 	
+	/* 
+	 * value为中文，会无法正常删除TODO
+	 */
 	@Override
 	public Integer remove(String name, Object value) {
 		Integer count = executeUpdate(sqlBuilder.remove(name),value);
@@ -460,16 +479,20 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (null == ids || ids.isEmpty()) {
 			return -1;
 		}
+		int resultcount = 0;
 		List<PK> temp = new ArrayList<PK>();
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+				resultcount += executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 				flushStatements();
 				temp = new ArrayList<PK>();
 			}
 		}
-		return  executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+		if(temp.size()>0) {
+			resultcount += executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+		}
+		return resultcount;
 	}
 	
 	
@@ -712,22 +735,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return criteria.list();
 	}
 	
-	/**
-	 * 
-	 * 方法用途: 设置表的索引值，指定操作的具体分表<br>
-	 * 操作步骤: TODO<br>
-	 * @param index
-	 * @return
-	 */
-	public Dao<T,PK> setIndex(Integer index) {
-		if(index != null) {
-			//检测下分表是否存在，不存在的话，创建一个分表 待实现 TODO
-			sqlBuilder.setTableIndexLocal(index);
-		} else {
-			sqlBuilder.getTableIndexLocal().remove();
-		}
-		return this;
-	}
 
 	@Override
 	public List<T> findBy(String name,Object value) {
@@ -892,6 +899,23 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public void flushStatements() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 设置表的索引值，指定操作的具体分表<br>
+	 * 操作步骤: TODO<br>
+	 * @param index
+	 * @return
+	 */
+	public Dao<T,PK> setIndex(Integer index) {
+		if(index != null) {
+			//检测下分表是否存在，不存在的话，创建一个分表 待实现 TODO
+			sqlBuilder.setTableIndexLocal(index);
+		} else {
+			sqlBuilder.getTableIndexLocal().remove();
+		}
+		return this;
 	}
 	
 //	@Resource

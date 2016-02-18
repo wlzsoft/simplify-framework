@@ -181,7 +181,7 @@ public class ReflectionUtil {
     /**
      * 
      * 方法用途: 直接读取对象属性值 忽视private/protected修饰符，不经过getter函数<br>
-     * 操作步骤: TODO<br>
+     * 操作步骤: 注意：和invokeGetterMethod功能重复，后续确认抛弃掉其中一个方法 TODO<br>
      * @param obj
      * @param fieldName
      * @return
@@ -204,18 +204,6 @@ public class ReflectionUtil {
             e.printStackTrace();
         }
         return retval;
-//         TODO 待整理的方法
-//        MetaInfo metaInfo;
-//  		try {
-//  			metaInfo = objectToMap(obj).get(fieldName);
-//  			return metaInfo.getValue();
-//  		} catch (IllegalAccessException | IllegalArgumentException
-//  				| InvocationTargetException | IntrospectionException e) {
-//  			// TODO Auto-generated catch block
-//  			e.printStackTrace();
-//  		}
-//  		return null;
-         
     }
     
     /**

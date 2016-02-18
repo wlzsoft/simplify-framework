@@ -139,7 +139,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
      * @param t 要持久化的对象
      * @return 执行成功的记录个数
      */
-    boolean update(T t);
+    Integer update(T t);
      
     /**
      * 未测试

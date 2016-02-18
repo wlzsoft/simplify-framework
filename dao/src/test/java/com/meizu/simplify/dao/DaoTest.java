@@ -84,6 +84,13 @@ public class DaoTest {
 	
 	@Test
 	public void s5_deleteTest() {
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("name", "删除"));
+		//中文编码问题，无法正常删除
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("url", "geny测试"));
+	}
+	
+	@Test
+	public void s6_deleteTest() {
+		Integer[] ids = new Integer[] {901,902,903,904,905};
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(ids));
 	}
 }

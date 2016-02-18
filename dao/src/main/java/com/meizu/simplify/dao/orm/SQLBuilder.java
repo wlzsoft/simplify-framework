@@ -41,7 +41,7 @@ public class SQLBuilder<T> {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     private List<String> columns;
     private List<String> otherIdColumns;
-    private String tableName;
+	private String tableName;
     private String columnsStr;
     private String otherIdColumnsStr;
     private String pkName;
@@ -55,7 +55,9 @@ public class SQLBuilder<T> {
         this.columnsStr = StringUtil.join(columns, ",");
         this.otherIdColumnsStr = StringUtil.join(otherIdColumns, ",");
     }
-    
+    public List<String> getOtherIdColumns() {
+		return otherIdColumns;
+	}
     public String getTableName() {
     	if(tableIndexLocal.get() == null) {
     		return this.tableName;
@@ -127,25 +129,6 @@ public class SQLBuilder<T> {
         return value;
     }
     
-    /**
-     * 提供给生成更新SQL使用
-     * 
-     * @param t
-     * @param currentColumnFieldNames
-     * @return
-     */
-    private List<String> obtainColumnVals(T t,
-            Map<String, String> currentColumnFieldNames) {
-        List<String> colVals = new LinkedList<String>();
-        for (String column : columns) {
-            Object value = ReflectionUtil.obtainFieldValue(t,
-                    currentColumnFieldNames.get(column));
-            if (value != null && !column.equalsIgnoreCase(pkName)) {
-                colVals.add(column + "=" + handleValue(value));
-            }
-        }
-        return colVals;
-    }
     
     
     
@@ -317,7 +300,7 @@ public class SQLBuilder<T> {
         WhereDTO where = new WhereDTO();
         where.setKey(name);
         where.setOperator(" = ");
-        where.setValue(new String[]{"?"});
+        where.setValue("?");
         return commonSqlByType("delete",where);
 	}
     
@@ -388,9 +371,18 @@ public class SQLBuilder<T> {
      * @return
      */
     public String update(T t, Map<String, String> currentColumnFieldNames) {
-        List<String> values = obtainColumnVals(t, currentColumnFieldNames);
-        Object id = ReflectionUtil.obtainFieldValue(t,
-                currentColumnFieldNames.get(pkName));
+    	
+    	String values = "";
+        for (int i=0; i < otherIdColumns.size();i++) {
+        	String column = otherIdColumns.get(0);
+            Object value = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(column));
+            if(i>0) {
+            	values += ",";
+            }
+            values += column + "=" + handleValue(value);
+        }
+    	
+        Object id = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(pkName));
         if(id == null) {
         	throw new UncheckedException("主键为空，非法操作");
         }
@@ -400,7 +392,7 @@ public class SQLBuilder<T> {
         }
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("UPDATE ").append(tableName).append(" SET ")
-                .append(StringUtil.join(values, ",")).append(" WHERE ")
+                .append(values).append(" WHERE ")
                 .append(pkName).append(" = ").append(id);
          
         String sql = sqlBuild.toString();
