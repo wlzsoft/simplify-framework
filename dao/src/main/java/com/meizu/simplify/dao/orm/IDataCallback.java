@@ -36,9 +36,17 @@ public interface IDataCallback<T> {
 	 * 方法用途: 回调方法<br>
 	 * 操作步骤: 获取数据之前，where条件参数回调<br>
 	 * @param prepareStatement
+	 * @param params
 	 * @return
 	 */
-	default T paramCall(PreparedStatement prepareStatement) throws SQLException {
+	default T paramCall(PreparedStatement prepareStatement,Object... params ) throws SQLException {
+		if(params == null) {
+			return null;
+		}
+		for (int i=1; i <= params.length;i++) {
+			Object obj = params[i-1];
+			prepareStatement.setObject(i, obj);
+		}
 		return null;
 	}
 	

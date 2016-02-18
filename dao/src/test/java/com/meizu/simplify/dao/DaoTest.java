@@ -112,4 +112,10 @@ public class DaoTest {
 		Integer[] ids = new Integer[] {901,902,903,904,905};
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(ids));
 	}
+	
+	@Test
+	public void s8_countTest() {
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).count("select count(*) from test_web"));
+	}
+	
 }

@@ -217,19 +217,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param param
 	 * @return
 	 */
-	public Integer executeUpdate(String sql,Object... param) {
-		if(param == null) {
+	public Integer executeUpdate(String sql,Object... params) {
+		if(params == null) {
 			return null;
 		}
 		return executeUpdate(sql,new IDataCallback<Integer>() {
 
 			@Override
-			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
-				for (int i=1; i <= param.length;i++) {
-					Object obj = param[i-1];
-					prepareStatement.setObject(i, obj);
-				}
-				return IDataCallback.super.paramCall(prepareStatement);
+			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
+				return IDataCallback.super.paramCall(prepareStatement,params);
 			}
 			
 		});
@@ -304,7 +300,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private Integer preSave(String sql,List<T> tList) {
 		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
 			@Override
-			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+			public Integer paramCall(PreparedStatement prepareStatement,Object... params) throws SQLException {
 				for(int j=0; j<tList.size();j++) {
 					T t = tList.get(j);
 					List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
@@ -389,13 +385,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		String sql = sqlBuilder.update(t, currentColumnFieldNames);
 		return executeUpdate(sql,new IDataCallback<Integer>() {
 			@Override
-			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
+			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				List<String> cList = sqlBuilder.getOtherIdColumns();
 				for (int i=0; i < cList.size(); i++) {
 					String columnName = cList.get(i);
 					prepareStatement.setObject(i,ReflectionUtil.invokeGetterMethod(t, columnName));
 				}
-				return IDataCallback.super.paramCall(prepareStatement);
+				return null;
 			}
 			
 		});
@@ -539,22 +535,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return valClazz;
 	}
 	
-	public List<T> find(String sql,Object... param) {
+	public List<T> find(String sql,Object... params) {
 		
 		try {
 			final T t = this.entityClass.newInstance();
 			logger.info(sql);
 			List<T> tList = executeQuery(sql, new IDataCallback<T>() {
 				@Override
-				public T paramCall(PreparedStatement prepareStatement) throws SQLException {
-					if(param == null) {
-						return null;
-					}
-					for (int i=1; i <= param.length;i++) {
-						Object obj = param[i-1];
-						prepareStatement.setObject(i, obj);
-					}
-					return IDataCallback.super.paramCall(prepareStatement);
+				public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
+					return IDataCallback.super.paramCall(prepareStatement,params);
 				}
 
 				@Override
@@ -584,19 +573,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //		return MapToEntity(resultMap, this.entityClass);
 	}
 	
-	public Integer count(String sql) {
-		List<Integer> list = executeQuery(sql, new IDataCallback<Integer>() {
-			@Override
-			public Integer resultCall(String columnLabel, Object object) {
-				return DataUtil.parseInt(object);
-			}
-		});
-		return list.get(0);
-	}
 	
-	
-	public T findOne(String sql,Object... param) {
-		return find(sql,param).get(0);
+	public T findOne(String sql,Object... params) {
+		return find(sql,params).get(0);
 	}
 	
 	@Override
@@ -721,55 +700,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return find(sqlBuilder.findAll());
 	}
 
-	@Override
-	public Integer findAllCount() {
-		Integer count = count(sqlBuilder.findAllCount());
-		return count;
-	}
-	
-	
-	@Override
-	public Integer count() {
-		return findAllCount();
-	}
-	
-	
-	@Override
-	public Integer count(Page<T> page) {
-		List<WhereDTO> listParam = new ArrayList<WhereDTO>();
-		
-		//其他地方有冗余，需重构start
-		Object params = page.getParams().get("where");
-		if(params != null) {
-			listParam = (List<WhereDTO>) params;
-		}
-		BaseDTO dto = null;//sqlBuilder.count(listParam.toArray(new WhereDTO[listParam.size()]));
-		dto.setLinkType(LinkType.AND);
-		dto.setPage(page);
-		dto.setLimit("true");
-		//其他地方有冗余，需重构end
-		
-//		java.util.HashMap<String,Object> a = selectOne(dto);
-//		Integer count = DataUtil.parseInt(a.get("count(1)"));
-		//bugs fix by lcy 2015/05/26
-//		Integer count = selectOne(dto);
-//		return count;
-		return 0;
-	}
-	
-	
-	@Override
-	public Integer count(T param) {
-		Map<String, Object> paramMap = null;
-//		try{
-//			paramMap = ReflectionUtil.bean2Map(param);
-//		}catch(Exception e){
-//			throw new BaseDaoException("获取参数失败", e);
-//		}
-		return null;//(Integer)count(paramMap);
-	}
-	//-----------------------------------------------------------------------以下方法待实现
-	
 	
 	@Override
 	public List<T> find(Page<T> page,Object... values) {
@@ -868,6 +798,56 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 			return new Page<T>(pageNo, pageSize, lst, count);
 	}
+	
+	public Integer count(String sql,Object... params) {
+		List<Integer> list = executeQuery(sql, new IDataCallback<Integer>() {
+			@Override
+			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
+				return IDataCallback.super.paramCall(prepareStatement,params);
+			}
+
+			@Override
+			public Integer resultCall(String columnLabel, Object object) {
+				return DataUtil.parseInt(object);
+			}
+		});
+		return list.get(0);
+	}
+	
+	@Override
+	public Integer count(T param) {
+//		Map<String, Object> paramMap = null;
+//		try{
+//			paramMap = ReflectionUtil.bean2Map(param);
+//		}catch(Exception e){
+//			throw new BaseDaoException("获取参数失败", e);
+//		}
+		return count("select count(1) from "+sqlBuilder.getTableName(),param);
+	}
+	
+	@Override
+	public Integer count(Page<T> page) {
+		List<WhereDTO> listParam = new ArrayList<WhereDTO>();
+		
+		//其他地方有冗余，需重构start
+		Object params = page.getParams().get("where");
+		if(params != null) {
+			listParam = (List<WhereDTO>) params;
+		}
+		BaseDTO dto = null;//sqlBuilder.count(listParam.toArray(new WhereDTO[listParam.size()]));
+		dto.setLinkType(LinkType.AND);
+		dto.setPage(page);
+		dto.setLimit("true");
+		//其他地方有冗余，需重构end
+		
+//		java.util.HashMap<String,Object> a = selectOne(dto);
+//		Integer count = DataUtil.parseInt(a.get("count(1)"));
+		//bugs fix by lcy 2015/05/26
+//		Integer count = selectOne(dto);
+//		return count;
+		return 0;
+	}
+	
 	
 	
 	@Override

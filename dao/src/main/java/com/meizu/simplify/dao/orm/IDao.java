@@ -157,13 +157,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
      */
     List<T> findAll();
      
-    /**
-     * 未测试
-     * 获取记录数
-     * @return
-     */
-    Integer findAllCount();
-    
 
 	/**
 	 * 未实现  TODO
@@ -214,13 +207,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	Integer count(String sql, Object... values);
 
 	
-	/**
-	 * 未测试
-	 * 方法用途: 执行count查询获得记录总数。<br>
-	 * 操作步骤: TODO<br>
-	 * @return 返回记录总数。
-	 */
-	Integer count();
 	/**
 	 * 未测试
 	 * 方法用途: 执行count查询获得记录总数。<br>
