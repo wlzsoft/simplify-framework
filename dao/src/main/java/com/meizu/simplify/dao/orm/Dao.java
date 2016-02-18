@@ -439,7 +439,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer remove(String name, Object value) {
-		Integer count = executeUpdate(sqlBuilder.remove(name),name,value);
+		Integer count = executeUpdate(sqlBuilder.remove(name),value);
 		return count;
 	}
 	

@@ -74,4 +74,16 @@ public class DaoTest {
 	public void s3_deleteTest() {
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(key));
 	}
+	
+	@Test
+	public void s4_deleteTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setId(918);
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(t));
+	}
+	
+	@Test
+	public void s5_deleteTest() {
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("name", "删除"));
+	}
 }
