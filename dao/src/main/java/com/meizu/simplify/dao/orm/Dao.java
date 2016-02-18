@@ -317,7 +317,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public boolean save(T t) {
-		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置
+//		buildInfo.buildId(t);//TODO 慎重考虑createId，等字段的值的自动设置
 		String sql = sqlBuilder.preCreate();
 		List<T> tList = new ArrayList<>();
 		tList.add(t);
@@ -331,7 +331,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	@Override
 	public boolean saveOrUpdate(T t) {
-		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
+//		buildInfo.buildId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
 		if(t.getId()!=null) {
 			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
 			Integer res = update(t);
@@ -377,7 +377,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer update(T t) {
-		generateId(t);
+//		buildInfo.buildId(t);
 		
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
 		if(t == null) {
@@ -814,29 +814,5 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 //	@Resource
 //	private BuildInfo<T> buildInfo;
-	/**
-	 * 
-	 * 方法用途: 生成主键值<br>
-	 * 操作步骤: 默认情况下什么也不做；
-	 * 如果需要生成主键，需要由子类重写此方法根据需要的方式生成主键值<br>
-	 * @param t 要持久化的对象
-	 */
-	@Deprecated
-	protected void generateId(T t) {
-//		buildInfo.buildId(t);
-	}
-	
-
-	/**
-	 * 
-	 * 方法用途: TODO<br>
-	 * 操作步骤: TODO<br>
-	 * @param statement 映射的语句ID
-	 * @param parameter 参数
-	 * @param rowBounds 用于分页查询的记录范围
-	 * @param handler 结果集处理器
-	 */
-//	protected void select(String statement, Object parameter, RowBounds rowBounds,ResultHandler handler) {
-//	}
 
 }

@@ -14,6 +14,11 @@ package com.meizu.simplify.dao;
  */
 public class RowBounds {
 
+	/**
+	 * 用于分页查询的记录范围
+	 * @param start
+	 * @param pageSize
+	 */
 	public RowBounds(int start, int pageSize) {
 		// TODO Auto-generated constructor stub
 	}
