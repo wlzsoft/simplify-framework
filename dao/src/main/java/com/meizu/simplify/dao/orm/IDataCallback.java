@@ -5,8 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
-  * <p><b>Title:</b><i>数据回调接口-结果回调器</i></p>
- * <p>Desc: 获取数据库中数据后，会回调次接口的call方法</p>
+  * <p><b>Title:</b><i>回调接口</i></p>
+ * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -22,7 +22,7 @@ public interface IDataCallback<T> {
 	/**
 	 * 
 	 * 方法用途: 回调方法<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 获取数据库中数据后，结果集或是结果集回调<br>
 	 * @param columnLabel
 	 * @param object
 	 * @return
@@ -34,7 +34,7 @@ public interface IDataCallback<T> {
 	/**
 	 * 
 	 * 方法用途: 回调方法<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 获取数据之前，where条件参数回调<br>
 	 * @param prepareStatement
 	 * @return
 	 */
