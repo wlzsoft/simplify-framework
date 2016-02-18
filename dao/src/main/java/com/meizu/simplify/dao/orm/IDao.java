@@ -125,13 +125,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
      */
     Integer remove(List<PK> ids);
      
-    /**
-     * 未测试
-     * 方法用途: 删除所有记录<br>
-     * 操作步骤: TODO<br>
-     * @return 返回删除的记录数量
-     */
-    Integer removeAll();
 	/**
 	 * 已测试
 	 * 方法用途: 根据ID批量删除业务实体。<br>

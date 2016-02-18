@@ -311,14 +311,13 @@ public class SQLBuilder<T> {
      * 方法用途: TODO<br>
      * 操作步骤: TODO<br>
      * @param name
-     * @param value
      * @return
      */
-    public String remove(String name, Object value) {
+    public String remove(String name) {
         WhereDTO where = new WhereDTO();
         where.setKey(name);
         where.setOperator(" = ");
-        where.setValue(new String[]{value.toString()});
+        where.setValue(new String[]{"?"});
         return commonSqlByType("delete",where);
 	}
     
@@ -347,41 +346,29 @@ public class SQLBuilder<T> {
      * @param ids
      * @return
      */
-    public <PK> BaseDTO removeOfBatch(List<PK> ids) {
+    public <PK> String removeOfBatch(int idsLength) {
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("DELETE FROM ").append(getTableName());
-        BaseDTO dto = new BaseDTO();
         String sql = sqlBuild.toString();
-        dto.setPreSql(sql);
         
-        List<WhereDTO> list = new ArrayList<WhereDTO>();
-        WhereDTO where = new WhereDTO();
-        where.setKey(pkName);
-        where.setOperator(" IN ");
-        String value = "";
-        for (int i=0; i < ids.size(); i++) {
-            PK id = ids.get(i);
-            if(i > 0) {
-            	value += ",";	
-            }
-            value+=id;
-            
+        String value = pkName+" IN (";
+        for (int i=0; i < idsLength; i++) {
             if (i > 0 && i % (BatchOperator.DELETE_CRITICAL_VAL.getSize() - 1) == 0) {
-            	where.setValue(value.split(","));
-                list.add(where);
-                value = " 0 ";
-                where = new WhereDTO();
-                where.setKey(pkName);
-                where.setOperator(" IN ");
+            	if(i == idsLength-1) {
+            		value += "?" + ")";
+            	} else {
+            		value += "?" + ") OR "+ pkName+" IN (";
+            	}
+            } else {
+            	if(i == idsLength-1) {
+            		value+="?" + ")";
+            	} else {
+            		value+="?" + ",";
+            	}
             }
         }
-        String[] valueArr = value.split(",");  // TODO 需要优化，没必要先用字符串拼接，有转成数组,直接数据处理就可以
-        where.setValue(valueArr);
-        list.add(where);
         //logger.debug("生成的SQL为: " + sql);
-        dto.setWhereList(list);
-        dto.setSql(sql+" where "+pkName+" IN ("+value+")");
-        return dto;
+        return sql+" where "+value;
     }
      
      

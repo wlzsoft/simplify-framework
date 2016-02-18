@@ -15,7 +15,7 @@ package com.meizu.simplify.dao;
 public enum BatchOperator {
 
 	/**
-	 * 每次删除带or方式的次数间隔
+	 * 每次删除带or方式的次数间隔==>>批量删除的时候要考虑的，分批删除，考虑是否保留
 	 */
 	DELETE_CRITICAL_VAL(25),
 	/**

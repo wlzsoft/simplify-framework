@@ -236,6 +236,45 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		});
 	}
 	
+	/**
+	 * 方法用途: 可执行insert和delete，update语句,支持预处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @param callback
+	 * @return
+	 */
+	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			callback.paramCall(prepareStatement);
+			Integer rs = prepareStatement.executeUpdate();
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 未测试
+	 * 方法用途: 可执行insert和delete，update语句,不支持预处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @return
+	 */
+	public Integer executeUpdate(String sql) {
+		try {
+			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			Integer rs = prepareStatement.executeUpdate();
+			return rs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	//--------------------------------保存操作-----------------------------------------------------------
 	
 	/**
@@ -332,45 +371,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 	}
 	
-	/**
-	 * 未测试
-	 * 方法用途: 可执行insert和delete，update语句,支持预处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @param callback
-	 * @return
-	 */
-	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
-			callback.paramCall(prepareStatement);
-			Integer rs = prepareStatement.executeUpdate();
-			return rs;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	 * 未测试
-	 * 方法用途: 可执行insert和delete，update语句,不支持预处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @return
-	 */
-	public Integer executeUpdate(String sql) {
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
-			Integer rs = prepareStatement.executeUpdate();
-			return rs;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	@Override
 	public void createByMycat(List<T> list) {
@@ -425,11 +425,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	//--------------------------------删除操作-----------------------------------------------------------
 	
-
-	public Integer remove(BaseDTO removeById) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public Integer remove(PK id) {
@@ -440,6 +435,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public Integer remove(T entity) {
 		return remove((PK) entity.getId());
+	}
+	
+	@Override
+	public Integer remove(String name, Object value) {
+		Integer count = executeUpdate(sqlBuilder.remove(name),name,value);
+		return count;
 	}
 	
 	@Override
@@ -463,28 +464,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				remove(sqlBuilder.removeOfBatch(temp));
+				executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 				flushStatements();
 				temp = new ArrayList<PK>();
 			}
 		}
-		return  remove(sqlBuilder.removeOfBatch(temp));
+		return  executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 	}
 	
-	@Override
-	public Integer removeAll() {
-		return executeUpdate(sqlBuilder.removeAll());
-	}
 	
-	@Override
-	public Integer remove(String name, Object value) {
-//		Query query = createQuery("delete from " + clazz.getName() + " where "
-//				+ name + "=?", value);
-//		query.executeUpdate();
-		
-		Integer count = executeUpdate(sqlBuilder.remove(name,value));
-		return count;
-	}
 //--------------------------------查询操作-----------------------------------------------------------
 	
 	
