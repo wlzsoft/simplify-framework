@@ -98,8 +98,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
     
     void saveByMycat(List<T> list);
 
-	void createByMycat(List<T> list);
-     
 	/**
 	 * 未实现
 	 * 方法用途: 根据属性批量删除业务实体<br>

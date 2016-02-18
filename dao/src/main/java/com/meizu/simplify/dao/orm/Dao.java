@@ -325,6 +325,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return true;
 	}
 
+	@Override
+	public boolean saveOrUpdate(T t) {
+		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
+		if(t.getId()!=null) {
+			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
+			Integer res = update(t);
+			if(res >0) {
+				return true;
+			} else {
+				return true;
+			}
+		} else {
+			return save(t);
+		}
+	}
 	
 	@Override
 	public void save(List<T> list) {
@@ -351,34 +366,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return;
 	}
 	
+	
 	@Override
 	public void saveByMycat(List<T> list) {
-		if (null == list || list.isEmpty()) {
-			return;
-		}
-		createByMycat(list);
-		return;
-	}
-	
-	@Override
-	public boolean saveOrUpdate(T t) {
-		generateId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
-		if(t.getId()!=null) {
-			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
-			Integer res = update(t);
-			if(res >0) {
-				return true;
-			} else {
-				return true;
-			}
-		} else {
-			return save(t);
-		}
-	}
-	
-	
-	@Override
-	public void createByMycat(List<T> list) {
 		if (null == list || list.isEmpty()) {
 			return;
 		}
