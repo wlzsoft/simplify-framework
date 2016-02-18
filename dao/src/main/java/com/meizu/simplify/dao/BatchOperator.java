@@ -21,7 +21,7 @@ public enum BatchOperator {
 	/**
 	 * 每次刷新同步到数据库的间隔
 	 */
-	FLUSH_CRITICAL_VAL(2);
+	FLUSH_CRITICAL_VAL(50);
 	
 	private Integer size;
 	private BatchOperator(Integer size) {
