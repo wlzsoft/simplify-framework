@@ -75,8 +75,7 @@ public class SQLBuilder<T> {
      * @param columnsNames 
      * @return
      */
-    public List<Object> obtainFieldValues(T t,
-            Map<String, String> currentColumnFieldNames) {
+    public List<Object> obtainFieldValues(T t,Map<String, String> currentColumnFieldNames) {
         List<Object> values = new LinkedList<Object>();
         for (String column : otherIdColumns) {
             Field field = ReflectionUtil.getField(t,currentColumnFieldNames.get(column));
@@ -216,8 +215,7 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String createOfBatch(List<T> list,
-            Map<String, String> currentColumnFieldNames,Object pkVal) {
+    public String createOfBatch(List<T> list,Map<String, String> currentColumnFieldNames) {
         StringBuilder sqlBuild = new StringBuilder();
          
             List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames);
@@ -255,8 +253,7 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String createOfBatchByMycat(List<T> list,
-            Map<String, String> currentColumnFieldNames,Object pkVal) {
+    public String createOfBatchByMycat(List<T> list,Map<String, String> currentColumnFieldNames) {
         StringBuilder sqlBuild = new StringBuilder();
          
             List<Object> values = obtainFieldValues(list.get(0), currentColumnFieldNames);

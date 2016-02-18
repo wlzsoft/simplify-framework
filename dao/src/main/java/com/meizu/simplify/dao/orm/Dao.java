@@ -348,22 +348,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		List<T> temp = new ArrayList<T>();
 		// 获取列表的第一个对象的pk的value
-		Object pkVal = null;
 		for (int i=0; i < list.size(); i++) {
 			T t = list.get(i);
-			if (i == 0) {
-				pkVal = getId(t);
-			}
-
 			temp.add(t);
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames, pkVal));
+				executeUpdate(sqlBuilder.createOfBatch(temp,currentColumnFieldNames));
 				flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames, pkVal));
-		return;
+		if(temp.size()>0) {
+			executeUpdate(sqlBuilder.createOfBatch(temp, currentColumnFieldNames));
+		}
 	}
 	
 	
@@ -374,21 +370,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		List<T> temp = new ArrayList<T>();
 		// 获取列表的第一个对象的pk的value
-		Object pkVal = null;
 		for (int i=0; i < list.size(); i++) {
 			T t = list.get(i);
-			if (i == 0) {
-				pkVal = getId(t);
-			}
-
 			temp.add(t);
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				executeUpdate(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames, pkVal));
+				executeUpdate(sqlBuilder.createOfBatchByMycat(temp,currentColumnFieldNames));
 				flushStatements();
 				temp = new ArrayList<T>();
 			}
 		}
-		executeUpdate(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames, pkVal));
+		if(temp.size()>0) {
+			executeUpdate(sqlBuilder.createOfBatchByMycat(temp, currentColumnFieldNames));
+		}
 	}
 	//--------------------------------更新操作-----------------------------------------------------------
 	
