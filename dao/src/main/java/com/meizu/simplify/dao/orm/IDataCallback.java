@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
   * <p><b>Title:</b><i>回调接口</i></p>
  * <p>Desc: TODO</p>
@@ -19,15 +22,18 @@ import java.sql.SQLException;
  */
 public interface IDataCallback<T> {
 
+	static final Logger LOGGER = LoggerFactory.getLogger(IDataCallback.class);
+	
 	/**
 	 * 
 	 * 方法用途: 回调方法<br>
 	 * 操作步骤: 获取数据库中数据后，结果集或是结果集回调<br>
 	 * @param columnLabel
 	 * @param object
+	 * @param t
 	 * @return
 	 */
-	default T resultCall(String columnLabel, Object object) {
+	default T resultCall(String columnLabel, Object object,T t) {
 		return null;
 	}
 
@@ -57,7 +63,17 @@ public interface IDataCallback<T> {
 	 * @param rs
 	 * @return
 	 */
-	default T resultCall(ResultSet rs) {
+	default T resultCall(ResultSet rs,Class<?> clazz) {
+		try {
+			T t = (T) clazz.newInstance();
+			return t;
+		} catch (InstantiationException e) {
+			LOGGER.error("封装查询结果时，实例化对象(" + clazz + ")时，出现异常!"
+					+ e.getMessage());
+		} catch (IllegalAccessException e) {
+			LOGGER.error("封装查询结果时，实例化对象(" + clazz + ")时，出现异常!"
+					+ e.getMessage());
+		}
 		return null;
 	}
 }

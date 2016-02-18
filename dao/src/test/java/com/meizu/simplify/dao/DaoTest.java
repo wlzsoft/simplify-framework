@@ -66,6 +66,20 @@ public class DaoTest {
 		key = t.getId();
 	}
 	
+	@Test
+	public void s2_findUniqueTest() {
+		Assert.assertEquals("lcy", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findUnique("name","lcy").getName());
+	}
+	
+	@Test
+	public void s2_findByIdsTest() {
+		Integer[] ids = new Integer[]{1,2,3};
+		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByIds(ids);
+		for (com.meizu.simplify.dao.entity.Test test : list) {
+			System.out.println(test.getId()+test.getName());
+		}
+		Assert.assertEquals(3, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByIds(ids).size());
+	}
 	
 	@Test
 	public void s2_findByIdTest() {

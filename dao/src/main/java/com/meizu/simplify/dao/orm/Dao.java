@@ -502,11 +502,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			ResultSet rs = prepareStatement.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			while(rs.next()) {
+				B b = callback.resultCall(rs,this.entityClass);
 				for(int i=1; i <= metaData.getColumnCount(); i++) {
 					String columnLabel = metaData.getColumnLabel(i);
-					B b = callback.resultCall(columnLabel,rs.getObject(columnLabel));
-					bList.add(b);
+					callback.resultCall(columnLabel,rs.getObject(columnLabel),b);
 				}
+				bList.add(b);
 			}
 //			查询无需事务处理
 //			DruidPoolFactory.startTransaction();
@@ -538,8 +539,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	public List<T> find(String sql,Object... params) {
 		
-		try {
-			final T t = this.entityClass.newInstance();
 			logger.info(sql);
 			List<T> tList = executeQuery(sql, new IDataCallback<T>() {
 				@Override
@@ -548,7 +547,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 
 				@Override
-				public T resultCall(String columnLabel, Object val) {
+				public T resultCall(String columnLabel, Object val,T t) {
 					String key = currentColumnFieldNames.get(columnLabel);
 					try {
 						Class<?> valClazz = mapperOrmType(val);
@@ -560,18 +559,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 			});
 			return tList;
-		} catch (InstantiationException e) {
-			logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
-					+ e.getMessage());
-		} catch (IllegalAccessException e) {
-			logger.error("封装查询结果时，实例化对象(" + this.entityClass + ")时，出现异常!"
-					+ e.getMessage());
-		}
-		return null;
 		
-//		以上修改代码待验证
-//		Map<String, Object> resultMap = selectOne(sqlBuilder.findById(id));
-//		return MapToEntity(resultMap, this.entityClass);
+		
 	}
 	
 	
@@ -580,21 +569,23 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
+	public T findUnique(String name, Object value) {
+		return findOne(sqlBuilder.findByProperties(name, "?"),value);
+	}
+	
+	/*
+	 *考虑是否提供这个功能 TODO 
+	 */
+	@Override
 	public T findUnique(Criteria criteria) {
 //		return findUnique(name,value);
 		return criteria.uniqueResult();
-	}
-	
-	@Override
-	public T findUnique(String name, Object value) {
-		return findOne(sqlBuilder.findByProperties(name, value),name,value);
 	}
 
 	@Override
 	public T findById(PK id) {
 		return findOne(sqlBuilder.findById(),id);
 	}
-	
 	
 	@Override
 	public List<T> findByIds(PK[] idArr) {
@@ -807,7 +798,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 
 			@Override
-			public Integer resultCall(String columnLabel, Object object) {
+			public Integer resultCall(String columnLabel, Object object,Integer t) {
 				return DataUtil.parseInt(object);
 			}
 		});
