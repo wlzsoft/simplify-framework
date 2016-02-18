@@ -115,7 +115,14 @@ public class DaoTest {
 	
 	@Test
 	public void s8_countTest() {
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).count("select count(*) from test_web"));
+		System.out.println("count============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).count("select count(*) from test_web"));
+	}
+	
+	@Test
+	public void s9_countTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcy");
+		System.out.println("count============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).count(t));
 	}
 	
 }

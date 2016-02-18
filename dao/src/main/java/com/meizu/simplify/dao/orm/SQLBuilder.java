@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.annotations.Value;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
+import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.DataUtil;
@@ -54,6 +55,9 @@ public class SQLBuilder<T> {
     }
     public List<String> getOtherIdColumns() {
 		return otherIdColumns;
+	}
+    public String getOtherIdColumnsStr() {
+		return otherIdColumnsStr;
 	}
     public String getTableName() {
     	if(tableIndexLocal.get() == null) {
@@ -101,6 +105,41 @@ public class SQLBuilder<T> {
         }
         return values;
     }
+    
+    /**
+     * 提供给生成count SQL 使用
+     * 
+     * @param t
+     * @param currentColumnFieldNames
+     * @param columnsNames 
+     * @return
+     */
+    public SqlDTO countWhereValue(T t,Map<String, String> currentColumnFieldNames) {
+        
+    	List<Object> values = new LinkedList<Object>();
+        String whereName = "";
+        for (String column : otherIdColumns) {
+            Field field = ReflectionUtil.getField(t,currentColumnFieldNames.get(column));
+            
+            try {
+            	Object value = field.get(t);
+            	if(value != null) {
+            		values.add(value);
+            		whereName += " "+LinkType.AND+" " + column + "=?";
+        		}
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+           
+        }
+        whereName = whereName.substring(4);
+        SqlDTO dto = new SqlDTO();
+        dto.setWhereName(whereName);
+        dto.setWhereValues(values.toArray());
+        return dto;
+    }
      
     /**
      * 处理value
@@ -140,11 +179,8 @@ public class SQLBuilder<T> {
     	StringBuilder sqlBuild = new StringBuilder();
     	if(type.equals("select")) {
     		type += " "+columnsStr;
-    	} else if(type.equals("count")) {
-    		type = "select count(1) ";
-    	} else if(type.equals("update")) {/*不在这实现*/} 
-    	  else if(type.equals("delete")) {/*默认不需要处理*/}
-        sqlBuild.append(type + " FROM ").append(getTableName());
+    	}
+        sqlBuild.append(type + " from ").append(getTableName());
         String sql = sqlBuild.toString();
         String whereSql = "";
         for (WhereDTO whereDTO : whereList) {
@@ -493,9 +529,10 @@ public class SQLBuilder<T> {
         return commonSqlByType("select",whereList);
          
     }
-    public  String count(WhereDTO... whereList) {
-        return commonSqlByType("count",whereList);
-         
+    public  String count(String where) {
+    	StringBuilder sqlBuild = new StringBuilder();
+    	sqlBuild.append("select count(1) from ").append(getTableName());
+        return sqlBuild.toString() +" where "+where;
     }
 
 

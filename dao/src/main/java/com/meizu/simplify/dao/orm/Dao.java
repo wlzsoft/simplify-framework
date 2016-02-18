@@ -30,6 +30,7 @@ import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
+import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
@@ -816,13 +817,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer count(T param) {
-//		Map<String, Object> paramMap = null;
-//		try{
-//			paramMap = ReflectionUtil.bean2Map(param);
-//		}catch(Exception e){
-//			throw new BaseDaoException("获取参数失败", e);
-//		}
-		return count("select count(1) from "+sqlBuilder.getTableName(),param);
+		SqlDTO dto = sqlBuilder.countWhereValue(param, currentColumnFieldNames);
+		return count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
 	}
 	
 	@Override
