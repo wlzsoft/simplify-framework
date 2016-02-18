@@ -218,11 +218,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param param
 	 * @return
 	 */
-	public Integer executeUpdate(Object... param) {
+	public Integer executeUpdate(String sql,Object... param) {
 		if(param == null) {
 			return null;
 		}
-		return executeUpdate(sqlBuilder.removeById(),new IDataCallback<Integer>() {
+		return executeUpdate(sql,new IDataCallback<Integer>() {
 
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement) throws SQLException {
@@ -431,13 +431,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return null;
 	}
 	
-	
-	
-	
-	
 	@Override
 	public Integer remove(PK id) {
-		return executeUpdate(id);
+		return executeUpdate(sqlBuilder.removeById(),id);
 	}
 	
 	@SuppressWarnings("unchecked")
