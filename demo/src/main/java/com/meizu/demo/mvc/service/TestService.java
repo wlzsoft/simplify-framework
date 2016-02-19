@@ -1,7 +1,9 @@
 package com.meizu.demo.mvc.service;
 
+import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.entity.User;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
+import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 @Bean
@@ -14,8 +16,9 @@ public class TestService {
     }
 	@CacheDataAdd(key="bbb")
     public Object doSomeThing2(String aa) {
-        System.out.println("ִtest2测试2");
-        return true;
+        Test test = BaseDao.getIns(Test.class).findById(1);
+        System.out.println("ִtest2测试2:"+test.getName());
+        return test;
     }
 
 

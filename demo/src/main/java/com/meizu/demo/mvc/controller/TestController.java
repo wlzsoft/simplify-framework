@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
@@ -65,9 +66,9 @@ public class TestController extends BaseController<TestModel> {
 		if(testService != null) {
 			 User bb = new User();
 		        bb.setName("yyyyy2");
-			testService.doSomeThing2("basdfsd");
+			Test test = (Test) testService.doSomeThing2("basdfsd");
+			request.setAttribute("userName", test.getName());
 		}
-		request.setAttribute("userName", "lcy19870112@126.com");
 		return new ActionForward("/index.jsp");
 //		return new RedirectForward("/index.jsp");
 //		return new MessageForward("测试中");
