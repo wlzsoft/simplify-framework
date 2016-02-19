@@ -538,29 +538,25 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	public List<T> find(String sql,Object... params) {
-		
-			logger.info(sql);
-			List<T> tList = executeQuery(sql, new IDataCallback<T>() {
-				@Override
-				public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-					return IDataCallback.super.paramCall(prepareStatement,params);
+		logger.info(sql);
+		List<T> tList = executeQuery(sql, new IDataCallback<T>() {
+			@Override
+			public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
+				return IDataCallback.super.paramCall(prepareStatement,params);
+			}
+			@Override
+			public T resultCall(String columnLabel, Object val,T t) {
+				String key = currentColumnFieldNames.get(columnLabel);
+				try {
+					Class<?> valClazz = mapperOrmType(val);
+					ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+				} catch(IllegalArgumentException ex) {
+					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
 				}
-
-				@Override
-				public T resultCall(String columnLabel, Object val,T t) {
-					String key = currentColumnFieldNames.get(columnLabel);
-					try {
-						Class<?> valClazz = mapperOrmType(val);
-						ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
-					} catch(IllegalArgumentException ex) {
-						throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
-					}
-					return t;
-				}
-			});
-			return tList;
-		
-		
+				return t;
+			}
+		});
+		return tList;
 	}
 	
 	
