@@ -15,7 +15,7 @@ public class TestService {
         return true;
     }
 	@CacheDataAdd(key="bbb")
-    public Object doSomeThing2(String aa) {
+    public Test doSomeThing2(String aa) {
         Test test = BaseDao.getIns(Test.class).findById(1);
         System.out.println("ִtest2测试2:"+test.getName());
         return test;

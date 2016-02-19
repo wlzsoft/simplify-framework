@@ -49,32 +49,16 @@ public class TestController extends BaseController<TestModel> {
 	
 	@RequestMap(path = "/(.+)/(.+)/testpage$ /test/demo_(.+).html$ /test/login.html$ /web/$ /test/ /testa/(.+)/(.+)$")
 	public IForward doTest(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1",name="a3") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
-//		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
-//		String domain = CookiesUtil.getDomain(request);
-//			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
-		// 判断当前访问站点来源
-//		String sDomain = request.getServerName();
-//		if(sDomain.indexOf("meizu.com") > 0)  {
-//		}
-//		resultStr = resultStr.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
-//		if (model.getScript() == 1) { 
-//			return new MessageForward(StringUtil.format("<script>document.domain='{0}';{1}({2})</script>",domain , model.getJsonp(), result.toString()));
-//		} else {
-//			return new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
-//		}
-		System.out.println(testService+"HHHHHHHHHHHHHHHHHHHHHHHH");
 		if(testService != null) {
 			 User bb = new User();
 		        bb.setName("yyyyy2");
-			Test test = (Test) testService.doSomeThing2("basdfsd");
+			Test test = testService.doSomeThing2("basdfsd");
 			request.setAttribute("userName", test.getName());
 		}
 		return new ActionForward("/index.jsp");
-//		return new RedirectForward("/index.jsp");
-//		return new MessageForward("测试中");
 //		return new VelocityForward("/template/login.html");
+//		return new RedirectForward("/index.jsp");
 //		return new RedirectForward("/test/demo_" + point + ".html");
-//		return new MessageForward(StringUtil.format("{0}", "result"));
 	}
 	
 	@RequestMap(path = "/(.+)/(.+)/demo/(.+)$")
@@ -87,8 +71,15 @@ public class TestController extends BaseController<TestModel> {
 		// 存在脚本生成地址，无法使用加密 
 		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorForward(getMsg("VERIFY.FAILED"));
 
-		String domain = null;// CookiesUtil.getDomain(request);
-//		model.setDomain(request.getServerName());
+//		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
+		String domain = null;//CookiesUtil.getDomain(request);
+		// 判断当前访问站点来源
+//		String sDomain = request.getServerName();
+//		if(sDomain.indexOf("meizu.com") > 0)  {
+//		}
+//		resultStr = resultStr.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
+		
+		
 		String isflag = request.getParameter("isflag");
 		String result = "";
 		if (model.getScript() == 1) { 
