@@ -77,7 +77,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	boolean save(T ob);
     /**
-     * 未测试
      * 方法用途: 批量新增记录(会将序列生成的ID,注入)<br>
      * 操作步骤: TODO<br>
      * @param list
@@ -94,7 +93,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
     boolean saveOrUpdate(T t);
     
 	/**
-	 * 未实现
 	 * 方法用途: 根据属性批量删除业务实体<br>
 	 * 操作步骤: TODO<br>
 	 * @param name 属性名
@@ -102,7 +100,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	Integer remove(String name, Object value);
 	/**
-	 * 已测试 
 	 * 方法用途: 根据ID删除业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param id 待删除业务实体ID
@@ -110,7 +107,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	Integer remove(PK id);
     /**
-     * 已测试
      * 方法用途: 根据ids进行批量删除<br>
      * 操作步骤: TODO<br>
      * @param  待删除的业务实体id列表
@@ -119,7 +115,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
     Integer remove(List<PK> ids);
      
 	/**
-	 * 已测试
 	 * 方法用途: 根据ID批量删除业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param ids 待删除业务实体ID数组 
@@ -127,7 +122,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	Integer remove(PK[] ids);
     /** 
-     * 已测试
      * 更新,字段为空，则不进行更新
      * @param t 要持久化的对象
      * @return 执行成功的记录个数
@@ -135,98 +129,49 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
     Integer update(T t);
      
     /**
-     * 未测试
      * 方法用途: 批量更新<br>
      * 操作步骤: TODO<br>
      * @param list
      */
     void update(List<T> list);
-     
+    
     /**
-     * 已测试
-     * 方法用途:根据ID获取对象<br>
-     * 操作步骤: TODO<br>
-     * @param id 指定的唯一标识符
-     * @return  指定的唯一标识符对应的持久化对象，如果没有对应的持久化对象，则返回null。
-     */
-    T findById(PK id);
-    /**
-     * 已测试
-     * 获取所有的对象
-     * @return 返回指定类型的所有业务实体。
-     */
-    List<T> findAll();
-     
-
-	/**
-	 * 未实现  TODO
-	 * 获取满足查询参数条件的数据总数
-	 * 
-	 * @param param 查询参数
-	 * @return 数据总数
-	 */
-	Integer count(T param);
-	/**
-	 * 暂未实现
-	 * 方法用途: TODO<br>
-	 * 操作步骤: TODO<br>
-	 * @param criteria
-	 * @return
-	 */
-//	Integer count(Criteria criteria);
-	/**
-	 * 
-	 * 暂未实现
-	 * 不分页查询
-	 * 
-	 * @param param 查询参数
-	 * @param sort 排序字段名
-	 * @param isDesc 是否降序 [ 排序方式（升序(asc)或降序(desc)]
-	 * @return 查询结果列表
-	 */
-	List<T> findBy(T param, String sort, boolean isDesc);
-	/**
-	 * 已测试
-	 * 方法用途: 通过属性查找列表<br>
-	 * 操作步骤: TODO<br>
-	 * @param name 属性名
-	 * @param value 属性值
-	 * @return 返回属性值相符的业务实体集合，如果没有找到返回一个空的集合。
-	 */
-	List<T> findBy(String name,Object value);
-
-	/**
-	 * 未实现
-	 * 方法用途: 获取查询所能获得的对象总数。<br/>
-	 * 本函数只能自动处理简单的sql语句,复杂的sql查询请另行编写count语句查询。<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql 查询语句 
-	 * @param values 查询参数
-	 * @return 返回查询结果总数。
-	 */
-//	Integer count(String sql, Object... values);
-
-	
-	/**
-	 * 未测试
-	 * 方法用途: 执行count查询获得记录总数。<br>
-	 * 操作步骤: TODO<br>
-	 * @param page
-	 * @return 返回记录总数。
-	 */
-//	Integer count(Page<T> page);
-	
-	/**
-	 * 已测试
 	 * 方法用途: 删除业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param entity 待删除业务实体
 	 * @return  返回删除记录数
 	 */
 	Integer remove(T entity);
+	
+	/**
+	 * 方法用途: 清理当前Session。<br>
+	 * 操作步骤: TODO<br>
+	 */
+//	void clear();
+	/**
+	 * 方法用途: 保存业务实体。（复用已有的ID键值时使用）<br>
+	 * 操作步骤: TODO<br>
+	 * @param entity 待保存的业务实体
+	 */
+//	void replicate(T entity);
+	/**
+	 * 方法用途: 合并业务实体。<br>
+	 * 操作步骤: TODO<br>
+	 * @param entity 待更新业务实体
+	 * @return 返回更新后的业务实体（持久状态的）。
+	 */
+//	T merge(T entity);
+     
+    /**
+     * 方法用途:根据ID获取对象<br>
+     * 操作步骤: TODO<br>
+     * @param id 指定的唯一标识符
+     * @return  指定的唯一标识符对应的持久化对象，如果没有对应的持久化对象，则返回null。
+     */
+    T findById(PK id);
+    
 
 	/**
-	 * 已测试
 	 * 方法用途: 通过id数组查找对于的实体对象<br>
 	 * 操作步骤: TODO<br>
 	 * @param idArr  id数组
@@ -243,7 +188,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	List<T> findByMutil(String name, String values);
 	/**
-	 * 未测试
 	 * 方法用途: 根据属性的值查找唯一的业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param name  属性名
@@ -252,7 +196,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	T findUnique(String name, Object value);
 	/**
-	 * 未测试
 	 * 方法用途: 查找唯一业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param criteria 查询条件
@@ -282,7 +225,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	public T findUnique(String sql, Object[] args, int[] types, RowMapper<T> rowMapper);
 	
 	/**
-	 * 未测试
 	 * 方法用途: 判断是否存在属性重复的业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param entity 待判断的业务实体
@@ -290,8 +232,33 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @return 如果存在重复的业务实体返回false，否则返回true。
 	 */
 //	Boolean isUnique(T entity, String propNames);
+	
 	/**
-	 * 未测试
+     * 获取所有的对象
+     * @return 返回指定类型的所有业务实体。
+     */
+    List<T> findAll();
+     
+	/**
+	 * 
+	 * 不分页查询
+	 * 
+	 * @param param 查询参数
+	 * @param sort 排序字段名
+	 * @param isDesc 是否降序 [ 排序方式（升序(asc)或降序(desc)]
+	 * @return 查询结果列表
+	 */
+	List<T> findBy(T param, String sort, boolean isDesc);
+	/**
+	 * 方法用途: 通过属性查找列表<br>
+	 * 操作步骤: TODO<br>
+	 * @param name 属性名
+	 * @param value 属性值
+	 * @return 返回属性值相符的业务实体集合，如果没有找到返回一个空的集合。
+	 */
+	List<T> findBy(String name,Object value);
+	
+	/**
 	 * 方法用途: 根据属性的值查找业务实体并进行排序。<br>
 	 * 操作步骤: TODO<br>
 	 * @param param
@@ -300,7 +267,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	List<T> findBy(T param);
 	/**
 	 *
-	 * 未测试
 	 * 方法用途:  根据属性的值查找业务实体并进行排序。<br>
 	 * 操作步骤: TODO<br>
 	 * @param name 属性名
@@ -311,7 +277,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	List<T> findBy(String name, Object value, String sort, boolean isDesc);
 	/**
-	 * 未实现
 	 * 方法用途: 获取指定类型的所有业务实体并进行排序。<br>
 	 * 操作步骤: TODO<br>
 	 * @param orderBy 排序的属性名
@@ -319,31 +284,8 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @return 返回排序后的指定类型的所有业务实体。
 	 */
 //	List<T> findAll(String orderBy, Boolean isAsc);
-	/**
-	 * 未实现
-	 * 方法用途: 清理当前Session。<br>
-	 * 操作步骤: TODO<br>
-	 */
-//	void clear();
-	/**
-	 * 未实现
-	 * 方法用途: 保存业务实体。（复用已有的ID键值时使用）<br>
-	 * 操作步骤: TODO<br>
-	 * @param entity 待保存的业务实体
-	 */
-//	void replicate(T entity);
-	/**
-	 * 未实现
-	 * 方法用途: 合并业务实体。<br>
-	 * 操作步骤: TODO<br>
-	 * @param entity 待更新业务实体
-	 * @return 返回更新后的业务实体（持久状态的）。
-	 */
-//	T merge(T entity);
-
 
 	/**
-	 * 未测试
 	 * 方法用途: 根据查询条件进行分页查询。<br>
 	 * 操作步骤: TODO<br>
 	 * @param pageNo 要查询的页号
@@ -354,7 +296,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	Page<T> findPage(int pageNo, int pageSize,Criteria criteria);
 	
 	/**
-	 * 未测试
 	 * 方法用途: 根据查询条件进行分页查询。<br>
 	 * 操作步骤: TODO<br>
 	 * @param sort 排序字段名
@@ -367,7 +308,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	Page<T> findPage( String sort, String orderBy,int pageNo, int pageSize,Criteria criteria);
 	
 	/**
-	 * 暂未实现
 	 * 方法用途: 根据条件进行分页查询<br>
 	 * 操作步骤: TODO<br>
 	 * @param param 查询参数
@@ -380,7 +320,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	Page<T> findPage(T param,int pageNo, int pageSize,String sort, boolean isDesc );
 
 	/**
-	 * 未测试
 	 * 方法用途: 根据条件进行分页查询<br>
 	 * 操作步骤: TODO<br>
 	 * @param page 
@@ -389,7 +328,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	Page<T> findPage(Page<T> page, Object... values);
 	/**
-	 * 未测试
 	 * 方法用途: 根据条件进行分页查询<br>
 	 * 操作步骤: TODO<br>
 	 * @param sort 排序字段名
@@ -429,6 +367,40 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @return
 	 */
 //	public List<T> find(String sql);
+	
+	/**
+	 * 获取满足查询参数条件的数据总数
+	 * 
+	 * @param param 查询参数
+	 * @return 数据总数
+	 */
+	Integer count(T param);
+	/**
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param criteria
+	 * @return
+	 */
+//	Integer count(Criteria criteria);
+	
+	/**
+	 * 方法用途: 获取查询所能获得的对象总数。<br/>
+	 * 本函数只能自动处理简单的sql语句,复杂的sql查询请另行编写count语句查询。<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql 查询语句 
+	 * @param values 查询参数
+	 * @return 返回查询结果总数。
+	 */
+//	Integer count(String sql, Object... values);
+
+	
+	/**
+	 * 方法用途: 执行count查询获得记录总数。<br>
+	 * 操作步骤: TODO<br>
+	 * @param page
+	 * @return 返回记录总数。
+	 */
+//	Integer count(Page<T> page);
 
 	public void flushStatements();
 	
