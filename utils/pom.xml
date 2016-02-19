@@ -13,6 +13,11 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.7</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.7.0</version>
+		</dependency>
 		<!-- 使用objenesis来创建无默认构造函数的类的对象 -->
 		<dependency>
 			<groupId>org.objenesis</groupId>
@@ -38,13 +43,6 @@
 		    <groupId>de.ruedigermoeller</groupId>
 		    <artifactId>fst</artifactId>
 		    <version>2.43</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<groupId>com.fasterxml.jackson.core</groupId>
-		    		<artifactId>jackson-core</artifactId>
-		    		<!-- <version>2.7.0</version> -->
-		    	</exclusion>
-		    </exclusions>
 		</dependency>
 		<!-- <dependency>
 			<groupId>com.esotericsoftware</groupId>
