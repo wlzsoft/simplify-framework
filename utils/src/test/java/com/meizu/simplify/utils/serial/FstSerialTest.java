@@ -2,7 +2,6 @@ package com.meizu.simplify.utils.serial;
 
 import org.junit.Test;
 
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.entity.User;
 import com.meizu.simplify.stresstester.StressTestUtils;
 import com.meizu.simplify.stresstester.core.StressTask;
