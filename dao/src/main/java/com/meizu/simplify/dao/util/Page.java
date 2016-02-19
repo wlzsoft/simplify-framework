@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 
 import com.meizu.simplify.exception.UncheckedException;
 
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * <p><b>Title:</b><i>分页实体</i></p>
  * <p>Desc: 对分页的基本数据的封装</p>
