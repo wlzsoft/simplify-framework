@@ -646,17 +646,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public List<T> findBy(String sql, Object param,int pageNo, int pageSize,String sort,boolean isDesc){
-		int start =0;
-		if (pageNo > -1) {
-			start = (pageNo - 1) * pageSize;
-		}
-		RowBounds rowBound = new RowBounds(start,pageSize);
-		List<T> lst = null;//selectList( paramMap,rowBound);
-		return lst;
-	}
-	
-	@Override
 	public List<T> findBy(String name, Object value, String sort,boolean isDesc) {
 		Criteria criteria = new Criteria();
 		if (value == null) {
@@ -667,22 +656,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return criteria.list();
 	}
 	
-
-	
-	@Override
-	public List<T> find(Page<T> page,Object... params) {
-		
-		WhereDTO[] listParam = new WhereDTO[]{};
-		if(params != null) {
-			listParam = (WhereDTO[]) params;
-		}
-		BaseDTO dto = null;//sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
-		dto.setLinkType(LinkType.AND);
-		dto.setPage(page);
-		dto.setLimit("true");
-		
-		return find(dto.getSql());
-	}
+	//--------------------------------查询分页操作-----------------------------------------------------------
 	
 	@Override
 	public Page<T> findPage(Page<T> page,Object... params) {
@@ -692,19 +666,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		List<T> list = query.setFirstResult((page.getNumber() - 1) * page.getPageSize())
 				.setMaxResults(page.getPageSize())
 				.getResultList();*/
-		//end
 		
-//		方案二：start 不推荐方案，后期替换
+//		方案二：start 考虑是否可以喝方案一共存
 //		page.setTotalRecord(count(params));
 		WhereDTO[] listParam = new WhereDTO[]{};
 		if(params != null) {
 			listParam = (WhereDTO[]) params;
 		}
-//		 WhereDTO where = new WhereDTO();
-//	        where.setKey(pkName);
-//	        where.setOperator(" = ");
-//	        where.setValue("");
-//	     listParam.add(where);
 		BaseDTO dto = null;//sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
@@ -722,19 +690,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
 		 */
 		final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-		final String SORT_NAME = "SORT";
-		final String DIR_NAME = "DIR";
-	
 	    // 获取满足条件的记录总数，没有记录时返回空页数据
 		int count = count(param);
 		if (count < 1) {
 			return Page.emptyPage();
 		}
-
-		Map<String, Object> paramMap = null;
-		//paramMap = ReflectionUtil.bean2Map(param);
-		// Where过滤条件
-		//			paramMap.put("param", param);
+		
+		//Map<String, Object> paramMap = ReflectionUtil.bean2Map(param);
 		// 排序条件
 		if (sort != null) {
 			// 排序字段不为空，过滤其中可能存在的非法字符
@@ -742,6 +704,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		// 分页条件
 		int start = Page.getStartOfPage(pageNo, pageSize) - 1;
+		
 		RowBounds rowBound = new RowBounds(start, pageSize);
 		List<T> lst = null;//selectList(paramMap, rowBound);
 		return new Page<T>(pageNo, pageSize, lst, count);

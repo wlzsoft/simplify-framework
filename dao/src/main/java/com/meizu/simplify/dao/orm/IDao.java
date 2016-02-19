@@ -343,21 +343,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 
 
 	/**
-	 * 
-	 * 方法用途: 分页查询<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @param param
-	 * @param pageNo
-	 * @param pageSize
-	 * @param sort
-	 * @param isDesc
-	 * @return
-	 */
-	List<T> findBy(String sql, Object param, int pageNo, int pageSize,
-			String sort, boolean isDesc);
-	
-	/**
 	 * 未测试
 	 * 方法用途: 根据查询条件进行分页查询。<br>
 	 * 操作步骤: TODO<br>
@@ -416,16 +401,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	Page<T> findPage(String sort, String orderBy,Page<T> page, Object... values);
 
 
-	/**
-	 * 
-	 * 方法用途: 查询不分页<br>
-	 * 操作步骤: TODO<br>
-	 * @param page
-	 * @param values
-	 * @return
-	 */
-	List<T> find(Page<T> page, Object... values);
-	
 	/**
 	 * 方法用途: 列表查询<br>
 	 * 操作步骤: <br>
