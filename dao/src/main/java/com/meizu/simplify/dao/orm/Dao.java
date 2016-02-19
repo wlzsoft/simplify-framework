@@ -609,7 +609,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public List<T> findBy(T param){
-		return findBy(param, null, null);
+		return findBy(param, null, true);
 	}
 	
 	/**
@@ -635,7 +635,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param param where条件参数
 	 */
 	@Override
-	public List<T> findBy(T param, String sort, String orderBy) {
+	public List<T> findBy(T param, String sort, boolean isDesc) {
 		/** 
 		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
 		 */
@@ -650,13 +650,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public List<T> findBy(String sqlName, Object param,int pageNo, int pageSize,String sort,String orderBy){
-		Map<String,Object> paramMap = new HashMap<String,Object>();
-		paramMap.put("param", param);
-		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
-			paramMap.put("sort", null);
-			paramMap.put("orderBy", null);
-		}
+	public List<T> findBy(String sql, Object param,int pageNo, int pageSize,String sort,boolean isDesc){
 		int start =0;
 		if (pageNo > -1) {
 			start = (pageNo - 1) * pageSize;
@@ -667,7 +661,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public List<T> findBy(String name, Object value, String orderBy,boolean isAsc) {
+	public List<T> findBy(String name, Object value, String sort,boolean isDesc) {
 		Criteria criteria = new Criteria();
 		if (value == null) {
 			criteria.add(Restrictions.isNull(name));
@@ -727,7 +721,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
-	public Page<T> findPage(String sort, String orderBy, int pageNo,int pageSize, T param) {
+	public Page<T> findPage(T param, int pageNo,int pageSize,String sort, boolean isDesc) {
 		/** 
 		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
 		 */
@@ -749,13 +743,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if (sort != null) {
 			// 排序字段不为空，过滤其中可能存在的非法字符
 			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
-		}
-		if (StringUtil.isEmpty(sort) || StringUtil.isEmpty(orderBy)) {
-		//				paramMap.put("sort", null);
-		//				paramMap.put("orderBy", null);
-		} else {
-			paramMap.put(SORT_NAME, sort);
-			paramMap.put(DIR_NAME, orderBy);
 		}
 		// 分页条件
 		int start = Page.getStartOfPage(pageNo, pageSize) - 1;

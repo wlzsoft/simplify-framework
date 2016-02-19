@@ -181,10 +181,10 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * 
 	 * @param param 查询参数
 	 * @param sort 排序字段名
-	 * @param dir 排序方式（升序(asc)或降序(desc)
+	 * @param isDesc 是否降序 [ 排序方式（升序(asc)或降序(desc)]
 	 * @return 查询结果列表
 	 */
-	List<T> findBy(T param, String sort, String dir);
+	List<T> findBy(T param, String sort, boolean isDesc);
 	/**
 	 * 已测试
 	 * 方法用途: 通过属性查找列表<br>
@@ -305,11 +305,11 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * 操作步骤: TODO<br>
 	 * @param name 属性名
 	 * @param value 属性值
-	 * @param orderBy 排序属性
-	 * @param isAsc 是否升序
+	 * @param sort 排序属性
+	 * @param isAsc 是否降序
 	 * @return 返回排序后的属性值相符的业务实体集合，如果没有找到返回一个空的集合。
 	 */
-	List<T> findBy(String name, Object value, String orderBy, boolean isAsc);
+	List<T> findBy(String name, Object value, String sort, boolean isDesc);
 	/**
 	 * 未实现
 	 * 方法用途: 获取指定类型的所有业务实体并进行排序。<br>
@@ -346,16 +346,16 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * 
 	 * 方法用途: 分页查询<br>
 	 * 操作步骤: TODO<br>
-	 * @param sqlName
+	 * @param sql
 	 * @param param
 	 * @param pageNo
 	 * @param pageSize
 	 * @param sort
-	 * @param dir
+	 * @param isDesc
 	 * @return
 	 */
-	List<T> findBy(String sqlName, Object param, int pageNo, int pageSize,
-			String sort, String dir);
+	List<T> findBy(String sql, Object param, int pageNo, int pageSize,
+			String sort, boolean isDesc);
 	
 	/**
 	 * 未测试
@@ -385,14 +385,14 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * 暂未实现
 	 * 方法用途: 根据条件进行分页查询<br>
 	 * 操作步骤: TODO<br>
+	 * @param param 查询参数
 	 * @param sort 排序字段名
-	 * @param orderBy 排序方式（升序(asc)或降序(desc)
+	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
 	 * @param pageNo 要查询的页号
 	 * @param pageSize 每页数据个数
-	 * @param param 查询参数
 	 * @return 查询结果分页数据
 	 */
-	Page<T> findPage(String sort, String orderBy,int pageNo, int pageSize,T param );
+	Page<T> findPage(T param,int pageNo, int pageSize,String sort, boolean isDesc );
 
 	/**
 	 * 未测试
