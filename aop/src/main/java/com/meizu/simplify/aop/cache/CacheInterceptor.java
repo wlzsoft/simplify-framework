@@ -3,6 +3,9 @@ package com.meizu.simplify.aop.cache;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
@@ -35,7 +38,7 @@ import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
  */
 public class CacheInterceptor extends Handler implements  IInterceptor{
 
-//	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
 	
 	private static final CacheInterceptor CACHE_BEFORE_INTERCEPTOR = new CacheInterceptor();
 	private static final CacheInterceptor CACHE_AFTER_INTERCEPTOR = new CacheInterceptor(); 
@@ -54,8 +57,8 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	
 	@Override
 	public void before(String methodFullName,Object o,Object... args) {
-//		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
-		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
+		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
+//		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 		String key = methodFullName+"id";//需要想方法获取id的值
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
@@ -64,15 +67,15 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
 			Object obj = commonRedisDao.get(key);
-//			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
-			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
+			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
+//			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
 	}
 	
 	@Override
 	public void after(String methodFullName,Object o,Object... args) {
-//		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
-		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
+		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
+//		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 		String key = methodFullName+"id";//需要想方法获取id的值
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
@@ -82,13 +85,13 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
 			//TODO　这块的操作要控制的2ms以内
 			boolean isOk = commonRedisDao.set(key, args[0]);
-//			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
-			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
+			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
+//			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
 		} else if(anno.annotationType().equals(CacheDataDel.class)) {
 			CacheDataDel cacheDataDel = (CacheDataDel)anno;
 			Object obj = commonRedisDao.delete(key);
-//			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
-			System.out.println("del key:"+cacheDataDel.key()+"]"+obj);
+			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
+//			System.out.println("del key:"+cacheDataDel.key()+"]"+obj);
 		}
 	}
 
