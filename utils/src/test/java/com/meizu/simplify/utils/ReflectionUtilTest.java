@@ -1,6 +1,9 @@
 package com.meizu.simplify.utils;
 
 import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -9,6 +12,7 @@ import org.junit.rules.ExpectedException;
 
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.demo.DemoService;
+import com.meizu.simplify.utils.entity.Test2;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -94,5 +98,17 @@ public class ReflectionUtilTest  {
 		
 	}
 	
+	@Test
+	public void beanToMapTest() {
+		
+		Test2 test = new Test2();
+		test.setId(1);
+		test.setName("lcy");
+		Map<String, Object> paramMap = ReflectionUtil.bean2Map(test);
+		Set<Entry<String, Object>> set = paramMap.entrySet();
+		for (Entry<String, Object> entry : set) {
+			System.out.println(entry.getKey()+"="+entry.getValue());
+		}
+	}
 
 }

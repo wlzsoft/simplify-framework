@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -285,5 +287,36 @@ public class ReflectionUtil {
 		}
 		return null;
 	}
+
+	/**
+	 * 
+	 * 方法用途: 实体转map<br>
+	 * 操作步骤: TODO<br>
+	 * @param param
+	 * @return
+	 */
+	public  static <T extends Object> Map<String, Object> bean2Map(T param) {
+		Map<String,Object> map = new ConcurrentHashMap<>();
+		buildFieldInfo(param.getClass(),param,map);
+		return map;
+	}
+	
+	/**
+	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
+	 * 操作步骤: TODO<br>
+	 * @param class1
+	 * @param trans 
+	 */
+	private static <T> void buildFieldInfo(Class<? extends T> class1,T param,Map<String,Object> map) {
+		Field[] fields = class1.getDeclaredFields();
+		for (Field field : fields) {
+			String fieldName = field.getName();
+			map.put(fieldName, invokeGetterMethod(param, field.getName()));
+		}
+		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
+			buildFieldInfo(class1.getSuperclass(),param,map);
+		}
+	}
+	
     
 }

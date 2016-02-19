@@ -118,8 +118,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param trans 
 	 */
 	private void buildFieldInfo(Class<? super T> class1) {
-		Transient trans = entityClass.getAnnotation(Transient.class);
 		Field[] fields = class1.getDeclaredFields();
+		Transient trans = entityClass.getAnnotation(Transient.class);
 		getFieldInfo(fields,trans);
 		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
 			buildFieldInfo(class1.getSuperclass());
@@ -696,7 +696,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			return Page.emptyPage();
 		}
 		
-		//Map<String, Object> paramMap = ReflectionUtil.bean2Map(param);
 		// 排序条件
 		if (sort != null) {
 			// 排序字段不为空，过滤其中可能存在的非法字符
