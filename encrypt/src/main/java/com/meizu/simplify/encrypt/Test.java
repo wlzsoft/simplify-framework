@@ -7,7 +7,7 @@ package com.meizu.simplify.encrypt;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: AES_256_CBC 256位加密算法-存在的问题和优势</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
