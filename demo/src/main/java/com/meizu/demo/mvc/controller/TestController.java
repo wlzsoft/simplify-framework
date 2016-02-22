@@ -1,6 +1,7 @@
 package com.meizu.demo.mvc.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.BaseController;
+import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.annotation.RequestMap;
@@ -48,10 +50,24 @@ public class TestController extends BaseController<TestModel> {
 	private TestService testService;
 	
 	@RequestMap(path = "/test/")
-	public IForward doTest(HttpServletRequest request, HttpServletResponse response)  {
+	public IForward doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2("basdfsd");
 		request.setAttribute("userName", test.getName());
 		return new ActionForward("/index.jsp");
+	}
+	
+	@RequestMap(path = "/testSelect/")
+	public IForward doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
+		request.setAttribute("testList", test);
+		return new ActionForward("/testList.jsp");
+	}
+	
+	@RequestMap(path = "/testSelect2/")
+	public IForward adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
+		request.setAttribute("testList", test);
+		return new ActionForward("/testList.jsp");
 	}
 	
 	@RequestMap(path = "/(.+)/(.+)/demo/(.+)$ /(.+)/(.+)/demo2$ /demo/demo_(.+).html$ /demo/demo.html$ /demo/$ /demo/(.+)/(.+)$")

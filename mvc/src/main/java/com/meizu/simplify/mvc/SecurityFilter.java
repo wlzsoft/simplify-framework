@@ -91,8 +91,8 @@ public class SecurityFilter implements Filter {
 			Statistics.getReadMap().put(thisUrl, 0);
 			
 			request.setAttribute("params", params);
-			String parName = controllerAnnotationInfo.getMethod().substring(2, controllerAnnotationInfo.getMethod().length());
-			request.setAttribute("cmd", Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
+			String parName = controllerAnnotationInfo.getMethod();
+			request.setAttribute("cmd", parName);//请求指令，其实就是action请求方法名
 			SecurityContoller<?> bs = (SecurityContoller<?>)controllerAnnotationInfo.getObj();
 			bs.process(request, response);
 			

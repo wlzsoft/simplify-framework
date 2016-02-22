@@ -147,7 +147,7 @@ public class SecurityContoller<T extends Model> {
 	 */
 	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws ServletException, IOException {
 		if (t.getCmd() != null && t.getCmd().length() > 0) {
-			String doCmd = StringUtil.format("do{0}", Character.toUpperCase(t.getCmd().charAt(0)) + t.getCmd().substring(1));
+			String doCmd = t.getCmd();
 			Method doMethod = null;
 			try {
 				Method[] methods = this.getClass().getMethods();
@@ -164,8 +164,8 @@ public class SecurityContoller<T extends Model> {
 				if (doMethod == null) { 
 					throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
 				}
-				if (doMethod.getParameterTypes().length < 3) { 
-					throw new IllegalArgumentException("The method named, " + doCmd + ", parameter length is not enough by " + this.getClass()); 
+				if (doMethod.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
+					throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 				}
 
 				// 设置参数值

@@ -9,6 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.exception.UncheckedException;
@@ -32,6 +35,9 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 public class MvcInit {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MvcInit.class);
+	
 	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
 	
 	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
@@ -104,14 +110,14 @@ public class MvcInit {
 			return;
 		}
 		for (Method method : entityClass.getMethods()) {
-			if (method != null && method.getName().indexOf("do") == 0) {
+			if (method != null) {
 				// 检查annotation 设置
 				if (method.isAnnotationPresent(RequestMap.class)) {
 					RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
 					for (String _path : rset.path().split("\\s+", -1)) {
 						if (_path != null && _path.length() > 0) {
-//							LOGGER.debug("ADDED " + class_path + " -> " + _path);
-							System.out.println("ADDED [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
+							LOGGER.debug("ADDED [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
+//							System.out.println("ADDED [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
 							controllerMap.put(_path, new ControllerAnnotationInfo(obj, method.getName()));
 						}
 					}

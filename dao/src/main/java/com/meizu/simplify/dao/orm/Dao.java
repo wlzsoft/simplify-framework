@@ -150,8 +150,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //			如果没标示Column注解，那么默认使用全大写属性名，否知使用注解指定的值
 			if (null != tableColumn&&StringUtil.isNotBlank(tableColumn.value())) {
 				columnName = tableColumn.value();
+//				currentColumnFieldNames.put(field.getName(), field.getName());//fix bug:  需要考虑未转大写之前的属性名添加到元数据中
 			} else {
-				columnName = field.getName().toUpperCase();
+				columnName = field.getName();
 			}
 			currentColumnFieldNames.put(columnName, field.getName());
 			if (field.isAnnotationPresent(Key.class)) {
@@ -548,6 +549,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			@Override
 			public T resultCall(String columnLabel, Object val,T t) {
 				String key = currentColumnFieldNames.get(columnLabel);
+				if(key == null) {
+					return null;
+				}
 				try {
 					Class<?> valClazz = mapperOrmType(val);
 					ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
