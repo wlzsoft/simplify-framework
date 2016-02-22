@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 
 /**
  * <p><b>Title:</b><i>系统初始化servlet</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 考虑servlet3.0或是后续最新的servlet4.0规范，以支持http2.0协议，或是抛弃servlet规范，直接封装http2.0</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

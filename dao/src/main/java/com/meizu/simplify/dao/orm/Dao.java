@@ -45,7 +45,8 @@ import com.meizu.simplify.utils.StringUtil;
  * 
  * <p><b>Title:</b><i> 基础泛型DAO实现类</i></p>
  * <p>Desc:1. IBaseDaoTemplate的实现方式
- *         2. 注意sql注入的问题</p>
+ *         2. 注意sql注入的问题
+ *         3.考虑jdbc4.0规范，或是直接使用特定mysql二进制协议，不考虑跨数据库</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
