@@ -47,21 +47,14 @@ public class TestController extends BaseController<TestModel> {
 	@Resource
 	private TestService testService;
 	
-	@RequestMap(path = "/(.+)/(.+)/testpage$ /test/demo_(.+).html$ /test/login.html$ /web/$ /test/ /testa/(.+)/(.+)$")
-	public IForward doTest(HttpServletRequest request, HttpServletResponse response, final TestModel model, @RequestParam(defaultValue = "0", param = "1",name="a3") String enc, @RequestParam(defaultValue = "0", param = "2") String pid)  {
-		if(testService != null) {
-			 User bb = new User();
-		        bb.setName("yyyyy2");
-			Test test = testService.doSomeThing2("basdfsd");
-			request.setAttribute("userName", test.getName());
-		}
+	@RequestMap(path = "/test/")
+	public IForward doTest(HttpServletRequest request, HttpServletResponse response)  {
+		Test test = testService.doSomeThing2("basdfsd");
+		request.setAttribute("userName", test.getName());
 		return new ActionForward("/index.jsp");
-//		return new VelocityForward("/template/login.html");
-//		return new RedirectForward("/index.jsp");
-//		return new RedirectForward("/test/demo_" + point + ".html");
 	}
 	
-	@RequestMap(path = "/(.+)/(.+)/demo/(.+)$")
+	@RequestMap(path = "/(.+)/(.+)/demo/(.+)$ /(.+)/(.+)/demo2$ /demo/demo_(.+).html$ /demo/demo.html$ /demo/$ /demo/(.+)/(.+)$")
 	public IForward doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid, @RequestParam(defaultValue = "0", param = "3") String id) throws ServletException, IOException, InterruptedException {
  
 		
@@ -89,6 +82,9 @@ public class TestController extends BaseController<TestModel> {
 		} else {
 			return  new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 		}
+//		return new VelocityForward("/template/login.html");
+//		return new RedirectForward("/index.jsp");
+//		return new RedirectForward("/test/demo_" + point + ".html");
 	}
 	
 
