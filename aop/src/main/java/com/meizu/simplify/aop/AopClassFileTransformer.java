@@ -33,7 +33,7 @@ import javassist.NotFoundException;
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
 	
-	private static final Logger LOGGER = DefaultLogManager.getLogger();
+//	private static final Logger LOGGER = DefaultLogManager.getLogger();
 	private class FilterMetaInfo {
 		private String filterName;
 		//默认不匹配
@@ -113,8 +113,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         	String classInfo = filterMetaInfo.getFilterName();
         	if (classInfo.startsWith(className)){
         		filterMetaInfo.setIsMatch(true);
-        		LOGGER.info("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
-//        		System.out.println("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
+//        		LOGGER.info("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
+        		System.out.println("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
         		
         		String methodNameStr = classInfo.split(":")[1];
         		String[] methodArr = methodNameStr.split(",");
@@ -122,8 +122,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 //        			CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
 //        			再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
         			ClassPool.doPruning = true;//减少对象内存占用
-        			LOGGER.info("AOP：javasist开始精简["+className+"]对象字节码");
-//        			System.out.println("AOP：javasist开始精简["+className+"]对象字节码");
+//        			LOGGER.info("AOP：javasist开始精简["+className+"]对象字节码");
+        			System.out.println("AOP：javasist开始精简["+className+"]对象字节码");
 //        	                    通过类全路径名获取class字节码文件数据
         			ClassPool pool = ClassPool.getDefault();
 //        			pool.insertClassPath(className);
@@ -141,8 +141,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 //    	        	}
     		        for(String methodName : methodArr){
     		        	String methodFullName = className+":"+methodName;
-    		        	LOGGER.info("AOP：对方法["+methodFullName+"]进行逻辑切入");
-//    		        	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
+//    		        	LOGGER.info("AOP：对方法["+methodFullName+"]进行逻辑切入");
+    		        	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
     	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
     	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
     	                	ctmethod.addLocalVariable("endTime", CtClass.longType);

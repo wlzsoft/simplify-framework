@@ -14,7 +14,8 @@ public class DefaultLogManager{
 	
     static{
         LogManager.getLogManager().reset(); 
-        resetFromPropertyFile("/logger.properties");
+//        resetFromPropertyFile("/logger.properties");
+        resetFromPropertyFile("");
 	}
 	
 	public static void resetFromPropertyFile(String filePath){
@@ -31,7 +32,9 @@ public class DefaultLogManager{
         	System.err.println("读取jdk日志配置文件错误：\n" + e.toString());
         } finally{
             try {
-                is.close();
+            	if(is != null) {
+            		is.close();
+            	}
             } catch (IOException e) {
             	System.err.println("关闭jdk日志配置文件错误：\n" + e.toString());
             }
