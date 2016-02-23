@@ -25,10 +25,17 @@ public class Test extends BaseEntity {
 
 	private static final long serialVersionUID = 246628316050179125L;
 	private String name;
+	private String createName;
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getCreateName() {
+		return createName;
+	}
+	public void setCreateName(String createName) {
+		this.createName = createName;
 	}
 }
