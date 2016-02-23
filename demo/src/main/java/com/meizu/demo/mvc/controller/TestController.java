@@ -65,7 +65,7 @@ public class TestController extends BaseController<TestModel> {
 	
 	@RequestMap(path = "/testSelect2/")
 	public IForward adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
+		List<Test> test = BaseDao.getIns(Test.class).find("select test_web.* from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
 		return new ActionForward("/testList.jsp");
 	}
