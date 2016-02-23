@@ -65,6 +65,7 @@ public interface IDataCallback<T> {
 	 */
 	default T resultCall(ResultSet rs,Class<?> clazz) {
 		try {
+			@SuppressWarnings("unchecked")
 			T t = (T) clazz.newInstance();
 			return t;
 		} catch (InstantiationException e) {

@@ -2,6 +2,7 @@ package com.meizu.demo.mvc.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +67,13 @@ public class TestController extends BaseController<TestModel> {
 	@RequestMap(path = "/testSelect2/")
 	public IForward adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
+		request.setAttribute("testList", test);
+		return new ActionForward("/testList.jsp");
+	}
+	
+	@RequestMap(path = "/testSelect3/")
+	public IForward adoTestSelect3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		List<Map<String,Object>> test = BaseDao.getInsMap(Map.class).find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
 		return new ActionForward("/testList.jsp");
 	}

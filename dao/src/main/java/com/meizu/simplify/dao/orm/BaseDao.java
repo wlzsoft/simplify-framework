@@ -1,6 +1,7 @@
 package com.meizu.simplify.dao.orm;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.exception.UncheckedException;
@@ -21,6 +22,25 @@ import com.meizu.simplify.ioc.BeanFactory;
  */
 public class BaseDao  {
 
+	/**
+	 * 方法用途: 获取业务实体类对应的dao实例<br>
+	 * 操作步骤: 1.第一步：对于的实体类必须实现基于IdEntity的实体或是IdEntity本身
+	 *        2.第二步：必须在对于的实体类上标注javax.persistence.Entity注解,才能动态生成对应的dao操作类
+	 *        3.第三步：必须在对于的实体类上标注javax.persistence.Table注解,并指定表名，才能知道具体操作哪个表，
+	 *        。。。。具体的信息，参照com.meizu.entity.Test类<br>
+	 * @param classz 业务实体类
+	 * @return
+	 */
+	public static <T extends Map<String,Object>>  Dao<?, Serializable> getInsMap (Class<T> classz) {//TODO 等待验证
+		String className = "mapBaseDao";
+		Dao<?, Serializable> dao = BeanFactory.getBean(className);
+		if(dao == null) {
+			throw new UncheckedException("无法获取到名为"+className+"的dao，请检查是否已经初始化了");
+		}
+//		dao.setIndex(null);
+		return dao;
+	}
+	
 	/**
 	 * 方法用途: 获取业务实体类对应的dao实例<br>
 	 * 操作步骤: 1.第一步：对于的实体类必须实现基于IdEntity的实体或是IdEntity本身
