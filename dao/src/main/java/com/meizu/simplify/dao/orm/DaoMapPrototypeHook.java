@@ -34,7 +34,7 @@ import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 
-//@BeanHook(Dao.class)
+//@BeanHook(Dao.class) //TODO
 public class DaoMapPrototypeHook implements IBeanPrototypeHook {//需要进一步优化和重构 TODO
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoMapPrototypeHook.class);

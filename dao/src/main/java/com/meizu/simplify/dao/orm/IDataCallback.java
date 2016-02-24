@@ -63,12 +63,21 @@ public interface IDataCallback<T> {
 	 * @param rs
 	 * @return
 	 */
-	default T resultCall(ResultSet rs,Class<?> clazz) {
+	default T resultCall(ResultSet rs,Class<T> clazz) {
 		try {
-			@SuppressWarnings("unchecked")
-			T t = (T) clazz.newInstance();
+			T t = null;
+			if(clazz == Integer.class) {//fix bug(lcy-2016/2/24)
+//				t = (T) new Integer(0);//可以不必要，TODO 因为clazz有特殊值的情况，可重构这个方法，使其更优雅，而不是一直修改这个方法
+			} else {
+				t = (T) clazz.newInstance();
+			}
 			return t;
 		} catch (InstantiationException e) {
+			/*fix bug(lcy-2016/2/24)
+			问题：基本类型情况下，实例化报异常，详细异常会报 [ Evaluations must contain either an expression or a block of well-formed statements ] 信息的异常
+			原理原因：http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html
+			根本原因：需要构造函数
+			方案：基本类型单独实例化*/
 			LOGGER.error("封装查询结果时，实例化对象(" + clazz + ")时，出现异常!"
 					+ e.getMessage());
 		} catch (IllegalAccessException e) {

@@ -213,95 +213,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return currentColumnFieldNames.get(pkName);
 	}
 	
-	/**
-	 * 
-	 * 方法用途: 执行delete，update 根据param的where条件来更新或是删除<br>
-	 * 操作步骤: TODO<br>
-	 * @param param
-	 * @return
-	 */
-	public Integer executeUpdate(String sql,Object... params) {
-		if(params == null) {
-			return null;
-		}
-		return executeUpdate(sql,new IDataCallback<Integer>() {
-
-			@Override
-			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
-			}
-			
-		});
-	}
 	
-	/**
-	 * 方法用途: 可执行insert和delete，update语句,支持预处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @param callback
-	 * @return
-	 */
-	public Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
-			callback.paramCall(prepareStatement);
-			Integer rs = prepareStatement.executeUpdate();
-			return rs;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new BaseDaoException("执行sql异常", e);
-		}
-	}
-	
-	/**
-	 * 未测试
-	 * 方法用途: 可执行insert和delete，update语句,不支持预处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @return
-	 */
-	public Integer executeUpdate(String sql) {
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
-			Integer rs = prepareStatement.executeUpdate();
-			return rs;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	//--------------------------------保存操作-----------------------------------------------------------
 	
-	/**
-	 * 
-	 * 方法用途: 可执行insert,支持预处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param sql
-	 * @param callback
-	 * @return
-	 */
-	private Integer executeInsert(String sql,IDataCallback<Integer> callback) {
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-			callback.paramCall(prepareStatement);
-			prepareStatement.executeUpdate();
-			ResultSet rs = prepareStatement.getGeneratedKeys();
-			if(rs.next()) {
-				int key=rs.getInt(1);
-				return key;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 	
 	private Integer preSave(String sql,List<T> tList) {
-		Integer key = executeInsert(sql,new IDataCallback<Integer>(){
+		Integer key = SQLExecute.executeInsert(sql,new IDataCallback<Integer>(){
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... params) throws SQLException {
 				for(int j=0; j<tList.size();j++) {
@@ -386,7 +305,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			return null;
 		}
 		String sql = sqlBuilder.update(t, currentColumnFieldNames);
-		return executeUpdate(sql,new IDataCallback<Integer>() {
+		return SQLExecute.executeUpdate(sql,new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				List<String> cList = sqlBuilder.getOtherIdColumns();
@@ -418,7 +337,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer remove(PK id) {
-		return executeUpdate(sqlBuilder.removeById(),id);
+		return SQLExecute.executeUpdate(sqlBuilder.removeById(),id);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -432,7 +351,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public Integer remove(String name, Object value) {
-		Integer count = executeUpdate(sqlBuilder.remove(name),value);
+		Integer count = SQLExecute.executeUpdate(sqlBuilder.remove(name),value);
 		return count;
 	}
 	
@@ -458,13 +377,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				resultcount += executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+				resultcount += SQLExecute.executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 				flushStatements();
 				temp = new ArrayList<PK>();
 			}
 		}
 		if(temp.size()>0) {
-			resultcount += executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+			resultcount += SQLExecute.executeUpdate(sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 		}
 		return resultcount;
 	}
@@ -473,56 +392,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //--------------------------------查询操作-----------------------------------------------------------
 	
 	
-	/**
-	 * 
-	 * 方法用途: TODO<br>
-	 * 操作步骤: <pre>
-	System.out.println("请求sql的列名ColumnLabel:"+metaData.getColumnLabel(i));
-	System.out.println("java中列的类型ColumnClassName:"+metaData.getColumnClassName(i));
-	System.out.println("数据库中的列名ColumnName:"+metaData.getColumnName(i));
-	System.out.println("数据库中列的类型ColumnType:"+metaData.getColumnType(i));
-	System.out.println("数据库中列的类型的名字ColumnTypeName:"+metaData.getColumnTypeName(i));
-	System.out.println("整个数值长度ColumnDisplaySize:"+metaData.getColumnDisplaySize(i));
-	System.out.println("整数长度Precision:"+metaData.getPrecision(i));
 	
-	System.out.println("表名TableName:"+metaData.getTableName(i));
-	System.out.println("数据库名CatalogName:"+metaData.getCatalogName(i));
-	
-	System.out.println("小数长度Scale:"+metaData.getScale(i));
-	
-	System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
-	System.out.println("========================");</pre><br>
-	 * @param sql
-	 * @param callback
-	 * @return
-	 */
-	public <B> List<B> executeQuery(String sql,IDataCallback<B> callback) {
-		List<B> bList= new ArrayList<B>();
-		try {
-			PreparedStatement prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
-			callback.paramCall(prepareStatement);
-			ResultSet rs = prepareStatement.executeQuery();
-			ResultSetMetaData metaData = rs.getMetaData();
-			while(rs.next()) {
-				B b = callback.resultCall(rs,this.entityClass);
-				for(int i=1; i <= metaData.getColumnCount(); i++) {
-					String columnLabel = metaData.getColumnLabel(i);
-					callback.resultCall(columnLabel,rs.getObject(columnLabel),b);
-				}
-				bList.add(b);
-			}
-//			查询无需事务处理
-//			DruidPoolFactory.startTransaction();
-//			DruidPoolFactory.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-//			DruidPoolFactory.rollback();
-		} finally {
-			DruidPoolFactory.close();//TODO 测试是否需要关闭，关闭是否回收到连接池，还是真正的关闭
-		}
-		return bList;
-	}
 	
 	/**
 	 * 
@@ -541,7 +411,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	public List<T> find(String sql,Object... params) {
 		logger.info(sql);
-		List<T> tList = executeQuery(sql, new IDataCallback<T>() {
+		List<T> tList = SQLExecute.executeQuery(sql, new IDataCallback<T>() {
 			@Override
 			public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return IDataCallback.super.paramCall(prepareStatement,params);
@@ -560,7 +430,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 				return t;
 			}
-		});
+		},this.entityClass);
 		return tList;
 	}
 	
@@ -716,7 +586,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
 	public Integer count(String sql,Object... params) {
-		List<Integer> list = executeQuery(sql, new IDataCallback<Integer>() {
+		List<Integer> list = SQLExecute.executeQuery(sql, new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return IDataCallback.super.paramCall(prepareStatement,params);
@@ -726,7 +596,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			public Integer resultCall(String columnLabel, Object object,Integer t) {
 				return DataUtil.parseInt(object);
 			}
-		});
+		},Integer.class);
 		return list.get(0);
 	}
 	
