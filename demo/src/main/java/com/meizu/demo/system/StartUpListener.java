@@ -8,6 +8,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import com.meizu.simplify.cache.redis.RedisPool;
+import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.controller.VelocityForward;
@@ -46,7 +47,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("系统停止运行");
-		
+		DruidPoolFactory.close();
 	}
 
 	@Override

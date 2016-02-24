@@ -79,6 +79,12 @@ public class DruidPoolFactory {
 			dataSource.setPoolPreparedStatements(false);
 			
 		}
+		try {
+			dataSource.init();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return dataSource;
 	}
 	
@@ -178,6 +184,15 @@ public class DruidPoolFactory {
 				e2.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 关闭数据源<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static void closePool() {
+		factory.dataSource.close();
 	}
 }
 

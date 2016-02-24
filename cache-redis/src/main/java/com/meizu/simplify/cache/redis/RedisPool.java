@@ -123,13 +123,13 @@ public class RedisPool {
 	 * 操作步骤: TODO<br>
 	 */
 	public static void initCachePool() {
-    	ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
-    	for(int i=0; i<10; i++) {
-    		pool.getResource();
-    	}
-//      LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
-        System.out.println("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
-//      pool.returnResourceObject(resource);
+		ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
+		for(int i=0; i<10; i++) {
+			pool.getResource();
+		}
+		LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
+//    	System.out.println("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
+//    	pool.returnResourceObject(resource);
 	}
 	
 	private RedisPool() {
