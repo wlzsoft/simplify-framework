@@ -3,6 +3,7 @@ package com.meizu.simplify.dao.orm;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,16 +62,15 @@ public interface IDataCallback<T> {
 	 * 方法用途: 回调方法<br>
 	 * 操作步骤: TODO<br>
 	 * @param rs
+	 * @param clazz 如果类型不支持，那么值为空，不处理，结果直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
 	 * @return
 	 */
 	default T resultCall(ResultSet rs,Class<T> clazz) {
 		try {
-			T t = null;
-			if(clazz == Integer.class) {//fix bug(lcy-2016/2/24)
-//				t = (T) new Integer(0);//可以不必要，TODO 因为clazz有特殊值的情况，可重构这个方法，使其更优雅，而不是一直修改这个方法
-			} else {
-				t = (T) clazz.newInstance();
+			if(clazz == null) {//fix bug(lcy-2016/2/24)
+				return null;
 			}
+			T t = (T) clazz.newInstance();
 			return t;
 		} catch (InstantiationException e) {
 			/*fix bug(lcy-2016/2/24)

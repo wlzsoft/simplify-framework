@@ -131,6 +131,7 @@ public class SQLExecute {
 	System.out.println("========================");</pre><br>
 	 * @param sql
 	 * @param callback
+	 * @param clazz 如果类型不支持，那么值为空，那么变量b直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
 	 * @return
 	 */
 	public static <B> List<B> executeQuery(String sql,IDataCallback<B> callback,Class<B> clazz) {

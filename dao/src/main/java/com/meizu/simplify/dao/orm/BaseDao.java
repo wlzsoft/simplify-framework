@@ -31,13 +31,11 @@ public class BaseDao  {
 	 * @param classz 业务实体类
 	 * @return
 	 */
-	public static <T extends Map<String,Object>>  Dao<?, Serializable> getInsMap (Class<T> classz) {//TODO 等待验证
-		String className = "mapBaseDao";
-		Dao<?, Serializable> dao = BeanFactory.getBean(className);
+	public static  SearchByMapDao getInsMap() {
+		SearchByMapDao dao = BeanFactory.getBean(SearchByMapDao.class);
 		if(dao == null) {
-			throw new UncheckedException("无法获取到名为"+className+"的dao，请检查是否已经初始化了");
+			throw new UncheckedException("无法获取到SearchByMapDao.class的dao，请检查是否已经初始化了");
 		}
-//		dao.setIndex(null);
 		return dao;
 	}
 	
