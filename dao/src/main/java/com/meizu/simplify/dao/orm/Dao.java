@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Criteria;
 import com.meizu.simplify.dao.Restrictions;
-import com.meizu.simplify.dao.RowBounds;
 import com.meizu.simplify.dao.annotations.Column;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.annotations.Table;
@@ -576,7 +575,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		// 分页条件
 		int start = Page.getStartOfPage(pageNo, pageSize) - 1;
 		
-		RowBounds rowBound = new RowBounds(start, pageSize);
 		List<T> lst = null;//selectList(paramMap, rowBound);
 		return new Page<T>(pageNo, pageSize, lst, count);
 	}
