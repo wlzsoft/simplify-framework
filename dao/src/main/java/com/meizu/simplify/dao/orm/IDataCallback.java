@@ -35,7 +35,10 @@ public interface IDataCallback<T> {
 	 * @return
 	 */
 	default T resultCall(String columnLabel, Object object,T t) {
-		return null;
+		if(t == null) {
+			return null;
+		}
+		return t;
 	}
 
 	/**
