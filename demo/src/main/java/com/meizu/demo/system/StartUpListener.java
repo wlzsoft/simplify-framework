@@ -47,7 +47,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("系统停止运行");
-		DruidPoolFactory.close();
+		DruidPoolFactory.closePool();
 	}
 
 	@Override

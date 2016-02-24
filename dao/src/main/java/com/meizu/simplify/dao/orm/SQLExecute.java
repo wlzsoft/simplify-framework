@@ -157,7 +157,7 @@ public class SQLExecute {
 			e.printStackTrace();
 //			DruidPoolFactory.rollback();
 		} finally {
-			DruidPoolFactory.close();//TODO 测试是否需要关闭，关闭是否回收到连接池，还是真正的关闭
+			DruidPoolFactory.close();//需要关闭，关闭会回收到连接池，是逻辑关闭而不是真正的物理关闭
 		}
 		return bList;
 	}
