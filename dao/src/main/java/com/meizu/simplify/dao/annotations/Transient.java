@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>忽略属性</i></p>
+ * <p>Desc: 忽略参与sql生成解析，但可用于实体属性注入</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

@@ -418,8 +418,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 				
 				try {
-					Class<?> valClazz = mapperOrmType(val);
-					ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+					if(val != null) {
+						Class<?> valClazz = mapperOrmType(val);
+						ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+					}
 				} catch(IllegalArgumentException ex) {
 					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
 				}
