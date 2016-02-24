@@ -528,10 +528,6 @@ public class SQLBuilder<T> {
          
         return sql;
 	}
-    public  String findPage(WhereDTO... whereList) {
-        return commonSqlByType("select",whereList);
-         
-    }
     public  String count(String where) {
     	StringBuilder sqlBuild = new StringBuilder();
     	sqlBuild.append("select count(1) from ").append(getTableName());

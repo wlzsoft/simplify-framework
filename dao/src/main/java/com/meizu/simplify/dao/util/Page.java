@@ -61,7 +61,7 @@ public class Page<T> implements IPage<T> {
 	 * 定义一空页
 	 * @see #emptyPage()
 	 */
-	public static final Page EMPTY_PAGE = new Page(0, 0, Collections.emptyList(), 0);
+	public static final Page EMPTY_PAGE = new Page(0, 0, 0,Collections.emptyList());
 
 	/**
 	 * 构造方法，只构造空页
@@ -71,6 +71,7 @@ public class Page<T> implements IPage<T> {
 	}
 	
 	/**
+	 * 构造方法
 	 * 初始化一个新的分页对象，该构造方法通常用于生成一个空的分页对象
 	 * @param pageSize 每页记录数
 	 */
@@ -79,39 +80,12 @@ public class Page<T> implements IPage<T> {
 	}
 	/**
 	 * 构造方法
-	 * @param currentRecord 本页数据在数据库中的起始位置
-	 * @param totalRecord  数据库中总记录条数
-	 * @param pageSize 本页容量
-	 * @param results 本页包含的数据
-	 */
-	public Page(int currentRecord, int totalRecord, int pageSize, List<T> results) {
-		this.pageSize = pageSize;
-		this.currentRecord = currentRecord;
-		this.totalRecord = totalRecord;
-		this.results = results;
-	}
-
-	/**
-	 * 根据当前页码、页大小（每页数据个数）、当前页数据列表、数据总个数构造分页数据对象的实例
-	 * @param currentPage 当前页码
-	 * @param pageSize 页大小（每页数据个数）
-	 * @param results 当前页数据列表
-	 * @param totalRecord 数据总个数
-	 */
-	public Page(int currentPage, int pageSize, List<T> results, int totalRecord) {
-		this.currentPage = currentPage;
-		this.pageSize = pageSize;
-		this.results = results;
-		this.totalRecord = totalRecord;
-	}
-
-	/**
 	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
 	 * @param totalRecord 记录总数
 	 * @param currentPage 当前页数
 	 * @param pageSize 每页记录数
 	 */
-	public Page(Integer totalRecord, Integer currentPage, Integer pageSize) {
+	public Page(int currentPage, int pageSize) {//TODO
 
 		if (totalRecord % pageSize > 0) {
 			totalPage = totalRecord / pageSize + 1;
@@ -143,6 +117,61 @@ public class Page<T> implements IPage<T> {
 		results = new ArrayList<T>();
 
 	}
+	/**
+	 * 构造方法
+	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
+	 * @param totalRecord 记录总数
+	 * @param currentPage 当前页数
+	 * @param pageSize 每页记录数
+	 */
+	public Page(int currentPage, int pageSize,int totalRecord) {
+
+		if (totalRecord % pageSize > 0) {
+			totalPage = totalRecord / pageSize + 1;
+		} else {
+			totalPage = totalRecord / pageSize;
+		}
+
+		if (totalPage < currentPage) {
+			this.currentPage = totalPage;
+		} else {
+			this.currentPage = currentPage;
+		}
+
+		if (this.currentPage <= 1) {
+			isFirstPage = true;
+			prev = this.currentPage;
+		} else {
+			isFirstPage = false;
+			prev = this.currentPage - 1;
+		}
+
+		if (this.currentPage >= totalPage) {
+			isLastPage = true;
+			next = this.currentPage;
+		} else {
+			isLastPage = false;
+			next = this.currentPage + 1;
+		}
+		results = new ArrayList<T>();
+
+	}
+	/**
+	 * 构造方法
+	 * 根据当前页码、页大小（每页数据个数）、当前页数据列表、数据总个数构造分页数据对象的实例
+	 * @param currentPage 当前页码
+	 * @param pageSize 页大小（每页数据个数）
+	 * @param totalRecord 数据库中总记录条数
+	 * @param results 本页包含的数据列表
+	 */
+	public Page(int currentPage, int pageSize, int totalRecord, List<T> results) {
+		this.currentPage = currentPage;
+		this.pageSize = pageSize;
+		this.totalRecord = totalRecord;
+		this.results = results;
+	}
+
+	
 
 	/**
 	 * 

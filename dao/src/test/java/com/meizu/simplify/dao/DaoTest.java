@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.ioc.Startup;
 
 /**
@@ -96,6 +97,13 @@ public class DaoTest {
 	@Test
 	public void s2_findAllTest() {
 		Assert.assertEquals(51, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findAll().size());
+	}
+	@Test
+	public void s2_findPageTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcy");
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(0,10,"createTime",true,t);
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findByTest() {

@@ -529,6 +529,23 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	//--------------------------------查询分页操作-----------------------------------------------------------
 	
+	public Page<T> findPage(int currentPage,int pageSize,String sort, boolean isDesc,T params) {//TODO 初步完成，待测试
+		Page<T> page = new Page<T>(currentPage,pageSize);
+		page.setTotalRecord(count(params));
+		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
+		String sql = sqlBuilder.findBy(dto.getWhereName());
+		List<T> list = find(sql + " limit " +currentPage+"," + pageSize,dto.getWhereValues());
+		page.setResults(list);
+		page.setPageSize(pageSize);
+		page.setCurrentPage(currentPage);
+		return page;
+	}
+	
+	public Page<T> findPage(String sql,int currentPage,int pageSize,String sort, boolean isDesc,Object... params) {
+		Page<T> page = new Page<T>();
+		return page;
+	}
+	
 	@Override
 	public Page<T> findPage(Page<T> page,Object... params) {
 
@@ -540,11 +557,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 //		方案二：start 考虑是否可以喝方案一共存
 //		page.setTotalRecord(count(params));
-		WhereDTO[] listParam = new WhereDTO[]{};
-		if(params != null) {
-			listParam = (WhereDTO[]) params;
-		}
-		BaseDTO dto = null;//sqlBuilder.findPage(listParam.toArray(new WhereDTO[listParam.size()]));
+//		sqlBuilder.findPage(null);
+		BaseDTO dto = null;
 		dto.setLinkType(LinkType.AND);
 		dto.setPage(page);
 		dto.setLimit("true");
@@ -575,8 +589,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		// 分页条件
 		int start = Page.getStartOfPage(pageNo, pageSize) - 1;
 		
-		List<T> lst = null;//selectList(paramMap, rowBound);
-		return new Page<T>(pageNo, pageSize, lst, count);
+		List<T> lst = null;
+		return new Page<T>(pageNo, pageSize, count,lst);
 	}
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
