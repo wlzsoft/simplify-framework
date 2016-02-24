@@ -414,11 +414,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			public T resultCall(String columnLabel, Object val,T t) {
 				String key = currentColumnFieldNames.get(columnLabel);
 				if(key == null) {
-					return null;
+					return t;
 				}
-				if(t == null) {
-					System.out.println("");
-				}
+				
 				try {
 					Class<?> valClazz = mapperOrmType(val);
 					ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
