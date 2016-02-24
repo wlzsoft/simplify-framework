@@ -110,20 +110,22 @@ public class DruidPoolFactory {
 	
 	/**
 	 * 
-	 * 方法用途: 获取当前线程上的连接开启事务<br>
+	 * 方法用途: 获取当前线程上的连接并开启事务<br>
 	 * 操作步骤: TODO<br>
 	 */
 	public static void startTransaction() {
-		Connection conn = container.get();// 首先获取当前线程的连接
-		if (conn == null) {// 如果连接为空
-			conn = getConnection();// 从连接池中获取连接
-			container.set(conn);// 将此连接放在当前线程上
-			System.out.println(Thread.currentThread().getName() + "空连接从dataSource获取连接");
+		//获取当前线程的连接
+		Connection conn = container.get();
+		if (conn == null) {
+			conn = getConnection();
+			container.set(conn);
+			System.out.println(Thread.currentThread().getName() + "已从数据源中成功获取连接");
 		} else {
 			System.out.println(Thread.currentThread().getName() + "从缓存中获取连接");
 		}
 		try {
-			conn.setAutoCommit(false);// 开启事务
+			//手动提交事务
+			conn.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -136,9 +138,9 @@ public class DruidPoolFactory {
 	 */
 	public static void commit() {
 		try {
-			Connection conn = container.get();// 从当前线程上获取连接if(conn!=null){//如果连接为空，则不做处理
+			Connection conn = container.get();
 			if (null != conn) {
-				conn.commit();// 提交事务
+				conn.commit();
 				System.out.println(Thread.currentThread().getName() + "事务已经提交......");
 			}
 		} catch (Exception e) {
@@ -153,10 +155,10 @@ public class DruidPoolFactory {
 	 */
 	public static void rollback() {
 		try {
-			Connection conn = container.get();// 检查当前线程是否存在连接
+			Connection conn = container.get();
 			if (conn != null) {
-				conn.rollback();// 回滚事务
-				container.remove();// 如果回滚了，就移除这个连接
+				conn.rollback();
+				container.remove();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -179,7 +181,7 @@ public class DruidPoolFactory {
 			throw new RuntimeException(e.getMessage(), e);
 		} finally {
 			try {
-				container.remove();// 从当前线程移除连接切记
+				container.remove();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
