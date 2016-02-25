@@ -99,6 +99,11 @@ public class DaoTest {
 		Assert.assertEquals(51, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findAll().size());
 	}
 	@Test
+	public void s2_findPageSqlTest() {
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from test_web where name=?","lcy");
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
 	public void s2_findPageTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");

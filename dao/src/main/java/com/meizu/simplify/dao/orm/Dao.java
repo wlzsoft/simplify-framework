@@ -621,8 +621,20 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	
+	/**
+	 * 
+	 * 方法用途: 还未测试通过，count的replaceall有问题，处理后，还要测试是否可用，基于这个方法，再次封装，提供更简便的多表分页查询 TODO<br>
+	 * 操作步骤: 提供可选字段的update操作TODO <br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
-		Page<T> page = new Page<T>(currentPage,pageSize,count(null));
+		Page<T> page = new Page<T>(currentPage,pageSize,count(sql.replaceAll("select * from", "select count(1) from"),params));
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
 		page.setResults(list);
 		return page;
