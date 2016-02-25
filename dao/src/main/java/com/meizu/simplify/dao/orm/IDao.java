@@ -266,21 +266,21 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	List<T> findBy(T param);
 	/**
-	 * 方法用途: 获取指定类型的所有业务实体并进行排序。<br>
+	 * 方法用途: 获取指定类型的所有业务实体并进行排序<br>
 	 * 操作步骤: TODO<br>
 	 * @param orderBy 排序的属性名
-	 * @param isAsc 是否升序
-	 * @return 返回排序后的指定类型的所有业务实体。
+	 * @param isDesc 是否降序
+	 * @return 返回排序后的指定类型的所有业务实体
 	 */
-//	List<T> findAll(String orderBy, Boolean isAsc);
+//	List<T> findAll(String orderBy, Boolean isDesc);
 
 	/**
-	 * 方法用途: 根据查询条件进行分页查询。<br>
+	 * 方法用途: 根据查询条件进行分页查询<br>
 	 * 操作步骤: TODO<br>
 	 * @param pageNo 要查询的页号
 	 * @param pageSize 每页数据个数
 	 * @param criteria 查询条件
-	 * @return 返回查询得到的分页对象。
+	 * @return 返回查询得到的分页对象
 	 */
 //	Page<T> findPage(int pageNo, int pageSize,Criteria criteria);
 	
@@ -296,37 +296,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 //	Page<T> findPage( String sort, String orderBy,int pageNo, int pageSize,Criteria criteria);
 	
-	/**
-	 * 方法用途: 根据条件进行分页查询<br>
-	 * 操作步骤: TODO<br>
-	 * @param param 查询参数
-	 * @param sort 排序字段名
-	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
-	 * @param pageNo 要查询的页号
-	 * @param pageSize 每页数据个数
-	 * @return 查询结果分页数据
-	 */
-	Page<T> findPage(T param,int pageNo, int pageSize,String sort, boolean isDesc );
-
-	/**
-	 * 方法用途: 根据条件进行分页查询<br>
-	 * 操作步骤: TODO<br>
-	 * @param page 
-	 * @param values 查询条件
-	 * @return 返回查询得到的分页对象。
-	 */
-	Page<T> findPage(Page<T> page, Object... values);
-	/**
-	 * 方法用途: 根据条件进行分页查询<br>
-	 * 操作步骤: TODO<br>
-	 * @param sort 排序字段名
-	 * @param orderBy 排序方式（升序(asc)或降序(desc)
-	 * @param page 
-	 * @param values 查询条件
-	 * @return 返回查询得到的分页对象。
-	 */
-//	Page<T> findPage(String sort, String orderBy,Page<T> page, Object... values);
-
 
 	/**
 	 * 方法用途: 列表查询<br>

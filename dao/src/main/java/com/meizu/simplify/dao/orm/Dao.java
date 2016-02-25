@@ -569,6 +569,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 		StringBuilder type = new StringBuilder();
 		if(!StringUtil.isBlank(sort)) {
+			//不能用于SQL中的非法字符（主要用于排序字段名） 
+			String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
+			// 排序字段不为空，过滤其中可能存在的非法字符
+			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
+			
 			String sortMethod = "desc";
 			if(!isDesc) {
 				sortMethod = "asm";
@@ -598,17 +603,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	/**
-	 * 
-	 * 方法用途: 分页-支持排序<br>
+	 * 方法用途: 分页查询-支持排序<br>
 	 * 操作步骤: TODO<br>
-	 * @param currentPage
-	 * @param pageSize
-	 * @param sort
-	 * @param isDesc
-	 * @param params
-	 * @return
+	 * @param currentPage 当前页码
+	 * @param pageSize 每页数据个数
+	 * @param sort 排序字段名
+	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
+	 * @param param 查询参数
+	 * @return 查询结果分页数据
 	 */
-	public Page<T> findPage(int currentPage,int pageSize,String sort, Boolean isDesc,T params) {
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,T params) {
+	
 		Page<T> page = new Page<T>(currentPage,pageSize,count(params));
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
 		page.setResults(list);
@@ -623,42 +628,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return page;
 	}
 	
-	@Override
-	public Page<T> findPage(Page<T> page,Object... params) {
-
-//		方案二：start 考虑是否可以喝方案一共存
-//		sqlBuilder.findPage(null);
-		BaseDTO dto = null;
-		dto.setLinkType(LinkType.AND);
-		dto.setPage(page);
-		dto.setLimit("true");
-//		SelectDTO selectDto = new SelectDTO(dto,page);
-		
-		return page;
-	}
 	
-	@Override
-	public Page<T> findPage(T param, int pageNo,int pageSize,String sort, boolean isDesc) {
-		/** 
-		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
-		 */
-		final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-	    // 获取满足条件的记录总数，没有记录时返回空页数据
-		int count = count(param);
-		if (count < 1) {
-			return Page.emptyPage();
-		}
-		
-		// 排序条件
-		if (sort != null) {
-			// 排序字段不为空，过滤其中可能存在的非法字符
-			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
-		}
-		// 分页条件
-		int start = Page.getStartOfPage(pageNo, pageSize) - 1;
-		return null;
-		
-	}
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
 	public Integer count(String sql,Object... params) {

@@ -198,12 +198,22 @@ public class Page<T> implements IPage<T> {
 		}
 		return currentPage - 1;
 	}
-
+	/**
+	 * 
+	 * 方法用途: 根据页大小（每页数据个数）获取给定页码的第一条数据在总数据中的位置（从1开始）<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage 给定的页码
+	 * @param pageSize 页大小（每页数据个数）
+	 * @return 给定页码的第一条数据在总数据中的位置（从1开始）
+	 */
 	public int getCurrentRecord() {
 		if (currentPage < 1) {
 			currentPage = 1;
 		}
 		currentRecord = (currentPage - 1) * pageSize;
+		if(currentRecord < 0) {
+			currentRecord = 0;
+		}
 		return currentRecord;
 	}
 
@@ -291,24 +301,6 @@ public class Page<T> implements IPage<T> {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	/**
-	 * 
-	 * 方法用途: 根据页大小（每页数据个数）获取给定页码的第一条数据在总数据中的位置（从1开始）<br>
-	 * 操作步骤: TODO<br>
-	 * @param currentPage 给定的页码
-	 * @param pageSize 页大小（每页数据个数）
-	 * @return 给定页码的第一条数据在总数据中的位置（从1开始）
-	 */
-	public static int getStartOfPage(int currentPage, int pageSize) {
-		int startIndex = (currentPage - 1) * pageSize + 1;
-		if (startIndex < 1)
-			startIndex = 1;
-		return startIndex;
-	}
-
-
-	
 	
 	public Integer getNext() {
 		return next;
