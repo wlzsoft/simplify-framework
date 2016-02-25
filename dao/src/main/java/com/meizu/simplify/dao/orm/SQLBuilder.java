@@ -363,12 +363,13 @@ public class SQLBuilder<T> {
     	
     	String values = "";
         for (int i=0; i < otherIdColumns.size();i++) {
-        	String column = otherIdColumns.get(0);
+        	String column = otherIdColumns.get(i);
             Object value = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(column));
             if(i>0) {
             	values += ",";
             }
-            values += column + "=" + handleValue(value);
+//            values += column + "=" + handleValue(value);
+            values += column + "=?";
         }
     	
         Object id = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(pkName));
