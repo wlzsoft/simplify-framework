@@ -372,18 +372,18 @@ public class SQLBuilder<T> {
             values += column + "=?";
         }
     	
-        Object id = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(pkName));
-        if(id == null) {
-        	throw new UncheckedException("主键为空，非法操作");
-        }
-        id = handleValue(id);
-        if(id == null) {
-        	throw new UncheckedException("主键为空，非法操作");
-        }
+//        Object id = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(pkName));
+//        if(id == null) {
+//        	throw new UncheckedException("主键为空，非法操作");
+//        }
+//        id = handleValue(id);
+//        if(id == null) {
+//        	throw new UncheckedException("主键为空，非法操作");
+//        }
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("UPDATE ").append(tableName).append(" SET ")
                 .append(values).append(" WHERE ")
-                .append(pkName).append(" = ").append(id);
+                .append(pkName).append(" = ").append("?");
          
         String sql = sqlBuild.toString();
          

@@ -306,6 +306,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 					Object value = ReflectionUtil.invokeGetterMethod(t, columnName);
 					prepareStatement.setObject(i+1,value);
 				}
+				prepareStatement.setObject(cList.size()+1,t.getId());
 				return null;
 			}
 			
