@@ -561,11 +561,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		List<T> list = find(sql,currentRecord,pageSize,sort,isDesc,dto.getWhereValues());
+		List<T> list = find(currentRecord,pageSize,sort,isDesc,sql,dto.getWhereValues());
 		return list;
 	}
 	
-	public List<T> find(String sql,Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,Object... params) {
+	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
 		
 		StringBuilder type = new StringBuilder();
 		if(!StringUtil.isBlank(sort)) {
@@ -621,9 +621,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	
-	public Page<T> findPage(String sql,Integer currentPage,Integer pageSize,String sort, Boolean isDesc,Object... params) {
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
 		Page<T> page = new Page<T>(currentPage,pageSize,count(null));
-		List<T> list = find(sql,page.getCurrentRecord(),pageSize,sort,isDesc,params);
+		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
 		page.setResults(list);
 		return page;
 	}
