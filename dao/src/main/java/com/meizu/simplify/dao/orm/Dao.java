@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Query;
-import com.meizu.simplify.dao.Restrictions;
 import com.meizu.simplify.dao.annotations.Column;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.annotations.Table;
@@ -26,7 +25,6 @@ import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.SqlDTO;
-import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -527,6 +525,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
+		String sortMethod = "desc";
+		if(!isDesc) {
+			sortMethod = "asm";
+		}
+		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
+		return list;
+	}
+	
+	/*public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
+		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
+		String sql = sqlBuilder.findBy(dto.getWhereName());
 		Query query = createQuery(sql, dto.getWhereValues());
 //		if (value == null) {
 //			query.add(Restrictions.isNull(name));
@@ -542,9 +551,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private Query createQuery(String sql, Object... params) {
 		Query query = new Query(this,sql,params);
 		return query;
-	}
-
-
+	}*/
+	
 	public Page<T> findPage(int currentPage,int pageSize,String sort, boolean isDesc,T params) {
 		Page<T> page = new Page<T>(currentPage,pageSize);
 		page.setTotalRecord(count(params));
