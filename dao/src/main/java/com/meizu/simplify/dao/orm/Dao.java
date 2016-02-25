@@ -535,14 +535,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 //		return list;
 		
-		Query criteria = createQuery("sql", params);
+		Query query = createQuery("sql", params);
 //		if (value == null) {
 //			criteria.add(Restrictions.isNull(name));
 //		} else {
 //			criteria.add(Restrictions.eq(name, value));
 //		}
 		
-		list = criteria.setFirstResult((currentRecord - 1) * pageSize).setMaxResults(pageSize).list();
+		list = query.setFirstResult((currentRecord - 1) * pageSize).setMaxResults(pageSize).list();
 		return list;
 		
 	}
