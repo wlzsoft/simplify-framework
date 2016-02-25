@@ -102,6 +102,13 @@ public class DaoTest {
 	public void s2_findPageTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,t);
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
+	public void s2_findPageOderByTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcy");
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,t);
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}

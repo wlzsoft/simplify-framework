@@ -2,6 +2,7 @@ package com.meizu.simplify.dao;
 
 import java.util.List;
 
+import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.orm.Dao;
 
 /**
@@ -67,7 +68,7 @@ public class Query {
 		return null;
 	}
 
-	public void add(Object null1) {
+	public void add(WhereDTO null1) {
 		// TODO Auto-generated method stub
 		
 	}

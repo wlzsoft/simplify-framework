@@ -55,66 +55,6 @@ public class Page<T> implements IPage<T> {
 	private String sortorder; // 排序属性
 	private List<T> results;// 对应的当前页存放记录
 	
-
-	/**
-	 * 构造方法，只构造空页
-	 */
-	public Page() {
-		this.pageSize = DEFAULT_PAGE_SIZE;
-	}
-	
-	/**
-	 * 构造方法
-	 * 初始化一个新的分页对象，该构造方法通常用于生成一个空的分页对象
-	 * @param pageSize 每页记录数
-	 */
-	public Page(int pageSize) {
-		this.pageSize = pageSize;
-		hasNextPage = this.getCurrentPage() < this.getTotalPageCount() - 1;
-		hasPrevPage = this.getCurrentPage() > 1;
-	}
-	/**
-	 * 构造方法
-	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
-	 * @param totalRecord 记录总数
-	 * @param currentPage 当前页数
-	 * @param pageSize 每页记录数
-	 */
-	public Page(int currentPage, int pageSize) {//TODO
-
-		if (totalRecord % pageSize > 0) {
-			totalPage = totalRecord / pageSize + 1;
-		} else {
-			totalPage = totalRecord / pageSize;
-		}
-
-		if (totalPage < currentPage) {
-			this.currentPage = totalPage;
-		} else {
-			this.currentPage = currentPage;
-		}
-
-		if (this.currentPage <= 1) {
-			isFirstPage = true;
-			prev = this.currentPage;
-		} else {
-			isFirstPage = false;
-			prev = this.currentPage - 1;
-		}
-
-		if (this.currentPage >= totalPage) {
-			isLastPage = true;
-			next = this.currentPage;
-		} else {
-			isLastPage = false;
-			next = this.currentPage + 1;
-		}
-		
-		hasNextPage = this.getCurrentPage() < this.getTotalPageCount() - 1;
-		hasPrevPage = this.getCurrentPage() > 1;
-		results = new ArrayList<T>();
-
-	}
 	/**
 	 * 构造方法
 	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
@@ -127,7 +67,7 @@ public class Page<T> implements IPage<T> {
 
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
-		this.totalRecord = totalRecord;
+		setTotalRecord(totalRecord);
 		
 		if (totalRecord % pageSize > 0) {
 			totalPage = totalRecord / pageSize + 1;

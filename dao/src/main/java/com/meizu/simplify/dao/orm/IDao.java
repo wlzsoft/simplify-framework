@@ -266,17 +266,6 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	List<T> findBy(T param);
 	/**
-	 *
-	 * 方法用途:  根据属性的值查找业务实体并进行排序。<br>
-	 * 操作步骤: TODO<br>
-	 * @param name 属性名
-	 * @param value 属性值
-	 * @param sort 排序属性
-	 * @param isAsc 是否降序
-	 * @return 返回排序后的属性值相符的业务实体集合，如果没有找到返回一个空的集合。
-	 */
-	List<T> findBy(String name, Object value, String sort, boolean isDesc);
-	/**
 	 * 方法用途: 获取指定类型的所有业务实体并进行排序。<br>
 	 * 操作步骤: TODO<br>
 	 * @param orderBy 排序的属性名

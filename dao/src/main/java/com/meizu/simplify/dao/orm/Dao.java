@@ -25,6 +25,7 @@ import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.dao.dto.BaseDTO;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.SqlDTO;
+import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -514,17 +515,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return find(sqlBuilder.findBy(dto.getWhereName()),dto.getWhereValues());
 	}
 	
-	@Override
-	public List<T> findBy(String name, Object value, String sort,boolean isDesc) {
-		return null;
-		
-	}
 	
 	//--------------------------------查询分页操作-----------------------------------------------------------
 	
 	/**
 	 * 
-	 * 方法用途: 会频繁创建query对象，目前待选，暂不使用，需要测试query对内存的消耗，再考虑是否启用<br>
+	 * 方法用途: TODO 会频繁创建query对象，目前待选，暂不使用，需要测试query对内存的消耗，再考虑是否启用<br>
 	 * 操作步骤: TODO<br>
 	 * @param currentRecord
 	 * @param pageSize
@@ -537,11 +533,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
 		Query query = createQuery(sql, dto.getWhereValues());
-//		if (value == null) {
-//			query.add(Restrictions.isNull(name));
-//		} else {
-//			query.add(Restrictions.eq(name, value));
-//		}
+		query.add(WhereDTO.eq("1", "1"));//
 		
 		List<T> list = query.setSortName(sort).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
 		return list;
@@ -553,27 +545,74 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return query;
 	}
 	
-	public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
+	/**
+	 * 
+	 * 方法用途: 分页基础方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentRecord
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param params
+	 * @return
+	 */
+	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		String sortMethod = "desc";
-		if(!isDesc) {
-			sortMethod = "asm";
+		
+		StringBuilder type = new StringBuilder();
+		if(!StringUtil.isBlank(sort)) {
+			String sortMethod = "desc";
+			if(!isDesc) {
+				sortMethod = "asm";
+			}
+			type.append(" order by ").append(sort).append(" ").append(sortMethod);
 		}
-		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
+		if(pageSize != null) {
+			type.append(" limit ").append(currentRecord).append(",").append(pageSize);
+		}
+		
+		List<T> list = find(sql +type,dto.getWhereValues());
 		return list;
 	}
 	
-	public Page<T> findPage(int currentPage,int pageSize,String sort, boolean isDesc,T params) {
-		Page<T> page = new Page<T>(currentPage,pageSize);
-		page.setTotalRecord(count(params));
+	/**
+	 * 
+	 * 方法用途: 分页-不知排序<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param params
+	 * @return
+	 */
+	public Page<T> findPage(int currentPage,int pageSize,T params) {
+		Page<T> page = findPage(currentPage,pageSize,null,null, params);
+		return page;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 分页-支持排序<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param params
+	 * @return
+	 */
+	public Page<T> findPage(int currentPage,int pageSize,String sort, Boolean isDesc,T params) {
+		Page<T> page = new Page<T>(currentPage,pageSize,count(params));
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
 		page.setResults(list);
 		return page;
 	}
 	
 	public Page<T> findPage(String sql,int currentPage,int pageSize,String sort, boolean isDesc,Object... params) {
-		Page<T> page = new Page<T>();
+		Page<T> page = new Page<T>(currentPage,pageSize,count(null));
+		String type = "";
+		List<T> list = find(sql +type,params);
+		page.setResults(list);
 		return page;
 	}
 	

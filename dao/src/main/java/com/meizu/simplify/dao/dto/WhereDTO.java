@@ -36,6 +36,21 @@ public class WhereDTO implements Serializable {
 		opertorMap.put("in", "true");
 		opertorMap.put("not in", "true");
 	}
+	
+	/**
+	 * 方法用途: 提供更简洁的操作方式，不需要在代码里显示的构建WhereDTO<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public static WhereDTO eq(String key,String value) {
+		WhereDTO dto = new WhereDTO();
+		dto.setKey(key);
+		dto.setOperator("=");
+		dto.setValue(value);
+		return dto;
+	}
 	/**
 	 * where条件中的字段名
 	 */
