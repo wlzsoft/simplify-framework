@@ -561,6 +561,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
+		List<T> list = find(sql,currentRecord,pageSize,sort,isDesc,dto.getWhereValues());
+		return list;
+	}
+	
+	public List<T> find(String sql,Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,Object... params) {
 		
 		StringBuilder type = new StringBuilder();
 		if(!StringUtil.isBlank(sort)) {
@@ -574,7 +579,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			type.append(" limit ").append(currentRecord).append(",").append(pageSize);
 		}
 		
-		List<T> list = find(sql +type,dto.getWhereValues());
+		List<T> list = find(sql +type,params);
 		return list;
 	}
 	
@@ -610,20 +615,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return page;
 	}
 	
+	
 	public Page<T> findPage(String sql,Integer currentPage,Integer pageSize,String sort, Boolean isDesc,Object... params) {
 		Page<T> page = new Page<T>(currentPage,pageSize,count(null));
-		StringBuilder type = new StringBuilder();
-		if(!StringUtil.isBlank(sort)) {
-			String sortMethod = "desc";
-			if(!isDesc) {
-				sortMethod = "asm";
-			}
-			type.append(" order by ").append(sort).append(" ").append(sortMethod);
-		}
-		if(pageSize != null) {
-//			type.append(" limit ").append(currentRecord).append(",").append(pageSize);
-		}
-		List<T> list = find(sql +type,params);
+		List<T> list = find(sql,page.getCurrentRecord(),pageSize,sort,isDesc,params);
 		page.setResults(list);
 		return page;
 	}
