@@ -533,13 +533,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
 		
-//		return list;
-		
 		Query query = createQuery("sql", params);
 //		if (value == null) {
-//			criteria.add(Restrictions.isNull(name));
+//			query.add(Restrictions.isNull(name));
 //		} else {
-//			criteria.add(Restrictions.eq(name, value));
+//			query.add(Restrictions.eq(name, value));
 //		}
 		
 		list = query.setFirstResult((currentRecord - 1) * pageSize).setMaxResults(pageSize).list();
