@@ -15,14 +15,14 @@ import java.util.List;
  * @version Version 0.1
  *
  */
-public class Criteria {
+public class Query {
 
-	public Criteria setFirstResult(int i) {
+	public Query setFirstResult(int i) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Criteria setMaxResults(Integer pageSize) {
+	public Query setMaxResults(Integer pageSize) {
 		// TODO Auto-generated method stub
 		return null;
 	}

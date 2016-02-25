@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.BatchOperator;
-import com.meizu.simplify.dao.Criteria;
+import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.dao.Restrictions;
 import com.meizu.simplify.dao.annotations.Column;
 import com.meizu.simplify.dao.annotations.Key;
@@ -444,7 +444,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 *考虑是否提供这个功能 TODO 
 	 */
 	@Override
-	public T findUnique(Criteria criteria) {
+	public T findUnique(Query criteria) {
 //		return findUnique(name,value);
 		return criteria.uniqueResult();
 	}
@@ -518,25 +518,46 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public List<T> findBy(String name, Object value, String sort,boolean isDesc) {
-		Criteria criteria = new Criteria();
-		if (value == null) {
-			criteria.add(Restrictions.isNull(name));
-		} else {
-			criteria.add(Restrictions.eq(name, value));
-		}
-		return criteria.list();
+		return null;
+		
 	}
 	
 	//--------------------------------查询分页操作-----------------------------------------------------------
 	
-	public Page<T> findPage(int currentPage,int pageSize,String sort, boolean isDesc,T params) {//TODO 初步完成，待测试
-		Page<T> page = new Page<T>(currentPage,pageSize);
-		page.setTotalRecord(count(params));
+	public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		List<T> list = find(sql + " limit " +page.getCurrentRecord()+"," + pageSize,dto.getWhereValues());
+		String sortMethod = "desc";
+		if(!isDesc) {
+			sortMethod = "asm";
+		}
+		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
+		
+//		return list;
+		
+		Query criteria = createQuery("sql", params);
+//		if (value == null) {
+//			criteria.add(Restrictions.isNull(name));
+//		} else {
+//			criteria.add(Restrictions.eq(name, value));
+//		}
+		
+		list = criteria.setFirstResult((currentRecord - 1) * pageSize).setMaxResults(pageSize).list();
+		return list;
+		
+	}
+	
+	private Query createQuery(String string, T params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public Page<T> findPage(int currentPage,int pageSize,String sort, boolean isDesc,T params) {
+		Page<T> page = new Page<T>(currentPage,pageSize);
+		page.setTotalRecord(count(params));
+		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
 		page.setResults(list);
-		page.setPageSize(pageSize);
 		return page;
 	}
 	
@@ -548,14 +569,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public Page<T> findPage(Page<T> page,Object... params) {
 
-		//方案一：start 推荐使用方式方案 
-		/*Query query = createQuery("sql", params);
-		List<T> list = query.setFirstResult((page.getNumber() - 1) * page.getPageSize())
-				.setMaxResults(page.getPageSize())
-				.getResultList();*/
-		
 //		方案二：start 考虑是否可以喝方案一共存
-//		page.setTotalRecord(count(params));
 //		sqlBuilder.findPage(null);
 		BaseDTO dto = null;
 		dto.setLinkType(LinkType.AND);
@@ -563,8 +577,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		dto.setLimit("true");
 //		SelectDTO selectDto = new SelectDTO(dto,page);
 		
-		List<T> list = find(dto.getSql());
-		page.setResults(list);
 		return page;
 	}
 	
@@ -593,6 +605,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
 	public Integer count(String sql,Object... params) {
+		logger.info(sql);//后续不在这里处理sql日志
 		List<Integer> list = SQLExecute.executeQuery(sql, new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {

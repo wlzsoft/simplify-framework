@@ -3,7 +3,7 @@ package com.meizu.simplify.dao.orm;
 import java.io.Serializable;
 import java.util.List;
 
-import com.meizu.simplify.dao.Criteria;
+import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 
@@ -201,7 +201,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param criteria 查询条件
 	 * @return  返回唯一业务实体，如果没有找到返回null。
 	 */
-	T findUnique(Criteria criteria);
+	T findUnique(Query criteria);
 	
 	/**
 	 * 方法用途: 查询返回单个对象<br>
