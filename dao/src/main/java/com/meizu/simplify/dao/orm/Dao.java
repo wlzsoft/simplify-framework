@@ -608,9 +608,19 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return page;
 	}
 	
-	public Page<T> findPage(String sql,int currentPage,int pageSize,String sort, Boolean isDesc,Object... params) {
+	public Page<T> findPage(String sql,Integer currentPage,Integer pageSize,String sort, Boolean isDesc,Object... params) {
 		Page<T> page = new Page<T>(currentPage,pageSize,count(null));
-		String type = "";
+		StringBuilder type = new StringBuilder();
+		if(!StringUtil.isBlank(sort)) {
+			String sortMethod = "desc";
+			if(!isDesc) {
+				sortMethod = "asm";
+			}
+			type.append(" order by ").append(sort).append(" ").append(sortMethod);
+		}
+		if(pageSize != null) {
+//			type.append(" limit ").append(currentRecord).append(",").append(pageSize);
+		}
 		List<T> list = find(sql +type,params);
 		page.setResults(list);
 		return page;
