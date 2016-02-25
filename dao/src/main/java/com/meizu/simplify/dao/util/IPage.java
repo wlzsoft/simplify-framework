@@ -40,7 +40,7 @@ public interface IPage<T> extends Serializable {
 
 	/**
 	 * 
-	 * 方法用途:  有无下一页 <br>
+	 * 方法用途:  是否有下一页<br>
 	 * 操作步骤: TODO<br>
 	 * @return 
 	 */
@@ -48,7 +48,7 @@ public interface IPage<T> extends Serializable {
 
 	/**
 	 * 
-	 * 方法用途: 有无上一页 <br>
+	 * 方法用途: 是否有上一页 <br>
 	 * 操作步骤: TODO<br>
 	 * @return 
 	 */
@@ -110,7 +110,7 @@ public interface IPage<T> extends Serializable {
 
 	/**
 	 * 
-	 * 方法用途: 获取当前页的页码 <br>
+	 * 方法用途: 获取当前页的页码,页码从1开始 <br>
 	 * 操作步骤: TODO<br>
 	 * @return  
 	 */

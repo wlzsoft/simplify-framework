@@ -534,10 +534,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		page.setTotalRecord(count(params));
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		List<T> list = find(sql + " limit " +currentPage+"," + pageSize,dto.getWhereValues());
+		List<T> list = find(sql + " limit " +page.getCurrentRecord()+"," + pageSize,dto.getWhereValues());
 		page.setResults(list);
 		page.setPageSize(pageSize);
-		page.setCurrentPage(currentPage);
 		return page;
 	}
 	
@@ -588,9 +587,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		// 分页条件
 		int start = Page.getStartOfPage(pageNo, pageSize) - 1;
+		return null;
 		
-		List<T> lst = null;
-		return new Page<T>(pageNo, pageSize, count,lst);
 	}
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	

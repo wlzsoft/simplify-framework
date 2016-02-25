@@ -2,9 +2,7 @@ package com.meizu.simplify.dao.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.meizu.simplify.exception.UncheckedException;
@@ -57,11 +55,6 @@ public class Page<T> implements IPage<T> {
 	private String sortorder; // 排序属性
 	private List<T> results;// 对应的当前页存放记录
 	
-	/**
-	 * 定义一空页
-	 * @see #emptyPage()
-	 */
-	public static final Page EMPTY_PAGE = new Page(0, 0, 0,Collections.emptyList());
 
 	/**
 	 * 构造方法，只构造空页
@@ -75,8 +68,10 @@ public class Page<T> implements IPage<T> {
 	 * 初始化一个新的分页对象，该构造方法通常用于生成一个空的分页对象
 	 * @param pageSize 每页记录数
 	 */
-	public Page(Integer pageSize) {
+	public Page(int pageSize) {
 		this.pageSize = pageSize;
+		hasNextPage = this.getCurrentPage() < this.getTotalPageCount() - 1;
+		hasPrevPage = this.getCurrentPage() > 1;
 	}
 	/**
 	 * 构造方法
@@ -114,18 +109,26 @@ public class Page<T> implements IPage<T> {
 			isLastPage = false;
 			next = this.currentPage + 1;
 		}
+		
+		hasNextPage = this.getCurrentPage() < this.getTotalPageCount() - 1;
+		hasPrevPage = this.getCurrentPage() > 1;
 		results = new ArrayList<T>();
 
 	}
 	/**
 	 * 构造方法
 	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
-	 * @param totalRecord 记录总数
-	 * @param currentPage 当前页数
-	 * @param pageSize 每页记录数
+	 * 根据当前页码、页大小（每页数据个数）、当前页数据列表、数据总个数构造分页数据对象的实例
+	 * @param currentPage 当前页码
+	 * @param pageSize 页大小（每页数据个数）
+	 * @param totalRecord 数据库中总记录条数
 	 */
 	public Page(int currentPage, int pageSize,int totalRecord) {
 
+		this.currentPage = currentPage;
+		this.pageSize = pageSize;
+		this.totalRecord = totalRecord;
+		
 		if (totalRecord % pageSize > 0) {
 			totalPage = totalRecord / pageSize + 1;
 		} else {
@@ -153,24 +156,12 @@ public class Page<T> implements IPage<T> {
 			isLastPage = false;
 			next = this.currentPage + 1;
 		}
+		
+		hasNextPage = this.getCurrentPage() < this.getTotalPageCount() - 1;
+		hasPrevPage = this.getCurrentPage() > 1;
 		results = new ArrayList<T>();
 
 	}
-	/**
-	 * 构造方法
-	 * 根据当前页码、页大小（每页数据个数）、当前页数据列表、数据总个数构造分页数据对象的实例
-	 * @param currentPage 当前页码
-	 * @param pageSize 页大小（每页数据个数）
-	 * @param totalRecord 数据库中总记录条数
-	 * @param results 本页包含的数据列表
-	 */
-	public Page(int currentPage, int pageSize, int totalRecord, List<T> results) {
-		this.currentPage = currentPage;
-		this.pageSize = pageSize;
-		this.totalRecord = totalRecord;
-		this.results = results;
-	}
-
 	
 
 	/**
@@ -180,7 +171,7 @@ public class Page<T> implements IPage<T> {
 	 * @return
 	 */
 	public static <E> Page<E> emptyPage() {
-		return (Page<E>) EMPTY_PAGE;
+		return (Page<E>) new Page(0, 0, 0);
 	}
 
 	public String getSortname() {
@@ -231,17 +222,9 @@ public class Page<T> implements IPage<T> {
 		return hasNextPage;
 	}
 
-	public void setHasNextPage(boolean hasNextPage) {
-		this.hasNextPage = hasNextPage;
-	}
-
 	@Override
 	public boolean isHasPrevPage() {
 		return hasPrevPage;
-	}
-
-	public void setHasPrevPage(boolean hasPrevPage) {
-		this.hasPrevPage = hasPrevPage;
 	}
 
 	@Override
@@ -284,15 +267,15 @@ public class Page<T> implements IPage<T> {
 		return currentRecord;
 	}
 
-	public void setCurrentRecord(int start) {
-		this.currentRecord = start;
+	public void setCurrentRecord(int currentRecord) {
+		this.currentRecord = currentRecord;
 	}
-
+	
 	@Override
 	public int getCurrentPage() {
-		return currentPage;
+		return currentPage;//currentRecord / pageSize + 1
 	}
-
+	
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
@@ -385,35 +368,7 @@ public class Page<T> implements IPage<T> {
 	}
 
 
-	/**
-	 * 
-	 * 方法用途: 取该页当前页码,页码从1开始<br>
-	 * 操作步骤: TODO<br>
-	 * @return
-	 */
-	public long getCurrentPageNo() {
-		return currentRecord / pageSize + 1;
-	}
-
-	/**
-	 * 
-	 * 方法用途: 该页是否有下一页<br>
-	 * 操作步骤: TODO<br>
-	 * @return
-	 */
-	public boolean hasNextPage() {
-		return this.getCurrentPageNo() < this.getTotalPageCount() - 1;
-	}
-
-	/**
-	 * 
-	 * 方法用途: 该页是否有上一页<br>
-	 * 操作步骤: TODO<br>
-	 * @return
-	 */
-	public boolean hasPrevPage() {
-		return this.getCurrentPageNo() > 1;
-	}
+	
 	
 	public Integer getNext() {
 		return next;
