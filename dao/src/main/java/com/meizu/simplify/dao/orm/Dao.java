@@ -608,7 +608,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return page;
 	}
 	
-	public Page<T> findPage(String sql,int currentPage,int pageSize,String sort, boolean isDesc,Object... params) {
+	public Page<T> findPage(String sql,int currentPage,int pageSize,String sort, Boolean isDesc,Object... params) {
 		Page<T> page = new Page<T>(currentPage,pageSize,count(null));
 		String type = "";
 		List<T> list = find(sql +type,params);
