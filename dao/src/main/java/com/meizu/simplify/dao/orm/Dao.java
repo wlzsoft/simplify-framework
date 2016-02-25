@@ -522,18 +522,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	//--------------------------------查询分页操作-----------------------------------------------------------
 	
-	public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
-		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
-		String sql = sqlBuilder.findBy(dto.getWhereName());
-		String sortMethod = "desc";
-		if(!isDesc) {
-			sortMethod = "asm";
-		}
-		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
-		return list;
-	}
-	
-	/*public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
+	/**
+	 * 
+	 * 方法用途: 会频繁创建query对象，目前待选，暂不使用，需要测试query对内存的消耗，再考虑是否启用<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentRecord
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param params
+	 * @return
+	 */
+	public List<T> query(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
 		Query query = createQuery(sql, dto.getWhereValues());
@@ -551,7 +551,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private Query createQuery(String sql, Object... params) {
 		Query query = new Query(this,sql,params);
 		return query;
-	}*/
+	}
+	
+	public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
+		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
+		String sql = sqlBuilder.findBy(dto.getWhereName());
+		String sortMethod = "desc";
+		if(!isDesc) {
+			sortMethod = "asm";
+		}
+		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
+		return list;
+	}
 	
 	public Page<T> findPage(int currentPage,int pageSize,String sort, boolean isDesc,T params) {
 		Page<T> page = new Page<T>(currentPage,pageSize);
