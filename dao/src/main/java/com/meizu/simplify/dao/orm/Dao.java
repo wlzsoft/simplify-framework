@@ -303,7 +303,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				List<String> cList = sqlBuilder.getOtherIdColumns();
 				for (int i=0; i < cList.size(); i++) {
 					String columnName = cList.get(i);
-					prepareStatement.setObject(i,ReflectionUtil.invokeGetterMethod(t, columnName));
+					Object value = ReflectionUtil.invokeGetterMethod(t, columnName);
+					prepareStatement.setObject(i+1,value);
 				}
 				return null;
 			}

@@ -151,12 +151,21 @@ public class DaoTest {
 		BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(testList);
 		System.out.println("save==all=============================");
 	}
-	
+	@Test
+	public void s6_updateTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcycc");
+		t.setId(1);
+		BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).update(t);
+		System.out.println("save==all=============================");
+	}
 	@Test
 	public void s7_deleteTest() {
 		Integer[] ids = new Integer[] {901,902,903,904,905};
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(ids));
 	}
+	
+	
 	
 	@Test
 	public void s8_countTest() {
