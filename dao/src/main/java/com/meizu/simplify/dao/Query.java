@@ -2,6 +2,8 @@ package com.meizu.simplify.dao;
 
 import java.util.List;
 
+import com.meizu.simplify.dao.orm.Dao;
+
 /**
  * <p><b>Title:</b><i>mybatis查询条件封装</i></p>
  * <p>Desc: 暂未实现</p>
@@ -17,19 +19,46 @@ import java.util.List;
  */
 public class Query {
 
-	public Query setFirstResult(int i) {
-		// TODO Auto-generated method stub
-		return null;
+	private String sql;
+	private Object[] params;
+	private String sortName;
+	private String sortMethod;
+	private int currentRecord;
+	private int pageSize;
+	private Dao dao;
+	public Query(Dao dao,String sql, Object... params) {
+		this.sql = sql;
+		this.params = params;
+		this.dao = dao;
 	}
 
-	public Query setMaxResults(Integer pageSize) {
-		// TODO Auto-generated method stub
-		return null;
+	public Query setCurrentRecord(int currentRecord) {
+		this.currentRecord = currentRecord;
+		return this;
+	}
+
+	public Query setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+		return this;
+	}
+	
+	public Query setSortName(String sortName) {
+		this.sortName = sortName;
+		return this;
+	}
+	
+	public Query setSortMethod(boolean isDesc) {
+		if(isDesc) {
+			this.sortMethod = "desc";
+		} else {
+			this.sortMethod = "asm";
+		}
+		return this;
 	}
 	
 	public <T> List<T> list() {
-		// TODO Auto-generated method stub
-		return null;
+		List<T> list = dao.find(sql +" order by "+sortName +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,params);
+		return list;
 		
 	}
 
@@ -42,5 +71,9 @@ public class Query {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+
+	
 
 }

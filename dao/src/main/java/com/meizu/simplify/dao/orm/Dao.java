@@ -527,27 +527,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<T> find(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		String sortMethod = "desc";
-		if(!isDesc) {
-			sortMethod = "asm";
-		}
-		List<T> list = find(sql +" order by "+sort +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,dto.getWhereValues());
-		
-		Query query = createQuery("sql", params);
+		Query query = createQuery(sql, dto.getWhereValues());
 //		if (value == null) {
 //			query.add(Restrictions.isNull(name));
 //		} else {
 //			query.add(Restrictions.eq(name, value));
 //		}
 		
-		list = query.setFirstResult((currentRecord - 1) * pageSize).setMaxResults(pageSize).list();
+		List<T> list = query.setSortName(sort).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
 		return list;
 		
 	}
 	
-	private Query createQuery(String string, T params) {
-		// TODO Auto-generated method stub
-		return null;
+	private Query createQuery(String sql, Object... params) {
+		Query query = new Query(this,sql,params);
+		return query;
 	}
 
 
