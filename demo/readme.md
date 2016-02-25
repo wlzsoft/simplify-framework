@@ -8,3 +8,7 @@
            7.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
            8.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
            9.druid日志配置：https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_LogFilter
+           
+           10.public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params)
+           还未测试通过，count的replaceall有问题，处理后，还要测试是否可用，基于这个方法，再次封装，提供更简便的多表分页查询 TODO<br>
+	       11.提供可选字段的update操作TODO
