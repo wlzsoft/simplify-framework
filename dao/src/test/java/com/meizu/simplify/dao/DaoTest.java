@@ -46,7 +46,7 @@ public class DaoTest {
 	@Test
 	public void getIdValTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setId(1);//必须设置id的值
+		t.setFid(1);//必须设置id的值
 		t.setName("lcy");
 		t.setCreateId(1);
 		t.setUpdateId(1);
@@ -66,7 +66,7 @@ public class DaoTest {
 		t.setCreateTime(new Date());
 		t.setUpdateTime(new Date());
 		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
-		key = t.getId();
+		key = t.getFid();
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class DaoTest {
 		Integer[] ids = new Integer[]{1,2,3};
 		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByIds(ids);
 		for (com.meizu.simplify.dao.entity.Test test : list) {
-			System.out.println(test.getId()+test.getName());
+			System.out.println(test.getFid()+test.getName());
 		}
 		Assert.assertEquals(3, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByIds(ids).size());
 	}
@@ -87,7 +87,7 @@ public class DaoTest {
 	public void s2_findByMutilTest() {
 		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByMutil("name","lcy");
 		for (com.meizu.simplify.dao.entity.Test test : list) {
-			System.out.println(test.getId()+test.getName());
+			System.out.println(test.getFid()+test.getName());
 		}
 		Assert.assertEquals(2, BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findByMutil("name","lcy").size());
 	}
@@ -169,7 +169,7 @@ public class DaoTest {
 	@Test
 	public void s4_deleteTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setId(918);
+		t.setFid(918);
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(t));
 	}
 	
@@ -199,7 +199,7 @@ public class DaoTest {
 	public void s6_updateTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcycc");
-		t.setId(1);
+		t.setFid(1);
 		BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).update(t);
 		System.out.println("save==all=============================");
 	}
@@ -228,7 +228,7 @@ public class DaoTest {
 		t.setName("lcy");
 		List<com.meizu.simplify.dao.entity.Test> list = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findBy(t);
 		for (com.meizu.simplify.dao.entity.Test test : list) {
-			System.out.println(test.getId()+test.getName());
+			System.out.println(test.getFid()+test.getName());
 		}
 	}
 	

@@ -238,14 +238,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(key<1) {
 			return false;
 		}
-		t.setId(key);
+		t.setFid(key);
 		return true;
 	}
 
 	@Override
 	public boolean saveOrUpdate(T t) {
 //		buildInfo.buildId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
-		if(t.getId()!=null) {
+		if(t.getFid()!=null) {
 			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
 			Integer res = update(t);
 			if(res >0) {
@@ -270,7 +270,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
 				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),currentColumnFieldNames),temp);
 				for (T t2 : temp) {
-					t2.setId(maxkey++);//此处需要严格并发测试TODO
+					t2.setFid(maxkey++);//此处需要严格并发测试TODO
 				}
 				flushStatements();
 				temp = new ArrayList<T>();
@@ -279,7 +279,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		if(temp.size()>0) {
 			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(), currentColumnFieldNames),temp);
 			for (T t2 : temp) {
-				t2.setId(maxkey++);//此处需要严格并发测试TODO
+				t2.setFid(maxkey++);//此处需要严格并发测试TODO
 			}
 		}
 	}
@@ -297,6 +297,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			return null;
 		}
 		String sql = sqlBuilder.update(t, currentColumnFieldNames);
+		logger.info(sql);
 		return SQLExecute.executeUpdate(sql,new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
@@ -337,7 +338,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@SuppressWarnings("unchecked")
 	@Override
 	public Integer remove(T entity) {
-		return remove((PK) entity.getId());
+		return remove((PK) entity.getFid());
 	}
 	
 	/* 

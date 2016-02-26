@@ -9,11 +9,12 @@ public class IdEntity<T,PK extends Serializable> implements Serializable{
 	private static final long serialVersionUID = -3333906406099241984L;
 //	@NotNull
 	@Key
-	private Integer id;
-	public Integer getId() {
-		return id;
+	private Integer fid;
+	public Integer getFid() {
+		return fid;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setFid(Integer fid) {
+		this.fid = fid;
 	}
+	
 }

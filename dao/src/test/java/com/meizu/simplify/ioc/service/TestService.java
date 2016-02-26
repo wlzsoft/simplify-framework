@@ -38,7 +38,7 @@ public class TestService implements ITestService{
 
 	@Override
 	public IDemoService getDemoService() {
-		System.out.println(dao.findById(1).getId()+":Resource2");
+		System.out.println(dao.findById(1).getFid()+":Resource2");
 		System.out.println(dao.findById(1).getName()+":Resource1");
 		return demoService;
 	}

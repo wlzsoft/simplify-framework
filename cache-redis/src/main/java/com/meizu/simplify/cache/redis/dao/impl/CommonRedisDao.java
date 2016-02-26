@@ -5,6 +5,10 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import redis.clients.jedis.ShardedJedisPool;
+import redis.clients.jedis.exceptions.JedisConnectionException;
+import redis.clients.jedis.exceptions.JedisException;
+
 import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.exception.CacheException;
@@ -13,9 +17,6 @@ import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.exception.RedisException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.SerializeUtil;
-
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisException;
 
 
 /**
@@ -34,6 +35,7 @@ import redis.clients.jedis.exceptions.JedisException;
  * @param <V>
  * @param <T>
  */
+//@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao<K> implements ICacheDao<K,V>{
 	
   private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
@@ -55,7 +57,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   	
   	 
        try {
-           return jedis.exists(key.toString());
+           return getJedis().exists(key.toString());
        } catch (Exception e) {
       	   LOGGER.error("exists error  key["+key+"]", e);
            return false;
@@ -72,7 +74,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public V get(K key) {
       
       try {
-          byte[] ret = jedis.get(SerializeUtil.serialize(key));
+          byte[] ret = getJedis().get(SerializeUtil.serialize(key));
           if (ret != null && ret.length > 0) {
 				return (V) SerializeUtil.unserialize(ret);
           }
@@ -87,7 +89,15 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 			LOGGER.warn("获取 redis 缓存错误", e);
 			throw new RedisException(e);
         } finally {
-        	RedisPool.init(mod_name).returnResourceObject(jedis);
+        	try {
+        		ShardedJedisPool pool = RedisPool.init(mod_name);
+        		if(!pool.isClosed()) {
+        			pool.returnResourceObject(getJedis());
+        		}
+        	} catch(Exception ex) {
+        		System.out.println(ex.getMessage());
+        		ex.printStackTrace();
+        	}
         }
      }
 	/**
@@ -102,7 +112,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	public  V get(K key, Class<T> type) {
 	    Object cacheValue;
 		try {
-			cacheValue = jedis.get(key.toString());
+			cacheValue = getJedis().get(key.toString());
 			Object value = (cacheValue != null ? cacheValue : null);
 			if (type != null && !type.isInstance(value)) {
 				throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + value);
@@ -162,9 +172,9 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
 		
       try {
-          String ret = jedis.set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+          String ret = getJedis().set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
           if(export.timesanmp() > 0){
-				jedis.expire(SerializeUtil.serialize(key), export.timesanmp());
+        	  getJedis().expire(SerializeUtil.serialize(key), export.timesanmp());
 			}
           return ret.equalsIgnoreCase("OK");
       } catch(JedisConnectionException e) {
@@ -189,7 +199,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public Object getAndSet(K key, Object value) {
       
       try {
-          byte[] bytes = jedis.getSet(SerializeUtil.serialize(key),SerializeUtil.serialize(value));
+          byte[] bytes = getJedis().getSet(SerializeUtil.serialize(key),SerializeUtil.serialize(value));
           if (bytes != null && bytes.length > 0) {
               return SerializeUtil.unserialize(bytes);
           }
@@ -213,7 +223,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		
 		Long res = null;
        try {
-      	 res = jedis.del(key.toString());
+      	 res = getJedis().del(SerializeUtil.serialize(key));
       	 if(res==0) {
       		 return true;
       	 }
@@ -281,7 +291,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public boolean setnx(K key, Object value) {
       
       try {
-          long ret = jedis.setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+          long ret = getJedis().setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
           return ret > 0;
       } catch (Exception e) {
           LOGGER.error("setnx error!", e);
@@ -301,7 +311,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   public boolean setex(K key, int seconds, Object value) {
       
       try {
-          String ret = jedis.setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
+          String ret = getJedis().setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
           return ret.equalsIgnoreCase("OK");
       } catch (Exception e) {
           LOGGER.error("setex error!", e);

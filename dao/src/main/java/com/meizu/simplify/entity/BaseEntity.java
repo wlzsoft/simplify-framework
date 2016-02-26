@@ -19,8 +19,8 @@ public class BaseEntity extends IdEntity<Serializable,Integer>{
 	private Integer updateId;
 	@Column(value="updateTime")
 	private Date updateTime;
-	@Column(value="delFlag")
-	private Boolean delFlag;
+	@Column(value="deleteflag")
+	private Boolean deleteflag;
 	public Integer getCreateId() {
 		return createId;
 	}
@@ -45,10 +45,11 @@ public class BaseEntity extends IdEntity<Serializable,Integer>{
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	public Boolean isDelFlag() {
-		return delFlag;
+	public Boolean getDeleteflag() {
+		return deleteflag;
 	}
-	public void setDelFlag(Boolean delFlag) {
-		this.delFlag = delFlag;
+	public void setDeleteflag(Boolean deleteflag) {
+		this.deleteflag = deleteflag;
 	}
+	
 }

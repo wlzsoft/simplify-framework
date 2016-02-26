@@ -26,12 +26,17 @@ import redis.clients.jedis.ShardedJedis;
 public abstract class BaseRedisDao<K extends Serializable>  {
 	
 	public ShardedJedis jedis = null;
+	private String mod_name;
 	public BaseRedisDao(String mod_name) {
+		this.mod_name = mod_name;
+	}
+	public ShardedJedis getJedis() {
 		try {
-			jedis = RedisPool.getConnection(mod_name);
+			return RedisPool.getConnection(mod_name);
 		} catch(RedisException ex) {
 			ex.printStackTrace();
 		}
+		return null;
 	}
 	/**
 	 * 
@@ -44,9 +49,9 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 */
 	public long expire(K key, CacheExpireTimeEnum export, TimeEnum seconds) {
 		if(key instanceof String) {
-			return jedis.expire(key.toString(), export.timesanmp());
+			return getJedis().expire(key.toString(), export.timesanmp());
 		} else if(key instanceof byte[]){
-			return jedis.expire((byte[])key, export.timesanmp());
+			return getJedis().expire((byte[])key, export.timesanmp());
 		} else {
 			throw new RedisException("无效key");
 		}

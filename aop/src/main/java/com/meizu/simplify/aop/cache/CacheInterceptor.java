@@ -1,5 +1,6 @@
 package com.meizu.simplify.aop.cache;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
@@ -52,9 +53,7 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		return CACHE_AFTER_INTERCEPTOR;
 	}
 	
-	//TODO 需要优化，不应该每次都去获取连接，要设置初始化一个可用连接池，并初始化部分连接，这块的连接每次都去获取连接，很消耗性能
-	ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
-	
+	ICacheDao<String, Object> data = CacheProxyDao.getCache();
 	@Override
 	public void before(String methodFullName,Object o,Object... args) {
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
@@ -66,7 +65,7 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
-			Object obj = commonRedisDao.get(key);
+			Object obj = data.get(key);
 			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
 //			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
@@ -84,12 +83,12 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
 			//TODO　这块的操作要控制的2ms以内
-			boolean isOk = commonRedisDao.set(key, args[0]);
+			boolean isOk = data.set(key, args[0]);
 			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
 //			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
 		} else if(anno.annotationType().equals(CacheDataDel.class)) {
 			CacheDataDel cacheDataDel = (CacheDataDel)anno;
-			Object obj = commonRedisDao.delete(key);
+			Object obj = data.delete(key);
 			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
 //			System.out.println("del key:"+cacheDataDel.key()+"]"+obj);
 		}
