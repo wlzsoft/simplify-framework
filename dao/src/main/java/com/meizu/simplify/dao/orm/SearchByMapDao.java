@@ -66,8 +66,8 @@ public class SearchByMapDao {
 	}
 
 	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
-		String countSql = sql.substring(sql.indexOf("from"));
-		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
+		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
+		countSql = countSql.toLowerCase().replaceAll("order\\s*by.*(desc|asc)", "");
 		Page<Map<String,Object>> page = new Page<>(currentPage, pageSize, count("select count(1) "+countSql,params));
 		List<Map<String,Object>> mapList = find(sql,params);
 		page.setResults(mapList);
