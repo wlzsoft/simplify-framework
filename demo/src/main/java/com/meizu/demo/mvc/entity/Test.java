@@ -1,6 +1,7 @@
 package com.meizu.demo.mvc.entity;
 
 import com.meizu.simplify.dao.annotations.Entity;
+import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.annotations.Table;
 import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.entity.BaseEntity;
@@ -24,6 +25,7 @@ import com.meizu.simplify.entity.BaseEntity;
 public class Test extends BaseEntity {
 
 	private static final long serialVersionUID = 246628316050179125L;
+	
 	private String name;
 	@Transient
 	private String createName;

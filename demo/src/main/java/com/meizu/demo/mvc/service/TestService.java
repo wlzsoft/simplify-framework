@@ -15,9 +15,22 @@ public class TestService {
         System.out.println("2test2d测试");
         return true;
     }
-	@CacheDataAdd(key="bbb")
+	/**
+	 * 
+	 * 方法用途: 不能同时有两个cache相关注解，前者会被后者覆盖<br>
+	 * 操作步骤: TODO<br>
+	 * @param aa
+	 * @return
+	 */
+//	@CacheDataAdd(key="bbb")
 	@CacheDataSearch(key="bbb")
-    public Test doSomeThing2(String aa) {
+    public Test doSomeThing2() {
+        Test test = BaseDao.getIns(Test.class).findById(1);
+        System.out.println("ִtest2测试2:"+test.getName());
+        return test;
+    }
+	@CacheDataAdd(key="bbb")
+	public Test addTest(String aa) {
         Test test = BaseDao.getIns(Test.class).findById(1);
         System.out.println("ִtest2测试2:"+test.getName());
         return test;
