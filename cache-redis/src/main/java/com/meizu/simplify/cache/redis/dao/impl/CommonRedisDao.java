@@ -5,19 +5,20 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import redis.clients.jedis.ShardedJedisPool;
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.exceptions.JedisException;
-
 import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.exception.CacheException;
 import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.cache.redis.exception.RedisException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.SerializeUtil;
+
+import redis.clients.jedis.ShardedJedisPool;
+import redis.clients.jedis.exceptions.JedisConnectionException;
+import redis.clients.jedis.exceptions.JedisDataException;
+import redis.clients.jedis.exceptions.JedisException;
 
 
 /**
@@ -39,13 +40,53 @@ import com.meizu.simplify.utils.SerializeUtil;
 //@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao<K> implements ICacheDao<K,V>{
 	
-  private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
-  
-  private String mod_name;
-  public CommonRedisDao(String mod_name) {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
+
+	private String mod_name;
+
+	public CommonRedisDao(String mod_name) {
 		super(mod_name);
 		this.mod_name = mod_name;
-  }
+	}
+  
+  
+  
+  /**
+	 * 方法用途: 返回值 TODO 
+	 * 操作步骤: <br>
+	 * @param key 保存键
+	 * @return 缓存保存的对象
+	 */
+	public <KK,VV> VV execute(KK key,ICacheExecuteCallbak<KK,VV> callback) {
+		try {
+			return callback.call(key);
+//		} catch (TimeoutException e) {
+//			LOGGER.error("获取 redis 缓存超时", e);
+		} catch (JedisConnectionException e) {
+			LOGGER.error("并发导致连接异常被服务端丢弃和重置!", e);
+			throw new RedisException(e);
+		} catch (JedisDataException e) {
+			LOGGER.warn("获取 redis 缓存被中断", e);
+			throw new RedisException(e);
+		} catch (JedisException e) {
+			LOGGER.warn("获取 redis 缓存错误", e);
+			throw new RedisException(e);
+		} catch (Exception e) {
+	          LOGGER.error("error!", e);
+	          throw new CacheException(e.getMessage());
+		} finally {
+			try {
+				ShardedJedisPool pool = RedisPool.init(mod_name);
+				if (!pool.isClosed()) {
+					pool.returnResourceObject(getJedis());
+				}
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+	}
+  
 
   /**
    * 方法用途:缓存里面是否存在该key
@@ -56,7 +97,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   @Override
   public boolean exists(K key){
   	
-  	 
        try {
            return getJedis().exists(key.toString());
        } catch (Exception e) {
@@ -72,35 +112,19 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return 缓存保存的对象
 	 */
   @Override
-  public V get(K key) {
-      
-      try {
-          byte[] ret = getJedis().get(SerializeUtil.serialize(key));
-          if (ret != null && ret.length > 0) {
-				return (V) SerializeUtil.unserialize(ret);
-          }
-          return null;
-      	} catch (JedisConnectionException e) {  
-        	LOGGER.warn("获取 redis 缓存超时", e);
-			throw new RedisException(e);
-		} catch (JedisDataException e) {
-			LOGGER.warn("获取 redis 缓存被中断", e);
-			throw new RedisException(e);
-		} catch (JedisException e) {
-			LOGGER.warn("获取 redis 缓存错误", e);
-			throw new RedisException(e);
-        } finally {
-        	try {
-        		ShardedJedisPool pool = RedisPool.init(mod_name);
-        		if(!pool.isClosed()) {
-        			pool.returnResourceObject(getJedis());
-        		}
-        	} catch(Exception ex) {
-        		System.out.println(ex.getMessage());
-        		ex.printStackTrace();
-        	}
-        }
-     }
+	public V get(K key) {
+
+		return execute(key, new ICacheExecuteCallbak<K, V>() {
+			@Override
+			public V call(K key) {
+				byte[] ret = getJedis().get(SerializeUtil.serialize(key));
+				if (ret != null && ret.length > 0) {
+					return (V) SerializeUtil.unserialize(ret);
+				}
+				return null;
+			}
+		});
+	}
 	/**
 	 * 
 	 * 方法用途: TODO<br>
@@ -109,20 +133,21 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @param type
 	 * @return
 	 */
-  //@Override
-	public  V get(K key, Class<T> type) {
-	    Object cacheValue;
-		try {
-			cacheValue = getJedis().get(key.toString());
-			Object value = (cacheValue != null ? cacheValue : null);
-			if (type != null && !type.isInstance(value)) {
-				throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + value);
+	public  V get(K key, Class<V> type) {
+		return execute(key, new ICacheExecuteCallbak<K, V>() {
+			@Override
+			public V call(K key) {
+				byte[] ret = getJedis().get(SerializeUtil.serialize(key));
+				if (ret != null && ret.length > 0) {
+					V value = (V) SerializeUtil.unserialize(ret);
+					if (type != null && !type.isInstance(value)) {
+						throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + value);
+					}
+					return value;
+				}
+				return null;
 			}
-			return  (V) value;
-		} catch ( CacheException e) {
-			e.printStackTrace();
-		}
-		return null;
+		});
 	  }
 	
 	/** 
@@ -172,44 +197,41 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
 		
-      try {
-          String ret = getJedis().set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
-          if(export.timesanmp() > 0){
-        	  getJedis().expire(SerializeUtil.serialize(key), export.timesanmp());
-			}
-          return ret.equalsIgnoreCase("OK");
-      } catch(JedisConnectionException e) {
-    	  LOGGER.error("并发导致连接异常被服务端丢弃和重置!", e);
-      } catch (Exception e) {
-          LOGGER.error("set error!", e);
-      } finally {
-      	RedisPool.init(mod_name).returnResourceObject(jedis);
-      }
-      return false;
+		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+  			@Override
+  			public Boolean call(K key) {
+  				String ret = getJedis().set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+  	            if(export.timesanmp() > 0){
+  	        	    getJedis().expire(SerializeUtil.serialize(key), export.timesanmp());
+  			    }
+			    return ret.equalsIgnoreCase("OK");
+  			}
+  		});
+        return ret;
 	}
 	
-	
-	/**
-   * 方法用途: <p>将给定key的值设为value，并返回key的旧值。   </p>
-   * <p>当key存在但不是字符串类型时，返回一个错误。    </p>
-   *
-   * @param key
-   * @param value
-   * @return
-   */
-  public Object getAndSet(K key, Object value) {
-      
-      try {
-          byte[] bytes = getJedis().getSet(SerializeUtil.serialize(key),SerializeUtil.serialize(value));
-          if (bytes != null && bytes.length > 0) {
-              return SerializeUtil.unserialize(bytes);
-          }
-          return null;
-      } catch (Exception e) {
-          LOGGER.error("getAndSet error!", e);
-          return null;
-      }
-  }
+   /**
+	 * 
+	 * 方法用途: 将给定key的值设为value，并返回key的旧值<br>
+	 * 操作步骤: 当key存在但不是字符串类型时，返回一个错误<br>
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Object getAndSet(K key, Object value) {
+
+		return execute(key, new ICacheExecuteCallbak<K, V>() {
+			@Override
+			public V call(K key) {
+				byte[] bytes = getJedis().getSet(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+				if (bytes != null && bytes.length > 0) {
+					return SerializeUtil.unserialize(bytes);
+				}
+				return null;
+			}
+		});
+		
+	}
 	
 	
 	
@@ -222,38 +244,25 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean delete(K key) throws UncheckedException {
 		
-		Long res = null;
-       try {
-      	 res = getJedis().del(SerializeUtil.serialize(key));
-      	 if(res==0) {
-      		 return true;
-      	 }
-//      	 catch (JedisDataException e) {
-//   			log.warn("删除 redis 缓存被中断", e);
-//   		} catch (RedisException e) {
-//   			log.warn("删除 redis 缓存错误", e);
-//   		}
-       } catch (Exception e) {
-      	 LOGGER.error("del error  key["+key+"]", e);
-       }
-		return false;
+		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+  			@Override
+  			public Boolean call(K key) {
+  				 Long res = getJedis().del(SerializeUtil.serialize(key));
+  		      	 if(res==0) {
+  		      		 return true;
+  		      	 } else {
+  		      		 return false;
+  		      	 }
+  			}
+  		});
+		return ret;
 	}
 	
   @Override  
   public void clear() {  
-//      try {  
-//      	redisClient.flush();  
-//      } catch (CacheException e) {  
-//          e.printStackTrace();  
-//      }  
+//      redisClient.flush();  
 //		for (String key : keySet) {
-//			try {
-//				redisClient.deleteWithNoReply(this.getKey(key));
-//			} catch (JedisDataException e) {
-//				log.warn("删除 redis 缓存被中断", e);
-//			} catch (RedisException e) {
-//				log.warn("删除 redis 缓存错误", e);
-//			}
+//			redisClient.deleteWithNoReply(this.getKey(key));
 //		}
 	}
 	 
@@ -264,61 +273,65 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @param key 保存键
 	 * @return 有冲突为TRUE无为FALSE
 	 */
-  public boolean isMutex(K key) throws UncheckedException {  
-      return isMutex(key, CacheExpireTimeEnum.MUTEX_EXP);  
-  }  
+	public boolean isMutex(K key) throws UncheckedException {
+		return isMutex(key, CacheExpireTimeEnum.MUTEX_EXP);
+	} 
 
-  /** 
-   * 注意：通过注解实现，该方法不可用
-	 * 方法用途: 冲突判定
+	/**
+	 * 注意：通过注解实现，该方法不可用
+	 * 方法用途: 冲突判定<br>
 	 * 操作步骤: <br>
-	 * @param key 保存键
-	 * @param export 超时时间
+	 * @param key  保存键
+	 * @param export  超时时间
 	 * @return 有冲突为TRUE无为FALSE
 	 */
-  public boolean isMutex(K key, CacheExpireTimeEnum export) throws UncheckedException {
-		return false;  
-  }
+	public boolean isMutex(K key, CacheExpireTimeEnum export) throws UncheckedException {
+		return false;
+	}
   
-  /**
-   * 方法用途: <p> 将key的值设为value，当且仅当key不存在。   </p>
-   * <p>若给定的key已经存在，则SETNX不做任何动作。    </p>
-   * <p>SETNX是”SET if Not eXists”(如果不存在，则SET)的简写。</p>
-   *
-   * @param key
-   * @param value
-   * @return
-   */
-  public boolean setnx(K key, Object value) {
-      
-      try {
-          long ret = getJedis().setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
-          return ret > 0;
-      } catch (Exception e) {
-          LOGGER.error("setnx error!", e);
-          return false;
-      }
-  }
+	/**
+	 * 
+	 * 方法用途: 将key的值设为value，当且仅当key不存在<br>
+	 * 操作步骤: 若给定的key已经存在，则SETNX不做任何动作
+	 * SETNX是”SET if Not eXists”(如果不存在，则SET)的简写<br>
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public boolean setnx(K key, V value) {
+		
+		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+  			@Override
+  			public Boolean call(K key) {
+  				long ret = getJedis().setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+  				return ret > 0;
+  			}
+  		});
+		return ret;
+		
+	}
 
-  /**
-   * 方法用途: <p>将值value关联到key，并将key的生存时间设为seconds(以秒为单位)。</p>
-   * <p>如果key 已经存在，SETEX命令将覆写旧值。   原子性(atomic)操作<p/>
-   *
-   * @param key
-   * @param seconds
-   * @param value
-   * @return
-   */
-  public boolean setex(K key, int seconds, Object value) {
-      
-      try {
-          String ret = getJedis().setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
-          return ret.equalsIgnoreCase("OK");
-      } catch (Exception e) {
-          LOGGER.error("setex error!", e);
-          return false;
-      }
-  }
+	/**
+	 * 
+	 * 方法用途: 将值value关联到key，并将key的生存时间设为seconds(以秒为单位)<br>
+	 * 操作步骤: 如果key 已经存在，SETEX命令将覆写旧值。 原子性(atomic)操作<br>
+	 * 
+	 * @param key
+	 * @param seconds
+	 * @param value
+	 * @return
+	 */
+	public boolean setex(K key, int seconds, V value) {
+		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+  			@Override
+  			public Boolean call(K key) {
+  				String ret = getJedis().setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
+  				return ret.equalsIgnoreCase("OK");
+  			}
+  		});
+		return ret;
+		
+	}
 
 	
 }
