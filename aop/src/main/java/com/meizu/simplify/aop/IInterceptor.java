@@ -43,6 +43,6 @@ public interface IInterceptor {
 		return -1;
 	}
 	
-	void before(String methodFullName,Object o,Object... args);
-	void after(String methodFullName,Object o,Object... args);
+	boolean before(String methodFullName,Object o,Object... args);
+	boolean after(String methodFullName,Object o,Object... args);
 }

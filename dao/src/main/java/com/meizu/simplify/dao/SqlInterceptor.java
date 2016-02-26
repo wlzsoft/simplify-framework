@@ -145,15 +145,15 @@ public class SqlInterceptor implements IInterceptor {
 
 
 	@Override
-	public void before(String methodFullName, Object o, Object... args) {
+	public boolean before(String methodFullName, Object o, Object... args) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 
 	@Override
-	public void after(String methodFullName, Object o, Object... args) {
+	public boolean after(String methodFullName, Object o, Object... args) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 }

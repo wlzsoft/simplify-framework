@@ -55,51 +55,56 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	
 	ICacheDao<String, Object> data = CacheProxyDao.getCache();
 	@Override
-	public void before(String methodFullName,Object o,Object... args) {
+	public boolean before(String methodFullName,Object o,Object... args) {
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
-		String key = methodFullName+"id";//需要想方法获取id的值
+//		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
-			Object obj = data.get(key);
+			Object obj = data.get(cacheDataSearch.key());
 			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
 //			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
+		return false;
 	}
 	
 	@Override
-	public void after(String methodFullName,Object o,Object... args) {
+	public boolean after(String methodFullName,Object o,Object... args) {
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
-		String key = methodFullName+"id";//需要想方法获取id的值
+//		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
 		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
 			//TODO　这块的操作要控制的2ms以内
-			boolean isOk = data.set(key, args[0]);
+			boolean isOk = data.set(cacheDataAdd.key(), args[0]);
 			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
 //			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
 		} else if(anno.annotationType().equals(CacheDataDel.class)) {
 			CacheDataDel cacheDataDel = (CacheDataDel)anno;
-			Object obj = data.delete(key);
+			Object obj = data.delete(cacheDataDel.key());
 			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
 //			System.out.println("del key:"+cacheDataDel.key()+"]"+obj);
 		}
+		return false;
 	}
 
 	@Override
 	public boolean handle(Context context,Object... obj) {
+		boolean isToAfter = false;
 		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
-			before(context.getMethodFullName(),context.getThiz(),obj);
+			isToAfter = before(context.getMethodFullName(),context.getThiz(),obj);
 		} else {
-			after(context.getMethodFullName(),context.getThiz(),obj);
+			if(isToAfter) {
+				after(context.getMethodFullName(),context.getThiz(),obj);
+			}
 		}
 		return true;
 	}

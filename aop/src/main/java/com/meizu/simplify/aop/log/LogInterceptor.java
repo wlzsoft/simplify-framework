@@ -35,13 +35,15 @@ public class LogInterceptor extends Handler implements  IInterceptor{
 	
 	
 	@Override
-	public void before(String methodFullName,Object o,Object... args) {
+	public boolean before(String methodFullName,Object o,Object... args) {
 		LOGGER.info("日志切面切入：["+methodFullName+"]方法之前 切入");
+		return true;
 	}
 	
 	@Override
-	public void after(String methodFullName,Object o,Object... args) {
+	public boolean after(String methodFullName,Object o,Object... args) {
 		LOGGER.info("日志切面切入：["+methodFullName+"]方法之后切入");
+		return true;
 	}
 
 	@Override
