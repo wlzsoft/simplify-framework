@@ -2,23 +2,13 @@ package com.meizu.simplify.cache.redis.dao.impl;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
-import com.meizu.simplify.cache.exception.CacheException;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.cache.redis.dao.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
-import com.meizu.simplify.cache.redis.exception.RedisException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.SerializeUtil;
-
-import redis.clients.jedis.ShardedJedisPool;
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.exceptions.JedisException;
 
 
 /**
@@ -40,91 +30,50 @@ import redis.clients.jedis.exceptions.JedisException;
 //@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao<K> implements ICacheDao<K,V>{
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
-
-	private String mod_name;
-
 	public CommonRedisDao(String mod_name) {
 		super(mod_name);
-		this.mod_name = mod_name;
 	}
-  
-  
-  
-  /**
-	 * 方法用途: 返回值 TODO 
-	 * 操作步骤: <br>
-	 * @param key 保存键
-	 * @return 缓存保存的对象
-	 */
-	public <KK,VV> VV execute(KK key,ICacheExecuteCallbak<KK,VV> callback) {
-		try {
-			return callback.call(key);
-//		} catch (TimeoutException e) {
-//			LOGGER.error("获取 redis 缓存超时", e);
-		} catch (JedisConnectionException e) {
-			LOGGER.error("并发导致连接异常被服务端丢弃和重置!", e);
-			throw new RedisException(e);
-		} catch (JedisDataException e) {
-			LOGGER.warn("获取 redis 缓存被中断", e);
-			throw new RedisException(e);
-		} catch (JedisException e) {
-			LOGGER.warn("获取 redis 缓存错误", e);
-			throw new RedisException(e);
-		} catch (Exception e) {
-	          LOGGER.error("error!", e);
-	          throw new CacheException(e.getMessage());
-		} finally {
-			try {
-				ShardedJedisPool pool = RedisPool.init(mod_name);
-				if (!pool.isClosed()) {
-					pool.returnResourceObject(getJedis());
-				}
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-				ex.printStackTrace();
-			}
-		}
-	}
-  
 
-  /**
-   * 方法用途:缓存里面是否存在该key
-   * 操作步骤: <br>
-   * @param key
-   * @return
-   */
-  @Override
-  public boolean exists(K key){
-  	
-       try {
-           return getJedis().exists(key.toString());
-       } catch (Exception e) {
-      	   LOGGER.error("exists error  key["+key+"]", e);
-           return false;
-       }
-  }
+	/**
+	 * 方法用途:缓存里面是否存在该key<br>
+	 * 操作步骤: TODO<br>
+	 * 
+	 * @param key
+	 * @return
+	 */
+	@Override
+	public boolean exists(K key) {
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+  			@Override
+  			public Boolean call(K key) {
+  				return CacheExecute.getJedis(mod_name).exists(key.toString());
+  			}
+  		},mod_name);
+		return ret;
+			
+	}
   
-  /**
-	 * 方法用途: 返回值 TODO 
+	/**
+	 * 方法用途: 返回值 <br>
 	 * 操作步骤: <br>
-	 * @param key 保存键
+	 * @param key  保存键
 	 * @return 缓存保存的对象
 	 */
-  @Override
+	@Override
 	public V get(K key) {
 
-		return execute(key, new ICacheExecuteCallbak<K, V>() {
+		return CacheExecute.execute(key, new ICacheExecuteCallbak<K, V>() {
 			@Override
 			public V call(K key) {
-				byte[] ret = getJedis().get(SerializeUtil.serialize(key));
+				byte[] ret = CacheExecute.getJedis(mod_name).get(SerializeUtil.serialize(key));
 				if (ret != null && ret.length > 0) {
 					return (V) SerializeUtil.unserialize(ret);
 				}
 				return null;
 			}
-		});
+		},mod_name);
 	}
+	
 	/**
 	 * 
 	 * 方法用途: TODO<br>
@@ -134,10 +83,10 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public  V get(K key, Class<V> type) {
-		return execute(key, new ICacheExecuteCallbak<K, V>() {
+		return CacheExecute.execute(key, new ICacheExecuteCallbak<K, V>() {
 			@Override
 			public V call(K key) {
-				byte[] ret = getJedis().get(SerializeUtil.serialize(key));
+				byte[] ret = CacheExecute.getJedis(mod_name).get(SerializeUtil.serialize(key));
 				if (ret != null && ret.length > 0) {
 					V value = (V) SerializeUtil.unserialize(ret);
 					if (type != null && !type.isInstance(value)) {
@@ -147,7 +96,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 				}
 				return null;
 			}
-		});
+		},mod_name);
 	  }
 	
 	/** 
@@ -197,16 +146,16 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
 		
-		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
   			@Override
   			public Boolean call(K key) {
-  				String ret = getJedis().set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+  				String ret = CacheExecute.getJedis(mod_name).set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
   	            if(export.timesanmp() > 0){
-  	        	    getJedis().expire(SerializeUtil.serialize(key), export.timesanmp());
+  	            	CacheExecute.getJedis(mod_name).expire(SerializeUtil.serialize(key), export.timesanmp());
   			    }
 			    return ret.equalsIgnoreCase("OK");
   			}
-  		});
+  		},mod_name);
         return ret;
 	}
 	
@@ -220,16 +169,16 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	public Object getAndSet(K key, Object value) {
 
-		return execute(key, new ICacheExecuteCallbak<K, V>() {
+		return CacheExecute.execute(key, new ICacheExecuteCallbak<K, V>() {
 			@Override
 			public V call(K key) {
-				byte[] bytes = getJedis().getSet(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+				byte[] bytes = CacheExecute.getJedis(mod_name).getSet(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
 				if (bytes != null && bytes.length > 0) {
 					return SerializeUtil.unserialize(bytes);
 				}
 				return null;
 			}
-		});
+		},mod_name);
 		
 	}
 	
@@ -244,17 +193,17 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean delete(K key) throws UncheckedException {
 		
-		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
   			@Override
   			public Boolean call(K key) {
-  				 Long res = getJedis().del(SerializeUtil.serialize(key));
+  				 Long res = CacheExecute.getJedis(mod_name).del(SerializeUtil.serialize(key));
   		      	 if(res==0) {
   		      		 return true;
   		      	 } else {
   		      		 return false;
   		      	 }
   			}
-  		});
+  		},mod_name);
 		return ret;
 	}
 	
@@ -300,13 +249,13 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	public boolean setnx(K key, V value) {
 		
-		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
   			@Override
   			public Boolean call(K key) {
-  				long ret = getJedis().setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+  				long ret = CacheExecute.getJedis(mod_name).setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
   				return ret > 0;
   			}
-  		});
+  		},mod_name);
 		return ret;
 		
 	}
@@ -322,13 +271,13 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public boolean setex(K key, int seconds, V value) {
-		Boolean ret = execute(key, new ICacheExecuteCallbak<K, Boolean>() {
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
   			@Override
   			public Boolean call(K key) {
-  				String ret = getJedis().setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
+  				String ret = CacheExecute.getJedis(mod_name).setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
   				return ret.equalsIgnoreCase("OK");
   			}
-  		});
+  		},mod_name);
 		return ret;
 		
 	}

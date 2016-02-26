@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.dao.IGeneratorCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.cache.redis.dao.CacheExecute;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.utils.SerializeUtil;
 
 /**
@@ -20,7 +22,7 @@ import com.meizu.simplify.utils.SerializeUtil;
  * @version Version 0.1
  *
  */
-public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheDao<String> {
+public class GeneratorRedisDao extends  BaseRedisDao<String> implements IGeneratorCacheDao<String> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
 
@@ -38,13 +40,14 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	 * @return
 	 */
 	public long incr(String key) {
-		
-		try {
-			return jedis.incr(key);
-		} catch (Exception e) {
-			LOGGER.error("incr error!", e);
-			return 0L;
-		}
+		Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
+
+			@Override
+			public Long call(String key) {
+				return CacheExecute.getJedis(mod_name).incr(key);
+			}
+		}, mod_name);
+		return ret;
 	}
 
 	/**
@@ -55,12 +58,13 @@ public class GeneratorRedisDao extends  BaseRedisDao implements IGeneratorCacheD
 	 * @return
 	 */
 	public long incrBy(String key, long value) {
-		
-		try {
-			return jedis.incrBy(SerializeUtil.serialize(key), value);
-		} catch (Exception e) {
-			LOGGER.error("incrBy error!", e);
-			return 0L;
-		}
+		Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
+
+			@Override
+			public Long call(String key) {
+				return CacheExecute.getJedis(mod_name).incrBy(SerializeUtil.serialize(key), value);
+			}
+		}, mod_name);
+		return ret;
 	}
 }

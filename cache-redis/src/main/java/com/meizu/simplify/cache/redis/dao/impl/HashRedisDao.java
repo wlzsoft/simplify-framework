@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.dao.IHashCacheDao;
 import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.cache.redis.dao.CacheExecute;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.utils.JsonUtil;
 
 import redis.clients.jedis.ShardedJedis;
@@ -29,7 +31,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
+public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public HashRedisDao(String mod_name) {
 		super(mod_name);
@@ -46,19 +48,21 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public boolean set(String key,  String field, Object value,int seconds){
-    	
-		try {
-			long status = jedis.hset(key, field, JsonUtil.ObjectToJson(value));
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				long status = CacheExecute.getJedis(mod_name).hset(key, field, JsonUtil.ObjectToJson(value));
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				if(status >= 0){
+					return true;
+				}
+				return false;
 			}
-			if(status >= 0){
-				return true;
-			}
-		} catch (Exception e) {
-			LOGGER.error("set error!", e);
-		}
-		return false;
+		}, mod_name);
+		return ret;
     }
     
     /**
@@ -70,16 +74,18 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public Object get(String key,  String field){
-    	
-		try {
-			String str = jedis.hget(key,field);
-			if(str != null && str.length() > 0){
-				return JsonUtil.JsonToObject(str);
+    	Object ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Object>() {
+
+			@Override
+			public Object call(String key) {
+				String str = CacheExecute.getJedis(mod_name).hget(key,field);
+				if(str != null && str.length() > 0){
+					return JsonUtil.JsonToObject(str);
+				}
+				return null;
 			}
-		} catch (Exception e) {
-			LOGGER.error("get error!", e);
-		}
-		return null;
+		}, mod_name);
+		return ret;
     }
     
     /**
@@ -94,18 +100,22 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      */
     public boolean hsetnx(String key,  String field, Object value,int seconds){
     	
-		try {
-			long status = jedis.hsetnx(key, field, JsonUtil.ObjectToJson(value));
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				long status = CacheExecute.getJedis(mod_name).hsetnx(key, field, JsonUtil.ObjectToJson(value));
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				if(status >= 0){
+					return true;
+				}
+				return false;
 			}
-			if(status >= 0){
-				return true;
-			}
-		} catch (Exception e) {
-			LOGGER.error("hsetnx error!", e);
-		}
-		return false;
+		}, mod_name);
+		return ret;
+    	
     }
     
     /**
@@ -130,16 +140,20 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
     	}
     	
     	
-		try {
-			String ret = jedis.hmset(key, map);
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				String ret = CacheExecute.getJedis(mod_name).hmset(key, map);
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return ret.equalsIgnoreCase("OK");
 			}
-			return ret.equalsIgnoreCase("OK");
-		} catch (Exception e) {
-			LOGGER.error("hmset error!", e);
-		}
-		return false;
+		}, mod_name);
+		return ret;
+    	
+    	
     }
    
     /**
@@ -153,16 +167,20 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      */
     public long hdel(String key,int seconds,String ... fields){
     	
-		try {
-			long ret = jedis.hdel(key, fields);
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+    	
+    	Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
+
+			@Override
+			public Long call(String key) {
+				long ret = CacheExecute.getJedis(mod_name).hdel(key, fields);
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return ret;
 			}
-			return ret;
-		} catch (Exception e) {
-			LOGGER.error("hdel error!", e);
-		}
-		return 0;
+		}, mod_name);
+		return ret;
+    	
     }
     
     /**
@@ -173,13 +191,14 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public long hlen(String key){
-    	
-		try {
-			return jedis.hlen(key);
-		} catch (Exception e) {
-			LOGGER.error("hlen error!", e);
-		}
-		return 0;
+    	Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
+
+			@Override
+			public Long call(String key) {
+				return CacheExecute.getJedis(mod_name).hlen(key);
+			}
+		}, mod_name);
+		return ret;
     }
     
     /**
@@ -191,13 +210,14 @@ public class HashRedisDao extends BaseRedisDao implements IHashCacheDao {
      * @return
      */
     public boolean hexists(String key,String field){
-    	
-		try {
-			 return jedis.hexists(key, field);
-		} catch (Exception e) {
-			LOGGER.error("hlen error!", e);
-		}
-		return false;
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				return CacheExecute.getJedis(mod_name).hexists(key, field);
+			}
+		}, mod_name);
+		return ret;
     }
 	
 }

@@ -6,6 +6,7 @@ import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.enums.TimeEnum;
 import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.exception.RedisException;
+import com.meizu.simplify.utils.SerializeUtil;
 
 import redis.clients.jedis.ShardedJedis;
 
@@ -25,19 +26,11 @@ import redis.clients.jedis.ShardedJedis;
  */
 public abstract class BaseRedisDao<K extends Serializable>  {
 	
-	public ShardedJedis jedis = null;
-	private String mod_name;
+	public String mod_name;
 	public BaseRedisDao(String mod_name) {
 		this.mod_name = mod_name;
 	}
-	public ShardedJedis getJedis() {
-		try {
-			return RedisPool.getConnection(mod_name);
-		} catch(RedisException ex) {
-			ex.printStackTrace();
-		}
-		return null;
-	}
+	
 	/**
 	 * 
 	 * 方法用途: 指定key设置过期时间<br>
@@ -48,13 +41,20 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 * @return
 	 */
 	public long expire(K key, CacheExpireTimeEnum export, TimeEnum seconds) {
-		if(key instanceof String) {
-			return getJedis().expire(key.toString(), export.timesanmp());
-		} else if(key instanceof byte[]){
-			return getJedis().expire((byte[])key, export.timesanmp());
-		} else {
-			throw new RedisException("无效key");
-		}
+		
+		Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Long>() {
+  			@Override
+  			public Long call(K key) {
+  				if(key instanceof String) {
+  					return CacheExecute.getJedis(mod_name).expire(key.toString(), export.timesanmp());
+  				} else if(key instanceof byte[]){
+  					return CacheExecute.getJedis(mod_name).expire((byte[])key, export.timesanmp());
+  				} else {
+  					throw new RedisException("无效key");
+  				}
+  			}
+  		},mod_name);
+		return ret;
 	}
 	/**
 	 * 

@@ -6,11 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.dao.IListCacheDao;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.cache.redis.dao.CacheExecute;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
+import com.meizu.simplify.utils.JsonUtil;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
-import redis.clients.jedis.ShardedJedis;
+
 
 /**
  * <p><b>Title:</b><i>list 操作类</i></p>
@@ -54,40 +56,48 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 * @return
 	 */
 	public boolean lpush(String key, String value,int seconds) {
-		try {
-			long length = jedis.lpush(key, value);
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				long length = CacheExecute.getJedis(mod_name).lpush(key, value);
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return length > 0;
 			}
-			return length > 0;
-		} catch (Exception e) {
-			LOGGER.error("lpush error!", e);
-			return false;
-		}
+		}, mod_name);
+		return ret;
 	}
 	
 	/**
 	 * 
 	 * 方法用途: 批量将值value插入到列表key的表头<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: TODO 代码不是很规范，处理有问题，待优化<br>
 	 * @param keys
 	 * @param values
 	 * @param seconds
 	 * @return
 	 */
 	public boolean lpush(String[] keys,String[] values,int seconds){
-		try {
-			for(int i=0,len=keys.length;i<len;i++){
-				jedis.lpush(keys[i], values[i]);
-				if(seconds > 0){
-					jedis.expire(keys[i], seconds);
+		for(int i=0,len=keys.length;i<len;i++){
+			String value = values[i];
+			Boolean ret = CacheExecute.execute(keys[i], new ICacheExecuteCallbak<String,Boolean>() {
+				@Override
+				public Boolean call(String key) {
+					Long ret = CacheExecute.getJedis(mod_name).lpush(key, value);
+					if(seconds > 0){
+						CacheExecute.getJedis(mod_name).expire(key, seconds);
+					}
+					if(ret >=0) {
+						return true;
+					}
+					return false;
 				}
-			}
-			return true;
-		} catch (Exception e) {
-			LOGGER.error("lpush error!", e);
-			return false;
+			}, mod_name);
 		}
+		return true;
+		
 	}
 	
 	/**
@@ -103,21 +113,20 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 		if(values == null || values.size() == 0){
 			return true;
 		}
-		
-		try{
-			for(int i=0,len=values.size();i<len;i++){
-				String value = values.get(i);
-				jedis.lpush(key, value);
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+			@Override
+			public Boolean call(String key) {
+				for(int i=0,len=values.size();i<len;i++){
+					String value = values.get(i);
+					CacheExecute.getJedis(mod_name).lpush(key, value);
+				}
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return true;
 			}
-			if(seconds > 0){
-				jedis.expire(key, seconds);
-			}
-			return true;
-		}catch(Exception e){
-			LOGGER.error("lpush error!", e);
-			return false;
-		}
-		
+		}, mod_name);
+		return ret;
 	}
 	
 	/**
@@ -142,16 +151,18 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 * @return
 	 */
 	public boolean rpush(String key, String value,int seconds) {
-		try {
-			long length = jedis.rpush(key, value);
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+		
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+			@Override
+			public Boolean call(String key) {
+				long length = CacheExecute.getJedis(mod_name).rpush(key, value);
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return length > 0;
 			}
-			return length > 0;
-		} catch (Exception e) {
-			LOGGER.error("rpush error!", e);
-			return false;
-		}
+		}, mod_name);
+		return ret;
 	}
 	
 	/**
@@ -171,10 +182,10 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 		try{
 			for(int i=0,len=values.size();i<len;i++){
 				String value = values.get(i);
-				jedis.rpush(key, value);
+				CacheExecute.getJedis(mod_name).rpush(key, value);
 			}
 			if(seconds > 0){
-				jedis.expire(key, seconds);
+				CacheExecute.getJedis(mod_name).expire(key, seconds);
 			}
 		}catch(Exception e){
 			LOGGER.error("rpush error!", e);
@@ -193,7 +204,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public String lpop(String key) {
 		try {
-			return jedis.lpop(key);
+			return CacheExecute.getJedis(mod_name).lpop(key);
 		} catch (Exception e) {
 			LOGGER.error("lpop error!", e);
 			return null;
@@ -209,7 +220,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public Object rpop(String key) {
 		try {
-			return jedis.rpop(key);
+			return CacheExecute.getJedis(mod_name).rpop(key);
 		} catch (Exception e) {
 			LOGGER.error("rpop error!", e);
 			return null;
@@ -225,7 +236,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public long llen(String key) {
 		try {
-			long length = jedis.llen(key);
+			long length = CacheExecute.getJedis(mod_name).llen(key);
 			return length;
 		} catch (Exception e) {
 			LOGGER.error("llen error!", e);
@@ -246,7 +257,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 		//long begin = System.currentTimeMillis();
 		//System.out.println("1:"+(System.currentTimeMillis() - begin));
 		try {
-			List<String> list = jedis.lrange(key, start, end);
+			List<String> list = CacheExecute.getJedis(mod_name).lrange(key, start, end);
 			return list;
 		} catch (Exception e) {
 			LOGGER.error("lrange error!", e);
@@ -257,7 +268,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 //		ShardedJedis jedis = RedisPool.getConnection(mod_name);
 //		try {
 //			long begin = System.currentTimeMillis();
-//			List<byte[]> bytesList = jedis.lrange(getByteKey(key), start, end);
+//			List<byte[]> bytesList = CacheExecute.getJedis(mod_name).lrange(getByteKey(key), start, end);
 //			System.out.println(System.currentTimeMillis()-begin);
 //			List<Object> objList = null;
 //			
@@ -290,7 +301,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public long lrem(String key, int count, String value) {
 		try {
-			long ret = jedis.lrem(key, count, value);
+			long ret = CacheExecute.getJedis(mod_name).lrem(key, count, value);
 			return ret;
 		} catch (Exception e) {
 			LOGGER.error("lrem error!", e);
@@ -309,7 +320,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public boolean lset(String key, int index, String value) {
 		try {
-			String ret = jedis
+			String ret = CacheExecute.getJedis(mod_name)
 					.lset(key, index, value);
 			return ret.equalsIgnoreCase("ok");
 		} catch (Exception e) {
@@ -329,7 +340,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public boolean ltrim(String key, int start, int stop) {
 		try {
-			String ret = jedis.ltrim(key, start, stop);
+			String ret = CacheExecute.getJedis(mod_name).ltrim(key, start, stop);
 			return ret.equalsIgnoreCase("ok");
 		} catch (Exception e) {
 			LOGGER.error("ltrim error!", e);
@@ -350,7 +361,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public Object lindex(String key, int index) {
 		try {
-			return jedis.lindex(key, index);
+			return CacheExecute.getJedis(mod_name).lindex(key, index);
 		} catch (Exception e) {
 			LOGGER.error("lindex error!", e);
 			return null;
@@ -375,7 +386,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public long linsert(String key, LIST_POSITION position, String pivot,String value) {
 		try {
-			long length = jedis.linsert(key, position,pivot, value);
+			long length = CacheExecute.getJedis(mod_name).linsert(key, position,pivot, value);
 			return length;
 		} catch (Exception e) {
 			LOGGER.error("linsert error!", e);

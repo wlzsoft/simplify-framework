@@ -1,16 +1,13 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
-import java.io.Serializable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.dao.IJsonCacheDao;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.cache.redis.dao.CacheExecute;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.utils.JsonUtil;
-
-import redis.clients.jedis.ShardedJedis;
 
 
 /**
@@ -26,7 +23,7 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
+public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonRedisDao.class);
 	
 	public JsonRedisDao(String mod_name) {
@@ -43,16 +40,18 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	 * @return
 	 */
 	public Object getAndSet(String key, Object value) {
-		try {
-			String str = jedis.getSet(key, JsonUtil.ObjectToJson(value));
-			if(str != null && str.length() > 0){
-				return JsonUtil.JsonToObject(str);
+		Object ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Object>() {
+
+			@Override
+			public Object call(String key) {
+				String str = CacheExecute.getJedis(mod_name).getSet(key, JsonUtil.ObjectToJson(value));
+				if(str != null && str.length() > 0){
+					return JsonUtil.JsonToObject(str);
+				}
+				return null;
 			}
-			return null;
-		} catch (Exception e) {
-			LOGGER.error("getAndSet error!", e);
-			return null;
-		}
+		}, mod_name);
+		return ret;
 	}
 
 	/**
@@ -63,16 +62,18 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	 * @return
 	 */
 	public Object get(String key) {
-		try {
-			String str =  jedis.get(key);
-			if(str != null && str.length() > 0){
-				return JsonUtil.JsonToObject(str);
+		Object ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Object>() {
+
+			@Override
+			public Object call(String key) {
+				String str =  CacheExecute.getJedis(mod_name).get(key);
+				if(str != null && str.length() > 0){
+					return JsonUtil.JsonToObject(str);
+				}
+				return null;
 			}
-			return null;
-		} catch (Exception e) {
-			LOGGER.error("get error!", e);
-			return null;
-		}
+		}, mod_name);
+		return ret;
 	}
 
 	/**
@@ -85,16 +86,19 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
 	 * @return
 	 */
 	public boolean set(String key, Object value,int seconds) {
-		try {
-			String ret = jedis.set(key, JsonUtil.ObjectToJson(value));
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+		
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				String ret = CacheExecute.getJedis(mod_name).set(key, JsonUtil.ObjectToJson(value));
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return ret.equalsIgnoreCase("OK");
 			}
-			return ret.equalsIgnoreCase("OK");
-		} catch (Exception e) {
-			LOGGER.error("set error!", e);
-			return false;
-		}
+		}, mod_name);
+		return ret;
 	}
 	  
     /**
@@ -108,13 +112,15 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
      * @return
      */
     public boolean setnx(String key, Object value) {
-        try {
-            long ret = jedis.setnx(key, JsonUtil.ObjectToJson(value));
-            return ret > 0;
-        } catch (Exception e) {
-            LOGGER.error("setnx error!", e);
-            return false;
-        }
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				 long ret = CacheExecute.getJedis(mod_name).setnx(key, JsonUtil.ObjectToJson(value));
+		         return ret > 0;
+			}
+		}, mod_name);
+        return ret;
     }
 
     /**
@@ -128,13 +134,15 @@ public class JsonRedisDao extends BaseRedisDao implements IJsonCacheDao{
      * @return
      */
     public boolean setex(String key, int seconds, Object value) {
-        try {
-            String ret = jedis.setex(key, seconds, JsonUtil.ObjectToJson(value));
-            return ret.equalsIgnoreCase("OK");
-        } catch (Exception e) {
-            LOGGER.error("setex error!", e);
-            return false;
-        }
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				String ret = CacheExecute.getJedis(mod_name).setex(key, seconds, JsonUtil.ObjectToJson(value));
+	            return ret.equalsIgnoreCase("OK");
+			}
+		}, mod_name);
+        return ret;
     }
     
 }

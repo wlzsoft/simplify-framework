@@ -4,10 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.dao.IStringCacheDao;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
-
-import redis.clients.jedis.ShardedJedis;
+import com.meizu.simplify.cache.redis.dao.CacheExecute;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 
 /**
  * <p><b>Title:</b><i>redis  String 结构操作</i></p>
@@ -22,107 +21,76 @@ import redis.clients.jedis.ShardedJedis;
  * @version Version 0.1
  *
  */
-public class StringRedisDao extends BaseRedisDao implements IStringCacheDao{
+public class StringRedisDao extends BaseRedisDao<String> implements IStringCacheDao{
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
-
 	public StringRedisDao(String mod_name) {
 		super(mod_name);
 	}
 
-	/**
-	 * 方法用途: <p>将给定key的值设为value，并返回key的旧值。 </p>
-	 * <p>当key存在但不是字符串类型时，返回一个错误。 </p>
-	 * 
-	 * @param key
-	 * @param value
-	 * @return
-	 */
+	
 	public String getAndSet(String key, String value) {
-		
-		try {
-			return jedis.getSet(key, value);
-		} catch (Exception e) {
-			LOGGER.error("getAndSet error!", e);
-			return null;
-		}
-	}
+		String ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,String>() {
 
-	/**
-	 * get
-	 * @param key
-	 * @return
-	 */
-	public String get(String key) {
-		
-		try {
-			return jedis.get(key);
-		} catch (Exception e) {
-			LOGGER.error("get error!", e);
-			return null;
-		}
-	}
-
-	/**
-	 * set
-	 * @param key
-	 * @param value
-	 * @param seconds
-	 * @return
-	 */
-	public boolean set(String key, String value,int seconds) {
-		
-		try {
-			String ret = jedis.set(key, value);
-			if(seconds > 0){
-				jedis.expire(key, seconds);
+			@Override
+			public String call(String key) {
+				return CacheExecute.getJedis(mod_name).getSet(key, value);
 			}
-			return ret.equalsIgnoreCase("OK");
-		} catch (Exception e) {
-			LOGGER.error("set error!", e);
-			return false;
-		}
+		}, mod_name);
+		return ret;
+	}
+
+	public String get(String key) {
+		String ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,String>() {
+
+			@Override
+			public String call(String key) {
+				return CacheExecute.getJedis(mod_name).get(key);
+			}
+		}, mod_name);
+		return ret;
+	}
+
+	public boolean set(String key, String value,int seconds) {
+		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				String ret = CacheExecute.getJedis(mod_name).set(key, value);
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return ret.equalsIgnoreCase("OK");
+			}
+		}, mod_name);
+		return ret;
 	}
 	
 	  
-    /**
-     * 方法用途: <p>将key的值设为value，当且仅当key不存在。   </p>
-     * <p>若给定的key已经存在，则SETNX不做任何动作。    </p>
-     * <p>SETNX是”SET if Not eXists”(如果不存在，则SET)的简写。</p>
-     *
-     * @param key
-     * @param value
-     * @return
-     */
     public boolean setnx(String key, String value) {
-        
-        try {
-            long ret = jedis.setnx(key, value);
-            return ret > 0;
-        } catch (Exception e) {
-            LOGGER.error("setnx error!", e);
-            return false;
-        }
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				long ret = CacheExecute.getJedis(mod_name).setnx(key, value);
+				return ret > 0;
+			}
+		}, mod_name);
+    	return ret;
     }
 
-    /**
-     * 方法用途: <p>将值value关联到key，并将key的生存时间设为seconds(以秒为单位) </p>
-     * <p>如果key 已经存在，SETEX命令将覆写旧值。   原子性(atomic)操作 <p/>
-     *
-     * @param key
-     * @param seconds
-     * @param value
-     * @return
-     */
     public boolean setex(String key, int seconds, String value) {
-        
-        try {
-            String ret = jedis.setex(key, seconds, value);
-            return ret.equalsIgnoreCase("OK");
-        } catch (Exception e) {
-            LOGGER.error("setex error!", e);
-            return false;
-        }
+    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+
+			@Override
+			public Boolean call(String key) {
+				String ret = CacheExecute.getJedis(mod_name).setex(key,seconds, value);
+				if(seconds > 0){
+					CacheExecute.getJedis(mod_name).expire(key, seconds);
+				}
+				return ret.equalsIgnoreCase("OK");
+			}
+		}, mod_name);
+    	return ret;
     }
 
 }
