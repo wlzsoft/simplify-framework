@@ -10,6 +10,8 @@
            9.druid日志配置：https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_LogFilter
            
            10.public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params)
-           还未测试通过，count的replaceall有问题，处理后，还要测试是否可用，基于这个方法，再次封装，提供更简便的多表分页查询 TODO<br>
+           还未测试通过，count的replaceAll有问题，处理后，还要测试是否可用，基于这个方法，再次封装，提供更简便的多表分页查询 TODO<br>
 	       11.提供可选字段的update操作TODO
 	       12.缓存操作，基于注解的读取缓存功能，好像失效，需要查看下。
+	       13.IdEntity 的id改成了fid，业务需要，后续可以考虑更优雅的处理方式
+	       14.BaseEntity 的delFlag改成deleteflag业务需要
