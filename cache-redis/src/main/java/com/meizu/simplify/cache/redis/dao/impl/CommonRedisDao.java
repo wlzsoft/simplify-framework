@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.ShardedJedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
+import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
 import com.meizu.simplify.cache.ICacheDao;
@@ -79,12 +80,12 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 				return (V) SerializeUtil.unserialize(ret);
           }
           return null;
-//      } catch (TimeoutException e) {  
-//        	LOGGER.warn("获取 redis 缓存超时", e);
-//			throw new RedisException(e);
-//		} catch (InterruptedException e) {
-//			LOGGER.warn("获取 redis 缓存被中断", e);
-//			throw new RedisException(e);
+      	} catch (JedisConnectionException e) {  
+        	LOGGER.warn("获取 redis 缓存超时", e);
+			throw new RedisException(e);
+		} catch (JedisDataException e) {
+			LOGGER.warn("获取 redis 缓存被中断", e);
+			throw new RedisException(e);
 		} catch (JedisException e) {
 			LOGGER.warn("获取 redis 缓存错误", e);
 			throw new RedisException(e);
@@ -182,7 +183,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
       } catch (Exception e) {
           LOGGER.error("set error!", e);
       } finally {
-//      	RedisPool.init(mod_name).returnResourceObject(jedis);
+      	RedisPool.init(mod_name).returnResourceObject(jedis);
       }
       return false;
 	}
@@ -227,7 +228,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
       	 if(res==0) {
       		 return true;
       	 }
-//      	 catch (InterruptedException e) {
+//      	 catch (JedisDataException e) {
 //   			log.warn("删除 redis 缓存被中断", e);
 //   		} catch (RedisException e) {
 //   			log.warn("删除 redis 缓存错误", e);
@@ -248,9 +249,9 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 //		for (String key : keySet) {
 //			try {
 //				redisClient.deleteWithNoReply(this.getKey(key));
-//			} catch (InterruptedException e) {
+//			} catch (JedisDataException e) {
 //				log.warn("删除 redis 缓存被中断", e);
-//			} catch (redisException e) {
+//			} catch (RedisException e) {
 //				log.warn("删除 redis 缓存错误", e);
 //			}
 //		}
