@@ -359,18 +359,18 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String update(T t, Map<String, String> currentColumnFieldNames) {
+    public String update(T t, Map<String, String> currentColumnFieldNames,Boolean... isAllField) {
     	
     	String values = "";
         for (int i=0; i < otherIdColumns.size();i++) {
         	String column = otherIdColumns.get(i);
             Object value = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(column));
-            if(i>0) {
-            	values += ",";
-            }
-//            values += column + "=" + handleValue(value);
-            values += column + "=?";
+            if(isAllField == null||isAllField.length == 0 || isAllField[0] || value != null) {
+//              values += ","+column + "=" + handleValue(value);
+            	values += ","+column + "=?";
+        	}
         }
+        values = values.substring(1);
     	
 //        Object id = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(pkName));
 //        if(id == null) {

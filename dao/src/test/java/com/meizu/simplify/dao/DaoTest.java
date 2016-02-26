@@ -198,10 +198,16 @@ public class DaoTest {
 	@Test
 	public void s6_updateTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setName("lcycc");
+		t.setName("lcycc1");
 		t.setFid(1);
-		BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).update(t);
-		System.out.println("save==all=============================");
+		System.out.println("update==============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).update(t));
+	}
+	@Test
+	public void s6_update2Test() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("lcycc2");
+		t.setFid(1);
+		System.out.println("update2==============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).update(t,false));
 	}
 	@Test
 	public void s7_deleteTest() {

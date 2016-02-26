@@ -290,24 +290,40 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer update(T t) {
+		return update(t,true);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 更新<br>
+	 * 操作步骤: TODO<br>
+	 * @param t
+	 * @param isAllField 是否全字段更新
+	 * @return
+	 */
+	public Integer update(T t,Boolean isAllField) {
 //		buildInfo.buildId(t);
 		
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
 		if(t == null) {
 			return null;
 		}
-		String sql = sqlBuilder.update(t, currentColumnFieldNames);
+		String sql = sqlBuilder.update(t, currentColumnFieldNames,isAllField);
 		logger.info(sql);
 		return SQLExecute.executeUpdate(sql,new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				List<String> cList = sqlBuilder.getOtherIdColumns();
+				int count = 0;
 				for (int i=0; i < cList.size(); i++) {
 					String columnName = cList.get(i);
 					Object value = ReflectionUtil.invokeGetterMethod(t, columnName);
-					prepareStatement.setObject(i+1,value);
+					if((isAllField == null || isAllField)||value != null) {
+						prepareStatement.setObject(i+1,value);
+						count ++;
+					}
 				}
-				prepareStatement.setObject(cList.size()+1,t.getFid());
+				prepareStatement.setObject(count+1,t.getFid());
 				return null;
 			}
 			

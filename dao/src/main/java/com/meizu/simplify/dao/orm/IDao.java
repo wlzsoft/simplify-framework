@@ -121,8 +121,10 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @return 删除的对象数量
 	 */
 	Integer remove(PK[] ids);
-    /** 
-     * 更新,字段为空，则不进行更新
+    /**
+     * 
+     * 方法用途: 更新-默认全字段更新<br>
+     * 操作步骤: TODO<br>
      * @param t 要持久化的对象
      * @return 执行成功的记录个数
      */

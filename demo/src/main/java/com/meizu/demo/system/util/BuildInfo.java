@@ -37,15 +37,15 @@ public class BuildInfo<T extends IdEntity<Serializable,Integer>> {
 		    } catch(Exception e) {
 		    	//e.printStackTrace();
 		    }
-			if(t.getId()==null) {
+			if(t.getFid()==null) {
 				params.put("createTime", DBUtil.getDbDate());
 				if(curUserObj != null) {
-					params.put("createId",  ((IdEntity<Serializable,Integer>)curUserObj).getId());
+					params.put("createId",  ((IdEntity<Serializable,Integer>)curUserObj).getFid());
 				}
 			}
 			params.put("updateTime", DBUtil.getDbDate());
 			if(curUserObj != null) {
-				params.put("updateId",  ((IdEntity<Serializable,Integer>)curUserObj).getId());
+				params.put("updateId",  ((IdEntity<Serializable,Integer>)curUserObj).getFid());
 			}
 //			ReflectionUtil.setProperties(t, params);
 		}
