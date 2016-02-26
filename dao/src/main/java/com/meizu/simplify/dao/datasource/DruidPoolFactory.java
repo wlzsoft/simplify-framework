@@ -54,7 +54,6 @@ public class DruidPoolFactory {
 //			dataSource.setUsername("root"); 
 //			dataSource.setPassword("root"); 
 			dataSource.setUrl("jdbc:h2:d:/ms_db/MESSAGE_DATA;MVCC\\=true"); 
-//			dataSource.setUrl("jdbc:mysql://182.92.222.140:3306/idotest?useUnicode=true&characterEncoding=UTF-8");
 			dataSource.setInitialSize(5); 
 			dataSource.setMinIdle(1); 
 			dataSource.setMaxActive(16); // 启用监控统计功能 
@@ -167,7 +166,7 @@ public class DruidPoolFactory {
 
 	/**
 	 * 
-	 * 方法用途: 关闭连接<br>
+	 * 方法用途: 关闭连接-关闭会回收到连接池，是逻辑关闭而不是真正的物理关闭<br>
 	 * 操作步骤: TODO<br>
 	 */
 	public static void close() {

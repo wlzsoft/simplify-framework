@@ -63,6 +63,8 @@ public class SQLExecute {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new BaseDaoException("执行sql异常", e);
+		} finally {
+			DruidPoolFactory.close();
 		}
 	}
 	
@@ -81,6 +83,8 @@ public class SQLExecute {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			DruidPoolFactory.close();
 		}
 		return null;
 	}
@@ -103,9 +107,15 @@ public class SQLExecute {
 				int key=rs.getInt(1);
 				return key;
 			}
+//			单个sql无需手动控制事务
+//			DruidPoolFactory.startTransaction();
+//			DruidPoolFactory.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+//			DruidPoolFactory.rollback();
+		} finally {
+			DruidPoolFactory.close();
 		}
 		return null;
 	}
@@ -149,15 +159,11 @@ public class SQLExecute {
 				}
 				bList.add(b);
 			}
-//			查询无需事务处理
-//			DruidPoolFactory.startTransaction();
-//			DruidPoolFactory.commit();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-//			DruidPoolFactory.rollback();
+//			查询无需事务处理，无需事务回滚  
 		} finally {
-			DruidPoolFactory.close();//需要关闭，关闭会回收到连接池，是逻辑关闭而不是真正的物理关闭
+			DruidPoolFactory.close();
 		}
 		return bList;
 	}
