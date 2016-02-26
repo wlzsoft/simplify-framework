@@ -20,7 +20,7 @@ import com.meizu.simplify.entity.BaseEntity;
  */
 @Entity
 @Table(name="test_web")
-@Transient({"delFlag"})
+@Transient({"deleteflag"})
 public class Test extends BaseEntity {
 
 	private static final long serialVersionUID = 246628316050179125L;
