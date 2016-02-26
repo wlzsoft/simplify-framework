@@ -76,5 +76,29 @@ public class DataUtil {
 		}
 		return (T)value;
 	}
+	public static boolean parseBool(Object param) {
+		return parseBool(param, false);
+	}
+	/**
+	 * 将参数解析为boolean基本类型，解析失败时返回defaultValue。
+	 * 
+	 * @param param
+	 * @param defaultValue
+	 * @return
+	 */
+	public static boolean parseBool(Object param, boolean defaultValue) {
+		return parseBoolean(param, defaultValue);
+	}
 
+	/** 将参数解析为Boolean对象，解析失败时返回defaultValue */
+	public static Boolean parseBoolean(Object param, Boolean defaultValue) {
+		if (param == null) {
+			return defaultValue;
+		}
+		try {
+			return new Boolean(param.toString());
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
 }
