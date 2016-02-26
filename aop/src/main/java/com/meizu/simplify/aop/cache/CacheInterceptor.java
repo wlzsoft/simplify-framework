@@ -66,10 +66,13 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
 			Object obj = data.get(cacheDataSearch.key());
+			if(obj == null) {
+				return false;
+			}
 			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
 //			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -98,13 +101,10 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 
 	@Override
 	public boolean handle(Context context,Object... obj) {
-		boolean isToAfter = false;
 		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
-			isToAfter = before(context.getMethodFullName(),context.getThiz(),obj);
+			before(context.getMethodFullName(),context.getThiz(),obj);
 		} else {
-			if(isToAfter) {
-				after(context.getMethodFullName(),context.getThiz(),obj);
-			}
+			after(context.getMethodFullName(),context.getThiz(),obj);
 		}
 		return true;
 	}
