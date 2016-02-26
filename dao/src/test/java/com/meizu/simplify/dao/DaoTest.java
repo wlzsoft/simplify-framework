@@ -3,6 +3,7 @@ package com.meizu.simplify.dao;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.dao.orm.SearchByMapDao;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.ioc.Startup;
 
@@ -104,6 +106,43 @@ public class DaoTest {
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
+	public void s2_findPageMutilSqlTest() {
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp","lcy");
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
+	public void s2_findPageMutilSql2Test() {
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc) as temp","lcy");
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
+	public void s2_findPageMutilSql3Test() {
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
+	public void s2_findPageMutilSql4Test() {
+		Page<Map<String,Object>> page = BaseDao.getInsMap().findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
+	public void s2_findPageMutilSqlSubStringTest() {
+ String sql = "select * from test_web where name=?";
+		sql = sql.substring(sql.indexOf("from"));
+		System.out.println("select count(1) "+sql);
+		sql = "select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp";
+		sql = sql.substring(sql.indexOf("from"));
+		System.out.println("select count(1) "+sql);
+		sql = "select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc) as temp";
+		sql = sql.substring(sql.indexOf("from"));
+		sql = sql.replaceAll("order\\s*by.*(desc|asc)", "");
+		System.out.println("select count(1) "+sql);
+		sql = "select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc";
+		sql = sql.substring(sql.indexOf("from"));
+		sql = sql.replaceAll("order\\s*by.*(desc|asc)", "");
+		System.out.println("select count(1) "+sql);
+	}
+	@Test
 	public void s2_findPageTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");
@@ -174,7 +213,7 @@ public class DaoTest {
 	
 	@Test
 	public void s8_countTest() {
-		System.out.println("count============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).count("select count(*) from test_web"));
+		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","lcy"));
 	}
 	
 	@Test
@@ -192,5 +231,6 @@ public class DaoTest {
 			System.out.println(test.getId()+test.getName());
 		}
 	}
+	
 	
 }

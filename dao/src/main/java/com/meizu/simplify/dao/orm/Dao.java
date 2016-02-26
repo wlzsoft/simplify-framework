@@ -623,8 +623,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	/**
 	 * 
-	 * 方法用途: 还未测试通过，count的replaceall有问题，处理后，还要测试是否可用，基于这个方法，再次封装，提供更简便的多表分页查询 TODO<br>
-	 * 操作步骤: 提供可选字段的update操作TODO <br>
+	 * 方法用途: 基于这个方法，再次封装，提供更简便的多表分页查询 <br>
+	 * 操作步骤: sql通过 druid sqlparser 来解析 
+	 * 注意：方法不是很灵活<br>
 	 * @param currentPage
 	 * @param pageSize
 	 * @param sort
@@ -633,9 +634,31 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param params
 	 * @return
 	 */
+	@Deprecated
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
-		Page<T> page = new Page<T>(currentPage,pageSize,count(sql.replaceAll("select * from", "select count(1) from"),params));
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(sql.replace("select * from", "select count(1) from"),params));
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
+		page.setResults(list);
+		return page;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 基于这个方法，再次封装，提供更简便的多表分页查询 <br>
+	 * 操作步骤: sql通过 druid sqlparser 来解析<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param sql 
+	 * @param params
+	 * @return
+	 */
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
+		String countSql = sql.substring(sql.indexOf("from"));
+		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count("select count(1) "+countSql,params));
+		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
 		page.setResults(list);
 		return page;
 	}
@@ -643,26 +666,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
-	public Integer count(String sql,Object... params) {
-		logger.info(sql);//后续不在这里处理sql日志
-		List<Integer> list = SQLExecute.executeQuery(sql, new IDataCallback<Integer>() {
-			@Override
-			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
-			}
-
-			@Override
-			public Integer resultCall(String columnLabel, Object object,Integer t) {
-				return DataUtil.parseInt(object);
-			}
-		},null);
-		return list.get(0);
-	}
-	
 	@Override
 	public Integer count(T param) {
 		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
-		return count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
+		return BaseDao.getInsMap().count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
 	}
 	
 	/**

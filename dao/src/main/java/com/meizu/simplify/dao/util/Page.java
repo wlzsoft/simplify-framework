@@ -260,7 +260,7 @@ public class Page<T> implements IPage<T> {
 		return totalRecord;
 	}
 
-	public void setTotalRecord(Integer totalRecord) {
+	private void setTotalRecord(Integer totalRecord) {
 		if (totalRecord == null) {
 			totalRecord = 0;
 		}
