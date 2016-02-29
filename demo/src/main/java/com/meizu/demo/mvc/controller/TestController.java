@@ -50,6 +50,14 @@ public class TestController extends BaseController<TestModel> {
 	@Resource
 	private TestService testService;
 	
+	@RequestMap(path = "/testvoid/")
+	public IForward doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		testService.addTestObj(null);
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
+		return new ActionForward("/index.jsp");
+	}
+	
 	@RequestMap(path = "/test/")
 	public IForward doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTest(null);

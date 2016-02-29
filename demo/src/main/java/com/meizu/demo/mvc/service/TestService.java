@@ -42,6 +42,19 @@ public class TestService {
         System.out.println("ִtest2测试2:"+test.getName());
         return test;
     }
+	
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param test 写入redis，是写入的这个参数
+	 * @return
+	 */
+	@CacheDataAdd(key="bbb22")
+	public void addTestObj(Test test) {
+        test = BaseDao.getIns(Test.class).findById(1);
+        System.out.println("ִ测试添加功能:"+test.getName());
+    }
 
 
     /*public static void main(String[] args) {
