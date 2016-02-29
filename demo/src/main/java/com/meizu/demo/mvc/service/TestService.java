@@ -4,6 +4,7 @@ import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.entity.User;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
+import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 
@@ -50,6 +51,7 @@ public class TestService {
 	 * @param test 写入redis，是写入的这个参数
 	 * @return
 	 */
+	@Transation
 	@CacheDataAdd(key="bbb22")
 	public void addTestObj(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);

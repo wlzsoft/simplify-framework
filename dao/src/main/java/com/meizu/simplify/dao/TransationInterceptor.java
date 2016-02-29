@@ -1,5 +1,8 @@
 package com.meizu.simplify.dao;
 
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,7 +10,10 @@ import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
+import com.meizu.simplify.cache.dto.CacheAnnotationInfo;
+import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
+import com.meizu.simplify.dao.resolver.TransationAnnotationResolver;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
@@ -32,8 +38,18 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 	public boolean before(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
-		DruidPoolFactory.startTransaction();
-		LOGGER.info("事务切面切入：["+methodFullName+"]方法之前 切入");
+		
+		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		if(cacheAnnoInfo == null) {
+			return false;
+		}
+		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		if(anno.annotationType().equals(Transation.class)) {
+			DruidPoolFactory.startTransaction();
+			LOGGER.info("事务切面切入：["+methodFullName+"]方法之前 切入");
+		}
+		
 		return true;
 	}
 	
@@ -41,9 +57,18 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 	public boolean after(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
-		DruidPoolFactory.commit();
-		DruidPoolFactory.close();
-		LOGGER.info("事务切面切入：["+methodFullName+"]方法之后切入");
+		
+		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		if(cacheAnnoInfo == null) {
+			return false;
+		}
+		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		if(anno.annotationType().equals(Transation.class)) {
+			DruidPoolFactory.commit();
+			DruidPoolFactory.close();
+			LOGGER.info("事务切面切入：["+methodFullName+"]方法之后切入");
+		}
 		return true;
 	}
 
