@@ -8,6 +8,7 @@ import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
+import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
  * <p><b>Title:</b><i>事务处理拦截器</i></p>
@@ -22,16 +23,10 @@ import com.meizu.simplify.dao.datasource.DruidPoolFactory;
  * @version Version 0.1
  *
  */
+@Bean
 public class TransationInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransationInterceptor.class);
-	private static final TransationInterceptor INTERCEPTOR = new TransationInterceptor(); 
-	private TransationInterceptor() {
-		
-	}
-	public static TransationInterceptor getInstance() {
-		return INTERCEPTOR;
-	}
 	
 	@Override
 	public boolean before(Context context,Object... args) {
