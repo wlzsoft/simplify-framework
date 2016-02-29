@@ -1,6 +1,5 @@
 package com.meizu.simplify.dao.datasource;
 
-import com.meizu.simplify.dao.ProceedingJoinPoint;
 import com.meizu.simplify.ioc.annotation.Bean;
 /**
  * <p><b>Title:</b><i>动态数据源切面</i></p>
@@ -54,6 +53,29 @@ public class DynamicDataSourceAspect {
 			DynamicDataSourceHolder.setClear();
 		}
 		return object;
+	}
+
+}
+class ProceedingJoinPoint {
+
+	public Object[] getArgs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getTarget() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Class<? extends Object> getSignature() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object proceed() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
