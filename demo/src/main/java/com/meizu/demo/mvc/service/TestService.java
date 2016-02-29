@@ -11,7 +11,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 public class TestService {
 
 	@CacheDataAdd(key="aaa")
-    public Object doSomeThing(User bb) {
+    public Object doSomeThing() {
         System.out.println("2test2d测试");
         return true;
     }
@@ -44,7 +44,7 @@ public class TestService {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
     	long start = System.currentTimeMillis();
         TestService h = new TestService();
         User bb = new User();
@@ -52,5 +52,5 @@ public class TestService {
         h.doSomeThing(bb);
         System.out.println(System.currentTimeMillis()-start);
     }
-
+*/
 }

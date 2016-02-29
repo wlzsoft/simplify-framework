@@ -151,9 +151,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
     	                	ctmethod.insertBefore("com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);");
     	                	ctmethod.insertBefore("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);"
-//            			            + "if(beforeObject != null) {"
-//            			            + "    return beforeObject;"
-//            			            + "}"
+            			            + "if(beforeObject != null) {"
+            			            + "    return beforeObject;"
+            			            + "}"
             			            );
     	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",this,$args);");
     	                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
