@@ -4,6 +4,7 @@ package com.meizu.demo;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.meizu.simplify.aop.InterceptResult;
 import com.meizu.simplify.ioc.Startup;
 
 /**
@@ -31,10 +32,11 @@ public class AopTest {
 		String className = "com.meizu.demo.mvc.service.TestService";
 		String methodName = "doSomeThing";
 		String methodFullName = className+":"+methodName;
+		InterceptResult ir = new InterceptResult();
     	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
-        	com.meizu.simplify.aop.IInterceptor.initBefore(methodFullName,this);
+        	com.meizu.simplify.aop.IInterceptor.initBefore(methodFullName,ir,this);
         	long startTime = System.currentTimeMillis();
-        	com.meizu.simplify.aop.IInterceptor.initAfter(methodFullName,this);
+        	com.meizu.simplify.aop.IInterceptor.initAfter(methodFullName,ir,this);
         	long endTime = System.currentTimeMillis();
         	System.out.println("方法 ["+methodFullName+"] 调用花费的时间:" +(endTime - startTime) +"ms.");
 	}

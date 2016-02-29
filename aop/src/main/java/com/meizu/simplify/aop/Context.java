@@ -21,9 +21,13 @@ public class Context {
 	private Object thiz;
 	//方法全名
 	private String methodFullName;
-	//结果值
-	private Object result;
+	//结果值-注意：这个值是请求共享变量，在同一个请求中，值的引用是同一个
+	private InterceptResult result;
 
+	public Context(InterceptResult result) {
+		this.result = result;
+	}
+	
 	public void setMethodFullName(String methodFullName) {
 		this.methodFullName = methodFullName;
 	}
@@ -53,16 +57,7 @@ public class Context {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public Object getCallback() {
+	public InterceptResult getCallback() {
 		return result;
-	}
-	/**
-	 * 
-	 * 方法用途: 设置结果值或中间结果<br>
-	 * 操作步骤: TODO<br>
-	 * @param result
-	 */
-	public void setResult(Object result) {
-		this.result = result;
 	}
 }

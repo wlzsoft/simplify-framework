@@ -71,7 +71,7 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 			if(obj == null) {
 				return false;
 			}
-			context.setResult(obj);
+			context.getCallback().setResult(obj);
 			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
 //			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
@@ -109,7 +109,9 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
 			before(context,obj);
 		} else {
-			after(context,obj);
+			if(context.getCallback().getResult() == null) {
+				after(context,obj);
+			}
 		}
 		return true;
 	}
