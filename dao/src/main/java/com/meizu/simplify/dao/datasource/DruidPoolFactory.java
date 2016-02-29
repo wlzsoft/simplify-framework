@@ -168,7 +168,9 @@ public class DruidPoolFactory {
 		try {
 			Connection conn = container.get();
 			if (conn != null) {
-				conn.close();
+				if(!conn.isClosed()) {
+					conn.close();
+				}
 				System.out.println(Thread.currentThread().getName() + "连接关闭");
 			}
 		} catch (SQLException e) {
