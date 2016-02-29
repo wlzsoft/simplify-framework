@@ -34,6 +34,7 @@ import javassist.NotFoundException;
 public class AopClassFileTransformer implements ClassFileTransformer {
 	
 //	private static final Logger LOGGER = DefaultLogManager.getLogger();
+//	private static final Logger LOGGER = LoggerFactory.getLogger(AopClassFileTransformer.class);
 	private class FilterMetaInfo {
 		private String filterName;
 		//默认不匹配
@@ -52,7 +53,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		}
 		
 	}
-//	private static final Logger LOGGER = LoggerFactory.getLogger(AopClassFileTransformer.class);
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
     public AopClassFileTransformer(){
@@ -128,13 +128,13 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         			ClassPool pool = ClassPool.getDefault();
 //        			pool.insertClassPath(className);
 //        			pool.insertClassPath(new ClassClassPath(this.getClass())); 
+//        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
         			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
         			for (String targetClassPath : targetClassPathArr) {
         				pool.insertClassPath(targetClassPath); 
 					}
-//        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
-//        			InputStream ins = null; 
-//        			CtClass ctclass = pool.makeClass(ins); 
+//        			InputStream inputStream = null; 
+//        			CtClass ctclass = pool.makeClass(inputStream); 
     	        	CtClass ctclass = pool.get(className);
 //    	        	if(!ctclass.hasAnnotation(Bean.class)) {
 //    	        		return ctclass;
@@ -154,18 +154,16 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     		        }
     		        return ctclass;
     	        } catch (CannotCompileException e) {
-    	            // TODO Auto-generated catch block
     	            e.printStackTrace();
     	            System.out.println("framework:buildClazz");
     	        } catch (NotFoundException e) {
-    	            // TODO Auto-generated catch block
     	            e.printStackTrace();
     	            System.out.println("framework:NotFound(找不到相关class文件):1.请检查aop.properties中injectionTargetClassPaths属性是否有设置有误");
     	        }
         		break;
         	}
         }
-//        printAopMappingInfo();
+//      printAopMappingInfo();
         return null;
 	}
 
