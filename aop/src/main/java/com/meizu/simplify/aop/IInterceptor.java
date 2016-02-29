@@ -19,7 +19,7 @@ import com.meizu.simplify.aop.log.LogInterceptor;
  *
  */
 public interface IInterceptor {
-	public static Object initBefore(String methodFullName,Object o,Object... args ) {
+	public  static <T extends Object> T initBefore(String methodFullName,Object o,Object... args ) {
 		Handler handle = CacheInterceptor.getBeforeInstance();
 //		handle.setNextHandler(new LogInterceptor())//业务处理成功后才需要记录日志，这里无需设置日志过滤器
 //		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
@@ -28,7 +28,7 @@ public interface IInterceptor {
 		context.setThis(o);
 		context.setType(ContextTypeEnum.BEFORE);
 		handle.invoke(context,args);//无需指定参数，暂无传递参数，后续有需要再添加
-		return null;
+		return (T) context.getCallback();
 	}
 	
 	public static Object initAfter(String methodFullName,Object o,Object... args ) {
@@ -43,6 +43,6 @@ public interface IInterceptor {
 		return -1;
 	}
 	
-	boolean before(String methodFullName,Object o,Object... args);
-	boolean after(String methodFullName,Object o,Object... args);
+	boolean before(Context context,Object... args);
+	boolean after(Context context,Object... args);
 }

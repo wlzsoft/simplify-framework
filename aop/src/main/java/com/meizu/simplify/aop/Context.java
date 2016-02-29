@@ -17,8 +17,13 @@ import com.meizu.simplify.aop.enums.ContextTypeEnum;
  */
 public class Context {
 	private ContextTypeEnum type;
+	//当前业务对象-一般是xxxController或是xxxService的对象
 	private Object thiz;
+	//方法全名
 	private String methodFullName;
+	//结果值
+	private Object result;
+
 	public void setMethodFullName(String methodFullName) {
 		this.methodFullName = methodFullName;
 	}
@@ -40,5 +45,24 @@ public class Context {
 
 	public void setType(ContextTypeEnum type) {
 		this.type = type;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 获取链条环境中的结果值<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public Object getCallback() {
+		return result;
+	}
+	/**
+	 * 
+	 * 方法用途: 设置结果值或中间结果<br>
+	 * 操作步骤: TODO<br>
+	 * @param result
+	 */
+	public void setResult(Object result) {
+		this.result = result;
 	}
 }

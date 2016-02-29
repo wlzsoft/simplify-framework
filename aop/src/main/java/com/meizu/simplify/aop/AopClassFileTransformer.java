@@ -146,15 +146,16 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
     	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
     	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
-//    	                	ctmethod.addParameter(type); 添加方法参数，并指定参数类型，可以是自定义类型
+//    	                	ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
     	                	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
-    	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
-    	                	ctmethod.insertBefore("com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);");
-    	                	ctmethod.insertBefore("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);"
+//    	                	ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
+    	                	//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
+    	                	ctmethod.insertBefore(" beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);"
             			            + "if(beforeObject != null) {"
-            			            + "    return beforeObject;"
+            			            + "    return ("+ctmethod.getReturnType().getName()+")beforeObject;"
             			            + "}"
             			            );
+    	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
     	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",this,$args);");
     	                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
     	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");

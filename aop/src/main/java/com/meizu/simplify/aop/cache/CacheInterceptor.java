@@ -55,7 +55,9 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	
 	ICacheDao<String, Object> data = CacheProxyDao.getCache();
 	@Override
-	public boolean before(String methodFullName,Object o,Object... args) {
+	public boolean before(Context context,Object... args) {
+		String methodFullName = context.getMethodFullName();
+		Object o = context.getThiz();
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
@@ -76,7 +78,9 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	}
 	
 	@Override
-	public boolean after(String methodFullName,Object o,Object... args) {
+	public boolean after(Context context,Object... args) {
+		String methodFullName = context.getMethodFullName();
+		Object o = context.getThiz();
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
@@ -102,9 +106,9 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean handle(Context context,Object... obj) {
 		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
-			before(context.getMethodFullName(),context.getThiz(),obj);
+			before(context,obj);
 		} else {
-			after(context.getMethodFullName(),context.getThiz(),obj);
+			after(context,obj);
 		}
 		return true;
 	}

@@ -1,14 +1,11 @@
 package com.meizu.simplify.dao;
  
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
- 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.dao.dialect.IDialectManager;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -145,14 +142,14 @@ public class SqlInterceptor implements IInterceptor {
 
 
 	@Override
-	public boolean before(String methodFullName, Object o, Object... args) {
+	public boolean before(Context context, Object... args) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
 
 	@Override
-	public boolean after(String methodFullName, Object o, Object... args) {
+	public boolean after(Context context, Object... args) {
 		// TODO Auto-generated method stub
 		return true;
 	}
