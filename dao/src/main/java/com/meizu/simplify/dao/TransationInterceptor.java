@@ -10,7 +10,7 @@ import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
-import com.meizu.simplify.cache.dto.CacheAnnotationInfo;
+import com.meizu.simplify.cache.dto.AnnotationInfo;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.resolver.TransationAnnotationResolver;
@@ -39,8 +39,8 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
 		
-		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
-		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		if(cacheAnnoInfo == null) {
 			return false;
 		}
@@ -58,8 +58,8 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
 		
-		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
-		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		if(cacheAnnoInfo == null) {
 			return false;
 		}

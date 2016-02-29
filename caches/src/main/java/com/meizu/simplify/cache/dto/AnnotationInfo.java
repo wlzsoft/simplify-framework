@@ -15,7 +15,7 @@ import java.lang.annotation.Annotation;
  * @version Version 0.1
  *
  */
-public class CacheAnnotationInfo {
+public class AnnotationInfo {
 
 	/**
 	 * annotation类型

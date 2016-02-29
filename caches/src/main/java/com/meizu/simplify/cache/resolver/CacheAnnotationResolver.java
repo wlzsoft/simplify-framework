@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.annotation.CacheDataDel;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
-import com.meizu.simplify.cache.dto.CacheAnnotationInfo;
+import com.meizu.simplify.cache.dto.AnnotationInfo;
 import com.meizu.simplify.cache.exception.CacheException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -37,7 +37,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheAnnotationResolver.class);
 	
-	public static final Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = new ConcurrentHashMap<>();
+	public static final Map<String,AnnotationInfo> cacheAnnotationInfoMap = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -69,7 +69,7 @@ public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T cacheDataAdd = method.getDeclaredAnnotation(clazzAnno);
 		LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
-		CacheAnnotationInfo cai = new CacheAnnotationInfo();
+		AnnotationInfo cai = new AnnotationInfo();
 		cai.setAnnotatoionType(cacheDataAdd);
 		cai.setReturnType(method.getReturnType());
 		cacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);

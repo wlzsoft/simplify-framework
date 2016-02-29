@@ -5,7 +5,7 @@ import java.lang.annotation.Annotation;
 import org.junit.Test;
 
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
-import com.meizu.simplify.cache.dto.CacheAnnotationInfo;
+import com.meizu.simplify.cache.dto.AnnotationInfo;
 import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
 
 import javassist.CannotCompileException;
@@ -17,7 +17,7 @@ public class AopClassFileTransformerSimpleTest {
 //		CtClass cc = new AopClassFileTransformer().buildClazz("com/meizu/aop/service/TestService");
 //		new AopClassFileTransformer().transformInit("com/meizu/aop/service/TestService");
 		long start = System.currentTimeMillis();
-			CacheAnnotationInfo cai = new CacheAnnotationInfo();
+			AnnotationInfo cai = new AnnotationInfo();
 			CacheDataAdd cacheDataAdd = new CacheDataAdd() {
 				
 				@Override

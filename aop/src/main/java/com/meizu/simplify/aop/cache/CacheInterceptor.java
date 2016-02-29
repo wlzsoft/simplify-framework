@@ -15,7 +15,7 @@ import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.annotation.CacheDataDel;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
-import com.meizu.simplify.cache.dto.CacheAnnotationInfo;
+import com.meizu.simplify.cache.dto.AnnotationInfo;
 import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
 
@@ -62,8 +62,8 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
-		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
@@ -86,8 +86,8 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,CacheAnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
-		CacheAnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
