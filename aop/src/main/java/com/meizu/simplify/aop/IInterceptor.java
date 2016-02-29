@@ -28,7 +28,7 @@ public interface IInterceptor {
 		context.setThis(o);
 		context.setType(ContextTypeEnum.BEFORE);
 		handle.invoke(context,args);//无需指定参数，暂无传递参数，后续有需要再添加
-		return -1;
+		return null;
 	}
 	
 	public static Object initAfter(String methodFullName,Object o,Object... args ) {

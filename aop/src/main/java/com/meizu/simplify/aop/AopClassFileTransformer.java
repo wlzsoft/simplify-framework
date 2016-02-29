@@ -8,9 +8,7 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.utils.log.util.DefaultLogManager;
+//import com.meizu.simplify.utils.log.util.DefaultLogManager;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -66,7 +64,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	
     	injectionTargetClassPaths = Config.getUtil().getProperty("injectionTargetClassPaths");
     	if(injectionTargetClassPaths == null || injectionTargetClassPaths.equals("")) {
-    		throw new UncheckedException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
+    		throw new RuntimeException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
     	}
     	
     }
@@ -131,6 +129,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 //        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
         			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
         			for (String targetClassPath : targetClassPathArr) {
+        				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来
+        				//因为启动修改class文件时依赖他
         				pool.insertClassPath(targetClassPath); 
 					}
 //        			InputStream inputStream = null; 
@@ -146,8 +146,15 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
     	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
     	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
-    	                	ctmethod.insertBefore("com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);");
+//    	                	ctmethod.addParameter(type); 添加方法参数，并指定参数类型，可以是自定义类型
+    	                	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
     	                	ctmethod.insertBefore("startTime = System.currentTimeMillis();");
+    	                	ctmethod.insertBefore("com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);");
+    	                	ctmethod.insertBefore("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",this,$args);"
+//            			            + "if(beforeObject != null) {"
+//            			            + "    return beforeObject;"
+//            			            + "}"
+            			            );
     	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",this,$args);");
     	                	ctmethod.insertAfter("endTime = System.currentTimeMillis();");
     	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime) +\"ms.\");");
