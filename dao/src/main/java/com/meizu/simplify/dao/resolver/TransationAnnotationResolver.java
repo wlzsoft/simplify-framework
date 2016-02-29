@@ -10,12 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.annotation.CacheDataAdd;
-import com.meizu.simplify.cache.annotation.CacheDataDel;
-import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.cache.dto.AnnotationInfo;
-import com.meizu.simplify.cache.exception.CacheException;
 import com.meizu.simplify.dao.annotations.Transation;
+import com.meizu.simplify.dao.exception.DataAccessException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
@@ -51,7 +48,7 @@ public class TransationAnnotationResolver implements IAnnotationResolver<Class<?
 				methodArr = beanClass.getDeclaredMethods();
 			} catch(NoClassDefFoundError e) {
 				e.printStackTrace();
-				throw new CacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+				throw new DataAccessException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
 			}
 			
 			for (Method method : methodArr) {
@@ -62,10 +59,10 @@ public class TransationAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 	}
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
-		T cacheDataAdd = method.getDeclaredAnnotation(clazzAnno);
+		T transation = method.getDeclaredAnnotation(clazzAnno);
 		LOGGER.debug("事务注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 		AnnotationInfo cai = new AnnotationInfo();
-		cai.setAnnotatoionType(cacheDataAdd);
+		cai.setAnnotatoionType(transation);
 		cai.setReturnType(method.getReturnType());
 		transAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);
 	}

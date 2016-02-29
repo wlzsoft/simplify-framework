@@ -39,12 +39,12 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
 		
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
-		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
-		if(cacheAnnoInfo == null) {
+		Map<String,AnnotationInfo> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo annoInfo = annotationInfoMap.get(methodFullName);
+		if(annoInfo == null) {
 			return false;
 		}
-		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			DruidPoolFactory.startTransaction();
 			LOGGER.info("事务切面切入：["+methodFullName+"]方法之前 切入");
@@ -58,12 +58,12 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
 		
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
-		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
-		if(cacheAnnoInfo == null) {
+		Map<String,AnnotationInfo> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo annoInfo = annotationInfoMap.get(methodFullName);
+		if(annoInfo == null) {
 			return false;
 		}
-		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			DruidPoolFactory.commit();
 			DruidPoolFactory.close();
