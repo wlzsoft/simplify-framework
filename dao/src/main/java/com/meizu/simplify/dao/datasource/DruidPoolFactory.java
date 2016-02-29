@@ -5,9 +5,7 @@ import java.sql.SQLException;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
-import com.meizu.simplify.dao.config.PropertiesConfig;
 import com.meizu.simplify.dao.exception.DataAccessException;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.utils.PropertieUtil;
 
 /**
@@ -72,13 +70,16 @@ public class DruidPoolFactory {
 			try {
 				dataSource.setFilters("stat");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}  
 			dataSource.setPoolPreparedStatements(false);
 			
 		}
-		initPool();
+		try {
+			dataSource.init();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return dataSource;
 	}
 	
@@ -93,7 +94,6 @@ public class DruidPoolFactory {
 				throw new DataAccessException("连接已关闭");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new DataAccessException(e.getMessage());
 		}
@@ -139,6 +139,8 @@ public class DruidPoolFactory {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
 
@@ -156,6 +158,8 @@ public class DruidPoolFactory {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 	}
 
@@ -194,7 +198,6 @@ public class DruidPoolFactory {
 		try {
 			factory.dataSource.init();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

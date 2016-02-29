@@ -23,6 +23,7 @@ public interface IInterceptor {
 		Handler handle = CacheInterceptor.getBeforeInstance();
 //		handle.setNextHandler(new LogInterceptor())//业务处理成功后才需要记录日志，这里无需设置日志过滤器
 //		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
+//		handle.setNextHandler(TransationInterceptor)
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);
 		context.setThis(o);
