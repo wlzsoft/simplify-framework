@@ -78,12 +78,7 @@ public class DruidPoolFactory {
 			dataSource.setPoolPreparedStatements(false);
 			
 		}
-		try {
-			dataSource.init();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		initPool();
 		return dataSource;
 	}
 	
@@ -187,10 +182,25 @@ public class DruidPoolFactory {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * 方法用途: 初始化数据源<br>
+	 * 操作步骤:  init-method="init"<br>
+	 */
+	public static void initPool() {
+		try {
+			factory.dataSource.init();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * 方法用途: 关闭数据源<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤:  destroy-method="close"<br>
 	 */
 	public static void closePool() {
 		factory.dataSource.close();
