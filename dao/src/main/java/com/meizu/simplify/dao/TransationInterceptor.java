@@ -12,7 +12,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
  * <p><b>Title:</b><i>事务处理拦截器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 缺少对rollback的处理，这块在异常处理器中去执行</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
