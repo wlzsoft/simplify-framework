@@ -68,7 +68,8 @@ public class SQLExecute {
 			e.printStackTrace();
 			throw new BaseDaoException("执行sql异常", e);
 		} finally {
-			free(prepareStatement,null);
+//			free(prepareStatement,null);
+			DruidPoolFactory.close();
 		}
 	}
 	
@@ -90,14 +91,16 @@ public class SQLExecute {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			free(prepareStatement,null);
+//			free(prepareStatement,null);
+			DruidPoolFactory.close();
 		}
 		return null;
 	}
 	
 	/**
 	 * 方法用途: 释放资源<br>
-	 * 操作步骤: TODO 待测试<br>
+	 * 操作步骤: 注意：关闭PreparedStatement和ResultSet有性能消耗，没必要关闭，因为连接有连接池管理，但是另外两个确没有，并且跟着连接走，所以没必要关闭
+	 *           需要更进一步验证上面的理论<br>
 	 * @param preparedStatement
 	 * @param rs
 	 */
@@ -113,11 +116,12 @@ public class SQLExecute {
 		}finally{
 			try{
 				if(preparedStatement != null ) {
-					if(!preparedStatement.isCloseOnCompletion()){
+//					if(!preparedStatement.isCloseOnCompletion()){
+//						preparedStatement.close();
+//					} else 
+					if(!preparedStatement.isClosed()) {
 						preparedStatement.close();
-					} else if(!preparedStatement.isClosed()) {
-						preparedStatement.close();
-						System.out.println("preparedStatement非正常关闭");
+//						System.out.println("preparedStatement非正常关闭");
 					}
 				}
 			}catch(SQLException e){
@@ -163,7 +167,8 @@ public class SQLExecute {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
-			free(prepareStatement,rs);
+//			free(prepareStatement,rs);
+			DruidPoolFactory.close();
 		}
 	}
 	
@@ -194,7 +199,8 @@ public class SQLExecute {
 			e.printStackTrace();
 //			DruidPoolFactory.rollback();
 		} finally {
-			free(prepareStatement,null);
+//			free(prepareStatement,null);
+			DruidPoolFactory.close();
 		}
 		return null;
 	}
@@ -244,7 +250,8 @@ public class SQLExecute {
 			e.printStackTrace();
 //			查询无需事务处理，无需事务回滚  
 		} finally {
-			free(prepareStatement,rs);
+//			free(prepareStatement,rs);
+			DruidPoolFactory.close();
 		}
 		return bList;
 	}

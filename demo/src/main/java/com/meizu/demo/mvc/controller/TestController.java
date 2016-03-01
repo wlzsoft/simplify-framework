@@ -50,6 +50,12 @@ public class TestController extends BaseController<TestModel> {
 	@Resource
 	private TestService testService;
 	
+	@RequestMap(path = "/testjson/")
+	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
+	}
+	
 	@RequestMap(path = "/testvoid/")
 	public IForward doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTestObj(null);
