@@ -1,13 +1,6 @@
 package com.meizu.simplify.mvc.controller;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.meizu.simplify.mvc.MvcInit;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.utils.JsonUtil;
 
 
 /**
@@ -27,6 +20,7 @@ public  class  JsonForward extends MessageForward {
 
 	public JsonForward(Object obj) {
 		super("");
-		super.setMsg("obj");
+		String message = JsonUtil.ObjectToJson(obj);
+		super.setMsg(message);
 	}
 }
