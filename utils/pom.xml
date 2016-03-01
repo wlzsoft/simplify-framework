@@ -31,7 +31,7 @@
 			<version>1.11.0</version>
 		</dependency> -->
 		
-		<!-- 字节码操作工具 -->
+		<!-- 字节码操作工具-TODO 后续废弃掉，这里不需要，只存在于weaving模块中就可以 -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
