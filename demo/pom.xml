@@ -53,7 +53,7 @@
     	<!-- 运行命令 mvn jetty:run 或    mvn -Djetty.port=9999 jetty:run -->
 		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
 		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
-		<!-- -javaagent:E:/workspace-new/simplify-framework/aop/target/aop-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties -->
+		<!-- -javaagent:E:/workspace-new/simplify-framework/aop/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties -->
 		<plugin>
 
 		  <groupId>org.eclipse.jetty</groupId>
@@ -159,7 +159,7 @@
 	      <artifactId>maven-surefire-plugin</artifactId>
 	      <configuration>
 	        <forkMode>pertest</forkMode>
-	        <argLine>-javaagent:${project.basedir}/target/aop-0.0.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
+	        <argLine>-javaagent:${project.basedir}/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
 	        <workingDirectory>${project.basedir}/target</workingDirectory>
 	      </configuration>
 	    </plugin>

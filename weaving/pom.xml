@@ -6,10 +6,10 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>weaving</artifactId>
-  <name>切面组件</name>
+  <name>织入组件</name>
   <description>动态字节码生成方式
-  以下是javaagent参数读取的aop.jar所依赖的配置文件，日志的jar可以不提供
-  aop-0.0.1-SNAPSHOT.jar
+  以下是javaagent参数读取的weaving.jar所依赖的配置文件，日志的jar可以不提供
+  weaving-0.0.1-SNAPSHOT.jar
   javassist-3.20.0-GA.jar
   utils-0.0.1-SNAPSHOT.jar 如果缺少这个包会报Caused by: java.lang.NoClassDefFoundError ，因为运行时依赖他
   //以下日志插件会影响jetty容器输入的日志，考虑废弃掉，或是通过jetty参数设置来控制日志的输出
