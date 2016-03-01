@@ -75,7 +75,15 @@
 		<url-pattern>/druid/*</url-pattern>
 	</servlet-mapping>
   
-  
+     <!-- 用于控制@WebFilter的顺序：servlet3.0规范的缺陷，最好只保留一个filter，权限控制自定义模块控制，目前已有，需要优化，下面的配置可选，但有多个filter时 -->
+	<!-- <filter-mapping>
+	    <filter-name>LoginFilter</filter-name>
+	    <url-pattern />
+	</filter-mapping>
+	 <filter-mapping>
+	    <filter-name>SecurityFilter</filter-name>
+	    <url-pattern />
+	</filter-mapping> -->
   
   
   <error-page>

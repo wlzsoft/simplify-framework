@@ -56,7 +56,9 @@ public class ActionForward implements IForward {
 			response.setContentType("text/html; charset=" + MvcInit.charSet);
 			response.getWriter().print(content);
 
-		} else rd.forward(request, response);
+		} else {
+			rd.forward(request, response);
+		}
 	}
 
 	/**
