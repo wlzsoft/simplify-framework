@@ -18,13 +18,25 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 public class JsonUtil {
 	/**
 	 * 
-	 * 方法用途: JSON转换成字符串<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: JSON转换成字符串-带元数据信息<br>
+	 * 操作步骤: 注意：会有的@type用来表示类型,尽量避免使用
+	 *           建议使用场景，容器启动时，不建议用于网络传输中<br>
+	 * @param obj
+	 * @return
+	 */
+	public static String ObjectToJsonAndContainMeta(Object obj){
+    	return JSON.toJSONString(obj, SerializerFeature.WriteClassName);
+    }
+	
+	/**
+	 * 
+	 * 方法用途: JSON转换成字符串-不带元数据信息<br>
+	 * 操作步骤: TODO <br>
 	 * @param obj
 	 * @return
 	 */
 	public static String ObjectToJson(Object obj){
-    	return JSON.toJSONString(obj, SerializerFeature.WriteClassName);
+    	return JSON.toJSONString(obj);
     }
     
 	/**
