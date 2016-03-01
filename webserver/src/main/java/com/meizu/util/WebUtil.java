@@ -4,11 +4,18 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
-
 /**
- * 
- * byte转char
- * 
+ * <p><b>Title:</b><i>byte转char</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月1日 下午6:43:22</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月1日 下午6:43:22</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
  */
 public class WebUtil {
 	public static byte[] getBytes(char[] chars) {
