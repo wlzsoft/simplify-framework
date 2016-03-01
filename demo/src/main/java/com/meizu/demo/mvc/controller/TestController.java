@@ -1,6 +1,7 @@
 package com.meizu.demo.mvc.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,9 @@ public class TestController extends BaseController<TestModel> {
 	@RequestMap(path = "/testjson/")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
-		return new JsonForward(test);
+		List<Test> testList = new ArrayList<>();
+		testList.add(test);
+		return new JsonForward(testList);
 	}
 	
 	@RequestMap(path = "/testmessage/")
