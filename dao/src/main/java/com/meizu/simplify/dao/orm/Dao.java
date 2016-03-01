@@ -221,6 +221,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 					for (int i=1; i <= values.size();i++) {
 						Object obj = values.get(i-1);
 						prepareStatement.setObject(i+values.size()*j, obj);
+//						prepareStatement.setDate(i,new Date(System.currentTimeMillis()));//这里通用处理，无需单独处理日期
 					}
 				}
 				return null;
