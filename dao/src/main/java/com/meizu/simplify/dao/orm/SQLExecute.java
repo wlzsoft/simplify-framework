@@ -100,7 +100,7 @@ public class SQLExecute {
 	/**
 	 * 方法用途: 释放资源<br>
 	 * 操作步骤: 注意：关闭PreparedStatement和ResultSet有性能消耗，没必要关闭，因为连接有连接池管理，但是另外两个确没有，并且跟着连接走，所以没必要关闭
-	 *           需要更进一步验证上面的理论<br>
+	 *           需要更进一步验证上面的理论,默认con关闭时会自动关闭ResultSet、Statement，连接池未必会<br>
 	 * @param preparedStatement
 	 * @param rs
 	 */

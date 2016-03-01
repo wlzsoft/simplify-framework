@@ -17,6 +17,7 @@
 15.修复部分数据库相关没释放的问题，比如result和statement的关闭，需要测试，配合14点的压力测试，查看效果
 16.mvc的json方式的ajax方法的处理和优化
 17.查看aop模块的readme.md文档，处理aop相关的问题
+18.druid连接池，是否有管理resultset和statement的关闭和创建
 
 	       
 	       
