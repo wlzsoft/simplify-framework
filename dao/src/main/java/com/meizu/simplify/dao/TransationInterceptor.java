@@ -10,10 +10,10 @@ import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
-import com.meizu.simplify.cache.dto.AnnotationInfo;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.resolver.TransationAnnotationResolver;
+import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 /**

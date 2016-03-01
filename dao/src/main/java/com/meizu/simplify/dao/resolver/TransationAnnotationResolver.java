@@ -10,9 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.dto.AnnotationInfo;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.exception.DataAccessException;
+import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
