@@ -20,6 +20,7 @@ import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.ActionForward;
 import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.controller.JsonForward;
 import com.meizu.simplify.mvc.controller.MessageForward;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -52,6 +53,12 @@ public class TestController extends BaseController<TestModel> {
 	
 	@RequestMap(path = "/testjson/")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		return new JsonForward(test);
+	}
+	
+	@RequestMap(path = "/testmessage/")
+	public IForward doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
 	}
