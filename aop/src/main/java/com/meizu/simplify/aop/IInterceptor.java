@@ -1,6 +1,5 @@
 package com.meizu.simplify.aop;
 
-import com.meizu.simplify.aop.cache.CacheInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.ioc.BeanFactory;
 

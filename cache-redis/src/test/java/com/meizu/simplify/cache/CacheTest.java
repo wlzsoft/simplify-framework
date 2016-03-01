@@ -7,7 +7,7 @@ import com.meizu.simplify.cache.service.TestService;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
 
-public class AopClassFileTransformerTest {
+public class CacheTest {
 
 	@Test
 	public void testAll() {

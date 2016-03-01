@@ -11,7 +11,7 @@ import com.meizu.simplify.dto.AnnotationInfo;
 
 import javassist.CannotCompileException;
 
-public class AopClassFileTransformerSimpleTest {
+public class CacheSimpleTest {
 
 	@Test
 	public void test() throws InstantiationException, IllegalAccessException, CannotCompileException {
