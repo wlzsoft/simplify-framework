@@ -124,9 +124,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         			System.out.println("AOP：javasist开始精简["+className+"]对象字节码");
 //        	                    通过类全路径名获取class字节码文件数据
         			ClassPool pool = ClassPool.getDefault();
-//        			pool.insertClassPath(className);
 //        			pool.insertClassPath(new ClassClassPath(this.getClass())); 
 //        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
+//        			pool.insertClassPath("com.meizu.simplify.aop.InterceptResult");
         			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
         			for (String targetClassPath : targetClassPathArr) {
         				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来
