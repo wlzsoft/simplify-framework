@@ -16,7 +16,9 @@
 16.mvc的json方式的ajax方法的处理和优化==>> 已测试，已通过 2016/3/1
 14.压力测试业务请求的性能表现:性能指标，模拟mvc的tomcat，jedis，druid的性能测试，着重是mysql的压力导致tomcat挂掉，而不是mysql挂掉，检查下，是否应该mysql客户端连接频繁重试导致的tomcat挂掉，这时候用的线程资源和连接都是tomcat消耗，需要确认是否是这个问题
 15.修复部分数据库相关没释放的问题，比如result和statement的关闭(druid连接池，是否有管理resultset和statement的关闭和创建)，需要测试，配合14点的压力测试，查看效果
-17.查看aop模块的readme.md文档，处理aop相关的问题
+17.查看aop模块的readme.md文档，处理aop相关的问题==>>暂缓
+18.配置文件热加载实现
+19.极速启动实现
 
 	       
 	       
