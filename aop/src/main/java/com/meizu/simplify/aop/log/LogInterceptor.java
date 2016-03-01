@@ -7,6 +7,7 @@ import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
+import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
  * <p><b>Title:</b><i>日志拦截器</i></p>
@@ -21,16 +22,9 @@ import com.meizu.simplify.aop.enums.ContextTypeEnum;
  * @version Version 0.1
  *
  */
+@Bean
 public class LogInterceptor extends Handler implements  IInterceptor{
 
-	private static final LogInterceptor LOG_INTERCEPTOR = new LogInterceptor(); 
-	private LogInterceptor() {
-		
-	}
-	public static LogInterceptor getInstance() {
-		return LOG_INTERCEPTOR;
-	}
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LogInterceptor.class);
 	
 	
