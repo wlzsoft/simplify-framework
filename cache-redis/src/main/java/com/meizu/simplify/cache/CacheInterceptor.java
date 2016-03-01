@@ -15,6 +15,8 @@ import com.meizu.simplify.cache.annotation.CacheDataDel;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
 import com.meizu.simplify.dto.AnnotationInfo;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 
 /**
  * <p><b>Title:</b><i>缓存拦截器-后期剥离成一个插件</i></p>
@@ -34,6 +36,7 @@ import com.meizu.simplify.dto.AnnotationInfo;
  * @version Version 0.1
  *
  */
+@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class CacheInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
