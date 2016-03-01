@@ -1,7 +1,7 @@
-package com.meizu.simplify.aop.service;
+package com.meizu.simplify.cache.service;
 
-import com.meizu.simplify.aop.User;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
+import com.meizu.simplify.cache.entity.User;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 @Bean

@@ -1,4 +1,4 @@
-package com.meizu.simplify.aop;
+package com.meizu.simplify.cache.entity;
 
 import java.io.Serializable;
 
