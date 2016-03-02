@@ -2,10 +2,6 @@ package com.meizu;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 import com.meizu.simplify.mvc.SecurityFilter;
 import com.meizu.util.WebUtil;

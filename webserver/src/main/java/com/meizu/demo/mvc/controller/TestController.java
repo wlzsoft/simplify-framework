@@ -8,7 +8,9 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.meizu.HttpRoute;
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
@@ -62,6 +64,18 @@ public class TestController extends BaseController<TestModel> {
 		return new RedirectForward("/testjson/");
 	}
 	
+	@RequestMap(path = "/testvelocity2/")
+	public IForward doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		String userName = request.getParameter("userName");
+		HttpSession session = request.getSession();
+		/*if (userName != null && userName.equals("admin")) {//服务器内部跳转到首页
+			request.setAttribute("userName", userName);
+			request.setRequestURI("/");//服务器内部跳转
+			session.setAttribute("admin", userName);
+			HttpRoute.route(request, response);
+		}*/
+		return new VelocityForward("/template/login.html");
+	}
 	@RequestMap(path = "/testvelocity/")
 	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
