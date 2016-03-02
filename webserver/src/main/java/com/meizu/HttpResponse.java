@@ -25,6 +25,8 @@ public class HttpResponse implements HttpServletResponse{
 	private char[] body;
 
 	private final PrintWriter bw;
+	private String charset;
+	private String contentType;
 	
 	public HttpResponse(Socket socket) throws IOException {
 		bw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -102,18 +104,27 @@ public class HttpResponse implements HttpServletResponse{
 		bw.append("\r\n");
 		return bw;
 	}
+	
+	@Override
+	public void setCharacterEncoding(String charset) {
+		this.charset = charset;
+	}
+	
+	@Override
+	public void setContentType(String type) {
+		this.contentType = type;
+	}
 
 	@Override
 	public String getCharacterEncoding() {
-		// TODO Auto-generated method stub
-		return null;
+		return charset;
 	}
 
 	@Override
 	public String getContentType() {
-		// TODO Auto-generated method stub
-		return null;
+		return contentType;
 	}
+	
 
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
@@ -122,11 +133,7 @@ public class HttpResponse implements HttpServletResponse{
 	}
 
 
-	@Override
-	public void setCharacterEncoding(String charset) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void setContentLength(int len) {
@@ -140,11 +147,7 @@ public class HttpResponse implements HttpServletResponse{
 		
 	}
 
-	@Override
-	public void setContentType(String type) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void setBufferSize(int size) {

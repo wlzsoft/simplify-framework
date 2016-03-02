@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
@@ -178,8 +180,17 @@ public class HttpRequest implements HttpServletRequest{
 
 	@Override
 	public Enumeration<String> getAttributeNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Enumeration<String>() {
+			private Iterator<Entry<String,Object>> set = attributes.entrySet().iterator();
+			@Override
+			public boolean hasMoreElements() {
+				return set.hasNext();
+			}
+
+			@Override
+			public String nextElement() {
+				return set.next().getKey();
+			}};
 	}
 
 	@Override
