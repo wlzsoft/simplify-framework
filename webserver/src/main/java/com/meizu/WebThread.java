@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Date;
 
-import com.meizu.util.SessionIdGenerator;
+import com.meizu.util.SessionIdFactory;
 
 /**
  * <p><b>Title:</b><i>服务器线程,一个请求一个线程</i></p>
@@ -75,13 +75,13 @@ public class WebThread implements Runnable {
 				HttpSessionImpl session = null;
 				if (sessionId == null || sessionId.length() < 32) {
 					session = new HttpSessionImpl();
-					session.setSessionId(SessionIdGenerator.getSessionId());
+					session.setSessionId(SessionIdFactory.getSessionId());
 					WebServer.sessions.put(session.getSessionId(), session);
 				} else {
 					session = WebServer.sessions.get(sessionId);
 					if (session == null) {
 						session = new HttpSessionImpl();
-						session.setSessionId(SessionIdGenerator.getSessionId());
+						session.setSessionId(SessionIdFactory.getSessionId());
 						WebServer.sessions.put(session.getSessionId(), session);
 					}
 				}

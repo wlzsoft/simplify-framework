@@ -15,8 +15,8 @@ import java.util.UUID;
  * @version Version 0.1
  *
  */
-public class SessionIdGenerator {
-	public SessionIdGenerator() {
+public class SessionIdFactory {
+	public SessionIdFactory() {
 	}
 
 	public static String getSessionId() {
