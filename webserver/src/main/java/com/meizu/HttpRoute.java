@@ -2,6 +2,12 @@ package com.meizu;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import com.meizu.simplify.mvc.SecurityFilter;
 import com.meizu.util.WebUtil;
@@ -11,20 +17,22 @@ public class HttpRoute {
 
 	public static void route(HttpRequest request, HttpResponse response) {
 		String requestUrl = request.getRequestURI();
-		if (isRoute(requestUrl)) {
-			/*String servletName = routeMap.get(requestUrl);
-			if (servletName != null) {*/
-				try {
-					filter.doFilter(request, response, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			/*} else {
-				response.setStatusCode("404");
-				response.setReason("Not Found");
-				String html = "<html><head></head><body>File Not Found !</body></html>";
-				response.setBody(html.toCharArray());
-			}*/
+		if (isResource(requestUrl)) {
+			try {
+				FilterChain fc = new FilterChain() {
+					@Override
+					public void doFilter(ServletRequest request, ServletResponse resp) throws IOException, ServletException {
+						HttpResponse response = (HttpResponse) resp;
+						response.setStatusCode("404");
+						response.setReason("Not Found");
+						String html = "<html><head></head><body>File Not Found !</body></html>";
+						response.setBody(html.toCharArray());
+					}
+				};
+				filter.doFilter(request, response, fc);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			// 加载静态页面从web.properties里面获取
 			String contextpath = WebServer.config.get("path");
@@ -51,8 +59,7 @@ public class HttpRoute {
 		}
 	}
 
-	// 判断是否需要在路由表中去寻找
-	public static boolean isRoute(String url) {
+	public static boolean isResource(String url) {
 		if (url.endsWith(".html") || url.endsWith(".htm")
 				|| url.endsWith(".css") || url.endsWith(".js")) {
 			return false;
