@@ -1,19 +1,14 @@
 package com.meizu;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HttpResponse {
 	private String version = "HTTP/1.1";// 版本默认值
-	private String statusCode;// 状态码
+	private String statusCode;
 	private String reason;// 原因短语
 
-	private Map<String, String> responseHeader = new HashMap<String, String>();// 用hashmap存储响应头
+	private Map<String, String> responseHeader = new HashMap<String, String>();
 
 	private char[] body;
 

@@ -26,11 +26,9 @@ public class HttpRoute {
 		}
 	}
 
-	// route处理
 	public static void route(HttpRequest request, HttpResponse response) {
 		String requestUrl = request.getRequestUrl();
 		String servletName = routeMap.get(requestUrl);
-		// 配置文件里面去寻找
 		if (isRoute(requestUrl)) {
 			if (servletName != null) {
 				try {

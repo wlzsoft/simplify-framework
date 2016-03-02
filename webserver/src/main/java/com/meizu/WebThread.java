@@ -40,15 +40,6 @@ public class WebThread implements Runnable {
 	private final BufferedReader br;
 	private final BufferedWriter bw;
 	
-//	//响应对象
-//		private HttpResponse response;
-//		//请求对象
-//		private HttpRequest request;
-//		//客户端
-//		private Socket client;
-//		//状态码
-//		private int code = 200;
-
 	public WebThread(Socket socket) throws Exception {
 		
 		this.socket = socket;
@@ -60,18 +51,18 @@ public class WebThread implements Runnable {
 	
 	@Override
 	public void run() {
+		HttpRequest request = new HttpRequest();
+		HttpResponse response = new HttpResponse();
 		try {
 			
 			// 开始解析HttpRequest
-			HttpRequest request = new HttpRequest();
-			HttpResponse response = new HttpResponse();
 			String requestLine = br.readLine();
 			if (requestLine != null) {
 				System.out.println(requestLine);
 				request.parseRequestLine(requestLine);
 				boolean flag = true;
 				while (flag) {
-					String read = br.readLine();// 不停的开始读
+					String read = br.readLine();
 					if (read == null || read.trim().length() < 1) {// 当到请求正文的时为0和内容为空的时候退出
 						break;
 					} else {
@@ -80,7 +71,6 @@ public class WebThread implements Runnable {
 					}
 				}
 
-				// 创建一个session 判断是否存在 ，没有就创建
 				String sessionId = request.getCookies().get("sessionId");
 				HttpSession session = null;
 				if (sessionId == null || sessionId.length() < 32) {
@@ -101,36 +91,28 @@ public class WebThread implements Runnable {
 						"sessionId=" + session.getSessionId());
 
 				String contentLength = request.getRequestHeader().get(
-						"Content-Length");// 判断是否有content length
+						"Content-Length");
 				System.out.println("ContentLength :" + contentLength);
 				if (contentLength != null) {
 					int length = Integer.parseInt(contentLength);
 					char[] buffer = new char[length];
 					br.read(buffer);
 					System.out.println("datas : " + new String(buffer));
-					// 创建一个buffer能够存放datas也就是parameter里面的内容
 					String postData = new String(buffer);
 					String[] parameters = postData.split("&");
 					for (String str : parameters) {
 						String[] datas = str.split("=");
-						request.getParameters().put(datas[0], datas[1]);// 存放进request里面
+						request.getParameters().put(datas[0], datas[1]);
 					}
-					request.setBody(buffer);// 放入body中
+					request.setBody(buffer);
 				}
 				// 解析请求头完毕
-				// 路由处理
 				HttpRoute.route(request, response);
-				// 返回客户端
 				sendToClient(response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-//			this.code = 500;
-//			try {
-//				response.response(code);
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
+			response.setStatusCode("500");
 		}
 		
 	}

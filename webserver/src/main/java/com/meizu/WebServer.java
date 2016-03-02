@@ -14,7 +14,6 @@ import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.controller.VelocityForward;
 public class WebServer {
-	//是否关闭
 	private volatile boolean isShutDowm = false;
 	public static Map<String, String> config = new HashMap<String, String>();
 	public static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
@@ -22,10 +21,10 @@ public class WebServer {
 	public static void main(String[] args) {
 		try {
 			//应用级框架代码，不能写死依赖，后续修改成插件形式
-			RedisPool.initCachePool();
-			Startup.start();
-			MvcInit.init();
-			VelocityForward.init();
+//			RedisPool.initCachePool();
+//			Startup.start();
+//			MvcInit.init();
+//			VelocityForward.init();
 			//end
 			init();
 			new WebServer().start();
@@ -39,8 +38,7 @@ public class WebServer {
 		try (
 				
 			//1、创建http server //服务器连接
-				ServerSocket server = new ServerSocket(Integer.parseInt(config
-				.get("port")))) {// 读取配置里面的端口号
+			ServerSocket server = new ServerSocket(Integer.parseInt(config.get("port")))) {
 			this.server = server;
 			//2、等待客户端连接，由于使用TCP协议，所以这里的客户端就是浏览器
 			while (!isShutDowm) {
@@ -81,11 +79,10 @@ public class WebServer {
 		}
 
 	}
-	//关闭服务器
 	public void stop()  {
 		//应用级框架代码，不能写死依赖，后续修改成插件形式
 		System.out.println("系统停止运行");
-		DruidPoolFactory.closePool();
+//		DruidPoolFactory.closePool();
 		//end
 		isShutDowm = true;
 		try {

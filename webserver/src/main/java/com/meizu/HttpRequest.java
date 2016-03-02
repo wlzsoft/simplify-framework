@@ -1,36 +1,40 @@
 package com.meizu;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class HttpRequest {
 	
 	
-	private String method;// 请求方法
-	private String requestUrl;// 请求地址
+	private String method;// POST 或 GET
+	private String requestUrl;
 	private String version;// 请求版本
-	private final Map<String, String> cookies = new HashMap<String, String>();// cookies
-	private Map<String, String> requestHeader = new HashMap<String, String>();// 用hashmap存储请求头
-	private final Map<String, String> parameters = new HashMap<String, String>();// 用来存放datas里面的数据。命名空间里的数据，？后面
+	private final Map<String, String> cookies = new HashMap<String, String>();
+	private Map<String, String> requestHeader = new HashMap<String, String>();
+	private final Map<String, String> parameters = new HashMap<String, String>();//存储post和get请求的参数值 
 	private char[] body;
 
 	private HttpSession session;
 
 	// 解析请求头
 	public void parseRequestLine(String line) throws Exception {
-		String[] strs = line.split(" ");// 从空格分割
+		String[] strs = line.split(" ");
 		if (strs.length != 3) {
 			throw new Exception("invalide request line !");
 		}
 		method = strs[0].trim();
 		requestUrl = strs[1].trim();
+		String[] requestUrlArr = requestUrl.split("\\?");
+		if(requestUrlArr.length>1) {
+			requestUrl = requestUrlArr[0];
+			String[] parameters = requestUrlArr[1].split("&");
+			for (String str : parameters) {
+				String[] datas = str.split("=");
+				getParameters().put(datas[0], datas[1]);
+			}
+		}
+		
+		
 		version = strs[2].trim();
 	}
 
@@ -47,7 +51,7 @@ public class HttpRequest {
 					}
 				}
 			} else {
-				requestHeader.put(strs[0].trim(), strs[1].trim());// 存入请求头
+				requestHeader.put(strs[0].trim(), strs[1].trim());
 			}
 
 		}

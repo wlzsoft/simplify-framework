@@ -13,7 +13,6 @@ public class HttpSession {
 		attributes.put(key, value);
 	}
 
-	// 拿到object存放在session里面的
 	public Object getAttribute(String key) {
 		return attributes.get(key);
 	}
