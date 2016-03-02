@@ -16,15 +16,6 @@ public class HttpRoute {
 			if (servletName != null) {*/
 				try {
 					filter.doFilter(request, response, null);
-					/*
-					 //servlet实现，直接去掉
-					 Servlet servlet = (Servlet) Class.forName(servletName).newInstance();
-					if (request.getMethod().equals("GET")) {
-						servlet.doGet(request, response);
-					} else {
-						servlet.doPost(request, response);
-					}
-					*/
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
