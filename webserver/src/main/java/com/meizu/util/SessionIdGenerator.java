@@ -3,7 +3,7 @@ package com.meizu.util;
 import java.util.UUID;
 
 /**
- * <p><b>Title:</b><i>UUID生成ID方法</i></p>
+ * <p><b>Title:</b><i>UUID生成sessionId</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -19,9 +19,6 @@ public class SessionIdGenerator {
 	public SessionIdGenerator() {
 	}
 
-	/**
-	 * 获得一个SessionId
-	 */
 	public static String getSessionId() {
 		String s = UUID.randomUUID().toString();
 		// 去掉“-”符号
