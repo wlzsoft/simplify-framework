@@ -16,15 +16,15 @@ import com.meizu.simplify.mvc.controller.VelocityForward;
 public class WebServer {
 	private volatile boolean isShutDowm = false;
 	public static Map<String, String> config = new HashMap<String, String>();
-	public static Map<String, HttpSession> sessions = new HashMap<String, HttpSession>();
+	public static Map<String, HttpSessionImpl> sessions = new HashMap<String, HttpSessionImpl>();
 	private ServerSocket server; 
 	public static void main(String[] args) {
 		try {
 			//应用级框架代码，不能写死依赖，后续修改成插件形式
-//			RedisPool.initCachePool();
-//			Startup.start();
-//			MvcInit.init();
-//			VelocityForward.init();
+			RedisPool.initCachePool();
+			Startup.start();
+			MvcInit.init();
+			VelocityForward.init();
 			//end
 			init();
 			new WebServer().start();
@@ -82,7 +82,7 @@ public class WebServer {
 	public void stop()  {
 		//应用级框架代码，不能写死依赖，后续修改成插件形式
 		System.out.println("系统停止运行");
-//		DruidPoolFactory.closePool();
+		DruidPoolFactory.closePool();
 		//end
 		isShutDowm = true;
 		try {

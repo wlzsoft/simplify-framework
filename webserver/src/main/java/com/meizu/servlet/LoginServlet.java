@@ -1,9 +1,10 @@
 package com.meizu.servlet;
 
+import javax.servlet.http.HttpSession;
+
 import com.meizu.HttpRequest;
 import com.meizu.HttpResponse;
 import com.meizu.HttpRoute;
-import com.meizu.HttpSession;
 
 public class LoginServlet implements Servlet {
 

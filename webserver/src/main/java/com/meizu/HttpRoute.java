@@ -8,9 +8,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.meizu.servlet.Servlet;
+import com.meizu.simplify.mvc.SecurityFilter;
 import com.meizu.util.WebUtil;
 
 public class HttpRoute {
+	private static final SecurityFilter filter = new SecurityFilter();
 	private static Map<String, String> routeMap = new HashMap<String, String>();
 	// 静态变量加载路由配置
 	static {
@@ -32,6 +34,7 @@ public class HttpRoute {
 		if (isRoute(requestUrl)) {
 			if (servletName != null) {
 				try {
+					filter.doFilter(request, response, null);
 					Servlet servlet = (Servlet) Class.forName(servletName)
 							.newInstance();
 					if (request.getMethod().equals("GET")) {
