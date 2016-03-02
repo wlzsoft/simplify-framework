@@ -67,7 +67,8 @@ public class TestController extends BaseController<TestModel> {
 	
 	@RequestMap(path = "/testvelocity/")
 	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-//		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
 		return new VelocityForward("/template/login.html");
 	}
 	@RequestMap(path = "/testjson/")

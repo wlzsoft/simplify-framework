@@ -21,6 +21,8 @@ import com.meizu.simplify.mvc.controller.ActionForward;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.controller.JsonForward;
 import com.meizu.simplify.mvc.controller.MessageForward;
+import com.meizu.simplify.mvc.controller.RedirectForward;
+import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -49,6 +51,21 @@ public class TestController extends BaseController<TestModel> {
 	
 	@Resource
 	private TestService testService;
+	
+	
+	@RequestMap(path = "/testredirect2/")
+	public IForward doTestRedirect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+//		Test test = testService.doSomeThing2();
+		return new RedirectForward("/testjson/");
+	}
+	
+	@RequestMap(path = "/testvelocity/")
+	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
+		return new VelocityForward("/template/login.html");
+	}
+	
 	
 	@RequestMap(path = "/testjson/")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
