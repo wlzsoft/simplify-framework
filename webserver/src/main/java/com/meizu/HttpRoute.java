@@ -12,20 +12,6 @@ import com.meizu.util.WebUtil;
 
 public class HttpRoute {
 	private static final SecurityFilter filter = new SecurityFilter();
-	private static Map<String, String> routeMap = new HashMap<String, String>();
-	// 静态变量加载路由配置
-	static {
-		Properties props = new Properties();
-		try {
-			InputStream is = WebServer.class.getClassLoader().getResourceAsStream("route.properties");
-			props.load(is);
-			for (Object key : props.keySet()) {
-				routeMap.put((String) key, (String) props.get(key));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static void route(HttpRequest request, HttpResponse response) {
 		String requestUrl = request.getRequestURI();
