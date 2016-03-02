@@ -5,8 +5,8 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 /**
- * <p><b>Title:</b><i>byte转char</i></p>
- * <p>Desc: TODO 后续废弃</p>
+ * <p><b>Title:</b><i>byte和char互转工具</i></p>
+ * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -17,8 +17,14 @@ import java.nio.charset.Charset;
  * @version Version 0.1
  *
  */
-@Deprecated
-public class WebUtil {
+public class ByteAndCharConvertUtil {
+	
+	/**
+	 * 方法用途: char转byte<br>
+	 * 操作步骤: TODO<br>
+	 * @param chars
+	 * @return
+	 */
 	public static byte[] getBytes(char[] chars) {
 		Charset cs = Charset.forName("UTF-8");
 		CharBuffer cb = CharBuffer.allocate(chars.length);
@@ -29,7 +35,13 @@ public class WebUtil {
 
 	}
 
-	// byte转char
+	/**
+	 * 
+	 * 方法用途: byte转char<br>
+	 * 操作步骤: TODO<br>
+	 * @param bytes
+	 * @return
+	 */
 	public static char[] getChars(byte[] bytes) {
 		Charset cs = Charset.forName("UTF-8");
 		ByteBuffer bb = ByteBuffer.allocate(bytes.length);
