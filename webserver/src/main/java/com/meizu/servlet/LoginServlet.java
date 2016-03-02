@@ -16,6 +16,10 @@ public class LoginServlet implements Servlet {
 			session.setAttribute("admin", userName);// 登录成功，放入session
 			HttpRoute.route(request, response);// 塞给路由
 		} else {
+			String html = "<html><head><title>登录</title></head><body>";
+			html+=request.getParameter("usr");
+			html+=" Welcome to Server</body></html>";
+			response.setBody(html.toCharArray());
 			request.setRequestUrl("/error.html");
 			HttpRoute.route(request, response);
 		}
@@ -27,11 +31,5 @@ public class LoginServlet implements Servlet {
 		doGet(request, response);
 
 	}
-//	@Override
-//	public void doPost(HttpRequest request, HttpResponse response) {
-//		response.print("<html><head><title>登录</title></head><body>");
-//		response.print(request.getParameter("usr"));
-//		response.print(" Welcome to Server</body></html>");
-//	}
 
 }
