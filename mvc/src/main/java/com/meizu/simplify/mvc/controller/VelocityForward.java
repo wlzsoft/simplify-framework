@@ -90,7 +90,6 @@ public class VelocityForward implements IForward {
 		response.setContentType("text/html; charset=" + MvcInit.charSet);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void doAction(HttpServletRequest request, HttpServletResponse response, CacheSet cacheSet, String staticName) throws ServletException, IOException {
 
 		// 设置编码
