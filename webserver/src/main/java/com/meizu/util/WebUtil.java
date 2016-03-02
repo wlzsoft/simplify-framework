@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
  * @version Version 0.1
  *
  */
-public class ByteAndCharConvertUtil {
+public class WebUtil {
 	
 	/**
 	 * 方法用途: char转byte<br>

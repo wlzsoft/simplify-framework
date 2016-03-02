@@ -27,7 +27,6 @@ public class BrowserCache implements Cache {
 	 */
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
-		/*System.out.println(MvcInit.charSet);*/
 		//浏览器缓存的读取操作由浏览器自己完成，无需程序员控制。 TODO
 		return null;
 	}
@@ -39,7 +38,7 @@ public class BrowserCache implements Cache {
 		if(obj == null) {
 			return true;
 		}
-		/*System.out.println(MvcInit.charSet);
+		/*
 		HttpServletResponse response = (HttpServletResponse) obj;
 		BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());*/
 //		BrowserUtil.enableBrowerCache(response,20000);

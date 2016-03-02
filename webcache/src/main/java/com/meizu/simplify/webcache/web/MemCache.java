@@ -23,7 +23,7 @@ public class MemCache implements Cache {
 	
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
-		/*System.out.println(MvcInit.charSet);
+		/*
 		try {
 			Object[] values = MvcInit.urlCache.get(staticName);
 			long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
@@ -44,7 +44,6 @@ public class MemCache implements Cache {
 			HttpServletResponse response = (HttpServletResponse) obj;
 			BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
 		}
-		System.out.println(MvcInit.charSet);
 		MvcInit.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });*/
 		return true;
 	}

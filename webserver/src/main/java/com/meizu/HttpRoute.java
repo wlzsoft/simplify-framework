@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import com.meizu.simplify.mvc.SecurityFilter;
-import com.meizu.util.ByteAndCharConvertUtil;
+import com.meizu.util.WebUtil;
 
 public class HttpRoute {
 	private static final SecurityFilter filter = new SecurityFilter();
@@ -46,7 +46,7 @@ public class HttpRoute {
 				byte[] buffer = new byte[(int) file.length()];
 				try (FileInputStream fis = new FileInputStream(file)) {
 					fis.read(buffer);
-					response.setBody(ByteAndCharConvertUtil.getChars(buffer));
+					response.setBody(WebUtil.getChars(buffer));
 				} catch (Exception e) {
 
 				}
