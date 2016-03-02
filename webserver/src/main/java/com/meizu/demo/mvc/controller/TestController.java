@@ -56,6 +56,9 @@ public class TestController extends BaseController<TestModel> {
 	@RequestMap(path = "/testredirect2/")
 	public IForward doTestRedirect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 //		Test test = testService.doSomeThing2();
+		if (request.getMethod().equals("GET")) {
+			
+		}
 		return new RedirectForward("/testjson/");
 	}
 	

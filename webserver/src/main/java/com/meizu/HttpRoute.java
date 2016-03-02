@@ -27,7 +27,8 @@ public class HttpRoute {
 						servlet.doGet(request, response);
 					} else {
 						servlet.doPost(request, response);
-					}*/
+					}
+					*/
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
