@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.demo.mvc.entity.Test;
-import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.BaseController;
@@ -23,6 +22,8 @@ import com.meizu.simplify.mvc.controller.ActionForward;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.controller.JsonForward;
 import com.meizu.simplify.mvc.controller.MessageForward;
+import com.meizu.simplify.mvc.controller.RedirectForward;
+import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -52,6 +53,23 @@ public class TestController extends BaseController<TestModel> {
 	@Resource
 	private TestService testService;
 	
+	@RequestMap(path = "/testredirect/")
+	public IForward doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		return new RedirectForward("/index.jsp");
+	}
+	
+	@RequestMap(path = "/testredirect2/")
+	public IForward doTestRedirect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+//		Test test = testService.doSomeThing2();
+		return new RedirectForward("/testjson/");
+	}
+	
+	@RequestMap(path = "/testvelocity/")
+	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+//		Test test = testService.doSomeThing2();
+		return new VelocityForward("/template/login.html");
+	}
 	@RequestMap(path = "/testjson/")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
@@ -131,9 +149,7 @@ public class TestController extends BaseController<TestModel> {
 		} else {
 			return  new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 		}
-//		return new VelocityForward("/template/login.html");
-//		return new RedirectForward("/index.jsp");
-//		return new RedirectForward("/test/demo_" + point + ".html");
+
 	}
 	
 

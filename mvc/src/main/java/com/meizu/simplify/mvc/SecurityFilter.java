@@ -72,9 +72,10 @@ public class SecurityFilter implements Filter {
 		}
 		//注意：匹配不上正则，匹配不上action，会走filterchain,大部分情况是不会执行chain,
 		//如果有多个filter的情况，就要注意，如果这个地方注释掉，可能导致后续的filter不会执行
-		//[是否单独的jsp和servlet会走这个chain，可以整个屏蔽掉，不支持直接访问servlet和jsp，后续考虑 TODO]
+		//[jsp和servlet会走这个chain，不支持直接访问servlet和jsp，可以整个屏蔽掉，jsp还是可以访问，直接会返回200的空白页]
+		//[会屏蔽掉资源文件的访问，比如js，png等图片等等]
 		if(chain != null) {
-			//chain.doFilter(req, res);// [标示]启用原生 filter的chain,三个地方同时打开注释
+			chain.doFilter(req, res);// [标示]启用原生 filter的chain,三个地方同时打开注释
 		}
 	}
 	
