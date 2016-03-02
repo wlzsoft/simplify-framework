@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 
 /**
  * <p><b>Title:</b><i>byte转char</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: TODO 后续废弃</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
  * @version Version 0.1
  *
  */
+@Deprecated
 public class WebUtil {
 	public static byte[] getBytes(char[] chars) {
 		Charset cs = Charset.forName("UTF-8");
