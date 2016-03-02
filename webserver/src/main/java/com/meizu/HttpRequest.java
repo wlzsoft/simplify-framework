@@ -32,11 +32,12 @@ public class HttpRequest implements HttpServletRequest{
 	
 	
 	private String method;// POST 或 GET
-	private String requestUrl;
+	private String requestURI;
 	private String version;// 请求版本
-	private final Map<String, String> cookies = new HashMap<String, String>();
-	private Map<String, String> requestHeader = new HashMap<String, String>();
-	private final Map<String, String> parameters = new HashMap<String, String>();//存储post和get请求的参数值 
+	private final Map<String, String> cookies = new HashMap<>();
+	private Map<String, String> requestHeader = new HashMap<>();
+	private final Map<String, String> parameters = new HashMap<>();//存储post和get请求的参数值 
+	private final Map<String, Object> attributes = new HashMap<>();
 	private char[] body;
 
 	private HttpSessionImpl session;
@@ -48,10 +49,10 @@ public class HttpRequest implements HttpServletRequest{
 			throw new Exception("invalide request line !");
 		}
 		method = strs[0].trim();
-		requestUrl = strs[1].trim();
-		String[] requestUrlArr = requestUrl.split("\\?");
+		requestURI = strs[1].trim();
+		String[] requestUrlArr = requestURI.split("\\?");
 		if(requestUrlArr.length>1) {
-			requestUrl = requestUrlArr[0];
+			requestURI = requestUrlArr[0];
 			String[] parameters = requestUrlArr[1].split("&");
 			for (String str : parameters) {
 				String[] datas = str.split("=");
@@ -96,12 +97,13 @@ public class HttpRequest implements HttpServletRequest{
 		this.method = method;
 	}
 
-	public String getRequestUrl() {
-		return requestUrl;
+	@Override
+	public String getRequestURI() {
+		return requestURI;
 	}
 
-	public void setRequestUrl(String requestUrl) {
-		this.requestUrl = requestUrl;
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
 	}
 
 	public String getVersion() {
@@ -163,12 +165,16 @@ public class HttpRequest implements HttpServletRequest{
 		return session;
 	}
 	
+	@Override
+	public void setAttribute(String name, Object o) {
+		attributes.put(name, o);
+	}
 	
 	@Override
 	public Object getAttribute(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return attributes.get(name);
 	}
+	
 
 	@Override
 	public Enumeration<String> getAttributeNames() {
@@ -272,11 +278,6 @@ public class HttpRequest implements HttpServletRequest{
 		return null;
 	}
 
-	@Override
-	public void setAttribute(String name, Object o) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void removeAttribute(String name) {
@@ -432,8 +433,7 @@ public class HttpRequest implements HttpServletRequest{
 
 	@Override
 	public String getContextPath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
@@ -462,12 +462,6 @@ public class HttpRequest implements HttpServletRequest{
 
 	@Override
 	public String getRequestedSessionId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getRequestURI() {
 		// TODO Auto-generated method stub
 		return null;
 	}

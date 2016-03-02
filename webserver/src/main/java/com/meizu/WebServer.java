@@ -55,7 +55,6 @@ public class WebServer {
 					System.out.println(info.trim());*/
 					//对每一个客户端都启动一个线程处理
 //					new Thread(new ServletDisPatcher(client)).start(); //TODO
-					
 					new Thread(new WebThread(client)).start();
 				} catch (IOException e) {
 					e.printStackTrace();

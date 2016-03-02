@@ -2,6 +2,7 @@ package com.meizu;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -38,13 +39,10 @@ Servlet3.0的solution:
 public class WebThread implements Runnable {
 	private Socket socket;
 	private final BufferedReader br;
-	private final BufferedWriter bw;
-	
 	public WebThread(Socket socket) throws Exception {
 		
 		this.socket = socket;
 		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		
 	}
 	
@@ -52,9 +50,11 @@ public class WebThread implements Runnable {
 	@Override
 	public void run() {
 		HttpRequest request = new HttpRequest();
-		HttpResponse response = new HttpResponse();
+		HttpResponse response = null;
+		
 		try {
 			
+			response = new HttpResponse(this.socket);
 			// 开始解析HttpRequest
 			String requestLine = br.readLine();
 			if (requestLine != null) {
@@ -108,7 +108,7 @@ public class WebThread implements Runnable {
 				}
 				// 解析请求头完毕
 				HttpRoute.route(request, response);
-				sendToClient(response);
+				response.sendToClient();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,21 +125,5 @@ public class WebThread implements Runnable {
 		this.socket = socket;
 	}
 
-	// 写出发回客户端的内容 响应标头
-	public void sendToClient(HttpResponse response) throws Exception {
-		bw.write(response.getVersion() + " " + response.getStatusCode() + " "
-				+ response.getReason() + "\r\n");
-		bw.write("Date: " + new Date() + "\r\n");
-		bw.write("Server: Parrot\r\n");
-		bw.write("Accept-Ranges: bytes\r\n");
-		bw.write("Content-Length: " + response.getBody().length + "\r\n");
-		bw.write("Content-Type: text/html\r\n");
-		bw.write("Set-Cookie: "
-				+ response.getResponseHeader().get("Set-Cookie") + "\r\n");// 把cookie写上去
-		bw.write("\r\n");
-		bw.write(response.getBody());
-		bw.flush();
-		bw.close();
-	}
 
 }

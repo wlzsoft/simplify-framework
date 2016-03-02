@@ -52,9 +52,10 @@ public class SecurityFilter implements Filter {
 		ControllerAnnotationInfo controllerAnnotationInfo = MvcInit.controllerMap.get(thisUrl);
 		if(controllerAnnotationInfo !=null) {
 			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
-//			return;// [标示]启用原生 filter的chain,三个地方同时打开注释
+			return;// [标示]启用原生 filter的chain,三个地方同时打开注释
 		} else {
-			for ( String key : MvcInit.controllerMap.keySet() ) {//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型,不过由于正则无法确定具体值的访问，所以也没法比较
+			//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型,不过由于正则无法确定具体值的访问，所以也没法比较
+			for ( String key : MvcInit.controllerMap.keySet() ) {
 				if(!key.contains("$")) {
 					continue;
 				}
@@ -65,14 +66,16 @@ public class SecurityFilter implements Filter {
 					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
 					controllerAnnotationInfo = MvcInit.controllerMap.get(key);
 					analysisAndProcess(request, response, thisUrl,controllerAnnotationInfo, params);
-//					return; // [标示]启用原生 filter的chain,三个地方同时打开注释
+					return; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
 			}
 		}
 		//注意：匹配不上正则，匹配不上action，会走filterchain,大部分情况是不会执行chain,
 		//如果有多个filter的情况，就要注意，如果这个地方注释掉，可能导致后续的filter不会执行
 		//[是否单独的jsp和servlet会走这个chain，可以整个屏蔽掉，不支持直接访问servlet和jsp，后续考虑 TODO]
-//		chain.doFilter(req, res);// [标示]启用原生 filter的chain,三个地方同时打开注释
+		if(chain != null) {
+			//chain.doFilter(req, res);// [标示]启用原生 filter的chain,三个地方同时打开注释
+		}
 	}
 	
 	/**

@@ -1,8 +1,12 @@
 package com.meizu;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -19,6 +23,12 @@ public class HttpResponse implements HttpServletResponse{
 	private Map<String, String> responseHeader = new HashMap<String, String>();
 
 	private char[] body;
+
+	private final PrintWriter bw;
+	
+	public HttpResponse(Socket socket) throws IOException {
+		bw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+	}
 
 	public String getVersion() {
 		return version;
@@ -59,6 +69,39 @@ public class HttpResponse implements HttpServletResponse{
 	public void setBody(char[] body) {
 		this.body = body;
 	}
+	
+	public void sendToClient() throws IOException {
+		if(body != null ) {
+			bw.write(getVersion() + " " + getStatusCode() + " "
+					+ getReason() + "\r\n");
+			bw.write("Date: " + new Date() + "\r\n");
+			bw.write("Server: Parrot\r\n");
+			bw.write("Accept-Ranges: bytes\r\n");
+			bw.write("Content-Length: " + getBody().length + "\r\n");
+			bw.write("Content-Type: text/html\r\n");
+			bw.write("Set-Cookie: "
+					+ getResponseHeader().get("Set-Cookie") + "\r\n");// 把cookie写上去
+			bw.write("\r\n");
+			bw.write(getBody());
+		}
+		bw.flush();
+		bw.close();
+	}
+	
+	@Override
+	public PrintWriter getWriter() throws IOException {
+		bw.append(getVersion() + " " + getStatusCode() + " "
+				+ getReason() + "\r\n");
+		bw.append("Date: " + new Date() + "\r\n");
+		bw.append("Server: Parrot\r\n");
+		bw.append("Accept-Ranges: bytes\r\n");
+		bw.append("Content-Length: " + "getBody().length" + "\r\n");
+		bw.append("Content-Type: text/html\r\n");
+		bw.append("Set-Cookie: "
+				+ getResponseHeader().get("Set-Cookie") + "\r\n");// 把cookie写上去
+		bw.append("\r\n");
+		return bw;
+	}
 
 	@Override
 	public String getCharacterEncoding() {
@@ -78,11 +121,6 @@ public class HttpResponse implements HttpServletResponse{
 		return null;
 	}
 
-	@Override
-	public PrintWriter getWriter() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void setCharacterEncoding(String charset) {

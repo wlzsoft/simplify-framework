@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.meizu.servlet.Servlet;
 import com.meizu.simplify.mvc.SecurityFilter;
 import com.meizu.util.WebUtil;
 
@@ -29,28 +28,29 @@ public class HttpRoute {
 	}
 
 	public static void route(HttpRequest request, HttpResponse response) {
-		String requestUrl = request.getRequestUrl();
-		String servletName = routeMap.get(requestUrl);
+		String requestUrl = request.getRequestURI();
 		if (isRoute(requestUrl)) {
-			if (servletName != null) {
+			/*String servletName = routeMap.get(requestUrl);
+			if (servletName != null) {*/
 				try {
 					filter.doFilter(request, response, null);
-					Servlet servlet = (Servlet) Class.forName(servletName)
-							.newInstance();
+					/*
+					 //servlet实现，直接去掉
+					 Servlet servlet = (Servlet) Class.forName(servletName).newInstance();
 					if (request.getMethod().equals("GET")) {
 						servlet.doGet(request, response);
 					} else {
 						servlet.doPost(request, response);
-					}
+					}*/
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else {
+			/*} else {
 				response.setStatusCode("404");
 				response.setReason("Not Found");
 				String html = "<html><head></head><body>File Not Found !</body></html>";
 				response.setBody(html.toCharArray());
-			}
+			}*/
 		} else {
 			// 加载静态页面从web.properties里面获取
 			String contextpath = WebServer.config.get("path");

@@ -13,7 +13,7 @@ public class LoginServlet implements Servlet {
 		String userName = request.getParameter("userName");
 		HttpSession session = request.getSession();
 		if (userName != null && userName.equals("admin")) {
-			request.setRequestUrl("/");//服务器内部跳转
+			request.setRequestURI("/");//服务器内部跳转
 			session.setAttribute("admin", userName);
 			HttpRoute.route(request, response);
 		} else {
