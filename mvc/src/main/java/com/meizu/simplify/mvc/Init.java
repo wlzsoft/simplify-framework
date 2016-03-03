@@ -21,23 +21,9 @@ package com.meizu.simplify.mvc;
  */
 public class Init extends MvcInit {
 	public static boolean cache = false;
-	public static String directory_provider = ""; // 加载器
-	public static boolean jvmcache;
-	
-	// public static Integer limitExecutionTime = 0; // 默认关闭
-	
-	
-	
-	/*
-	 * 测试开关，true表示以测试方式启动项目 测试方式启动项目则缓存方式无效
-	 */
-	public static boolean test_switch = false;
-	
-	public Init() {
-	}
+	public static boolean jvmcache = false;
 	
 	static {
-		test_switch = config.getBoolean("system.test_switch", false);
 		if (cache) {
 			if (jvmcache) {
 //				LOGGER.log("Framework jvm cached -> ok.");
