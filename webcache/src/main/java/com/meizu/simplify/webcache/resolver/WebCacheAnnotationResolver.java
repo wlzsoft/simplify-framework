@@ -10,15 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.annotation.CacheDataAdd;
-import com.meizu.simplify.cache.annotation.CacheDataDel;
-import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.cache.exception.CacheException;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.webcache.annotation.CacheSet;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -54,21 +52,15 @@ public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>
 			}
 			
 			for (Method method : methodArr) {
-                if (method.isAnnotationPresent(CacheDataAdd.class)) {
-                	resolveAnno(beanClass, method,CacheDataAdd.class);
-                }
-                if (method.isAnnotationPresent(CacheDataDel.class)) {
-                	resolveAnno(beanClass, method,CacheDataDel.class);
-                }
-                if (method.isAnnotationPresent(CacheDataSearch.class)) {
-                	resolveAnno(beanClass, method,CacheDataSearch.class);
+                if (method.isAnnotationPresent(CacheSet.class)) {
+                	resolveAnno(beanClass, method,CacheSet.class);
                 }
 			}
 		}
 	}
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T cacheDataAdd = method.getDeclaredAnnotation(clazzAnno);
-		LOGGER.debug("缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		LOGGER.debug("web缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 		AnnotationInfo cai = new AnnotationInfo();
 		cai.setAnnotatoionType(cacheDataAdd);
 		cai.setReturnType(method.getReturnType());
