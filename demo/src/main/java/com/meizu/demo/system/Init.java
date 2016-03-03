@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc;
+package com.meizu.demo.system;
 
 
 /**
