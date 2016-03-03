@@ -16,8 +16,12 @@ import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.utils.ClearCommentUtil;
+import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
+import com.meizu.simplify.webcache.web.Cache;
+import com.meizu.simplify.webcache.web.CacheBase;
 
 /**
  * <p><b>Title:</b><i>web缓存拦截器</i></p>
@@ -76,7 +80,7 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 		return true;
 		
 		
-		
+//1
 		/*//需要废弃 TODO
 				MethodSignature signature = (MethodSignature) join.getSignature();
 				Method doMethod = signature.getMethod();
@@ -94,6 +98,22 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 //						}
 					}
 				}*/
+//2
+		// 检查静态规则配置
+		/*if (doMethod.isAnnotationPresent(WebCache.class)) {
+			this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
+			Cache cache = CacheBase.getCache(cacheSet);
+			if(cache != null){
+				String cacheContent = cache.readCache(cacheSet, staticName,response);
+				if(cacheContent != null){
+					response.setCharacterEncoding(MvcInit.charSet);
+					response.setContentType("text/html; charset=" + MvcInit.charSet);
+					response.getWriter().print(cacheContent);
+					System.out.println("UrlCache -> read Cache.");
+					return null;
+				}
+			}
+		}*/
 	}
 	
 	@Override
@@ -107,42 +127,67 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
 		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
+		// 检查静态规则配置
 		if(anno.annotationType().equals(WebCache.class)) {
-			WebCache cacheDataAdd = (WebCache)anno;
-			//TODO　这块的操作要控制的2ms以内
-			boolean isOk = false;//data.set(cacheDataAdd.key(), args[0]);
-			LOGGER.debug("add key:"+cacheDataAdd+"]"+isOk);
-//			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
-		}
-		return false;
-		
-		
-		/*//需要废弃
-				if (this.isError) {
-					return; // 业务类若抛异常就不记录数据库日志
+			WebCache webCache = (WebCache)anno;
+			LOGGER.debug("webCache: timeToLiveSeconds="+webCache.timeToLiveSeconds()+
+			",enableBrowerCache="+webCache.enableBrowerCache()+
+			",mode="+webCache.mode()+
+			",removeSpace="+webCache.removeSpace());
+			
+//1
+			// 跳转前检查静态规则
+			if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
+				//页面级别内容
+				String content = "test"; // TODO 
+				// 是否去除空格
+				if(webCache.removeSpace()) {
+					content = ClearCommentUtil.clear(content);
+					content = StringUtil.removeHtmlSpace(content);
 				}
-				MethodSignature signature = (MethodSignature) join.getSignature();
-				Method doMethod = signature.getMethod();
-				// 检查静态规则配置
-				if (doMethod.isAnnotationPresent(WebCache.class)) {
-					WebCache cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
-					// 跳转前检查静态规则
-					if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
-						//页面级别内容
-						String content = "test"; // TODO 
-						// 是否去除空格
-						if(cacheSet.removeSpace()) {
-							content = ClearCommentUtil.clear(content);
-							content = StringUtil.removeHtmlSpace(content);
-						}
-						Cache cache = CacheBase.getCache(cacheSet);
+				Cache cache = CacheBase.getCache(webCache);
 //						String url = request.getServerName() + request.getRequestURI() + StringUtils.isNotNull(request.getQueryString());
 //						String staticName = Md5Util.md5(url) + ".lv";
 //						if(cache != null && cache.doCache(cacheSet, staticName, content,null)){
 //							// 缓存成功.
 //						}
+			}
+			
+//2			
+			/* 文件缓存 */
+			/*String content = vw.toString();
+			if (cacheSet != null) {
+				// 是否去除空格
+				if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
+				Cache cache = CacheBase.getCache(cacheSet);
+				if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
+					// 缓存成功.
+				}
+			}
+			
+			
+			
+		}*/
+		
+//3
+		/*// 跳转前检查静态规则
+				if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
+					String content = getPageContent(request, response, rd);
+					
+					// 是否去除空格
+					if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
+
+					Cache cache = CacheBase.getCache(cacheSet);
+					if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
+						// 缓存成功.
 					}
-				}*/
+					response.setCharacterEncoding(MvcInit.charSet);
+					response.setContentType("text/html; charset=" + MvcInit.charSet);
+					response.getWriter().print(content);*/
+		
+		
+		}
+		return false;
 	}
 
 	@Override
