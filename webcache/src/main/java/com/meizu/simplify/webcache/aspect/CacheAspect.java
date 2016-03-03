@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.Aspect;
 import com.meizu.simplify.webcache.annotation.CacheSet;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
@@ -28,7 +27,6 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-@Aspect
 public class CacheAspect {
 	@Resource
 	private HttpServletRequest request;
