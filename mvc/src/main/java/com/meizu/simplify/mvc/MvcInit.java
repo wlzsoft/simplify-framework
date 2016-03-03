@@ -38,9 +38,8 @@ public class MvcInit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MvcInit.class);
 	
-	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
+	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");//注意，要合并成一个实例，不要太多重复实例 TODO
 	
-	public static FiFoMap<String, Object[]> urlCache; // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
 	public static boolean debug = false;
@@ -62,7 +61,7 @@ public class MvcInit {
 		
 		class_path = config.getString("system.classpath", null);
 		directives = config.getString("system.directives", null);
-		urlCache = new FiFoMap<String, Object[]>((urlcacheCount = config.getInteger("system.urlcacheCount", 100)));
+		
 		
 		// 查找指定class路径
 		if (class_path != null) {

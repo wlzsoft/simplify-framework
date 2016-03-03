@@ -1,5 +1,7 @@
 package com.meizu.simplify.webcache.web;
 
+import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.collection.FiFoMap;
 import com.meizu.simplify.webcache.annotation.CacheSet;
 
 
@@ -17,7 +19,8 @@ import com.meizu.simplify.webcache.annotation.CacheSet;
  *
  */
 public class CacheBase {
-	
+	private static PropertieUtil config = new PropertieUtil("properties/config.properties");//注意，要合并成一个实例，不要太多重复实例 TODO
+	public static FiFoMap<String, Object[]> urlCache = new FiFoMap<String, Object[]>(config.getInteger("system.urlcacheCount", 100)); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
 	/**
 	 * 取缓冲器
 	 * 

@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc;
+package com.meizu.simplify.utils.collection;
 
 import java.util.HashMap;
 import java.util.LinkedList;
