@@ -26,13 +26,20 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
  */
 public class FileCache implements Cache {
 	
+	
+	public static String getPath() {
+//		String path = MvcInit.class.getResource("/").getPath();
+		String path = FileCache.class.getResource("/").getPath();
+		return path.substring(0, path.lastIndexOf("/"));
+	}
+	
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
 		Object[] values = CacheBase.urlCache.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
-//			File directory = new File(MvcInit.getPath());
-			File directory = new File("D:/htmlCache/");
+			File directory = new File(getPath());
+//			File directory = new File("D:/htmlCache/");
 			try {
 				if(obj!=null&&cacheSet.enableBrowerCache()) {
 					HttpServletResponse response = (HttpServletResponse) obj;
