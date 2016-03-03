@@ -10,13 +10,11 @@ import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
-import com.meizu.simplify.cache.annotation.CacheDataAdd;
-import com.meizu.simplify.cache.annotation.CacheDataDel;
-import com.meizu.simplify.cache.annotation.CacheDataSearch;
-import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
 
 /**
  * <p><b>Title:</b><i>web缓存拦截器</i></p>
@@ -56,17 +54,17 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
 		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
-		if(anno.annotationType().equals(CacheDataSearch.class)) {
-			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
+		if(anno.annotationType().equals(CacheSet.class)) {
+			CacheSet cacheDataSearch = (CacheSet)anno;
 			Object obj = null;//data.get(cacheDataSearch.key());
 			if(obj == null) {
 				return false;
 			}
 			context.getCallback().setResult(obj);
-			LOGGER.debug("search key:"+cacheDataSearch.key()+"]"+obj);
+			LOGGER.debug("search key:"+cacheDataSearch+"]"+obj);
 //			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
 		return true;
@@ -80,20 +78,15 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
 		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
-		if(anno.annotationType().equals(CacheDataAdd.class)) {
-			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;
+		if(anno.annotationType().equals(CacheSet.class)) {
+			CacheSet cacheDataAdd = (CacheSet)anno;
 			//TODO　这块的操作要控制的2ms以内
 			boolean isOk = false;//data.set(cacheDataAdd.key(), args[0]);
-			LOGGER.debug("add key:"+cacheDataAdd.key()+"]"+isOk);
+			LOGGER.debug("add key:"+cacheDataAdd+"]"+isOk);
 //			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
-		} else if(anno.annotationType().equals(CacheDataDel.class)) {
-			CacheDataDel cacheDataDel = (CacheDataDel)anno;
-			Object obj = null;//data.delete(cacheDataDel.key());
-			LOGGER.debug("del key:"+cacheDataDel.key()+"]"+obj);
-//			System.out.println("del key:"+cacheDataDel.key()+"]"+obj);
 		}
 		return false;
 	}
