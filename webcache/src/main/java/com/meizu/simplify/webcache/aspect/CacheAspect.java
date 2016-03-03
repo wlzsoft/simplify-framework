@@ -3,6 +3,7 @@ package com.meizu.simplify.webcache.aspect;
 import java.lang.reflect.Method;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.ClearCommentUtil;
