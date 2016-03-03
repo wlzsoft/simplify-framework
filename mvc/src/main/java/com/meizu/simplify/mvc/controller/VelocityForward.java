@@ -14,6 +14,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
@@ -110,11 +111,13 @@ public class VelocityForward implements IForward {
 		try {
 			template.merge(context, vw);
 			
-			/* 文件缓存 */
 			String content = vw.toString();
-			if (cacheSet != null) {
+			if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
 				// 是否去除空格
-				if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
+				if(cacheSet.removeSpace()) {
+					content = ClearCommentUtil.clear(content);
+					content = StringUtil.removeHtmlSpace(content);
+				}
 				Cache cache = CacheBase.getCache(cacheSet);
 				if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
 					// 缓存成功.

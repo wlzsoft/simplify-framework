@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
@@ -46,7 +47,10 @@ public class ActionForward implements IForward {
 			String content = getPageContent(request, response, rd);
 			
 			// 是否去除空格
-			if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
+			if(cacheSet.removeSpace()) {
+				content = ClearCommentUtil.clear(content);
+				content = StringUtil.removeHtmlSpace(content);
+			}
 
 			Cache cache = CacheBase.getCache(cacheSet);
 			if(cache != null && cache.doCache(cacheSet, staticName, content,response)){

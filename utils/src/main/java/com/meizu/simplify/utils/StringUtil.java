@@ -307,7 +307,9 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String removeHtmlSpace(String content) {
-		if (null == content) return "";
+		if (null == content) {
+			return "";
+		}
 		return content.replaceAll("\\s*(\\r\\n)\\s*", "").replaceAll(">(\\s+)", ">").replaceAll("(\\s+)<", "<");
 	}
 
