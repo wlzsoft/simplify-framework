@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -38,11 +38,11 @@ public class ActionForward implements IForward {
 		this.str = str;
 	}
 
-	public void doAction(HttpServletRequest request, HttpServletResponse response, CacheSet cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(str);
 
 		// 跳转前检查静态规则
-		if (cacheSet != null && cacheSet.mode() != CacheSet.CacheMode.nil) {
+		if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
 			String content = getPageContent(request, response, rd);
 			
 			// 是否去除空格

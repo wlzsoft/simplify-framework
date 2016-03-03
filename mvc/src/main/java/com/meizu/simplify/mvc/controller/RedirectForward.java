@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.mvc.MvcInit;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -58,7 +58,7 @@ public class RedirectForward implements IForward {
 		this.paramMap = paramMap;
 	}
 	
-	public void doAction(HttpServletRequest request, HttpServletResponse response, CacheSet cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 		if (paramMap.keySet().size() > 0) {
 			StringBuffer w = new StringBuffer("<html><head></head><body onload=\"form1.submit()\"><form id=\"form1\" method=\"post\" action=\"" + url + "\">");
 			for (String key : paramMap.keySet()) {

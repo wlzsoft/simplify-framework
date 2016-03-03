@@ -25,8 +25,8 @@ import com.meizu.simplify.mvc.controller.MessageForward;
 import com.meizu.simplify.mvc.controller.RedirectForward;
 import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.CacheSet;
-import com.meizu.simplify.webcache.annotation.CacheSet.CacheMode;
+import com.meizu.simplify.webcache.annotation.WebCache;
+import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
 
 
 /**
@@ -71,7 +71,7 @@ public class TestController extends BaseController<TestModel> {
 	}
 	
 	@RequestMap(path = "/testvelocity/")
-	@CacheSet(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
+	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
 	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());

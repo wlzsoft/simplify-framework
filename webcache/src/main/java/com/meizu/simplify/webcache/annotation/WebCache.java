@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface CacheSet {
+public @interface WebCache {
 	
 	/**
 	 * 方法用途:  缓存模式

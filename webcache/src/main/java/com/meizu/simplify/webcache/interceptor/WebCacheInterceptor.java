@@ -13,7 +13,7 @@ import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
 
 /**
@@ -57,8 +57,8 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
 		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
-		if(anno.annotationType().equals(CacheSet.class)) {
-			CacheSet cacheDataSearch = (CacheSet)anno;
+		if(anno.annotationType().equals(WebCache.class)) {
+			WebCache cacheDataSearch = (WebCache)anno;
 			Object obj = null;//data.get(cacheDataSearch.key());
 			if(obj == null) {
 				return false;
@@ -81,8 +81,8 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
 		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
-		if(anno.annotationType().equals(CacheSet.class)) {
-			CacheSet cacheDataAdd = (CacheSet)anno;
+		if(anno.annotationType().equals(WebCache.class)) {
+			WebCache cacheDataAdd = (WebCache)anno;
 			//TODO　这块的操作要控制的2ms以内
 			boolean isOk = false;//data.set(cacheDataAdd.key(), args[0]);
 			LOGGER.debug("add key:"+cacheDataAdd+"]"+isOk);

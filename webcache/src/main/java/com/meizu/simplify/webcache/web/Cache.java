@@ -1,6 +1,6 @@
 package com.meizu.simplify.webcache.web;
 
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 
@@ -26,7 +26,7 @@ public interface Cache {
 	 * @param staticName
 	 * @return
 	 */
-	public <T> String readCache(CacheSet cacheSet, String staticName,T o);
+	public <T> String readCache(WebCache cacheSet, String staticName,T o);
 	
 	/**
 	 * 
@@ -38,5 +38,5 @@ public interface Cache {
 	 * @param o
 	 * @return
 	 */
-	public <T> boolean  doCache(CacheSet cacheSet, String staticName, String content,T o);
+	public <T> boolean  doCache(WebCache cacheSet, String staticName, String content,T o);
 }

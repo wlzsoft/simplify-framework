@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
@@ -34,7 +34,7 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
+	public String readCache(WebCache cacheSet, String staticName,Object obj) {
 		Object[] values = CacheBase.urlCache.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
@@ -60,7 +60,7 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public boolean doCache(CacheSet cacheSet, String staticName, String content,Object obj) {
+	public boolean doCache(WebCache cacheSet, String staticName, String content,Object obj) {
 		try{
 			if(obj!=null&&cacheSet.enableBrowerCache()) {
 				HttpServletResponse response = (HttpServletResponse) obj;

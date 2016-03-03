@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.mvc.MvcInit;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -38,7 +38,7 @@ public class MessageForward implements IForward {
 		this.msg = msg;
 	}
 
-	public void doAction(HttpServletRequest request, HttpServletResponse response, CacheSet cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 		response.setCharacterEncoding(MvcInit.charSet);
 		response.setContentType("text/html; charset=" + MvcInit.charSet);
 		response.getWriter().print(msg);

@@ -21,7 +21,7 @@ import com.meizu.simplify.utils.Md5Util;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -41,7 +41,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @param <T>
  */
 public class SecurityContoller<T extends Model> {
-	protected CacheSet cacheSet = null; // 静态规则设置
+	protected WebCache cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";
 	
@@ -231,8 +231,8 @@ public class SecurityContoller<T extends Model> {
 				}
 
 				// 检查静态规则配置
-				if (doMethod.isAnnotationPresent(CacheSet.class)) {
-					this.cacheSet = (CacheSet) doMethod.getAnnotation(CacheSet.class);
+				if (doMethod.isAnnotationPresent(WebCache.class)) {
+					this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
 					Cache cache = CacheBase.getCache(cacheSet);
 					if(cache != null){
 						String cacheContent = cache.readCache(cacheSet, staticName,response);

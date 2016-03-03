@@ -2,7 +2,7 @@ package com.meizu.simplify.webcache.web;
 
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.collection.FiFoMap;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -27,14 +27,14 @@ public class CacheBase {
 	 * @param cacheSet
 	 * @return
 	 */
-	public static Cache getCache(CacheSet cacheSet) {
+	public static Cache getCache(WebCache cacheSet) {
 		Cache cache = null;
 //		if(MvcInit.debug)return null; //TODO 从配置文件中读取,后续打开
-		if (CacheSet.CacheMode.Mem == cacheSet.mode()) {
+		if (WebCache.CacheMode.Mem == cacheSet.mode()) {
 			cache = new MemCache();
-		} else if (CacheSet.CacheMode.File == cacheSet.mode()) {
+		} else if (WebCache.CacheMode.File == cacheSet.mode()) {
 			cache = new FileCache();
-		} else if (CacheSet.CacheMode.browser == cacheSet.mode()) {
+		} else if (WebCache.CacheMode.browser == cacheSet.mode()) {
 			cache = new BrowserCache();
 		}
 		return cache;

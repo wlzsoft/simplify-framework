@@ -2,7 +2,7 @@ package com.meizu.simplify.webcache.web;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
@@ -22,7 +22,7 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
 public class MemCache implements Cache {
 	
 	@Override
-	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
+	public String readCache(WebCache cacheSet, String staticName,Object obj) {
 		
 		try {
 			Object[] values = CacheBase.urlCache.get(staticName);
@@ -41,7 +41,7 @@ public class MemCache implements Cache {
 		return null;
 	}
 	@Override
-	public boolean doCache(CacheSet cacheSet, String staticName, String content,Object obj) {
+	public boolean doCache(WebCache cacheSet, String staticName, String content,Object obj) {
 		if(obj!=null&&cacheSet.enableBrowerCache()) {
 			HttpServletResponse response = (HttpServletResponse) obj;
 			BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());

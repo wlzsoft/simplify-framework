@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 /**
  * <p><b>Title:</b><i>页面处理返回方式</i></p>
@@ -42,7 +42,7 @@ public class ErrorForward implements IForward {
 		this.msg = msg;
 	}
 
-	public void doAction(HttpServletRequest request, HttpServletResponse response, CacheSet cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 		response.sendError(errorCode, msg);
 	}
 }

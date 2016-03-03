@@ -16,7 +16,7 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -52,8 +52,8 @@ public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>
 			}
 			
 			for (Method method : methodArr) {
-                if (method.isAnnotationPresent(CacheSet.class)) {
-                	resolveAnno(beanClass, method,CacheSet.class);
+                if (method.isAnnotationPresent(WebCache.class)) {
+                	resolveAnno(beanClass, method,WebCache.class);
                 }
 			}
 		}

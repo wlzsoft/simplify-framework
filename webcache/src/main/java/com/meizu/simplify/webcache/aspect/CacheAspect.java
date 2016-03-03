@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -52,8 +52,8 @@ public class CacheAspect {
 		MethodSignature signature = (MethodSignature) join.getSignature();
 		Method doMethod = signature.getMethod();
 		// 检查静态规则配置
-		if (doMethod.isAnnotationPresent(CacheSet.class)) {
-			CacheSet cacheSet = (CacheSet) doMethod.getAnnotation(CacheSet.class);
+		if (doMethod.isAnnotationPresent(WebCache.class)) {
+			WebCache cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
 			Cache cache = CacheBase.getCache(cacheSet);
 			if(cache != null){
 //				String cacheContent = cache.readCache(cacheSet, staticName);
@@ -94,10 +94,10 @@ public class CacheAspect {
 		MethodSignature signature = (MethodSignature) join.getSignature();
 		Method doMethod = signature.getMethod();
 		// 检查静态规则配置
-		if (doMethod.isAnnotationPresent(CacheSet.class)) {
-			CacheSet cacheSet = (CacheSet) doMethod.getAnnotation(CacheSet.class);
+		if (doMethod.isAnnotationPresent(WebCache.class)) {
+			WebCache cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
 			// 跳转前检查静态规则
-			if (cacheSet != null && cacheSet.mode() != CacheSet.CacheMode.nil) {
+			if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
 				//页面级别内容
 				String content = "test"; // TODO 
 				// 是否去除空格
