@@ -3,6 +3,9 @@ package com.meizu.simplify.webcache.interceptor;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +36,9 @@ import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
 public class WebCacheInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebCacheInterceptor.class);
+	
+	@Resource
+	private HttpServletRequest request;
 	
 	private static final WebCacheInterceptor CACHE_BEFORE_INTERCEPTOR = new WebCacheInterceptor();
 	private static final WebCacheInterceptor CACHE_AFTER_INTERCEPTOR = new WebCacheInterceptor(); 
@@ -68,6 +74,26 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 //			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
 		} 
 		return true;
+		
+		
+		
+		/*//需要废弃 TODO
+				MethodSignature signature = (MethodSignature) join.getSignature();
+				Method doMethod = signature.getMethod();
+				// 检查静态规则配置
+				if (doMethod.isAnnotationPresent(WebCache.class)) {
+					WebCache cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
+					Cache cache = CacheBase.getCache(cacheSet);
+					if(cache != null){
+//						String cacheContent = cache.readCache(cacheSet, staticName);
+//						if(cacheContent != null){
+//							response.setCharacterEncoding(MvcInit.charSet);
+//							response.setContentType("text/html; charset=" + MvcInit.charSet);
+//							response.getWriter().print(cacheContent);
+							System.out.println("debug:UrlCache -> read Cache.");
+//						}
+					}
+				}*/
 	}
 	
 	@Override
@@ -89,6 +115,34 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 //			System.out.println("add key:"+cacheDataAdd.key()+"]"+isOk);
 		}
 		return false;
+		
+		
+		/*//需要废弃
+				if (this.isError) {
+					return; // 业务类若抛异常就不记录数据库日志
+				}
+				MethodSignature signature = (MethodSignature) join.getSignature();
+				Method doMethod = signature.getMethod();
+				// 检查静态规则配置
+				if (doMethod.isAnnotationPresent(WebCache.class)) {
+					WebCache cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
+					// 跳转前检查静态规则
+					if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
+						//页面级别内容
+						String content = "test"; // TODO 
+						// 是否去除空格
+						if(cacheSet.removeSpace()) {
+							content = ClearCommentUtil.clear(content);
+							content = StringUtil.removeHtmlSpace(content);
+						}
+						Cache cache = CacheBase.getCache(cacheSet);
+//						String url = request.getServerName() + request.getRequestURI() + StringUtils.isNotNull(request.getQueryString());
+//						String staticName = Md5Util.md5(url) + ".lv";
+//						if(cache != null && cache.doCache(cacheSet, staticName, content,null)){
+//							// 缓存成功.
+//						}
+					}
+				}*/
 	}
 
 	@Override
