@@ -26,7 +26,7 @@ public class CacheBase {
 	 */
 	public static Cache getCache(CacheSet cacheSet) {
 		Cache cache = null;
-//		if(Init.test_switch)return null; //TODO 从配置文件中读取,后续打开
+//		if(MvcInit.debug)return null; //TODO 从配置文件中读取,后续打开
 		if (CacheSet.CacheMode.Mem == cacheSet.mode()) {
 			cache = new MemCache();
 		} else if (CacheSet.CacheMode.File == cacheSet.mode()) {

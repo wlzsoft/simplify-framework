@@ -45,14 +45,10 @@ public class MvcInit {
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
 	public static boolean debug = false;
 	public static String charSet = null;
-	public static String webcharSet = "ISO-8859-1";
+//	public static String webcharSet = "ISO-8859-1";//页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
 	public static Integer urlcacheCount = 100;
 	public static String class_path; // class位置
 	public static String directives; // velocity自定义Directive
-	
-	
-	public MvcInit() {
-	}
 	
 	public static String getPath() {
 		String path = MvcInit.class.getResource("/").getPath();
@@ -62,7 +58,7 @@ public class MvcInit {
 	public static void init() {
 		debug = config.getBoolean("system.debug", false);
 		charSet = config.getString("system.charset", null);
-		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
+//		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
 		
 		class_path = config.getString("system.classpath", null);
 		directives = config.getString("system.directives", null);
@@ -90,10 +86,10 @@ public class MvcInit {
 					e.printStackTrace();
 				}
 			}
-	//		LOGGER.log("Framework Debug -> " + debug);
+			LOGGER.info("Framework Debug -> " + debug);
 	//		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
 	//		LOGGER.log("Framework Charset -> " + charSet);
-	//		LOGGER.log("Framework v0.0.1-SNAPSHOT Init.");
+			LOGGER.info("Framework v0.0.1-SNAPSHOT Init");
 		}
 	
 	}
