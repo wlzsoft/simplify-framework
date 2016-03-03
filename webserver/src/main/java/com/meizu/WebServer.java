@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.meizu.simplify.cache.redis.RedisPool;
+import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.mvc.MvcInit;
@@ -21,7 +21,7 @@ public class WebServer {
 	public static void main(String[] args) {
 		try {
 			//应用级框架代码，不能写死依赖，后续修改成插件形式
-			RedisPool.initCachePool();
+			CachePool.init();
 			Startup.start();
 			MvcInit.init();
 			VelocityForward.init();

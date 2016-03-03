@@ -40,7 +40,7 @@ public class MvcInit {
 	
 	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");
 	
-	public static FiFoMap<String, Object[]> urlCache; // url请求缓存
+	public static FiFoMap<String, Object[]> urlCache; // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
 	public static boolean debug = false;
