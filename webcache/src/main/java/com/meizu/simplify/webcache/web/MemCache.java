@@ -1,9 +1,9 @@
 package com.meizu.simplify.webcache.web;
 
-//import com.meizu.simplify.mvc.HttpServletResponse;
-//import com.meizu.simplify.mvc.MvcInit;
+import javax.servlet.http.HttpServletResponse;
+
 import com.meizu.simplify.webcache.annotation.CacheSet;
-//import com.meizu.simplify.webcache.util.BrowserUtil;
+import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
 /**
@@ -23,9 +23,9 @@ public class MemCache implements Cache {
 	
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
-		/*
+		
 		try {
-			Object[] values = MvcInit.urlCache.get(staticName);
+			Object[] values = CacheBase.urlCache.get(staticName);
 			long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 			// 检查存活时间
 			if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
@@ -35,16 +35,18 @@ public class MemCache implements Cache {
 				}
 				return values[0].toString();
 			}
-		} catch (Exception e) { }*/
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
 		return null;
 	}
 	@Override
 	public boolean doCache(CacheSet cacheSet, String staticName, String content,Object obj) {
-		/*if(obj!=null&&cacheSet.enableBrowerCache()) {
+		if(obj!=null&&cacheSet.enableBrowerCache()) {
 			HttpServletResponse response = (HttpServletResponse) obj;
 			BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
 		}
-		MvcInit.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });*/
+		CacheBase.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });
 		return true;
 	}
 	

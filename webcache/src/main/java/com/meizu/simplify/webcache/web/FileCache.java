@@ -5,11 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-//import javax.servlet.http.HttpServletResponse;
-//
-//import com.meizu.simplify.mvc.MvcInit;
-//import com.meizu.util.web.BrowserUtil;
+import javax.servlet.http.HttpServletResponse;
+
 import com.meizu.simplify.webcache.annotation.CacheSet;
+import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
 /**
@@ -29,10 +28,11 @@ public class FileCache implements Cache {
 	
 	@Override
 	public String readCache(CacheSet cacheSet, String staticName,Object obj) {
-		/*Object[] values = MvcInit.urlCache.get(staticName);
+		Object[] values = CacheBase.urlCache.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
-			File directory = new File(MvcInit.getPath());
+//			File directory = new File(MvcInit.getPath());
+			File directory = new File("D:/htmlCache/");
 			try {
 				if(obj!=null&&cacheSet.enableBrowerCache()) {
 					HttpServletResponse response = (HttpServletResponse) obj;
@@ -48,30 +48,28 @@ public class FileCache implements Cache {
 				
 				e.printStackTrace();
 			}
-		}*/
+		}
 		return null;
 	}
 	
 	@Override
 	public boolean doCache(CacheSet cacheSet, String staticName, String content,Object obj) {
-		/*try{
+		try{
 			if(obj!=null&&cacheSet.enableBrowerCache()) {
 				HttpServletResponse response = (HttpServletResponse) obj;
 				BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
 			}
-//			File directory = new File(MvcInit.getPath());
+//			File htmlCache = new File(MvcInit.getPath());
 			File htmlCache = new File("D:/htmlCache/");
 			if (!htmlCache.exists()) htmlCache.mkdirs();
 			FileWriter fw = new FileWriter(htmlCache.getPath() + "/" + staticName);
 			fw.write(content);
 			fw.close();
-			System.out.println(MvcInit.debug);
-			MvcInit.urlCache.put(staticName, new Object[] { "", System.currentTimeMillis() });
+			CacheBase.urlCache.put(staticName, new Object[] { "", System.currentTimeMillis() });
 			return true;
 		} catch(Exception e){
 			return false;
-		}*/
-		return false;
+		}
 	}
 	
 }

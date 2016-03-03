@@ -2,6 +2,8 @@ package com.meizu.simplify.webcache.util;
 
 import java.time.Clock;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * <p><b>Title:</b><i>浏览器相关工具</i></p>
@@ -18,7 +20,7 @@ import java.time.Clock;
  */
 public class BrowserUtil {
 	
-/*
+
 	public static void disableBrowerCache(HttpServletResponse response) {
 		//不允许浏览器端或缓存服务器缓存当前页面信息。
 		response.setHeader("version","ros2.0");
@@ -47,6 +49,6 @@ public class BrowserUtil {
 //      response.setHeader("Content-Type", "text/html;charset=utf-8"); 
 //      response.setIntHeader("Content-Length", 7228); 
 		
-	}*/
+	}
 	
 }

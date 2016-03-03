@@ -1,8 +1,8 @@
 package com.meizu.simplify.webcache.web;
 
 
-//import com.meizu.simplify.mvc.HttpServletResponse;
-//import com.meizu.simplify.mvc.MvcInit;
+import javax.servlet.http.HttpServletResponse;
+
 import com.meizu.simplify.webcache.annotation.CacheSet;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 
@@ -38,9 +38,9 @@ public class BrowserCache implements Cache {
 		if(obj == null) {
 			return true;
 		}
-		/*
+		
 		HttpServletResponse response = (HttpServletResponse) obj;
-		BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());*/
+		BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
 //		BrowserUtil.enableBrowerCache(response,20000);
 		return true;
 	}
