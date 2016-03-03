@@ -311,8 +311,10 @@ public class StringUtil {
 		if (null == content) {
 			return "";
 		}
+		//bugfix： 考虑把比如 <input name=""> 这个标签，input和name之间是\r\n标签 需要转换成一个空格，而不是删除他
+		//fixed by lcy : 通过调整第一个正则表达式替换的内容从""，改成" "
 		return content
-				.replaceAll("\\s*(\\r\\n)\\s*", "")
+				.replaceAll("\\s*(\\r\\n)\\s*", " ")
 				.replaceAll(">(\\s+)", ">")
 				.replaceAll("(\\s+)<", "<");
 	}
