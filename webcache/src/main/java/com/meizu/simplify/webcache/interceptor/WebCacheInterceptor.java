@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.ClearCommentUtil;
+import com.meizu.simplify.utils.Md5Util;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
@@ -44,6 +46,12 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 	@Resource
 	private HttpServletRequest request;
 	
+	private HttpServletResponse response;
+	
+//	后续删除，这里测试下配置文件常量的读取方式
+//	@value("system.charSet") 
+//	public static String charSet = "utf-8";
+	
 	private static final WebCacheInterceptor CACHE_BEFORE_INTERCEPTOR = new WebCacheInterceptor();
 	private static final WebCacheInterceptor CACHE_AFTER_INTERCEPTOR = new WebCacheInterceptor(); 
 	private WebCacheInterceptor() {
@@ -67,53 +75,30 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
 		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
-		if(anno.annotationType().equals(WebCache.class)) {
-			WebCache cacheDataSearch = (WebCache)anno;
-			Object obj = null;//data.get(cacheDataSearch.key());
-			if(obj == null) {
-				return false;
-			}
-			context.getCallback().setResult(obj);
-			LOGGER.debug("search key:"+cacheDataSearch+"]"+obj);
-//			System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
-		} 
-		return true;
-		
-		
-//1
-		/*//需要废弃 TODO
-				MethodSignature signature = (MethodSignature) join.getSignature();
-				Method doMethod = signature.getMethod();
-				// 检查静态规则配置
-				if (doMethod.isAnnotationPresent(WebCache.class)) {
-					WebCache cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
-					Cache cache = CacheBase.getCache(cacheSet);
-					if(cache != null){
-//						String cacheContent = cache.readCache(cacheSet, staticName);
-//						if(cacheContent != null){
-//							response.setCharacterEncoding(MvcInit.charSet);
-//							response.setContentType("text/html; charset=" + MvcInit.charSet);
-//							response.getWriter().print(cacheContent);
-							System.out.println("debug:UrlCache -> read Cache.");
-//						}
-					}
-				}*/
-//2
 		// 检查静态规则配置
-		/*if (doMethod.isAnnotationPresent(WebCache.class)) {
-			this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
-			Cache cache = CacheBase.getCache(cacheSet);
+		if(anno.annotationType().equals(WebCache.class)) {
+			WebCache webCache = (WebCache)anno;
+			
+					
+			Cache cache = CacheBase.getCache(webCache);
 			if(cache != null){
-				String cacheContent = cache.readCache(cacheSet, staticName,response);
+				//这两行代码和下面重复，并且重复执行了一次
+				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
+				String staticName = Md5Util.md5(url) + ".lv";
+				//end
+				String cacheContent =cache.readCache(webCache, staticName,response);
 				if(cacheContent != null){
-					response.setCharacterEncoding(MvcInit.charSet);
-					response.setContentType("text/html; charset=" + MvcInit.charSet);
-					response.getWriter().print(cacheContent);
-					System.out.println("UrlCache -> read Cache.");
-					return null;
+					//返回缓存的页面
+					context.getCallback().setResult(cacheContent);
+					LOGGER.debug("返回请求["+webCache+"]的缓存页面内容");
 				}
 			}
-		}*/
+		} 
+		
+		
+
+		
+		return true;
 	}
 	
 	@Override
@@ -139,52 +124,21 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 			// 跳转前检查静态规则
 			if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
 				//页面级别内容
-				String content = "test"; // TODO 
+				String content = (String) args[0];
+//				String content = getPageContent(request, response, rd);//jvm内存缓存,ActionForward生成，然后传递过来
+//				String content = vw.toString();//文件缓存，Velocity中生成，然后传递过来
 				// 是否去除空格
 				if(webCache.removeSpace()) {
 					content = ClearCommentUtil.clear(content);
 					content = StringUtil.removeHtmlSpace(content);
 				}
 				Cache cache = CacheBase.getCache(webCache);
-//						String url = request.getServerName() + request.getRequestURI() + StringUtils.isNotNull(request.getQueryString());
-//						String staticName = Md5Util.md5(url) + ".lv";
-//						if(cache != null && cache.doCache(cacheSet, staticName, content,null)){
-//							// 缓存成功.
-//						}
-			}
-			
-//2			
-			/* 文件缓存 */
-			/*String content = vw.toString();
-			if (cacheSet != null) {
-				// 是否去除空格
-				if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
-				Cache cache = CacheBase.getCache(cacheSet);
-				if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
+				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
+				String staticName = Md5Util.md5(url) + ".lv";
+				if(cache != null && cache.doCache(webCache, staticName, content,response)){
 					// 缓存成功.
 				}
 			}
-			
-			
-			
-		}*/
-		
-//3
-		/*// 跳转前检查静态规则
-				if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
-					String content = getPageContent(request, response, rd);
-					
-					// 是否去除空格
-					if(cacheSet.removeSpace()) content = StringUtil.removeHtmlSpace(content);
-
-					Cache cache = CacheBase.getCache(cacheSet);
-					if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
-						// 缓存成功.
-					}
-					response.setCharacterEncoding(MvcInit.charSet);
-					response.setContentType("text/html; charset=" + MvcInit.charSet);
-					response.getWriter().print(content);*/
-		
 		
 		}
 		return false;
