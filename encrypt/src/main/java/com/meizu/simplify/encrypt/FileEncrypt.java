@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
-
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -18,39 +17,33 @@ import java.util.zip.GZIPOutputStream;
  * @version Version 0.1
  *
  */
-public class FileEncrypt
-{
+public class FileEncrypt {
 
-    public static void StreamEncrypt(InputStream in, OutputStream out, byte[] keys) throws IOException
-    {
-        if(in == null || out == null)
-        {
-            throw new IOException("流为空");
-        }
-        
-        if(keys==null)
-        {
-        //    out.write(new byte[] {0});
-            keys = Keys.defaultFileKey();
-        }
-        else
-        {
-        //    out.write(new byte[] {1});
-        }
-        EncryptStream cos = new EncryptStream(out, keys);
-        GZIPOutputStream gzos = new GZIPOutputStream(cos);
-        byte[] buffer = new byte[512];
-        int bytesRead;
-        try {
-            while ((bytesRead = in.read(buffer)) != -1) {
-            	gzos.write(buffer, 0, bytesRead);
-            }
-            gzos.finish();
-            gzos.flush();
-            gzos.close();
-            cos.close();
-        } catch (IOException e) {
-            throw e;
-        }
-    }
+	public static void StreamEncrypt(InputStream in, OutputStream out, byte[] keys) throws IOException {
+		if (in == null || out == null) {
+			throw new IOException("流为空");
+		}
+
+		if (keys == null) {
+			// out.write(new byte[] {0});
+			keys = Keys.defaultFileKey();
+		} else {
+			// out.write(new byte[] {1});
+		}
+		EncryptStream cos = new EncryptStream(out, keys);
+		GZIPOutputStream gzos = new GZIPOutputStream(cos);
+		byte[] buffer = new byte[512];
+		int bytesRead;
+		try {
+			while ((bytesRead = in.read(buffer)) != -1) {
+				gzos.write(buffer, 0, bytesRead);
+			}
+			gzos.finish();
+			gzos.flush();
+			gzos.close();
+			cos.close();
+		} catch (IOException e) {
+			throw e;
+		}
+	}
 }

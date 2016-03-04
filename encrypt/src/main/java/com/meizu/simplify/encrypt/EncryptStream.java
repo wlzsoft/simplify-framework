@@ -3,7 +3,6 @@ package com.meizu.simplify.encrypt;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -17,75 +16,61 @@ import java.io.OutputStream;
  * @version Version 0.1
  *
  */
-final class EncryptStream extends FilterOutputStream
-{
-    private byte[] conkeys = null;
-    private byte[] rc4Keys = null;
-    private int page = 0;
-    
-    private byte[] buf = new byte[512];
-    private int pos = 0;
-    
-    public EncryptStream(OutputStream in, byte[] key)
-    {
-        super(in);
-        this.conkeys = Keys.calcConKey("ff", key);
-        this.rc4Keys = Keys.calcRc4Key("ff", key);
-    }
+final class EncryptStream extends FilterOutputStream {
+	private byte[] conkeys = null;
+	private byte[] rc4Keys = null;
+	private int page = 0;
 
-    protected EncryptStream(OutputStream out) {
-        super(out);
-    }
-    
-    @Override
-    public void write(byte b[], int off, int len) throws IOException
-    {
-    	for(int i = 0; i < len; ++i, ++off, ++pos)
-    	{
-    		if(pos==512)
-    		{
-    			writeToFile(buf, 0, 512);
-    			pos = 0;
-    		}
-    		buf[pos] = b[off];
-    	}
-    }
-    
-    @Override
-    public void flush() throws IOException 
-    {
-    	if(pos!=0)
-    	{
-    		writeToFile(buf, 0, pos);
-    		pos = 0;
-    	}
-    }
-    
-    private void writeToFile(byte b[], int off, int len) throws IOException
-    {
-        if(len > 0)
-        {
-            if(b.length == len)
-            {
-                if(page % 3 == 0)
-                {
-                    Encrypt.enConfusion(b, conkeys);
-                }
-                if(page==0)
-                {
-                    Encrypt.rc4crypt(b, rc4Keys);
-                }
-            }
-            else
-            {
-                byte[] data = new byte[len];
-                System.arraycopy(b, off, data, 0, len);
-                Encrypt.enConfusion(data, conkeys);
-                Encrypt.rc4crypt(data, rc4Keys);
-                System.arraycopy(data, 0, b, off, len);
-            }
-        }
-        ++page;
-        out.write(b, off, len);
-    }
+	private byte[] buf = new byte[512];
+	private int pos = 0;
+
+	public EncryptStream(OutputStream in, byte[] key) {
+		super(in);
+		this.conkeys = Keys.calcConKey("ff", key);
+		this.rc4Keys = Keys.calcRc4Key("ff", key);
+	}
+
+	protected EncryptStream(OutputStream out) {
+		super(out);
+	}
+
+	@Override
+	public void write(byte b[], int off, int len) throws IOException {
+		for (int i = 0; i < len; ++i, ++off, ++pos) {
+			if (pos == 512) {
+				writeToFile(buf, 0, 512);
+				pos = 0;
+			}
+			buf[pos] = b[off];
+		}
+	}
+
+	@Override
+	public void flush() throws IOException {
+		if (pos != 0) {
+			writeToFile(buf, 0, pos);
+			pos = 0;
+		}
+	}
+
+	private void writeToFile(byte b[], int off, int len) throws IOException {
+		if (len > 0) {
+			if (b.length == len) {
+				if (page % 3 == 0) {
+					Encrypt.enConfusion(b, conkeys);
+				}
+				if (page == 0) {
+					Encrypt.rc4crypt(b, rc4Keys);
+				}
+			} else {
+				byte[] data = new byte[len];
+				System.arraycopy(b, off, data, 0, len);
+				Encrypt.enConfusion(data, conkeys);
+				Encrypt.rc4crypt(data, rc4Keys);
+				System.arraycopy(data, 0, b, off, len);
+			}
+		}
+		++page;
+		out.write(b, off, len);
+	}
 }
