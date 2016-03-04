@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +17,7 @@ import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -48,12 +50,10 @@ public class MvcInit {
 	public static Integer urlcacheCount = 100;
 	public static String class_path; // class位置
 	public static String directives; // velocity自定义Directive
-	
 	public static String getPath() {
 		String path = MvcInit.class.getResource("/").getPath();
 		return path.substring(0, path.lastIndexOf("/"));
 	}
-	
 	public static void init() {
 		debug = config.getBoolean("system.debug", false);
 		charSet = config.getString("system.charset", null);
@@ -65,25 +65,13 @@ public class MvcInit {
 		
 		// 查找指定class路径
 		if (class_path != null) {
-			String path = StringUtil.format("{0}/{1}", getPath(), class_path.replaceAll("\\.", "/"));
-			File file = new File(path);
-			File[] fns = file.listFiles(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					return name.endsWith(".class");
-				}
-			});
 			
-			if (fns == null) {
-				throw new UncheckedException("没有扫描到配置的路径["+path+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
+			List<Class<?>> controllerClassList = ClassUtil.findClasses(class_path);
+			if (controllerClassList == null || controllerClassList.size()<=0) {
+				throw new UncheckedException("没有扫描到配置的路径[system.classpath="+class_path+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
 			}
-			for (int i = 0; i < fns.length; i++) {
-				String name = fns[i].getAbsoluteFile().getName().replace(".class", "");
-				try {
-					Class<?> entityClass = (Class<?>) Class.forName(class_path + "." + name);
-					resolverRequestInfo(entityClass);
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
+			for (Class<?> controllerClass : controllerClassList) {
+				resolverRequestInfo(controllerClass);
 			}
 			LOGGER.info("Framework Debug -> " + debug);
 	//		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
