@@ -1,10 +1,5 @@
 package com.meizu.simplify.encrypt;
 
-//import java.io.FileInputStream;
-//import java.io.FileNotFoundException;
-//import java.io.FileOutputStream;
-//import java.io.IOException;
-
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: AES_256_CBC 256位加密算法-存在的问题和优势</p>
@@ -18,11 +13,10 @@ package com.meizu.simplify.encrypt;
  * @version Version 0.1
  *
  */
-public class Test
+public class EncryptTest
 {
-    public static void main(String[] args)
-    {
-    	System.out.println(Encrypt.passwordEncrypt("scts808"));
+    public static void main(String[] args) {
+    	System.out.println(Encrypt.passwordEncrypt("ros123"));
 //    	String ssssss = "123456789";
 //        ssssss = Encrypt.numEncrypt(ssssss);
 //        print("ssssss=" + ssssss);
@@ -33,15 +27,15 @@ public class Test
 //        
 //        String cinemaNo = "13014101";
 //        String key = "loongcinema";
-//        print("设置影院编码=" + cinemaNo);
-//        print("设置秘钥=" + key);
+//        print("用户名=" + cinemaNo);
+//        print("秘钥=" + key);
 //        Keys.setCinemaNo(cinemaNo);
 //        Keys.setKey(key);
 //        
 //        String username = "admin";
 //        String password = "123456";
-//        String name = "雪狼";
-//        String adderss = "深圳市福田区福强路111栋4楼 深圳市福田区福强路111栋4楼 深圳市福田区福强路111栋4楼 深圳市福田区福强路111栋4楼 深圳市福田区福强路111栋4楼";
+//        String name = "lcy";
+//        String adderss = "深圳市海王银河科技大厦 深圳市海王银河科技大厦 深圳市海王银河科技大厦 深圳市海王银河科技大厦 深圳市海王银河科技大厦";
 //        
 //        print("用户名：" + username);
 //        print("密码：" + password);
