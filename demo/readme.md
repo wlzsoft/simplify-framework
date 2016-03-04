@@ -33,6 +33,7 @@
 31.对参数@RequestParam的解析的测试==>>已测试，已通过2016/3/4
 32.基于jetty使用框架时，第一次请求性能耗费了800ms左右的时间==>>已测试，已通过，jetty本身自己的问题，第一次访问会很慢（估计jetty第一次访问会初始化一些数据） 2016/3/4
 33.webcache的ClearCommentUtil.clear中要清除的html页面中，全部用html5的头声明(<!doctype html>)，否则声明头会被清除掉一部分
+34.mvc性能优化，修复请求过程中使用反射的问题
 	       
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
