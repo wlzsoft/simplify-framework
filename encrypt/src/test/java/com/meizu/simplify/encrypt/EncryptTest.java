@@ -22,17 +22,21 @@ import org.junit.Test;
 public class EncryptTest {
 
 	@Test
-	public void test() {
+	public void testPasswordEncrypt() {
 		System.out.println(Encrypt.passwordEncrypt("ros123"));
-
-		String ssssss = "123456789";
-		ssssss = Encrypt.numEncrypt(ssssss);
-		print("ssssss=" + ssssss);
-		ssssss = Decrypt.numDecrypt(ssssss);
-		print("ssssss=" + ssssss);
-		ssssss = Encrypt.numEncrypt(ssssss);
-		print("ssssss=" + ssssss);
-
+	}
+	@Test
+	public void testNum() {
+		String num = "123456789";
+		num = Encrypt.numEncrypt(num);
+		print("加密=" + num);
+		num = Decrypt.numDecrypt(num);
+		print("解密=" + num);
+		num = Encrypt.numEncrypt(num);
+		print("加密=" + num);
+	}
+	@Test
+	public void testFieldEncryptAndPassword() {
 		String cinemaNo = "13014101";
 		String key = "loongcinema";
 		print("用户名=" + cinemaNo);
@@ -78,7 +82,9 @@ public class EncryptTest {
 		print("=============解密地址============");
 		String adderssDecrtyed = Decrypt.fieldDecrypt(adderssEncrtyed);
 		print("地址解密结果：" + adderssDecrtyed);
-
+	}
+	@Test
+	public void testFileEncrypt() {
 		print("=================================");
 		print("=============文件加解密===========");
 		String file1 = "C:\\Users\\Administrator\\Desktop\\热部署.txt";
@@ -101,17 +107,14 @@ public class EncryptTest {
 			out = new FileOutputStream(file2);
 			FileEncrypt.StreamEncrypt(in, out, keybyte);
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -119,7 +122,6 @@ public class EncryptTest {
 				try {
 					out.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -130,17 +132,14 @@ public class EncryptTest {
 			out = new FileOutputStream(file3);
 			FileDecrypt.StreamDecrypt(in, out, keybyte);
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -148,7 +147,6 @@ public class EncryptTest {
 				try {
 					out.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
