@@ -17,6 +17,7 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.utils.ObjectUtil;
@@ -41,6 +42,10 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	public static final Map<String,AnnotationInfo> mappingAnnotationInfo = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
+		//解析方式1：目前正在使用的方式
+		MvcInit.init();
+		
+		//解析方式2：后续统一用第二种
 		BeanContainer container = BeanFactory.getBeanContainer();
 		Map<String, Object> mapContainer = container.getMapContainer();
 		Collection<Object> containerCollection = mapContainer.values();

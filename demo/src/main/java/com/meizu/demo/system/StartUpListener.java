@@ -37,7 +37,6 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		
 		CachePool.init();
 		Startup.start();
-		MvcInit.init();
 		VelocityForward.init();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");
