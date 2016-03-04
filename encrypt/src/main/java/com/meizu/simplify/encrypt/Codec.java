@@ -21,6 +21,7 @@ import java.security.NoSuchAlgorithmException;
 public class Codec {
 	final static byte[] DIGITS = new byte[64];
 	final static byte[] base64Alphabet = new byte[255];
+	//注意：如果文件编码是ansi，那么如果文件中有中文文字，那么加密后，中文部分解密会乱码
 	final static Charset CHARSET = Charset.forName("UTF-8");
 
 	static {
@@ -210,6 +211,8 @@ public class Codec {
 		}
 		return decodedData;
 	}
+	//以上是base64相关
+	//以下是password签名加密相关
 
 	static String encode16ToString(byte[] bytes) {
 		if (bytes == null || bytes.length == 0)
