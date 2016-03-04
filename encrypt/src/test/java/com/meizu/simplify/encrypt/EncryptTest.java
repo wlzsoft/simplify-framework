@@ -1,5 +1,7 @@
 package com.meizu.simplify.encrypt;
 
+import org.junit.Test;
+
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: AES_256_CBC 256位加密算法-存在的问题和优势</p>
@@ -14,7 +16,9 @@ package com.meizu.simplify.encrypt;
  *
  */
 public class EncryptTest {
-    public static void main(String[] args) {
+	
+	@Test
+    public void test() {
     	System.out.println(Encrypt.passwordEncrypt("ros123"));
 //    	String ssssss = "123456789";
 //        ssssss = Encrypt.numEncrypt(ssssss);
