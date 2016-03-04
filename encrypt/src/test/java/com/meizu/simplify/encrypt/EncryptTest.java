@@ -13,8 +13,7 @@ package com.meizu.simplify.encrypt;
  * @version Version 0.1
  *
  */
-public class EncryptTest
-{
+public class EncryptTest {
     public static void main(String[] args) {
     	System.out.println(Encrypt.passwordEncrypt("ros123"));
 //    	String ssssss = "123456789";
