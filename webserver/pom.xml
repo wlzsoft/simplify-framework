@@ -41,7 +41,6 @@
 			<groupId>com.meizu</groupId>
 			<artifactId>encrypt</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- 日志相关 begin -->
 		<!-- slf4j启用彩色日志jansi -->
