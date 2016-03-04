@@ -111,9 +111,9 @@ public class MvcInit {
 					RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
 					for (String _path : rset.path().split("\\s+", -1)) {
 						if (_path != null && _path.length() > 0) {
-							LOGGER.debug("ADDED [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
-//							System.out.println("ADDED [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
 							controllerMap.put(_path, new ControllerAnnotationInfo(obj, method.getName()));
+							LOGGER.debug("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
+//							System.out.println("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
 						}
 					}
 				}
