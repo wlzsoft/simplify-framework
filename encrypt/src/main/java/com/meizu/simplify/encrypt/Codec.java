@@ -263,20 +263,9 @@ public class Codec {
 		if (plaintext == null || plaintext.isEmpty())
 			return "";
 		byte[] data = plaintext.getBytes(CHARSET);
-		byte[] hash = hashMd5(data);
+		byte[] hash = Md5Util.hashMd5(data);
 		return encode16ToString(hash);
 	}
 
-	private static byte[] hashMd5(byte[] bytes) {
-		MessageDigest digest;
-		try {
-			digest = MessageDigest.getInstance("MD5");
-			digest.reset();
-			digest.update(bytes);
-			return digest.digest();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	
 }

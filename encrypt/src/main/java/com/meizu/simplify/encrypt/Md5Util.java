@@ -1,6 +1,8 @@
 package com.meizu.simplify.encrypt;
 
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * <p><b>Title:</b><i>Md5加密工具类</i></p>
@@ -46,15 +48,26 @@ public class Md5Util {
 			return null;
 		}
 	}
+	
+	public static byte[] hashMd5(byte[] source) {
+		try {
+			
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			digest.reset();//是否需要重置 TODO
+			digest.update(source);
+			return digest.digest();// MD5 的计算结果是一个 128 位的长整数，
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	private static String getMD5(byte[] source) {
 		String s = null;
 		char hexDigits[] = { // 用来将字节转换成 16 进制表示的字符
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 		try {
-			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-			md.update(source);
-			byte tmp[] = md.digest(); // MD5 的计算结果是一个 128 位的长整数，
+			byte tmp[] = hashMd5(source); // MD5 的计算结果是一个 128 位的长整数，
 			// 用字节表示就是 16 个字节
 			char str[] = new char[16 * 2]; // 每个字节用 16 进制表示的话，使用两个字符，
 			// 所以表示成 16 进制需要 32 个字符
