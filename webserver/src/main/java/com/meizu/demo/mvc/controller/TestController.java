@@ -82,6 +82,13 @@ public class TestController extends BaseController<TestModel> {
 		return new VelocityForward("/template/login.html");
 	}
 	
+	@RequestMap(path = "/testwebsocket/")
+	public IForward doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
+		return new VelocityForward("/template/websocket.html");
+	}
+	
 	
 	@RequestMap(path = "/testjson/")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
