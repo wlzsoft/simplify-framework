@@ -77,7 +77,7 @@ public class HttpResponse implements HttpServletResponse{
 			bw.write(getVersion() + " " + getStatusCode() + " "
 					+ getReason() + "\r\n");
 			bw.write("Date: " + new Date() + "\r\n");
-			bw.write("Server: Parrot\r\n");
+			bw.write("Server: meizu-server-0.1\r\n");
 			bw.write("Accept-Ranges: bytes\r\n");
 			bw.write("Content-Length: " + getBody().length + "\r\n");
 			bw.write("Content-Type: text/html\r\n");
@@ -95,7 +95,7 @@ public class HttpResponse implements HttpServletResponse{
 		bw.append(getVersion() + " " + getStatusCode() + " "
 				+ getReason() + "\r\n");
 		bw.append("Date: " + new Date() + "\r\n");
-		bw.append("Server: Parrot\r\n");
+		bw.append("Server: meizu-server-0.1\r\n");
 		bw.append("Accept-Ranges: bytes\r\n");
 		bw.append("Content-Length: " + "getBody().length" + "\r\n");
 		bw.append("Content-Type: text/html\r\n");
