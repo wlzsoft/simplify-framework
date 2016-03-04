@@ -2,7 +2,6 @@ package com.meizu.simplify.websocket.resolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.TypeVariable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -12,15 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.exception.CacheException;
-import com.meizu.simplify.mvc.annotation.RequestMap;
-import com.meizu.simplify.mvc.annotation.RequestParam;
-import com.meizu.simplify.mvc.dto.MappingAnnotationInfo;
+import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.exception.StartupErrorException;
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.mvc.annotation.RequestMap;
+import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.utils.ObjectUtil;
 
 /**
@@ -40,7 +38,7 @@ import com.meizu.simplify.utils.ObjectUtil;
 public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketAnnotationResolver.class);
 	
-	public static final Map<String,MappingAnnotationInfo> mappingAnnotationInfo = new ConcurrentHashMap<>();
+	public static final Map<String,AnnotationInfo> mappingAnnotationInfo = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -69,7 +67,7 @@ public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T requestInfo = method.getDeclaredAnnotation(clazzAnno);
 		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
-		MappingAnnotationInfo cai = new MappingAnnotationInfo();
+		AnnotationInfo cai = new AnnotationInfo();
 		cai.setAnnotatoionType(requestInfo);
 		cai.setReturnType(method.getReturnType());
 		mappingAnnotationInfo.put(beanClass.getName()+":"+method.getName(), cai);
