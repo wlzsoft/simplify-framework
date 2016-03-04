@@ -32,11 +32,7 @@ import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: 对参数@RequestParam的解析的测试
- *          对非正则表达式的url的映射解析的404问题的解决
- *          第一次性能耗费了800ms左右的时间，排查和解决
- *          dao模块的开发
- *          aop日志打印太过详细的问题</p>
+ * <p>Desc: TODO </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

@@ -28,7 +28,11 @@
 26.mvcinit类 需要重构下，以便和webcache等模块分离==>>已测试，已通过 2016/3/3
 27.PropertieUtil类需要重构下，目前有多个实例的冗余，[1.可以根据配置文件的不同，创建不同实例，2.也可以通过配置文件自动合并，只生成一个实例。推荐第二种方式]
 28.webcache的removespace的功能的实现：目前这个压缩过程，有bug，会丢失有效的文本信息==>>已测试，已通过 2016/3/3
-	       
+29.aop日志打印太过详细的问题==>>已测试，已通过[由于jetty本身的问题，jetty底层依赖slf4j，如果有相关的slf4j，那么就会启用slf4j的日志，导致输出日志很详细，可以在javaagent中删掉slf4j，那么就会用回jdk的log模块，日志就很少]2016/3/4
+30.对非正则表达式的url的映射解析的404问题的解决==>>已测试，已通过 2016/3/4
+31.对参数@RequestParam的解析的测试==>>已测试，已通过2016/3/4
+32.基于jetty使用框架时，第一次请求性能耗费了800ms左右的时间==>>已测试，已通过，jetty本身自己的问题，第一次访问会很慢（估计jetty第一次访问会初始化一些数据） 2016/3/4
+33.webcache的ClearCommentUtil.clear中要清除的html页面中，全部用html5的头声明(<!doctype html>)，否则声明头会被清除掉一部分
 	       
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
