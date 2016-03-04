@@ -82,7 +82,7 @@ public class HttpResponse implements HttpServletResponse{
 			bw.write("Content-Length: " + getBody().length + "\r\n");
 			bw.write("Content-Type: text/html\r\n");
 			bw.write("Set-Cookie: "
-					+ getResponseHeader().get("Set-Cookie") + "\r\n");// 把cookie写上去
+					+ getResponseHeader().get("Set-Cookie") + "\r\n");
 			bw.write("\r\n");
 			bw.write(getBody());
 		}
@@ -97,10 +97,10 @@ public class HttpResponse implements HttpServletResponse{
 		bw.append("Date: " + new Date() + "\r\n");
 		bw.append("Server: meizu-server-0.1\r\n");
 		bw.append("Accept-Ranges: bytes\r\n");
-		bw.append("Content-Length: " + "getBody().length" + "\r\n");
+//		bw.append("Content-Length: " + "getBody().length" + "\r\n");//TODO 目前是http1.0状态，这个属性可有可无
 		bw.append("Content-Type: text/html\r\n");
 		bw.append("Set-Cookie: "
-				+ getResponseHeader().get("Set-Cookie") + "\r\n");// 把cookie写上去
+				+ getResponseHeader().get("Set-Cookie") + "\r\n");
 		bw.append("\r\n");
 		return bw;
 	}
