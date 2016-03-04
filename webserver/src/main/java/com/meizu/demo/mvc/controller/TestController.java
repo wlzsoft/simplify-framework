@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.meizu.HttpRoute;
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
@@ -28,6 +27,7 @@ import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
+import com.meizu.simplify.websocket.annotation.WebSocket;
 
 
 /**
@@ -87,6 +87,14 @@ public class TestController extends BaseController<TestModel> {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
 		return new VelocityForward("/template/websocket.html");
+	}
+	
+	@WebSocket
+	@RequestMap(path = "/websocket/notice")
+	public IForward doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
+		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
 	}
 	
 	
