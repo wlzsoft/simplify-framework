@@ -36,18 +36,21 @@ public class EncryptTest {
 		print("加密=" + num);
 	}
 	@Test
-	public void testFieldEncryptAndPassword() {
+	public void testKeys() {
 		String cinemaNo = "13014101";
 		String key = "loongcinema";
 		print("用户名=" + cinemaNo);
 		print("秘钥=" + key);
 		Keys.setCinemaNo(cinemaNo);
 		Keys.setKey(key);
+	}
+	@Test
+	public void testFieldEncryptAndPassword() {
 
 		String username = "admin";
 		String password = "123456";
 		String name = "lcy";
-		String adderss = "深圳市海王银河科技大厦 深圳市海王银河科技大厦 深圳市海王银河科技大厦 深圳市海王银河科技大厦 深圳市海王银河科技大厦";
+		String adderss = "深圳市海王银河科技大厦 深圳市海王银河科技大厦";
 
 		print("用户名：" + username);
 		print("密码：" + password);
