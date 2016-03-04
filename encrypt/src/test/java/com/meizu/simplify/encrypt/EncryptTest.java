@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.junit.Test;
 /**
@@ -23,6 +24,7 @@ public class EncryptTest {
 
 	@Test
 	public void testPasswordEncrypt() {
+		System.out.println(new String(Keys.defaultFileKey()));
 		System.out.println(Encrypt.passwordEncrypt("ros123"));
 	}
 	@Test
@@ -35,15 +37,7 @@ public class EncryptTest {
 		num = Encrypt.numEncrypt(num);
 		print("加密=" + num);
 	}
-	@Test
-	public void testKeys() {
-		String cinemaNo = "13014101";
-		String key = "loongcinema";
-		print("用户名=" + cinemaNo);
-		print("秘钥=" + key);
-		Keys.setCinemaNo(cinemaNo);
-		Keys.setKey(key);
-	}
+	
 	@Test
 	public void testFieldEncryptAndPassword() {
 
@@ -88,15 +82,26 @@ public class EncryptTest {
 	}
 	@Test
 	public void testFileEncrypt() {
+		String key = "iuiserliselros";
+		String no = "13014101";
+		print("手机编码=" + no);
+		print("秘钥=" + key);
+		Keys.setNo(no);
+		Keys.setKey(key);
+		
 		print("=================================");
 		print("=============文件加解密===========");
-		String file1 = "C:\\Users\\Administrator\\Desktop\\热部署.txt";
-		String file2 = "C:\\Users\\Administrator\\Desktop\\热部署.enc";
-		String file3 = "C:\\Users\\Administrator\\Desktop\\热部署.enc.zip";
+		String file1 = "C:\\Users\\Administrator\\Desktop\\测试.txt";
+		String file2 = "C:\\Users\\Administrator\\Desktop\\测试.enc";
+		String file3 = "C:\\Users\\Administrator\\Desktop\\测试.enc.zip";
 		print("待加密文件：" + file1);
 		print("加密后文件：" + file2);
 		print("解密后文件：" + file3);
-		byte[] keybyte = Keys.defaultFileKey();
+		byte[] keybyte = Keys.key;
+		byte[] re = new byte[14];
+		if(Arrays.equals(keybyte, re)) {
+			keybyte = Keys.defaultFileKey();
+		}
 		byte[] filekey = Keys.calcConKey("ff", keybyte);
 		print("文件加混淆秘钥：" + new String(filekey));
 		byte[] rc4Key = Keys.calcRc4Key("ff", keybyte);

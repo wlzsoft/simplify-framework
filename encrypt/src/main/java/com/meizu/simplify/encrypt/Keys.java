@@ -16,7 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 public final class Keys {
-	final static byte[] cinemaNO = new byte[8];
+	//NO(手机产品编码 )和业务相关，比如手机产品编码 默认规定8个字节，可以根据业务修改长度
+	final static byte[] NO = new byte[8];
+	//key(秘钥)和业务相关，默认规定14位，可以根据业务修改长度
 	final static byte[] key = new byte[14];
 
 	final static Map<String, String> Prefix = new ConcurrentHashMap<String, String>();
@@ -24,12 +26,12 @@ public final class Keys {
 	final static Map<String, byte[]> AesKey = new ConcurrentHashMap<String, byte[]>();
 	final static Map<String, byte[]> Rc4Key = new ConcurrentHashMap<String, byte[]>();
 
-	public static void setCinemaNo(String no) {
+	public static void setNo(String no) {
 		if (no == null || no.isEmpty())
 			return;
 		no = Encrypt.numEncrypt(no);
 		byte[] bytes = no.getBytes();
-		System.arraycopy(bytes, 0, cinemaNO, 0, bytes.length);
+		System.arraycopy(bytes, 0, NO, 0, bytes.length);
 	}
 
 	public static void setKey(String keystr) {
@@ -92,8 +94,8 @@ public final class Keys {
 		bytes[1] = (byte) prefix.charAt(1);
 		byte[] cinemaNX = new byte[8];
 		for (int i = 0; i < 4; ++i) {
-			cinemaNX[i] = (byte) (cinemaNO[7 - i] ^ bytes[0]);
-			cinemaNX[++i] = (byte) (cinemaNO[7 - i] ^ bytes[1]);
+			cinemaNX[i] = (byte) (NO[7 - i] ^ bytes[0]);
+			cinemaNX[++i] = (byte) (NO[7 - i] ^ bytes[1]);
 		}
 		System.arraycopy(cinemaNX, 0, bytes, 2, 8);
 		System.arraycopy(key, 0, bytes, 10, 14);
@@ -110,8 +112,8 @@ public final class Keys {
 		bytes[1] = (byte) prefix.charAt(1);
 		byte[] cinemaNX = new byte[8];
 		for (int i = 0; i < 4; ++i) {
-			cinemaNX[i] = (byte) (cinemaNO[7 - i] ^ bytes[0]);
-			cinemaNX[++i] = (byte) (cinemaNO[7 - i] ^ bytes[1]);
+			cinemaNX[i] = (byte) (NO[7 - i] ^ bytes[0]);
+			cinemaNX[++i] = (byte) (NO[7 - i] ^ bytes[1]);
 		}
 		System.arraycopy(cinemaNX, 0, bytes, 2, 8);
 		System.arraycopy(key, 0, bytes, 10, key.length);
@@ -132,7 +134,7 @@ public final class Keys {
 		byte[] bytes = new byte[24];
 		bytes[0] = (byte) prefix.charAt(0);
 		bytes[1] = (byte) prefix.charAt(1);
-		System.arraycopy(cinemaNO, 0, bytes, 2, 8);
+		System.arraycopy(NO, 0, bytes, 2, 8);
 		System.arraycopy(key, 0, bytes, 10, 14);
 		ConKey.put(prefix, bytes);
 		return bytes;
@@ -145,7 +147,7 @@ public final class Keys {
 		byte[] bytes = new byte[24];
 		bytes[0] = (byte) prefix.charAt(0);
 		bytes[1] = (byte) prefix.charAt(1);
-		System.arraycopy(cinemaNO, 0, bytes, 2, 8);
+		System.arraycopy(NO, 0, bytes, 2, 8);
 		System.arraycopy(key, 0, bytes, 10, key.length);
 		return bytes;
 	}
@@ -208,12 +210,12 @@ public final class Keys {
 
 	/**
 	 * 
-	 * 方法用途: 文件加密默认密码keyloongcinema<br>
+	 * 方法用途: 文件加密默认密码ros!&^*$sse<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static byte[] defaultFileKey() {
-		return new byte[] { 107, 101, 121, 108, 111, 111, 110, 103, 99, 105, 110, 101, 109, 97 };
+		return new byte[] { 114,111,115,33,38,94,42,36,115,115,101 };
 	}
 
 	/**
