@@ -1,4 +1,4 @@
-package com.meizu.simplify.utils;
+package com.meizu.simplify.encrypt;
 
 import java.io.UnsupportedEncodingException;
 
@@ -32,15 +32,15 @@ public class Md5Util {
 	 * 
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
-	 * @param string 字符串
+	 * @param src 字符串
 	 * @return
 	 */
-	public static String md5(String string) {
-		if (StringUtil.isBlank(string)) {
+	public static String md5(String src) {
+		if (src == null || src.trim().equals("")) {
 			return null;
 		}
 		try {
-			return getMD5(string.getBytes("UTF-8"));
+			return getMD5(src.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;

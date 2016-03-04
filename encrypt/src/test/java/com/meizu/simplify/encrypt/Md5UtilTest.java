@@ -1,4 +1,4 @@
-package com.meizu.simplify.utils;
+package com.meizu.simplify.encrypt;
 
 import org.junit.Test;
 
