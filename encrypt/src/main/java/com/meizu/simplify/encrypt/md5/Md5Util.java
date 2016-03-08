@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import com.meizu.simplify.encrypt.base64.ByteHexUtil;
 
 /**
- * <p><b>Title:</b><i>Md5加密工具类</i></p>
+ * <p><b>Title:</b><i>Md5加密工具类-依赖jdk的类的实现</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>

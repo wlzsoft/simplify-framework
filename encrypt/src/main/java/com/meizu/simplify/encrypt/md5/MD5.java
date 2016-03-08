@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 
 /**
  * 
- * <p><b>Title:</b><i>md5工具类</i></p>
+ * <p><b>Title:</b><i>md5工具类-不依赖第三方类</i></p>
  * <p>Desc: md5 类实现了RSA Data Security, Inc.在提交给IETF 的RFC1321中的MD5 message-digest 算法。</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
