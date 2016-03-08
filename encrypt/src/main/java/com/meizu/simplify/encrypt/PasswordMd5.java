@@ -80,7 +80,7 @@ public class PasswordMd5 {
 			return out;
 		}
 	
-		static String hashMd5(String plaintext) {
+		public static String hashMd5(String plaintext) {
 			if (plaintext == null || plaintext.isEmpty())
 				return "";
 			byte[] data = plaintext.getBytes(CHARSET);
