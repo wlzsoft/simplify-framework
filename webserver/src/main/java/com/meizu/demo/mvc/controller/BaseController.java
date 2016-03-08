@@ -27,8 +27,6 @@ import com.meizu.simplify.mvc.directives.SecurityContoller;
  */
 public class BaseController<T extends Model> extends SecurityContoller<T> {
 	
-	public BaseController() {}
-
 	@Override
 	public final void process(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String path = request.getContextPath();
