@@ -17,7 +17,7 @@ import com.meizu.simplify.encrypt.md5.Md5Util;
  * @version Version 0.1
  *
  */
-
+//PasswordMd5和Base64Codec是由Codec拆分而来
 public class PasswordMd5 {
 	final static byte[] DIGITS = new byte[64];
 	final static Charset CHARSET = Charset.forName("UTF-8");
