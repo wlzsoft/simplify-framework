@@ -6,10 +6,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.demo.mvc.model.TestModel;
+import com.alibaba.fastjson.JSONObject;
+import com.meizu.simplify.encrypt.des.DESStaticKey;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.directives.Model;
 import com.meizu.simplify.mvc.directives.SecurityContoller;
+import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p><b>Title:</b><i>controller基类</i></p>
@@ -44,15 +47,14 @@ public class BaseController<T extends Model> extends SecurityContoller<T> {
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T model) throws ServletException, IOException {
 		
 		
-		/*if (!"login".equals(model.getCmd())) {
-			response.sendRedirect("/test/login.html");
+		if (!"login".equals(model.getCmd())) {
+			response.sendRedirect("/template/login.html");
 			return false;
 		}
-		String auth = CookiesUtil.loadCookie("SYSTEM_LOGIN_FLAG", request);
-		JSONObject authjson = JSONObject.fromObject(DESStaticKey.decrypt(auth, "SYSTEM_AUTOLOGIN_KEY"));
-		if (authjson != null && ObjectUtils.isInt(authjson.get("uid"))) {
-			model.setFromSite(authjson.optString("fromid","0"));
-			String[] domainArr = StringUtil.notNull(request.getServerName()).split("\\.");
+		String auth = "";//CookiesUtil.loadCookie("SYSTEM_LOGIN_FLAG", request);
+		JSONObject authjson = JSONObject.parseObject(DESStaticKey.decrypt(auth, "SYSTEM_AUTOLOGIN_KEY"));
+		if (authjson != null && ObjectUtil.isInt(authjson.get("uid"))) {
+			String[] domainArr = StringUtil.parseString(request.getServerName(),"").split("\\.");
 			String curDomain = "";
 			if(domainArr != null&&domainArr.length>1) {
 				 curDomain = domainArr[1];
@@ -60,12 +62,13 @@ public class BaseController<T extends Model> extends SecurityContoller<T> {
 			if(authjson.containsKey("domain") && !curDomain.equalsIgnoreCase(authjson.getString("domain"))) {
 				return false;
 			}
-			StringUtil.unescape(uname);
+			Object uname = "";
+//			StringUtil.unescape(uname);
 		 } else {
 			response.sendError(403, "{result:-1}");
 			return false;
 		 }
-		*/
+		
 		
 		return true;
 	}
