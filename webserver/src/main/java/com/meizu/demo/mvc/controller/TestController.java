@@ -182,37 +182,5 @@ public class TestController extends BaseController<TestModel> {
 //		return new RedirectForward("/test/demo_" + point + ".html");
 	}
 	
-
-	/**
-	 * 检查权限
-	 */
-	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, TestModel model) throws ServletException, IOException {
-		
-		
-		/*if (!"login".equals(model.getCmd())) {
-			response.sendRedirect("/test/login.html");
-			return false;
-		}
-		String auth = CookiesUtil.loadCookie("SYSTEM_LOGIN_FLAG", request);
-		JSONObject authjson = JSONObject.fromObject(DESStaticKey.decrypt(auth, "SYSTEM_AUTOLOGIN_KEY"));
-		if (authjson != null && ObjectUtils.isInt(authjson.get("uid"))) {
-			model.setFromSite(authjson.optString("fromid","0"));
-			String[] domainArr = StringUtil.notNull(request.getServerName()).split("\\.");
-			String curDomain = "";
-			if(domainArr != null&&domainArr.length>1) {
-				 curDomain = domainArr[1];
-			}
-			if(authjson.containsKey("domain") && !curDomain.equalsIgnoreCase(authjson.getString("domain"))) {
-				return false;
-			}
-			StringUtil.unescape(uname);
-		 } else {
-			response.sendError(403, "{result:-1}");
-			return false;
-		 }
-		*/
-		
-		return true;
-	}
+	
 }
