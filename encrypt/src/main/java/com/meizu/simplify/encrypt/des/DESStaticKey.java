@@ -8,10 +8,25 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+/**
+ * <p><b>Title:</b><i>TODO</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月8日 下午4:41:50</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月8日 下午4:41:50</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
 public class DESStaticKey {
 
 	/**
-	 * DES 加密，解决中文乱码问题
+	 * 
+	 * 方法用途: DES 加密，解决中文乱码问题<br>
+	 * 操作步骤: TODO<br>
 	 * @param str
 	 * @param key
 	 * @param charset
@@ -37,7 +52,9 @@ public class DESStaticKey {
 	}
 
 	/**
-	 * DES 加密，解决中文乱码问题
+	 * 
+	 * 方法用途: DES 加密，解决中文乱码问题<br>
+	 * 操作步骤: TODO<br>
 	 * @param str
 	 * @param key
 	 * @param charset
