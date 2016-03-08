@@ -79,6 +79,7 @@ public class ByteHexUtil {
 	public static String bytes2Hex(byte[] bytes) {
 		StringBuilder sb = new StringBuilder();
 		for (byte b : bytes) {
+			
 			int i = b & 0xFF;
 			
 			//1.第一种写法
@@ -96,6 +97,8 @@ public class ByteHexUtil {
 			
 			sb.append(tmp);
 		}
+		
+			
 		return sb.toString();
 	}
 
@@ -104,15 +107,13 @@ public class ByteHexUtil {
 			byte[] bts = new byte[hexStr.length() / 2];
 			for ( int i = 0, j = 0; j < bts.length; j++ ) {
 				String hexSub = hexStr.substring(i, i + 2);
-				byte parseHex = 16;
-				try {
-					parseHex = Byte.parseByte(hexSub);
-				} catch (NumberFormatException e) {
-				}
+//				byte parseHex = Byte.parseByte(hexSub,16);
+				int parseHex = Integer.parseInt(hexSub, 16);
 				bts[j] = (byte) parseHex;
 				i += 2;
 			}
 			return bts;
+			
 		} catch ( Exception e ) {
 			return "".getBytes();
 		}
@@ -134,37 +135,4 @@ public class ByteHexUtil {
 	    return stringBuilder.toString();  
 	}  
 	
-	
-	
-	//==============================
-	private static String bytes2HexDemo(byte[] bts) {
-		String des = "";
-		String tmp = null;
-		for (int i = 0; i < bts.length; i++) {
-			tmp = (Integer.toHexString(bts[i] & 0xFF));
-			if (tmp.length() == 1) {
-				des += "0";
-			}
-			des += tmp;
-		}
-		return des;
-	}
-	
-	private static byte[] hex2byteDemo(String hexStr){
-		try{
-	        byte[] bts = new byte[hexStr.length() / 2];
-	        for (int i = 0,j=0; j < bts.length; j++ ) {
-	           bts[j] = (byte) Integer.parseInt(hexStr.substring(i, i+2), 16);
-	           i+=2;
-	        }
-	        return bts;
-		} catch(Exception e){
-			return "".getBytes();
-		}
-    }
-	
-	
-		
-		
-		
 }
