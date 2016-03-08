@@ -8,6 +8,19 @@ import com.meizu.simplify.encrypt.base64.ByteHexUtil;
 
  
 
+/**
+ * <p><b>Title:</b><i>自定义随机加解密算法</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月8日 下午5:38:21</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月8日 下午5:38:21</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
 public class CoverMessageEncrypt {
 
 	private static long time;
