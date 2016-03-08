@@ -12,6 +12,8 @@ package com.meizu.simplify.encrypt.des;
 import java.util.*;
 import javax.crypto.*;
 
+import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+
 public class DxEncrypt {
 	private String m_strSrc = new String();
 
@@ -21,26 +23,6 @@ public class DxEncrypt {
 
 	private byte[] m_byteRand;
 
-	private static final List<Character> HEX_CHAR_LIST;
-	static {
-		HEX_CHAR_LIST = new ArrayList<Character>();
-		HEX_CHAR_LIST.add(new Character('0'));
-		HEX_CHAR_LIST.add(new Character('1'));
-		HEX_CHAR_LIST.add(new Character('2'));
-		HEX_CHAR_LIST.add(new Character('3'));
-		HEX_CHAR_LIST.add(new Character('4'));
-		HEX_CHAR_LIST.add(new Character('5'));
-		HEX_CHAR_LIST.add(new Character('6'));
-		HEX_CHAR_LIST.add(new Character('7'));
-		HEX_CHAR_LIST.add(new Character('8'));
-		HEX_CHAR_LIST.add(new Character('9'));
-		HEX_CHAR_LIST.add(new Character('A'));
-		HEX_CHAR_LIST.add(new Character('B'));
-		HEX_CHAR_LIST.add(new Character('C'));
-		HEX_CHAR_LIST.add(new Character('D'));
-		HEX_CHAR_LIST.add(new Character('E'));
-		HEX_CHAR_LIST.add(new Character('F'));
-	}
 
 	public DxEncrypt() {
 		Date dt = new Date();
@@ -83,36 +65,7 @@ public class DxEncrypt {
 		m_nEncryptMethod = nEncryptMethod;
 	}
 
-	private String Bytes2Hex(byte[] b) {
-		String hs = "";
-		String strtmp = "";
-		for ( int n = 0; n < b.length; n++ ) {
-			strtmp = (java.lang.Integer.toHexString(b[n] & 0xFF));
-			if (strtmp.length() == 1) {
-				hs = hs + "0" + strtmp;
-			} else {
-				hs = hs + strtmp;
-			}
-		}
-		return hs.toUpperCase();
-	}
 
-	private byte Hex2Byte(String s) {
-		int high = HEX_CHAR_LIST.indexOf(new Character(s.charAt(0))) << 4;
-		int low = HEX_CHAR_LIST.indexOf(new Character(s.charAt(1)));
-
-		return (byte) (high + low);
-	}
-
-	private byte[] Hex2Bytes(String hex) {
-		int len = hex.length() / 2;
-		byte[] rtn = new byte[len];
-
-		for ( int i = 0; i < len; i++ ) {
-			rtn[i] = Hex2Byte(hex.substring(i * 2, i * 2 + 2));
-		}
-		return rtn;
-	}
 
 	private byte[] RandEncode(byte[] bySrc) {
 		byte[] byResult = bySrc;
@@ -125,9 +78,9 @@ public class DxEncrypt {
 
 	private String RandDecode(String strContent) {
 		int nConLen = strContent.length();
-		byte[] byKey = Hex2Bytes(strContent.substring(nConLen - 16, nConLen));
+		byte[] byKey = ByteHexUtil.hex2Bytes(strContent.substring(nConLen - 16, nConLen));
 		int nKeyLen = byKey.length;
-		byte[] byteResult = Hex2Bytes(strContent.substring(0, nConLen - 16));
+		byte[] byteResult = ByteHexUtil.hex2Bytes(strContent.substring(0, nConLen - 16));
 		int nResultLen = byteResult.length;
 		for ( int n = 0; n < nResultLen; n++ ) {
 			byteResult[n] -= byKey[nKeyLen - 1];
@@ -160,8 +113,8 @@ public class DxEncrypt {
 			}
 			case 3: {
 				String strRandKey = new String(m_byteRand);
-				String strResult = Bytes2Hex(RandEncode(strContent.getBytes()));
-				String strKey = Bytes2Hex(strRandKey.getBytes());
+				String strResult = ByteHexUtil.bytes2Hex(RandEncode(strContent.getBytes()));
+				String strKey = ByteHexUtil.bytes2Hex(strRandKey.getBytes());
 				return (strResult + strKey);
 			}
 			default:
@@ -175,7 +128,7 @@ public class DxEncrypt {
 			c1.init(Cipher.ENCRYPT_MODE, m_keyDES);
 			byte[] cipherByte = c1.doFinal(strContent.getBytes());
 
-			return Bytes2Hex(cipherByte);
+			return ByteHexUtil.bytes2Hex(cipherByte);
 		} catch ( java.security.NoSuchAlgorithmException e1 ) {
 			e1.printStackTrace();
 		} catch ( javax.crypto.NoSuchPaddingException e2 ) {
@@ -187,7 +140,7 @@ public class DxEncrypt {
 	}
 
 	public String getEncodeKey() {
-		return Bytes2Hex(m_keyDES.toString().getBytes());
+		return ByteHexUtil.bytes2Hex(m_keyDES.toString().getBytes());
 	}
 
 	public String Decode(String strContent) {
@@ -210,7 +163,7 @@ public class DxEncrypt {
 			}
 			Cipher c1 = Cipher.getInstance(strAlgorithm);
 			c1.init(Cipher.DECRYPT_MODE, m_keyDES);
-			byte[] clearByte = c1.doFinal(Hex2Bytes(strContent));
+			byte[] clearByte = c1.doFinal(ByteHexUtil.hex2Bytes(strContent));
 			String strResult = new String(clearByte);
 			return strResult;
 		} catch ( Exception e1 ) {

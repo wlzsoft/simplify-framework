@@ -28,6 +28,7 @@ public class ByteHexUtil {
 		
 		
 		public static final List<Character> HEX_CHAR_LIST;
+		
 		static {
 			HEX_CHAR_LIST = new ArrayList<Character>();
 			HEX_CHAR_LIST.add(new Character('0'));
@@ -46,6 +47,12 @@ public class ByteHexUtil {
 			HEX_CHAR_LIST.add(new Character('d'));
 			HEX_CHAR_LIST.add(new Character('e'));
 			HEX_CHAR_LIST.add(new Character('f'));
+//			HEX_CHAR_LIST.add(new Character('A'));
+//			HEX_CHAR_LIST.add(new Character('B'));
+//			HEX_CHAR_LIST.add(new Character('C'));
+//			HEX_CHAR_LIST.add(new Character('D'));
+//			HEX_CHAR_LIST.add(new Character('E'));
+//			HEX_CHAR_LIST.add(new Character('F'));
 		}
 		
 	/**
@@ -81,6 +88,7 @@ public class ByteHexUtil {
 		for (byte b : bytes) {
 			
 			int i = b & 0xFF;
+//			int i = b & 0xff;
 			
 			//1.第一种写法
 			if (i <= 0xF) {
@@ -97,20 +105,32 @@ public class ByteHexUtil {
 			
 			sb.append(tmp);
 		}
-		
-			
+//		return sb.toUpperCase();
 		return sb.toString();
 	}
 
+	
+	private static byte Hex2Byte(String s) {
+		int high = HEX_CHAR_LIST.indexOf(new Character(s.charAt(0))) << 4;
+		int low = HEX_CHAR_LIST.indexOf(new Character(s.charAt(1)));
+
+		return (byte) (high + low);
+	}
+
+	
 	public static byte[] hex2byte(String hexStr) {
 		try {
 			byte[] bts = new byte[hexStr.length() / 2];
 			for ( int i = 0, j = 0; j < bts.length; j++ ) {
+//				第一种方式
 				String hexSub = hexStr.substring(i, i + 2);
+//				第二种方式
 //				byte parseHex = Byte.parseByte(hexSub,16);
 				int parseHex = Integer.parseInt(hexSub, 16);
 				bts[j] = (byte) parseHex;
 				i += 2;
+				//第三种方式
+//				bts[i] = Hex2Byte(hexStr.substring(i * 2, i * 2 + 2));
 			}
 			return bts;
 			
@@ -134,5 +154,7 @@ public class ByteHexUtil {
 	    }  
 	    return stringBuilder.toString();  
 	}  
+	
+	
 	
 }
