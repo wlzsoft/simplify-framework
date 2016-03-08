@@ -94,8 +94,9 @@ public class CoverMessageEncrypt {
 		 public static void main(String[] args) {
 			 CoverMessageEncrypt encrypt = new CoverMessageEncrypt();
 			 
-			 System.out.println(new String(encrypt.encode("2212".getBytes())));
-			 System.out.println(new String(encrypt.encode("2212".getBytes())));
+			 String str = new String(encrypt.encode("2212".getBytes()));
+			 System.out.println(str);
+			 System.out.println(encrypt.decode(str));
 		}
 
 }
