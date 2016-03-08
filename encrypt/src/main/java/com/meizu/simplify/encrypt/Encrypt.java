@@ -45,7 +45,7 @@ public final class Encrypt {
 		// print("混淆密文：" + new String(bytes));
 		rc4crypt(bytes, rc4Key);
 		// print("rc4密文：" + new String(bytes));
-		return prefix + Codec.encode64String(bytes);
+		return prefix + Base64Codec.encode64String(bytes);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public final class Encrypt {
 	public static String passwordEncrypt(String plaintext) {
 		if (plaintext == null)
 			return plaintext;
-		String md5 = Codec.hashMd5(plaintext);
+		String md5 = PasswordMd5.hashMd5(plaintext);
 		return fieldEncrypt("password", md5);
 	}
 

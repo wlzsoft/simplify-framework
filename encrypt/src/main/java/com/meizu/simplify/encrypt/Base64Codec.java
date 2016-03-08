@@ -20,7 +20,7 @@ import com.meizu.simplify.encrypt.md5.Md5Util;
  * @version Version 0.1
  *
  */
-public class Codec {
+public class Base64Codec {
 	final static byte[] DIGITS = new byte[64];
 	final static byte[] base64Alphabet = new byte[255];
 	//注意：如果文件编码是ansi，那么如果文件中有中文文字，那么加密后，中文部分解密会乱码
@@ -214,60 +214,7 @@ public class Codec {
 		return decodedData;
 	}
 	//以上是base64相关
-	//以下是password签名加密相关
-
-	static String encode16ToString(byte[] bytes) {
-		if (bytes == null || bytes.length == 0)
-			return null;
-		char[] encodedChars = encode16(bytes);
-		return new String(encodedChars);
-	}
-
-	private static char[] encode16(byte[] data) {
-		if (data == null || data.length == 0)
-			return new char[0];
-		int l = data.length;
-
-		char[] out = new char[l << 1];
-
-		// two characters form the hex value.
-		for (int i = 0, j = 0; i < l; i++) {
-			out[j++] = (char) DIGITS[(0xF0 & data[i]) >>> 4];
-			out[j++] = (char) DIGITS[0x0F & data[i]];
-		}
-		return out;
-	}
-
-	static byte[] decode16(String hex) {
-		if (hex == null || hex.isEmpty())
-			return new byte[0];
-		char[] data = hex.toCharArray();
-		int len = data.length;
-
-		if ((len & 0x01) != 0) {
-			throw new IllegalArgumentException("Odd number of characters.");
-		}
-
-		byte[] out = new byte[len >> 1];
-
-		// two characters form the hex value.
-		for (int i = 0, j = 0; j < len; i++) {
-			int f = Character.digit(data[j], 16) << 4;
-			j++;
-			f = f | Character.digit(data[j], 16);
-			j++;
-			out[i] = (byte) (f & 0xFF);
-		}
-		return out;
-	}
-
-	static String hashMd5(String plaintext) {
-		if (plaintext == null || plaintext.isEmpty())
-			return "";
-		byte[] data = plaintext.getBytes(CHARSET);
-		byte[] hash = Md5Util.hashMd5(data);
-		return encode16ToString(hash);
-	}
+	
 
 	
 }

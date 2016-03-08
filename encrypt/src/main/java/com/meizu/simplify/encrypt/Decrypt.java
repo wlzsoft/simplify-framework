@@ -34,7 +34,7 @@ public class Decrypt {
 			return null;
 
 		String cipherted = ciphertext.substring(2, ciphertext.length());
-		byte[] bytes = Codec.decode64(cipherted);
+		byte[] bytes = Base64Codec.decode64(cipherted);
 		// print("密文：" + new String(bytes));
 
 		String prefix = ciphertext.substring(0, 2);
@@ -65,7 +65,7 @@ public class Decrypt {
 		if (plaintext == null || ciphertext == null)
 			return false;
 		String decrypted = fieldDecrypt(ciphertext);
-		String md5 = Codec.hashMd5(plaintext);
+		String md5 = PasswordMd5.hashMd5(plaintext);
 		return md5.equals(decrypted);
 	}
 
