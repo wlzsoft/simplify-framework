@@ -115,7 +115,7 @@ public class DESMessageEncrypt {
 		
 		String token=DES.encrypt("meizu&123456","meizuall");
 		String token64 = DES.encrypt64("meizu&123456","meizuall");
-		System.out.println(new DESMessageEncrypt().encode("meizu&123456".getBytes())+"kkkk");
+		System.out.println(new String(new DESMessageEncrypt().encode("meizu&123456".getBytes()))+"kkkk");
 		//String token64 = DESMessageEncrypt.encrypt64("meizuall","meizu&123456");
 //		 BASE64Encoder base64Encoder = new BASE64Encoder();
 //         strMi = base64Encoder.encode(byteMi);

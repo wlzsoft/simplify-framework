@@ -10,9 +10,6 @@ import com.meizu.simplify.encrypt.base64.ByteHexUtil;
 
 public class CoverMessageEncrypt {
 
-	public static final String NAME="cover";
-
-	
 	private static long time;
 	static {
 		
@@ -97,8 +94,8 @@ public class CoverMessageEncrypt {
 		 public static void main(String[] args) {
 			 CoverMessageEncrypt encrypt = new CoverMessageEncrypt();
 			 
-			 System.out.println(encrypt.encode("2212".getBytes()));
-			 System.out.println(encrypt.encode("2212".getBytes()));
+			 System.out.println(new String(encrypt.encode("2212".getBytes())));
+			 System.out.println(new String(encrypt.encode("2212".getBytes())));
 		}
 
 }
