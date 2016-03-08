@@ -8,7 +8,7 @@ import com.meizu.simplify.encrypt.base64.ByteHexUtil;
 
  
 
-public class CoverMessageEncrypt extends MessageEncrypt {
+public class CoverMessageEncrypt {
 
 	public static final String NAME="cover";
 
@@ -49,12 +49,10 @@ public class CoverMessageEncrypt extends MessageEncrypt {
 		}
 	}
 
-	@Override
 	public byte[] decode(byte[] input) {				
 		return decode(new String(input)).getBytes();
 	}
 
-	@Override
 	public byte[] encode(byte[] input) {
 		return ByteHexUtil.bytes2Hex(RandEncode(input)).getBytes();
 	}
@@ -97,10 +95,10 @@ public class CoverMessageEncrypt extends MessageEncrypt {
 	}
 		 
 		 public static void main(String[] args) {
-			 MessageEncrypt encrypt = new CoverMessageEncrypt();
+			 CoverMessageEncrypt encrypt = new CoverMessageEncrypt();
 			 
-			 System.out.println(encrypt.encode("2212"));
-			 System.out.println(encrypt.encode("2212"));
+			 System.out.println(encrypt.encode("2212".getBytes()));
+			 System.out.println(encrypt.encode("2212".getBytes()));
 		}
 
 }

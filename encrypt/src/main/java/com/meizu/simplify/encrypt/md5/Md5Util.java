@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+
 /**
  * <p><b>Title:</b><i>Md5加密工具类</i></p>
  * <p>Desc: TODO</p>
@@ -48,10 +50,11 @@ public class Md5Util {
 			return null;
 		}
 	}
-	
+	public byte[] hashMd5Str (byte[] source) {
+		return  ByteHexUtil.bytes2Hex(hashMd5(source)).getBytes();
+	}
 	public static byte[] hashMd5(byte[] source) {
 		try {
-			
             // 获得MD5摘要算法的 MessageDigest 对象
 			MessageDigest digest = MessageDigest.getInstance("MD5");
 			digest.reset();//是否需要重置 TODO

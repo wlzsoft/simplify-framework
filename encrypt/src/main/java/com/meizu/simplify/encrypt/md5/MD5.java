@@ -1,10 +1,6 @@
 package com.meizu.simplify.encrypt.md5;
 
 import java.lang.reflect.Array;
-import java.security.MessageDigest;
-
-import com.meizu.simplify.encrypt.PasswordMd5;
-import com.meizu.simplify.encrypt.des.MessageEncrypt;
 
 /**
  * 
@@ -371,9 +367,6 @@ public class MD5 {
 		ob[1] = Digit[ib & 0X0F];
 		String s = new String(ob);
 		return s;
-	}
-	public static String calcMD5(String str) {
-		return MessageEncrypt.getInstance("md5").encode(str);
 	}
 	public String getMD5String(String md5) {
 		return getMD5ofStr(md5).toLowerCase();

@@ -29,8 +29,7 @@ import com.meizu.simplify.encrypt.base64.ByteHexUtil;
  * @version Version 0.1
  *
  */
-public class DESMessageEncrypt extends MessageEncrypt {
-	@Override
+public class DESMessageEncrypt {
 	public byte[] encode(byte[] input) {
 		try {
 			Cipher c1 = Cipher.getInstance("DES");
@@ -56,8 +55,6 @@ public class DESMessageEncrypt extends MessageEncrypt {
 	
 	
 	
-	
-	@Override
 	public byte[] decode(byte[] input) {
 		try {			
 			Cipher c1 = Cipher.getInstance("DES");
@@ -118,7 +115,7 @@ public class DESMessageEncrypt extends MessageEncrypt {
 		
 		String token=DES.encrypt("meizu&123456","meizuall");
 		String token64 = DES.encrypt64("meizu&123456","meizuall");
-		System.out.println(MessageEncrypt.getInstance("DES").encode("meizu&123456")+"kkkk");
+		System.out.println(new DESMessageEncrypt().encode("meizu&123456".getBytes())+"kkkk");
 		//String token64 = DESMessageEncrypt.encrypt64("meizuall","meizu&123456");
 //		 BASE64Encoder base64Encoder = new BASE64Encoder();
 //         strMi = base64Encoder.encode(byteMi);
