@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt;
+package com.meizu.simplify.encrypt.md5;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

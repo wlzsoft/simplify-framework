@@ -15,7 +15,7 @@ import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dto.AnnotationInfo;
-import com.meizu.simplify.encrypt.Md5Util;
+import com.meizu.simplify.encrypt.md5.Md5Util;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.ClearCommentUtil;

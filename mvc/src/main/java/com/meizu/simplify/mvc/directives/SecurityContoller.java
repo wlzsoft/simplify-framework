@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.encrypt.Md5Util;
+import com.meizu.simplify.encrypt.md5.Md5Util;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
