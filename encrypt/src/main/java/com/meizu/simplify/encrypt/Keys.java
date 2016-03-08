@@ -2,6 +2,8 @@ package com.meizu.simplify.encrypt;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.meizu.simplify.encrypt.base64.Base64Codec;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

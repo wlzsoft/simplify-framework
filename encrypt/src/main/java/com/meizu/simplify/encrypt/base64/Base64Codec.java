@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt;
+package com.meizu.simplify.encrypt.base64;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -21,7 +21,7 @@ import com.meizu.simplify.encrypt.md5.Md5Util;
  *
  */
 public class Base64Codec {
-	final static byte[] DIGITS = new byte[64];
+	public final static byte[] DIGITS = new byte[64];
 	final static byte[] base64Alphabet = new byte[255];
 	//注意：如果文件编码是ansi，那么如果文件中有中文文字，那么加密后，中文部分解密会乱码
 	final static Charset CHARSET = Charset.forName("UTF-8");
@@ -55,7 +55,7 @@ public class Base64Codec {
 		base64Alphabet['-'] = 63;
 	}
 
-	static String encode64String(byte[] binaryData) {
+	public static String encode64String(byte[] binaryData) {
 		if (binaryData == null || binaryData.length == 0)
 			return "";
 		byte[] encoded = encode64(binaryData);
@@ -148,7 +148,7 @@ public class Base64Codec {
 		return encodedData;
 	}
 
-	static byte[] decode64(String base64) {
+	public static byte[] decode64(String base64) {
 		if (base64 == null || base64.isEmpty())
 			return new byte[0];
 		byte[] encodeBytes = base64.getBytes(CHARSET);

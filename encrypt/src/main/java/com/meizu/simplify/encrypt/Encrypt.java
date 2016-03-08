@@ -1,4 +1,7 @@
 package com.meizu.simplify.encrypt;
+
+import com.meizu.simplify.encrypt.base64.Base64Codec;
+
 /**
  * <p><b>Title:</b><i>加密</i></p>
  * <p>Desc: TODO</p>
