@@ -50,22 +50,12 @@ public class Md5Util {
 			return null;
 		}
 	}
+	
 	public byte[] hashMd5Str (byte[] source) {
 		return  ByteHexUtil.bytes2Hex(hashMd5(source)).getBytes();
 	}
-	public static byte[] hashMd5(byte[] source) {
-		try {
-            // 获得MD5摘要算法的 MessageDigest 对象
-			MessageDigest digest = MessageDigest.getInstance("MD5");
-			digest.reset();//是否需要重置 TODO
-			// 使用指定的字节更新摘要
-			digest.update(source);
-			return digest.digest();//  获得密文:MD5 的计算结果是一个 128 位的长整数，
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	
+	
 
 	/**
 	 * 
@@ -102,6 +92,20 @@ public class Md5Util {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static byte[] hashMd5(byte[] source) {
+		try {
+            // 获得MD5摘要算法的 MessageDigest 对象
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			digest.reset();//是否需要重置 TODO
+			// 使用指定的字节更新摘要
+			digest.update(source);
+			return digest.digest();//  获得密文:MD5 的计算结果是一个 128 位的长整数，
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }
