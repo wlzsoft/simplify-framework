@@ -135,6 +135,35 @@ public class ByteHexUtil {
 	}  
 	
 	
+	
+	//==============================
+	private static String bytes2HexDemo(byte[] bts) {
+		String des = "";
+		String tmp = null;
+		for (int i = 0; i < bts.length; i++) {
+			tmp = (Integer.toHexString(bts[i] & 0xFF));
+			if (tmp.length() == 1) {
+				des += "0";
+			}
+			des += tmp;
+		}
+		return des;
+	}
+	
+	private static byte[] hex2byteDemo(String hexStr){
+		try{
+	        byte[] bts = new byte[hexStr.length() / 2];
+	        for (int i = 0,j=0; j < bts.length; j++ ) {
+	           bts[j] = (byte) Integer.parseInt(hexStr.substring(i, i+2), 16);
+	           i+=2;
+	        }
+	        return bts;
+		} catch(Exception e){
+			return "".getBytes();
+		}
+    }
+	
+	
 		
 		
 		
