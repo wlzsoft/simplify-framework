@@ -15,7 +15,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
-import com.meizu.simplify.encrypt.base64.Base64Encoder;
 
 /**
  * 

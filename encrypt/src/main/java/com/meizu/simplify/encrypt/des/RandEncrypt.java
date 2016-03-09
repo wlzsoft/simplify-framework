@@ -3,10 +3,6 @@ package com.meizu.simplify.encrypt.des;
 import java.util.Date;
 import java.util.Random;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
 import com.meizu.simplify.encrypt.ByteHexUtil;
 
 /**

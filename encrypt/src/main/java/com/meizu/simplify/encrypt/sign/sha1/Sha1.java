@@ -1,8 +1,5 @@
 package com.meizu.simplify.encrypt.sign.sha1;
 
-import java.io.UnsupportedEncodingException;
-
-import com.meizu.simplify.encrypt.ByteHexUtil;
 import com.meizu.simplify.encrypt.sign.Sign;
 
 /**

@@ -3,11 +3,6 @@ package com.meizu.simplify.encrypt;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
-
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

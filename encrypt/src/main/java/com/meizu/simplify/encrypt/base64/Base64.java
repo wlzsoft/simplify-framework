@@ -2,8 +2,6 @@ package com.meizu.simplify.encrypt.base64;
 
 import java.io.UnsupportedEncodingException;
 
-import org.omg.IOP.Encoding;
-
 /**
  * 
  * <p><b>Title:</b><i>Base64编码转换工具类</i></p>
