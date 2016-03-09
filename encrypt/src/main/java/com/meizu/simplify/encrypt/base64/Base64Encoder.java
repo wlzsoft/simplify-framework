@@ -3,6 +3,7 @@ package com.meizu.simplify.encrypt.base64;
 import java.io.*;
 
 /** 
+ * base64编码算法-正统算法
  * A class to encode Base64 streams and strings.  
  * See RFC 1521 section 5.2 for details of the Base64 algorithm.
  * <p>

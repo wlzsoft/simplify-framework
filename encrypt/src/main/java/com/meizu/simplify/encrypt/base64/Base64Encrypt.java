@@ -4,8 +4,8 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * 
- * <p><b>Title:</b><i>Base64编码转换工具类</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>base64编码算法-正统算法</i></p>
+ * <p>Desc: 基于RFC2045～RFC2049，上面有MIME的详细规范</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

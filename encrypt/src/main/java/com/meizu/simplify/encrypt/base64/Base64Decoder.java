@@ -1,15 +1,14 @@
 package com.meizu.simplify.encrypt.base64;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 /** 
+ * base64编码算法-正统算法
  * A class to decode Base64 streams and strings.  
  * See RFC 1521 section 5.2 for details of the Base64 algorithm.
  * <p>

@@ -2,9 +2,16 @@ package com.meizu.simplify.encrypt;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.util.UUID;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
+
+import org.junit.Test;
+
+import com.meizu.simplify.encrypt.base64.Base64Codec;
 import com.meizu.simplify.encrypt.base64.Base64Decoder;
 import com.meizu.simplify.encrypt.base64.Base64Encoder;
+import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 
 
 /**
@@ -71,6 +78,57 @@ public class Base64EncryptTest {
 				in.close();
 			if (encoder != null)
 				encoder.close();
+		}
+	}
+	@Test
+	public void test() {
+//		UUID uuid = UUID.randomUUID();
+//		System.out.println(Base64Codec.encode64String(uuid.toString().getBytes()));
+		String str = "sejjjjjjjjjjjjsfirsjfsldjfoisejflsidjfsio";
+		System.out.println(Base64Codec.encode64String(str.getBytes()));
+		System.out.println(new String(Base64Encoder.encode(str.getBytes())));
+		System.out.println(new String(Base64Encrypt.encode(str.getBytes())));
+	}
+	@Test
+	public void test2() {
+		byte[] base64Alphabet2 = {
+				(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E',
+				(byte) 'F', (byte) 'G', (byte) 'H', (byte) 'I', (byte) 'J',
+				(byte) 'K', (byte) 'L', (byte) 'M', (byte) 'N', (byte) 'O',
+				(byte) 'P', (byte) 'Q', (byte) 'R', (byte) 'S', (byte) 'T',
+				(byte) 'U', (byte) 'V', (byte) 'W', (byte) 'X', (byte) 'Y',
+				(byte) 'Z', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd',
+				(byte) 'e', (byte) 'f', (byte) 'g', (byte) 'h', (byte) 'i',
+				(byte) 'j', (byte) 'k', (byte) 'l', (byte) 'm', (byte) 'n',
+				(byte) 'o', (byte) 'p', (byte) 'q', (byte) 'r', (byte) 's',
+				(byte) 't', (byte) 'u', (byte) 'v', (byte) 'w', (byte) 'x',
+				(byte) 'y', (byte) 'z', (byte) '0', (byte) '1', (byte) '2',
+				(byte) '3', (byte) '4', (byte) '5', (byte) '6', (byte) '7',
+				(byte) '8', (byte) '9', (byte) '+', (byte) '/', (byte) '-'
+				};
+		byte[] base64Alphabet = new byte[255];
+		for (int i = 0; i < 255; ++i) {
+			base64Alphabet[i] = (byte) -1;
+		}
+		for (int i = '0'; i <= '9'; ++i) {
+			base64Alphabet[i] = (byte) (i - '0');
+		}
+		for (int i = 'a'; i <= 'z'; ++i) {
+			base64Alphabet[i] = (byte) (i - 'a' + 10);
+		}
+		for (int i = 'A'; i <= 'Z'; ++i) {
+			base64Alphabet[i] = (byte) (i - 'A' + 36);
+		}
+		base64Alphabet['_'] = 62;
+		base64Alphabet['-'] = 63;
+		for(byte b : base64Alphabet) {
+			char c = (char) b;
+			System.out.println(c);
+		}
+		System.out.println("==========================");
+		for(byte b : base64Alphabet2) {
+			char c = (char) b;
+			System.out.println(c);
 		}
 	}
 }

@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
+ * <p><b>Title:</b><i>base64编码算法-变种</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
