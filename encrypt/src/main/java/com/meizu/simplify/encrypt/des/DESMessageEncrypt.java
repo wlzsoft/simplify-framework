@@ -243,5 +243,9 @@ public class DESMessageEncrypt {
 		System.out.println(decrypt(str, "402880E6"));
 //		System.out.println(decrypt("cde01d1bc4311736", "sDx5show"));
 		//System.out.println(hex2byte("a13qswdswqe").length);
+		String source = "哈哈哈哈，也";
+		String re =DESMessageEncrypt.encrypt(source, "sdferese");
+		System.out.println(re);
+		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
 	}
 }

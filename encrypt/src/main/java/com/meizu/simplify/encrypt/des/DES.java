@@ -163,20 +163,7 @@ public class DES {
 	       return null;
 	  }
 	
-	public static void main(String[] args) {
-		try {
-			String encryptString = DES.DESAndBase64Encrypt("meizu&123456", "meizuall", "utf-8");
-			System.out.println(encryptString+"||||||||||||||");
-			String decryptString = DES.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
-			System.out.println(decryptString+"////////////");
-			
-//			String token=encrypt("meizu&123456","meizuall");
-			String token64 = encrypt64("meizu&123456","meizuall");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 	
 
 	
@@ -197,6 +184,21 @@ public class DES {
 			return Base64Encoder.encode(cipherByte);
 		} catch ( Exception e ) {
 			return "";
+		}
+	}
+	
+	public static void main(String[] args) {
+		try {
+			String encryptString = DES.DESAndBase64Encrypt("meizu&123456", "meizuall", "utf-8");
+			System.out.println(encryptString+"||||||||||||||");
+			String decryptString = DES.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
+			System.out.println(decryptString+"////////////");
+			
+//			String token=encrypt("meizu&123456","meizuall");
+			String token64 = encrypt64("meizu&123456","meizuall");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

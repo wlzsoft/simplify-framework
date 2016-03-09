@@ -1,14 +1,5 @@
 package com.meizu.simplify.encrypt.des;
 
-/*
- * @function: 字符串加密算法，目前系统中，仅用到了第三种加密算法——随机加密算法
- * @用法：
- * 1、定义encdec对象
- * 2、调用setSrc，设置需要加密的字符串
- * 3、调用setEncryptMethod，设置加密算法，这里设置为3
- * 4、调用Encode得到加密结果
- * 5、测试代码见文件末尾main函数，打开注释即可测试
- */
 import java.util.Date;
 import java.util.Random;
 
@@ -18,14 +9,27 @@ import javax.crypto.SecretKey;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 
-public class DxEncrypt {
+/**
+ * <p><b>Title:</b><i>字符串加密算法-随机加密算法</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月9日 下午3:41:21</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月9日 下午3:41:21</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
+public class RandEncrypt {
 
 	private SecretKey m_keyDES;
 
 	private byte[] m_byteRand;
 
 
-	public DxEncrypt() {
+	public RandEncrypt() {
 		Date dt = new Date();
 		Random rand = new Random(dt.getTime());
 		m_byteRand = new byte[8];
@@ -139,7 +143,7 @@ public class DxEncrypt {
 	}
 	
 	public static void main(String[] args) {
-		DxEncrypt dec = new DxEncrypt();
+		RandEncrypt dec = new RandEncrypt();
 		String source = "哈哈哈哈，也";
 		String my = dec.encode(source);
 		System.out.println(my);
