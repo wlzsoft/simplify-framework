@@ -27,8 +27,8 @@ public class Md5Util {
 	 * @param source 整型
 	 * @return
 	 */
-	public static String md5(int source) {
-		return md5(String.valueOf((source)));
+	public static String sign(int source) {
+		return sign(String.valueOf((source)));
 	}
 	
 	/**
@@ -38,11 +38,11 @@ public class Md5Util {
 	 * @param source 字符串
 	 * @return
 	 */
-	public static String md5(String source) {
+	public static String sign(String source) {
 		return Sign.sign(source, "MD5");
 	}
 	
-	public static byte[] md5(byte[] source) {
+	public static byte[] sign(byte[] source) {
 		return Sign.sign(source, "MD5");
 	}
 	

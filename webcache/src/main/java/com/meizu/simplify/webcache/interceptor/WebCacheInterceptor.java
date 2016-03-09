@@ -15,7 +15,7 @@ import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dto.AnnotationInfo;
-import com.meizu.simplify.encrypt.md5.Md5Util;
+import com.meizu.simplify.encrypt.sign.md5.Md5Util;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.ClearCommentUtil;
@@ -84,7 +84,7 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 			if(cache != null){
 				//这两行代码和下面重复，并且重复执行了一次
 				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
-				String staticName = Md5Util.md5(url) + ".lv";
+				String staticName = Md5Util.sign(url) + ".lv";
 				//end
 				String cacheContent =cache.readCache(webCache, staticName,response);
 				if(cacheContent != null){
@@ -134,7 +134,7 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 				}
 				Cache cache = CacheBase.getCache(webCache);
 				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
-				String staticName = Md5Util.md5(url) + ".lv";
+				String staticName = Md5Util.sign(url) + ".lv";
 				if(cache != null && cache.doCache(webCache, staticName, content,response)){
 					// 缓存成功.
 				}
