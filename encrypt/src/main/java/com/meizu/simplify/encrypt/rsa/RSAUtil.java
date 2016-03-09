@@ -12,17 +12,27 @@ import java.security.spec.X509EncodedKeySpec;
 import com.meizu.simplify.encrypt.base64.Base64;
 
 /**
- * 加解密工具类。
+ * <p><b>Title:</b><i>RSA非对称加密</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月9日 上午10:08:00</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月9日 上午10:08:00</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
  */
 public class RSAUtil {
+
 	/**
-	 * 生成随机字符串。
 	 * 
-	 * @param src
-	 *            源字符串（随机字符从源字符串中取）
-	 * @param length
-	 *            生成字符串长度
-	 * @return 返回生成的随机字符串。
+	 * 方法用途: 生成随机字符串<br>
+	 * 操作步骤: TODO<br>
+	 * @param src 源字符串（随机字符从源字符串中取）
+	 * @param length 生成字符串长度
+	 * @return 返回生成的随机字符串
 	 */
 	public static String genRandomCode(String src, Integer length) {
 		char[] chars = src.toCharArray();
@@ -37,12 +47,11 @@ public class RSAUtil {
 		return challengeString.toString();
 	}
 
-	
-
 	/**
-	 * 生成密钥对。
 	 * 
-	 * @return 返回生成的密钥对。
+	 * 方法用途: 生成密钥对<br>
+	 * 操作步骤: TODO<br>
+	 * @return 返回生成的密钥对
 	 */
 	public static KeyPair genKeyPair() {
 		try {
@@ -55,33 +64,33 @@ public class RSAUtil {
 	}
 
 	/**
-	 * 从密钥对中获取Base64编码的公钥字符串。
 	 * 
-	 * @param keyPair
-	 *            密钥对
-	 * @return 返回Base64编码后的公钥字符串。
+	 * 方法用途: 从密钥对中获取Base64编码的公钥字符串<br>
+	 * 操作步骤: TODO<br>
+	 * @param keyPair 密钥对
+	 * @return 返回Base64编码后的公钥字符串
 	 */
 	public static String getPublicKey(KeyPair keyPair) {
 		return new String(Base64.encodeBase64(keyPair.getPublic().getEncoded()));
 	}
 
 	/**
-	 * 从密钥对中获取Base64编码的私钥字符串。
 	 * 
-	 * @param keyPair
-	 *            密钥对
-	 * @return 返回Base64编码的私钥字符串。
+	 * 方法用途: 从密钥对中获取Base64编码的私钥字符串<br>
+	 * 操作步骤: TODO<br>
+	 * @param keyPair 密钥对
+	 * @return 返回Base64编码的私钥字符串
 	 */
 	public static String getPrivateKey(KeyPair keyPair) {
 		return new String(Base64.encodeBase64(keyPair.getPrivate().getEncoded()));
 	}
 
 	/**
-	 * 从Base64编码的公钥字符串中获取公钥。
 	 * 
-	 * @param publicKey
-	 *            Base64编码的公钥字符串
-	 * @return 返回公钥。
+	 * 方法用途: 从Base64编码的公钥字符串中获取公钥<br>
+	 * 操作步骤: TODO<br>
+	 * @param publicKey Base64编码的公钥字符串
+	 * @return 返回公钥
 	 */
 	public static PublicKey getPublicKey(String publicKey) {
 		try {
@@ -93,13 +102,12 @@ public class RSAUtil {
 			throw new RuntimeException("将字符串转换为公钥时发生异常", e);
 		}
 	}
-
 	/**
-	 * 从Base64编码的私钥字符串中获取私钥。
 	 * 
-	 * @param privateKey
-	 *            Base64编码的私钥字符串
-	 * @return 返回私钥。
+	 * 方法用途: 从Base64编码的私钥字符串中获取私钥<br>
+	 * 操作步骤: TODO<br>
+	 * @param privateKey Base64编码的私钥字符串
+	 * @return 返回私钥
 	 */
 	public static PrivateKey getPrivateKey(String privateKey) {
 		try {
@@ -113,13 +121,12 @@ public class RSAUtil {
 	}
 
 	/**
-	 * 对字符串进行签名。
 	 * 
-	 * @param srcString
-	 *            待签名的字符串
-	 * @param privateKey
-	 *            私钥
-	 * @return 返回Base64编码格式的签名。
+	 * 方法用途: 对字符串进行签名<br>
+	 * 操作步骤: TODO<br>
+	 * @param srcString 待签名的字符串
+	 * @param privateKey 私钥
+	 * @return 返回Base64编码格式的签名
 	 */
 	public static String sign(String srcString, PrivateKey privateKey) {
 		try {
@@ -134,15 +141,13 @@ public class RSAUtil {
 	}
 
 	/**
-	 * 验证签名。
 	 * 
-	 * @param srcString
-	 *            原文字符串
-	 * @param publicKey
-	 *            公钥
-	 * @param signature
-	 *            签名
-	 * @return 验证签名成功返回true，否则返回false。
+	 * 方法用途: 验证签名<br>
+	 * 操作步骤: TODO<br>
+	 * @param srcString 原文字符串
+	 * @param publicKey 公钥
+	 * @param signature 签名
+	 * @return 验证签名成功返回true，否则返回false
 	 */
 	public static Boolean verify(String srcString, PublicKey publicKey,
 			String signature) {
