@@ -18,7 +18,8 @@ import java.nio.charset.Charset;
  */
 public class Base64Codec {
 	public final static byte[] DIGITS = new byte[64];
-	final static byte[] base64Alphabet = new byte[255];
+//	final static byte[] base64Alphabet = new byte[255];
+	final static byte[] decodingTable = new byte[255];
 	//注意：如果文件编码是ansi，那么如果文件中有中文文字，那么加密后，中文部分解密会乱码
 	final static Charset CHARSET = Charset.forName("UTF-8");
 
@@ -36,19 +37,19 @@ public class Base64Codec {
 		DIGITS[63] = '-';
 
 		for (int i = 0; i < 255; ++i) {
-			base64Alphabet[i] = (byte) -1;
+			decodingTable[i] = (byte) -1;
 		}
 		for (int i = '0'; i <= '9'; ++i) {
-			base64Alphabet[i] = (byte) (i - '0');
+			decodingTable[i] = (byte) (i - '0');
 		}
 		for (int i = 'a'; i <= 'z'; ++i) {
-			base64Alphabet[i] = (byte) (i - 'a' + 10);
+			decodingTable[i] = (byte) (i - 'a' + 10);
 		}
 		for (int i = 'A'; i <= 'Z'; ++i) {
-			base64Alphabet[i] = (byte) (i - 'A' + 36);
+			decodingTable[i] = (byte) (i - 'A' + 36);
 		}
-		base64Alphabet['_'] = 62;
-		base64Alphabet['-'] = 63;
+		decodingTable['_'] = 62;
+		decodingTable['-'] = 63;
 	}
 
 	public static String encode64String(byte[] binaryData) {
@@ -185,13 +186,13 @@ public class Base64Codec {
 			marker0 = base64Data[dataIndex + 2];
 			marker1 = base64Data[dataIndex + 3];
 
-			b1 = base64Alphabet[base64Data[dataIndex]];
-			b2 = base64Alphabet[base64Data[dataIndex + 1]];
+			b1 = decodingTable[base64Data[dataIndex]];
+			b2 = decodingTable[base64Data[dataIndex + 1]];
 
 			if (marker0 != '.' && marker1 != '.') {
 				// No PAD e.g 3cQl
-				b3 = base64Alphabet[marker0];
-				b4 = base64Alphabet[marker1];
+				b3 = decodingTable[marker0];
+				b4 = decodingTable[marker1];
 
 				decodedData[encodedIndex] = (byte) (b1 << 2 | b2 >> 4);
 				decodedData[encodedIndex + 1] = (byte) (((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf));
@@ -201,7 +202,7 @@ public class Base64Codec {
 				decodedData[encodedIndex] = (byte) (b1 << 2 | b2 >> 4);
 			} else {
 				// One PAD e.g. 3cQ[Pad]
-				b3 = base64Alphabet[marker0];
+				b3 = decodingTable[marker0];
 				decodedData[encodedIndex] = (byte) (b1 << 2 | b2 >> 4);
 				decodedData[encodedIndex + 1] = (byte) (((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf));
 			}
