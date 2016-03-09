@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt;
 
 import java.nio.charset.Charset;
 
-import com.meizu.simplify.encrypt.md5.Md5Util;
+import com.meizu.simplify.encrypt.sign.Sign;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -84,7 +84,7 @@ public class PasswordMd5 {
 			if (plaintext == null || plaintext.isEmpty())
 				return "";
 			byte[] data = plaintext.getBytes(CHARSET);
-			byte[] hash = Md5Util.hashSign(data,"MD5");
+			byte[] hash = Sign.hashSign(data,"MD5");
 			return encode16ToString(hash);
 		}
 }
