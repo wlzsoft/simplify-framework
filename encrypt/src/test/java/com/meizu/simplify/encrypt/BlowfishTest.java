@@ -1,5 +1,7 @@
 package com.meizu.simplify.encrypt;
 
+import org.junit.Test;
+
 import com.meizu.simplify.encrypt.des.Blowfish;
 
 /**
@@ -16,7 +18,8 @@ import com.meizu.simplify.encrypt.des.Blowfish;
  *
  */
 public class BlowfishTest {
-	public static void main(String[] args) {
+	@Test
+	public void test() {
 		Blowfish dec = new Blowfish();
 		String source = "哈哈哈哈，也";
 		String my = dec.encode(source);

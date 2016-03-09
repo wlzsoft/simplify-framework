@@ -1,5 +1,7 @@
 package com.meizu.simplify.encrypt;
 
+import org.junit.Test;
+
 import com.meizu.simplify.encrypt.des.CoverMessageEncrypt;
 import com.meizu.simplify.encrypt.des.RandEncrypt;
 
@@ -17,7 +19,9 @@ import com.meizu.simplify.encrypt.des.RandEncrypt;
  *
  */
 public class CoverEncryptTest {
-	public static void main(String[] args) {
+	
+	@Test
+	public void test() {
 		 CoverMessageEncrypt encrypt = new CoverMessageEncrypt();
 		 
 		 String str = new String(encrypt.encode("2212".getBytes()));
