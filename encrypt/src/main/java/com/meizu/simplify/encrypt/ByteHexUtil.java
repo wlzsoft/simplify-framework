@@ -75,12 +75,13 @@ public class ByteHexUtil {
 	}
 	
 	/**
-	 * bytes to hex string
 	 * 
+	 * 方法用途: 字节数组转成16进制字符串<br>
+	 * 操作步骤: TODO<br>
 	 * @param bytes
 	 * @return
 	 */
-	public static String bytes2Hex(byte[] bytes) {
+	public static String bytes2Hex2(byte[] bytes) {
 		StringBuilder sb = new StringBuilder();
 		for (byte b : bytes) {
 			
@@ -110,16 +111,51 @@ public class ByteHexUtil {
 //		return sb.toUpperCase();
 		return sb.toString();
 	}
+	/**
+	 * 
+	 * 方法用途: 字节数组转成16进制字符串<br>
+	 * 操作步骤: 性能比bytes2Hex2优，后续合并在一起<br>
+	 * @param bytes
+	 * @return
+	 */
+	public static String bytes2Hex(byte[] bytes) {
+		// 用来将字节转换成 16 进制表示的字符
+		char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+//		char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+			
+			
+		// 把密文转换成十六进制的字符串形式
+		int j = bytes.length;
+//			int j = 16; // 用字节表示就是 16 个字节
+        char str[] = new char[j * 2];// 每个字节用 16 进制表示的话，使用两个字符
+		
+		// 所以表示成 16 进制需要 32 个字符
+		int k = 0; // 表示转换结果中对应的字符位置
+		for (int i = 0; i < j; i++) { // 从第一个字节开始，对 MD5 的每一个字节
+			// 转换成 16 进制字符的转换
+			byte byte0 = bytes[i]; // 取第 i 个字节
+			str[k++] = hexDigits[byte0 >>> 4 & 0xf]; // 取字节中高 4 位的数字转换,
+			// >>> 为逻辑右移，将符号位一起右移
+			str[k++] = hexDigits[byte0 & 0xf]; // 取字节中低 4 位的数字转换
+		}
+		return new String(str); // 换后的结果转换为字符串
+//		return new String(str).toLowerCase();
+
+	}
+	
+	
 	/*
 	 * byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示，
 	 * 　因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)
 	 */
-	public static String byteHEX(byte ib) {
-		char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };
-		char[] ob = new char[2];
-		ob[0] = Digit[(ib >>> 4) & 0X0F];
-		ob[1] = Digit[ib & 0X0F];
-		String s = new String(ob);
+	private static String byteHEX(byte byte0) {
+		// 用来将字节转换成 16 进制表示的字符
+		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };//可以抽取待外层循环，也就是bytes2Hex(byte[] bytes)方法的方法体的第一行，for语句之前，防止重复创建 
+//		char[] hexDigits={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+		char[] str = new char[2];
+		str[0] = hexDigits[(byte0 >>> 4) & 0X0F];
+		str[1] = hexDigits[byte0 & 0X0F];
+		String s = new String(str);
 		return s;
 	}
 	

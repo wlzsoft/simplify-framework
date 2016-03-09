@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
+import com.meizu.simplify.encrypt.md5.Md5Util;
 
 public class DxKey {
 	private String m_strSrc;
@@ -90,5 +91,6 @@ public class DxKey {
 		key.setEncryptMethod(1);
 		key.genKEY();
 		System.out.println(ByteHexUtil.bytes2Hex(key.getByteDig()));
+		System.out.println(Md5Util.md5(str));
 	}
 }
