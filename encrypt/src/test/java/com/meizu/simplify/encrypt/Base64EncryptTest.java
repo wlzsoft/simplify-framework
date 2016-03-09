@@ -106,6 +106,7 @@ public class Base64EncryptTest {
 				(byte) '3', (byte) '4', (byte) '5', (byte) '6', (byte) '7',
 				(byte) '8', (byte) '9', (byte) '+', (byte) '/', (byte) '-'
 				};
+//		变种的编码表
 		byte[] base64Alphabet = new byte[255];
 		for (int i = 0; i < 255; ++i) {
 			base64Alphabet[i] = (byte) -1;

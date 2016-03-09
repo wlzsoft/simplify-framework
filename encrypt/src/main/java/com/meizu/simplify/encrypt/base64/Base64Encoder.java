@@ -25,7 +25,7 @@ import java.io.*;
  */
 public class Base64Encoder extends FilterOutputStream {
 
-  private static final char[] chars = {
+  private static final char[] encodingTable = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
     'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
     'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
@@ -69,22 +69,22 @@ public class Base64Encoder extends FilterOutputStream {
     if (charCount % 3 == 0) {
       int lookup = b >> 2;
       carryOver = b & 3;        // last two bits
-      out.write(chars[lookup]);
+      out.write(encodingTable[lookup]);
     }
     // Second byte use previous two bits and first four new bits,
     // save last four bits
     else if (charCount % 3 == 1) {
       int lookup = ((carryOver << 4) + (b >> 4)) & 63;
       carryOver = b & 15;       // last four bits
-      out.write(chars[lookup]);
+      out.write(encodingTable[lookup]);
     }
     // Third byte use previous four bits and first two new bits,
     // then use last six new bits
     else if (charCount % 3 == 2) {
       int lookup = ((carryOver << 2) + (b >> 6)) & 63;
-      out.write(chars[lookup]);
+      out.write(encodingTable[lookup]);
       lookup = b & 63;          // last six bits
-      out.write(chars[lookup]);
+      out.write(encodingTable[lookup]);
       carryOver = 0;
     }
     charCount++;
@@ -121,13 +121,13 @@ public class Base64Encoder extends FilterOutputStream {
     // Handle leftover bytes
     if (charCount % 3 == 1) {  // one leftover
       int lookup = (carryOver << 4) & 63;
-      out.write(chars[lookup]);
+      out.write(encodingTable[lookup]);
       out.write('=');
       out.write('=');
     }
     else if (charCount % 3 == 2) {  // two leftovers
       int lookup = (carryOver << 2) & 63;
-      out.write(chars[lookup]);
+      out.write(encodingTable[lookup]);
       out.write('=');
     }
     super.close();

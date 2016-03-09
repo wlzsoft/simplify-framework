@@ -71,8 +71,8 @@ public final class Keys {
 			pre = fname.charAt(0) + fname.charAt(1);
 		}
 		char[] buf = new char[2];
-		buf[0] = (char) Base64Codec.DIGITS[(0xF0 & pre) >>> 4];
-		buf[1] = (char) Base64Codec.DIGITS[0x0F & pre];
+		buf[0] = (char) Base64Codec.encodingTable[(0xF0 & pre) >>> 4];
+		buf[1] = (char) Base64Codec.encodingTable[0x0F & pre];
 		String prefix = new String(buf);
 		if (!Prefix.containsKey(fname)) {
 			Prefix.put(fname, prefix);
