@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt.md5;
+package com.meizu.simplify.encrypt.rsa;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
