@@ -32,7 +32,6 @@ public class Sha1Util {
 	}
 	
 	/**
-	 * 符合RFC 1321标准的MD5编码
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
 	 * @param source 字符串
