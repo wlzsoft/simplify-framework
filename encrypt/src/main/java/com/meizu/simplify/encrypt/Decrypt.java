@@ -3,6 +3,7 @@ package com.meizu.simplify.encrypt;
 import java.nio.charset.Charset;
 
 import com.meizu.simplify.encrypt.base64.Base64Codec;
+import com.meizu.simplify.encrypt.sign.md5.Md5Util;
 /**
  * <p><b>Title:</b><i>解密</i></p>
  * <p>Desc: TODO</p>
@@ -67,7 +68,7 @@ public class Decrypt {
 		if (plaintext == null || ciphertext == null)
 			return false;
 		String decrypted = fieldDecrypt(ciphertext);
-		String md5 = PasswordMd5.hashMd5(plaintext);
+		String md5 = Md5Util.hashMd5(plaintext);
 		return md5.equals(decrypted);
 	}
 

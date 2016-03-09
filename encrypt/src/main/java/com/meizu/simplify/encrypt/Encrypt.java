@@ -1,6 +1,7 @@
 package com.meizu.simplify.encrypt;
 
 import com.meizu.simplify.encrypt.base64.Base64Codec;
+import com.meizu.simplify.encrypt.sign.md5.Md5Util;
 
 /**
  * <p><b>Title:</b><i>加密</i></p>
@@ -61,7 +62,7 @@ public final class Encrypt {
 	public static String passwordEncrypt(String plaintext) {
 		if (plaintext == null)
 			return plaintext;
-		String md5 = PasswordMd5.hashMd5(plaintext);
+		String md5 = Md5Util.hashMd5(plaintext);
 		return fieldEncrypt("password", md5);
 	}
 

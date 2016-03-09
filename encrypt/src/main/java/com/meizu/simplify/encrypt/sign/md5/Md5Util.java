@@ -1,8 +1,10 @@
 package com.meizu.simplify.encrypt.sign.md5;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
+import com.meizu.simplify.encrypt.Base16;
 import com.meizu.simplify.encrypt.sign.Sign;
 
 /**
@@ -19,7 +21,7 @@ import com.meizu.simplify.encrypt.sign.Sign;
  *
  */
 public class Md5Util {
-
+	final static Charset CHARSET = Charset.forName("UTF-8");
 	/**
 	 * 
 	 * 方法用途: TODO<br>
@@ -47,7 +49,13 @@ public class Md5Util {
 	}
 	
 	
-
+	public static String hashMd5(String plaintext) {
+		if (plaintext == null || plaintext.isEmpty())
+			return "";
+		byte[] data = plaintext.getBytes(CHARSET);
+		byte[] hash = Sign.hashSign(data,"MD5");
+		return Base16.encode16ToString(hash);
+	}
 	
 	
 	
