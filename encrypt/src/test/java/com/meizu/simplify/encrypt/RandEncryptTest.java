@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.RandEncrypt;
+import com.meizu.simplify.encrypt.des.RANDEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -21,7 +21,7 @@ public class RandEncryptTest {
 	
 	@Test
 	public void test() {
-		RandEncrypt dec = new RandEncrypt();
+		RANDEncrypt dec = new RANDEncrypt();
 		String source = "哈哈哈哈，也";
 		String my = dec.encode(source);
 		System.out.println(my);

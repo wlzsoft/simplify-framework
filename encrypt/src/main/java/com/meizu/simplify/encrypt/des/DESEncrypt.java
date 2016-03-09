@@ -30,7 +30,7 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
  * @version Version 0.1
  *
  */
-public class DESMessageEncrypt {
+public class DESEncrypt {
 	
 	
 	
@@ -83,7 +83,7 @@ public class DESMessageEncrypt {
 		try {
 			if (str == null || str.length() < 1) return "";
 			
-			byte[] cipherByte = new DESMessageEncrypt().encode(str.getBytes(),key.getBytes());
+			byte[] cipherByte = new DESEncrypt().encode(str.getBytes(),key.getBytes());
 			
 			String result = new String(cipherByte);
 			return result;
@@ -146,7 +146,7 @@ public class DESMessageEncrypt {
 	public static String decrypt(String str, String key) {
 		try {
 			if (str == null || str.length() < 1) return "";
-			String result = new String(new DESMessageEncrypt().decode(str.getBytes(),key.getBytes()));
+			String result = new String(new DESEncrypt().decode(str.getBytes(),key.getBytes()));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

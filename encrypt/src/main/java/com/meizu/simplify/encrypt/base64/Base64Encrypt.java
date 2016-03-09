@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
  * @version Version 0.1
  *
  */
-public class Base64 {
+public class Base64Encrypt {
 
 	
 	/**
@@ -350,7 +350,7 @@ public class Base64 {
 	public static String decode(String data, String charset) {
 		try {
 			if (data == null || data.length() == 0) return data;
-			return new String(Base64.decode(data), charset);
+			return new String(Base64Encrypt.decode(data), charset);
 		} catch (UnsupportedEncodingException e) {
 			return null;
 		}
@@ -396,7 +396,7 @@ public class Base64 {
 	 * @return 返回编码后的内容字节数组。
 	 */
 	public static byte[] encodeBase64(byte[] contentBytes) {
-		return Base64.encodeBase64(contentBytes);
+		return Base64Encrypt.encodeBase64(contentBytes);
 	}
 
 	/**
@@ -407,7 +407,7 @@ public class Base64 {
 	 * @return 返回解码后的内容字节数组。
 	 */
 	public static byte[] decodeBase64(byte[] contentBytes) {
-		return Base64.decodeBase64(contentBytes);
+		return Base64Encrypt.decodeBase64(contentBytes);
 	}
 
 	public String encodeToString(byte[] encrypted) {

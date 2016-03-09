@@ -22,14 +22,14 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
  * @version Version 0.1
  *
  */
-public class Blowfish {
+public class BlowfishEncrypt {
 
 	private SecretKey m_keyDES;
 
 	private byte[] m_byteRand;
 
 
-	public Blowfish() {
+	public BlowfishEncrypt() {
 		Date dt = new Date();
 		Random rand = new Random(dt.getTime());
 		m_byteRand = new byte[8];

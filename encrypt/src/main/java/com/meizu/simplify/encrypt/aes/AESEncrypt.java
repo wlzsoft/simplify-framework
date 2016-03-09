@@ -3,7 +3,7 @@ package com.meizu.simplify.encrypt.aes;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.meizu.simplify.encrypt.base64.Base64;
+import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -19,7 +19,7 @@ import com.meizu.simplify.encrypt.base64.Base64;
  *
  */
 
-public class AES {
+public class AESEncrypt {
 	
 		/**
 		 * 
@@ -36,7 +36,7 @@ public class AES {
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 				cipher.init(Cipher.ENCRYPT_MODE, key);
 				byte[] encrypted = cipher.doFinal(content.getBytes("UTF-8"));
-				Base64 encoder = new Base64();
+				Base64Encrypt encoder = new Base64Encrypt();
 				return encoder.encodeToString(encrypted);
 			} catch (Exception e) {
 				throw new RuntimeException("AES加密时发生异常。", e);
@@ -57,7 +57,7 @@ public class AES {
 				SecretKeySpec key = new SecretKeySpec(raw, "AES");
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 				cipher.init(Cipher.DECRYPT_MODE, key);
-				byte[] encrypted = new Base64().decode(content);
+				byte[] encrypted = new Base64Encrypt().decode(content);
 				byte[] original = cipher.doFinal(encrypted);
 				return new String(original, "UTF-8");
 			} catch (Exception e) {

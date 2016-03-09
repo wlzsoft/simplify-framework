@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.Blowfish;
+import com.meizu.simplify.encrypt.des.BlowfishEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -20,7 +20,7 @@ import com.meizu.simplify.encrypt.des.Blowfish;
 public class BlowfishTest {
 	@Test
 	public void test() {
-		Blowfish dec = new Blowfish();
+		BlowfishEncrypt dec = new BlowfishEncrypt();
 		String source = "哈哈哈哈，也";
 		String my = dec.encode(source);
 		System.out.println(my);

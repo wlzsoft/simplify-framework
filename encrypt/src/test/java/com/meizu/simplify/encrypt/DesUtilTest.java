@@ -5,7 +5,7 @@ import java.io.UnsupportedEncodingException;
 import org.junit.Test;
 
 import com.meizu.simplify.encrypt.des.DES;
-import com.meizu.simplify.encrypt.des.DESMessageEncrypt;
+import com.meizu.simplify.encrypt.des.DESEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -23,15 +23,15 @@ import com.meizu.simplify.encrypt.des.DESMessageEncrypt;
 public class DesUtilTest {
 	@Test
 	public void test() {
-		byte[] b = new DESMessageEncrypt().encode("�ز�".getBytes(),"sdferese".getBytes());
+		byte[] b = new DESEncrypt().encode("�ز�".getBytes(),"sdferese".getBytes());
 		System.out.println(new String(b));
-		System.out.println(new String(new DESMessageEncrypt().decode(b,"sdferese".getBytes())));
+		System.out.println(new String(new DESEncrypt().decode(b,"sdferese".getBytes())));
 		
 		String source = "{\"text\":\"哈哈哈哈，也\"}";
 //		String source = "�ز�";
-		String re =DESMessageEncrypt.encrypt(source, "sdferese");
+		String re =DESEncrypt.encrypt(source, "sdferese");
 		System.out.println(re);
-		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
+		System.out.println(DESEncrypt.decrypt(re,  "sdferese"));
 	}
 	
 	public static void DES(String[] args) {

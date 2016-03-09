@@ -21,7 +21,7 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
  * @version Version 0.1
  *
  */
-public class CoverMessageEncrypt {
+public class CoverEncrypt {
 
 	private static long time;
 	static {

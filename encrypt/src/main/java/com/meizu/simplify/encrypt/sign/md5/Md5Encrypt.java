@@ -1,5 +1,8 @@
-package com.meizu.simplify.encrypt.sign.sha1;
+package com.meizu.simplify.encrypt.sign.md5;
 
+import java.nio.charset.Charset;
+
+import com.meizu.simplify.encrypt.Base16;
 import com.meizu.simplify.encrypt.sign.Sign;
 
 /**
@@ -15,8 +18,8 @@ import com.meizu.simplify.encrypt.sign.Sign;
  * @version Version 0.1
  *
  */
-public class Sha1 {
-
+public class Md5Encrypt {
+	final static Charset CHARSET = Charset.forName("UTF-8");
 	/**
 	 * 
 	 * 方法用途: TODO<br>
@@ -29,21 +32,28 @@ public class Sha1 {
 	}
 	
 	/**
+	 * 符合RFC 1321标准的MD5编码
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
 	 * @param source 字符串
 	 * @return
 	 */
 	public static String sign(String source) {
-		return Sign.sign(source, "SHA-1");
+		return Sign.sign(source, "MD5");
 	}
 	
 	public static byte[] sign(byte[] source) {
-		return Sign.sign(source, "SHA-1");
+		return Sign.sign(source, "MD5");
 	}
 	
 	
-
+	public static String hashMd5(String plaintext) {
+		if (plaintext == null || plaintext.isEmpty())
+			return "";
+		byte[] data = plaintext.getBytes(CHARSET);
+		byte[] hash = Sign.hashSign(data,"MD5");
+		return Base16.encode16ToString(hash);
+	}
 	
 	
 	

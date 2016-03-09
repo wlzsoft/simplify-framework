@@ -2,8 +2,8 @@ package com.meizu.simplify.encrypt;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.CoverMessageEncrypt;
-import com.meizu.simplify.encrypt.des.RandEncrypt;
+import com.meizu.simplify.encrypt.des.CoverEncrypt;
+import com.meizu.simplify.encrypt.des.RANDEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -22,7 +22,7 @@ public class CoverEncryptTest {
 	
 	@Test
 	public void test() {
-		 CoverMessageEncrypt encrypt = new CoverMessageEncrypt();
+		 CoverEncrypt encrypt = new CoverEncrypt();
 		 
 		 String str = new String(encrypt.encode("2212".getBytes()));
 		 System.out.println(str);
