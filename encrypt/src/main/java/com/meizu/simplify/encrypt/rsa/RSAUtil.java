@@ -14,7 +14,7 @@ import com.meizu.simplify.encrypt.base64.Base64;
 /**
  * 加解密工具类。
  */
-public class CryptoUtils {
+public class RSAUtil {
 	/**
 	 * 生成随机字符串。
 	 * 
