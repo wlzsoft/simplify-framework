@@ -84,7 +84,7 @@ public class PasswordMd5 {
 			if (plaintext == null || plaintext.isEmpty())
 				return "";
 			byte[] data = plaintext.getBytes(CHARSET);
-			byte[] hash = Md5Util.hashMd5(data);
+			byte[] hash = Md5Util.hashSign(data,"MD5");
 			return encode16ToString(hash);
 		}
 }

@@ -45,7 +45,7 @@ public class Md5Util {
 		}
 		try {
 //			return getMD5(hashMd5(src.getBytes("UTF-8")));
-			return ByteHexUtil.bytes2Hex(hashMd5(src.getBytes("UTF-8")));
+			return ByteHexUtil.bytes2Hex(hashSign(src.getBytes("UTF-8"),"MD5"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
@@ -53,7 +53,7 @@ public class Md5Util {
 	}
 	
 	public byte[] hashMd5Str (byte[] source) {
-		return  ByteHexUtil.bytes2Hex(hashMd5(source)).getBytes();
+		return  ByteHexUtil.bytes2Hex(hashSign(source,"MD5")).getBytes();
 	}
 	
 	
@@ -65,12 +65,13 @@ public class Md5Util {
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
 	 * @param source
+	 * @param name hash签名算法名称 [MD5,SHA-1]
 	 * @return MD5 的计算结果是一个 128 位的长整数
 	 */
-	public static byte[] hashMd5(byte[] source) {
+	public static byte[] hashSign(byte[] source,String name) {
 		try {
             // 获得MD5摘要算法的 MessageDigest 对象
-			MessageDigest digest = MessageDigest.getInstance("MD5");
+			MessageDigest digest = MessageDigest.getInstance(name);//MD5 or SHA-1
 			digest.reset();//是否需要重置 TODO
 			// 使用指定的字节更新摘要
 			digest.update(source);
