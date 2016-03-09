@@ -22,7 +22,7 @@ public class Base64Encrypt {
 	/**
 	 * 注意：字符 '/'有问题的情况下，替换成'-'试试，把后面的'-'删除。
 	 */
-	private static final byte[] encodingTable = {
+	private static final byte[] base64Alphabet = {
 	(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E',
 	(byte) 'F', (byte) 'G', (byte) 'H', (byte) 'I', (byte) 'J',
 	(byte) 'K', (byte) 'L', (byte) 'M', (byte) 'N', (byte) 'O',
@@ -84,10 +84,10 @@ public class Base64Encrypt {
             a2 = data[i + 1] & 0xff;
             a3 = data[i + 2] & 0xff;
 
-            bytes[j] = encodingTable[(a1 >>> 2) & 0x3f];
-            bytes[j + 1] = encodingTable[((a1 << 4) | (a2 >>> 4)) & 0x3f];
-            bytes[j + 2] = encodingTable[((a2 << 2) | (a3 >>> 6)) & 0x3f];
-            bytes[j + 3] = encodingTable[a3 & 0x3f];
+            bytes[j] = base64Alphabet[(a1 >>> 2) & 0x3f];
+            bytes[j + 1] = base64Alphabet[((a1 << 4) | (a2 >>> 4)) & 0x3f];
+            bytes[j + 2] = base64Alphabet[((a2 << 2) | (a3 >>> 6)) & 0x3f];
+            bytes[j + 3] = base64Alphabet[a3 & 0x3f];
         }
 
         /*
@@ -104,8 +104,8 @@ public class Base64Encrypt {
                 b1 = (d1 >>> 2) & 0x3f;
                 b2 = (d1 << 4) & 0x3f;
 
-                bytes[bytes.length - 4] = encodingTable[b1];
-                bytes[bytes.length - 3] = encodingTable[b2];
+                bytes[bytes.length - 4] = base64Alphabet[b1];
+                bytes[bytes.length - 3] = base64Alphabet[b2];
                 bytes[bytes.length - 2] = (byte) '=';
                 bytes[bytes.length - 1] = (byte) '=';
                 break;
@@ -117,9 +117,9 @@ public class Base64Encrypt {
                 b2 = ((d1 << 4) | (d2 >>> 4)) & 0x3f;
                 b3 = (d2 << 2) & 0x3f;
 
-                bytes[bytes.length - 4] = encodingTable[b1];
-                bytes[bytes.length - 3] = encodingTable[b2];
-                bytes[bytes.length - 2] = encodingTable[b3];
+                bytes[bytes.length - 4] = base64Alphabet[b1];
+                bytes[bytes.length - 3] = base64Alphabet[b2];
+                bytes[bytes.length - 2] = base64Alphabet[b3];
                 bytes[bytes.length - 1] = (byte) '=';
                 break;
         }
@@ -260,10 +260,10 @@ public class Base64Encrypt {
 			a1 = data[i] & 0xff;
 			a2 = data[i + 1] & 0xff;
 			a3 = data[i + 2] & 0xff;
-			bytes[j] = encodingTable[(a1 >>> 2) & 0x3f];
-			bytes[j + 1] = encodingTable[((a1 << 4) | (a2 >>> 4)) & 0x3f];
-			bytes[j + 2] = encodingTable[((a2 << 2) | (a3 >>> 6)) & 0x3f];
-			bytes[j + 3] = encodingTable[a3 & 0x3f];
+			bytes[j] = base64Alphabet[(a1 >>> 2) & 0x3f];
+			bytes[j + 1] = base64Alphabet[((a1 << 4) | (a2 >>> 4)) & 0x3f];
+			bytes[j + 2] = base64Alphabet[((a2 << 2) | (a3 >>> 6)) & 0x3f];
+			bytes[j + 3] = base64Alphabet[a3 & 0x3f];
 		}
 		int b1;
 		int b2;
@@ -277,8 +277,8 @@ public class Base64Encrypt {
 			d1 = data[data.length - 1] & 0xff;
 			b1 = (d1 >>> 2) & 0x3f;
 			b2 = (d1 << 4) & 0x3f;
-			bytes[bytes.length - 4] = encodingTable[b1];
-			bytes[bytes.length - 3] = encodingTable[b2];
+			bytes[bytes.length - 4] = base64Alphabet[b1];
+			bytes[bytes.length - 3] = base64Alphabet[b2];
 			bytes[bytes.length - 2] = (byte) '=';
 			bytes[bytes.length - 1] = (byte) '=';
 			break;
@@ -289,9 +289,9 @@ public class Base64Encrypt {
 			b1 = (d1 >>> 2) & 0x3f;
 			b2 = ((d1 << 4) | (d2 >>> 4)) & 0x3f;
 			b3 = (d2 << 2) & 0x3f;
-			bytes[bytes.length - 4] = encodingTable[b1];
-			bytes[bytes.length - 3] = encodingTable[b2];
-			bytes[bytes.length - 2] = encodingTable[b3];
+			bytes[bytes.length - 4] = base64Alphabet[b1];
+			bytes[bytes.length - 3] = base64Alphabet[b2];
+			bytes[bytes.length - 2] = base64Alphabet[b3];
 			bytes[bytes.length - 1] = (byte) '=';
 			break;
 		}
