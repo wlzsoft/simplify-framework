@@ -170,37 +170,5 @@ public class Base64Encoder extends FilterOutputStream {
     catch (IOException ignored) { return null; }
   }
 
-  public static void main(String[] args) throws Exception {
-	  
-	  
-//		 BASE64Encoder base64Encoder = new BASE64Encoder();
-//    strMi = base64Encoder.encode(byteMi);
-	//a2ee5e1d00de3fc5320a95beaf15b692
-	
-//	System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
-//	System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
-	  
-    if (args.length != 1) {
-      System.err.println(
-        "Usage: java com.dudu.upload.Base64Encoder fileToEncode");
-      return;
-    }
-
-    Base64Encoder encoder = null;
-    BufferedInputStream in = null;
-    try {
-      encoder = new Base64Encoder(System.out);
-      in = new BufferedInputStream(new FileInputStream(args[0]));
-
-      byte[] buf = new byte[4 * 1024];  // 4K buffer
-      int bytesRead;
-      while ((bytesRead = in.read(buf)) != -1) {
-        encoder.write(buf, 0, bytesRead);
-      }
-    }
-    finally {
-      if (in != null) in.close();
-      if (encoder != null) encoder.close();
-    }
-  }
+  
 }

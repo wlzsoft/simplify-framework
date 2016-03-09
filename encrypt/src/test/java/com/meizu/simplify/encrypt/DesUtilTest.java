@@ -1,7 +1,10 @@
 package com.meizu.simplify.encrypt;
 
+import java.io.UnsupportedEncodingException;
+
 import org.junit.Test;
 
+import com.meizu.simplify.encrypt.des.DES;
 import com.meizu.simplify.encrypt.des.DESMessageEncrypt;
 
 /**
@@ -29,5 +32,22 @@ public class DesUtilTest {
 		String re =DESMessageEncrypt.encrypt(source, "sdferese");
 		System.out.println(re);
 		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
+	}
+	
+	public static void DES(String[] args) {
+		try {
+			String encryptString = DES.DESAndBase64Encrypt("meizu&123456", "meizuall", "utf-8");
+			System.out.println(encryptString+"||||||||||||||");
+			String decryptString = DES.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
+			System.out.println(decryptString+"////////////");
+			
+//			String token=encrypt("meizu&123456","meizuall");
+			String token64 = DES.encrypt64("meizu&123456","meizuall");
+			
+			token64 = DES.encrypt64("meizu&123456","meizuall");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

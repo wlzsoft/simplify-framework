@@ -1,14 +1,5 @@
 package com.meizu.simplify.encrypt.des;
 
-/*
- * @function: 字符串加密算法，目前系统中，仅用到了第三种加密算法——随机加密算法
- * @用法：
- * 1、定义encdec对象
- * 2、调用setSrc，设置需要加密的字符串
- * 3、调用setEncryptMethod，设置加密算法，这里设置为3
- * 4、调用Encode得到加密结果
- * 5、测试代码见文件末尾main函数，打开注释即可测试
- */
 import java.util.Date;
 import java.util.Random;
 
@@ -18,6 +9,19 @@ import javax.crypto.SecretKey;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 
+/**
+ * <p><b>Title:</b><i>BlowFish对称加密算法</i></p>
+ * <p>Desc: 可用来加密64比特长度的字符串。32位处理器诞生后，Blowfish算法因其在加密速度上超越了DES而引起人们的关注。Blowfish算法具有加密速度快、紧凑、密钥长度可变、可免费使用等特点</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月9日 下午5:10:18</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月9日 下午5:10:18</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
 public class Blowfish {
 
 	private SecretKey m_keyDES;
@@ -87,13 +91,5 @@ public class Blowfish {
 		}
 	}
 	
-	public static void main(String[] args) {
-		Blowfish dec = new Blowfish();
-		String source = "哈哈哈哈，也";
-		String my = dec.encode(source);
-		System.out.println(my);
-		System.out.println(dec.decode(my));
-		
-		
-	}
+	
 }

@@ -80,13 +80,5 @@ public class RandEncrypt {
 		return randDecode(strContent);
 	}
 	
-	public static void main(String[] args) {
-		RandEncrypt dec = new RandEncrypt();
-		String source = "哈哈哈哈，也";
-		String my = dec.encode(source);
-		System.out.println(my);
-		System.out.println(dec.decode(my));
-		
-		
-	}
+	
 }
