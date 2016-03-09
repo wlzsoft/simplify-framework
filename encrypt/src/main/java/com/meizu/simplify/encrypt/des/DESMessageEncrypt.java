@@ -31,28 +31,7 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
  *
  */
 public class DESMessageEncrypt {
-	public byte[] encode(byte[] input) {
-		if(secretKey==null){
-			secretKey = getSecretKey("meizuall".getBytes());
-		}
-		try {
-			Cipher c1 = Cipher.getInstance("DES");
-			c1.init(Cipher.ENCRYPT_MODE, getSecretKey("meizuall".getBytes()));
-			byte[] codes =  c1.doFinal(input);
-			return  ByteHexUtil.bytes2Hex(codes).getBytes();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 	
 	
 	
@@ -106,7 +85,7 @@ public class DESMessageEncrypt {
 			
 			byte[] cipherByte = new DESMessageEncrypt().encode(str.getBytes(),key.getBytes());
 			
-			String result = ByteHexUtil.bytes2Hex(cipherByte);
+			String result = new String(cipherByte);
 			return result;
 		} catch (Exception e) {
 			return "";
@@ -114,11 +93,15 @@ public class DESMessageEncrypt {
 	}
 	
 	public byte[] encode(byte[] input,byte[] key) {
+//		if(secretKey==null){
+//			secretKey = getSecretKey(key);
+//		}
 		try {
 			Cipher c1 = Cipher.getInstance("DES");
 			c1.init(Cipher.ENCRYPT_MODE, getSecretKey(key));
 			byte[] cipherByte = c1.doFinal(input);
-			return  cipherByte;
+//			return  cipherByte;
+			return  ByteHexUtil.bytes2Hex(cipherByte).getBytes();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
@@ -134,33 +117,15 @@ public class DESMessageEncrypt {
 	}
 	
 	
-	
-	public byte[] decode(byte[] input) {
-		if(secretKey==null){
-			secretKey = getSecretKey("meizuall".getBytes());
-		}
-		try {			
-			Cipher c1 = Cipher.getInstance("DES");
-			c1.init(Cipher.DECRYPT_MODE,secretKey);
-			return c1.doFinal(ByteHexUtil.hex2Bytes(new String(input)));
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	public byte[] decode(byte[] input,byte[] key) {
+//		if(secretKey==null){
+//			secretKey = getSecretKey(key);
+//		}
 		try {			
 			
 			Cipher c1 = Cipher.getInstance("DES");
+//			c1.init(Cipher.DECRYPT_MODE,secretKey);
 			c1.init(Cipher.DECRYPT_MODE,getSecretKey(key));
 			return c1.doFinal(ByteHexUtil.hex2Bytes(new String(input)));
 		} catch (NoSuchAlgorithmException e) {
@@ -212,16 +177,4 @@ public class DESMessageEncrypt {
 	}
 	
 
-	
-
-	public static void main(String[] args) {
-		byte[] b = new DESMessageEncrypt().encode("�ز�".getBytes());
-		System.out.println(new String(new DESMessageEncrypt().decode(b)));
-		
-		
-		String source = "{\"text\":\"哈哈哈哈，也\"}";
-		String re =encrypt(source, "sdferese");
-		System.out.println(re);
-		System.out.println(decrypt(re,  "sdferese"));
-	}
 }
