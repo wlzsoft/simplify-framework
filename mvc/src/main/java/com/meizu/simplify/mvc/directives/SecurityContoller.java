@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.encrypt.sign.md5.Md5Encrypt;
+import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
@@ -93,7 +93,7 @@ public class SecurityContoller<T extends Model> {
 //			}
 //		};
 		T model = setRequestModel(request);
-		this.staticName = Md5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
+		this.staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
 			IForward AF = execute(request, response, model);
