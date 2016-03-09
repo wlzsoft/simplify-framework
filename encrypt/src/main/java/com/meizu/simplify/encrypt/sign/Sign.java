@@ -55,7 +55,6 @@ public class Sign {
 			return null;
 		}
 		try {
-//			return getMD5(hashMd5(src.getBytes("UTF-8")));
 			return ByteHexUtil.bytes2Hex(Sign.hashSign(src.getBytes("UTF-8"),name));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
