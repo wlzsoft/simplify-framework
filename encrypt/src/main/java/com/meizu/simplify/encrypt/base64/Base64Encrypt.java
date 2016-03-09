@@ -58,7 +58,6 @@ public class Base64Encrypt {
 		}
 		decodingTable['+'] = 62;
 		decodingTable['/'] = 63;
-		System.out.println("");
 	}
 
 	
