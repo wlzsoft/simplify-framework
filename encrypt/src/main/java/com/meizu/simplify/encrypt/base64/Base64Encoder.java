@@ -171,6 +171,15 @@ public class Base64Encoder extends FilterOutputStream {
   }
 
   public static void main(String[] args) throws Exception {
+	  
+	  
+//		 BASE64Encoder base64Encoder = new BASE64Encoder();
+//    strMi = base64Encoder.encode(byteMi);
+	//a2ee5e1d00de3fc5320a95beaf15b692
+	
+//	System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
+//	System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
+	  
     if (args.length != 1) {
       System.err.println(
         "Usage: java com.dudu.upload.Base64Encoder fileToEncode");

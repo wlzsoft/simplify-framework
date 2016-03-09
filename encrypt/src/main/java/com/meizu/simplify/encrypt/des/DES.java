@@ -163,10 +163,6 @@ public class DES {
 	  }
 	
 	
-	
-
-	
-	
 	public static String encrypt64(String str, String key) {
 		try {
 			if (str == null || str.length() < 1) return "";
@@ -195,6 +191,8 @@ public class DES {
 			
 //			String token=encrypt("meizu&123456","meizuall");
 			String token64 = encrypt64("meizu&123456","meizuall");
+			
+			token64 = DES.encrypt64("meizu&123456","meizuall");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

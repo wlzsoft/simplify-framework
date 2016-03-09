@@ -215,36 +215,13 @@ public class DESMessageEncrypt {
 	
 
 	public static void main(String[] args) {
-//		System.out.println(new DESMessageEncrypt()
-//		.encode("123456789012"));
-//
-//		System.out.println(new DESMessageEncrypt()
-//		.encode("�ز�"));
-		
-//		System.out.println(new DESMessageEncrypt()
-//		.decode("e0e9f8daabe4f77db4298411b075e38e742dcc96c2085da6e0130bf0b0f1dd7c23aa70c3d1bd4438b941790bbc0fcf7406587467eade1be9b4df0afa22f5ffb9".toLowerCase()));
-		
-//		String token=DES.encrypt("meizu&123456","meizuall");
-		String token64 = DES.encrypt64("meizu&123456","meizuall");
-		System.out.println(new String(new DESMessageEncrypt().encode("meizu&123456".getBytes()))+"kkkk");
-		//String token64 = DESMessageEncrypt.encrypt64("meizuall","meizu&123456");
-//		 BASE64Encoder base64Encoder = new BASE64Encoder();
-//         strMi = base64Encoder.encode(byteMi);
-		//a2ee5e1d00de3fc5320a95beaf15b692
-		
-//		System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
-//		System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
-		System.out.println(token64);//ou5eHQDeP8UyCpW+rxW2kg==
+		byte[] b = new DESMessageEncrypt().encode("�ز�".getBytes());
+		System.out.println(new String(new DESMessageEncrypt().decode(b)));
 		
 		
-		
-		String str="6cb2606b4382afd1659a4b4031f65a2c6ef727f10c03de27f4ed22e84d8ef49a8ca9af6dd4f68fc2a9c1f322be1043efd50b4070bb33a84c1c4433fdfea98cb913f7f76703e7c5ded1c494c2cc288c4bd055d335bf2a0a779135eb694b5da73e6499b1cd74d2b3e957eb793aabc23b1ca7949c3eb28abfce76ce7c7e4120d8ecbd74b61603637e817a7fce656a32f81ecea8a1ac96c701c6";
-		System.out.println(decrypt(str, "402880E6"));
-//		System.out.println(decrypt("cde01d1bc4311736", "sDx5show"));
-		//System.out.println(hex2byte("a13qswdswqe").length);
-		String source = "哈哈哈哈，也";
-		String re =DESMessageEncrypt.encrypt(source, "sdferese");
+		String source = "{\"text\":\"哈哈哈哈，也\"}";
+		String re =encrypt(source, "sdferese");
 		System.out.println(re);
-		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
+		System.out.println(decrypt(re,  "sdferese"));
 	}
 }
