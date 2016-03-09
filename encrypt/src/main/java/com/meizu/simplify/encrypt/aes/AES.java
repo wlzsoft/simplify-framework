@@ -29,7 +29,7 @@ public class AES {
 		 * @param password 密码
 		 * @return 返回加密后的内容
 		 */
-		public static String aesEncrypt(String content, String password) {
+		public static String encrypt(String content, String password) {
 			try {
 				byte[] raw = password.getBytes("UTF-8");
 				SecretKeySpec key = new SecretKeySpec(raw, "AES");
@@ -51,7 +51,7 @@ public class AES {
 		 * @param password 密码
 		 * @return 返回解密后的内容
 		 */
-		public static String aesDecrypt(String content, String password) {
+		public static String decrypt(String content, String password) {
 			try {
 				byte[] raw = password.getBytes("UTF-8");
 				SecretKeySpec key = new SecretKeySpec(raw, "AES");
