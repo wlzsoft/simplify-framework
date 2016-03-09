@@ -20,7 +20,7 @@ import com.meizu.simplify.encrypt.sign.md5.Md5Encrypt;
  * @version Version 0.1
  *
  */
-public class Md5UtilTest {
+public class MD5EncryptTest {
 	@Test
 	public  void md5() {
 		System.out.println(Md5Encrypt.sign(1));

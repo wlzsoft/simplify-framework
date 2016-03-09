@@ -20,7 +20,7 @@ import com.meizu.simplify.encrypt.base64.Base64Encoder;
  * @version Version 0.1
  *
  */
-public class Base64UtilTest {
+public class Base64EncryptTest {
 	public static void base64Decoder(String[] args) throws Exception {
 		if (args.length != 1) {
 			System.err.println("Usage: java Base64Decoder fileToDecode");

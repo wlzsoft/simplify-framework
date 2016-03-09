@@ -20,7 +20,7 @@ import com.meizu.simplify.encrypt.des.DESEncrypt;
  * @version Version 0.1
  *
  */
-public class DesUtilTest {
+public class DESEncryptTest {
 	@Test
 	public void test() {
 		byte[] b = new DESEncrypt().encode("�ز�".getBytes(),"sdferese".getBytes());

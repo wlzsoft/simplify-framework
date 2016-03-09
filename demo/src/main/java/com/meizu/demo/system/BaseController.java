@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSONObject;
-import com.meizu.simplify.encrypt.des.DESMessageEncrypt;
+import com.meizu.simplify.encrypt.des.DESEncrypt;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.directives.Model;
 import com.meizu.simplify.mvc.directives.SecurityContoller;
@@ -52,7 +52,7 @@ public class BaseController<T extends Model> extends SecurityContoller<T> {
 			return false;
 		}
 		String auth = "";//CookiesUtil.loadCookie("SYSTEM_LOGIN_FLAG", request);
-		JSONObject authjson = JSONObject.parseObject(DESMessageEncrypt.decrypt(auth, "SYSTEM_AUTOLOGIN_KEY"));
+		JSONObject authjson = JSONObject.parseObject(DESEncrypt.decrypt(auth, "SYSTEM_AUTOLOGIN_KEY"));
 		if (authjson != null && ObjectUtil.isInt(authjson.get("uid"))) {
 			String[] domainArr = StringUtil.parseString(request.getServerName(),"").split("\\.");
 			String curDomain = "";

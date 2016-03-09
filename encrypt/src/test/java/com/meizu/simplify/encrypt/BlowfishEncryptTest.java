@@ -17,7 +17,7 @@ import com.meizu.simplify.encrypt.des.BlowfishEncrypt;
  * @version Version 0.1
  *
  */
-public class BlowfishTest {
+public class BlowfishEncryptTest {
 	@Test
 	public void test() {
 		BlowfishEncrypt dec = new BlowfishEncrypt();
