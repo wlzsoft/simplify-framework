@@ -1,9 +1,7 @@
 package com.meizu.simplify.encrypt.sign.md5;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-import com.meizu.simplify.encrypt.ByteHexUtil;
 import com.meizu.simplify.encrypt.Base16;
 import com.meizu.simplify.encrypt.sign.Sign;
 
