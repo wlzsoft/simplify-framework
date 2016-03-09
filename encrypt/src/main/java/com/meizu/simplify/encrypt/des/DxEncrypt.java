@@ -1,5 +1,7 @@
 package com.meizu.simplify.encrypt.des;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 /*
  * @function: 字符串加密算法，目前系统中，仅用到了第三种加密算法——随机加密算法
  * @用法：
@@ -9,8 +11,12 @@ package com.meizu.simplify.encrypt.des;
  * 4、调用Encode得到加密结果
  * 5、测试代码见文件末尾main函数，打开注释即可测试
  */
-import java.util.*;
-import javax.crypto.*;
+import java.util.Date;
+import java.util.Random;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 
@@ -169,5 +175,16 @@ public class DxEncrypt {
 		} catch ( Exception e1 ) {
 			return null;
 		}
+	}
+	
+	public static void main(String[] args) {
+		DxEncrypt dec = new DxEncrypt(2);
+		String my = dec.Encode("哈哈哈哈，也");
+		System.out.println(my);
+		System.out.println(dec.Decode(my));
+//		String re = DESMessageEncrypt.encrypt(my, "sdferese");
+//		System.out.println(re);
+//		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
+		
 	}
 }
