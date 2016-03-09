@@ -1,6 +1,18 @@
 package com.meizu.simplify.encrypt;
 
-// Base16和Base64Codec是由Codec拆分而来
+/**
+ * <p><b>Title:</b><i>Base16和Base64Codec是由Codec拆分而来</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月9日 下午5:15:29</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月9日 下午5:15:29</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
 public class Base16 {
 	final static byte[] DIGITS = new byte[64];
 
