@@ -45,26 +45,6 @@ public class DxEncrypt {
 		}
 	}
 
-	private byte[] randEncode(byte[] bySrc) {
-		byte[] byResult = bySrc;
-		for ( int n = 0; n < bySrc.length; n++ ) {
-			byResult[n] += m_byteRand[m_byteRand.length - 1];
-		}
-
-		return byResult;
-	}
-
-	private String randDecode(String strContent) {
-		int nConLen = strContent.length();
-		byte[] byKey = ByteHexUtil.hex2Bytes(strContent.substring(nConLen - 16, nConLen));
-		int nKeyLen = byKey.length;
-		byte[] byteResult = ByteHexUtil.hex2Bytes(strContent.substring(0, nConLen - 16));
-		int nResultLen = byteResult.length;
-		for ( int n = 0; n < nResultLen; n++ ) {
-			byteResult[n] -= byKey[nKeyLen - 1];
-		}
-		return new String(byteResult);
-	}
 
 	public String getRand() {
 		String strResult = new String(m_byteRand);
@@ -73,26 +53,7 @@ public class DxEncrypt {
 
 
 	public String encode(String strContent) {
-		int nEncodeMethod = 3;
 		String strAlgorithm = "Blowfish";
-		switch( nEncodeMethod ) {
-			case 1: {
-				strAlgorithm = "Blowfish";
-				break;
-			}
-			case 2: {
-				strAlgorithm = "DES";
-				break;
-			}
-			case 3: {
-				String strRandKey = new String(m_byteRand);
-				String strResult = ByteHexUtil.bytes2Hex(randEncode(strContent.getBytes()));
-				String strKey = ByteHexUtil.bytes2Hex(strRandKey.getBytes());
-				return (strResult + strKey);
-			}
-			default:
-				break;
-		}
 		try {
 			KeyGenerator keygen = KeyGenerator.getInstance(strAlgorithm);
 			m_keyDES = keygen.generateKey();
@@ -115,19 +76,7 @@ public class DxEncrypt {
 
 	public String decode(String strContent) {
 		String strAlgorithm = "Blowfish";
-		int nEncodeMethod = 3;
 		try {
-			switch( nEncodeMethod ) {
-				case 1: {
-					strAlgorithm = "Blowfish";
-					break;
-				}
-				case 3: {
-					return randDecode(strContent);
-				}
-				default:
-					break;
-			}
 			Cipher c1 = Cipher.getInstance(strAlgorithm);
 			c1.init(Cipher.DECRYPT_MODE, m_keyDES);
 			byte[] clearByte = c1.doFinal(ByteHexUtil.hex2Bytes(strContent));

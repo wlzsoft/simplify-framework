@@ -24,11 +24,7 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
  */
 public class RandEncrypt {
 
-	private SecretKey m_keyDES;
-
 	private byte[] m_byteRand;
-
-
 	public RandEncrypt() {
 		Date dt = new Date();
 		Random rand = new Random(dt.getTime());
@@ -77,69 +73,15 @@ public class RandEncrypt {
 
 
 	public String encode(String strContent) {
-		int nEncodeMethod = 3;
-		String strAlgorithm = "Blowfish";
-		switch( nEncodeMethod ) {
-			case 1: {
-				strAlgorithm = "Blowfish";
-				break;
-			}
-			case 2: {
-				strAlgorithm = "DES";
-				break;
-			}
-			case 3: {
-				String strRandKey = new String(m_byteRand);
-				String strResult = ByteHexUtil.bytes2Hex(randEncode(strContent.getBytes()));
-				String strKey = ByteHexUtil.bytes2Hex(strRandKey.getBytes());
-				return (strResult + strKey);
-			}
-			default:
-				break;
-		}
-		try {
-			KeyGenerator keygen = KeyGenerator.getInstance(strAlgorithm);
-			m_keyDES = keygen.generateKey();
-
-			Cipher c1 = Cipher.getInstance(strAlgorithm);
-			c1.init(Cipher.ENCRYPT_MODE, m_keyDES);
-			byte[] cipherByte = c1.doFinal(strContent.getBytes());
-
-			return ByteHexUtil.bytes2Hex(cipherByte);
-		} catch ( java.security.NoSuchAlgorithmException e1 ) {
-			e1.printStackTrace();
-		} catch ( javax.crypto.NoSuchPaddingException e2 ) {
-			e2.printStackTrace();
-		} catch ( java.lang.Exception e3 ) {
-			e3.printStackTrace();
-		}
-		return strContent;
+		String strRandKey = new String(m_byteRand);
+		String strResult = ByteHexUtil.bytes2Hex(randEncode(strContent.getBytes()));
+		String strKey = ByteHexUtil.bytes2Hex(strRandKey.getBytes());
+		return (strResult + strKey);
 	}
 
 
 	public String decode(String strContent) {
-		String strAlgorithm = "Blowfish";
-		int nEncodeMethod = 3;
-		try {
-			switch( nEncodeMethod ) {
-				case 1: {
-					strAlgorithm = "Blowfish";
-					break;
-				}
-				case 3: {
-					return randDecode(strContent);
-				}
-				default:
-					break;
-			}
-			Cipher c1 = Cipher.getInstance(strAlgorithm);
-			c1.init(Cipher.DECRYPT_MODE, m_keyDES);
-			byte[] clearByte = c1.doFinal(ByteHexUtil.hex2Bytes(strContent));
-			String strResult = new String(clearByte);
-			return strResult;
-		} catch ( Exception e1 ) {
-			return null;
-		}
+		return randDecode(strContent);
 	}
 	
 	public static void main(String[] args) {
