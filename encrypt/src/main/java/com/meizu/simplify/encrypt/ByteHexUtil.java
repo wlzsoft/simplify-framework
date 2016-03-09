@@ -51,81 +51,119 @@ public class ByteHexUtil {
 //			HEX_CHAR_LIST.add(new Character('E'));
 //			HEX_CHAR_LIST.add(new Character('F'));
 		}
-		
-	/**
-	 * hex string to bytes
-	 * 
-	 * @param bytes
-	 * @return
-	 */
-	public static byte[] hex2Bytes(String input) {
-		int len = input.length() / 2;
-		byte[] rtn = new byte[len];
-		
-		for (int i = 0; i < len; i++) {
-			rtn[i] = hex2Byte(input.substring(i * 2, i * 2 + 2));
-		}
-		return rtn;
-	}
-	private static byte hex2Byte(String s) {
-		int high = HEX_CHAR_LIST.indexOf(new Character(s.charAt(0))) << 4;
-		int low = HEX_CHAR_LIST.indexOf(new Character(s.charAt(1)));
-		
+	private static byte hex2Byte(String source) {
+		int high = HEX_CHAR_LIST.indexOf(new Character(source.charAt(0))) << 4;
+		int low = HEX_CHAR_LIST.indexOf(new Character(source.charAt(1)));
+
 		return (byte) (high + low);
 	}
+		
+	
+	public static byte[] hex2Bytes(String source) {
+		try {
+			byte[] bts = new byte[source.length() / 2];
+			for ( int i = 0, j = 0; j < bts.length; j++ ) {
+//				第一种方式
+				String hexSub = source.substring(i, i + 2);
+//				第二种方式
+//				byte parseHex = Byte.parseByte(hexSub,16);
+				int parseHex = Integer.parseInt(hexSub, 16);
+				bts[j] = (byte) parseHex;
+				i += 2;
+				//第三种方式 推荐用法之一
+//				bts[j] = hex2Byte(source.substring(i * 2, i * 2 + 2));
+			}
+			
+//			第四种用法
+			/*int len = source.length() / 2;
+			byte[] bts = new byte[len];
+			for (int i = 0; i < len; i++) {
+				bts[i] = hex2Byte(source.substring(i * 2, i * 2 + 2));
+			}*/
+			
+			return bts;
+			
+		} catch ( Exception e ) {
+			return "".getBytes();
+		}
+	}
+	
+	
+	/*
+	 * byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示，
+	 * 　因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)
+	 */
+	private static String byteHEX(byte sourceByte) {
+		// 用来将字节转换成 16 进制表示的字符
+		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };//可以抽取待外层循环，也就是bytes2Hex(byte[] bytes)方法的方法体的第一行，for语句之前，防止重复创建 
+//		char[] hexDigits={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+		char[] str = new char[2];
+		str[0] = hexDigits[(sourceByte >>> 4) & 0X0F];
+		str[1] = hexDigits[sourceByte & 0X0F];
+		String s = new String(str);
+		return s;
+	}
+	
 	
 	/**
 	 * 
 	 * 方法用途: 字节数组转成16进制字符串<br>
 	 * 操作步骤: TODO<br>
-	 * @param bytes
+	 * @param sourceBytes
 	 * @return
 	 */
-	public static String bytes2Hex2(byte[] bytes) {
+	public static String bytes2Hex2(byte[] sourceBytes) {
+		
+		if (sourceBytes == null || sourceBytes.length <= 0) {
+			return null;
+		}
 		StringBuilder sb = new StringBuilder();
-		for (byte b : bytes) {
+
+		for (byte b : sourceBytes) {
 			
-			int i = b & 0xFF;
-//			int i = b & 0xff;
+			int v = b & 0xFF;
+//			int v = b & 0xff;
 			
 			//1.第一种写法-jdk自带类实现方式
-			if (i <= 0xF) {
+			if (v <= 0xF) {
 				sb.append("0");//添加0的目的是什么
 			}
-			String tmp = Integer.toHexString(i);//jdk自带类实现方式
+			String hv = Integer.toHexString(v);//jdk自带类实现方式
 			//end
 		
 			/*
 			 //2.第二种写法-jdk自带类实现方式
-			 String tmp = Integer.toHexString(i);
-			if (tmp.length() == 1) {
+			String hv = Integer.toHexString(v);
+			//if (hv.length() < 2) {
+			if (hv.length() == 1) {
 				sb.append("0");
 			}
 			//end
 			*/
 //			第三种写法-自己实现方式
-//			String tmp = byteHEX((byte)i);//自己实现方式
+//			String hv = byteHEX((byte)v);//自己实现方式
 //			end
-			sb.append(tmp);
+			sb.append(hv);
 		}
 //		return sb.toUpperCase();
 		return sb.toString();
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 字节数组转成16进制字符串<br>
 	 * 操作步骤: 性能比bytes2Hex2优，后续合并在一起<br>
-	 * @param bytes
+	 * @param sourceBytes
 	 * @return
 	 */
-	public static String bytes2Hex(byte[] bytes) {
+	public static String bytes2Hex(byte[] sourceBytes) {
 		// 用来将字节转换成 16 进制表示的字符
 		char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 //		char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 			
 			
 		// 把密文转换成十六进制的字符串形式
-		int j = bytes.length;
+		int j = sourceBytes.length;
 //			int j = 16; // 用字节表示就是 16 个字节
         char str[] = new char[j * 2];// 每个字节用 16 进制表示的话，使用两个字符
 		
@@ -133,7 +171,7 @@ public class ByteHexUtil {
 		int k = 0; // 表示转换结果中对应的字符位置
 		for (int i = 0; i < j; i++) { // 从第一个字节开始，对 MD5 的每一个字节
 			// 转换成 16 进制字符的转换
-			byte byte0 = bytes[i]; // 取第 i 个字节
+			byte byte0 = sourceBytes[i]; // 取第 i 个字节
 			str[k++] = hexDigits[byte0 >>> 4 & 0xf]; // 取字节中高 4 位的数字转换,
 			// >>> 为逻辑右移，将符号位一起右移
 			str[k++] = hexDigits[byte0 & 0xf]; // 取字节中低 4 位的数字转换
@@ -142,67 +180,6 @@ public class ByteHexUtil {
 //		return new String(str).toLowerCase();
 
 	}
-	
-	
-	/*
-	 * byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示，
-	 * 　因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)
-	 */
-	private static String byteHEX(byte byte0) {
-		// 用来将字节转换成 16 进制表示的字符
-		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };//可以抽取待外层循环，也就是bytes2Hex(byte[] bytes)方法的方法体的第一行，for语句之前，防止重复创建 
-//		char[] hexDigits={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-		char[] str = new char[2];
-		str[0] = hexDigits[(byte0 >>> 4) & 0X0F];
-		str[1] = hexDigits[byte0 & 0X0F];
-		String s = new String(str);
-		return s;
-	}
-	
-	private static byte Hex2Byte(String s) {
-		int high = HEX_CHAR_LIST.indexOf(new Character(s.charAt(0))) << 4;
-		int low = HEX_CHAR_LIST.indexOf(new Character(s.charAt(1)));
-
-		return (byte) (high + low);
-	}
-
-	
-	public static byte[] hex2byte(String hexStr) {
-		try {
-			byte[] bts = new byte[hexStr.length() / 2];
-			for ( int i = 0, j = 0; j < bts.length; j++ ) {
-//				第一种方式
-				String hexSub = hexStr.substring(i, i + 2);
-//				第二种方式
-//				byte parseHex = Byte.parseByte(hexSub,16);
-				int parseHex = Integer.parseInt(hexSub, 16);
-				bts[j] = (byte) parseHex;
-				i += 2;
-				//第三种方式
-//				bts[i] = Hex2Byte(hexStr.substring(i * 2, i * 2 + 2));
-			}
-			return bts;
-			
-		} catch ( Exception e ) {
-			return "".getBytes();
-		}
-	}
-		
-	public static String bytesToHexString(byte[] src){  
-	    StringBuilder stringBuilder = new StringBuilder("");  
-	    if (src == null || src.length <= 0) {  
-	        return null;  
-	    }  
-	    for (int i = 0; i < src.length; i++) {  
-	        int v = src[i] & 0xFF;  
-	        String hv = Integer.toHexString(v);  
-	        if (hv.length() < 2) {  
-	            stringBuilder.append(0);  
-	        }  
-	        stringBuilder.append(hv);  
-	    }  
-	    return stringBuilder.toString();  
-	}  
 	
 	
 	

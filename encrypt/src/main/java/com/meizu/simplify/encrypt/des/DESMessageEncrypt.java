@@ -60,6 +60,82 @@ public class DESMessageEncrypt {
 	
 	protected SecretKey secretKey;
 	
+	
+	
+	
+	protected SecretKey getSecretKey(byte[] key) {
+		try {
+			DESKeySpec keySpec = new DESKeySpec(key);
+			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+			secretKey = keyFactory.generateSecret(keySpec);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+	    return secretKey;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * 方法用途: DES 加密<br>
+	 * 操作步骤: 注意：可解决中文乱码问题(加密算法，unicode转码，URIEncode转码，都可以解决乱码问题)<br>
+	 * @param str
+	 * @param key
+	 * @param charset
+	 * @return
+	 */
+	public static String encrypt(String str, String key,String charset) {
+		try {
+			String result = encrypt(str, key);
+			if(!(null == charset || charset.length() < 1)){
+				result = URLEncoder.encode(result, charset);
+			}
+			return result;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
+	public static String encrypt(String str, String key) {
+		try {
+			if (str == null || str.length() < 1) return "";
+			
+			byte[] cipherByte = new DESMessageEncrypt().encode(str.getBytes(),key.getBytes());
+			
+			String result = ByteHexUtil.bytes2Hex(cipherByte);
+			return result;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
+	public byte[] encode(byte[] input,byte[] key) {
+		try {
+			Cipher c1 = Cipher.getInstance("DES");
+			c1.init(Cipher.ENCRYPT_MODE, getSecretKey(key));
+			byte[] cipherByte = c1.doFinal(input);
+			return  cipherByte;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
 	public byte[] decode(byte[] input) {
 		if(secretKey==null){
 			secretKey = getSecretKey("meizuall".getBytes());
@@ -84,6 +160,7 @@ public class DESMessageEncrypt {
 	
 	public byte[] decode(byte[] input,byte[] key) {
 		try {			
+			
 			Cipher c1 = Cipher.getInstance("DES");
 			c1.init(Cipher.DECRYPT_MODE,getSecretKey(key));
 			return c1.doFinal(ByteHexUtil.hex2Bytes(new String(input)));
@@ -101,67 +178,17 @@ public class DESMessageEncrypt {
 		return null;
 	}
 	
-	public byte[] encode(byte[] input,byte[] key) {
-		
-		try {
-			Cipher c1 = Cipher.getInstance("DES");
-			c1.init(Cipher.ENCRYPT_MODE, getSecretKey(key));
-			byte[] codes =  c1.doFinal(input);
-			return  ByteHexUtil.bytes2Hex(codes).getBytes();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	 
 	
-	protected SecretKey getSecretKey(byte[] key) {
+	public static String decrypt(String str, String key) {
 		try {
-			SecretKeyFactory keygen = SecretKeyFactory.getInstance("DES");
-			DESKeySpec keySpec = new DESKeySpec(key);				
-			secretKey= keygen.generateSecret(keySpec);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
-	    return secretKey;
-	}
-	
-	/**
-	 * 
-	 * 方法用途: DES 加密<br>
-	 * 操作步骤: 注意：可解决中文乱码问题(加密算法，unicode转码，URIEncode转码，都可以解决乱码问题)<br>
-	 * @param str
-	 * @param key
-	 * @param charset
-	 * @return
-	 */
-	public static String encrypt(String str, String key,String charset) {
-		try {
-			if(str == null || str.length() < 1) return "";
-			byte[] cipherByte = new DESMessageEncrypt().encode(str.getBytes(),key.getBytes());
-			String result = ByteHexUtil.bytes2Hex(cipherByte);
-			if(!(null == charset || charset.length() < 1)){
-				result = URLEncoder.encode(result, charset);
-			}
+			if (str == null || str.length() < 1) return "";
+			String result = new String(new DESMessageEncrypt().decode(str.getBytes(),key.getBytes()));
 			return result;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "";
 		}
 	}
-	
-	
 	
 	/**
 	 * 
@@ -174,8 +201,7 @@ public class DESMessageEncrypt {
 	 */
 	public static String decrypt(String str, String key,String charset) {
 		try {
-			if(str == null || str.length() < 1) return "";
-			String result = new String(new DESMessageEncrypt().decode(str.getBytes(),key.getBytes()));
+			String result = decrypt(str, key);
 			if(!(null == charset || charset.length() < 1)){
 				result = URLDecoder.decode(result, charset);
 			}
@@ -186,14 +212,8 @@ public class DESMessageEncrypt {
 		}
 	}
 	
-	
-	public static String encrypt(String str, String key) {
-		return encrypt(str,key,null);
-	}
 
-	public static String decrypt(String str, String key) {
-		return decrypt(str, key,null);
-	}
+	
 
 	public static void main(String[] args) {
 //		System.out.println(new DESMessageEncrypt()
@@ -205,7 +225,7 @@ public class DESMessageEncrypt {
 //		System.out.println(new DESMessageEncrypt()
 //		.decode("e0e9f8daabe4f77db4298411b075e38e742dcc96c2085da6e0130bf0b0f1dd7c23aa70c3d1bd4438b941790bbc0fcf7406587467eade1be9b4df0afa22f5ffb9".toLowerCase()));
 		
-		String token=DES.encrypt("meizu&123456","meizuall");
+//		String token=DES.encrypt("meizu&123456","meizuall");
 		String token64 = DES.encrypt64("meizu&123456","meizuall");
 		System.out.println(new String(new DESMessageEncrypt().encode("meizu&123456".getBytes()))+"kkkk");
 		//String token64 = DESMessageEncrypt.encrypt64("meizuall","meizu&123456");
@@ -213,8 +233,8 @@ public class DESMessageEncrypt {
 //         strMi = base64Encoder.encode(byteMi);
 		//a2ee5e1d00de3fc5320a95beaf15b692
 		
-		System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
-		System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
+//		System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
+//		System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
 		System.out.println(token64);//ou5eHQDeP8UyCpW+rxW2kg==
 		
 		

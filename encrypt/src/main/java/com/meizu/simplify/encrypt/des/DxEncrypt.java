@@ -179,12 +179,15 @@ public class DxEncrypt {
 	
 	public static void main(String[] args) {
 		DxEncrypt dec = new DxEncrypt(2);
-		String my = dec.Encode("哈哈哈哈，也");
+		String source = "哈哈哈哈，也";
+		String my = dec.Encode(source);
 		System.out.println(my);
 		System.out.println(dec.Decode(my));
-//		String re = DESMessageEncrypt.encrypt(my, "sdferese");
-//		System.out.println(re);
-//		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
+		String re =DESMessageEncrypt.encrypt(source, "sdferese");
+//		re = DES.encrypt(source, "sdferese");
+		System.out.println(re);
+//		System.out.println(DES.decrypt(re, "sdferese"));
+		System.out.println(DESMessageEncrypt.decrypt(re,  "sdferese"));
 		
 	}
 }

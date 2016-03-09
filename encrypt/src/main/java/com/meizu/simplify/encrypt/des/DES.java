@@ -170,7 +170,7 @@ public class DES {
 			String decryptString = DES.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
 			System.out.println(decryptString+"////////////");
 			
-			String token=encrypt("meizu&123456","meizuall");
+//			String token=encrypt("meizu&123456","meizuall");
 			String token64 = encrypt64("meizu&123456","meizuall");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -179,20 +179,7 @@ public class DES {
 	}
 	
 
-	public static String encrypt(String str, String key) {
-		try {
-			if (str == null || str.length() < 1) return "";
-			DESKeySpec keySpec = new DESKeySpec(key.getBytes());
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-			SecretKey secretKey = keyFactory.generateSecret(keySpec);
-			Cipher c1 = Cipher.getInstance("DES");
-			c1.init(Cipher.ENCRYPT_MODE, secretKey);
-			byte[] cipherByte = c1.doFinal(str.getBytes());
-			return ByteHexUtil.bytes2Hex(cipherByte);
-		} catch ( Exception e ) {
-			return "";
-		}
-	}
+	
 	
 	public static String encrypt64(String str, String key) {
 		try {
@@ -209,22 +196,6 @@ public class DES {
 //			System.out.println(Base64Encoder.encode(cipherByte));
 			return Base64Encoder.encode(cipherByte);
 		} catch ( Exception e ) {
-			return "";
-		}
-	}
-	
-
-	public static String decrypt(String str, String key) {
-		try {
-			if (str == null || str.length() < 1) return "";
-			DESKeySpec keySpec = new DESKeySpec(key.getBytes());
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-			SecretKey secretKey = keyFactory.generateSecret(keySpec);
-			Cipher c1 = Cipher.getInstance("DES");
-			c1.init(Cipher.DECRYPT_MODE, secretKey);
-			return new String(c1.doFinal(ByteHexUtil.hex2byte(str)));
-		} catch ( Exception e ) {
-			e.printStackTrace();
 			return "";
 		}
 	}
