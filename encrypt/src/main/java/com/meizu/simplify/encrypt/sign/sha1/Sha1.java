@@ -18,7 +18,7 @@ import com.meizu.simplify.encrypt.sign.Sign;
  * @version Version 0.1
  *
  */
-public class Sha1Util {
+public class Sha1 {
 
 	/**
 	 * 
