@@ -1,7 +1,10 @@
 package com.meizu.simplify.encrypt.sign;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import com.meizu.simplify.encrypt.ByteHexUtil;
 
 /**
   * <p><b>Title:</b><i>数据签名</i></p>
@@ -38,5 +41,29 @@ public class Sign {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	/**
+	 * 符合RFC 1321标准的MD5编码
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param src 字符串
+	 * @return
+	 */
+	public static String sign(String src,String name) {
+		if (src == null || src.trim().equals("")) {
+			return null;
+		}
+		try {
+//			return getMD5(hashMd5(src.getBytes("UTF-8")));
+			return ByteHexUtil.bytes2Hex(Sign.hashSign(src.getBytes("UTF-8"),name));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static byte[] sign(byte[] source,String name) {
+		return  ByteHexUtil.bytes2Hex(Sign.hashSign(source,name)).getBytes();
 	}
 }

@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt.sign.md5;
+package com.meizu.simplify.encrypt.sign.sha1;
 
 import java.io.UnsupportedEncodingException;
 
@@ -18,7 +18,7 @@ import com.meizu.simplify.encrypt.sign.Sign;
  * @version Version 0.1
  *
  */
-public class Md5Util {
+public class Sha1Util {
 
 	/**
 	 * 
@@ -27,8 +27,8 @@ public class Md5Util {
 	 * @param source 整型
 	 * @return
 	 */
-	public static String md5(int source) {
-		return md5(String.valueOf((source)));
+	public static String sign(int source) {
+		return sign(String.valueOf((source)));
 	}
 	
 	/**
@@ -38,12 +38,12 @@ public class Md5Util {
 	 * @param source 字符串
 	 * @return
 	 */
-	public static String md5(String source) {
-		return Sign.sign(source, "MD5");
+	public static String sign(String source) {
+		return Sign.sign(source, "SHA-1");
 	}
 	
-	public static byte[] md5(byte[] source) {
-		return Sign.sign(source, "MD5");
+	public static byte[] sign(byte[] source) {
+		return Sign.sign(source, "SHA-1");
 	}
 	
 	
