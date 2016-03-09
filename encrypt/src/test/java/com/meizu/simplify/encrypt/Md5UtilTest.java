@@ -4,8 +4,8 @@ import java.lang.reflect.Array;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.md5.MD5;
-import com.meizu.simplify.encrypt.md5.Md5Util;
+import com.meizu.simplify.encrypt.sign.md5.MD5;
+import com.meizu.simplify.encrypt.sign.md5.Md5Util;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

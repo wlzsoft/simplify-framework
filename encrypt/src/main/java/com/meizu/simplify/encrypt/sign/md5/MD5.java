@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt.md5;
+package com.meizu.simplify.encrypt.sign.md5;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 

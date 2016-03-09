@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.meizu.simplify.encrypt.md5.Md5Util;
+import com.meizu.simplify.encrypt.sign.md5.Md5Util;
 
 
 /**
