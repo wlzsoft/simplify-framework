@@ -23,9 +23,6 @@ import javax.crypto.spec.DESKeySpec;
  */
 
 public class ByteHexUtil {
-	//des结束，后续des解析，需要确认是哪部分的=======================
-		
-		
 		
 		public static final List<Character> HEX_CHAR_LIST;
 		
@@ -90,25 +87,41 @@ public class ByteHexUtil {
 			int i = b & 0xFF;
 //			int i = b & 0xff;
 			
-			//1.第一种写法
+			//1.第一种写法-jdk自带类实现方式
 			if (i <= 0xF) {
-				sb.append("0");
+				sb.append("0");//添加0的目的是什么
 			}
-			String tmp = Integer.toHexString(i);
+			String tmp = Integer.toHexString(i);//jdk自带类实现方式
+			//end
 		
 			/*
-			 //2.第二种写法
+			 //2.第二种写法-jdk自带类实现方式
 			 String tmp = Integer.toHexString(i);
 			if (tmp.length() == 1) {
 				sb.append("0");
-			}*/
-			
+			}
+			//end
+			*/
+//			第三种写法-自己实现方式
+//			String tmp = byteHEX((byte)i);//自己实现方式
+//			end
 			sb.append(tmp);
 		}
 //		return sb.toUpperCase();
 		return sb.toString();
 	}
-
+	/*
+	 * byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示，
+	 * 　因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)
+	 */
+	public static String byteHEX(byte ib) {
+		char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };
+		char[] ob = new char[2];
+		ob[0] = Digit[(ib >>> 4) & 0X0F];
+		ob[1] = Digit[ib & 0X0F];
+		String s = new String(ob);
+		return s;
+	}
 	
 	private static byte Hex2Byte(String s) {
 		int high = HEX_CHAR_LIST.indexOf(new Character(s.charAt(0))) << 4;

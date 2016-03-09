@@ -1,6 +1,6 @@
 package com.meizu.simplify.encrypt.md5;
 
-import java.lang.reflect.Array;
+import com.meizu.simplify.encrypt.base64.ByteHexUtil;
 
 /**
  * 
@@ -340,32 +340,21 @@ public class MD5 {
 		return b < 0 ? b & 0x7F + 128 : b;
 	}
 
-	/*
-	 * byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示，
-	 * 　因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)
-	 */
-	public static String byteHEX(byte ib) {
-		char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };
-		char[] ob = new char[2];
-		ob[0] = Digit[(ib >>> 4) & 0X0F];
-		ob[1] = Digit[ib & 0X0F];
-		String s = new String(ob);
-		return s;
-	}
+	
 	
 	/**
-	 * 大写签名串
-	 * getMD5ofStr是类MD5最主要的公共方法，入口参数是你想要进行MD5变换的字符串
-	 * 返回的是变换完的结果，这个结果是从公共成员digestHexStr取得的．
+	 * 
+	 * 方法用途: 大写签名串<br>
+	 * 操作步骤: getMD5ofStr是类MD5最主要的公共方法，入口参数是你想要进行MD5变换的字符串
+	 * 返回的是变换完的结果，这个结果是从公共成员digestHexStr取得的<br>
+	 * @param inbuf
+	 * @return
 	 */
 	public String md5ForUpperCase(String inbuf) {
 		md5Init();
 		md5Update(inbuf.getBytes(), inbuf.length());
 		md5Final();
-		digestHexStr = "";
-		for (int i = 0; i < 16; i++) {
-			digestHexStr += byteHEX(digest[i]);
-		}
+		digestHexStr = ByteHexUtil.bytes2Hex(digest);
 		return digestHexStr;
 
 	}

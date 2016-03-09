@@ -33,17 +33,18 @@ public class Md5UtilTest {
 		MD5 m = new MD5();
 		System.out.println("MD5 Test suite:");
 		System.out.println("MD5(\"super\"):" + m.md5("偷"));
-		System.out.println("MD5(\"super\"):" + m.md5ForUpperCase("海"));
-		System.out.println("MD5(\"abc\"):" + m.md5ForUpperCase("abc"));
-		System.out.println("MD5(\"message digest\"):"+ m.md5ForUpperCase("message digest"));
+		System.out.println("MD5(\"super\"):" + m.md5("海"));
+		System.out.println("MD5(\"abc\"):" + m.md5("abc"));
+		System.out.println("MD5(\"message digest\"):"+ m.md5("message digest"));
 		System.out.println("MD5(\"abcdefghijklmnopqrstuvwxyz\"):"
-							+ m.md5ForUpperCase("abcdefghijklmnopqrstuvwxyz"));
+							+ m.md5("abcdefghijklmnopqrstuvwxyz"));
 		System.out.println("MD5(\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"):"
-							+ m.md5ForUpperCase("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
+							+ m.md5("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
 				
 		System.out.println("MD5 Test suite:");
 		System.out.println("MD5(\"super\"):" + Md5Util.md5("偷"));
 		System.out.println("MD5(\"super\"):" + Md5Util.md5("海"));
+		System.out.println("MD5(\"abc\"):" + Md5Util.md5("abc"));
 		
 		//注意：中文情况下 MD5.getMD5String 和Md5Util.md5 签名结果不一致
 				
