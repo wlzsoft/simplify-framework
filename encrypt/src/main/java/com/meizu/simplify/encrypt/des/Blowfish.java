@@ -18,14 +18,14 @@ import javax.crypto.SecretKey;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 
-public class DxEncrypt {
+public class Blowfish {
 
 	private SecretKey m_keyDES;
 
 	private byte[] m_byteRand;
 
 
-	public DxEncrypt() {
+	public Blowfish() {
 		Date dt = new Date();
 		Random rand = new Random(dt.getTime());
 		m_byteRand = new byte[8];
@@ -88,7 +88,7 @@ public class DxEncrypt {
 	}
 	
 	public static void main(String[] args) {
-		DxEncrypt dec = new DxEncrypt();
+		Blowfish dec = new Blowfish();
 		String source = "哈哈哈哈，也";
 		String my = dec.encode(source);
 		System.out.println(my);
