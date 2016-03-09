@@ -63,26 +63,10 @@ public class MD5 {
 	 */
 	private byte[] digest = new byte[16];
 
-	/**
-	 * getMD5ofStr是类MD5最主要的公共方法，入口参数是你想要进行MD5变换的字符串
-	 * 返回的是变换完的结果，这个结果是从公共成员digestHexStr取得的．
-	 */
-	public String getMD5ofStr(String inbuf) {
-		md5Init();
-		md5Update(inbuf.getBytes(), inbuf.length());
-		md5Final();
-		digestHexStr = "";
-		for (int i = 0; i < 16; i++) {
-			digestHexStr += byteHEX(digest[i]);
-		}
-		return digestHexStr;
-
-	}
 
 	// 这是MD5这个类的标准构造函数，JavaBean要求有一个public的并且没有参数的构造函数
 	public MD5() {
 		md5Init();
-
 		return;
 	}
 
@@ -368,47 +352,33 @@ public class MD5 {
 		String s = new String(ob);
 		return s;
 	}
-	public String getMD5String(String md5) {
-		return getMD5ofStr(md5).toLowerCase();
+	
+	/**
+	 * 大写签名串
+	 * getMD5ofStr是类MD5最主要的公共方法，入口参数是你想要进行MD5变换的字符串
+	 * 返回的是变换完的结果，这个结果是从公共成员digestHexStr取得的．
+	 */
+	public String md5ForUpperCase(String inbuf) {
+		md5Init();
+		md5Update(inbuf.getBytes(), inbuf.length());
+		md5Final();
+		digestHexStr = "";
+		for (int i = 0; i < 16; i++) {
+			digestHexStr += byteHEX(digest[i]);
+		}
+		return digestHexStr;
+
 	}
 	
-	public static void main(String args[]) {
-
-		//第一个测试案例
-		MD5 m = new MD5();
-		if (Array.getLength(args) == 0) { // 如果没有参数，执行标准的Test Suite
-
-			System.out.println("MD5 Test suite:");
-			System.out.println("MD5(\"super\"):" + m.getMD5String("偷"));
-			System.out.println("MD5(\"super\"):" + m.getMD5ofStr("海"));
-			System.out.println("MD5(\"abc\"):" + m.getMD5ofStr("abc"));
-			System.out.println("MD5(\"message digest\"):"
-					+ m.getMD5ofStr("message digest"));
-			System.out.println("MD5(\"abcdefghijklmnopqrstuvwxyz\"):"
-					+ m.getMD5ofStr("abcdefghijklmnopqrstuvwxyz"));
-			System.out
-					.println("MD5(\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\"):"
-							+ m
-									.getMD5ofStr("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"));
-		} else
-			System.out
-					.println("MD5(" + args[0] + ")=" + m.getMD5ofStr(args[0]));
-		
-		
-		//第二测试案例
-		
-		/*MD5 md5 = new MD5();
-		String md5str = md5.getMD5ofStr("123456");
-		Random random = new Random();
-		byte[] chars = new byte[10];
-		for(int i = 0; i < 10; i++) {
-			int index = random.nextInt(md5str.length());
-			chars[i] = (byte) md5str.charAt(index);
-		}
-		System.out.println(new String(chars));*/
-		
-		
-
+	/**
+	 * 
+	 * 方法用途: 小写签名串<br>
+	 * 操作步骤: TODO<br>
+	 * @param md5
+	 * @return
+	 */
+	public String md5(String md5) {
+		return md5ForUpperCase(md5).toLowerCase();
 	}
 
 }
