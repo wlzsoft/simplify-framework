@@ -1,6 +1,7 @@
 package com.meizu.simplify.encrypt;
 
 import com.meizu.simplify.encrypt.base64.Base64Codec;
+import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 
 /**
  * <p><b>Title:</b><i>加密</i></p>
