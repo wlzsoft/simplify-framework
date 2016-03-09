@@ -8,9 +8,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
+import com.meizu.simplify.encrypt.ByteHexUtil;
 import com.meizu.simplify.encrypt.base64.Base64Decoder;
 import com.meizu.simplify.encrypt.base64.Base64Encoder;
-import com.meizu.simplify.encrypt.base64.ByteHexUtil;
 
 /**
  * 

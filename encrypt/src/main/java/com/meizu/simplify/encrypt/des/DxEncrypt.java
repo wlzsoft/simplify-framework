@@ -12,7 +12,7 @@ package com.meizu.simplify.encrypt.des;
 import java.util.*;
 import javax.crypto.*;
 
-import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+import com.meizu.simplify.encrypt.ByteHexUtil;
 
 public class DxEncrypt {
 	private String m_strSrc = new String();

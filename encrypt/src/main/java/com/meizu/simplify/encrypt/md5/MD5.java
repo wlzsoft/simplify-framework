@@ -1,6 +1,6 @@
 package com.meizu.simplify.encrypt.md5;
 
-import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+import com.meizu.simplify.encrypt.ByteHexUtil;
 
 /**
  * 

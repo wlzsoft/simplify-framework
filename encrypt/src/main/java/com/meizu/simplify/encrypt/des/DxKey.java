@@ -11,7 +11,7 @@ package com.meizu.simplify.encrypt.des;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+import com.meizu.simplify.encrypt.ByteHexUtil;
 
 public class DxKey {
 	private String m_strSrc;

@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt.base64;
+package com.meizu.simplify.encrypt;
 
 import java.util.ArrayList;
 import java.util.List;

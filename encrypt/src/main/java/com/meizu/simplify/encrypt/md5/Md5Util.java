@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+import com.meizu.simplify.encrypt.ByteHexUtil;
 
 /**
  * <p><b>Title:</b><i>Md5加密工具类-依赖jdk的类的实现</i></p>

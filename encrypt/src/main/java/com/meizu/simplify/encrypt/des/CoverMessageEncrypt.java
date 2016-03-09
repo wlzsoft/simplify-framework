@@ -3,7 +3,7 @@ package com.meizu.simplify.encrypt.des;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
-import com.meizu.simplify.encrypt.base64.ByteHexUtil;
+import com.meizu.simplify.encrypt.ByteHexUtil;
 
 
  
