@@ -29,7 +29,7 @@ import java.io.*;
  * @version 0.1
  *
  */
-public class Base64StreamEncoder extends FilterOutputStream {
+public class Base64StreamEncoder /*extends FilterOutputStream*/ {
 
   private static final char[] encodingTable = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -43,12 +43,14 @@ public class Base64StreamEncoder extends FilterOutputStream {
 
   private int charCount;
   private int carryOver;
+  OutputStream out;
 
   public Base64StreamEncoder(OutputStream out) {
-    super(out);
+//    super(out);
+	  this.out = out;
   }
 
-  @Override
+//  @Override
   public void write(int b) throws IOException {
     // Take 24-bits from three octets, translate into four encoded chars
     // Break lines at 76 chars
@@ -91,12 +93,17 @@ public class Base64StreamEncoder extends FilterOutputStream {
     }
   }
 
-  @Override
+//  @Override
   public void write(byte[] buf, int off, int len) throws IOException {
     // This could of course be optimized
+	  
+	  if ((off | len | (buf.length - (len + off)) | (off + len)) < 0)
+          throw new IndexOutOfBoundsException();
+	  
     for (int i = 0; i < len; i++) {
       write(buf[off + i]);
     }
+    
   }
 
   /**
@@ -105,7 +112,7 @@ public class Base64StreamEncoder extends FilterOutputStream {
    *
    * @exception IOException if an I/O error occurs
    */
-  @Override
+//  @Override
   public void close() throws IOException {
     // Handle leftover bytes
     if (charCount % 3 == 1) {  // one leftover
@@ -119,10 +126,13 @@ public class Base64StreamEncoder extends FilterOutputStream {
       out.write(encodingTable[lookup]);
       out.write('=');
     }
-    super.close();
+    try (OutputStream ostream = out) {
+    	out.flush();
+    }
   }
 
-  
+  public void write(byte b[]) throws IOException {
+      write(b, 0, b.length);
+  }
 
-  
 }

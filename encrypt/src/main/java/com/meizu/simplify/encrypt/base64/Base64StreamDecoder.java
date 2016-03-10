@@ -1,6 +1,5 @@
 package com.meizu.simplify.encrypt.base64;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,7 +29,7 @@ import java.io.InputStream;
  * @version 0.1
  *
  */
-public class Base64StreamDecoder extends FilterInputStream {
+public class Base64StreamDecoder /*extends FilterInputStream*/ {
 
   private static final char[] decodingTable = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -52,9 +51,11 @@ public class Base64StreamDecoder extends FilterInputStream {
 
   private int charCount;
   private int carryOver;
+  
+  InputStream in;
 
   public Base64StreamDecoder(InputStream in) {
-    super(in);
+	  this.in = in;
   }
 
   /**
@@ -147,7 +148,11 @@ public class Base64StreamDecoder extends FilterInputStream {
     return i;
   }
 
-  
-
+  public int read(byte b[]) throws IOException {
+      return read(b, 0, b.length);
+  }
+  public void close() throws IOException {
+      in.close();
+  }
   
 }
