@@ -183,7 +183,8 @@ public class Base64Encrypt {
 				
 				int j=0;
 				for (int i = 0; i < len; i++) {
-					byte b = data[offset + i];
+//					byte b = data[offset + i];// 类型是byte，会有问题，数据错乱，为什么呢
+					int b = data[offset + i];
 					// Take 24-bits from three octets, translate into four encoded chars
 					// Break lines at 76 chars
 					// If necessary, pad with 0 bits on the right at the end
