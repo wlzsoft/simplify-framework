@@ -19,14 +19,14 @@ import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
  */
 public final class Keys {
 	//NO(手机产品编码 )和业务相关，比如手机产品编码 默认规定8个字节，可以根据业务修改长度
-	final static byte[] NO = new byte[8];
+	private final static byte[] NO = new byte[8];
 	//key(秘钥)和业务相关，默认规定14位，可以根据业务修改长度
 	final static byte[] key = new byte[14];
 
 	
-	final static Map<String, byte[]> ConKey = new ConcurrentHashMap<String, byte[]>();
-	final static Map<String, byte[]> AesKey = new ConcurrentHashMap<String, byte[]>();
-	final static Map<String, byte[]> Rc4Key = new ConcurrentHashMap<String, byte[]>();
+	private final static Map<String, byte[]> ConKey = new ConcurrentHashMap<String, byte[]>();
+	private final static Map<String, byte[]> AesKey = new ConcurrentHashMap<String, byte[]>();
+	private final static Map<String, byte[]> Rc4Key = new ConcurrentHashMap<String, byte[]>();
 
 	public static void setNo(String no) {
 		if (no == null || no.isEmpty()) {
