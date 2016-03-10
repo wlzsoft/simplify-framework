@@ -45,23 +45,12 @@ public class EncryptTest {
 	@Test
 	public void testFieldEncryptAndPassword() {
 
-		String username = "admin";
 		String password = "123456";
-		String name = "lcy";
 		String adderss = "深圳市海王银河科技大厦 深圳市海王银河科技大厦";
 
-		print("用户名：" + username);
-		print("密码：" + password);
-		print("姓名：" + name);
-		print("地址：" + adderss);
+		print("密码字段：" + password);
+		print("中文内容字段：" + adderss);
 		print("=================================");
-
-		print("===========加密用户名============");
-		String usernameEncrtyed = Encrypt.fieldEncrypt("username", username);
-		print("用户名加密结果：" + usernameEncrtyed);
-		print("===========解密用户名============");
-		String usernameDecrtyed = Decrypt.fieldDecrypt(usernameEncrtyed);
-		print("用户名解密结果：" + usernameDecrtyed);
 
 		print("=============加密密码===========");
 		String passwordEncrtyed = Encrypt.fieldEncrypt("password", MD5Encrypt.hashMd5(password));
@@ -72,19 +61,12 @@ public class EncryptTest {
 		boolean passwordVerify = PasswordEncrypt.passwordVerify(password, passwordEncrtyed);
 		print("密码验证结果：" + passwordVerify);
 
-		print("=============加密姓名============");
-		String nameEncrtyed = Encrypt.fieldEncrypt("name", name);
-		print("姓名加密结果：" + nameEncrtyed);
-		print("=============解密姓名============");
-		String nameDecrtyed = Decrypt.fieldDecrypt(nameEncrtyed);
-		print("姓名解密结果：" + nameDecrtyed);
-
-		print("=============加密地址============");
-		String adderssEncrtyed = Encrypt.fieldEncrypt("adderss", adderss);
-		print("地址加密结果：" + adderssEncrtyed);
-		print("=============解密地址============");
+		print("=============加密中文内容============");
+		String adderssEncrtyed = Encrypt.fieldEncrypt("message", adderss);
+		print("中文内容加密结果：" + adderssEncrtyed);
+		print("=============解密中文内容============");
 		String adderssDecrtyed = Decrypt.fieldDecrypt(adderssEncrtyed);
-		print("地址解密结果：" + adderssDecrtyed);
+		print("中文内容解密结果：" + adderssDecrtyed);
 	}
 	@Test
 	public void testFileEncrypt() {
