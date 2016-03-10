@@ -1,7 +1,5 @@
 package com.meizu.simplify.encrypt.base64;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * 
  * <p><b>Title:</b><i>base64编码算法-正统算法</i></p>
@@ -61,21 +59,23 @@ public class Base64Encrypt {
 	}
 
 	
-	/**
-	 * Base64编码。
-	 * encode the input data producong a base 64 encoded byte array.
-	 * @param contentBytes
-	 *            待编码内容字节数组
-	 * @return 返回编码后的内容字节数组。a byte array containing the base 64 encoded data.
-	 */
+    /**
+     * 
+     * 方法用途: Base64编码<br>
+     * 操作步骤: TODO<br>
+     * @param data
+     * @return
+     */
     public static byte[] encode(byte[]    data) {
         return encode(data,0);
     }
     
     /**
-     * decode the base 64 encoded input data.
-     *
-     * @return a byte array representing the decoded data.
+     * 
+     * 方法用途: base64解码<br>
+     * 操作步骤: TODO<br>
+     * @param data
+     * @return
      */
     public static byte[] decode(byte[]    data) {
         byte[]    bytes;
@@ -130,6 +130,14 @@ public class Base64Encrypt {
         return bytes;
     }
     
+    /**
+     * 
+     * 方法用途: Base64编码<br>
+     * 操作步骤: TODO<br>
+     * @param data
+     * @param offset
+     * @return
+     */
     public static byte[] encode(byte[] data, int offset) {
 		byte[] bytes;
 		int realCount = data.length - offset;
