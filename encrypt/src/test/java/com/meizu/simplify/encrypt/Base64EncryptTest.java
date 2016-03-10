@@ -85,8 +85,11 @@ public class Base64EncryptTest {
 //		UUID uuid = UUID.randomUUID();
 //		System.out.println(Base64Codec.encode64String(uuid.toString().getBytes()));
 		String str = "sejjjjjjjjjjjjsfirsjfsldjfoisejflsidjfsio";
+		String source = Base64Codec.encode64String(str.getBytes());
+		System.out.println(source);
+		System.out.println(new String(Base64Codec.decode64(source)));
 		System.out.println(new String(Base64Encrypt.encode(str.getBytes())));
-		System.out.println(Base64Codec.encode64String(str.getBytes()));
+		System.out.println(new String(Base64Encrypt.decode(source.getBytes())));
 		System.out.println(new String(Base64Encoder.encode(str.getBytes())));
 	}
 	@Test

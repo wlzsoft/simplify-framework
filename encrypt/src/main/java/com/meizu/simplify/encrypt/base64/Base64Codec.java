@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 
 
 /**
- * <p><b>Title:</b><i>base64编码算法，另外一种实现方式，非变种，非原来算法</i></p>
+ * <p><b>Title:</b><i>base64编码算法，自定义变种，更好了编码表和base64解码表</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
