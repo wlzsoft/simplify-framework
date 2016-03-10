@@ -1,5 +1,10 @@
 package com.meizu.simplify.encrypt.base64;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 /**
  * 
  * <p><b>Title:</b><i>base64编码算法-正统算法</i></p>
@@ -217,5 +222,60 @@ public class Base64Encrypt {
 		return true;
 
 	}
+	
+//	第二种方式
+
+	  /**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: 和decode(byte[] bytes) 二选一<br>
+	 * @param encoded
+	 * @return
+	 */
+	public static byte[] decodeToBytes(String encoded) {
+	    byte[] bytes = null;
+	    try {
+	      bytes = encoded.getBytes("8859_1");
+	    }
+	    catch (UnsupportedEncodingException ignored) { }
+
+	    Base64Decoder in = new Base64Decoder(
+	                       new ByteArrayInputStream(bytes));
+	    
+	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 0.67));
+
+	    try {
+	      byte[] buf = new byte[4 * 1024];  // 4K buffer
+	      int bytesRead;
+	      while ((bytesRead = in.read(buf)) != -1) {
+	        out.write(buf, 0, bytesRead);
+	      }
+	      out.close();
+	      in.close();
+
+	      return out.toByteArray();
+	    }
+	    catch (IOException ignored) { return null; }
+	  }
+	  
+
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: 和encode(byte[] bytes) 方法二选一<br>
+	 * @param bytes unencoded.getBytes("8859_1") uses the ISO-8859-1 (Latin-1) encoding to convert the string to bytes
+	 * @return
+	 */
+	public static String encode2(byte[] bytes) {
+	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
+	    Base64Encoder encodedOut = new Base64Encoder(out);
+	    try {
+	      encodedOut.write(bytes);
+	      encodedOut.close();
+
+	      return out.toString("8859_1");
+	    }
+	    catch (IOException ignored) { return null; }
+	  }
 
 }

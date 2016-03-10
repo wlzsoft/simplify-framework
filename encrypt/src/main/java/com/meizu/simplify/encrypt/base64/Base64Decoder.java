@@ -156,50 +156,7 @@ public class Base64Decoder extends FilterInputStream {
     return i;
   }
 
-  /**
-   * Returns the decoded form of the given encoded string, as a String.
-   * Note that not all binary data can be represented as a String, so this
-   * method should only be used for encoded String data.  Use decodeToBytes()
-   * otherwise.
-   *
-   * @param encoded the string to decode
-   * @return the decoded form of the encoded string
-   */
-  public static String decode(String encoded) {
-    return new String(decodeToBytes(encoded));
-  }
-
-  /**
-   * Returns the decoded form of the given encoded string, as bytes.
-   *
-   * @param encoded the string to decode
-   * @return the decoded form of the encoded string
-   */
-  public static byte[] decodeToBytes(String encoded) {
-    byte[] bytes = null;
-    try {
-      bytes = encoded.getBytes("8859_1");
-    }
-    catch (UnsupportedEncodingException ignored) { }
-
-    Base64Decoder in = new Base64Decoder(
-                       new ByteArrayInputStream(bytes));
-    
-    ByteArrayOutputStream out = 
-      new ByteArrayOutputStream((int) (bytes.length * 0.67));
-
-    try {
-      byte[] buf = new byte[4 * 1024];  // 4K buffer
-      int bytesRead;
-      while ((bytesRead = in.read(buf)) != -1) {
-        out.write(buf, 0, bytesRead);
-      }
-      out.close();
-
-      return out.toByteArray();
-    }
-    catch (IOException ignored) { return null; }
-  }
+  
 
   
 }

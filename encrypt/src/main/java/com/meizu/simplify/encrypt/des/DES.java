@@ -10,6 +10,7 @@ import javax.crypto.spec.IvParameterSpec;
 
 import com.meizu.simplify.encrypt.base64.Base64Decoder;
 import com.meizu.simplify.encrypt.base64.Base64Encoder;
+import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 
 /**
  * 
@@ -46,7 +47,7 @@ public class DES {
 		byte[] key = encrptKey.getBytes(charset);
         byte[] iv = encrptKey.getBytes(charset);
         byte[] data = CBCEncrypt(encryptString.getBytes(charset), key, iv);
-        return Base64Encoder.encode(data);
+        return new String(Base64Encrypt.encode(data));
 		
 	}
 	/**
@@ -64,7 +65,7 @@ public class DES {
 		
 		
 		//String aaa= java.net.URLDecoder.decode(java.net.URLEncoder.encode(encryptString,charset),charset);
-        byte[] resultArr = Base64Decoder.decodeToBytes(encryptString);
+        byte[] resultArr = Base64Encrypt.decodeToBytes(encryptString);
         
         
 		byte[] key = encrptKey.getBytes(charset);
@@ -176,7 +177,7 @@ public class DES {
 			//String sssString = new String(cipherByte);
 			//System.out.println(sssString+"|sdfsdf");
 //			System.out.println(Base64Encoder.encode(cipherByte));
-			return Base64Encoder.encode(cipherByte);
+			return new String(Base64Encrypt.encode(cipherByte));
 		} catch ( Exception e ) {
 			return "";
 		}

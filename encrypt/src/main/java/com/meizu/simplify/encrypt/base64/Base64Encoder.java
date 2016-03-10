@@ -139,43 +139,7 @@ public class Base64Encoder extends FilterOutputStream {
     super.close();
   }
 
-  /**
-   * Returns the encoded form of the given unencoded string.  The encoder
-   * uses the ISO-8859-1 (Latin-1) encoding to convert the string to bytes.
-   * For greater control over the encoding, encode the string to bytes
-   * yourself and use encode(byte[]).
-   *
-   * @param unencoded the string to encode
-   * @return the encoded form of the unencoded string
-   */
-  public static String encode(String unencoded) {
-    byte[] bytes = null;
-    try {
-      bytes = unencoded.getBytes("8859_1");
-    }
-    catch (UnsupportedEncodingException ignored) { }
-    return encode(bytes);
-  }
-
-  /**
-   * Returns the encoded form of the given unencoded string.
-   *
-   * @param unencoded the string to encode
-   * @return the encoded form of the unencoded string
-   */
-  public static String encode(byte[] bytes) {
-    ByteArrayOutputStream out = 
-      new ByteArrayOutputStream((int) (bytes.length * 1.37));
-    Base64Encoder encodedOut = new Base64Encoder(out);
-    
-    try {
-      encodedOut.write(bytes);
-      encodedOut.close();
-
-      return out.toString("8859_1");
-    }
-    catch (IOException ignored) { return null; }
-  }
+  
 
   
 }
