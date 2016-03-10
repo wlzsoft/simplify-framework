@@ -7,25 +7,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-/** 
- * base64编码算法-正统算法
- * A class to decode Base64 streams and strings.  
- * See RFC 1521 section 5.2 for details of the Base64 algorithm.
+/**
+ * <p><b>Title:</b><i>base64编码算法-正统算法</i></p>
+ * <p>Desc: 可用于解码字符串和字节流数据。base64算法的详细说明可以查看 RFC 1521 规范 的5.2小节  
  * <p>
- * This class can be used for decoding strings:
+ * 1.解码字符串(string)的用法:
  * <blockquote><pre>
  * String encoded = "d2VibWFzdGVyOnRyeTJndWVTUw";
  * String decoded = Base64Decoder.decode(encoded);
  * </pre></blockquote>
- * or for decoding streams:
+ * 2.解码字节流(streams)的用法:
  * <blockquote><pre>
  * InputStream in = new Base64Decoder(System.in);
- * </pre></blockquote>
- *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2000
+ * </pre></blockquote></p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月10日 上午11:29:43</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月10日 上午11:29:43</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version 1.1, 2002/11/01, added decodeToBytes() to better handle binary
  *                           data (thanks to Sean Graham)
  * @version 1.0, 2000/06/11
+ * @version 0.1
+ *
  */
 public class Base64Decoder extends FilterInputStream {
 
