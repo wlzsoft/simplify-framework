@@ -136,6 +136,25 @@ public class Base64Encrypt {
     }
     
     /**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: 和encode(byte[] bytes) 方法二选一<br>
+	 * @param bytes unencoded.getBytes("8859_1") uses the ISO-8859-1 (Latin-1) encoding to convert the string to bytes
+	 * @return
+	 */
+	public static String encode2(byte[] bytes) {
+	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
+	    Base64StreamEncoder encodedOut = new Base64StreamEncoder(out);
+	    try {
+	      encodedOut.write(bytes);
+	      encodedOut.close();
+
+	      return out.toString("8859_1");
+	    }
+	    catch (IOException ignored) { return null; }
+	  }
+    
+    /**
      * 
      * 方法用途: Base64编码<br>
      * 操作步骤: TODO<br>
@@ -259,23 +278,6 @@ public class Base64Encrypt {
 	  }
 	  
 
-	/**
-	 * 
-	 * 方法用途: TODO<br>
-	 * 操作步骤: 和encode(byte[] bytes) 方法二选一<br>
-	 * @param bytes unencoded.getBytes("8859_1") uses the ISO-8859-1 (Latin-1) encoding to convert the string to bytes
-	 * @return
-	 */
-	public static String encode2(byte[] bytes) {
-	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
-	    Base64StreamEncoder encodedOut = new Base64StreamEncoder(out);
-	    try {
-	      encodedOut.write(bytes);
-	      encodedOut.close();
-
-	      return out.toString("8859_1");
-	    }
-	    catch (IOException ignored) { return null; }
-	  }
+	
 
 }
