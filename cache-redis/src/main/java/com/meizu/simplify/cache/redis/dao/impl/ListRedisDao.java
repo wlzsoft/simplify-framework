@@ -5,13 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
+
 import com.meizu.simplify.cache.dao.IListCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
-import com.meizu.simplify.utils.JsonUtil;
-
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
 
 /**

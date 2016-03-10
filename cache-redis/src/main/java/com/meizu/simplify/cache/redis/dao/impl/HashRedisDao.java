@@ -1,7 +1,6 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,13 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.dao.IHashCacheDao;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
-import com.meizu.simplify.utils.JsonUtil;
-
-import redis.clients.jedis.ShardedJedis;
+import com.meizu.simplify.cache.redis.util.JsonUtil;
 
 /**
  * <p><b>Title:</b><i>SET 操作集合</i></p>
