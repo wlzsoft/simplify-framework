@@ -51,13 +51,6 @@ public class Base64EncryptTest {
 	@Test
 	public void base64Encoder() throws Exception {
 
-		// BASE64Encoder base64Encoder = new BASE64Encoder();
-		// strMi = base64Encoder.encode(byteMi);
-		// a2ee5e1d00de3fc5320a95beaf15b692
-
-		// System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
-		// System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
-
 		String[] args = new String[] {"C:/Users/Administrator/Desktop/test.txt"};
 		if (args.length != 1) {
 			System.err.println("Usage: java com.meizu.simplify.encrypt.base64.Base64Encoder fileToEncode");

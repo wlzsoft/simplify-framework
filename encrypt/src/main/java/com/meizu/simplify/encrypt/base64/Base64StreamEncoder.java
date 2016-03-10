@@ -44,21 +44,11 @@ public class Base64StreamEncoder extends FilterOutputStream {
   private int charCount;
   private int carryOver;
 
-  /**
-   * Constructs a new Base64 encoder that writes output to the given
-   * OutputStream.
-   *
-   * @param out the output stream
-   */
   public Base64StreamEncoder(OutputStream out) {
     super(out);
   }
 
-  /**
-   * Writes the given byte to the output stream in an encoded form.
-   *
-   * @exception IOException if an I/O error occurs
-   */
+  @Override
   public void write(int b) throws IOException {
     // Take 24-bits from three octets, translate into four encoded chars
     // Break lines at 76 chars
@@ -101,15 +91,7 @@ public class Base64StreamEncoder extends FilterOutputStream {
     }
   }
 
-  /**
-   * Writes the given byte array to the output stream in an 
-   * encoded form.
-   *
-   * @param b the data to be written
-   * @param off the start offset of the data
-   * @param len the length of the data
-   * @exception IOException if an I/O error occurs
-   */
+  @Override
   public void write(byte[] buf, int off, int len) throws IOException {
     // This could of course be optimized
     for (int i = 0; i < len; i++) {
@@ -123,6 +105,7 @@ public class Base64StreamEncoder extends FilterOutputStream {
    *
    * @exception IOException if an I/O error occurs
    */
+  @Override
   public void close() throws IOException {
     // Handle leftover bytes
     if (charCount % 3 == 1) {  // one leftover

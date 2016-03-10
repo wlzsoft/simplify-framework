@@ -53,12 +53,6 @@ public class Base64StreamDecoder extends FilterInputStream {
   private int charCount;
   private int carryOver;
 
-  /**
-   * Constructs a new Base64 decoder that reads input from the given
-   * InputStream.
-   *
-   * @param in the input stream
-   */
   public Base64StreamDecoder(InputStream in) {
     super(in);
   }
