@@ -30,7 +30,7 @@ import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 public class Base64EncryptTest {
 	public static void base64Decoder(String[] args) throws Exception {
 		if (args.length != 1) {
-			System.err.println("Usage: java Base64Decoder fileToDecode");
+			System.err.println("Usage: java com.meizu.simplify.encrypt.base64.Base64Decoder fileToDecode");
 			return;
 		}
 
@@ -58,7 +58,7 @@ public class Base64EncryptTest {
 		// System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
 
 		if (args.length != 1) {
-			System.err.println("Usage: java com.dudu.upload.Base64Encoder fileToEncode");
+			System.err.println("Usage: java com.meizu.simplify.encrypt.base64.Base64Encoder fileToEncode");
 			return;
 		}
 
