@@ -1,9 +1,12 @@
-package com.meizu.simplify.encrypt;
+package com.meizu.simplify.encrypt.file;
 
 import java.io.ByteArrayInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.meizu.simplify.encrypt.Decrypt;
+import com.meizu.simplify.encrypt.Keys;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

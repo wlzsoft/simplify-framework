@@ -79,7 +79,7 @@ public class Decrypt {
 	 * @param des
 	 * @param keys
 	 */
-	static void deConfusion(byte[] des, byte[] keys) {
+	public static void deConfusion(byte[] des, byte[] keys) {
 		int keyLength = keys.length;
 		int n = 0;
 		for (n = 0; n < des.length; n += keyLength) {
@@ -98,7 +98,7 @@ public class Decrypt {
 		}
 	}
 
-	static void rc4crypt(byte[] src, byte[] keys) {
+	public static void rc4crypt(byte[] src, byte[] keys) {
 		int x = 0;
 		int y = 0;
 		byte key[] = new byte[keys.length];

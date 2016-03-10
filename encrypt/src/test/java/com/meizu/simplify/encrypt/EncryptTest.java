@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import com.meizu.simplify.encrypt.file.FileDecrypt;
+import com.meizu.simplify.encrypt.file.FileEncrypt;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: AES_256_CBC 256位加密算法-存在的问题和优势</p>

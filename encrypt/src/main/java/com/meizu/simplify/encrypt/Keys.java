@@ -142,7 +142,7 @@ public final class Keys {
 		return bytes;
 	}
 
-	static byte[] calcConKey(String prefix, byte[] key) {
+	public static byte[] calcConKey(String prefix, byte[] key) {
 		if (key == null) {
 			return calcConKey(prefix);
 		}
@@ -186,7 +186,7 @@ public final class Keys {
 		return state;
 	}
 
-	static byte[] calcRc4Key(String prefix, byte[] key) {
+	public static byte[] calcRc4Key(String prefix, byte[] key) {
 		if (key == null) {
 			return calcRc4Key(prefix);
 		}

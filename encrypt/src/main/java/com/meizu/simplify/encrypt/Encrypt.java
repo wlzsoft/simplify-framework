@@ -66,7 +66,7 @@ public final class Encrypt {
 		return fieldEncrypt("password", md5);
 	}
 
-	static void rc4crypt(byte[] src, byte[] keys) {
+	public static void rc4crypt(byte[] src, byte[] keys) {
 		int x = 0;
 		int y = 0;
 		byte key[] = new byte[keys.length];
@@ -90,7 +90,7 @@ public final class Encrypt {
 	 * @param src
 	 * @param keys
 	 */
-	static void enConfusion(byte[] src, byte[] keys) {
+	public static void enConfusion(byte[] src, byte[] keys) {
 		int keyLength = keys.length;
 		int n = 0;
 		for (n = 0; n < src.length; n += keyLength) {
