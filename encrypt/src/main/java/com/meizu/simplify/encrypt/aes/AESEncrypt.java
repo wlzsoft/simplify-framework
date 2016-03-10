@@ -25,17 +25,17 @@ public class AESEncrypt {
 		 * 
 		 * 方法用途: AES加密<br>
 		 * 操作步骤: TODO<br>
-		 * @param content 待加密的内容
-		 * @param password 密码
+		 * @param source 待加密的内容
+		 * @param key 秘钥
 		 * @return 返回加密后的内容
 		 */
-		public static String encrypt(String content, String password) {
+		public static String encrypt(String source, String key) {
 			try {
-				byte[] raw = password.getBytes("UTF-8");
-				SecretKeySpec key = new SecretKeySpec(raw, "AES");
+				byte[] raw = key.getBytes("UTF-8");
+				SecretKeySpec keySpec = new SecretKeySpec(raw, "AES");
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-				cipher.init(Cipher.ENCRYPT_MODE, key);
-				byte[] encrypted = cipher.doFinal(content.getBytes("UTF-8"));
+				cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+				byte[] encrypted = cipher.doFinal(source.getBytes("UTF-8"));
 				return new String(Base64Encrypt.encode(encrypted));
 			} catch (Exception e) {
 				throw new RuntimeException("AES加密时发生异常。", e);
@@ -46,17 +46,17 @@ public class AESEncrypt {
 		 * 
 		 * 方法用途: AES解密<br>
 		 * 操作步骤: TODO<br>
-		 * @param content 待解密的内容
-		 * @param password 密码
+		 * @param source 待解密的内容
+		 * @param key 秘钥
 		 * @return 返回解密后的内容
 		 */
-		public static String decrypt(String content, String password) {
+		public static String decrypt(String source, String key) {
 			try {
-				byte[] raw = password.getBytes("UTF-8");
-				SecretKeySpec key = new SecretKeySpec(raw, "AES");
+				byte[] raw = key.getBytes("UTF-8");
+				SecretKeySpec keySpec = new SecretKeySpec(raw, "AES");
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-				cipher.init(Cipher.DECRYPT_MODE, key);
-				byte[] encrypted = Base64Encrypt.decode(content.getBytes());
+				cipher.init(Cipher.DECRYPT_MODE, keySpec);
+				byte[] encrypted = Base64Encrypt.decode(source.getBytes());
 				byte[] original = cipher.doFinal(encrypted);
 				return new String(original, "UTF-8");
 			} catch (Exception e) {

@@ -16,7 +16,6 @@ package com.meizu.simplify.encrypt;
 public class Base16Encrypt {
 	final static byte[] DIGITS = new byte[64];
 
-	// 以下是password签名加密相关
 	static {
 		for (int i = 0; i < 10; i++) {
 			DIGITS[i] = (byte) ('0' + i);
