@@ -18,7 +18,7 @@ import java.util.zip.GZIPInputStream;
  *
  */
 public class FileDecrypt {
-	public static void StreamDecrypt(InputStream in, OutputStream out, byte[] keys) throws IOException {
+	public static void streamDecrypt(InputStream in, OutputStream out, byte[] keys) throws IOException {
 		if (in == null || out == null) {
 			throw new IOException("流为空");
 		}

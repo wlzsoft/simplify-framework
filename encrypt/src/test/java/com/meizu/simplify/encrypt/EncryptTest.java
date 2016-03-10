@@ -113,7 +113,7 @@ public class EncryptTest {
 		try {
 			in = new FileInputStream(file1);
 			out = new FileOutputStream(file2);
-			FileEncrypt.StreamEncrypt(in, out, keybyte);
+			FileEncrypt.streamEncrypt(in, out, keybyte);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {
@@ -138,7 +138,7 @@ public class EncryptTest {
 		try {
 			in = new FileInputStream(file2);
 			out = new FileOutputStream(file3);
-			FileDecrypt.StreamDecrypt(in, out, keybyte);
+			FileDecrypt.streamDecrypt(in, out, keybyte);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e1) {

@@ -19,7 +19,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class FileEncrypt {
 
-	public static void StreamEncrypt(InputStream in, OutputStream out, byte[] keys) throws IOException {
+	public static void streamEncrypt(InputStream in, OutputStream out, byte[] keys) throws IOException {
 		if (in == null || out == null) {
 			throw new IOException("流为空");
 		}
