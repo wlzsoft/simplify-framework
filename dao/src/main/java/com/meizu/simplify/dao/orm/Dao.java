@@ -22,15 +22,12 @@ import com.meizu.simplify.dao.annotations.Column;
 import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.annotations.Table;
 import com.meizu.simplify.dao.annotations.Transient;
-import com.meizu.simplify.dao.dto.BaseDTO;
-import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
-import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 //import com.meizu.util.BeanUtils;
@@ -258,6 +255,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			return save(t);
 		}
 	}
+	@Override
+	public boolean saveOrUpdate(T t,Boolean isAllField) {
+//		buildInfo.buildId(t);//TODO 慎重考虑createId，等字段的值的自动设置,并考虑更新和保存的设置差异
+		if(t.getFid()!=null) {
+			//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
+			Integer res = update(t,isAllField);
+			if(res >0) {
+				return true;
+			} else {
+				return true;
+			}
+		} else {
+			return save(t);
+		}
+	}
 	
 	@Override
 	public void save(List<T> list) {
@@ -319,9 +331,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				for (int i=0; i < cList.size(); i++) {
 					String columnName = cList.get(i);
 					Object value = ReflectionUtil.invokeGetterMethod(t, columnName);
-					if((isAllField == null || isAllField)||value != null) {
-						prepareStatement.setObject(i+1,value);
-						count ++;
+					if(((isAllField == null || isAllField)||value != null)&&columnName!="fid") {
+						prepareStatement.setObject(count+1,value);
+						count++;
 					}
 				}
 				prepareStatement.setObject(count+1,t.getFid());

@@ -92,6 +92,14 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
     boolean saveOrUpdate(T t);
     
+    /**
+     * @param t
+     * @param isAllField 是否全字段更新
+     * @return 
+     * @return boolean返回类型 
+     * @throws
+     */
+    boolean saveOrUpdate(T t,Boolean isAllField);
 	/**
 	 * 方法用途: 根据属性批量删除业务实体<br>
 	 * 操作步骤: TODO<br>

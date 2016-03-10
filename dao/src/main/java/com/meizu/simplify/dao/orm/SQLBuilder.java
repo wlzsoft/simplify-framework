@@ -94,11 +94,11 @@ public class SQLBuilder<T> {
 //        			value = handleValue(value);//TODO
     		} else {
     			if(field.getType().equals(Date.class)) {
-    				value = "null";
+//    				value = "null";
     			} else if(field.getType().equals(Integer.class)){
     				value = 0;
     			} else {
-    	            value = "''";
+//    	            value = "''";
     	        }
     		}
             values.add(value);

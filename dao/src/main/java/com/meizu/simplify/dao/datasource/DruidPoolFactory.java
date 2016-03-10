@@ -3,6 +3,9 @@ package com.meizu.simplify.dao.datasource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.dao.exception.DataAccessException;
@@ -22,6 +25,9 @@ import com.meizu.simplify.utils.PropertieUtil;
  *
  */
 public class DruidPoolFactory {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DruidPoolFactory.class);
+			
 	// 线程共享变量,用于事务管理
 	public static ThreadLocal<Connection> container = new ThreadLocal<Connection>();
 	
@@ -91,13 +97,15 @@ public class DruidPoolFactory {
 				connection = factory.dataSource.getConnection();
 			}
 			if(connection.isClosed()) {
+				LOGGER.info("连接已关闭");
 				throw new DataAccessException("连接已关闭");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException(e.getMessage());
 		}
-		System.out.println("线程["+Thread.currentThread().getName() + "]连接已经开启......");
+		LOGGER.info("线程["+Thread.currentThread().getName() + "]连接已经开启......");
+//		System.out.println("线程["+Thread.currentThread().getName() + "]连接已经开启......");
 		container.set(connection);
 		return connection;
 	}
@@ -113,9 +121,11 @@ public class DruidPoolFactory {
 		if (conn == null) {
 			conn = getConnection();
 			container.set(conn);
-			System.out.println(Thread.currentThread().getName() + "已从数据源中成功获取连接");
+			LOGGER.info(Thread.currentThread().getName() + "已从数据源中成功获取连接");
+//			System.out.println(Thread.currentThread().getName() + "已从数据源中成功获取连接");
 		} else {
-			System.out.println(Thread.currentThread().getName() + "从缓存中获取连接");
+			LOGGER.info(Thread.currentThread().getName() + "从缓存中获取连接");
+//			System.out.println(Thread.currentThread().getName() + "从缓存中获取连接");
 		}
 		try {
 			//手动提交事务
@@ -135,7 +145,8 @@ public class DruidPoolFactory {
 			Connection conn = container.get();
 			if (null != conn) {
 				conn.commit();
-				System.out.println(Thread.currentThread().getName() + "事务已经提交......");
+				LOGGER.info(Thread.currentThread().getName() + "事务已经提交......");
+//				System.out.println(Thread.currentThread().getName() + "事务已经提交......");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -175,7 +186,8 @@ public class DruidPoolFactory {
 				if(!conn.isClosed()) {
 					conn.close();
 				}
-				System.out.println(Thread.currentThread().getName() + "连接关闭");
+//				System.out.println(Thread.currentThread().getName() + "连接关闭");
+				LOGGER.info(Thread.currentThread().getName() + "连接关闭");
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage(), e);
