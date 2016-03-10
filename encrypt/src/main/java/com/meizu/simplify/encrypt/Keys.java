@@ -23,7 +23,7 @@ public final class Keys {
 	//key(秘钥)和业务相关，默认规定14位，可以根据业务修改长度
 	final static byte[] key = new byte[14];
 
-	final static Map<String, String> Prefix = new ConcurrentHashMap<String, String>();
+	
 	final static Map<String, byte[]> ConKey = new ConcurrentHashMap<String, byte[]>();
 	final static Map<String, byte[]> AesKey = new ConcurrentHashMap<String, byte[]>();
 	final static Map<String, byte[]> Rc4Key = new ConcurrentHashMap<String, byte[]>();
@@ -50,38 +50,7 @@ public final class Keys {
 		}
 	}
 
-	static String getPrefix(String fname) {
-		if (fname == null || fname.length() < 2) {
-			return "fi";
-		}
-		return Prefix.get(fname);
-	}
-
-	/**
-	 * 
-	 * 方法用途: 通过字段名称计算前缀<br>
-	 * 操作步骤: TODO<br>
-	 * @param fname
-	 * @return
-	 */
-	static String calcPrefix(String fname) {
-		int pre = 0;
-		if (fname == null || fname.length() < 2) {
-			pre = 'f' + 'i';
-		} else if (Prefix.containsKey(fname)) {
-			return Prefix.get(fname);
-		} else {
-			pre = fname.charAt(0) + fname.charAt(1);
-		}
-		char[] buf = new char[2];
-		buf[0] = (char) Base64VariantEncrypt.encodingTable[(0xF0 & pre) >>> 4];
-		buf[1] = (char) Base64VariantEncrypt.encodingTable[0x0F & pre];
-		String prefix = new String(buf);
-		if (!Prefix.containsKey(fname)) {
-			Prefix.put(fname, prefix);
-		}
-		return prefix;
-	}
+	
 
 	/**
 	 * 

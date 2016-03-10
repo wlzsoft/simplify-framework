@@ -53,7 +53,7 @@ public class EncryptTest {
 		print("=================================");
 
 		print("=============加密密码===========");
-		String passwordEncrtyed = Encrypt.fieldEncrypt("password", MD5Encrypt.hashMd5(password));
+		String passwordEncrtyed = FieldEncrypt.fieldEncrypt("password", MD5Encrypt.hashMd5(password));
 		print("密码加密结果1：" + passwordEncrtyed);
 		passwordEncrtyed = PasswordEncrypt.passwordEncrypt(password);
 		print("密码加密结果2：" + passwordEncrtyed);
@@ -62,7 +62,7 @@ public class EncryptTest {
 		print("密码验证结果：" + passwordVerify);
 
 		print("=============加密中文内容============");
-		String adderssEncrtyed = Encrypt.fieldEncrypt("message", adderss);
+		String adderssEncrtyed = FieldEncrypt.fieldEncrypt("message", adderss);
 		print("中文内容加密结果：" + adderssEncrtyed);
 		print("=============解密中文内容============");
 		String adderssDecrtyed = Decrypt.fieldDecrypt(adderssEncrtyed);

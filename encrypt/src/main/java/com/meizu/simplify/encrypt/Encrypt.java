@@ -1,5 +1,8 @@
 package com.meizu.simplify.encrypt;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 
@@ -20,37 +23,7 @@ public final class Encrypt {
 	// private static void print(String s) {
 	// 		System.out.printf("%1$tF%1$tT: %2$s\r\n", new java.util.Date(), s);
 	// }
-
-	/**
-	 * 
-	 * 方法用途: 数据表字段加密<br>
-	 * 操作步骤: TODO<br>
-	 * @param name
-	 * @param value
-	 * @return
-	 */
-	public static String fieldEncrypt(String name, String value) {
-		if (name == null || value == null)
-			return null;
-
-		byte[] bytes = value.getBytes();
-
-		String prefix = Keys.calcPrefix(name);
-		// print("前缀：" + prefix);
-		byte[] conKey = Keys.calcConKey(prefix);
-		// print("混淆秘钥：" + new String(conKey));
-		// byte[] aesKey = NgKeys.calcAesKey(prefix);
-		// print("加密秘钥：" + new String(aesKey));
-		byte[] rc4Key = Keys.calcRc4Key(prefix);
-		// print("ARC秘钥：" + new String(rc4Key));
-
-		// print("明文：" + value);
-		enConfusion(bytes, conKey);
-		// print("混淆密文：" + new String(bytes));
-		rc4crypt(bytes, rc4Key);
-		// print("rc4密文：" + new String(bytes));
-		return prefix + Base64VariantEncrypt.encode64String(bytes);
-	}
+	
 
 
 	public static void rc4crypt(byte[] src, byte[] keys) {

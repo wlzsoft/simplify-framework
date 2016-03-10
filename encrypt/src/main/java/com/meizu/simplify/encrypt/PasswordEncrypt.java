@@ -45,6 +45,6 @@ public class PasswordEncrypt {
 			return plaintext;
 		}
 		String md5 = MD5Encrypt.hashMd5(plaintext);
-		return Encrypt.fieldEncrypt("password", md5);
+		return FieldEncrypt.fieldEncrypt("password", md5);
 	}
 }
