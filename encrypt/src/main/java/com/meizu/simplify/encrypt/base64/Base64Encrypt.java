@@ -239,7 +239,7 @@ public class Base64Encrypt {
 	    }
 	    catch (UnsupportedEncodingException ignored) { }
 
-	    Base64Decoder in = new Base64Decoder(
+	    Base64StreamDecoder in = new Base64StreamDecoder(
 	                       new ByteArrayInputStream(bytes));
 	    
 	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 0.67));
@@ -268,7 +268,7 @@ public class Base64Encrypt {
 	 */
 	public static String encode2(byte[] bytes) {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
-	    Base64Encoder encodedOut = new Base64Encoder(out);
+	    Base64StreamEncoder encodedOut = new Base64StreamEncoder(out);
 	    try {
 	      encodedOut.write(bytes);
 	      encodedOut.close();

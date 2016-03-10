@@ -30,7 +30,7 @@ import java.io.InputStream;
  * @version 0.1
  *
  */
-public class Base64Decoder extends FilterInputStream {
+public class Base64StreamDecoder extends FilterInputStream {
 
   private static final char[] decodingTable = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -59,7 +59,7 @@ public class Base64Decoder extends FilterInputStream {
    *
    * @param in the input stream
    */
-  public Base64Decoder(InputStream in) {
+  public Base64StreamDecoder(InputStream in) {
     super(in);
   }
 

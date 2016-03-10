@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.base64.Base64Decoder;
-import com.meizu.simplify.encrypt.base64.Base64Encoder;
+import com.meizu.simplify.encrypt.base64.Base64StreamDecoder;
+import com.meizu.simplify.encrypt.base64.Base64StreamEncoder;
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 
@@ -35,9 +35,9 @@ public class Base64EncryptTest {
 			return;
 		}
 
-		Base64Decoder decoder = null;
+		Base64StreamDecoder decoder = null;
 		try {
-			decoder = new Base64Decoder(new BufferedInputStream(new FileInputStream(args[0])));
+			decoder = new Base64StreamDecoder(new BufferedInputStream(new FileInputStream(args[0])));
 			byte[] buf = new byte[4 * 1024]; // 4K buffer
 			int bytesRead;
 			while ((bytesRead = decoder.read(buf)) != -1) {
@@ -64,10 +64,10 @@ public class Base64EncryptTest {
 			return;
 		}
 
-		Base64Encoder encoder = null;
+		Base64StreamEncoder encoder = null;
 		BufferedInputStream in = null;
 		try {
-			encoder = new Base64Encoder(System.out);
+			encoder = new Base64StreamEncoder(System.out);
 			in = new BufferedInputStream(new FileInputStream(args[0]));
 
 			byte[] buf = new byte[4 * 1024]; // 4K buffer

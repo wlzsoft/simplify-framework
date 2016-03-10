@@ -29,7 +29,7 @@ import java.io.*;
  * @version 0.1
  *
  */
-public class Base64Encoder extends FilterOutputStream {
+public class Base64StreamEncoder extends FilterOutputStream {
 
   private static final char[] encodingTable = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -50,7 +50,7 @@ public class Base64Encoder extends FilterOutputStream {
    *
    * @param out the output stream
    */
-  public Base64Encoder(OutputStream out) {
+  public Base64StreamEncoder(OutputStream out) {
     super(out);
   }
 
