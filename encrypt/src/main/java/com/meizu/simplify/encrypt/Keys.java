@@ -29,16 +29,18 @@ public final class Keys {
 	final static Map<String, byte[]> Rc4Key = new ConcurrentHashMap<String, byte[]>();
 
 	public static void setNo(String no) {
-		if (no == null || no.isEmpty())
+		if (no == null || no.isEmpty()) {
 			return;
+		}
 		no = Encrypt.numEncrypt(no);
 		byte[] bytes = no.getBytes();
 		System.arraycopy(bytes, 0, NO, 0, bytes.length);
 	}
 
 	public static void setKey(String keystr) {
-		if (keystr == null || keystr.isEmpty())
+		if (keystr == null || keystr.isEmpty()) {
 			return;
+		}
 		byte[] bytes = keystr.getBytes();
 		int keyLength = bytes.length;
 		if (keyLength >= 14) {
@@ -49,8 +51,9 @@ public final class Keys {
 	}
 
 	static String getPrefix(String fname) {
-		if (fname == null || fname.length() < 2)
+		if (fname == null || fname.length() < 2) {
 			return "fi";
+		}
 		return Prefix.get(fname);
 	}
 

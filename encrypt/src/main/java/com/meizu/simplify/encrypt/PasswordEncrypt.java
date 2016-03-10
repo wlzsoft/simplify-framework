@@ -25,8 +25,9 @@ public class PasswordEncrypt {
 	 * @return
 	 */
 	public static boolean passwordVerify(String plaintext, String ciphertext) {
-		if (plaintext == null || ciphertext == null)
+		if (plaintext == null || ciphertext == null) {
 			return false;
+		}
 		String decrypted = Decrypt.fieldDecrypt(ciphertext);
 		String md5 = MD5Encrypt.hashMd5(plaintext);
 		return md5.equals(decrypted);
@@ -40,8 +41,9 @@ public class PasswordEncrypt {
 	 * @return
 	 */
 	public static String passwordEncrypt(String plaintext) {
-		if (plaintext == null)
+		if (plaintext == null) {
 			return plaintext;
+		}
 		String md5 = MD5Encrypt.hashMd5(plaintext);
 		return Encrypt.fieldEncrypt("password", md5);
 	}
