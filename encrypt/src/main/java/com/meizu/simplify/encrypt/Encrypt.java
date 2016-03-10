@@ -1,6 +1,6 @@
 package com.meizu.simplify.encrypt;
 
-import com.meizu.simplify.encrypt.base64.Base64Codec;
+import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 
 /**
@@ -49,7 +49,7 @@ public final class Encrypt {
 		// print("混淆密文：" + new String(bytes));
 		rc4crypt(bytes, rc4Key);
 		// print("rc4密文：" + new String(bytes));
-		return prefix + Base64Codec.encode64String(bytes);
+		return prefix + Base64VariantEncrypt.encode64String(bytes);
 	}
 
 	/**

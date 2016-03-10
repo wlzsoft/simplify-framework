@@ -3,7 +3,7 @@ package com.meizu.simplify.encrypt;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.meizu.simplify.encrypt.base64.Base64Codec;
+import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -71,8 +71,8 @@ public final class Keys {
 			pre = fname.charAt(0) + fname.charAt(1);
 		}
 		char[] buf = new char[2];
-		buf[0] = (char) Base64Codec.encodingTable[(0xF0 & pre) >>> 4];
-		buf[1] = (char) Base64Codec.encodingTable[0x0F & pre];
+		buf[0] = (char) Base64VariantEncrypt.encodingTable[(0xF0 & pre) >>> 4];
+		buf[1] = (char) Base64VariantEncrypt.encodingTable[0x0F & pre];
 		String prefix = new String(buf);
 		if (!Prefix.containsKey(fname)) {
 			Prefix.put(fname, prefix);

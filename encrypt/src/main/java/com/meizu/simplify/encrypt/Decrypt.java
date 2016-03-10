@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt;
 
 import java.nio.charset.Charset;
 
-import com.meizu.simplify.encrypt.base64.Base64Codec;
+import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 /**
  * <p><b>Title:</b><i>解密</i></p>
@@ -37,7 +37,7 @@ public class Decrypt {
 			return null;
 
 		String cipherted = ciphertext.substring(2, ciphertext.length());
-		byte[] bytes = Base64Codec.decode64(cipherted);
+		byte[] bytes = Base64VariantEncrypt.decode64(cipherted);
 		// print("密文：" + new String(bytes));
 
 		String prefix = ciphertext.substring(0, 2);

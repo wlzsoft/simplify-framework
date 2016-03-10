@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
  * @version Version 0.1
  *
  */
-public class Base64Codec {
+public class Base64VariantEncrypt {
 	public final static byte[] encodingTable = new byte[64];
 //	final static byte[] base64Alphabet = new byte[255];
 	final static byte[] decodingTable = new byte[255];
