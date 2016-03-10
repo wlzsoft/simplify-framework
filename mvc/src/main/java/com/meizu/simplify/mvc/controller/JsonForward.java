@@ -1,6 +1,7 @@
 package com.meizu.simplify.mvc.controller;
 
-import com.meizu.simplify.utils.JsonUtil;
+import com.meizu.simplify.cache.redis.util.JsonUtil;
+
 
 
 /**
