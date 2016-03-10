@@ -71,7 +71,7 @@ public class RSAEncrypt {
 	 * @return 返回Base64编码后的公钥字符串
 	 */
 	public static String getPublicKey(KeyPair keyPair) {
-		return new String(Base64Encrypt.encodeBase64(keyPair.getPublic().getEncoded()));
+		return new String(Base64Encrypt.encode(keyPair.getPublic().getEncoded()));
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class RSAEncrypt {
 	 * @return 返回Base64编码的私钥字符串
 	 */
 	public static String getPrivateKey(KeyPair keyPair) {
-		return new String(Base64Encrypt.encodeBase64(keyPair.getPrivate().getEncoded()));
+		return new String(Base64Encrypt.encode(keyPair.getPrivate().getEncoded()));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class RSAEncrypt {
 		try {
 			KeyFactory factory = KeyFactory.getInstance("RSA");
 			X509EncodedKeySpec spec = new X509EncodedKeySpec(
-					Base64Encrypt.decodeBase64(publicKey.getBytes()));
+					Base64Encrypt.decode(publicKey.getBytes()));
 			return factory.generatePublic(spec);
 		} catch (Exception e) {
 			throw new RuntimeException("将字符串转换为公钥时发生异常", e);
@@ -113,7 +113,7 @@ public class RSAEncrypt {
 		try {
 			KeyFactory factory = KeyFactory.getInstance("RSA");
 			PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(
-					Base64Encrypt.decodeBase64(privateKey.getBytes()));
+					Base64Encrypt.decode(privateKey.getBytes()));
 			return factory.generatePrivate(spec);
 		} catch (Exception e) {
 			throw new RuntimeException("将字符串转换为私钥时发生异常", e);
@@ -134,7 +134,7 @@ public class RSAEncrypt {
 			rsa.initSign(privateKey);
 			rsa.update(srcString.getBytes());
 			byte[] sig = rsa.sign();
-			return new String(Base64Encrypt.encodeBase64(sig));
+			return new String(Base64Encrypt.encode(sig));
 		} catch (Exception e) {
 			throw new RuntimeException("对字符串进行签名时发生异常", e);
 		}
@@ -155,7 +155,7 @@ public class RSAEncrypt {
 			Signature rsa = Signature.getInstance("MD5withRSA");
 			rsa.initVerify(publicKey);
 			rsa.update(srcString.getBytes());
-			return rsa.verify(Base64Encrypt.decodeBase64(signature.getBytes()));
+			return rsa.verify(Base64Encrypt.decode(signature.getBytes()));
 		} catch (Exception e) {
 			throw new RuntimeException("验证签名时发生异常", e);
 		}

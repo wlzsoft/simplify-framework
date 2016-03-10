@@ -36,8 +36,7 @@ public class AESEncrypt {
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 				cipher.init(Cipher.ENCRYPT_MODE, key);
 				byte[] encrypted = cipher.doFinal(content.getBytes("UTF-8"));
-				Base64Encrypt encoder = new Base64Encrypt();
-				return encoder.encodeToString(encrypted);
+				return new String(Base64Encrypt.encode(encrypted));
 			} catch (Exception e) {
 				throw new RuntimeException("AES加密时发生异常。", e);
 			}
@@ -57,7 +56,7 @@ public class AESEncrypt {
 				SecretKeySpec key = new SecretKeySpec(raw, "AES");
 				Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 				cipher.init(Cipher.DECRYPT_MODE, key);
-				byte[] encrypted = new Base64Encrypt().decode(content);
+				byte[] encrypted = Base64Encrypt.decode(content.getBytes());
 				byte[] original = cipher.doFinal(encrypted);
 				return new String(original, "UTF-8");
 			} catch (Exception e) {

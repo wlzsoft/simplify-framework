@@ -2,16 +2,13 @@ package com.meizu.simplify.encrypt;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.util.UUID;
-
-import javax.swing.plaf.synth.SynthScrollBarUI;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 import com.meizu.simplify.encrypt.base64.Base64Decoder;
 import com.meizu.simplify.encrypt.base64.Base64Encoder;
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
+import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 
 
 /**
@@ -28,7 +25,11 @@ import com.meizu.simplify.encrypt.base64.Base64Encrypt;
  *
  */
 public class Base64EncryptTest {
-	public static void base64Decoder(String[] args) throws Exception {
+	
+	@Test
+	public void base64Decoder() throws Exception {
+		
+		String[] args = new String[] {"C:/Users/Administrator/Desktop/test.txt"};
 		if (args.length != 1) {
 			System.err.println("Usage: java com.meizu.simplify.encrypt.base64.Base64Decoder fileToDecode");
 			return;
@@ -47,8 +48,8 @@ public class Base64EncryptTest {
 				decoder.close();
 		}
 	}
-
-	public static void base64Encoder(String[] args) throws Exception {
+	@Test
+	public void base64Encoder() throws Exception {
 
 		// BASE64Encoder base64Encoder = new BASE64Encoder();
 		// strMi = base64Encoder.encode(byteMi);
@@ -57,6 +58,7 @@ public class Base64EncryptTest {
 		// System.out.println(token);//a2ee5e1d00de3fc5320a95beaf15b692
 		// System.out.println(Base64Encoder.encode(token));//YTJlZTVlMWQwMGRlM2ZjNTMyMGE5NWJlYWYxNWI2OTI=
 
+		String[] args = new String[] {"C:/Users/Administrator/Desktop/test.txt"};
 		if (args.length != 1) {
 			System.err.println("Usage: java com.meizu.simplify.encrypt.base64.Base64Encoder fileToEncode");
 			return;
@@ -84,12 +86,14 @@ public class Base64EncryptTest {
 	public void test() {
 //		UUID uuid = UUID.randomUUID();
 //		System.out.println(Base64Codec.encode64String(uuid.toString().getBytes()));
-		String str = "sejjjjjjjjjjjjsfirsjfsldjfoisejflsidjfsio";
+//		String str = "sejjjjjjjjjjjjsfirsjfsldjfoisejflsidjfsio";
+		String str = "色搜到发";
 		String source = Base64VariantEncrypt.encode64String(str.getBytes());
 		System.out.println(source);
 		System.out.println(new String(Base64VariantEncrypt.decode64(source)));
-		System.out.println(new String(Base64Encrypt.encode(str.getBytes())));
-		System.out.println(new String(Base64Encrypt.decode(source.getBytes())));
+		String source2 = new String(Base64Encrypt.encode(str.getBytes()));
+		System.out.println(source2);
+		System.out.println(new String(Base64Encrypt.decode(source2.getBytes())));
 		System.out.println(new String(Base64Encoder.encode(str.getBytes())));
 	}
 	@Test
