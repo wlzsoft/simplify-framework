@@ -153,6 +153,15 @@ public class Base64Encrypt {
 	    }
 	    catch (IOException ignored) { return null; }
 	  }
+	public static String encode3(byte[] bytes) {
+	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
+	    Base64Encoder encodedOut = new Base64Encoder(out);
+	    try {
+	      encodedOut.write(bytes);
+	      return out.toString("8859_1");
+	    }
+	    catch (IOException ignored) { return null; }
+	  }
     
     /**
      * 
