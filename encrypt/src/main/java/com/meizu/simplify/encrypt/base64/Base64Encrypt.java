@@ -3,6 +3,7 @@ package com.meizu.simplify.encrypt.base64;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -142,7 +143,7 @@ public class Base64Encrypt {
 	 * @param bytes unencoded.getBytes("8859_1") uses the ISO-8859-1 (Latin-1) encoding to convert the string to bytes
 	 * @return
 	 */
-	public static String encode2(byte[] bytes) {
+	public static String encodeTwo(byte[] bytes) {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
 	    Base64StreamEncoder encodedOut = new Base64StreamEncoder(out);
 	    try {
@@ -153,19 +154,106 @@ public class Base64Encrypt {
 	    }
 	    catch (IOException ignored) { return null; }
 	  }
-	public static String encode3(byte[] bytes) {
-	    ByteArrayOutputStream out = new ByteArrayOutputStream((int) (bytes.length * 1.37));
-	    Base64Encoder encodedOut = new Base64Encoder(out);
-	    try {
-	      encodedOut.write(bytes);
-	      return out.toString("8859_1");
-	    }
-	    catch (IOException ignored) { return null; }
-	  }
-    
+	/**
+     * 
+     * 方法用途: Base64编码-第二种算法<br>
+     * 操作步骤: TODO<br>
+     * @param data
+     * @param offset
+     * @return
+     */
+	public static byte[] encodeTwo(byte[] data, int offset) {
+				//可变可改，应该是方法参数
+				int len = data.length;
+				
+				byte[] bytes;
+				int realCount = data.length - offset;
+				int modulus = realCount % 3;
+				if (modulus == 0) {
+					bytes = new byte[4 * realCount / 3];
+				} else {
+					bytes = new byte[4 * ((realCount / 3) + 1)];
+				}
+//				encode第二种算法
+
+				int charCount = 0;
+				int carryOver = 0;
+				if ((offset | len | (data.length - (len + offset)) | (offset + len)) < 0)
+					throw new IndexOutOfBoundsException();
+
+				
+				
+				int j=0;
+				for (int i = 0; i < len; i++) {
+					byte b = data[offset + i];
+					// Take 24-bits from three octets, translate into four encoded chars
+					// Break lines at 76 chars
+					// If necessary, pad with 0 bits on the right at the end
+					// Use = signs as padding at the end to ensure encodedLength % 4 ==
+					// 0
+
+					// Remove the sign bit,
+					// thanks to Christian Schweingruber <chrigu@lorraine.ch>
+					if (b < 0) {
+						b += 256;
+					}
+
+					// First byte use first six bits, save last two bits
+					if (charCount % 3 == 0) {
+						int lookup = b >> 2;
+						carryOver = b & 3; // last two bits
+						bytes[j] = (encodingTable[lookup]);
+						j++;
+					}
+					// Second byte use previous two bits and first four new bits,
+					// save last four bits
+					else if (charCount % 3 == 1) {
+						int lookup = ((carryOver << 4) + (b >> 4)) & 63;
+						carryOver = b & 15; // last four bits
+						bytes[j] = (encodingTable[lookup]);
+						j++;
+					}
+					// Third byte use previous four bits and first two new bits,
+					// then use last six new bits
+					else if (charCount % 3 == 2) {
+						int lookup = ((carryOver << 2) + (b >> 6)) & 63;
+						bytes[j] = (encodingTable[lookup]);
+						j++;
+						lookup = b & 63; // last six bits
+						bytes[j] = (encodingTable[lookup]);
+						j++;
+						carryOver = 0;
+					}
+					charCount++;
+
+					// Add newline every 76 output chars (that's 57 input chars)
+					if (charCount % 57 == 0) {
+						bytes[j] = ('\n');
+						j++;
+					}
+				}
+
+				// Handle leftover bytes
+				if (charCount % 3 == 1) { // one leftover
+					int lookup = (carryOver << 4) & 63;
+					bytes[j] = (encodingTable[lookup]);
+					j++;
+					bytes[j] = ('=');
+					j++;
+					bytes[j] = ('=');
+					j++;
+				} else if (charCount % 3 == 2) { // two leftovers
+					int lookup = (carryOver << 2) & 63;
+					bytes[j] = (encodingTable[lookup]);
+					j++;
+					bytes[j] = ('=');
+					j++;
+				}
+				return bytes;
+	}
     /**
      * 
-     * 方法用途: Base64编码<br>
+     * 方法用途: Base64编码-第一种算法<br>
      * 操作步骤: TODO<br>
      * @param data
      * @param offset
@@ -180,6 +268,7 @@ public class Base64Encrypt {
 		} else {
 			bytes = new byte[4 * ((realCount / 3) + 1)];
 		}
+//		第二种算法开始
 		int dataLength = (data.length - modulus);
 		int a1, a2, a3;
 		for (int i = offset, j = 0; i < dataLength; i += 3, j += 4) {

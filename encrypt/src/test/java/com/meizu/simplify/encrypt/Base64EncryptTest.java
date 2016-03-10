@@ -88,8 +88,7 @@ public class Base64EncryptTest {
 		System.out.println(source2);
 		System.out.println(new String(Base64Encrypt.decode(source2.getBytes())));
 		System.out.println(new String(Base64Encrypt.encode(str.getBytes())));
-		System.out.println(new String(Base64Encrypt.encode2(str.getBytes())));
-		System.out.println(new String(Base64Encrypt.encode3(str.getBytes())));
+		System.out.println(new String(Base64Encrypt.encodeTwo(str.getBytes())));
 	}
 	@Test
 	public void test2() {
