@@ -162,7 +162,7 @@ public class Base64Encrypt {
      * @param offset
      * @return
      */
-	public static byte[] encodeTwo(byte[] data, int offset) {
+	public static byte[] encodeTwo(byte[] data, int offset) {//TODO 有bug，需要修复
 				//可变可改，应该是方法参数
 				int len = data.length;
 				
@@ -180,8 +180,6 @@ public class Base64Encrypt {
 				int carryOver = 0;
 				if ((offset | len | (data.length - (len + offset)) | (offset + len)) < 0)
 					throw new IndexOutOfBoundsException();
-
-				
 				
 				int j=0;
 				for (int i = 0; i < len; i++) {
