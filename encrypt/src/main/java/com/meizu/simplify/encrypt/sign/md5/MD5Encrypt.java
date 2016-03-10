@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt.sign.md5;
 
 import java.nio.charset.Charset;
 
-import com.meizu.simplify.encrypt.Base16;
+import com.meizu.simplify.encrypt.Base16Encrypt;
 import com.meizu.simplify.encrypt.sign.Sign;
 
 /**
@@ -52,7 +52,7 @@ public class MD5Encrypt {
 			return "";
 		byte[] data = plaintext.getBytes(CHARSET);
 		byte[] hash = Sign.hashSign(data,"MD5");
-		return Base16.encode16ToString(hash);
+		return Base16Encrypt.encode16ToString(hash);
 	}
 	
 	

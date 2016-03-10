@@ -13,7 +13,7 @@ package com.meizu.simplify.encrypt;
  * @version Version 0.1
  *
  */
-public class Base16 {
+public class Base16Encrypt {
 	final static byte[] DIGITS = new byte[64];
 
 	// 以下是password签名加密相关
