@@ -1,11 +1,8 @@
 package com.meizu.simplify.encrypt.base64;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * <p><b>Title:</b><i>base64编码算法-正统算法</i></p>
