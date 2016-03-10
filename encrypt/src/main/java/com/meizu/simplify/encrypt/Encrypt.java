@@ -52,19 +52,6 @@ public final class Encrypt {
 		return prefix + Base64VariantEncrypt.encode64String(bytes);
 	}
 
-	/**
-	 * 
-	 * 方法用途: 数据表密码加密<br>
-	 * 操作步骤: TODO<br>
-	 * @param plaintext
-	 * @return
-	 */
-	public static String passwordEncrypt(String plaintext) {
-		if (plaintext == null)
-			return plaintext;
-		String md5 = MD5Encrypt.hashMd5(plaintext);
-		return fieldEncrypt("password", md5);
-	}
 
 	public static void rc4crypt(byte[] src, byte[] keys) {
 		int x = 0;

@@ -56,21 +56,6 @@ public class Decrypt {
 		return new String(bytes, CHARSET);
 	}
 
-	/**
-	 * 
-	 * 方法用途: 密码验证<br>
-	 * 操作步骤: TODO<br>
-	 * @param plaintext
-	 * @param ciphertext
-	 * @return
-	 */
-	public static boolean passwordVerify(String plaintext, String ciphertext) {
-		if (plaintext == null || ciphertext == null)
-			return false;
-		String decrypted = fieldDecrypt(ciphertext);
-		String md5 = MD5Encrypt.hashMd5(plaintext);
-		return md5.equals(decrypted);
-	}
 
 	/**
 	 * 

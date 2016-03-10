@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.meizu.simplify.encrypt.file.FileDecrypt;
 import com.meizu.simplify.encrypt.file.FileEncrypt;
+import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: AES_256_CBC 256位加密算法-存在的问题和优势</p>
@@ -28,7 +29,7 @@ public class EncryptTest {
 	@Test
 	public void testPasswordEncrypt() {
 		System.out.println(new String(Keys.defaultFileKey()));
-		System.out.println(Encrypt.passwordEncrypt("ros123"));
+		System.out.println(PasswordEncrypt.passwordEncrypt("ros123"));
 	}
 	@Test
 	public void testNum() {
@@ -63,10 +64,12 @@ public class EncryptTest {
 		print("用户名解密结果：" + usernameDecrtyed);
 
 		print("=============加密密码===========");
-		String passwordEncrtyed = Encrypt.passwordEncrypt(password);
-		print("密码加密结果：" + passwordEncrtyed);
+		String passwordEncrtyed = Encrypt.fieldEncrypt("password", MD5Encrypt.hashMd5(password));
+		print("密码加密结果1：" + passwordEncrtyed);
+		passwordEncrtyed = PasswordEncrypt.passwordEncrypt(password);
+		print("密码加密结果2：" + passwordEncrtyed);
 		print("=============验证密码============");
-		boolean passwordVerify = Decrypt.passwordVerify(password, passwordEncrtyed);
+		boolean passwordVerify = PasswordEncrypt.passwordVerify(password, passwordEncrtyed);
 		print("密码验证结果：" + passwordVerify);
 
 		print("=============加密姓名============");
