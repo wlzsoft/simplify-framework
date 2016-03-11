@@ -272,7 +272,7 @@ public class Base64Encrypt {
 		} else {
 			bytes = new byte[4 * ((realCount / 3) + 1)];
 		}
-//		第二种算法开始
+//		第一种算法开始
 		int dataLength = (data.length - modulus);
 		int a1, a2, a3;
 		for (int i = offset, j = 0; i < dataLength; i += 3, j += 4) {
