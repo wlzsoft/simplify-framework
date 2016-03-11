@@ -230,11 +230,12 @@ public class Base64Encrypt {
 					}
 					charCount++;
 
+					//文件字节流方式，才需要换行存储到文件，因为文件较大的时候，这里只处理段文本，无需换行
 					// Add newline every 76 output chars (that's 57 input chars)
-					if (charCount % 57 == 0) {
-						bytes[j] = ('\n');
-						j++;
-					}
+//					if (charCount % 57 == 0) {
+//						bytes[j] = ('\n');
+//						j++;
+//					}
 				}
 
 				// Handle leftover bytes
@@ -244,12 +245,12 @@ public class Base64Encrypt {
 
 	private static void endEncodeTwo(byte[] bytes, int modulus, int carryOver, int encodedIndex) {
 		if (modulus == 1) { // one leftover
-			int lookup = (carryOver << 4) & 63;
+			int lookup = (carryOver << 4) & 0x3f;
 			bytes[encodedIndex] = (encodingTable[lookup]);
 			bytes[encodedIndex+1] = ('=');
 			bytes[encodedIndex+2] = ('=');
 		} else if (modulus == 2) { // two leftovers
-			int lookup = (carryOver << 2) & 63;
+			int lookup = (carryOver << 2) & 0x3f;
 			bytes[encodedIndex] = (encodingTable[lookup]);
 			bytes[encodedIndex+1] = ('=');
 		}

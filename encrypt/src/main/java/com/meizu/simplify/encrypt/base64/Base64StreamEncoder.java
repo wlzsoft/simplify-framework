@@ -112,8 +112,12 @@ public class Base64StreamEncoder extends FilterOutputStream {
     }
   }*/
   
+  //字节流文件转换成base64的方式，建议使用上面方法
   public void write(byte[] buf) throws IOException {
 		byte[] bytes = Base64Encrypt.encodeTwo(buf, 0);
+//		if (bytes.length % 57 == 0) {
+//	        out.write('\n');
+//	      }
 		out.write(bytes);
 		try (OutputStream ostream = out) {
 			out.flush();
