@@ -25,6 +25,7 @@ public class Base64Encrypt {
 	
 	/**
 	 * 注意：字符 '/'有问题的情况下，替换成'-'试试，把后面的'-'删除。
+	 * 目前编码表示65个字符，删掉一个是否会有问题？
 	 */
 	public static final byte[] encodingTable = {
 	(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E',
@@ -39,7 +40,7 @@ public class Base64Encrypt {
 	(byte) 't', (byte) 'u', (byte) 'v', (byte) 'w', (byte) 'x',
 	(byte) 'y', (byte) 'z', (byte) '0', (byte) '1', (byte) '2',
 	(byte) '3', (byte) '4', (byte) '5', (byte) '6', (byte) '7',
-	(byte) '8', (byte) '9', (byte) '+', (byte) '/', (byte) '-'
+	(byte) '8', (byte) '9', (byte) '+', (byte) '/'//, (byte) '-'
 	};
 	/*
      * set up the decoding table.
