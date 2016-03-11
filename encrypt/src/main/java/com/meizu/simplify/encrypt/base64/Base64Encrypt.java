@@ -258,10 +258,7 @@ public class Base64Encrypt {
 	private static void endEncode(byte[] data, byte[] bytes, int modulus) {
 		int b1, b2, b3;
 		int d1,d2;
-		switch (modulus) {
-		case 0: /* nothing left to do */
-			break;
-		case 1:
+		if (modulus == 1) {
 			d1 = data[data.length - 1] & 0xff;
 			b1 = (d1 >>> 2) & 0x3f;
 			b2 = (d1 << 4) & 0x3f;
@@ -269,9 +266,7 @@ public class Base64Encrypt {
 			bytes[bytes.length - 3] = encodingTable[b2];
 			bytes[bytes.length - 2] = (byte) '=';
 			bytes[bytes.length - 1] = (byte) '=';
-			break;
-
-		case 2:
+		} else if (modulus == 2) {
 			d1 = data[data.length - 2] & 0xff;
 			d2 = data[data.length - 1] & 0xff;
 			b1 = (d1 >>> 2) & 0x3f;
@@ -281,7 +276,8 @@ public class Base64Encrypt {
 			bytes[bytes.length - 3] = encodingTable[b2];
 			bytes[bytes.length - 2] = encodingTable[b3];
 			bytes[bytes.length - 1] = (byte) '=';
-			break;
+		} else if(modulus == 0) {
+			/* nothing left to do */
 		}
 	}
     /**
