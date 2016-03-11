@@ -286,9 +286,9 @@ public class Base64Encrypt {
 		}
 		
 		/*
-                * process the tail end.
-                */
-                int b1, b2, b3;
+        * process the tail end.
+        */
+        int b1, b2, b3;
 		int d1,d2;
 		switch (modulus) {
 		case 0: /* nothing left to do */
