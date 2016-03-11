@@ -1,6 +1,5 @@
 package com.meizu;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -10,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -81,6 +82,10 @@ public class HttpResponse implements HttpServletResponse{
 			bw.write("Accept-Ranges: bytes\r\n");
 			bw.write("Content-Length: " + getBody().length + "\r\n");
 			bw.write("Content-Type: text/html\r\n");
+			Set<Entry<String,String>> entryHead = responseHeader.entrySet();
+			for (Entry<String, String> entry : entryHead) {
+				bw.write(entry.getKey()+": "+entry.getValue()+"\r\n");
+			}
 			bw.write("Set-Cookie: "
 					+ getResponseHeader().get("Set-Cookie") + "\r\n");
 			bw.write("\r\n");
@@ -99,6 +104,10 @@ public class HttpResponse implements HttpServletResponse{
 		bw.append("Accept-Ranges: bytes\r\n");
 //		bw.append("Content-Length: " + "getBody().length" + "\r\n");//TODO 目前是http1.0状态，这个属性可有可无
 		bw.append("Content-Type: text/html\r\n");
+		Set<Entry<String,String>> entryHead = responseHeader.entrySet();
+		for (Entry<String, String> entry : entryHead) {
+			bw.write(entry.getKey()+": "+entry.getValue()+"\r\n");
+		}
 		bw.append("Set-Cookie: "
 				+ getResponseHeader().get("Set-Cookie") + "\r\n");
 		bw.append("\r\n");
@@ -125,7 +134,16 @@ public class HttpResponse implements HttpServletResponse{
 		return contentType;
 	}
 	
+	@Override
+	public void setHeader(String name, String value) {
+		responseHeader.put(name, value);
+	}
 
+	@Override
+	public String getHeader(String name) {
+		return responseHeader.get(name);
+	}
+	
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
 		// TODO Auto-generated method stub
@@ -263,11 +281,7 @@ public class HttpResponse implements HttpServletResponse{
 		
 	}
 
-	@Override
-	public void setHeader(String name, String value) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void addHeader(String name, String value) {
@@ -305,11 +319,7 @@ public class HttpResponse implements HttpServletResponse{
 		return 0;
 	}
 
-	@Override
-	public String getHeader(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public Collection<String> getHeaders(String name) {

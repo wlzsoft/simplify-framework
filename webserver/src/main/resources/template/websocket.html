@@ -9,43 +9,70 @@
         NoticeClient.socket = null;
 
         NoticeClient.connect = (function(host) {
-            if ('WebSocket' in window) {
-                NoticeClient.socket = new WebSocket(host);
-            } else if ('MozWebSocket' in window) {
-                NoticeClient.socket = new MozWebSocket(host);
-            } else {
-            	console.log('Error: WebSocket is not supported by this browser.');
-                return;
-            }
-
-            NoticeClient.socket.onopen = function () {
+        	
+        	
+        	
+        	 try{
+                 if(NoticeClient.socket == null || NoticeClient.socket.readyState > 1 ) {
+                	 if ('WebSocket' in window) {
+     	                NoticeClient.socket = new WebSocket(host);
+     	            } else if ('MozWebSocket' in window) {
+     	                NoticeClient.socket = new MozWebSocket(host);
+     	            } else {
+     	            	console.log('Error: WebSocket is not supported by this browser.');
+     	                return;
+     	            }
+                 } else {
+                     alert('已经连接啦，请不要重复连接！');
+                 }
+        	 }catch(e){
+                 alert('error:'+e.data);
+                 return;
+             }
+            
+            var readyState = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
+            NoticeClient.socket.onopen = function (evt) {
             	console.log("通知中心已经连接");
+            	console.log('connect success:'+readyState[NoticeClient.socket.readyState]);
             	NoticeClient.socket.send("通知中心已经连接上");
             };
-
-            NoticeClient.socket.onclose = function () {
-            	console.log("通知中心已经关闭");
+            NoticeClient.socket.onclose = function (evt) {
+            	console.log("通知中心已经关闭:"+readyState[NoticeClient.socket.readyState]);
             };
-
             NoticeClient.socket.onmessage = function (message) {
             	console.log(message.data);
+            };
+            NoticeClient.socket.onerror = function(evt) { 
+            	console.log('connect error:'+evt.data); 
             };
             
         });
 
         NoticeClient.init = function() {
             if (window.location.protocol == 'http:') {
-                NoticeClient.connect('ws://' + window.location.host + '/websocket/notice');
+                //NoticeClient.connect('ws://' + window.location.host + '');
+            	NoticeClient.connect('ws://127.0.0.1:9880');
             } else {
                 NoticeClient.connect('wss://' + window.location.host + '/websocket/notice');
             }
         };
-
         NoticeClient.init();
-
+        function connect() {
+           NoticeClient.init();
+        }
+        function send() {
+        	NoticeClient.socket.send(document.getElementById('msg').value);
+        }
+        function disconnect() {
+        	NoticeClient.socket.close();
+        }
 </script>
 </HEAD>
 <BODY>
+<input id="msg" type="text"> 
+<button onclick="connect()">Connect</button>
+<button onclick="send()">Send</button>
+<button onclick="disconnect()">Disconnect</button>
 <TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%"  
 border=0>
   <TR>

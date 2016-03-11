@@ -1,13 +1,11 @@
 package com.meizu;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Date;
 
+import com.meizu.WebSocketServer.Handler;
 import com.meizu.util.SessionIdFactory;
 
 /**
@@ -38,11 +36,11 @@ Servlet3.0的solution:
  */
 public class WebThread implements Runnable {
 	private Socket socket;
-	private final BufferedReader br;
+	private final InputStream br;
 	public WebThread(Socket socket) throws Exception {
 		
 		this.socket = socket;
-		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		br = socket.getInputStream();
 		
 	}
 	
@@ -56,13 +54,14 @@ public class WebThread implements Runnable {
 			
 			response = new HttpResponse(this.socket);
 			// 开始解析HttpRequest
-			String requestLine = br.readLine();
+			BufferedReader tr = new BufferedReader(new InputStreamReader(br));
+			String requestLine = tr.readLine();
 			if (requestLine != null) {
 				System.out.println(requestLine);
 				request.parseRequestLine(requestLine);
 				boolean flag = true;
 				while (flag) {
-					String read = br.readLine();
+					String read = tr.readLine();
 					if (read == null || read.trim().length() < 1) {// 当到请求正文的时为0和内容为空的时候退出
 						break;
 					} else {
@@ -96,7 +95,7 @@ public class WebThread implements Runnable {
 				if (contentLength != null) {
 					int length = Integer.parseInt(contentLength);
 					char[] buffer = new char[length];
-					br.read(buffer);
+					tr.read(buffer);
 					System.out.println("datas : " + new String(buffer));
 					String postData = new String(buffer);
 					String[] parameters = postData.split("&");
@@ -105,6 +104,11 @@ public class WebThread implements Runnable {
 						request.getParameters().put(datas[0], datas[1]);
 					}
 					request.setBody(buffer);
+				}
+				String upgrade = request.getHeader("Upgrade");
+				if(upgrade!= null&&upgrade.equals("websocket")) {
+					new WebSocketServer().new Handler(this.socket,br,request).exec();
+					return;
 				}
 				// 解析请求头完毕
 				HttpRoute.route(request, response);

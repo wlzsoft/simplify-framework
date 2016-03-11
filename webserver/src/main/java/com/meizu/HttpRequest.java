@@ -194,6 +194,11 @@ public class HttpRequest implements HttpServletRequest{
 	}
 
 	@Override
+	public String getHeader(String name) {
+		return requestHeader.get(name);
+	}
+	
+	@Override
 	public String getCharacterEncoding() {
 		// TODO Auto-generated method stub
 		return null;
@@ -406,11 +411,7 @@ public class HttpRequest implements HttpServletRequest{
 		return 0;
 	}
 
-	@Override
-	public String getHeader(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public Enumeration<String> getHeaders(String name) {
