@@ -210,8 +210,5 @@ public class Base64VariantEncrypt {
 		}
 		return decodedData;
 	}
-	//以上是base64相关
-	
-
 	
 }
