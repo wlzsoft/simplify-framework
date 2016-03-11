@@ -167,7 +167,7 @@ public class Base64Encrypt {
      * @param offset
      * @return
      */
-	public static byte[] encodeTwo(byte[] data, int offset) {//TODO 有bug，需要修复
+	public static byte[] encodeTwo(byte[] data, int offset) {
 				//可变可改，应该是方法参数
 				int len = data.length;
 				
