@@ -59,8 +59,8 @@ public class Base64VariantEncrypt {
 		return new String(encoded, CHARSET);
 	}
 
-	private static byte[] encode64(byte[] binaryData) {
-		long binaryDataLength = binaryData.length;
+	private static byte[] encode64(byte[] data) {
+		long binaryDataLength = data.length;
 		long lengthDataBits = binaryDataLength * 8;
 		long fewerThan24bits = lengthDataBits % 24;
 		long tripletCount = lengthDataBits / 24;
@@ -79,7 +79,7 @@ public class Base64VariantEncrypt {
 					"Input array too big, output array would be bigger than Integer.MAX_VALUE=" + Integer.MAX_VALUE);
 		}
 		int encodedDataLength = (int) encodedDataLengthLong;
-		byte encodedData[] = new byte[encodedDataLength];
+		byte[] bytes = new byte[encodedDataLength];
 
 		byte k, l, b1, b2, b3;
 
@@ -90,9 +90,9 @@ public class Base64VariantEncrypt {
 		// log.debug("number of triplets = " + numberTriplets);
 		for (i = 0; i < tripletCount; i++) {
 			dataIndex = i * 3;
-			b1 = binaryData[dataIndex];
-			b2 = binaryData[dataIndex + 1];
-			b3 = binaryData[dataIndex + 2];
+			b1 = data[dataIndex];
+			b2 = data[dataIndex + 1];
+			b3 = data[dataIndex + 2];
 
 			// log.debug("b1= " + b1 +", b2= " + b2 + ", b3= " + b3);
 
@@ -103,13 +103,13 @@ public class Base64VariantEncrypt {
 			byte val2 = ((b2 & 0xffffff80) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
 			byte val3 = ((b3 & 0xffffff80) == 0) ? (byte) (b3 >> 6) : (byte) ((b3) >> 6 ^ 0xfc);
 
-			encodedData[encodedIndex] = encodingTable[val1];
+			bytes[encodedIndex] = encodingTable[val1];
 			// log.debug( "val2 = " + val2 );
 			// log.debug( "k4 = " + (k<<4) );
 			// log.debug( "vak = " + (val2 | (k<<4)) );
-			encodedData[encodedIndex + 1] = encodingTable[val2 | (k << 4)];
-			encodedData[encodedIndex + 2] = encodingTable[(l << 2) | val3];
-			encodedData[encodedIndex + 3] = encodingTable[b3 & 0x3f];
+			bytes[encodedIndex + 1] = encodingTable[val2 | (k << 4)];
+			bytes[encodedIndex + 2] = encodingTable[(l << 2) | val3];
+			bytes[encodedIndex + 3] = encodingTable[b3 & 0x3f];
 
 			encodedIndex += 4;
 		}
@@ -117,32 +117,41 @@ public class Base64VariantEncrypt {
 		// form integral number of 6-bit groups
 		dataIndex = i * 3;
 
+		endEncode(data, fewerThan24bits, bytes, encodedIndex, dataIndex);
+		return bytes;
+	}
+
+	private static void endEncode(byte[] data, long fewerThan24bits, byte[] bytes, int encodedIndex,
+			int dataIndex) {
+		byte k;
+		byte l;
+		byte b1;
+		byte b2;
 		if (fewerThan24bits == 8) {
-			b1 = binaryData[dataIndex];
+			b1 = data[dataIndex];
 			k = (byte) (b1 & 0x03);
 			// log.debug("b1=" + b1);
 			// log.debug("b1<<2 = " + (b1>>2) );
 			byte val1 = ((b1 & 0xffffff80) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
-			encodedData[encodedIndex] = encodingTable[val1];
-			encodedData[encodedIndex + 1] = encodingTable[k << 4];
-			encodedData[encodedIndex + 2] = '.';
-			encodedData[encodedIndex + 3] = '.';
+			bytes[encodedIndex] = encodingTable[val1];
+			bytes[encodedIndex + 1] = encodingTable[k << 4];
+			bytes[encodedIndex + 2] = '.';
+			bytes[encodedIndex + 3] = '.';
 		} else if (fewerThan24bits == 0x10) {
 
-			b1 = binaryData[dataIndex];
-			b2 = binaryData[dataIndex + 1];
+			b1 = data[dataIndex];
+			b2 = data[dataIndex + 1];
 			l = (byte) (b2 & 0x0f);
 			k = (byte) (b1 & 0x03);
 
 			byte val1 = ((b1 & 0xffffff80) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
 			byte val2 = ((b2 & 0xffffff80) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
 
-			encodedData[encodedIndex] = encodingTable[val1];
-			encodedData[encodedIndex + 1] = encodingTable[val2 | (k << 4)];
-			encodedData[encodedIndex + 2] = encodingTable[l << 2];
-			encodedData[encodedIndex + 3] = '.';
+			bytes[encodedIndex] = encodingTable[val1];
+			bytes[encodedIndex + 1] = encodingTable[val2 | (k << 4)];
+			bytes[encodedIndex + 2] = encodingTable[l << 2];
+			bytes[encodedIndex + 3] = '.';
 		}
-		return encodedData;
 	}
 
 	public static byte[] decode64(String base64) {

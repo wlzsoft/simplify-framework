@@ -238,22 +238,50 @@ public class Base64Encrypt {
 				}
 
 				// Handle leftover bytes
-				if (charCount % 3 == 1) { // one leftover
-					int lookup = (carryOver << 4) & 63;
-					bytes[j] = (encodingTable[lookup]);
-					j++;
-					bytes[j] = ('=');
-					j++;
-					bytes[j] = ('=');
-					j++;
-				} else if (charCount % 3 == 2) { // two leftovers
-					int lookup = (carryOver << 2) & 63;
-					bytes[j] = (encodingTable[lookup]);
-					j++;
-					bytes[j] = ('=');
-					j++;
-				}
+				endEncodeTwo(bytes, charCount % 3, carryOver, j);
 				return bytes;
+	}
+
+	private static void endEncodeTwo(byte[] bytes, int modulus, int carryOver, int encodedIndex) {
+		if (modulus == 1) { // one leftover
+			int lookup = (carryOver << 4) & 63;
+			bytes[encodedIndex] = (encodingTable[lookup]);
+			bytes[encodedIndex+1] = ('=');
+			bytes[encodedIndex+2] = ('=');
+		} else if (modulus == 2) { // two leftovers
+			int lookup = (carryOver << 2) & 63;
+			bytes[encodedIndex] = (encodingTable[lookup]);
+			bytes[encodedIndex+1] = ('=');
+		}
+	}
+	private static void endEncode(byte[] data, byte[] bytes, int modulus) {
+		int b1, b2, b3;
+		int d1,d2;
+		switch (modulus) {
+		case 0: /* nothing left to do */
+			break;
+		case 1:
+			d1 = data[data.length - 1] & 0xff;
+			b1 = (d1 >>> 2) & 0x3f;
+			b2 = (d1 << 4) & 0x3f;
+			bytes[bytes.length - 4] = encodingTable[b1];
+			bytes[bytes.length - 3] = encodingTable[b2];
+			bytes[bytes.length - 2] = (byte) '=';
+			bytes[bytes.length - 1] = (byte) '=';
+			break;
+
+		case 2:
+			d1 = data[data.length - 2] & 0xff;
+			d2 = data[data.length - 1] & 0xff;
+			b1 = (d1 >>> 2) & 0x3f;
+			b2 = ((d1 << 4) | (d2 >>> 4)) & 0x3f;
+			b3 = (d2 << 2) & 0x3f;
+			bytes[bytes.length - 4] = encodingTable[b1];
+			bytes[bytes.length - 3] = encodingTable[b2];
+			bytes[bytes.length - 2] = encodingTable[b3];
+			bytes[bytes.length - 1] = (byte) '=';
+			break;
+		}
 	}
     /**
      * 
@@ -288,36 +316,12 @@ public class Base64Encrypt {
 		/*
         * process the tail end.
         */
-        int b1, b2, b3;
-		int d1,d2;
-		switch (modulus) {
-		case 0: /* nothing left to do */
-			break;
-		case 1:
-			d1 = data[data.length - 1] & 0xff;
-			b1 = (d1 >>> 2) & 0x3f;
-			b2 = (d1 << 4) & 0x3f;
-			bytes[bytes.length - 4] = encodingTable[b1];
-			bytes[bytes.length - 3] = encodingTable[b2];
-			bytes[bytes.length - 2] = (byte) '=';
-			bytes[bytes.length - 1] = (byte) '=';
-			break;
-
-		case 2:
-			d1 = data[data.length - 2] & 0xff;
-			d2 = data[data.length - 1] & 0xff;
-			b1 = (d1 >>> 2) & 0x3f;
-			b2 = ((d1 << 4) | (d2 >>> 4)) & 0x3f;
-			b3 = (d2 << 2) & 0x3f;
-			bytes[bytes.length - 4] = encodingTable[b1];
-			bytes[bytes.length - 3] = encodingTable[b2];
-			bytes[bytes.length - 2] = encodingTable[b3];
-			bytes[bytes.length - 1] = (byte) '=';
-			break;
-		}
+        endEncode(data, bytes, modulus);
 		return bytes;
 
 	}
+
+	
 
 	private static byte[] discardNonBase64Bytes(byte[] data) {
 		byte[] temp = new byte[data.length];
