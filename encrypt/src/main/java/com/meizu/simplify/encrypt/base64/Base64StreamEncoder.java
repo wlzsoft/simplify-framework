@@ -44,10 +44,16 @@ public class Base64StreamEncoder extends FilterOutputStream {
 	  byte[] encodingTable = Base64Encrypt.encodingTable;
 	  int charCount = 0;
 	  int carryOver = 0;
+	  //*Writes the given byte array to the output stream in an 
+      //* encoded form.
+      //* @param b the data to be written
+      //* @param off the start offset of the data
+      //* @param len the length of the data
     // This could of course be optimized
     for (int i = 0; i < len; i++) {
       int b = buf[off + i];
 
+//Writes the given byte to the output stream in an encoded form
       // Take 24-bits from three octets, translate into four encoded chars
       // Break lines at 76 chars
       // If necessary, pad with 0 bits on the right at the end
@@ -89,7 +95,10 @@ public class Base64StreamEncoder extends FilterOutputStream {
       }
     
     }
- // Handle leftover bytes
+    
+   //Closes the stream, this MUST be called to ensure proper padding is
+   //written to the end of the output stream.
+   // Handle leftover bytes
     if (charCount % 3 == 1) {  // one leftover
       int lookup = (carryOver << 4) & 63;
       out.write(encodingTable[lookup]);

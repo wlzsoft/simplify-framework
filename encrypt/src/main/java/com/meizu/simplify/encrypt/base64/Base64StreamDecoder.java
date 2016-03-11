@@ -43,7 +43,14 @@ public class Base64StreamDecoder extends FilterInputStream {
   public Base64StreamDecoder(InputStream in) {
     super(in);
   }
-
+  /**
+   * Returns the next decoded character from the stream, or -1 if
+   * end of stream was reached.
+   *
+   * @return  the decoded character, or -1 if the end of the
+   *      input stream is reached
+   * @exception IOException if an I/O error occurs
+   */
   public int read() throws IOException {
     // Read the next non-whitespace character
     int x;
