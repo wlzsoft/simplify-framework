@@ -1,5 +1,6 @@
 package com.meizu.simplify.encrypt.base64;
 
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -29,43 +30,25 @@ import java.io.InputStream;
  * @version 0.1
  *
  */
-public class Base64StreamDecoder /*extends FilterInputStream*/ {
+public class Base64StreamDecoder extends FilterInputStream {
 
-  private static final char[] decodingTable = {
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-    'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
-    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-    'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-    'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-    '8', '9', '+', '/'
-  };
+  
 
   // A mapping between char values and six-bit integers
-  private static final int[] ints = new int[128];
+  private static final int[] decodingTable = new int[128];
   static {
     for (int i = 0; i < 64; i++) {
-      ints[decodingTable[i]] = i;
+      decodingTable[Base64Encrypt.encodingTable[i]] = i;
     }
   }
 
-  private int charCount;
-  private int carryOver;
-  
-  InputStream in;
+  private int charCount = 0;
+  private int carryOver = 0;
 
   public Base64StreamDecoder(InputStream in) {
-	  this.in = in;
+    super(in);
   }
 
-  /**
-   * Returns the next decoded character from the stream, or -1 if
-   * end of stream was reached.
-   *
-   * @return  the decoded character, or -1 if the end of the
-   *      input stream is reached
-   * @exception IOException if an I/O error occurs
-   */
   public int read() throws IOException {
     // Read the next non-whitespace character
     int x;
@@ -83,7 +66,7 @@ public class Base64StreamDecoder /*extends FilterInputStream*/ {
     }
 
     // Convert from raw form to 6-bit form
-    x = ints[x];
+    x = decodingTable[x];
 
     // Calculate which character we're decoding now
     int mode = (charCount - 1) % 4;
@@ -148,11 +131,7 @@ public class Base64StreamDecoder /*extends FilterInputStream*/ {
     return i;
   }
 
-  public int read(byte b[]) throws IOException {
-      return read(b, 0, b.length);
-  }
-  public void close() throws IOException {
-      in.close();
-  }
+  
+
   
 }

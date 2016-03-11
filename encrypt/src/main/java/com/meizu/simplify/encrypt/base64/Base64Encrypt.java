@@ -26,7 +26,7 @@ public class Base64Encrypt {
 	/**
 	 * 注意：字符 '/'有问题的情况下，替换成'-'试试，把后面的'-'删除。
 	 */
-	private static final byte[] encodingTable = {
+	public static final byte[] encodingTable = {
 	(byte) 'A', (byte) 'B', (byte) 'C', (byte) 'D', (byte) 'E',
 	(byte) 'F', (byte) 'G', (byte) 'H', (byte) 'I', (byte) 'J',
 	(byte) 'K', (byte) 'L', (byte) 'M', (byte) 'N', (byte) 'O',
