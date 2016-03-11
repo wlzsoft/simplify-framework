@@ -35,12 +35,7 @@ public class Base64StreamDecoder extends FilterInputStream {
   
 
   // A mapping between char values and six-bit integers
-  private static final int[] decodingTable = new int[128];
-  static {
-    for (int i = 0; i < 64; i++) {
-      decodingTable[Base64Encrypt.encodingTable[i]] = i;
-    }
-  }
+  private static final byte[] decodingTable = Base64Encrypt.decodingTable;;
 
   private int charCount = 0;
   private int carryOver = 0;

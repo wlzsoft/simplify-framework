@@ -44,10 +44,10 @@ public class Base64Encrypt {
 	/*
      * set up the decoding table.
      */
-	private static final byte[] decodingTable;
+	public static final byte[] decodingTable = new byte[128];
+//	public static final byte[] decodingTable = new byte[''];
 	static {
-		decodingTable = new byte[128];
-//		decodingTable = new byte[''];
+		//方式一
 		for (int i = 0; i < 128; i++) {
 			decodingTable[i] = (byte) -1;
 		}
@@ -62,7 +62,11 @@ public class Base64Encrypt {
 		}
 		decodingTable['+'] = 62;
 		decodingTable['/'] = 63;
-	}
+		//方式二 TODO
+	    /*for (int i = 0; i < 64; i++) {
+	      decodingTable[Base64Encrypt.encodingTable[i]] = i;
+	    }*/
+	  }
 
 	
     /**
