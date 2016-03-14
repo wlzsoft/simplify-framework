@@ -211,7 +211,7 @@ public class SQLBuilder<T> {
                 .append(StringUtil.join(values, ",")).append(")");
         String sql = sqlBuild.toString();
          
-        logger.debug("生成的SQL为: " + sql);
+        logger.info("生成的SQL为: " + sql);
         return sql;
     }
     
@@ -274,7 +274,7 @@ public class SQLBuilder<T> {
          
         String sql = sqlBuild.toString();
          
-        logger.debug("生成的SQL为: " + sql);
+        logger.info("生成的SQL为: " + sql);
          
         return sql;
     }
@@ -309,7 +309,7 @@ public class SQLBuilder<T> {
          
         String sql = sqlBuild.toString();
          
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
         
         return sql+" where "+pkName+" = ?";
     }
@@ -341,7 +341,7 @@ public class SQLBuilder<T> {
             	}
             }
         }
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
         return sql+" where "+value;
     }
      
@@ -350,7 +350,7 @@ public class SQLBuilder<T> {
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("DELETE FROM ").append(getTableName());
         String sql = sqlBuild.toString();
-        logger.debug("生成的SQL为: " + sql);
+        logger.info("生成的SQL为: " + sql);
         return sql;
     }
      
@@ -389,7 +389,7 @@ public class SQLBuilder<T> {
          
         String sql = sqlBuild.toString();
          
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
          
         return sql;
     }
@@ -446,7 +446,7 @@ public class SQLBuilder<T> {
                 .append(getTableName())
                 .append(" WHERE " + pkName + " in (" + idArr+")");
         String sql = sqlBuild.toString();
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
          
         return sql;
          
@@ -483,7 +483,7 @@ public class SQLBuilder<T> {
                 .append(getTableName())
                 .append(" WHERE " + name + " in (" + values +")");
         String sql = sqlBuild.toString();
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
          
         return sql;
 	}
@@ -498,7 +498,7 @@ public class SQLBuilder<T> {
                 .append(getTableName());
         String sql = sqlBuild.toString();
          
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
          
         return sql;
     }
@@ -514,7 +514,7 @@ public class SQLBuilder<T> {
                 .append(getTableName());
         String sql = sqlBuild.toString();
          
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
          
         return sql;
     }
@@ -527,7 +527,7 @@ public class SQLBuilder<T> {
         		.append(" WHERE " + where);
         String sql = sqlBuild.toString();
          
-        //logger.debug("生成的SQL为: " + sql);
+        //logger.info("生成的SQL为: " + sql);
          
         return sql;
 	}

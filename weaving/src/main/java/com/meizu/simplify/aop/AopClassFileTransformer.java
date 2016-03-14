@@ -165,7 +165,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	                	ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
     	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
     	                	ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
-    	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime) +\"纳秒.\");");
+    	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)*10000000 +\"微秒.\");");
     		        }
     		        return ctclass;
     	        } catch (CannotCompileException e) {
