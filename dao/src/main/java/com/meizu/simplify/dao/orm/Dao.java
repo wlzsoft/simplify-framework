@@ -12,7 +12,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,11 +95,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 		List<String> columnArr = new ArrayList<>(currentColumnFieldNames.keySet());
 		List<String> otherIdColumn = new ArrayList<>();
-		for (String columnName : columnArr) {
+		/*for (String columnName : columnArr) {
 			if(!columnName.equals(pkName)) {
 				otherIdColumn.add(columnName);
 			}
-		}
+		}*/
+		
+		Stream.of(columnArr)
+//		.parallel()//并行,这里不可以使用并行处理，要保证顺序
+		.filter(columnName -> !columnName.equals(pkName)).forEach(columnNames -> otherIdColumn.addAll(columnNames));
+		
+		/*Collections.sort(otherIdColumn,String::compareToIgnoreCase);
+		String [] copyListToArray = Stream.of(otherIdColumn).toArray(String[]::new); 
+		//类似hadoop中的map 和 reduce，用于并行计算
+		Stream.of(otherIdColumn).map(ArrayList<String>::new).peek(System.out::println).findFirst();*/
+		
 		
 		sqlBuilder = new SQLBuilder<T>(otherIdColumn,columnArr,
 				table.name(), pkName,columnsMeta );
