@@ -43,9 +43,8 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean exists(K key) {
-		Boolean ret = CacheExecute.execute(key, k -> {
-  				return CacheExecute.getJedis(mod_name).exists(k.toString());
-  		},mod_name);
+		Boolean ret = CacheExecute.execute(key, k -> CacheExecute.getJedis(mod_name).exists(k.toString()),mod_name);
+//		Boolean ret = CacheExecute.execute(key, k -> {return CacheExecute.getJedis(mod_name).exists(k.toString());},mod_name);
 		return ret;
 			
 	}
