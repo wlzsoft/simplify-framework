@@ -21,11 +21,9 @@ import org.slf4j.LoggerFactory;
  * @version Version 0.1
  *
  */
-//@FunctionalInterface
 public interface IDataCallback<T> {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(IDataCallback.class);
-//	public abstract void resultCall();
 
 	/**
 	 * 

@@ -43,11 +43,8 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean exists(K key) {
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
-  			@Override
-  			public Boolean call(K key) {
-  				return CacheExecute.getJedis(mod_name).exists(key.toString());
-  			}
+		Boolean ret = CacheExecute.execute(key, k -> {
+  				return CacheExecute.getJedis(mod_name).exists(k.toString());
   		},mod_name);
 		return ret;
 			
@@ -62,15 +59,12 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public V get(K key) {
 
-		return CacheExecute.execute(key, new ICacheExecuteCallbak<K, V>() {
-			@Override
-			public V call(K key) {
-				byte[] ret = CacheExecute.getJedis(mod_name).get(SerializeUtil.serialize(key));
+		return CacheExecute.execute(key, k ->  {
+				byte[] ret = CacheExecute.getJedis(mod_name).get(SerializeUtil.serialize(k));
 				if (ret != null && ret.length > 0) {
 					return (V) SerializeUtil.unserialize(ret);
 				}
 				return null;
-			}
 		},mod_name);
 	}
 	
@@ -83,10 +77,8 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public  V get(K key, Class<V> type) {
-		return CacheExecute.execute(key, new ICacheExecuteCallbak<K, V>() {
-			@Override
-			public V call(K key) {
-				byte[] ret = CacheExecute.getJedis(mod_name).get(SerializeUtil.serialize(key));
+		return CacheExecute.execute(key, k -> {
+				byte[] ret = CacheExecute.getJedis(mod_name).get(SerializeUtil.serialize(k));
 				if (ret != null && ret.length > 0) {
 					V value = (V) SerializeUtil.unserialize(ret);
 					if (type != null && !type.isInstance(value)) {
@@ -95,7 +87,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 					return value;
 				}
 				return null;
-			}
 		},mod_name);
 	  }
 	
@@ -146,15 +137,12 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
 		
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
-  			@Override
-  			public Boolean call(K key) {
-  				String ret = CacheExecute.getJedis(mod_name).set(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+		Boolean ret = CacheExecute.execute(key, k ->  {
+  				String result = CacheExecute.getJedis(mod_name).set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
   	            if(export.timesanmp() > 0){
-  	            	CacheExecute.getJedis(mod_name).expire(SerializeUtil.serialize(key), export.timesanmp());
+  	            	CacheExecute.getJedis(mod_name).expire(SerializeUtil.serialize(k), export.timesanmp());
   			    }
-			    return ret.equalsIgnoreCase("OK");
-  			}
+			    return result.equalsIgnoreCase("OK");
   		},mod_name);
         return ret;
 	}
@@ -169,15 +157,12 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	public Object getAndSet(K key, Object value) {
 
-		return CacheExecute.execute(key, new ICacheExecuteCallbak<K, V>() {
-			@Override
-			public V call(K key) {
-				byte[] bytes = CacheExecute.getJedis(mod_name).getSet(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+		return CacheExecute.execute(key, k -> {
+				byte[] bytes = CacheExecute.getJedis(mod_name).getSet(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
 				if (bytes != null && bytes.length > 0) {
 					return SerializeUtil.unserialize(bytes);
 				}
 				return null;
-			}
 		},mod_name);
 		
 	}
@@ -193,16 +178,13 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean delete(K key) throws UncheckedException {
 		
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
-  			@Override
-  			public Boolean call(K key) {
-  				 Long res = CacheExecute.getJedis(mod_name).del(SerializeUtil.serialize(key));
+		Boolean ret = CacheExecute.execute(key, k -> {
+  				 Long res = CacheExecute.getJedis(mod_name).del(SerializeUtil.serialize(k));
   		      	 if(res==0) {
   		      		 return true;
   		      	 } else {
   		      		 return false;
   		      	 }
-  			}
   		},mod_name);
 		return ret;
 	}
@@ -249,12 +231,9 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	public boolean setnx(K key, V value) {
 		
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
-  			@Override
-  			public Boolean call(K key) {
-  				long ret = CacheExecute.getJedis(mod_name).setnx(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
-  				return ret > 0;
-  			}
+		Boolean ret = CacheExecute.execute(key, k -> {
+  				long result = CacheExecute.getJedis(mod_name).setnx(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+  				return result > 0;
   		},mod_name);
 		return ret;
 		
@@ -271,12 +250,9 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public boolean setex(K key, int seconds, V value) {
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Boolean>() {
-  			@Override
-  			public Boolean call(K key) {
-  				String ret = CacheExecute.getJedis(mod_name).setex(SerializeUtil.serialize(key), seconds, SerializeUtil.serialize(value));
-  				return ret.equalsIgnoreCase("OK");
-  			}
+		Boolean ret = CacheExecute.execute(key, k -> {
+  				String result = CacheExecute.getJedis(mod_name).setex(SerializeUtil.serialize(k), seconds, SerializeUtil.serialize(value));
+  				return result.equalsIgnoreCase("OK");
   		},mod_name);
 		return ret;
 		

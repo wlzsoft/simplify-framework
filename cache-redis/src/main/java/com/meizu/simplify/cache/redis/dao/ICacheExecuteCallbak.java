@@ -12,6 +12,7 @@ package com.meizu.simplify.cache.redis.dao;
  * @version Version 0.1
  *
  */
+@FunctionalInterface//可以省略掉，默认升级为function接口
 public interface ICacheExecuteCallbak<K,V> {
 
 	V call(K key);

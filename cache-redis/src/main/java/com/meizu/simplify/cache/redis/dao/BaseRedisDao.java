@@ -4,11 +4,7 @@ import java.io.Serializable;
 
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.enums.TimeEnum;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.exception.RedisException;
-import com.meizu.simplify.utils.SerializeUtil;
-
-import redis.clients.jedis.ShardedJedis;
 
 /**
  * <p><b>Title:</b><i>缓存操作基类</i></p>
@@ -42,17 +38,14 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 */
 	public long expire(K key, CacheExpireTimeEnum export, TimeEnum seconds) {
 		
-		Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<K, Long>() {
-  			@Override
-  			public Long call(K key) {
-  				if(key instanceof String) {
-  					return CacheExecute.getJedis(mod_name).expire(key.toString(), export.timesanmp());
-  				} else if(key instanceof byte[]){
-  					return CacheExecute.getJedis(mod_name).expire((byte[])key, export.timesanmp());
+		Long ret = CacheExecute.execute(key,k ->  {
+  				if(k instanceof String) {
+  					return CacheExecute.getJedis(mod_name).expire(k.toString(), export.timesanmp());
+  				} else if(k instanceof byte[]){
+  					return CacheExecute.getJedis(mod_name).expire((byte[])k, export.timesanmp());
   				} else {
   					throw new RedisException("无效key");
   				}
-  			}
   		},mod_name);
 		return ret;
 	}
