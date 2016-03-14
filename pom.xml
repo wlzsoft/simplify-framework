@@ -16,6 +16,8 @@
   	<module>dao</module>
   	<module>aop</module>
   	<module>weaving</module>
+  	<module>encrypt</module>
+  	<module>stress-tester</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
