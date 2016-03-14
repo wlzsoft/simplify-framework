@@ -1,6 +1,10 @@
 package com.meizu.simplify.mvc.directives;
 
 import java.io.IOException;
+import java.lang.invoke.ConstantCallSite;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -259,7 +263,14 @@ public class SecurityContoller<T extends Model> {
 						}
 					}
 				}
-				return (IForward) doMethod.invoke(this, parameValue);
+				/*MethodHandles.Lookup lookup = MethodHandles.lookup();  
+			    MethodType type = MethodType.methodType(this.getClass(), doMethod.getParameterTypes());  
+			    MethodHandle mh = lookup.findVirtual(this.getClass(), doMethod.getName(), type);  
+			    ConstantCallSite callSite = new ConstantCallSite(mh);  
+			    MethodHandle invoker = callSite.dynamicInvoker();  
+				IForward result = (IForward) invoker.invoke(parameValue);*/
+				IForward result = (IForward) doMethod.invoke(this, parameValue);
+				return result;
 			} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 				Throwable throwable = e.getTargetException();
 //              方法一
@@ -290,7 +301,9 @@ public class SecurityContoller<T extends Model> {
 				
 			} catch ( Exception e ) {
 				e.printStackTrace();
-			}
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}  
 		}
 		return null;
 	}
