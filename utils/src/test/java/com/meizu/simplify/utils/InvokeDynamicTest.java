@@ -36,17 +36,20 @@ public class InvokeDynamicTest {
 	    String result = (String) invoker.invoke("Hello", 2, 3);  
 	    System.out.println(result);
 	} 
+	@Test
 	public void useMutableCallSite() throws Throwable {  
+		MethodHandles.Lookup lookup = MethodHandles.lookup();  
 	    MethodType type = MethodType.methodType(int.class, int.class, int.class);  
 	    MutableCallSite callSite = new MutableCallSite(type);  
 	    MethodHandle invoker = callSite.dynamicInvoker();  
-	    MethodHandles.Lookup lookup = MethodHandles.lookup();  
 	    MethodHandle mhMax = lookup.findStatic(Math.class, "max", type);  
 	    MethodHandle mhMin = lookup.findStatic(Math.class, "min", type);  
 	    callSite.setTarget(mhMax);  
 	    int result = (int) invoker.invoke(3, 5); //值为5  
+	    System.out.println(result);
 	    callSite.setTarget(mhMin);  
 	    result = (int) invoker.invoke(3, 5); //值为3  
+	    System.out.println(result);
 	} 
 	
 	
