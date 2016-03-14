@@ -24,27 +24,27 @@ public enum CacheExpireTimeEnum {
 	/** 
 	 * 缓存时效 30分钟 
 	 */  
-	CACHE_EXP_MINUTES(7200),
+	CACHE_EXP_MINUTES(72_00),
 	
 	/** 
      * 缓存时效 1小时 
      */  
-    CACHE_EXP_HOUR(3600 * 1),
+    CACHE_EXP_HOUR(3_600 * 1),
     
 	/** 
      * 缓存时效 1天 
      */  
-    CACHE_EXP_DAY(3600 * 24), 
+    CACHE_EXP_DAY(3_600 * 24), 
   
     /** 
      * 缓存时效 1周 
      */  
-    CACHE_EXP_WEEK(3600 * 24 * 7), 
+    CACHE_EXP_WEEK(3_600 * 24 * 7), 
   
     /** 
      * 缓存时效 1月 
      */  
-    CACHE_EXP_MONTH(3600 * 24 * 30), 
+    CACHE_EXP_MONTH(3_600 * 24 * 30), 
   
     /** 
      * 缓存时效 永久 

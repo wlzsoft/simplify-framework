@@ -23,7 +23,6 @@ public final class Keys {
 	//key(秘钥)和业务相关，默认规定14位，可以根据业务修改长度
 	final static byte[] key = new byte[14];
 
-	
 	private final static Map<String, byte[]> ConKey = new ConcurrentHashMap<String, byte[]>();
 	private final static Map<String, byte[]> AesKey = new ConcurrentHashMap<String, byte[]>();
 	private final static Map<String, byte[]> Rc4Key = new ConcurrentHashMap<String, byte[]>();
@@ -189,7 +188,8 @@ public final class Keys {
 	 * @return
 	 */
 	public static byte[] defaultFileKey() {
-		return new byte[] { 114,111,115,33,38,94,42,36,115,115,101 };
+		byte binary = 0b0111_0010;
+		return new byte[] { binary,111,115,33,38,94,42,36,115,115,101 };
 	}
 
 	/**

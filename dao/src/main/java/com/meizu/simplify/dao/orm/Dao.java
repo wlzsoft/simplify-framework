@@ -92,7 +92,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			throw new RuntimeException("类" + entityClass
 					+ "需要指定@Table注解!");
 		}
-		
 		List<String> columnArr = new ArrayList<>(currentColumnFieldNames.keySet());
 		List<String> otherIdColumn = new ArrayList<>();
 		/*for (String columnName : columnArr) {
