@@ -84,7 +84,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param entityClass
 	 */
 	private void DaoInit(Class<T> entityClass) {
-
 		buildFieldInfo(entityClass);
 		
 		Table table = entityClass.getAnnotation(Table.class);
