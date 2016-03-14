@@ -38,14 +38,16 @@ public class SQLBuilder<T> {
      
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
     private List<String> columns;
+    private Map<String,String> columnsMeta;//用于create语句使用
     private List<String> otherIdColumns;
 	private String tableName;
     private String columnsStr;
     private String otherIdColumnsStr;
     private String pkName;
     private ThreadLocal<Integer> tableIndexLocal = new ThreadLocal<>();
-    public SQLBuilder(List<String> otherIdColumns,List<String> columns, String tableName, String pkName) {
+    public SQLBuilder(List<String> otherIdColumns,List<String> columns, String tableName, String pkName,Map<String,String> columnsMeta) {
         super();
+        this.columnsMeta = columnsMeta;
         this.columns = columns;
         this.otherIdColumns = otherIdColumns;
         this.tableName = tableName;
@@ -546,6 +548,28 @@ public class SQLBuilder<T> {
 
 	public void setTableIndexLocal(ThreadLocal<Integer> tableIndexLocal) {
 		this.tableIndexLocal = tableIndexLocal;
+	}
+	public String createTable() {
+		StringBuilder sqlBuild = new StringBuilder();
+		for(String colName : columns) {
+			sqlBuild.append(",");
+			sqlBuild.append(colName);
+			sqlBuild.append(" ");
+			String type = columnsMeta.get(colName);
+			if("java.lang.String".equals(type)) {
+				type = "varchar(100)";
+			} else if("java.lang.Integer".equals(type)||"int".equals(type)){
+				type = "int";
+			} else if("java.lang.Boolean".equals(type)||"boolean".equals(type)){
+				type = "tinyint";
+			} else if("java.util.Date".equals(type)){
+				type = "datetime";
+			} else {
+				type = "varchar(100)";
+			}
+			sqlBuild.append(type);
+		}
+        return sqlBuild.toString().substring(1);
 	}
 
 	

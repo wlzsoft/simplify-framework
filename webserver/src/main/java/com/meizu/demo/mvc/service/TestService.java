@@ -27,6 +27,9 @@ public class TestService {
 	@CacheDataSearch(key="bbb")
     public Test doSomeThing2() {
         Test test = BaseDao.getIns(Test.class).findById(1);
+        if(test == null) {
+        	return null;
+        }
         System.out.println("ִtest2测试2:"+test.getName());
         return test;
     }
@@ -40,7 +43,11 @@ public class TestService {
 	@CacheDataAdd(key="bbb")
 	public Test addTest(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);
-        System.out.println("ִtest2测试2:"+test.getName());
+        if(test == null) {
+        	System.out.println("ִnull测试2:");
+        } else {
+        	System.out.println("ִtest2测试2:"+test.getName());
+        }
         return test;
     }
 	

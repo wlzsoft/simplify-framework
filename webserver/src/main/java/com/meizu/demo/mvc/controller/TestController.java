@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
+import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -61,7 +62,13 @@ public class TestController extends BaseController<TestModel> {
 		}
 		return new RedirectForward("/testjson/");
 	}
-	
+	@RequestMap(path = "/testvelocity3/")
+	public IForward doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		if(true) {
+			throw new BaseDaoException("数据为空");
+		}
+		return new VelocityForward("/template/login.html");
+	}
 	@RequestMap(path = "/testvelocity2/")
 	public IForward doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		String userName = request.getParameter("userName");
@@ -78,7 +85,11 @@ public class TestController extends BaseController<TestModel> {
 	@RequestMap(path = "/testvelocity/")
 	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
-		request.setAttribute("userName", test.getName());
+		if(test != null) {
+			request.setAttribute("userName", test.getName());
+		} else {
+			request.setAttribute("userName", "nologin");
+		}
 		return new VelocityForward("/template/login.html");
 	}
 	
@@ -124,7 +135,9 @@ public class TestController extends BaseController<TestModel> {
 	public IForward doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTest(null);
 		Test test = testService.doSomeThing2();
-		request.setAttribute("userName", test.getName());
+		if(test != null) {
+			request.setAttribute("userName", test.getName());
+		}
 		return new ActionForward("/index.jsp");
 	}
 	

@@ -1,19 +1,23 @@
 package com.meizu.simplify.mvc.directives;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
+import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.mvc.directives.Model.ModelSet;
 import com.meizu.simplify.mvc.directives.Model.Passme;
 import com.meizu.simplify.mvc.directives.Model.StringFilter;
@@ -96,11 +100,21 @@ public class SecurityContoller<T extends Model> {
 		this.staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
-			IForward AF = execute(request, response, model);
-			if (AF != null) {
-				request.setAttribute("formData", model);
-				AF.doAction(request, response, cacheSet, staticName);
-			}
+//			try {
+				IForward AF = execute(request, response, model);
+				if (AF != null) {
+					request.setAttribute("formData", model);
+					AF.doAction(request, response, cacheSet, staticName);
+				}
+				
+//			} catch(BaseException e) {
+//				response.sendError(500,e.getTargetException().getMessage());
+//				response.setCharacterEncoding(MvcInit.charSet);
+//				response.setContentType("text/html; charset=" + MvcInit.charSet);
+//				response.getWriter().print("error");
+//				response.getWriter().flush();
+//				response.getWriter().close();
+//			}
 		}
 		// 逻辑递交执行完成, 关闭session
 		destroy(request, response, model);
@@ -145,7 +159,7 @@ public class SecurityContoller<T extends Model> {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws ServletException, IOException {
+	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws IOException  {
 		if (t.getCmd() != null && t.getCmd().length() > 0) {
 			String doCmd = t.getCmd();
 			Method doMethod = null;
@@ -246,8 +260,35 @@ public class SecurityContoller<T extends Model> {
 					}
 				}
 				return (IForward) doMethod.invoke(this, parameValue);
+			} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
+				Throwable throwable = e.getTargetException();
+//              方法一
+				//response.sendError(500,throwable.getMessage());
+				
+//				方法二：推荐
+				response.setStatus(500);
+				response.setCharacterEncoding(MvcInit.charSet);
+				response.setContentType("text/html; charset=" + MvcInit.charSet);
+				String page500 = "<!DOCTYPE html>"+
+								 "<html>"+
+								 "<head>"+
+								 "<meta charset=\"UTF-8\">"+
+								 "<title>500 错误</title>"+
+								 "</head>"+
+								 "<body>"+
+								 "<!--"+throwable+"-->"+
+								 throwable.getMessage() +
+								"</body>"+
+								"</html>";
+				response.getWriter().print(page500);
+//				方法二
+//				RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
+//				requestDispatcher.forward(request, response);
+//				方法三
+//				IForward iForward = new VelocityForward("/template/framework/500.html");
+//				iForward.doAction(request, response, cacheSet, doCmd);
+				
 			} catch ( Exception e ) {
-				// response.sendError(404); // 错误的request请求.
 				e.printStackTrace();
 			}
 		}

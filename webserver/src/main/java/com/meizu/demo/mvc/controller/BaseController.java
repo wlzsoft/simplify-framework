@@ -36,7 +36,7 @@ public class BaseController<T extends Model> extends SecurityContoller<T> {
 	}
 	
 	@Override
-	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t) throws ServletException, IOException {
+	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t) throws IOException {
 		return super.execute(request, response, t);
 	}
 	

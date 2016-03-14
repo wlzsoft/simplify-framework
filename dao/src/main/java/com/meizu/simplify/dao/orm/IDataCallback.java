@@ -21,10 +21,12 @@ import org.slf4j.LoggerFactory;
  * @version Version 0.1
  *
  */
+//@FunctionalInterface
 public interface IDataCallback<T> {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(IDataCallback.class);
-	
+//	public abstract void resultCall();
+
 	/**
 	 * 
 	 * 方法用途: 回调方法<br>
@@ -34,7 +36,7 @@ public interface IDataCallback<T> {
 	 * @param t
 	 * @return
 	 */
-	default T resultCall(String columnLabel, Object object,T t) {
+	default  T resultCall(String columnLabel, Object object,T t) {
 		if(t == null) {
 			return null;
 		}

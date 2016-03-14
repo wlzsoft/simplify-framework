@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//columnName=FieldName
 	private Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
 
+	private Map<String, String> columnsMeta = new LinkedHashMap<String, String>();//create dll sql 使用
+	
 	private SQLBuilder<T> sqlBuilder;
 
 	
@@ -98,7 +101,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		
 		sqlBuilder = new SQLBuilder<T>(otherIdColumn,columnArr,
-				table.name(), pkName);
+				table.name(), pkName,columnsMeta );
 	}
 	
 	/**
@@ -143,6 +146,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			} else {
 				columnName = field.getName();
 			}
+			//create dll start
+			columnsMeta.put(columnName,field.getType().getName());
+			//create dll end
 			currentColumnFieldNames.put(columnName, field.getName());
 			if (field.isAnnotationPresent(Key.class)) {
 				// 取得ID的列名
@@ -463,7 +469,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	public T findOne(String sql,Object... params) {
-		return find(sql,params).get(0);
+		List<T> list = find(sql,params);
+		if(list != null && list.size()==1) {
+			return list.get(0);
+		} else if(list != null && list.size()>1) {
+			logger.warn("返回的数据集有多条记录，确认是否出现脏数据");
+			return list.get(0);
+		} else {
+			return null;
+		}
 	}
 	
 	@Override
@@ -718,7 +732,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return this;
 	}
-	
+	//------------------------------------DDL语句的实现--------------------------------------
+	public int createTable(Class<T> t) {
+		String sql = sqlBuilder.createTable();
+		return SQLExecute.executeUpdate("create table if not exists "+t.getAnnotation(Table.class).name()+" ("+sql+") ;");
+	}
 	//--------------------------------未处理和实现的功能-----------------------------------------------------------
 	
 	@Override
@@ -726,7 +744,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+
 	
 //	@Resource
 //	private BuildInfo<T> buildInfo;

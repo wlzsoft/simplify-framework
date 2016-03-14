@@ -34,7 +34,13 @@
 32.基于jetty使用框架时，第一次请求性能耗费了800ms左右的时间==>>已测试，已通过，jetty本身自己的问题，第一次访问会很慢（估计jetty第一次访问会初始化一些数据） 2016/3/4
 33.webcache的ClearCommentUtil.clear中要清除的html页面中，全部用html5的头声明(<!doctype html>)，否则声明头会被清除掉一部分
 34.mvc性能优化，修复请求过程中使用反射的问题
-	       
+35.自动创建表的实现
+36.连接超时，自动重连功能	      
+37.mvc的页面异常处理 
+38.考虑使用Collection中的Stream(注意这个方式，只能遍历一次)来提高大数据json并行解析的速度
+39.使用invokedynamic(1.函数式编程的性能基础,2.对其他语言，比如js的支持，NashornJavaScript，java版nodejs的实现)或是动态代理(cglib)，或是java8的函数指针，或是启动时修改class内容的方式来提高mvc请求时解析的性能
+40.使用lambda表达式简化编程，优先改造内部类的使用方式
+41.使用 java.time代替部分date的操作
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

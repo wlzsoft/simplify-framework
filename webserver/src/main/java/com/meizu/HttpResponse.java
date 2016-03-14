@@ -144,6 +144,26 @@ public class HttpResponse implements HttpServletResponse{
 		return responseHeader.get(name);
 	}
 	
+	
+	@Override
+	public void setStatus(int sc) {
+		setStatusCode(String.valueOf(sc));
+		
+	}
+
+	@Override
+	public void setStatus(int sc, String sm) {
+		setStatusCode(String.valueOf(sc));
+		
+	}
+
+	@Override
+	public int getStatus() {
+		return Integer.parseInt(getStatusCode());
+	}
+	
+	
+	
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
 		// TODO Auto-generated method stub
@@ -301,23 +321,7 @@ public class HttpResponse implements HttpServletResponse{
 		
 	}
 
-	@Override
-	public void setStatus(int sc) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setStatus(int sc, String sm) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getStatus() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	
 

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.mvc.directives.SecurityContoller;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 
 
@@ -110,8 +111,8 @@ public class SecurityFilter implements Filter {
 			Statistics.incReadcount();
 			Statistics.setReadMaxTime(readtime, thisUrl);
 			Statistics.getReadMap().remove(thisUrl);
-			
-		} catch ( Exception e ) {
+		
+		} catch (ServletException | IOException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);
 		}

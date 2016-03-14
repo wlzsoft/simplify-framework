@@ -13,6 +13,7 @@ import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.BaseController;
+import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -65,7 +66,13 @@ public class TestController extends BaseController<TestModel> {
 		}
 		return new RedirectForward("/testjson/");
 	}
-	
+	@RequestMap(path = "/testvelocity3/")
+	public IForward doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		if(true) {
+			throw new BaseDaoException("数据为空");
+		}
+		return new VelocityForward("/template/login.html");
+	}
 	@RequestMap(path = "/testvelocity/")
 	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
 	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
