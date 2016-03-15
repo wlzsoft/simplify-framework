@@ -5,11 +5,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+
+import com.meizu.simplify.encrypt.base64.Base64Encrypt;
  
 public class WebSocketServer {
     private int i=0;
@@ -38,8 +39,7 @@ public class WebSocketServer {
                     MessageDigest md = MessageDigest.getInstance("SHA-1");
                     md.update(key.getBytes("utf-8"), 0, key.length());
                     byte[] sha1Hash = md.digest();
-                    sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-                    key = encoder.encode(sha1Hash);
+                    key = new String(Base64Encrypt.encode(sha1Hash));
                     pw.println("HTTP/1.1 101 Switching Protocols");
                     pw.println("Upgrade: websocket");
                     pw.println("Connection: Upgrade");
