@@ -50,8 +50,8 @@
 
         NoticeClient.init = function() {
             if (window.location.protocol == 'http:') {
-                //NoticeClient.connect('ws://' + window.location.host + '');
-            	NoticeClient.connect('ws://127.0.0.1:9880');
+                NoticeClient.connect('ws://' + window.location.host + '');
+            	//NoticeClient.connect('ws://127.0.0.1:9880');
             } else {
                 NoticeClient.connect('wss://' + window.location.host + '/websocket/notice');
             }

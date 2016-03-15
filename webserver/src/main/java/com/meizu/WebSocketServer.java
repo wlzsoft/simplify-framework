@@ -1,5 +1,4 @@
 package com.meizu;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,25 +12,10 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
  
 public class WebSocketServer {
-    private ServerSocket serverSocket;
     private int i=0;
-    public WebSocketServer() throws IOException {
-        serverSocket = new ServerSocket(9880);
-        System.out.println("服务器启动");
+    public WebSocketServer()  {
     }
-    private void service() {
-        Socket socket = null;
-        while (true) {
-            try {
-                socket = serverSocket.accept();
-                Thread workThread = new Thread(new Handler(socket,socket.getInputStream(),null));
-                workThread.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public class Handler implements Runnable {
+    public class Handler {
         private Socket socket;
         private boolean hasHandshake = false;
         Charset charset = Charset.forName("UTF-8");
@@ -42,23 +26,15 @@ public class WebSocketServer {
             this.br = br;
             this.request = request;
         }
-        public void run() {
-            exec();
-        }
-		public void exec() {
+		
+		public void exec2() {
 			try {
                 System.out.println("client["+(i++)+"] connected: " + socket.getInetAddress() + ":" + socket.getPort());
-                InputStream in = br;//socket.getInputStream();
                 PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-                byte[] buf = new byte[1024];
-                int len = in.read(buf, 0, 1024);
-                byte[] res = new byte[len];
-                System.arraycopy(buf, 0, res, 0, len);
-                String key = new String(res);
-                if (!hasHandshake && key.indexOf("Key") > 0) { // 握手
-                    key = key.substring(0, key.indexOf("==") + 2);
-                    key = key.substring(key.indexOf("Key") + 4, key.length()).trim();
-                    key += "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+                String upgrade = request.getHeader("Upgrade");
+                InputStream in = br;//socket.getInputStream();
+                if (!hasHandshake && (upgrade!= null&&upgrade.equals("websocket"))) { // 握手
+                    String key = request.getHeader("Sec-WebSocket-Key")+"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
                     MessageDigest md = MessageDigest.getInstance("SHA-1");
                     md.update(key.getBytes("utf-8"), 0, key.length());
                     byte[] sha1Hash = md.digest();
@@ -183,8 +159,5 @@ public class WebSocketServer {
             }
             System.out.println(res.toString());
         }
-    }
-    public static void main(String[] args) throws IOException {
-//    	new WebSocketServer().service();
     }
 }
