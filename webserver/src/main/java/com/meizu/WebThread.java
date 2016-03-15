@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import com.meizu.WebSocketServer.Handler;
+import com.meizu.WebSocket.Handler;
 import com.meizu.util.SessionIdFactory;
 
 /**
