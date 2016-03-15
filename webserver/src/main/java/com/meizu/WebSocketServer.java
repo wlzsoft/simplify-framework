@@ -13,10 +13,8 @@ import java.security.MessageDigest;
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
  
 public class WebSocketServer {
-    private int i=0;
-    public WebSocketServer()  {
-    }
-    public class Handler {
+    private static int i=0;
+    public static class Handler {
         private Socket socket;
         private boolean hasHandshake = false;
         Charset charset = Charset.forName("UTF-8");
