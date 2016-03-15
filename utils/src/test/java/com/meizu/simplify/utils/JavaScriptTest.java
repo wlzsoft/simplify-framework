@@ -1,6 +1,9 @@
 package com.meizu.simplify.utils;
 
+import java.util.List;
+
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
@@ -20,7 +23,14 @@ import javax.script.ScriptException;
 public class JavaScriptTest {
 	public static void main(String[] args) {
 		ScriptEngineManager scriptEngineManager = new ScriptEngineManager(); 
-			ScriptEngine nashorn = scriptEngineManager.getEngineByName("nashorn"); 
+			ScriptEngine nashorn = scriptEngineManager.getEngineByName("javascript"); 
+			List<ScriptEngineFactory> list = scriptEngineManager.getEngineFactories();
+			for (ScriptEngineFactory scriptEngineFactory : list) {
+				ScriptEngine se = scriptEngineFactory.getScriptEngine();
+				System.out.println(se);
+			}
+			long start = System.currentTimeMillis();
+			System.out.println(nashorn);
 			String name = "lcy"; 
 			try {
 				nashorn.eval("print('" + name + "')");
@@ -28,5 +38,6 @@ public class JavaScriptTest {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
+			System.out.println((System.currentTimeMillis()-start));
 	}
 }
