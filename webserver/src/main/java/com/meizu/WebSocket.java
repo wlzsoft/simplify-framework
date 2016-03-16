@@ -96,8 +96,7 @@ public class WebSocket {
                         byte[] mask = new byte[4];
                         in.read(mask, 0, 4);
                         int readThisFragment = 1;
-                        ByteBuffer byteBuf = ByteBuffer.allocate(payloadLength + 10);
-                        byteBuf.put("echo: ".getBytes("UTF-8"));
+                        ByteBuffer byteBuf = ByteBuffer.allocate(payloadLength);
                         while (payloadLength > 0) {
                             int masked = in.read();
                             masked = masked ^ (mask[(int) ((readThisFragment - 1) % 4)] & 0xFF);
@@ -107,7 +106,7 @@ public class WebSocket {
                         }
                         byteBuf.flip();
                         responseClient(byteBuf, true);
-                        printRes(byteBuf.array());
+                        System.out.println(new String(byteBuf.array(),charset));
                         in.read(first, 0, 1);
                     }
                 }
@@ -156,20 +155,6 @@ public class WebSocket {
             // Write the content
             out.write(byteBuf.array(), 0, byteBuf.limit());
             out.flush();
-        }
-        private void printRes(byte[] array) {
-            ByteArrayInputStream byteIn = new ByteArrayInputStream(array);
-            InputStreamReader reader = new InputStreamReader(byteIn,charset.newDecoder());
-            StringBuilder res = new StringBuilder();
-            try {
-                int b = 0;
-                while ((b = reader.read()) > 0) {
-                    res.append((char) b);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println(res.toString());
         }
     }
 }
