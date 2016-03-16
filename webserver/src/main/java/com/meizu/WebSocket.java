@@ -87,8 +87,7 @@ public class WebSocket {
                             int shift = 0;
                             payloadLength = 0;
                             for (int i = extended.length - 1; i >= 0; i--) {
-                                payloadLength = payloadLength
-                                        + ((extended[i] & 0xFF) << shift);
+                                payloadLength = payloadLength + ((extended[i] & 0xFF) << shift);
                                 shift += 8;
                             }
                         }
