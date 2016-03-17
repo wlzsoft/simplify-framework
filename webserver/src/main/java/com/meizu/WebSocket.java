@@ -89,6 +89,7 @@ public class WebSocket {
                         int b = first[0] & 0xFF;
                         // 1为字符数据，8为关闭socket
                         byte opCode = (byte) (b & 0x0F);
+//                        byte firstBit = (byte) (b & 0x80);//如果考虑分帧处理，那么需要判断这个值，是否是结束帧，目前不分帧处理
                         if (opCode == 8) {
                             socket.getOutputStream().close();
                             break;
@@ -149,10 +150,9 @@ public class WebSocket {
  
         private void responseClient(ByteBuffer byteBuf, boolean finalFragment) throws IOException {
             OutputStream out = socket.getOutputStream();
-            int first = 0x00;
+            byte first = 0x00;
             if (finalFragment) {// 是否是输出最后的WebSocket响应片段
-                first = first + 0x80;
-                first = first + 0x1;
+                first = (byte) (0x80 | 0x01);
             }
             out.write(first);
  
