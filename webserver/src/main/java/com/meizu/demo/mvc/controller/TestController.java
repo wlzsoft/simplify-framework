@@ -114,12 +114,13 @@ public class TestController extends BaseController<TestModel> {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();
 		testList.add(test);
+		response.setContentType("application/json;charset=utf-8");//后续整合到框架中，自动判断写入，无需这里硬编码
 		return new JsonForward(testList);
 	}
 	
 	@RequestMap(path = "/testmessage/")
 	public IForward doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.addTest(null);
 		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
 	}
 	
