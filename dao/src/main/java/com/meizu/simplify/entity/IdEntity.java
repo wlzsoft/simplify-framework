@@ -8,6 +8,7 @@ public class IdEntity<T,PK extends Serializable> implements Serializable,AutoClo
 	//@Transient
 	private static final long serialVersionUID = -3333906406099241984L;
 //	@NotNull
+//	@Column("id")
 	@Key
 	private Integer fid;
 	public Integer getFid() {
