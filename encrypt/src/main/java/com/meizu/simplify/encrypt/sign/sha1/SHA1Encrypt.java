@@ -39,7 +39,7 @@ public class SHA1Encrypt {
 	}
 	
 	public static byte[] sign(byte[] source) {
-		return Sign.sign(source, "SHA-1");
+		return Sign.hashSign(source, "SHA-1");
 	}
 	
 	

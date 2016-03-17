@@ -62,7 +62,4 @@ public class Sign {
 		}
 	}
 	
-	public static byte[] sign(byte[] source,String name) {
-		return  ByteHexUtil.bytes2Hex(Sign.hashSign(source,name)).getBytes();
-	}
 }

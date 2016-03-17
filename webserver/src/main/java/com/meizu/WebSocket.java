@@ -1,9 +1,7 @@
 package com.meizu;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -12,6 +10,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
+import com.meizu.simplify.encrypt.sign.sha1.SHA1Encrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -47,14 +46,48 @@ public class WebSocket {
                 String upgrade = request.getHeader("Upgrade");
                 InputStream in = br;//socket.getInputStream();
                 if (!hasHandshake && (upgrade!= null&&upgrade.equals("websocket"))) { // 握手
+//            			request info:
+//            			GET /websocket/notice HTTP/1.1
+//            			Host: 127.0.0.1:8080
+//            			Connection: Upgrade
+//            			Pragma: no-cache
+//            			Cache-Control: no-cache
+//            			Upgrade: websocket
+//            			Origin: http://127.0.0.1:8080
+//            			Sec-WebSocket-Version: 13
+//            			User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36
+//            			Accept-Encoding: gzip, deflate, sdch
+//            			Accept-Language: zh-CN,zh;q=0.8
+//            			Cookie: cookie_lang=1; JSESSIONID=1dqg8b1r9lt7o7j4mr0uqp4g3; Hm_lvt_82116c626a8d504a5c0675073362ef6f=1457403984; Hm_lpvt_82116c626a8d504a5c0675073362ef6f=1457415472; sessionId=393bbe756f294f2e8c3677164bddefa6
+//            			Sec-WebSocket-Key: utj2uKJA660Zw7uwVFQi8Q==
+//            			Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+//            			ContentLength :null
+            			
+//            			response info:
+//            			HTTP/1.1 101 Switching Protocols
+//            			Connection:Upgrade
+//            			Server:beetle websocket server
+//            			Upgrade:WebSocket
+//            			Date:Mon, 26 Nov 2012 23:42:44 GMT
+//            			Access-Control-Allow-Credentials:true
+//            			Access-Control-Allow-Headers:content-type
+//            			Sec-WebSocket-Accept:FCKgUr8c7OsDsLFeJTWrJw6WO8Q= 
+            			
                     String key = request.getHeader("Sec-WebSocket-Key")+"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
                     MessageDigest md = MessageDigest.getInstance("SHA-1");
                     md.update(key.getBytes("utf-8"), 0, key.length());
                     byte[] sha1Hash = md.digest();
+                    sha1Hash = SHA1Encrypt.sign(key.getBytes("utf-8"));
                     key = new String(Base64Encrypt.encode(sha1Hash));
                     pw.println("HTTP/1.1 101 Switching Protocols");
+//                  response.setStatusCode("101");
+//                  response.setReason("Switching Protocols");
                     pw.println("Upgrade: websocket");
                     pw.println("Connection: Upgrade");
+//        			response.setHeader("Connection", "Upgrade");
+//        			response.setHeader("Upgrade", "WebSocket");
+//        			response.setHeader("Access-Control-Allow-Credentials", "true");
+//        			response.setHeader("Access-Control-Allow-Headers", "content-type");
                     pw.println("Sec-WebSocket-Accept: " + key);
                     pw.println();
                     pw.flush();

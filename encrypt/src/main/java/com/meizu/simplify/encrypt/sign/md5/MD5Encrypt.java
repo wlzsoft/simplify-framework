@@ -43,7 +43,7 @@ public class MD5Encrypt {
 	}
 	
 	public static byte[] sign(byte[] source) {
-		return Sign.sign(source, "MD5");
+		return Sign.hashSign(source, "MD5");
 	}
 	
 	
