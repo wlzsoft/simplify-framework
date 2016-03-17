@@ -113,6 +113,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				table.name(), pkName,columnsMeta );
 	}
 	
+	private void buildClassTransientInfo(Class<? super T> entityClass,List<Transient> list) {
+		Transient trans = entityClass.getAnnotation(Transient.class);
+		if(trans != null) {
+			list.add(trans);
+		}
+		if(entityClass.getSuperclass() != Object.class && entityClass.getSuperclass() != null) {
+			buildClassTransientInfo(entityClass.getSuperclass(),list);
+		}
+	}
+	
 	/**
 	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
 	 * 操作步骤: TODO<br>
@@ -121,7 +131,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	private void buildFieldInfo(Class<? super T> class1) {
 		Field[] fields = class1.getDeclaredFields();
-		Transient trans = entityClass.getAnnotation(Transient.class);
+		List<Transient> trans = new ArrayList<>();
+		buildClassTransientInfo(entityClass,trans);
 		getFieldInfo(fields,trans);
 		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
 			buildFieldInfo(class1.getSuperclass());
@@ -135,13 +146,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param fields
 	 * @param trans
 	 */
-	private void getFieldInfo(Field[] fields, Transient trans) {
-		String[] transArr = null;
-		if(trans != null) {
-			transArr = trans.value();
+	private void getFieldInfo(Field[] fields, List<Transient> transAnno) {
+		List<String> transArr = new ArrayList<String>();
+		if(transAnno != null) {
+			for (Transient trans : transAnno) {
+				transArr.addAll(Arrays.asList(trans.value()));
+			}
 		}
 		for (Field field : fields) {
-			boolean isTransient = validTransient(transArr,field);
+			boolean isTransient = validTransient(transArr.toArray(new String[transArr.size()]),field);
 			if(isTransient) {
 				continue;
 			}
