@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+import java.time.LocalDateTime;
 
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 import com.meizu.simplify.encrypt.sign.sha1.SHA1Encrypt;
@@ -62,29 +63,21 @@ public class WebSocket {
 //            			Sec-WebSocket-Key: utj2uKJA660Zw7uwVFQi8Q==
 //            			Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
 //            			ContentLength :null
-            			
-//            			response info:
-//            			HTTP/1.1 101 Switching Protocols
-//            			Connection:Upgrade
-//            			Server:beetle websocket server
-//            			Upgrade:WebSocket
-//            			Date:Mon, 26 Nov 2012 23:42:44 GMT
-//            			Access-Control-Allow-Credentials:true
-//            			Access-Control-Allow-Headers:content-type
-//            			Sec-WebSocket-Accept:FCKgUr8c7OsDsLFeJTWrJw6WO8Q= 
-            			
+                	
+//            		response info //第二次握手确认
                     String key = request.getHeader("Sec-WebSocket-Key")+"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
                     byte[] sha1Hash = SHA1Encrypt.sign(key.getBytes("utf-8"));
                     key = new String(Base64Encrypt.encode(sha1Hash));
                     pw.println("HTTP/1.1 101 Switching Protocols");
 //                  response.setStatusCode("101");
 //                  response.setReason("Switching Protocols");
-                    pw.println("Upgrade: websocket");
-                    pw.println("Connection: Upgrade");
 //        			response.setHeader("Connection", "Upgrade");
-//        			response.setHeader("Upgrade", "WebSocket");
-//        			response.setHeader("Access-Control-Allow-Credentials", "true");
-//        			response.setHeader("Access-Control-Allow-Headers", "content-type");
+                    pw.println("Connection: Upgrade");
+                    pw.println("Server:meizu websocket server 1.0");
+                    pw.println("Upgrade: WebSocket");
+                    pw.println("Date: "+LocalDateTime.now());//Date:Mon, 26 Nov 2016 23:59:59 GMT
+        			pw.println("Access-Control-Allow-Credentials: true");
+        			pw.println("Access-Control-Allow-Headers: content-type");
                     pw.println("Sec-WebSocket-Accept: " + key);
                     pw.println();
                     pw.flush();
