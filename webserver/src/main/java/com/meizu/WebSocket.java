@@ -74,10 +74,7 @@ public class WebSocket {
 //            			Sec-WebSocket-Accept:FCKgUr8c7OsDsLFeJTWrJw6WO8Q= 
             			
                     String key = request.getHeader("Sec-WebSocket-Key")+"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-                    MessageDigest md = MessageDigest.getInstance("SHA-1");
-                    md.update(key.getBytes("utf-8"), 0, key.length());
-                    byte[] sha1Hash = md.digest();
-                    sha1Hash = SHA1Encrypt.sign(key.getBytes("utf-8"));
+                    byte[] sha1Hash = SHA1Encrypt.sign(key.getBytes("utf-8"));
                     key = new String(Base64Encrypt.encode(sha1Hash));
                     pw.println("HTTP/1.1 101 Switching Protocols");
 //                  response.setStatusCode("101");
