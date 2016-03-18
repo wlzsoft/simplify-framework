@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.controller.JsonForward;
@@ -116,8 +117,12 @@ public class SecurityFilter implements Filter {
 			Throwable throwable = e.getTargetException();
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(thisUrl.endsWith(".json")) {
-//				Result
-//				IForward ifd = new JsonForward(obj);
+				IForward ifd = new JsonForward(JsonResult.error(throwable.getMessage()));
+				try {
+					ifd.doAction(request, response, null, null);
+				} catch (ServletException | IOException e1) {
+					e1.printStackTrace();
+				}
 			} else if(thisUrl.endsWith(".xml")){//不实现
 				
 			} else {//其他方式的请求,都走html业务视图，可以支持jsp,velocity 等模板引擎
