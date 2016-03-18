@@ -48,7 +48,7 @@ public class JsonAfterFilter extends AfterFilter {
 			}
 			if(file.getName().equals("updateId") ){
 				try {
-					if(null!=file.get(object).toString() && file.get(object).toString()!="0"){
+					if(ObjectUtil.isNotNull(file.get(object)) && file.get(object).toString()!="0"){
 						Integer updateId =Integer.parseInt(file.get(object).toString());
 						ICacheDao<String, Object> cachedDao = CacheProxyDao.getCache();
 						Object user=cachedDao.get("curUser"+updateId);
