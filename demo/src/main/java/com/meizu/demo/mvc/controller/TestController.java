@@ -80,7 +80,7 @@ public class TestController extends BaseController<TestModel> {
 		request.setAttribute("userName", test.getName());
 		return new VelocityForward("/template/login.html");
 	}
-	@RequestMap(path = "/testjson/")
+	@RequestMap(path = "/testjson.json")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();
