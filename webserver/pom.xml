@@ -31,6 +31,11 @@
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>demo</artifactId><!-- 测试使用，后续webserver稳定，就不需要绑定demo了,而是可以做为demo等的容器 -->
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
