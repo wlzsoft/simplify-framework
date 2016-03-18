@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 /**
  * <p><b>Title:</b><i>JSON工具类</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 注： 后续要考虑解耦，只做工具类改有的事，想办法抽取到utils模块中,JsonAfterFilter的处理保留到缓存中 TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
