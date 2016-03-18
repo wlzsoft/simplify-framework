@@ -1,7 +1,14 @@
 package com.meizu.simplify.mvc.controller;
 
-import com.meizu.simplify.cache.redis.util.JsonUtil;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.meizu.simplify.cache.redis.util.JsonUtil;
+import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -24,5 +31,13 @@ public  class  JsonForward extends MessageForward {
 		//TODO 需要判断是否是集合，如果是集合，判断长度是否是1，如果是1，那么取出来，转成单一一个对象，再转成json
 		String message = JsonUtil.ObjectToJson(obj);
 		super.setMsg(message);
+	}
+
+	@Override
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName)
+			throws ServletException, IOException {
+		response.setCharacterEncoding(MvcInit.charSet);
+		response.setContentType("application/json; charset=" + MvcInit.charSet);
+		response.getWriter().print(super.getMsg());
 	}
 }
