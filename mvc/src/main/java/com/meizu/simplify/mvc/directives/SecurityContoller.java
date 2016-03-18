@@ -170,115 +170,116 @@ public class SecurityContoller<T extends Model> {
 	 * @throws IllegalAccessException 
 	 */
 	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
-		if (t.getCmd() != null && t.getCmd().length() > 0) {
-			String doCmd = t.getCmd();
-			Method doMethod = null;
-				Method[] methods = this.getClass().getMethods();
-				for ( Method m : methods ) {
-					if (doCmd.equals(m.getName())) {
-						if (doMethod == null) {
-							doMethod = m;
-							break;
-						} else {
-							throw new IllegalArgumentException();
-						}
-					}
-				}
-				if (doMethod == null) { 
-					throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
-				}
-				if (doMethod.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
-					throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
-				}
-
-				// 设置参数值
-				Object[] parameValue = new Object[doMethod.getParameterTypes().length];
-				parameValue[0] = request;
-				parameValue[1] = response;
-				parameValue[2] = t;
-				for ( int i = 3; i < doMethod.getParameterTypes().length; i++ ) {
-					for ( int j = 0; j < doMethod.getParameterAnnotations()[i].length; j++ ) {
-						if (doMethod.getParameterAnnotations()[i][j].annotationType() == RequestParam.class) {
-							parameValue[i] = null;
-							RequestParam requestParam = ((RequestParam) doMethod.getParameterAnnotations()[i][j]);
-							String param = requestParam.param();
-							String name = requestParam.name();
-							String defaultValue = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).defaultValue();
-							defaultValue = "null".equals(defaultValue) ? null : defaultValue;
-							Object value = null;
-							
-							//RequestParam的param有两个作用，一个是参数索引值，一个是参数名称，后续要拆分，不要一个参数两个含义，增加一个name属性就可以
-							if (!StringUtil.isEmpty(request.getParameter(name))) {
-								value = request.getParameter(name);
-							} else if (ObjectUtil.isInt(param)) {
-								int index = Integer.valueOf(param);
-								if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
-									value = t.getParams()[index];
-								}
-							} else {
-								value = defaultValue;
-							}
-
-							if (value == null) {
-								break;
-							}
-
-							// 将值进行格式化后注入
-							parameValue[i] = DataUtil.convertType(doMethod.getParameterTypes()[i], value.toString());
-						}
-					}
-				}
-				
-				// 检查Ajax跨域配置
-				if (doMethod.isAnnotationPresent(AjaxAccess.class)) {
-					AjaxAccess ajaxAccess = doMethod.getAnnotation(AjaxAccess.class);
-					if (ajaxAccess != null) {
-						if (!StringUtil.isEmpty(ajaxAccess.allowOrigin())) {
-							response.addHeader("Access-Control-Allow-Origin", ajaxAccess.allowOrigin());
-						}
-						if (!StringUtil.isEmpty(ajaxAccess.allowHeaders())) {
-							response.addHeader("Access-Control-Allow-Headers", ajaxAccess.allowHeaders());
-						}
-						if (ajaxAccess.allowMethods() != null) {
-							StringBuffer sb_methods = new StringBuffer();
-							for (Methods method : ajaxAccess.allowMethods()) {
-								sb_methods.append(method.name()).append(",");
-							}
-							if (sb_methods.length() > 0) {
-								sb_methods.delete(sb_methods.length() - 1, sb_methods.length());
-							}
-							response.addHeader("Access-Control-Allow-Methods", sb_methods.toString());
-						}
-						response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
-					}
-				}
-
-				// 检查静态规则配置
-				if (doMethod.isAnnotationPresent(WebCache.class)) {
-					this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
-					Cache cache = CacheBase.getCache(cacheSet);
-					if(cache != null){
-						String cacheContent = cache.readCache(cacheSet, staticName,response);
-						if(cacheContent != null){
-							response.setCharacterEncoding(MvcInit.charSet);
-							response.setContentType("text/html; charset=" + MvcInit.charSet);
-							response.getWriter().print(cacheContent);
-							System.out.println("UrlCache -> read Cache.");
-							return null;
-						}
-					}
-				}
-				/*MethodHandles.Lookup lookup = MethodHandles.lookup();  
-			    MethodType type = MethodType.methodType(this.getClass(), doMethod.getParameterTypes());  
-			    MethodHandle mh = lookup.findVirtual(this.getClass(), doMethod.getName(), type);  
-			    ConstantCallSite callSite = new ConstantCallSite(mh);  
-			    MethodHandle invoker = callSite.dynamicInvoker();  
-				IForward result = (IForward) invoker.invoke(parameValue);*/
-				IForward result = (IForward) doMethod.invoke(this, parameValue);
-				return result;
-			
+		if (t.getCmd() == null || t.getCmd().length() <= 0) {
+			return null;
 		}
-		return null;
+		String doCmd = t.getCmd();
+		Method[] methods = this.getClass().getMethods();
+		Method doMethod = null;
+		for ( Method m : methods ) {
+			if (doCmd.equals(m.getName())) {
+				if (doMethod == null) {
+					doMethod = m;
+					break;
+				} else {
+					throw new IllegalArgumentException();
+				}
+			}
+		}
+		if (doMethod == null) { 
+			throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
+		}
+		if (doMethod.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
+			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
+		}
+
+		// 设置参数值
+		Object[] parameValue = new Object[doMethod.getParameterTypes().length];
+		parameValue[0] = request;
+		parameValue[1] = response;
+		parameValue[2] = t;
+		for ( int i = 3; i < doMethod.getParameterTypes().length; i++ ) {
+			for ( int j = 0; j < doMethod.getParameterAnnotations()[i].length; j++ ) {
+				if (doMethod.getParameterAnnotations()[i][j].annotationType() == RequestParam.class) {
+					parameValue[i] = null;
+					RequestParam requestParam = ((RequestParam) doMethod.getParameterAnnotations()[i][j]);
+					String param = requestParam.param();
+					String name = requestParam.name();
+					String defaultValue = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).defaultValue();
+					defaultValue = "null".equals(defaultValue) ? null : defaultValue;
+					Object value = null;
+					
+					//RequestParam的param有两个作用，一个是参数索引值，一个是参数名称，后续要拆分，不要一个参数两个含义，增加一个name属性就可以
+					if (!StringUtil.isEmpty(request.getParameter(name))) {
+						value = request.getParameter(name);
+					} else if (ObjectUtil.isInt(param)) {
+						int index = Integer.valueOf(param);
+						if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
+							value = t.getParams()[index];
+						}
+					} else {
+						value = defaultValue;
+					}
+
+					if (value == null) {
+						break;
+					}
+
+					// 将值进行格式化后注入
+					parameValue[i] = DataUtil.convertType(doMethod.getParameterTypes()[i], value.toString());
+				}
+			}
+		}
+		
+		// 检查Ajax跨域配置
+		if (doMethod.isAnnotationPresent(AjaxAccess.class)) {
+			AjaxAccess ajaxAccess = doMethod.getAnnotation(AjaxAccess.class);
+			if (ajaxAccess != null) {
+				if (!StringUtil.isEmpty(ajaxAccess.allowOrigin())) {
+					response.addHeader("Access-Control-Allow-Origin", ajaxAccess.allowOrigin());
+				}
+				if (!StringUtil.isEmpty(ajaxAccess.allowHeaders())) {
+					response.addHeader("Access-Control-Allow-Headers", ajaxAccess.allowHeaders());
+				}
+				if (ajaxAccess.allowMethods() != null) {
+					StringBuffer sb_methods = new StringBuffer();
+					for (Methods method : ajaxAccess.allowMethods()) {
+						sb_methods.append(method.name()).append(",");
+					}
+					if (sb_methods.length() > 0) {
+						sb_methods.delete(sb_methods.length() - 1, sb_methods.length());
+					}
+					response.addHeader("Access-Control-Allow-Methods", sb_methods.toString());
+				}
+				response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
+			}
+		}
+
+		// 检查静态规则配置
+		if (doMethod.isAnnotationPresent(WebCache.class)) {
+			this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
+			Cache cache = CacheBase.getCache(cacheSet);
+			if(cache != null){
+				String cacheContent = cache.readCache(cacheSet, staticName,response);
+				if(cacheContent != null){
+					response.setCharacterEncoding(MvcInit.charSet);
+					response.setContentType("text/html; charset=" + MvcInit.charSet);
+					response.getWriter().print(cacheContent);
+					System.out.println("UrlCache -> read Cache.");
+					return null;
+				}
+			}
+		}
+		/*MethodHandles.Lookup lookup = MethodHandles.lookup();  
+	    MethodType type = MethodType.methodType(this.getClass(), doMethod.getParameterTypes());  
+	    MethodHandle mh = lookup.findVirtual(this.getClass(), doMethod.getName(), type);  
+	    ConstantCallSite callSite = new ConstantCallSite(mh);  
+	    MethodHandle invoker = callSite.dynamicInvoker();  
+		IForward result = (IForward) invoker.invoke(parameValue);*/
+		IForward result = (IForward) doMethod.invoke(this, parameValue);
+		return result;
+		
+		
 	}
 
 	
