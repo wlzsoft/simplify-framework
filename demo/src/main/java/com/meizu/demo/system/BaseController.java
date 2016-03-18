@@ -1,6 +1,7 @@
 package com.meizu.demo.system;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class BaseController<T extends Model> extends SecurityContoller<T> {
 	
 	@Override
-	public final void process(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	public final void process(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 		request.setAttribute("url", request.getRequestURI());
@@ -39,7 +40,7 @@ public class BaseController<T extends Model> extends SecurityContoller<T> {
 	}
 	
 	@Override
-	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t) throws IOException  {
+	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
 		return super.execute(request, response, t);
 	}
 	

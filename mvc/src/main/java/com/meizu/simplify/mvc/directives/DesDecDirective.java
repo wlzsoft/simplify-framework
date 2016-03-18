@@ -51,16 +51,16 @@ public class DesDecDirective extends Directive {
 			key = (String) sn_key.value(context);
 		}
 
-		/*if ("md5".equals(type)) {
-			writer.write(MD5.calcMD5(value));
+	/*	if ("md5".equals(type)) {
+			writer.write(MD5Encrypt.sign(value));
 		} else if ("e_base64".equals(type)) {
-			writer.write(Base64.encode(value, key));
+			writer.write(Base64Encrypt.encode(value, key));
 		} else if ("d_base64".equals(type)) {
-			writer.write(Base64.decode(value, key));
+			writer.write(Base64Encrypt.decode(value, key));
 		} else if ("e_des".equals(type)) {
-			writer.write(DESStaticKey.encrypt(value, key));
+			writer.write(DESEncrypt.encrypt(value, key));
 		} else if ("d_des".equals(type)) {
-			writer.write(DESStaticKey.decrypt(value, key));
+			writer.write(DESEncrypt.decrypt(value, key));
 		}*/
 		return true;
 	}

@@ -63,8 +63,11 @@ public class SecurityContoller<T extends Model> {
 	 * @param response
 	 * @throws ServletException
 	 * @throws IOException
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		HttpServletRequest request = req;
 //		HttpServletRequest request = new HttpServletRequestWrapper(req){
 //			
@@ -162,12 +165,14 @@ public class SecurityContoller<T extends Model> {
 	 * @return
 	 * @throws ServletException
 	 * @throws IOException
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws IOException  {
+	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
 		if (t.getCmd() != null && t.getCmd().length() > 0) {
 			String doCmd = t.getCmd();
 			Method doMethod = null;
-			try {
 				Method[] methods = this.getClass().getMethods();
 				for ( Method m : methods ) {
 					if (doCmd.equals(m.getName())) {
@@ -271,39 +276,7 @@ public class SecurityContoller<T extends Model> {
 				IForward result = (IForward) invoker.invoke(parameValue);*/
 				IForward result = (IForward) doMethod.invoke(this, parameValue);
 				return result;
-			} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
-				Throwable throwable = e.getTargetException();
-//              方法一
-				//response.sendError(500,throwable.getMessage());
-				
-//				方法二：推荐
-				response.setStatus(500);
-				response.setCharacterEncoding(MvcInit.charSet);
-				response.setContentType("text/html; charset=" + MvcInit.charSet);
-				String page500 = "<!DOCTYPE html>"+
-								 "<html>"+
-								 "<head>"+
-								 "<meta charset=\"UTF-8\">"+
-								 "<title>500 错误</title>"+
-								 "</head>"+
-								 "<body>"+
-								 "<!--"+throwable+"-->"+
-								 throwable.getMessage() +
-								"</body>"+
-								"</html>";
-				response.getWriter().print(page500);
-//				方法二
-//				RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
-//				requestDispatcher.forward(request, response);
-//				方法三
-//				IForward iForward = new VelocityForward("/template/framework/500.html");
-//				iForward.doAction(request, response, cacheSet, doCmd);
-				
-			} catch ( Exception e ) {
-				e.printStackTrace();
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}  
+			
 		}
 		return null;
 	}

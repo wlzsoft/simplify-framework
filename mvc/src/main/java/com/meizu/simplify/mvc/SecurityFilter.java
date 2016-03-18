@@ -1,6 +1,7 @@
 package com.meizu.simplify.mvc;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,7 +104,6 @@ public class SecurityFilter implements Filter {
 			request.setAttribute("cmd", parName);//请求指令，其实就是action请求方法名
 			SecurityContoller<?> bs = (SecurityContoller<?>)controllerAnnotationInfo.getObj();
 			bs.process(request, response);
-			
 			long readtime = System.currentTimeMillis() - time;
 //			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
 			
@@ -111,7 +111,40 @@ public class SecurityFilter implements Filter {
 			Statistics.incReadcount();
 			Statistics.setReadMaxTime(readtime, thisUrl);
 			Statistics.getReadMap().remove(thisUrl);
-		
+		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
+			Throwable throwable = e.getTargetException();
+//          方法一
+			//response.sendError(500,throwable.getMessage());
+			
+//			方法二：推荐
+			response.setStatus(500);
+			response.setCharacterEncoding(MvcInit.charSet);
+			response.setContentType("text/html; charset=" + MvcInit.charSet);
+			String page500 = "<!DOCTYPE html>"+
+							 "<html>"+
+							 "<head>"+
+							 "<meta charset=\"UTF-8\">"+
+							 "<title>500 错误</title>"+
+							 "</head>"+
+							 "<body>"+
+							 "<!--"+throwable+"-->"+
+							 "哎，出了点问题，先逛逛其他功能，或是联系管理员" +
+							"</body>"+
+							"</html>";
+			try {
+				response.getWriter().print(page500);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+//			方法三
+//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
+//			requestDispatcher.forward(request, response);
+//			方法四
+//			IForward iForward = new VelocityForward("/template/framework/500.html");
+//			iForward.doAction(request, response, cacheSet, doCmd);
+		} catch (IllegalAccessException | IllegalArgumentException e) {
+			e.printStackTrace();
+			throw new UncheckedException(e);
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);
