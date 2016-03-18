@@ -7,7 +7,7 @@ import com.meizu.simplify.entity.BaseEntity;
 
 @Entity
 @Table(name="sys_user")
-@Transient({"delFlag"})
+@Transient({"deleteflag"})
 public class User extends BaseEntity {
 
 	private static final long serialVersionUID = -9002719755949647466L;

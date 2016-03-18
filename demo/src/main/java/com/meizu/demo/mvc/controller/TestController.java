@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.model.TestModel;
@@ -73,13 +74,44 @@ public class TestController extends BaseController<TestModel> {
 		}
 		return new VelocityForward("/template/login.html");
 	}
-	@RequestMap(path = "/testvelocity/")
-	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
-	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
-		request.setAttribute("userName", test.getName());
+	@RequestMap(path = "/testvelocity2/")
+	public IForward doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		String userName = request.getParameter("userName");
+		HttpSession session = request.getSession();
+		/*if (userName != null && userName.equals("admin")) {//服务器内部跳转到首页
+			request.setAttribute("userName", userName);
+			request.setRequestURI("/");//服务器内部跳转
+			session.setAttribute("admin", userName);
+			HttpRoute.route(request, response);
+		}*/
 		return new VelocityForward("/template/login.html");
 	}
+	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
+	@RequestMap(path = "/testvelocity/")
+	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		if(test != null) {
+			request.setAttribute("userName", test.getName());
+		} else {
+			request.setAttribute("userName", "nologin");
+		}
+		return new VelocityForward("/template/login.html");
+	}
+	
+	@RequestMap(path = "/testwebsocket/")
+	public IForward doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
+		return new VelocityForward("/template/websocket.html");
+	}
+	
+//	@WebSocket
+	@RequestMap(path = "/websocket/notice")
+	public IForward doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		request.setAttribute("userName", test.getName());
+		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
+	}	
 	@RequestMap(path = "/testjson.json")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
@@ -90,7 +122,7 @@ public class TestController extends BaseController<TestModel> {
 	
 	@RequestMap(path = "/testmessage/")
 	public IForward doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.addTest(null);
 		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
 	}
 	
@@ -106,7 +138,9 @@ public class TestController extends BaseController<TestModel> {
 	public IForward doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTest(null);
 		Test test = testService.doSomeThing2();
-		request.setAttribute("userName", test.getName());
+		if(test != null) {
+			request.setAttribute("userName", test.getName());
+		}
 		return new ActionForward("/index.jsp");
 	}
 	
@@ -159,7 +193,6 @@ public class TestController extends BaseController<TestModel> {
 		} else {
 			return  new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
 		}
-
 	}
 	
 }
