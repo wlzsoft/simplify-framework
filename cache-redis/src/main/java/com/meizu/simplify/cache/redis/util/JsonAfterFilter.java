@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.AfterFilter;
 import com.meizu.simplify.cache.CacheProxyDao;
 import com.meizu.simplify.cache.ICacheDao;
+import com.meizu.simplify.utils.ObjectUtil;
 
 /**
  * 
@@ -32,7 +33,7 @@ public class JsonAfterFilter extends AfterFilter {
 		for(Field file:files){
 			if(file.getName().equals("createId") ){
 				try {
-					if(null!=file.get(object).toString() && file.get(object).toString()!="0"){
+					if(ObjectUtil.isNotNull(file.get(object)) && file.get(object).toString()!="0"){
 						Integer createId =Integer.parseInt(file.get(object).toString());
 						ICacheDao<String, Object> cachedDao = CacheProxyDao.getCache();
 						Object user=cachedDao.get("curUser"+createId);
