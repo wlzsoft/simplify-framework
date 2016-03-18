@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.util;
+package com.meizu.simplify.resource;
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
