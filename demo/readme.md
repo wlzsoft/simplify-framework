@@ -42,6 +42,8 @@
 40.使用lambda表达式简化编程，优先改造内部类的使用方式==>>已测试，已通过 2016/3/16
 41.使用 java.time代替部分date的操作==>>已测试，已通过 2016/3/16
 42.对脚本语言的支持,直接支持或间接支持,扩展java没有的高级特性的支持：Scala(待解决),ruby(延迟), groovy(待解决), javascript(已解决，普通js处理性能90ms，pc机)
+43.对rest请求方式的多视图的支持，目前支持通过.json 和非.json后缀的请求的视图，分别是json视图，html页面视图(支持velocity和jsp方式)==>> 已测试，已通过 2016/3/18
+44.对rest请求方式多视图支持的异常处理 ==>>已测试，已通过 2016/3/18
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
