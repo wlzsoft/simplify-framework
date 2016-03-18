@@ -16,10 +16,11 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.controller.JsonForward;
 import com.meizu.simplify.mvc.directives.SecurityContoller;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
-import com.meizu.simplify.exception.BaseException;
-import com.meizu.simplify.exception.UncheckedException;
 
 
 
@@ -101,7 +102,7 @@ public class SecurityFilter implements Filter {
 			
 			request.setAttribute("params", params);
 			String parName = controllerAnnotationInfo.getMethod();
-			request.setAttribute("cmd", parName);//请求指令，其实就是action请求方法名
+			request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
 			SecurityContoller<?> bs = (SecurityContoller<?>)controllerAnnotationInfo.getObj();
 			bs.process(request, response);
 			long readtime = System.currentTimeMillis() - time;
@@ -113,35 +114,45 @@ public class SecurityFilter implements Filter {
 			Statistics.getReadMap().remove(thisUrl);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 			Throwable throwable = e.getTargetException();
-//          方法一
-			//response.sendError(500,throwable.getMessage());
-			
-//			方法二：推荐
-			response.setStatus(500);
-			response.setCharacterEncoding(MvcInit.charSet);
-			response.setContentType("text/html; charset=" + MvcInit.charSet);
-			String page500 = "<!DOCTYPE html>"+
-							 "<html>"+
-							 "<head>"+
-							 "<meta charset=\"UTF-8\">"+
-							 "<title>500 错误</title>"+
-							 "</head>"+
-							 "<body>"+
-							 "<!--"+throwable+"-->"+
-							 "哎，出了点问题，先逛逛其他功能，或是联系管理员" +
-							"</body>"+
-							"</html>";
-			try {
-				response.getWriter().print(page500);
-			} catch (IOException e1) {
-				e1.printStackTrace();
+//			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
+			if(thisUrl.endsWith(".json")) {
+//				Result
+//				IForward ifd = new JsonForward(obj);
+			} else if(thisUrl.endsWith(".xml")){//不实现
+				
+			} else {//其他方式的请求,都走html业务视图，可以支持jsp,velocity 等模板引擎
+//	                                方法一
+				//response.sendError(500,throwable.getMessage());
+				
+//				方法二：推荐
+				response.setStatus(500);
+				response.setCharacterEncoding(MvcInit.charSet);
+				response.setContentType("text/html; charset=" + MvcInit.charSet);
+				String page500 = "<!DOCTYPE html>"+
+								 "<html>"+
+								 "<head>"+
+								 "<meta charset=\"UTF-8\">"+
+								 "<title>500 错误</title>"+
+								 "</head>"+
+								 "<body>"+
+								 "<!--"+throwable+"-->"+
+								 "哎，出了点问题，先逛逛其他功能，或是联系管理员" +
+								"</body>"+
+								"</html>";
+				try {
+					response.getWriter().print(page500);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+//				方法三
+//				RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
+//				requestDispatcher.forward(request, response);
+//				方法四
+//				IForward iForward = new VelocityForward("/template/framework/500.html");
+//				iForward.doAction(request, response, cacheSet, doCmd);
 			}
-//			方法三
-//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
-//			requestDispatcher.forward(request, response);
-//			方法四
-//			IForward iForward = new VelocityForward("/template/framework/500.html");
-//			iForward.doAction(request, response, cacheSet, doCmd);
+//			不同请求风格的异常处理end
+
 		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);

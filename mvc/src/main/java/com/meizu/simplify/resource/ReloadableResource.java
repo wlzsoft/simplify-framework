@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.annotations;
+package com.meizu.simplify.resource;
 /**
   * <p><b>Title:</b><i>指定绑定的类型的文件或目录可以重新热加载</i></p>
  * <p>Desc: TODO</p>
