@@ -20,6 +20,7 @@ import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.controller.JsonForward;
+import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.mvc.directives.SecurityContoller;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 
@@ -131,9 +132,7 @@ public class SecurityFilter implements Filter {
 				
 //				方法二：推荐
 				response.setStatus(500);
-				response.setCharacterEncoding(MvcInit.charSet);
-				response.setContentType("text/html; charset=" + MvcInit.charSet);
-				String page500 = "<!DOCTYPE html>"+
+				/*String page500 = "<!DOCTYPE html>"+
 								 "<html>"+
 								 "<head>"+
 								 "<meta charset=\"UTF-8\">"+
@@ -143,18 +142,18 @@ public class SecurityFilter implements Filter {
 								 "<!--"+throwable+"-->"+
 								 "哎，出了点问题，先逛逛其他功能，或是联系管理员" +
 								"</body>"+
-								"</html>";
+								"</html>";*/
+				
+				IForward iForward = new VelocityForward("/template/framework/500.html");
 				try {
-					response.getWriter().print(page500);
-				} catch (IOException e1) {
+					iForward.doAction(request, response, null, null);
+				} catch (ServletException | IOException e1) {
 					e1.printStackTrace();
 				}
+				
 //				方法三
 //				RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
 //				requestDispatcher.forward(request, response);
-//				方法四
-//				IForward iForward = new VelocityForward("/template/framework/500.html");
-//				iForward.doAction(request, response, cacheSet, doCmd);
 			}
 //			不同请求风格的异常处理end
 

@@ -109,12 +109,11 @@ public class TestController extends BaseController<TestModel> {
 	}
 	
 	
-	@RequestMap(path = "/testjson/")
+	@RequestMap(path = "/testjson.json")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();
 		testList.add(test);
-		response.setContentType("application/json;charset=utf-8");//后续整合到框架中，自动判断写入，无需这里硬编码
 		return new JsonForward(testList);
 	}
 	
