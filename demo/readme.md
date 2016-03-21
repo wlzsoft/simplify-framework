@@ -50,8 +50,9 @@
   			   2.模板中的静态部分采用二进制输出，不需要CPU运行的时候再转码
                3.合并模板中的静态部分一起输出，而不是每一行每一行输出 
                目前的现代模板引擎有 smarty4j(没有专业团队维护，移植于php的smarty)或是beetl(推荐)，或是httl
-47-1. httl现代模板引擎已经集成
-47-2. velocity传统模板引擎已经集成
+47-1. httl现代模板引擎已经集成-http://httl.github.io/zh/syntax.html ==>> 已测试，已通过 2016/3/21
+47-2. velocity传统模板引擎已经集成 ==>> 已测试，已通过 2015/11/25
+47-3. beetl
 48.用velocity来合成json串，比直接用那个JSONArray那个快很多，但是瓶颈还在这块，因为我们数据都读到内存里。如果直接拼StringBuffer会快1/3. 更换模板引擎可以提高一下。因为你停留在一个页面，行情列表是需要不停动态刷新的。velocity性能不够理想
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter

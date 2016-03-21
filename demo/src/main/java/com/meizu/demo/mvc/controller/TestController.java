@@ -1,9 +1,7 @@
 package com.meizu.demo.mvc.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +22,7 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.ActionForward;
+import com.meizu.simplify.mvc.controller.BeetlForward;
 import com.meizu.simplify.mvc.controller.HttlForward;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.controller.JsonForward;
@@ -33,9 +32,6 @@ import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
-
-import httl.Engine;
-import httl.Template;
 
 
 /**
@@ -60,6 +56,21 @@ public class TestController extends BaseController<TestModel> {
 	@Resource
 	private TestService testService;
 	
+	
+	@RequestMap(path = "/testbeetl/")
+	public IForward doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		
+		User user = new User();
+		user.setName("lcy");
+		List<Test> testList = new ArrayList<>();
+		Test test = new Test();
+		test.setName("syk");
+		test.setFid(1);
+		testList.add(test);
+		request.setAttribute("user", user);
+		request.setAttribute("tests", testList);
+		return new BeetlForward("/template/beetl/pagefunction.html");
+	}
 	
 	@RequestMap(path = "/testhttl/")
 	public IForward doTestHttl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
