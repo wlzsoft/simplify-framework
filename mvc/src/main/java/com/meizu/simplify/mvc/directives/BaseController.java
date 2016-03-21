@@ -1,27 +1,20 @@
 package com.meizu.simplify.mvc.directives;
 
 import java.io.IOException;
-import java.lang.invoke.ConstantCallSite;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
-import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.IForward;
-import com.meizu.simplify.mvc.controller.VelocityForward;
 import com.meizu.simplify.mvc.directives.Model.ModelSet;
 import com.meizu.simplify.mvc.directives.Model.Passme;
 import com.meizu.simplify.mvc.directives.Model.StringFilter;
@@ -69,40 +62,6 @@ public class BaseController<T extends Model> {
 	 */
 	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		HttpServletRequest request = req;
-//		HttpServletRequest request = new HttpServletRequestWrapper(req){
-//			
-//			private String encode(String param){
-//				try {
-//					
-//					String enc = StringUtil.parseString(super.getParameter("ec"), MvcInit.charSet); 
-//					if (enc.equalsIgnoreCase(super.getCharacterEncoding())) {
-//						return param;
-//					} else {
-//						return new String(param.getBytes(MvcInit.webcharSet), enc.toUpperCase());
-//					}
-//				} catch ( Exception e ) {
-//					e.printStackTrace();
-//				}
-//				return param;
-//			}
-//			
-//			@Override
-//			public String getParameter(String name) {
-//				return encode(super.getParameter(name)); 
-//			}
-//			
-//			@Override
-//			public String[] getParameterValues(String parameter){
-//				String[] results = super.getParameterValues(parameter);
-//				if (results == null)return null;
-//				int count = results.length;
-//				String[] trimResults = new String[count];
-//				for (int i = 0; i < count; i++) {
-//				  trimResults[i] = encode(results[i]);
-//				}
-//				return trimResults; 
-//			}
-//		};
 		T model = setRequestModel(request);
 		this.staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
