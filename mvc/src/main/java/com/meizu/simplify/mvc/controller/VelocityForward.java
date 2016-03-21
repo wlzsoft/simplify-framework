@@ -91,6 +91,7 @@ public class VelocityForward implements IForward {
 		response.setContentType("text/html; charset=" + MvcInit.charSet);
 	}
 
+	@Override
 	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 
 		// 设置编码

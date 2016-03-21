@@ -38,6 +38,7 @@ public class MessageForward implements IForward {
 		this.msg = msg;
 	}
 
+	@Override
 	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 		response.setCharacterEncoding(MvcInit.charSet);
 		response.setContentType("text/html; charset=" + MvcInit.charSet);

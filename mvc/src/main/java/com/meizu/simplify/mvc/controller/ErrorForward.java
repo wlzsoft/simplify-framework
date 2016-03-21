@@ -41,7 +41,8 @@ public class ErrorForward implements IForward {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-
+	
+	@Override
 	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
 		response.sendError(errorCode, msg);
 	}
