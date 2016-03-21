@@ -15,6 +15,7 @@ import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.controller.JsonForward;
 import com.meizu.simplify.mvc.directives.Model.ModelSet;
 import com.meizu.simplify.mvc.directives.Model.Passme;
 import com.meizu.simplify.mvc.directives.Model.StringFilter;
@@ -225,9 +226,17 @@ public class BaseController<T extends Model> {
 	    ConstantCallSite callSite = new ConstantCallSite(mh);  
 	    MethodHandle invoker = callSite.dynamicInvoker();  
 		IForward result = (IForward) invoker.invoke(parameValue);*/
-		IForward result = (IForward) doMethod.invoke(this, parameValue);
-		return result;
 		
+		IForward result = null;
+		if(doMethod.getReturnType() == IForward.class) {
+			result = (IForward) doMethod.invoke(this, parameValue);
+		} else {
+//			if(thisUrl.endsWith(".json")) {
+				Object obj = doMethod.invoke(this,parameValue);
+				result = new JsonForward(obj);
+//			}
+		}
+		return result;
 		
 	}
 
