@@ -37,8 +37,10 @@ import httl.Template;
  */
 public class HttlForward implements IForward {
 	private String str = null;
+	static Engine engine = null;
 	public static void init() {
 		String classPath = MvcInit.getPath();
+		engine = Engine.getEngine();
 	}
 
 	public HttlForward(String str) {
@@ -61,7 +63,7 @@ public class HttlForward implements IForward {
 		// 设置编码
 		setContentType(request, response);
 
-		Engine engine = Engine.getEngine();
+		
 		Template template = null;
 		try {
 			// 取模版

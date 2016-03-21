@@ -8,10 +8,10 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import com.meizu.simplify.cache.CachePool;
-import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.mvc.controller.BeetlForward;
+import com.meizu.simplify.mvc.controller.HttlForward;
 import com.meizu.simplify.mvc.controller.VelocityForward;
 
 /**
@@ -38,6 +38,8 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		CachePool.init();
 		Startup.start();
 		VelocityForward.init();
+		HttlForward.init();
+		BeetlForward.init();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");
 //		StringUtils.format("Current path -> {0}", systemConfig.getAppPath()));

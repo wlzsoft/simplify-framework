@@ -1,11 +1,7 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.text.ParseException;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,8 +36,19 @@ import com.meizu.simplify.webcache.web.CacheBase;
  */
 public class BeetlForward implements IForward {
 	private String str = null;
+	private static GroupTemplate gt = null;
 	public static void init() {
 		String classPath = MvcInit.getPath();
+//		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
+		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
+		try {
+			Configuration cfg = Configuration.defaultConfiguration();
+			gt = new GroupTemplate(resourceLoader, cfg);
+			gt.registerFunctionPackage("t", new FunctionPackage());//自定义模板函数
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public BeetlForward(String str) {
@@ -64,15 +71,11 @@ public class BeetlForward implements IForward {
 		// 设置编码
 		setContentType(request, response);
 
-//		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
-		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
-		Configuration cfg = Configuration.defaultConfiguration();
-		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
+
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
 //		gt.setSharedVars(shared);
-		gt.registerFunctionPackage("t", new FunctionPackage());//自定义模板函数
 		Template template = gt.getTemplate(str);
 //		Template template = gt.getTemplate("hello,${name}");//字符串模板
 

@@ -12,6 +12,8 @@ import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.mvc.controller.BeetlForward;
+import com.meizu.simplify.mvc.controller.HttlForward;
 import com.meizu.simplify.mvc.controller.VelocityForward;
 public class WebServer {
 	private volatile boolean isShutDowm = false;
@@ -24,6 +26,8 @@ public class WebServer {
 			CachePool.init();
 			Startup.start();
 			VelocityForward.init();
+			HttlForward.init();
+			BeetlForward.init();
 			//end
 			init();
 			new WebServer().start();
