@@ -44,6 +44,15 @@
 42.对脚本语言的支持,直接支持或间接支持,扩展java没有的高级特性的支持：Scala(待解决),ruby(延迟), groovy(待解决), javascript(已解决，普通js处理性能90ms，pc机)
 43.对rest请求方式的多视图的支持，目前支持通过.json 和非.json后缀的请求的视图，分别是json视图，html页面视图(支持velocity和jsp方式)==>> 已测试，已通过 2016/3/18
 44.对rest请求方式多视图支持的异常处理 ==>>已测试，已通过 2016/3/18
+45.整合proguard的特有的东西，还有fha的支持的微信等等的功能,smarty4j使用maven的本地库模式
+46.减少mvc请求时，对象的频繁创建，控制jvm的对象数量，特别是频繁的对象创建和销毁
+47.模板引擎的性能问题，改用现代模板引擎 (1.模板引擎将模板文件编译成class运行
+  			   2.模板中的静态部分采用二进制输出，不需要CPU运行的时候再转码
+               3.合并模板中的静态部分一起输出，而不是每一行每一行输出 
+               目前的现代模板引擎有 smarty4j(没有专业团队维护，移植于php的smarty)或是beetl(推荐)，或是httl
+47-1. httl现代模板引擎已经集成
+47-2. velocity传统模板引擎已经集成
+48.用velocity来合成json串，比直接用那个JSONArray那个快很多，但是瓶颈还在这块，因为我们数据都读到内存里。如果直接拼StringBuffer会快1/3. 更换模板引擎可以提高一下。因为你停留在一个页面，行情列表是需要不停动态刷新的。velocity性能不够理想
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
