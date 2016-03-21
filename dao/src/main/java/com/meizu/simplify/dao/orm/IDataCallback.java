@@ -3,7 +3,6 @@ package com.meizu.simplify.dao.orm;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +55,7 @@ public interface IDataCallback<T> {
 		for (int i=1; i <= params.length;i++) {
 			Object obj = params[i-1];
 			prepareStatement.setObject(i, obj);
+			LOGGER.info("["+i+","+obj+"]");
 		}
 		return null;
 	}
