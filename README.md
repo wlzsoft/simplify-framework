@@ -57,6 +57,7 @@
 49.SPI机制实现-用以替换和优化java的实现类发现机制，而不是通过扫描某个路径下的class文件的集合的方式,这是一种hack方式，直接用java自己的spi机制，通过ServiceLoader类实现,使用spi而不是api，可用于框架实现插件机制，接口位于调用方一端,考虑视图层使用spi插件机制
 50.mvc请求地址注解配置方式：直接类级别的一级地址前缀配置
 51.提供更灵活的根据url后缀更换视图的方式，并使用单例的视图对象
+52.提供更高性能的一个controller只对应一个地址，这样的controller必须实现特定接口，而这个接口的方法，就是controller的请求映射的方法
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

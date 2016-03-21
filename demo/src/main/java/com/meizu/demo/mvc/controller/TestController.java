@@ -48,6 +48,7 @@ import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
  *
  */
 @Bean
+@RequestMap(path = "/test")
 public class TestController extends SystemController<TestModel> {
 
 //	@Resource //注释掉，目前打开会报错，因为无实现类
@@ -55,6 +56,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@Resource
 	private TestService testService;
+	
 	
 	@RequestMap(path = "/testrestjson.json")
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {

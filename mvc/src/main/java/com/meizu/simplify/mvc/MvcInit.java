@@ -97,11 +97,15 @@ public class MvcInit {
 				// 检查annotation 设置
 				if (method.isAnnotationPresent(RequestMap.class)) {
 					RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
-					for (String _path : rset.path().split("\\s+", -1)) {
-						if (_path != null && _path.length() > 0) {
-							controllerMap.put(_path, new ControllerAnnotationInfo(obj, method.getName()));
-							LOGGER.info("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
-//							System.out.println("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + _path);
+					for (String path : rset.path().split("\\s+", -1)) {
+						if (path != null && path.length() > 0) {
+							RequestMap preControlMap = entityClass.getAnnotation(RequestMap.class);
+							if(preControlMap!=null && preControlMap.path().length()>0) {
+								path = preControlMap.path() + path;
+							}
+							controllerMap.put(path, new ControllerAnnotationInfo(obj, method.getName()));
+							LOGGER.info("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
+//							System.out.println("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
 						}
 					}
 				}

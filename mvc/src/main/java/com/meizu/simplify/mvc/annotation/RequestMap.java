@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * @version Version 0.1
  *
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
