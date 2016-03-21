@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSONObject;
 import com.meizu.simplify.encrypt.des.DESEncrypt;
 import com.meizu.simplify.mvc.controller.IForward;
+import com.meizu.simplify.mvc.directives.BaseController;
 import com.meizu.simplify.mvc.directives.Model;
-import com.meizu.simplify.mvc.directives.SecurityContoller;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -29,7 +29,7 @@ import com.meizu.simplify.utils.StringUtil;
  *
  * @param <T>
  */
-public class BaseController<T extends Model> extends SecurityContoller<T> {
+public class SystemController<T extends Model> extends BaseController<T> {
 	
 	@Override
 	public final void process(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

@@ -14,7 +14,7 @@ import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
-import com.meizu.demo.system.BaseController;
+import com.meizu.demo.system.SystemController;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -48,7 +48,7 @@ import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
  *
  */
 @Bean
-public class TestController extends BaseController<TestModel> {
+public class TestController extends SystemController<TestModel> {
 
 //	@Resource //注释掉，目前打开会报错，因为无实现类
 	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要 
