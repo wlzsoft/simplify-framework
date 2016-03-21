@@ -42,7 +42,7 @@ public class MvcInit {
 	
 	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");//注意，要合并成一个实例，不要太多重复实例 TODO
 	
-	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>(); // servletMap
+	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
 	public static boolean debug = false;
 	public static String charSet = null;
@@ -94,7 +94,6 @@ public class MvcInit {
 		}
 		for (Method method : entityClass.getMethods()) {
 			if (method != null) {
-				// 检查annotation 设置
 				if (method.isAnnotationPresent(RequestMap.class)) {
 					RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
 					for (String path : rset.path().split("\\s+", -1)) {
@@ -105,7 +104,6 @@ public class MvcInit {
 							}
 							controllerMap.put(path, new ControllerAnnotationInfo(obj, method.getName()));
 							LOGGER.info("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
-//							System.out.println("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
 						}
 					}
 				}
