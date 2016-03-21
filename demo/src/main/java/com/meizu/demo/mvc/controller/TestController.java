@@ -56,6 +56,13 @@ public class TestController extends BaseController<TestModel> {
 	@Resource
 	private TestService testService;
 	
+	@RequestMap(path = "/testrestjson.json")
+	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		List<Test> testList = new ArrayList<>();
+		testList.add(test);
+		return testList;
+	}
 	
 	@RequestMap(path = "/testbeetl/")
 	public IForward doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
