@@ -21,7 +21,7 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.IForward;
 import com.meizu.simplify.mvc.controller.JsonForward;
 import com.meizu.simplify.mvc.controller.VelocityForward;
-import com.meizu.simplify.mvc.directives.SecurityContoller;
+import com.meizu.simplify.mvc.directives.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 
 
@@ -105,7 +105,7 @@ public class SecurityFilter implements Filter {
 			request.setAttribute("params", params);
 			String parName = controllerAnnotationInfo.getMethod();
 			request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
-			SecurityContoller<?> bs = (SecurityContoller<?>)controllerAnnotationInfo.getObj();
+			BaseController<?> bs = (BaseController<?>)controllerAnnotationInfo.getObj();
 			bs.process(request, response);
 			long readtime = System.currentTimeMillis() - time;
 //			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
