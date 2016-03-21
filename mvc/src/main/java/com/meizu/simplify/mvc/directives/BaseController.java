@@ -107,21 +107,11 @@ public class BaseController<T extends Model> {
 		this.staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
-//			try {
-				IForward AF = execute(request, response, model);
-				if (AF != null) {
-					request.setAttribute("formData", model);
-					AF.doAction(request, response, cacheSet, staticName);
-				}
-				
-//			} catch(BaseException e) {
-//				response.sendError(500,e.getTargetException().getMessage());
-//				response.setCharacterEncoding(MvcInit.charSet);
-//				response.setContentType("text/html; charset=" + MvcInit.charSet);
-//				response.getWriter().print("error");
-//				response.getWriter().flush();
-//				response.getWriter().close();
-//			}
+			IForward AF = execute(request, response, model);
+			if (AF != null) {
+				request.setAttribute("formData", model);
+				AF.doAction(request, response, cacheSet, staticName);
+			}
 		}
 		// 逻辑递交执行完成, 关闭session
 		destroy(request, response, model);
