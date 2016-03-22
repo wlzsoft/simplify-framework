@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.directives;
+package com.meizu.simplify.mvc.view.function;
 
 import java.io.IOException;
 import java.io.Writer;

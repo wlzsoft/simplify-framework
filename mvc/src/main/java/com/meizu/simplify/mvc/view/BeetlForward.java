@@ -13,6 +13,7 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 import com.meizu.simplify.mvc.MvcInit;
+import com.meizu.simplify.mvc.view.function.FunctionPackage;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
