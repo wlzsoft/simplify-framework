@@ -70,7 +70,7 @@ public class TestController extends SystemController<TestModel> {
 	public IForward doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		
 		User user = new User();
-		user.setName("lcy");
+		user.setName("lcyc123");
 		List<Test> testList = new ArrayList<>();
 		Test test = new Test();
 		test.setName("syk");
@@ -88,7 +88,7 @@ public class TestController extends SystemController<TestModel> {
 		user.setName("lcy");
 		List<Test> testList = new ArrayList<>();
 		Test test = new Test();
-		test.setName("syk");
+		test.setName("sykcsss");
 		test.setFid(1);
 		testList.add(test);
 		request.setAttribute("user", user);
