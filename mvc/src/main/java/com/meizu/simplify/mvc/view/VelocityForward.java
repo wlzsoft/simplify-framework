@@ -61,7 +61,7 @@ public class VelocityForward implements IForward {
 		Velocity.setProperty("file.resource.loader.cache", MvcInit.debug ? "false" : "true");
 		Velocity.setProperty("file.resource.loader.modificationCheckInterval", "5");
 		
-		String directives = "com.meizu.simplify.mvc.directives.DesDecDirective";
+		String directives = "com.meizu.simplify.mvc.view.function.EncryptFunctionDirective";
 		if(!StringUtil.isEmpty(MvcInit.directives)) directives += "," + MvcInit.directives;
 		Velocity.setProperty("userdirective", directives);
 
