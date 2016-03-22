@@ -19,6 +19,8 @@ import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.mvc.annotation.AjaxAccess;
+import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.view.ActionForward;
@@ -57,6 +59,15 @@ public class TestController extends SystemController<TestModel> {
 	@Resource
 	private TestService testService;
 	
+	@AjaxAccess(allowOrigin = "http://ab.mezu.com",allowHeaders="X-Requested-With",allowMethods={Methods.Post},maxAge=30)
+//	@AjaxAccess(allowOrigin = "http://ab.mezu.com")
+	@RequestMap(path = "/testrestajaxjson.json")
+	public List<Test> doRestAjaxJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		List<Test> testList = new ArrayList<>();
+		testList.add(test);
+		return testList;
+	}
 	
 	@RequestMap(path = "/testrestjson.json")
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {

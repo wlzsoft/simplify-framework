@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 
 /**
  * <p><b>Title:</b><i>Ajax 跨域访问注解设置</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 服务端设置允许跨域访问的域名:
+ *                区分于jsonp跨域访问方式-jsonp访问方式不属于ajax访问方式，是阻塞性的请求</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
