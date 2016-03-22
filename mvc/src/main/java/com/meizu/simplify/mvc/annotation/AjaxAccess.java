@@ -8,9 +8,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p><b>Title:</b><i>Ajax 跨域访问注解设置</i></p>
+ * <p><b>Title:</b><i>Ajax 跨域访问注解设置--基于CORS(跨域资源共享,只支持get和post,移动端支持很好，ie6这种太老的浏览器无法支持)机制，区别于jsonp</i></p>
  * <p>Desc: 服务端设置允许跨域访问的域名:
- *                区分于jsonp跨域访问方式-jsonp访问方式不属于ajax访问方式，是阻塞性的请求</p>
+ *                区分于jsonp跨域访问方式-jsonp访问方式不属于ajax访问方式，是阻塞性的请求
+ *          常见的跨域方案有：JSONP、flash、ifame、xhr2,cors</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
