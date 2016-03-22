@@ -63,15 +63,16 @@ public class CacheExecute {
 	          LOGGER.error("error!", e);
 	          throw new CacheException(e.getMessage());
 		} finally {
-			try {
+			//TODO 后续连接的回收在这里处理 。目前回收到连接池，是放在 getConnection 方法中处理
+			/*try {
 				ShardedJedisPool pool = RedisPool.init(mod_name);
 				if (!pool.isClosed()) {
-//					pool.returnResourceObject(getJedis(mod_name));
+					pool.returnResourceObject(getJedis(mod_name));
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 				ex.printStackTrace();
-			}
+			}*/
 		}
 	}
 }

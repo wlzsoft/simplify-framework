@@ -26,4 +26,7 @@ public class RedisException extends BaseException {
 		super(message);
 	}
 
+	public RedisException(String message,Exception e) {
+		super(message,e);
+	}
 }

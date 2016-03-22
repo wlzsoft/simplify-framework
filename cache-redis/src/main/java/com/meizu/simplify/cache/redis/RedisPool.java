@@ -125,11 +125,9 @@ public class RedisPool {
 	public static void initCachePool() {
 		ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
 		for(int i=0; i<10; i++) {
-			pool.getResource();
+			RedisPool.getConnection("redis_ref_hosts");//请求后已经返回连接池中，这时候逻辑连接，应该为0，物理连接为10
 		}
 		LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
-//    	System.out.println("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
-//    	pool.returnResourceObject(resource);
 	}
 	
 	private RedisPool() {
@@ -160,14 +158,13 @@ public class RedisPool {
 		try {
 			jedis = pool.getResource();
 		} catch(JedisConnectionException ex) {
-//			ex.printStackTrace();
 			if(jedis != null) {
 				pool.destroy();
 			}
-			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常:"+ex.getMessage());
+			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常",ex);
 		} finally {
-//			TODO 是否回收到连接池中，等待验证
-			if(jedis != null) {
+			//TODO 后续不要在这里回收连接到连接池，配合CacheExecute类的execute方法做调整
+			if(jedis != null&&!pool.isClosed()) {
 				pool.returnResourceObject(jedis);
 			}
 		}
