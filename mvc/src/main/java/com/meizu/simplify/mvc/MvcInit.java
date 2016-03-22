@@ -95,8 +95,8 @@ public class MvcInit {
 		for (Method method : entityClass.getMethods()) {
 			if (method != null) {
 				if (method.isAnnotationPresent(RequestMap.class)) {
-					RequestMap rset = (RequestMap) method.getAnnotation(RequestMap.class);
-					for (String path : rset.path().split("\\s+", -1)) {
+					RequestMap requestMap = (RequestMap) method.getAnnotation(RequestMap.class);
+					for (String path : requestMap.path().split("\\s+", -1)) {
 						if (path != null && path.length() > 0) {
 							RequestMap preControlMap = entityClass.getAnnotation(RequestMap.class);
 							if(preControlMap!=null && preControlMap.path().length()>0) {
