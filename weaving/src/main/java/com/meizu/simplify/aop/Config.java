@@ -25,7 +25,7 @@ public class Config {
     	Properties  prop = System.getProperties();
         String config = prop.getProperty("aop.properties");
         if(config == null) {
-        	config = "E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties";
+        	config = "E:/workspace-new/simplify-framework/weaving/src/main/resources/aop.properties";
         }
         util = new PropertieUtil(new File(config));
     }

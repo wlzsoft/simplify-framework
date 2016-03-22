@@ -125,7 +125,8 @@ public class RedisPool {
 	public static void initCachePool() {
 		ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
 		for(int i=0; i<10; i++) {
-			RedisPool.getConnection("redis_ref_hosts");//请求后已经返回连接池中，这时候逻辑连接，应该为0，物理连接为10
+//			RedisPool.getConnection("redis_ref_hosts");//请求后已经返回连接池中，这时候逻辑连接，应该为0，物理连接为10
+			pool.getResource();
 		}
 		LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
 	}
