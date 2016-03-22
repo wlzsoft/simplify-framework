@@ -13,8 +13,8 @@ import org.apache.velocity.runtime.parser.node.SimpleNode;
 
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>加密函数</i></p>
+ * <p>Desc: 基于velocity的功能指令</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -25,7 +25,7 @@ import org.apache.velocity.runtime.parser.node.SimpleNode;
  * @version Version 0.1
  *
  */
-public class DesDecDirective extends Directive {
+public class EncryptFunctionDirective extends Directive {
 
 	@Override
 	public String getName() {

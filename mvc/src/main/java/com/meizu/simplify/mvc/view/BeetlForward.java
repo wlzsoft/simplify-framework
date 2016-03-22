@@ -13,7 +13,7 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 import com.meizu.simplify.mvc.MvcInit;
-import com.meizu.simplify.mvc.view.function.FunctionPackage;
+import com.meizu.simplify.mvc.view.function.BeetlFunctionDirectivePackage;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -45,7 +45,7 @@ public class BeetlForward implements IForward {
 		try {
 			Configuration cfg = Configuration.defaultConfiguration();
 			gt = new GroupTemplate(resourceLoader, cfg);
-			gt.registerFunctionPackage("t", new FunctionPackage());//自定义模板函数
+			gt.registerFunctionPackage("t", new BeetlFunctionDirectivePackage());//自定义模板函数
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

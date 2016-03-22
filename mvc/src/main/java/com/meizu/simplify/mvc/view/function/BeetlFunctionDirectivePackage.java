@@ -15,7 +15,7 @@ import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
  * @version Version 0.1
  *
  */
-public class FunctionPackage {
+public class BeetlFunctionDirectivePackage {
 	public String md5(String source){
 		return MD5Encrypt.sign(source);
 	}
