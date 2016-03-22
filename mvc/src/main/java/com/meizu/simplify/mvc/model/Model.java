@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.directives;
+package com.meizu.simplify.mvc.model;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

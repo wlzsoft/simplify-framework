@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSONObject;
 import com.meizu.simplify.encrypt.des.DESEncrypt;
-import com.meizu.simplify.mvc.controller.IForward;
-import com.meizu.simplify.mvc.directives.BaseController;
-import com.meizu.simplify.mvc.directives.Model;
+import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 

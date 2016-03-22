@@ -1,15 +1,16 @@
-package com.meizu.simplify.mvc.controller;
+package com.meizu.simplify.mvc.view;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.text.ParseException;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.beetl.core.Configuration;
+import org.beetl.core.GroupTemplate;
+import org.beetl.core.Template;
+import org.beetl.core.resource.ClasspathResourceLoader;
 
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.utils.ClearCommentUtil;
@@ -18,12 +19,10 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
-import httl.Engine;
-import httl.Template;
 
 
 /**
- * <p><b>Title:</b><i>Httl 模板 页面处理返回方式</i></p>
+ * <p><b>Title:</b><i>Beetl 模板 页面处理返回方式</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -35,15 +34,24 @@ import httl.Template;
  * @version Version 0.1
  *
  */
-public class HttlForward implements IForward {
+public class BeetlForward implements IForward {
 	private String str = null;
-	static Engine engine = null;
+	private static GroupTemplate gt = null;
 	public static void init() {
 		String classPath = MvcInit.getPath();
-		engine = Engine.getEngine();
+//		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
+		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
+		try {
+			Configuration cfg = Configuration.defaultConfiguration();
+			gt = new GroupTemplate(resourceLoader, cfg);
+			gt.registerFunctionPackage("t", new FunctionPackage());//自定义模板函数
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public HttlForward(String str) {
+	public BeetlForward(String str) {
 		this.str = str;
 	}
 
@@ -64,50 +72,36 @@ public class HttlForward implements IForward {
 		// 设置编码
 		setContentType(request, response);
 
-		
-		Template template = null;
-		try {
-			// 取模版
-			template = engine.getTemplate(str);
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
+
+//		共享变量-静态变量-全局变量
+//		Map<String,Object> shared = new HashMap<String,Object>();
+//		shared.put("type", "all");
+//		gt.setSharedVars(shared);
+		Template template = gt.getTemplate(str);
+//		Template template = gt.getTemplate("hello,${name}");//字符串模板
 
 		// 将request中的对象赋给模版
-		Map<String, Object> parameters = new HashMap<>();
 		Enumeration<String> atts = request.getAttributeNames();
 		while ( atts.hasMoreElements() ) {
 			String name = atts.nextElement();
-			parameters.put(name, request.getAttribute(name));
+			template.binding(name, request.getAttribute(name));
 		}
 
-		StringWriter vw = new StringWriter(0);
-		try {
-			template.render(parameters, vw);
-			String content = vw.toString();
-			if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
-				// 是否去除空格
-				if(cacheSet.removeSpace()) {
-					content = ClearCommentUtil.clear(content);
-					content = StringUtil.removeHtmlSpace(content);
-				}
-				Cache cache = CacheBase.getCache(cacheSet);
-				if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
-					// 缓存成功.
-				}
+		String content = template.render();	
+		if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
+			// 是否去除空格
+			if(cacheSet.removeSpace()) {
+				content = ClearCommentUtil.clear(content);
+				content = StringUtil.removeHtmlSpace(content);
 			}
-			response.setCharacterEncoding(MvcInit.charSet);
-			response.setContentType("text/html; charset=" + MvcInit.charSet);
-			response.getWriter().print(content);
-			
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} finally {
-			if (vw != null) {
-				vw.flush();
-				vw.close();
+			Cache cache = CacheBase.getCache(cacheSet);
+			if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
+				// 缓存成功.
 			}
 		}
+		response.setCharacterEncoding(MvcInit.charSet);
+		response.setContentType("text/html; charset=" + MvcInit.charSet);
+		response.getWriter().print(content);
 		
 	}
 

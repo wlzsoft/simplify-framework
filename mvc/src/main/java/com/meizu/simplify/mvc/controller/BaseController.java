@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.directives;
+package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,11 +14,12 @@ import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
-import com.meizu.simplify.mvc.controller.IForward;
-import com.meizu.simplify.mvc.controller.JsonForward;
-import com.meizu.simplify.mvc.directives.Model.ModelSet;
-import com.meizu.simplify.mvc.directives.Model.Passme;
-import com.meizu.simplify.mvc.directives.Model.StringFilter;
+import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.mvc.model.Model.ModelSet;
+import com.meizu.simplify.mvc.model.Model.Passme;
+import com.meizu.simplify.mvc.model.Model.StringFilter;
+import com.meizu.simplify.mvc.view.IForward;
+import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;

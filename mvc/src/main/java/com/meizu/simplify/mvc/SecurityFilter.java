@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.mvc.controller.IForward;
-import com.meizu.simplify.mvc.controller.JsonForward;
-import com.meizu.simplify.mvc.controller.VelocityForward;
-import com.meizu.simplify.mvc.directives.BaseController;
+import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.mvc.view.IForward;
+import com.meizu.simplify.mvc.view.JsonForward;
+import com.meizu.simplify.mvc.view.VelocityForward;
 
 
 

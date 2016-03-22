@@ -12,9 +12,9 @@ import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.mvc.MvcInit;
-import com.meizu.simplify.mvc.controller.BeetlForward;
-import com.meizu.simplify.mvc.controller.HttlForward;
-import com.meizu.simplify.mvc.controller.VelocityForward;
+import com.meizu.simplify.mvc.view.BeetlForward;
+import com.meizu.simplify.mvc.view.HttlForward;
+import com.meizu.simplify.mvc.view.VelocityForward;
 public class WebServer {
 	private volatile boolean isShutDowm = false;
 	public static Map<String, String> config = new HashMap<String, String>();
