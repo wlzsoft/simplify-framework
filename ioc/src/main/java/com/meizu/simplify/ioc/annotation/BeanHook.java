@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>钩子函数标识-用于多例bean创建</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -22,6 +22,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface BeanHook {
 
+	/**
+	 * 
+	 * 方法用途: 指定需要钩子函数处理的Class<br>
+	 * 操作步骤: 此处指定需要创建多个实例的bean的class<br>
+	 * @return
+	 */
 	Class<?> value();
 
 }

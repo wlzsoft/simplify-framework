@@ -14,6 +14,12 @@ package com.meizu.simplify.dao.annotations;
  */
 public @interface Value {
 
+	/**
+	 * 
+	 * 方法用途: 指定具体配置文件中的属性名，用于注入供bean中使用<br>
+	 * 操作步骤: 需要依赖ioc模块<br>
+	 * @return
+	 */
 	String value();
 
 }

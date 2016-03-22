@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
+ * <p><b>Title:</b><i>sql数据库数据源设定</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -19,6 +19,12 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataSource {
 
+	/**
+	 * 
+	 * 方法用途: 数据源指定，默认指定主数据源<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	String value() default "master";
 
 }

@@ -36,5 +36,11 @@ import java.lang.annotation.Target;
 @Inherited
 @Repeatable(RequestMaps.class)
 public @interface RequestMap {
+	/**
+	 * 
+	 * 方法用途: 请求映射地址设置<br>
+	 * 操作步骤: 可以是一个或多个地址<br>
+	 * @return
+	 */
 	String path();
 }

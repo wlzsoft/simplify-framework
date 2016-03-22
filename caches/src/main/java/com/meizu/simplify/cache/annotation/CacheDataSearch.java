@@ -23,6 +23,18 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface CacheDataSearch {
 
+	/**
+	 * 
+	 * 方法用途: 圈定数据集访问<br>
+	 * 操作步骤: 若指定value值，那么可到指定value的访问内的内存块查找数据，比如map中<br>
+	 * @return
+	 */
 	String value() default "";
+	/**
+	 * 
+	 * 方法用途: 需要查找的数据或是数据集的key<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	String key() default "";
 }

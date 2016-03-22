@@ -25,5 +25,11 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 public @interface RequestMaps {
+	/**
+	 * 
+	 * 方法用途: RequestMap集合<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	RequestMap[] value();
 }

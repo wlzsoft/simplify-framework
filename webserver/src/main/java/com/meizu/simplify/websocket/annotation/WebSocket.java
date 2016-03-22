@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>采用websocket协议标识</i></p>
+ * <p>Desc: 一旦标注这个标识，controller就会升级为websocket协议响应方式</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

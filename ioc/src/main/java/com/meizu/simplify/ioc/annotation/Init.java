@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+  * <p><b>Title:</b><i>指定容器启动时初始化顺序</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -23,6 +23,12 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Init {
 
+	/**
+	 * 
+	 * 方法用途: 指定初始化的顺序<br>
+	 * 操作步骤: 按照设定的init索引值在启动过程中执行<br>
+	 * @return
+	 */
 	int value();
 
 }

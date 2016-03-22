@@ -28,6 +28,12 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Transient {
 
+	/**
+	 * 
+	 * 方法用途: 指定orm中实体对象不需要参与数据库表操作的属性的名称<br>
+	 * 操作步骤: 只针对注解在实体上的方式有效<br>
+	 * @return
+	 */
 	String[] value() default "";
 
 }

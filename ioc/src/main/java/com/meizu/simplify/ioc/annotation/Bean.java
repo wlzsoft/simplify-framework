@@ -24,8 +24,20 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 @Retention(RUNTIME)
 public @interface Bean {
 
+	/**
+	 * 
+	 * 方法用途: 指定bean的类型<br>
+	 * 操作步骤: 目前有单例和多例两种方式<br>
+	 * @return
+	 */
 	BeanTypeEnum type() default BeanTypeEnum.SINGLE;
 
+	/**
+	 * 
+	 * 方法用途: 指定创建的唯一标识，bean的标识名<br>
+	 * 操作步骤: 创建bean的时候标识起来，可用于获取bean对象<br>
+	 * @return
+	 */
 	String value() default "";
 
 }

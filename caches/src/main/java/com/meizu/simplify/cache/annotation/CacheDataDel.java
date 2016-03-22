@@ -23,8 +23,26 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface CacheDataDel {
 
+	/**
+	 * 
+	 * 方法用途: 圈定数据集范围，确定删除数据集的访问<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	String value() default "";
+	/**
+	 * 
+	 * 方法用途: 需要删除的数据的key值<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	String key() default "";
+	/**
+	 * 
+	 * 方法用途: 是否删除key指定的所有数据集<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	boolean allEntries() default false;
 
 }
