@@ -96,7 +96,6 @@ public class MvcInit {
 			if (method != null) {
 				if (method.isAnnotationPresent(RequestMap.class)) {
 					RequestMap requestMap = (RequestMap) method.getAnnotation(RequestMap.class);
-//					for (String path : requestMap.path().split("\\s+", -1)) {
 					for (String path : requestMap.path()) {
 						if (path != null && path.length() > 0) {
 							RequestMap preControlMap = entityClass.getAnnotation(RequestMap.class);
