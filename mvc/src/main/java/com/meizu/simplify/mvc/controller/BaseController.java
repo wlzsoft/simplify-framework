@@ -15,9 +15,9 @@ import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.model.Model.ModelSet;
-import com.meizu.simplify.mvc.model.Model.Passme;
-import com.meizu.simplify.mvc.model.Model.StringFilter;
+import com.meizu.simplify.mvc.model.ModelScope;
+import com.meizu.simplify.mvc.model.ModelSkip;
+import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.utils.DataUtil;
@@ -264,35 +264,37 @@ public class BaseController<T extends Model> {
 					String par = request.getParameter(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
 
 					// 检查annotation 设置
-					ModelSet mset = null;
-					if (method.isAnnotationPresent(ModelSet.class)) {
-						mset = (ModelSet) method.getAnnotation(ModelSet.class);
+					ModelScope mset = null;
+					if (method.isAnnotationPresent(ModelScope.class)) {
+						mset = (ModelScope) method.getAnnotation(ModelScope.class);
 						if(mset.scope() != null){
-							if(ModelSet.Scope.session == mset.scope()){
+							if(ModelScope.Scope.session == mset.scope()){
 								
-							} else if(ModelSet.Scope.cookie == mset.scope()){
+							} else if(ModelScope.Scope.cookie == mset.scope()){
 								
-							} else if(ModelSet.Scope.application == mset.scope()){
+							} else if(ModelScope.Scope.application == mset.scope()){
 								
 							}
 						}
-						if(mset.charset() != null && mset.charset().length() > 0) par = StringUtil.coding(par, mset.charset());
+						if(mset.charset() != null && mset.charset().length() > 0) {
+							par = StringUtil.coding(par, mset.charset());
+						}
 					}
 					
-					StringFilter stringFilter = null;
-					if (method.isAnnotationPresent(StringFilter.class)) {
-						stringFilter = (StringFilter) method.getAnnotation(StringFilter.class);
+					ModelCharsFilter stringFilter = null;
+					if (method.isAnnotationPresent(ModelCharsFilter.class)) {
+						stringFilter = (ModelCharsFilter) method.getAnnotation(ModelCharsFilter.class);
 						if(stringFilter.filters() != null){
-							for(StringFilter.Filter filter : stringFilter.filters()){
-								if(StringFilter.Filter.Html == filter){
+							for(ModelCharsFilter.Filter filter : stringFilter.filters()){
+								if(ModelCharsFilter.Filter.Html == filter){
 									par = StringUtil.removeHtmlLabel(par);
-								} else if(StringFilter.Filter.Script == filter){
+								} else if(ModelCharsFilter.Filter.Script == filter){
 									par = StringUtil.removeScript(par);
-								} else if(StringFilter.Filter.Style == filter){
+								} else if(ModelCharsFilter.Filter.Style == filter){
 									par = StringUtil.removeStyle(par);
-								} else if(StringFilter.Filter.iframe == filter){
+								} else if(ModelCharsFilter.Filter.iframe == filter){
 									par = StringUtil.removeIframe(par);
-								} else if(StringFilter.Filter.trim == filter){
+								} else if(ModelCharsFilter.Filter.trim == filter){
 									par = StringUtil.removeHtmlSpace(par);
 								}
 							}
@@ -300,7 +302,7 @@ public class BaseController<T extends Model> {
 					}
 
 					// 是否滤过
-					if (method.isAnnotationPresent(Passme.class)) continue;
+					if (method.isAnnotationPresent(ModelSkip.class)) continue;
 
 					// 取消兼容方式
 					// par = par == null ? request.getParameter(parName) : par;

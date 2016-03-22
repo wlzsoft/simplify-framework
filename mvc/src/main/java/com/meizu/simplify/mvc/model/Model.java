@@ -1,12 +1,5 @@
 package com.meizu.simplify.mvc.model;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
  * <p><b>Title:</b><i>表单处理模型</i></p>
  * <p>Desc: TODO</p>
@@ -22,40 +15,10 @@ import java.lang.annotation.Target;
  */
 public abstract class Model {
 	
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Inherited
-	public @interface ModelSet {
-		String charset(); // 编码
-		
-		Scope scope(); // 作用域
-		
-		public enum Scope {
-			page, cookie, session, application
-		}
-	}
-	
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Inherited
-	public @interface StringFilter {
-		Filter[] filters(); // 格式化选项
-		
-		public enum Filter {
-			Script, Style, Html, iframe, trim
-		}
-	}
-	
-	@Target(ElementType.METHOD)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Inherited
-	public @interface Passme {
-	}
-	
-	private String[] params = new String[] {}; // 过滤器模式的参数值
+	/**
+	 * 过滤器模式的参数值
+	 */
+	private String[] params = new String[] {}; 
 	
 	private String cmd = "view";
 	

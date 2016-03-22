@@ -73,6 +73,7 @@ public class TestController extends SystemController<TestModel> {
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();
+		System.out.println(model.getDesc()+","+model.getName());
 		testList.add(test);
 		return testList;
 	}
