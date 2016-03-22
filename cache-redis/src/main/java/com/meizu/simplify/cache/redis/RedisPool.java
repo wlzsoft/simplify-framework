@@ -164,12 +164,12 @@ public class RedisPool {
 			if(jedis != null) {
 				pool.destroy();
 			}
-			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常");
+			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常:"+ex.getMessage());
 		} finally {
 //			TODO 是否回收到连接池中，等待验证
-//			if(jedis != null) {
-//				pool.returnResourceObject(jedis);
-//			}
+			if(jedis != null) {
+				pool.returnResourceObject(jedis);
+			}
 		}
 		return jedis;
 	}
