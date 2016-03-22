@@ -42,5 +42,5 @@ public @interface RequestMap {
 	 * 操作步骤: 可以是一个或多个地址<br>
 	 * @return
 	 */
-	String path();
+	String[] path();
 }
