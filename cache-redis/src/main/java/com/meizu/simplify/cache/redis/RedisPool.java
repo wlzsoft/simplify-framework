@@ -164,11 +164,6 @@ public class RedisPool {
 				pool.destroy();
 			}
 			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常",ex);
-		} finally {
-			//TODO 后续不要在这里回收连接到连接池，配合CacheExecute类的execute方法做调整
-//			if(jedis != null&&!pool.isClosed()) {
-//				pool.returnResourceObject(jedis);
-//			}
 		}
 		return jedis;
 	}

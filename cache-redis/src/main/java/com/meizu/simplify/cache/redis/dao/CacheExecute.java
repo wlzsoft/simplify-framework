@@ -66,7 +66,7 @@ public class CacheExecute {
 		} finally {
 			try {
 				ShardedJedisPool pool = RedisPool.init(mod_name);
-				if (!pool.isClosed()) {
+				if (!pool.isClosed()&&jedis!=null) {
 //					jedis.close();
 					pool.returnResourceObject(jedis);
 				}
