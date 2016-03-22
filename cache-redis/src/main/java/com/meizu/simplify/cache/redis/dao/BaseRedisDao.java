@@ -38,11 +38,11 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 */
 	public long expire(K key, CacheExpireTimeEnum export, TimeEnum seconds) {
 		
-		Long ret = CacheExecute.execute(key,k ->  {
+		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
   				if(k instanceof String) {
-  					return CacheExecute.getJedis(mod_name).expire(k.toString(), export.timesanmp());
+  					return jedis.expire(k.toString(), export.timesanmp());
   				} else if(k instanceof byte[]){
-  					return CacheExecute.getJedis(mod_name).expire((byte[])k, export.timesanmp());
+  					return jedis.expire((byte[])k, export.timesanmp());
   				} else {
   					throw new RedisException("无效key");
   				}

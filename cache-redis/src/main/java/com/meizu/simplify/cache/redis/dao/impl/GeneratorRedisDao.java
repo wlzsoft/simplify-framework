@@ -40,12 +40,8 @@ public class GeneratorRedisDao extends  BaseRedisDao<String> implements IGenerat
 	 * @return
 	 */
 	public long incr(String key) {
-		Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
-
-			@Override
-			public Long call(String key) {
-				return CacheExecute.getJedis(mod_name).incr(key);
-			}
+		Long ret = CacheExecute.execute(key, (k,jedis) -> {
+				return jedis.incr(k);
 		}, mod_name);
 		return ret;
 	}
@@ -58,12 +54,8 @@ public class GeneratorRedisDao extends  BaseRedisDao<String> implements IGenerat
 	 * @return
 	 */
 	public long incrBy(String key, long value) {
-		Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
-
-			@Override
-			public Long call(String key) {
-				return CacheExecute.getJedis(mod_name).incrBy(SerializeUtil.serialize(key), value);
-			}
+		Long ret = CacheExecute.execute(key, (k,jedis) -> {
+				return jedis.incrBy(SerializeUtil.serialize(k), value);
 		}, mod_name);
 		return ret;
 	}

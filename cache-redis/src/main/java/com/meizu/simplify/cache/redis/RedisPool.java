@@ -154,20 +154,21 @@ public class RedisPool {
 	 * @return
 	 */
 	public static ShardedJedis getConnection(String mod_name) {
-		ShardedJedisPool  pool = redisPools.get(mod_name);
+		ShardedJedisPool  pool = init(mod_name);
 		ShardedJedis jedis = null;
 		try {
 			jedis = pool.getResource();
 		} catch(JedisConnectionException ex) {
 			if(jedis != null) {
+				jedis.close();
 				pool.destroy();
 			}
 			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常",ex);
 		} finally {
 			//TODO 后续不要在这里回收连接到连接池，配合CacheExecute类的execute方法做调整
-			if(jedis != null&&!pool.isClosed()) {
-				pool.returnResourceObject(jedis);
-			}
+//			if(jedis != null&&!pool.isClosed()) {
+//				pool.returnResourceObject(jedis);
+//			}
 		}
 		return jedis;
 	}

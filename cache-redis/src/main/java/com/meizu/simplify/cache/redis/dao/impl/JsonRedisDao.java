@@ -40,16 +40,12 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 * @return
 	 */
 	public Object getAndSet(String key, Object value) {
-		Object ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Object>() {
-
-			@Override
-			public Object call(String key) {
-				String str = CacheExecute.getJedis(mod_name).getSet(key, JsonUtil.ObjectToJson(value));
+		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String str = jedis.getSet(k, JsonUtil.ObjectToJson(value));
 				if(str != null && str.length() > 0){
 					return JsonUtil.JsonToObject(str);
 				}
 				return null;
-			}
 		}, mod_name);
 		return ret;
 	}
@@ -62,16 +58,12 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 * @return
 	 */
 	public Object get(String key) {
-		Object ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Object>() {
-
-			@Override
-			public Object call(String key) {
-				String str =  CacheExecute.getJedis(mod_name).get(key);
+		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String str =  jedis.get(k);
 				if(str != null && str.length() > 0){
 					return JsonUtil.JsonToObject(str);
 				}
 				return null;
-			}
 		}, mod_name);
 		return ret;
 	}
@@ -87,16 +79,12 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 */
 	public boolean set(String key, Object value,int seconds) {
 		
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				String ret = CacheExecute.getJedis(mod_name).set(key, JsonUtil.ObjectToJson(value));
+		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
+				String result = jedis.set(k, JsonUtil.ObjectToJson(value));
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
-				return ret.equalsIgnoreCase("OK");
-			}
+				return result.equalsIgnoreCase("OK");
 		}, mod_name);
 		return ret;
 	}
@@ -112,13 +100,9 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      * @return
      */
     public boolean setnx(String key, Object value) {
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				 long ret = CacheExecute.getJedis(mod_name).setnx(key, JsonUtil.ObjectToJson(value));
-		         return ret > 0;
-			}
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				 long result = jedis.setnx(k, JsonUtil.ObjectToJson(value));
+		         return result > 0;
 		}, mod_name);
         return ret;
     }
@@ -134,13 +118,9 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      * @return
      */
     public boolean setex(String key, int seconds, Object value) {
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				String ret = CacheExecute.getJedis(mod_name).setex(key, seconds, JsonUtil.ObjectToJson(value));
-	            return ret.equalsIgnoreCase("OK");
-			}
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String result = jedis.setex(k, seconds, JsonUtil.ObjectToJson(value));
+	            return result.equalsIgnoreCase("OK");
 		}, mod_name);
         return ret;
     }

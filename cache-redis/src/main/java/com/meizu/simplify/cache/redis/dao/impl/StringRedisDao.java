@@ -8,6 +8,8 @@ import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 
+import redis.clients.jedis.ShardedJedis;
+
 /**
  * <p><b>Title:</b><i>redis  String 结构操作</i></p>
  * <p>Desc: TODO</p>
@@ -29,38 +31,22 @@ public class StringRedisDao extends BaseRedisDao<String> implements IStringCache
 
 	
 	public String getAndSet(String key, String value) {
-		String ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,String>() {
-
-			@Override
-			public String call(String key) {
-				return CacheExecute.getJedis(mod_name).getSet(key, value);
-			}
-		}, mod_name);
+		String ret = CacheExecute.execute(key, (k,jedis) ->  CacheExecute.getJedis(mod_name).getSet(k, value), mod_name);
 		return ret;
 	}
 
 	public String get(String key) {
-		String ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,String>() {
-
-			@Override
-			public String call(String key) {
-				return CacheExecute.getJedis(mod_name).get(key);
-			}
-		}, mod_name);
+		String ret = CacheExecute.execute(key, (k,jedis) ->  CacheExecute.getJedis(mod_name).get(k), mod_name);
 		return ret;
 	}
 
 	public boolean set(String key, String value,int seconds) {
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				String ret = CacheExecute.getJedis(mod_name).set(key, value);
+		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String result = jedis.set(k, value);
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
-				return ret.equalsIgnoreCase("OK");
-			}
+				return result.equalsIgnoreCase("OK");
 		}, mod_name);
 		return ret;
 	}
@@ -68,27 +54,22 @@ public class StringRedisDao extends BaseRedisDao<String> implements IStringCache
 	  
     public boolean setnx(String key, String value) {
     	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
 			@Override
-			public Boolean call(String key) {
-				long ret = CacheExecute.getJedis(mod_name).setnx(key, value);
-				return ret > 0;
+			public Boolean call(String k,ShardedJedis jedis) {
+				long result = jedis.setnx(k, value);
+				return result > 0;
 			}
 		}, mod_name);
     	return ret;
     }
 
     public boolean setex(String key, int seconds, String value) {
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				String ret = CacheExecute.getJedis(mod_name).setex(key,seconds, value);
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String result = CacheExecute.getJedis(mod_name).setex(k,seconds, value);
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					CacheExecute.getJedis(mod_name).expire(k, seconds);
 				}
-				return ret.equalsIgnoreCase("OK");
-			}
+				return result.equalsIgnoreCase("OK");
 		}, mod_name);
     	return ret;
     }

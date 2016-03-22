@@ -55,16 +55,12 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 * @return
 	 */
 	public boolean lpush(String key, String value,int seconds) {
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				long length = CacheExecute.getJedis(mod_name).lpush(key, value);
+		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				long length = jedis.lpush(k, value);
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
 				return length > 0;
-			}
 		}, mod_name);
 		return ret;
 	}
@@ -81,18 +77,15 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	public boolean lpush(String[] keys,String[] values,int seconds){
 		for(int i=0,len=keys.length;i<len;i++){
 			String value = values[i];
-			Boolean ret = CacheExecute.execute(keys[i], new ICacheExecuteCallbak<String,Boolean>() {
-				@Override
-				public Boolean call(String key) {
-					Long ret = CacheExecute.getJedis(mod_name).lpush(key, value);
+			Boolean ret = CacheExecute.execute(keys[i], (k,jedis) ->  {
+					Long result = jedis.lpush(k, value);
 					if(seconds > 0){
-						CacheExecute.getJedis(mod_name).expire(key, seconds);
+						jedis.expire(k, seconds);
 					}
-					if(ret >=0) {
+					if(result >=0) {
 						return true;
 					}
 					return false;
-				}
 			}, mod_name);
 		}
 		return true;
@@ -112,18 +105,15 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 		if(values == null || values.size() == 0){
 			return true;
 		}
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-			@Override
-			public Boolean call(String key) {
+		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
 				for(int i=0,len=values.size();i<len;i++){
 					String value = values.get(i);
-					CacheExecute.getJedis(mod_name).lpush(key, value);
+					jedis.lpush(k, value);
 				}
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
 				return true;
-			}
 		}, mod_name);
 		return ret;
 	}
@@ -151,15 +141,12 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 */
 	public boolean rpush(String key, String value,int seconds) {
 		
-		Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-			@Override
-			public Boolean call(String key) {
-				long length = CacheExecute.getJedis(mod_name).rpush(key, value);
+		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				long length = jedis.rpush(k, value);
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
 				return length > 0;
-			}
 		}, mod_name);
 		return ret;
 	}

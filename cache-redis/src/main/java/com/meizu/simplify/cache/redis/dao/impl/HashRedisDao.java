@@ -44,19 +44,15 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      * @return
      */
     public boolean set(String key,  String field, Object value,int seconds){
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				long status = CacheExecute.getJedis(mod_name).hset(key, field, JsonUtil.ObjectToJson(value));
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				long status = jedis.hset(k, field, JsonUtil.ObjectToJson(value));
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
 				if(status >= 0){
 					return true;
 				}
 				return false;
-			}
 		}, mod_name);
 		return ret;
     }
@@ -70,16 +66,12 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      * @return
      */
     public Object get(String key,  String field){
-    	Object ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Object>() {
-
-			@Override
-			public Object call(String key) {
-				String str = CacheExecute.getJedis(mod_name).hget(key,field);
+    	Object ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String str = jedis.hget(k,field);
 				if(str != null && str.length() > 0){
 					return JsonUtil.JsonToObject(str);
 				}
 				return null;
-			}
 		}, mod_name);
 		return ret;
     }
@@ -96,19 +88,16 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      */
     public boolean hsetnx(String key,  String field, Object value,int seconds){
     	
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
 
-			@Override
-			public Boolean call(String key) {
-				long status = CacheExecute.getJedis(mod_name).hsetnx(key, field, JsonUtil.ObjectToJson(value));
+				long status = jedis.hsetnx(k, field, JsonUtil.ObjectToJson(value));
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
 				if(status >= 0){
 					return true;
 				}
 				return false;
-			}
 		}, mod_name);
 		return ret;
     	
@@ -136,16 +125,12 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     	}
     	
     	
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				String ret = CacheExecute.getJedis(mod_name).hmset(key, map);
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String result = jedis.hmset(k, map);
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
-				return ret.equalsIgnoreCase("OK");
-			}
+				return result.equalsIgnoreCase("OK");
 		}, mod_name);
 		return ret;
     	
@@ -164,16 +149,12 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     public long hdel(String key,int seconds,String ... fields){
     	
     	
-    	Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
-
-			@Override
-			public Long call(String key) {
-				long ret = CacheExecute.getJedis(mod_name).hdel(key, fields);
+    	Long ret = CacheExecute.execute(key, (k,jedis) ->  {
+				long result = jedis.hdel(k, fields);
 				if(seconds > 0){
-					CacheExecute.getJedis(mod_name).expire(key, seconds);
+					jedis.expire(k, seconds);
 				}
-				return ret;
-			}
+				return result;
 		}, mod_name);
 		return ret;
     	
@@ -187,13 +168,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      * @return
      */
     public long hlen(String key){
-    	Long ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Long>() {
-
-			@Override
-			public Long call(String key) {
-				return CacheExecute.getJedis(mod_name).hlen(key);
-			}
-		}, mod_name);
+    	Long ret = CacheExecute.execute(key, (k,jedis) ->  jedis.hlen(k), mod_name);
 		return ret;
     }
     
@@ -206,13 +181,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      * @return
      */
     public boolean hexists(String key,String field){
-    	Boolean ret = CacheExecute.execute(key, new ICacheExecuteCallbak<String,Boolean>() {
-
-			@Override
-			public Boolean call(String key) {
-				return CacheExecute.getJedis(mod_name).hexists(key, field);
-			}
-		}, mod_name);
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->jedis.hexists(k, field), mod_name);
 		return ret;
     }
 	

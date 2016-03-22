@@ -1,4 +1,7 @@
 package com.meizu.simplify.cache.redis.dao;
+
+import redis.clients.jedis.ShardedJedis;
+
 /**
   * <p><b>Title:</b><i>缓存回调接口</i></p>
  * <p>Desc: TODO</p>
@@ -15,6 +18,6 @@ package com.meizu.simplify.cache.redis.dao;
 @FunctionalInterface//可以省略掉，默认升级为function接口
 public interface ICacheExecuteCallbak<K,V> {
 
-	V call(K key);
+	V call(K key,ShardedJedis jedis);
 
 }

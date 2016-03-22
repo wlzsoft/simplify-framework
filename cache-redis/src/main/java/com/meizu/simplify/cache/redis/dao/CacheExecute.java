@@ -46,8 +46,9 @@ public class CacheExecute {
 	 * @return 缓存保存的对象
 	 */
 	public static <KK,VV> VV execute(KK key,ICacheExecuteCallbak<KK,VV> callback,String mod_name) {
+		ShardedJedis jedis = CacheExecute.getJedis(mod_name);
 		try {
-			return callback.call(key);
+			return callback.call(key,jedis);
 //		} catch (TimeoutException e) {
 //			LOGGER.error("获取 redis 缓存超时", e);
 		} catch (JedisConnectionException e) {
@@ -63,16 +64,16 @@ public class CacheExecute {
 	          LOGGER.error("error!", e);
 	          throw new CacheException(e.getMessage());
 		} finally {
-			//TODO 后续连接的回收在这里处理 。目前回收到连接池，是放在 getConnection 方法中处理
-			/*try {
+			try {
 				ShardedJedisPool pool = RedisPool.init(mod_name);
 				if (!pool.isClosed()) {
-					pool.returnResourceObject(getJedis(mod_name));
+//					jedis.close();
+					pool.returnResourceObject(jedis);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 				ex.printStackTrace();
-			}*/
+			}
 		}
 	}
 }
