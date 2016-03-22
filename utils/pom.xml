@@ -54,5 +54,11 @@
 			<artifactId>encrypt</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+		<!-- 汉语拼音转化 -->
+		<groupId>com.belerweb</groupId>
+		  <artifactId>pinyin4j</artifactId>
+		  <version>2.5.0</version>
+		</dependency>
   </dependencies>
 </project>
