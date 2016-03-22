@@ -219,7 +219,7 @@ public class TestController extends SystemController<TestModel> {
 		return new ActionForward("/testList.jsp");
 	}
 	
-	@RequestMap(path = "/(.+)/(.+)/demo/(.+)$ /(.+)/(.+)/demo2$ /demo/demo_(.+).html$ /demo/demo.html$ /demo/$ /demo/(.+)/(.+)$")
+	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
 	public IForward doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid, @RequestParam(defaultValue = "0", param = "3") String id) throws ServletException, IOException, InterruptedException {
  
 		

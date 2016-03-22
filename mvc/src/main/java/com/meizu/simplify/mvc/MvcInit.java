@@ -100,7 +100,7 @@ public class MvcInit {
 						if (path != null && path.length() > 0) {
 							RequestMap preControlMap = entityClass.getAnnotation(RequestMap.class);
 							if(preControlMap!=null && preControlMap.path().length>0) {
-								path = preControlMap.path() + path;
+								path = preControlMap.path()[0] + path;
 							}
 							controllerMap.put(path, new ControllerAnnotationInfo(obj, method.getName()));
 							LOGGER.info("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
