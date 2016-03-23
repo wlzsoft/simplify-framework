@@ -13,6 +13,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -37,11 +39,12 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class VelocityForward implements IForward {
 	//private static SimplePool writerPool = new SimplePool(64);
 	private String str = null;
+	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static void init() {
 		String classPath = MvcInit.getPath();
 
-		Velocity.setProperty(Velocity.INPUT_ENCODING, MvcInit.charSet);
-		Velocity.setProperty(Velocity.OUTPUT_ENCODING, MvcInit.charSet);
+		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
+		Velocity.setProperty(Velocity.OUTPUT_ENCODING, config.getCharset());
 
 		/*
 		 * Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "class");
@@ -58,7 +61,7 @@ public class VelocityForward implements IForward {
 		Velocity.setProperty("file.resource.loader.description", " Velocity File Resource Loader");
 		Velocity.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
 		Velocity.setProperty("file.resource.loader.path", classPath);
-		Velocity.setProperty("file.resource.loader.cache", MvcInit.debug ? "false" : "true");
+		Velocity.setProperty("file.resource.loader.cache", config.getDebug() ? "false" : "true");
 		Velocity.setProperty("file.resource.loader.modificationCheckInterval", "5");
 		
 		String directives = "com.meizu.simplify.mvc.view.function.EncryptFunctionDirective";
@@ -68,7 +71,7 @@ public class VelocityForward implements IForward {
 		File file = new File(classPath + "layouts/macros.vm");
 		if (file.exists()) Velocity.setProperty("velocimacro.library", file.getAbsolutePath());
 
-		if (MvcInit.debug) {
+		if (config.getDebug()) {
 			Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, "org.apache.velocity.runtime.log.SimpleLog4JLogSystem");
 			Velocity.setProperty("runtime.log.logsystem.log4j.category", "org.apache.velocity");
 		}
@@ -87,8 +90,8 @@ public class VelocityForward implements IForward {
 	 * @param response
 	 */
 	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
-		response.setCharacterEncoding(MvcInit.charSet);
-		response.setContentType("text/html; charset=" + MvcInit.charSet);
+		response.setCharacterEncoding(config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
 	@Override
@@ -124,8 +127,8 @@ public class VelocityForward implements IForward {
 					// 缓存成功.
 				}
 			}
-			response.setCharacterEncoding(MvcInit.charSet);
-			response.setContentType("text/html; charset=" + MvcInit.charSet);
+			response.setCharacterEncoding(config.getCharset());
+			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(content);
 			
 		} finally {
@@ -140,9 +143,9 @@ public class VelocityForward implements IForward {
 		try {
 			vw = (VelocityWriter) writerPool.get();
 			if (vw == null) {
-				vw = new StringWriter();  //new VelocityWriter(new OutputStreamWriter(output, MvcInit.charSet), 4 * 1024, true);
+				vw = new StringWriter();  //new VelocityWriter(new OutputStreamWriter(output, config.getCharset()), 4 * 1024, true);
 			} else {
-				vw.recycle(new OutputStreamWriter(output, MvcInit.charSet));
+				vw.recycle(new OutputStreamWriter(output, config.getCharset()));
 			}
 			template.merge(context, vw);
 		} finally {

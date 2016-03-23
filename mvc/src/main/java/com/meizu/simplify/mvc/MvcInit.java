@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.annotation.RequestMap;
@@ -38,11 +39,10 @@ public class MvcInit {
 	
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
-	public static String charSet = null;
-//	public static String webcharSet = "ISO-8859-1";//页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
-	public static Integer urlcacheCount = 100;
-	public static String class_path; 
-	public static String directives; // velocity自定义Directive
+//	public static String webcharSet = config.getWebcharSet();
+	public static Integer urlcacheCount = config.getUrlcacheCount();
+	public static String class_path = config.getClasspath(); 
+	public static String directives = config.getDirectives(); 
 	public static String getPath() {
 		String path = MvcInit.class.getResource("/").getPath();
 		return path.substring(0, path.lastIndexOf("/"));

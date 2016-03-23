@@ -12,6 +12,8 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.view.function.BeetlFunctionDirectivePackage;
 import com.meizu.simplify.utils.ClearCommentUtil;
@@ -38,6 +40,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class BeetlForward implements IForward {
 	private String str = null;
 	private static GroupTemplate gt = null;
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static void init() {
 		String classPath = MvcInit.getPath();
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
@@ -63,8 +66,9 @@ public class BeetlForward implements IForward {
 	 * @param response
 	 */
 	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
-		response.setCharacterEncoding(MvcInit.charSet);
-		response.setContentType("text/html; charset=" + MvcInit.charSet);
+		
+		response.setCharacterEncoding(config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
 	@Override
@@ -100,8 +104,8 @@ public class BeetlForward implements IForward {
 				// 缓存成功.
 			}
 		}
-		response.setCharacterEncoding(MvcInit.charSet);
-		response.setContentType("text/html; charset=" + MvcInit.charSet);
+		response.setCharacterEncoding(config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
 		response.getWriter().print(content);
 		
 	}

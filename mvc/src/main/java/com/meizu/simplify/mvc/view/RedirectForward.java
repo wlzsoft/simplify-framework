@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
@@ -27,7 +29,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class RedirectForward implements IForward {
 	private String url = null;
 	private HashMap<String, String> paramMap = new HashMap<String, String>();
-	
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public RedirectForward(String url) {
 		this.url = url;
 	}
@@ -66,7 +68,7 @@ public class RedirectForward implements IForward {
 				w.append("<input type=\"hidden\"  name=\"" + key + "\" value=\"" + paramMap.get(key) + "\"/>");
 			}
 			w.append("</form></body></html>");
-			response.setContentType("text/html; charset=" + MvcInit.charSet);
+			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(w.toString());
 		} else {
 			response.sendRedirect(url);

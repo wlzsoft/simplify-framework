@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.config;
+package com.meizu.simplify.config;
 
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.PropertieUtil;

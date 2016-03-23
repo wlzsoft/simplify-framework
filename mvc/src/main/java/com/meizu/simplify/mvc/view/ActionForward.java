@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -58,8 +60,9 @@ public class ActionForward implements IForward {
 			if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
 				// 缓存成功.
 			}
-			response.setCharacterEncoding(MvcInit.charSet);
-			response.setContentType("text/html; charset=" + MvcInit.charSet);
+			PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+			response.setCharacterEncoding(config.getCharset());
+			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(content);
 
 		} else {

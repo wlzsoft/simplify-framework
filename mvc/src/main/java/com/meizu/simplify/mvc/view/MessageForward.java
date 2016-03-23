@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
@@ -25,7 +27,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class MessageForward implements IForward {
 	private String msg = "";
-
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public MessageForward(String msg) {
 		this.msg = msg;
 	}
@@ -40,8 +42,8 @@ public class MessageForward implements IForward {
 
 	@Override
 	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
-		response.setCharacterEncoding(MvcInit.charSet);
-		response.setContentType("text/html; charset=" + MvcInit.charSet);
+		response.setCharacterEncoding(config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
 		response.getWriter().print(msg);
 	}
 }

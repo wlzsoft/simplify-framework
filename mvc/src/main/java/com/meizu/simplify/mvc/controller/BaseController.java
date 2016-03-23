@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
@@ -47,7 +49,7 @@ public class BaseController<T extends Model> {
 	protected WebCache cacheSet = null; // 静态规则设置
 	protected String staticName; // 静态标识名字
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";
-	
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public void init() {}
 	
 	/**
@@ -213,8 +215,8 @@ public class BaseController<T extends Model> {
 			if(cache != null){
 				String cacheContent = cache.readCache(cacheSet, staticName,response);
 				if(cacheContent != null){
-					response.setCharacterEncoding(MvcInit.charSet);
-					response.setContentType("text/html; charset=" + MvcInit.charSet);
+					response.setCharacterEncoding(config.getCharset());
+					response.setContentType("text/html; charset=" + config.getCharset());
 					response.getWriter().print(cacheContent);
 					System.out.println("UrlCache -> read Cache.");
 					return null;

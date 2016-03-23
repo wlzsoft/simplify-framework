@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -38,6 +40,7 @@ import httl.Template;
 public class HttlForward implements IForward {
 	private String str = null;
 	static Engine engine = null;
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static void init() {
 		String classPath = MvcInit.getPath();
 		engine = Engine.getEngine();
@@ -54,8 +57,8 @@ public class HttlForward implements IForward {
 	 * @param response
 	 */
 	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
-		response.setCharacterEncoding(MvcInit.charSet);
-		response.setContentType("text/html; charset=" + MvcInit.charSet);
+		response.setCharacterEncoding(config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
 	@Override
@@ -96,8 +99,8 @@ public class HttlForward implements IForward {
 					// 缓存成功.
 				}
 			}
-			response.setCharacterEncoding(MvcInit.charSet);
-			response.setContentType("text/html; charset=" + MvcInit.charSet);
+			response.setCharacterEncoding(config.getCharset());
+			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(content);
 			
 		} catch (ParseException e) {
