@@ -75,21 +75,20 @@ public class BaseController<T extends Model> {
 				AF.doAction(request, response, cacheSet, staticName);
 			}
 		}
-		// 逻辑递交执行完成, 关闭session
 		destroy(request, response, model);
 		
 	}
 
 	/**
-	 * controller 注销相关处理
 	 * 
+	 * 方法用途: controller 注销相关处理<br>
+	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
 	 * @param t
 	 */
 	public void destroy(HttpServletRequest request, HttpServletResponse response, T t){
-//			DAO.closeSession(0);
-//			LOGGER.debug("dao Session[0]  closed.");
+//			System.out.println("回收数据库连接到连接池中");
 	}
 	
 	/**
