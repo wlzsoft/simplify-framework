@@ -1,25 +1,20 @@
 package com.meizu.simplify.mvc;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.HttpServlet;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.mvc.annotation.RequestMap;
-import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.mvc.annotation.RequestMap;
+import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.PropertieUtil;
-import com.meizu.simplify.utils.StringUtil;
 
 
 /**
