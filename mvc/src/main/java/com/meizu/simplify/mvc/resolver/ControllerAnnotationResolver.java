@@ -3,7 +3,6 @@ package com.meizu.simplify.mvc.resolver;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +18,6 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
-import com.meizu.simplify.mvc.ServletModel;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
@@ -45,7 +43,6 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
 	public String class_path; 
 	
