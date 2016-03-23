@@ -6,25 +6,33 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
- * 位编码对象。位编码对象以指定位上的0和1表示是否具有某种特性。
+ * <p><b>Title:</b><i>位编码对象。位编码对象以指定位上的0和1表示是否具有某种特性</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月23日 下午3:41:05</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月23日 下午3:41:05</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @version Version 0.1
+ *
  */
-@SuppressWarnings("serial")
 public class BitCode implements Serializable {
+	private static final long serialVersionUID = 4469841880135184426L;
 	public static final Integer DEFAULT_LENGTH = 300;
 	private String code;
 
 	/**
-	 * 构造一个默认长度的位编码对象。
+	 * 构造一个默认长度的位编码对象
 	 */
 	public BitCode() {
 		this(DEFAULT_LENGTH);
 	}
 
 	/**
-	 * 构造一个位编码对象。
-	 * 
-	 * @param code
-	 *            位编码字符串
+	 * 构造一个位编码对象
+	 * @param code 位编码字符串
 	 */
 	public BitCode(String code) {
 		if(StringUtil.isBlank(code)) {
@@ -34,10 +42,8 @@ public class BitCode implements Serializable {
 	}
 
 	/**
-	 * 构造指定长度（以基本长度为基数）的位编码对象。
-	 * 
-	 * @param length
-	 *            长度
+	 * 构造指定长度（以基本长度为基数）的位编码对象
+	 * @param length 长度
 	 */
 	public BitCode(Integer length) {
 		StringBuilder builder = new StringBuilder();
@@ -48,22 +54,21 @@ public class BitCode implements Serializable {
 	}
 
 	/**
-	 * 设置编码。
 	 * 
-	 * @param code
-	 *            编码
+	 * 方法用途: 设置编码<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 编码
 	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
 
 	/**
-	 * 设置指定编码位（从1开始）的值。
 	 * 
-	 * @param index
-	 *            编码位
-	 * @param value
-	 *            值
+	 * 方法用途: 设置指定编码位（从1开始）的值<br>
+	 * 操作步骤: TODO<br>
+	 * @param index 编码位
+	 * @param value 值
 	 */
 	public void setValue(Integer index, Boolean value) {
 		char[] chars = code.toCharArray();
@@ -72,62 +77,64 @@ public class BitCode implements Serializable {
 	}
 
 	/**
-	 * 以0表示false，1表示true，判断指定位上是否为true。
 	 * 
-	 * @param index
-	 *            位数
-	 * @return 返回指定位上是否为true。
+	 * 方法用途: 以0表示false，1表示true，判断指定位上是否为true<br>
+	 * 操作步骤: TODO<br>
+	 * @param index 位数
+	 * @return 返回指定位上是否为true
 	 */
 	public boolean isTrue(Integer index) {
 		return code.charAt(index - 1) == '1';
 	}
 
 	/**
-	 * 以0表示false，1表示true，判断指定位上是否为false。
 	 * 
-	 * @param index
-	 *            位数
-	 * @return 返回指定位上是否为false。
+	 * 方法用途: 以0表示false，1表示true，判断指定位上是否为false<br>
+	 * 操作步骤: TODO<br>
+	 * @param index 位数
+	 * @return 返回指定位上是否为false
 	 */
 	public boolean isFalse(Integer index) {
 		return code.charAt(index - 1) == '0';
 	}
 
 	/**
-	 * 与指定的位编码对象进行“或”运算，返回“或”运算结果。
 	 * 
-	 * @param bitCode
-	 *            位编码对象
-	 * @return 返回“或”运算结果。
+	 * 方法用途: 与指定的位编码对象进行“或”运算，返回“或”运算结果<br>
+	 * 操作步骤: TODO<br>
+	 * @param bitCode 位编码对象
+	 * @return 返回“或”运算结果
 	 */
 	public BitCode or(BitCode bitCode) {
 		return new BitCode(or(code, bitCode.toString()));
 	}
 
 	/**
-	 * 与指定的位编码对象进行“与”运算，返回“与”运算结果。
 	 * 
-	 * @param bitCode
-	 *            位编码对象
-	 * @return 返回“与”运算结果。
+	 * 方法用途: 与指定的位编码对象进行“与”运算，返回“与”运算结果<br>
+	 * 操作步骤: TODO<br>
+	 * @param bitCode 位编码对象
+	 * @return 返回“与”运算结果
 	 */
 	public BitCode and(BitCode bitCode) {
 		return new BitCode(and(code, bitCode.toString()));
 	}
 
 	/**
-	 * 获得位编码长度。
 	 * 
-	 * @return 返回位编码长度。
+	 * 方法用途: 获得位编码长度<br>
+	 * 操作步骤: TODO<br>
+	 * @return 返回位编码长度
 	 */
 	public int length() {
 		return code.length();
 	}
 
 	/**
-	 * 获取模糊查询编码。
 	 * 
-	 * @return 返回模糊查询编码。
+	 * 方法用途: 获取模糊查询编码<br>
+	 * 操作步骤: TODO<br>
+	 * @return 返回模糊查询编码
 	 */
 	public BitCode getQueryBitCode() {
 		StringBuilder builder = new StringBuilder();
@@ -138,13 +145,12 @@ public class BitCode implements Serializable {
 	}
 
 	/**
-	 * 获取指定true和false位数的模糊查询编码。
 	 * 
-	 * @param trueBits
-	 *            为true的位数集合
-	 * @param falseBits
-	 *            为false的位数集合
-	 * @return 返回指定true和false位数的模糊查询编码。
+	 * 方法用途: 获取指定true和false位数的模糊查询编码<br>
+	 * 操作步骤: TODO<br>
+	 * @param trueBits 为true的位数集合
+	 * @param falseBits 为false的位数集合
+	 * @return 返回指定true和false位数的模糊查询编码
 	 */
 	public BitCode getQueryBitCode(Integer[] trueBits, Integer[] falseBits) {
 		BitCode queryBitCode = getQueryBitCode();
@@ -190,13 +196,12 @@ public class BitCode implements Serializable {
 	}
 
 	/**
-	 * 对两个等长的位编码字符串进行“或”运算。
 	 * 
-	 * @param code1
-	 *            位编码字符串
-	 * @param code2
-	 *            位编码字符串
-	 * @return 返回“或”运算后的位编码字符串。
+	 * 方法用途: 对两个等长的位编码字符串进行“或”运算<br>
+	 * 操作步骤: TODO<br>
+	 * @param code1 位编码字符串
+	 * @param code2 位编码字符串
+	 * @return 返回“或”运算后的位编码字符串
 	 */
 	private String or(String code1, String code2) {
 		if(StringUtil.isBlank(code1)) {
@@ -219,13 +224,12 @@ public class BitCode implements Serializable {
 	}
 
 	/**
-	 * 对两个等长的位编码字符串进行“与”运算。
 	 * 
-	 * @param code1
-	 *            位编码字符串
-	 * @param code2
-	 *            位编码字符串
-	 * @return 返回“与”运算后的位编码字符串。
+	 * 方法用途: 对两个等长的位编码字符串进行“与”运算<br>
+	 * 操作步骤: TODO<br>
+	 * @param code1 位编码字符串
+	 * @param code2 位编码字符串
+	 * @return 返回“与”运算后的位编码字符串
 	 */
 	private String and(String code1, String code2) {
 		

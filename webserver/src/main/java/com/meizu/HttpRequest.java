@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
@@ -66,7 +65,12 @@ public class HttpRequest implements HttpServletRequest{
 		version = strs[2].trim();
 	}
 
-	// 读入开始行
+	/**
+	 * 
+	 * 方法用途: 读入开始行<br>
+	 * 操作步骤: TODO<br>
+	 * @param line
+	 */
 	public void parseRequestHeader(String line) {
 		String[] strs = line.split(":", 2);// 只用一次冒号
 		if (strs.length == 2) {

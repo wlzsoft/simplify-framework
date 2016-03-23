@@ -9,8 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.meizu.simplify.encrypt.base64.Base64Encrypt;
-import com.meizu.simplify.encrypt.sign.sha1.SHA1Encrypt;
 import com.meizu.simplify.mvc.SecurityFilter;
 import com.meizu.util.ByteAndCharConvertUtil;
 

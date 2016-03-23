@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
 import java.time.LocalDateTime;
 
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
