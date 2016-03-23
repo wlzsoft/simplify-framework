@@ -14,7 +14,6 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
-import com.meizu.simplify.utils.PropertieUtil;
 
 
 /**
@@ -35,11 +34,10 @@ public class MvcInit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MvcInit.class);
 	
-	protected static PropertieUtil config = new PropertieUtil("properties/config.properties");//注意，要合并成一个实例，不要太多重复实例 TODO
+	protected static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
-	public static boolean debug = false;
 	public static String charSet = null;
 //	public static String webcharSet = "ISO-8859-1";//页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
 	public static Integer urlcacheCount = 100;
@@ -50,11 +48,6 @@ public class MvcInit {
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	public static void init() {
-		debug = config.getBoolean("system.debug", false);
-		charSet = config.getString("system.charset", null);
-//		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
-		class_path = config.getString("system.classpath", null);
-		directives = config.getString("system.directives", null);
 		
 		// 查找指定class路径
 		if (class_path != null) {
@@ -66,7 +59,7 @@ public class MvcInit {
 			for (Class<?> controllerClass : controllerClassList) {
 				resolverRequestInfo(controllerClass);
 			}
-			LOGGER.info("Framework Debug -> " + debug);
+			LOGGER.info("Framework Debug -> " + config.getDebug());
 	//		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
 	//		LOGGER.log("Framework Charset -> " + charSet);
 			LOGGER.info("Framework v0.0.1-SNAPSHOT Init");
