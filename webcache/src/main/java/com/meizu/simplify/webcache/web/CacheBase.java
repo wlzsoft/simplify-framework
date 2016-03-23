@@ -2,7 +2,6 @@ package com.meizu.simplify.webcache.web;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.collection.FiFoMap;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
@@ -21,8 +20,12 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 public class CacheBase {
-	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public static FiFoMap<String, Object[]> urlCache = new FiFoMap<String, Object[]>(config.getUrlcacheCount()); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
+	private static PropertiesConfig config;
+	public static FiFoMap<String, Object[]> urlCache; 
+	public static void init() {
+		config = BeanFactory.getBean(PropertiesConfig.class);
+		urlCache = new FiFoMap<String, Object[]>(config.getUrlcacheCount()); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
+	}
 	/**
 	 * 取缓冲器
 	 * 

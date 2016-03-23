@@ -39,10 +39,10 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class VelocityForward implements IForward {
 	//private static SimplePool writerPool = new SimplePool(64);
 	private String str = null;
-	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	private static PropertiesConfig config;
 	public static void init() {
 		String classPath = MvcInit.getPath();
-
+		config = BeanFactory.getBean(PropertiesConfig.class);
 		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
 		Velocity.setProperty(Velocity.OUTPUT_ENCODING, config.getCharset());
 

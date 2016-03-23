@@ -15,6 +15,7 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.webcache.web.CacheBase;
 
 
 /**
@@ -35,7 +36,7 @@ public class MvcInit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MvcInit.class);
 	
-	protected static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	protected static PropertiesConfig config;
 	
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
@@ -45,6 +46,8 @@ public class MvcInit {
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	public static void init() {
+		CacheBase.init();
+		config = BeanFactory.getBean(PropertiesConfig.class);
 //		String webcharSet = config.getWebcharSet();
 //		String directives = config.getDirectives(); 
 		class_path = config.getClasspath(); 
