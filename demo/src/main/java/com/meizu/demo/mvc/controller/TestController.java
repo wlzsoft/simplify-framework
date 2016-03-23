@@ -169,9 +169,9 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = "/testjson.json")
 	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
-		List<Test> testList = new ArrayList<>();
-		testList.add(test);
-		return new JsonForward(testList);
+//		List<Test> testList = new ArrayList<>();
+//		testList.add(test);
+		return new JsonForward(test);
 	}
 	
 	@RequestMap(path = "/testmessage/")
