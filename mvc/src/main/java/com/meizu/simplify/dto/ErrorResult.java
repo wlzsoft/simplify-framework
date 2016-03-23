@@ -1,7 +1,7 @@
 package com.meizu.simplify.dto;
 
+import com.meizu.simplify.config.Message;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.resource.Message;
 
 /**
  * 

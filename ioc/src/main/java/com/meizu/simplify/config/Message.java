@@ -1,12 +1,12 @@
-package com.meizu.simplify.resource;
+package com.meizu.simplify.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.annotation.Reload;
+import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.resource.annotations.Reload;
-import com.meizu.simplify.resource.annotations.ReloadableResource;
 
 
 /**

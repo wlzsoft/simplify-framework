@@ -1,4 +1,4 @@
-package com.meizu.simplify.resource;
+package com.meizu.simplify.config;
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>

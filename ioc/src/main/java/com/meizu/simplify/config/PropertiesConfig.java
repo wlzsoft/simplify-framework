@@ -1,7 +1,12 @@
 package com.meizu.simplify.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.StringUtil;
 
 
 /**
@@ -27,6 +32,32 @@ public class PropertiesConfig {
 		return propertieUtils;
 	}
 	
+	/**
+	 * 方法用途: 根据通配符资源路径获取资源路径列表<br>
+	 * 操作步骤: TODO<br>
+	 * @param resourceDir  资源目录
+	 * @param wildcardResPaths   通配符资源路径
+	 * @return 返回实际匹配的资源路径列表
+	 */
+	public static List<String> getResList(String resourceDir,
+			String... wildcardResPaths) {
+		List<String> resourcePaths = new ArrayList<String>();
+		try {
+			for (Res resource : getRessByWildcard(wildcardResPaths)) {
+				String uri = resource.getURI().toString();
+				String resourcePath = "classpath:" + resourceDir+ StringUtil.substringAfter(uri, resourceDir);
+				resourcePaths.add(StringUtil.substringBeforeLast(resourcePath,"."));
+			}
+		} catch (Exception e) {
+			throw new UncheckedException("获取资源文件时发生异常。", e);
+		}
+		return resourcePaths;
+	}
+
+	private static List<Res> getRessByWildcard(String[] wildcardResPaths) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	private Boolean debug = true;
 	// 后续使用枚举类型 TODO
