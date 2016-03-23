@@ -20,6 +20,7 @@ import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.mvc.view.VelocityForward;
@@ -54,13 +55,13 @@ public class SecurityFilter implements Filter {
 //		if (StringUtil.parseString(request.getQueryString(),"").length() > 0) {
 //			thisUrl += "?" + request.getQueryString();
 //	 	}
-		ControllerAnnotationInfo controllerAnnotationInfo = MvcInit.controllerMap.get(thisUrl);
+		ControllerAnnotationInfo controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(thisUrl);
 		if(controllerAnnotationInfo !=null) {
 			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
 			return;// [标示]启用原生 filter的chain,三个地方同时打开注释
 		} else {
 			//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型,不过由于正则无法确定具体值的访问，所以也没法比较
-			for ( String key : MvcInit.controllerMap.keySet() ) {
+			for ( String key : ControllerAnnotationResolver.controllerMap.keySet() ) {
 				if(!key.contains("$")) {
 					continue;
 				}
@@ -69,7 +70,7 @@ public class SecurityFilter implements Filter {
 				if (matcher.find()) {
 					String[] params = new String[matcher.groupCount() + 1];
 					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
-					controllerAnnotationInfo = MvcInit.controllerMap.get(key);
+					controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(key);
 					analysisAndProcess(request, response, thisUrl,controllerAnnotationInfo, params);
 					return; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
