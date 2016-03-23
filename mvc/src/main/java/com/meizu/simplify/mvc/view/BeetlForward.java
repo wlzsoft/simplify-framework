@@ -42,7 +42,6 @@ public class BeetlForward implements IForward {
 	private static GroupTemplate gt = null;
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static void init() {
-		String classPath = MvcInit.getPath();
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
 		try {

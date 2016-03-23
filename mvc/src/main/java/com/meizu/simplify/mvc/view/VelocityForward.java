@@ -40,8 +40,16 @@ public class VelocityForward implements IForward {
 	//private static SimplePool writerPool = new SimplePool(64);
 	private String str = null;
 	private static PropertiesConfig config;
+	
+	@Deprecated//后续从配置中读取就可以
+	public static String getPath() {
+		String path = VelocityForward.class.getResource("/").getPath();
+		return path.substring(0, path.lastIndexOf("/"));
+	}
+	
 	public static void init() {
-		String classPath = MvcInit.getPath();
+//		String classPath = config.getClasspath();
+		String classPath = getPath();
 		config = BeanFactory.getBean(PropertiesConfig.class);
 		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
 		Velocity.setProperty(Velocity.OUTPUT_ENCODING, config.getCharset());

@@ -28,7 +28,6 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	
 	@Override	
 	public void resolve(List<Class<?>> resolveList) {
-		//解析方式1：目前正在使用的方式
 		new MvcInit().init();
 	}
 }

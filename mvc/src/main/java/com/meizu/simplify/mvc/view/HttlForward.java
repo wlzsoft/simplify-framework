@@ -42,7 +42,6 @@ public class HttlForward implements IForward {
 	static Engine engine = null;
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static void init() {
-		String classPath = MvcInit.getPath();
 		engine = Engine.getEngine();
 	}
 

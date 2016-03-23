@@ -47,11 +47,7 @@ public class MvcInit {
 	
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
-	public static String class_path; 
-	public static String getPath() {
-		String path = MvcInit.class.getResource("/").getPath();
-		return path.substring(0, path.lastIndexOf("/"));
-	}
+	public String class_path; 
 	
 	public void init() {
 		CacheBase.init();
