@@ -44,7 +44,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
-	public String class_path; 
+	private String classPath; 
 	
 	@Override	
 	public void resolve(List<Class<?>> resolveList) {
@@ -55,32 +55,34 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	public void init() {
 //		String webcharSet = config.getWebcharSet();
 //		String directives = config.getDirectives(); 
-		class_path = config.getClasspath(); 
+		classPath = config.getClasspath(); 
 		// 查找指定class路径
-		if (class_path != null) {
-			
-			List<Class<?>> controllerClassList = ClassUtil.findClasses(class_path);
-			if (controllerClassList == null || controllerClassList.size()<=0) {
-				throw new UncheckedException("没有扫描到配置的路径[system.classpath="+class_path+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
-			}
-			for (Class<?> controllerClass : controllerClassList) {
-				BeanContainer container = BeanFactory.getBeanContainer();
-				Map<String, Object> mapContainer = container.getMapContainer();
-				Collection<Object> containerCollection = mapContainer.values();
-				for (Object beanObj : containerCollection) {
-					Class<?> beanClass = beanObj.getClass();
-					if(controllerClass == beanClass) {
-						Method[] methodArr = null;
-						try {
-							methodArr = beanClass.getDeclaredMethods();
-						} catch(NoClassDefFoundError e) {
-							e.printStackTrace();
-							throw new CacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
-						}
-						
-						for (Method method : methodArr) {
-							if (method.isAnnotationPresent(RequestMap.class)) {
-								resolveAnno(beanClass, method,RequestMap.class);
+		if (classPath != null) {
+			String[] classPathArr = classPath.split(",");
+			for (String cpath : classPathArr) {
+				List<Class<?>> controllerClassList = ClassUtil.findClasses(cpath);
+				if (controllerClassList == null || controllerClassList.size()<=0) {
+					throw new UncheckedException("没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
+				}
+				for (Class<?> controllerClass : controllerClassList) {
+					BeanContainer container = BeanFactory.getBeanContainer();
+					Map<String, Object> mapContainer = container.getMapContainer();
+					Collection<Object> containerCollection = mapContainer.values();
+					for (Object beanObj : containerCollection) {
+						Class<?> beanClass = beanObj.getClass();
+						if(controllerClass == beanClass) {
+							Method[] methodArr = null;
+							try {
+								methodArr = beanClass.getDeclaredMethods();
+							} catch(NoClassDefFoundError e) {
+								e.printStackTrace();
+								throw new CacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+							}
+							
+							for (Method method : methodArr) {
+								if (method.isAnnotationPresent(RequestMap.class)) {
+									resolveAnno(beanClass, method,RequestMap.class,cpath);
+								}
 							}
 						}
 					}
@@ -93,9 +95,9 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 	}
 	
-	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
+	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno,String cpath) {
 		
-		resolverRequestInfo(beanClass,method,clazzAnno);
+		resolverRequestInfo(beanClass,method,clazzAnno,cpath);
 		
 //		TypeVariable<?>[] tv = method.getTypeParameters();//泛型方法才会使用到
 
@@ -134,7 +136,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	 * 操作步骤: TODO<br>
 	 * @param beanClass
 	 */
-	public <T extends Annotation>  void resolverRequestInfo(Class<?> beanClass,Method method ,Class<T> clazzAnno) {
+	public <T extends Annotation>  void resolverRequestInfo(Class<?> beanClass,Method method ,Class<T> clazzAnno,String cpath) {
 		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 		Object obj = BeanFactory.getBean(beanClass);//如果mvc需要脱离ioc框架，那么这个直接创建实例，而不是从容器获取实例
 		if(obj == null) {
@@ -151,7 +153,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 							path = preControlMap.path()[0] + path;
 						}
 						controllerMap.put(path, new ControllerAnnotationInfo(obj, method.getName()));
-						LOGGER.info("成功添加请求映射 [" + class_path + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
+						LOGGER.info("成功添加请求映射 [" + cpath + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
 					}
 				}
 			}
