@@ -38,10 +38,8 @@ public class ResourceUtil {
 		try {
 			for (Res resource : getRessByWildcard(wildcardResPaths)) {
 				String uri = resource.getURI().toString();
-					String resourcePath = "classpath:" + resourceDir
-							+ StringUtil.substringAfter(uri, resourceDir);
-					resourcePaths.add(StringUtil.substringBeforeLast(resourcePath,
-							"."));
+				String resourcePath = "classpath:" + resourceDir+ StringUtil.substringAfter(uri, resourceDir);
+				resourcePaths.add(StringUtil.substringBeforeLast(resourcePath,"."));
 			}
 		} catch (Exception e) {
 			throw new UncheckedException("获取资源文件时发生异常。", e);
