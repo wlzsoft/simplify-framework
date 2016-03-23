@@ -29,7 +29,6 @@ public  class  JsonForward extends MessageForward {
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public JsonForward(Object obj) {
 		super("");
-		//TODO 需要判断是否是集合，如果是集合，判断长度是否是1，如果是1，那么取出来，转成单一一个对象，再转成json
 		String message = JsonUtil.ObjectToJson(obj);
 		super.setMsg(message);
 	}
