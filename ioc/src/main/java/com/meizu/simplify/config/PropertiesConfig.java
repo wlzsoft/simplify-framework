@@ -45,8 +45,10 @@ public class PropertiesConfig {
 	private Integer limitExecutionTime = 0;//暂未启用
 	// 页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
 	private String webcharSet = "ISO-8859-1";//暂未启用
-
 	
+	//页面文件缓存路径配置
+	private String fileCachePath = "D:/htmlCache/";
+
 	public PropertiesConfig() {
 		debug = propertieUtils.getBoolean("system.debug", false);
 		charset = propertieUtils.getString("system.charset", null);
@@ -120,5 +122,13 @@ public class PropertiesConfig {
 	}
 	public void setWebcharSet(String webcharSet) {
 		this.webcharSet = webcharSet;
+	}
+
+	public String getFileCachePath() {
+		return fileCachePath;
+	}
+	
+	public void setFileCachePath(String fileCachePath) {
+		this.fileCachePath = fileCachePath;
 	}
 }

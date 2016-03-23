@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 
@@ -26,7 +28,7 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
  */
 public class FileCache implements Cache {
 	
-	
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static String getPath() {
 //		String path = MvcInit.class.getResource("/").getPath();
 		String path = FileCache.class.getResource("/").getPath();
@@ -39,7 +41,7 @@ public class FileCache implements Cache {
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
 			File directory = new File(getPath());
-//			File directory = new File("D:/htmlCache/");
+//			File directory = new File(config.getFileCachePath());
 			try {
 				if(obj!=null&&cacheSet.enableBrowerCache()) {
 					HttpServletResponse response = (HttpServletResponse) obj;
@@ -66,8 +68,7 @@ public class FileCache implements Cache {
 				HttpServletResponse response = (HttpServletResponse) obj;
 				BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
 			}
-//			File htmlCache = new File(MvcInit.getPath());
-			File htmlCache = new File("D:/htmlCache/");
+			File htmlCache = new File(config.getFileCachePath());
 			if (!htmlCache.exists()) htmlCache.mkdirs();
 			FileWriter fw = new FileWriter(htmlCache.getPath() + "/" + staticName);
 			fw.write(content);

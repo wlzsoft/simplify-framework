@@ -1,5 +1,7 @@
 package com.meizu.simplify.webcache.web;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.collection.FiFoMap;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -19,8 +21,8 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 public class CacheBase {
-	private static PropertieUtil config = new PropertieUtil("properties/config.properties");//注意，要合并成一个实例，不要太多重复实例 TODO
-	public static FiFoMap<String, Object[]> urlCache = new FiFoMap<String, Object[]>(config.getInteger("system.urlcacheCount", 100)); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
+	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	public static FiFoMap<String, Object[]> urlCache = new FiFoMap<String, Object[]>(config.getUrlcacheCount()); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
 	/**
 	 * 取缓冲器
 	 * 
@@ -29,7 +31,9 @@ public class CacheBase {
 	 */
 	public static Cache getCache(WebCache cacheSet) {
 		Cache cache = null;
-//		if(MvcInit.debug)return null; //TODO 从配置文件中读取,后续打开
+		if(config.getDebug()) {
+			return null; 
+		}
 		if (WebCache.CacheMode.Mem == cacheSet.mode()) {
 			cache = new MemCache();
 		} else if (WebCache.CacheMode.File == cacheSet.mode()) {
