@@ -39,16 +39,15 @@ public class MvcInit {
 	
 	public static HashMap<String, ServletModel> servletMap = new HashMap<String, ServletModel>();
 	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
-//	public static String webcharSet = config.getWebcharSet();
-	public static Integer urlcacheCount = config.getUrlcacheCount();
-	public static String class_path = config.getClasspath(); 
-	public static String directives = config.getDirectives(); 
+	public static String class_path; 
 	public static String getPath() {
 		String path = MvcInit.class.getResource("/").getPath();
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	public static void init() {
-		
+//		String webcharSet = config.getWebcharSet();
+//		String directives = config.getDirectives(); 
+		class_path = config.getClasspath(); 
 		// 查找指定class路径
 		if (class_path != null) {
 			
@@ -60,8 +59,8 @@ public class MvcInit {
 				resolverRequestInfo(controllerClass);
 			}
 			LOGGER.info("Framework Debug -> " + config.getDebug());
-	//		LOGGER.log("Framework UrlCache Limit -> " + urlcacheCount);
-	//		LOGGER.log("Framework Charset -> " + charSet);
+//			LOGGER.info("Framework UrlCache Limit -> " + config.getUrlcacheCount());
+//			LOGGER.info("Framework Charset -> " + config.getCharset());
 			LOGGER.info("Framework v0.0.1-SNAPSHOT Init");
 		}
 	

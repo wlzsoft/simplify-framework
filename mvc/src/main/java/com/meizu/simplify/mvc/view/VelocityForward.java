@@ -65,7 +65,7 @@ public class VelocityForward implements IForward {
 		Velocity.setProperty("file.resource.loader.modificationCheckInterval", "5");
 		
 		String directives = "com.meizu.simplify.mvc.view.function.EncryptFunctionDirective";
-		if(!StringUtil.isEmpty(MvcInit.directives)) directives += "," + MvcInit.directives;
+		if(!StringUtil.isEmpty(config.getDirectives())) directives += "," + config.getDirectives();
 		Velocity.setProperty("userdirective", directives);
 
 		File file = new File(classPath + "layouts/macros.vm");
