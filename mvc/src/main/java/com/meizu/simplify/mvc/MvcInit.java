@@ -43,7 +43,7 @@ public class MvcInit {
 	public static String charSet = null;
 //	public static String webcharSet = "ISO-8859-1";//页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
 	public static Integer urlcacheCount = 100;
-	public static String class_path; // class位置
+	public static String class_path; 
 	public static String directives; // velocity自定义Directive
 	public static String getPath() {
 		String path = MvcInit.class.getResource("/").getPath();
@@ -53,10 +53,8 @@ public class MvcInit {
 		debug = config.getBoolean("system.debug", false);
 		charSet = config.getString("system.charset", null);
 //		webcharSet = config.getString("system.webcharSet", "ISO-8859-1");
-		
 		class_path = config.getString("system.classpath", null);
 		directives = config.getString("system.directives", null);
-		
 		
 		// 查找指定class路径
 		if (class_path != null) {
