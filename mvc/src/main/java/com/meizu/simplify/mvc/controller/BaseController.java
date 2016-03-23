@@ -31,8 +31,8 @@ import com.meizu.simplify.webcache.web.CacheBase;
 
 
 /**
- * <p><b>Title:</b><i>安全控制器</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>基础控制器</i></p>
+ * <p>Desc: 特定系统中可扩展这个积累，加入系统特有的公有功能</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
