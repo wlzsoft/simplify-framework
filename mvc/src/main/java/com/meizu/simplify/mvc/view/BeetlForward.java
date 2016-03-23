@@ -14,7 +14,6 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.view.function.BeetlFunctionDirectivePackage;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;

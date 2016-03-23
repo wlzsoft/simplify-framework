@@ -11,7 +11,6 @@ import java.util.Properties;
 import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.view.BeetlForward;
 import com.meizu.simplify.mvc.view.HttlForward;
 import com.meizu.simplify.mvc.view.VelocityForward;

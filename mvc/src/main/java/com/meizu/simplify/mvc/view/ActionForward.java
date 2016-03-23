@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;

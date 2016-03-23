@@ -19,7 +19,6 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
-import com.meizu.simplify.mvc.MvcInit;
 import com.meizu.simplify.mvc.ServletModel;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
@@ -29,8 +28,9 @@ import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.webcache.web.CacheBase;
 
 /**
-  * <p><b>Title:</b><i>mvc请求地址解析器</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>mvc模块初始化解析</i></p>
+ * <p>Desc: 1.初始化mvc数据参数
+ *          2.mvc请求地址解析器</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
