@@ -99,8 +99,8 @@ public class RedisPool {
 		
 		for (Iterator<String> it = hostAndPortMap.keySet().iterator(); it
 				.hasNext();) {
-			String mod_name = it.next();
-			List<HostAndPort> hostList = hostAndPortMap.get(mod_name);
+			String modName = it.next();
+			List<HostAndPort> hostList = hostAndPortMap.get(modName);
 			List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
 			for (HostAndPort hnp : hostList) {
 				LOGGER.info("[redis - list],host:{},port:{}", new Object[] {hnp.host, hnp.port });
@@ -112,7 +112,7 @@ public class RedisPool {
 				shards.add(jedisShardInfo);
 			}
 			ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH);
-			redisPools.put(mod_name, pool);
+			redisPools.put(modName, pool);
 		}
 
 	}
@@ -139,10 +139,10 @@ public class RedisPool {
 	 * 
 	 * 方法用途: 启动时初始化连接池的大小<br>
 	 * 操作步骤: TODO<br>
-	 * @param mod_name
+	 * @param modName
 	 */
-	public static ShardedJedisPool init(String mod_name) {
-		return redisPools.get(mod_name);
+	public static ShardedJedisPool init(String modName) {
+		return redisPools.get(modName);
 	}
 	
 	/**
@@ -150,11 +150,11 @@ public class RedisPool {
 	 * 方法用途: Connection reset by peer: socket write error 问题分析和定位解决
 	 *          1.并发量过大，连接数不够导致服务器主动关闭部分连接<br>
 	 * 操作步骤: TODO<br>
-	 * @param mod_name
+	 * @param modName
 	 * @return
 	 */
-	public static ShardedJedis getConnection(String mod_name) {
-		ShardedJedisPool  pool = init(mod_name);
+	public static ShardedJedis getConnection(String modName) {
+		ShardedJedisPool  pool = init(modName);
 		ShardedJedis jedis = null;
 		try {
 			jedis = pool.getResource();

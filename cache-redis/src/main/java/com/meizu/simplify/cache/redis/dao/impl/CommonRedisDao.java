@@ -30,8 +30,8 @@ import com.meizu.simplify.utils.SerializeUtil;
 //@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao<K> implements ICacheDao<K,V>{
 	
-	public CommonRedisDao(String mod_name) {
-		super(mod_name);
+	public CommonRedisDao(String modName) {
+		super(modName);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean exists(K key) {
-		Boolean result = CacheExecute.execute(key, (k,jedis) -> jedis.exists(k.toString()),mod_name);
+		Boolean result = CacheExecute.execute(key, (k,jedis) -> jedis.exists(k.toString()),modName);
 		return result;
 			
 	}
@@ -63,7 +63,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 					return (V) SerializeUtil.unserialize(ret);
 				}
 				return null;
-		},mod_name);
+		},modName);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 					return value;
 				}
 				return null;
-		},mod_name);
+		},modName);
 	  }
 	
 	/** 
@@ -138,10 +138,10 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
   				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
   	            if(export.timesanmp() > 0){
-  	            	CacheExecute.getJedis(mod_name).expire(SerializeUtil.serialize(k), export.timesanmp());
+  	            	CacheExecute.getJedis(modName).expire(SerializeUtil.serialize(k), export.timesanmp());
   			    }
 			    return result.equalsIgnoreCase("OK");
-  		},mod_name);
+  		},modName);
         return ret;
 	}
 	
@@ -161,7 +161,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 					return SerializeUtil.unserialize(bytes);
 				}
 				return null;
-		},mod_name);
+		},modName);
 		
 	}
 	
@@ -183,7 +183,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   		      	 } else {
   		      		 return false;
   		      	 }
-  		},mod_name);
+  		},modName);
 		return ret;
 	}
 	
@@ -232,7 +232,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
   				long result = jedis.setnx(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
   				return result > 0;
-  		},mod_name);
+  		},modName);
 		return ret;
 		
 	}
@@ -251,7 +251,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
   				String result = jedis.setex(SerializeUtil.serialize(k), seconds, SerializeUtil.serialize(value));
   				return result.equalsIgnoreCase("OK");
-  		},mod_name);
+  		},modName);
 		return ret;
 		
 	}

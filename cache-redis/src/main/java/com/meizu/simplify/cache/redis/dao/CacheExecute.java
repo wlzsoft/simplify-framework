@@ -30,9 +30,9 @@ import redis.clients.jedis.exceptions.JedisException;
 public class CacheExecute {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
 	
-	public static ShardedJedis getJedis(String mod_name) {
+	public static ShardedJedis getJedis(String modName) {
 		try {
-			return RedisPool.getConnection(mod_name);
+			return RedisPool.getConnection(modName);
 		} catch(RedisException ex) {
 			ex.printStackTrace();
 		}
@@ -45,8 +45,8 @@ public class CacheExecute {
 	 * @param key 保存键
 	 * @return 缓存保存的对象
 	 */
-	public static <KK,VV> VV execute(KK key,ICacheExecuteCallbak<KK,VV> callback,String mod_name) {
-		ShardedJedis jedis = CacheExecute.getJedis(mod_name);
+	public static <KK,VV> VV execute(KK key,ICacheExecuteCallbak<KK,VV> callback,String modName) {
+		ShardedJedis jedis = CacheExecute.getJedis(modName);
 		try {
 			return callback.call(key,jedis);
 //		} catch (TimeoutException e) {
@@ -65,7 +65,7 @@ public class CacheExecute {
 	          throw new CacheException(e.getMessage());
 		} finally {
 			try {
-				ShardedJedisPool pool = RedisPool.init(mod_name);
+				ShardedJedisPool pool = RedisPool.init(modName);
 				if (!pool.isClosed()&&jedis!=null) {
 //					jedis.close();
 					pool.returnResourceObject(jedis);

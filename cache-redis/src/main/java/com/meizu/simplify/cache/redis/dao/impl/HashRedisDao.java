@@ -29,8 +29,8 @@ import com.meizu.simplify.cache.redis.util.JsonUtil;
  */
 public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    public HashRedisDao(String mod_name) {
-		super(mod_name);
+    public HashRedisDao(String modName) {
+		super(modName);
 	}
 
     /**
@@ -53,7 +53,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
 					return true;
 				}
 				return false;
-		}, mod_name);
+		}, modName);
 		return ret;
     }
     
@@ -72,7 +72,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
 					return JsonUtil.JsonToObject(str);
 				}
 				return null;
-		}, mod_name);
+		}, modName);
 		return ret;
     }
     
@@ -98,7 +98,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
 					return true;
 				}
 				return false;
-		}, mod_name);
+		}, modName);
 		return ret;
     	
     }
@@ -131,7 +131,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
 					jedis.expire(k, seconds);
 				}
 				return result.equalsIgnoreCase("OK");
-		}, mod_name);
+		}, modName);
 		return ret;
     	
     	
@@ -155,7 +155,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
 					jedis.expire(k, seconds);
 				}
 				return result;
-		}, mod_name);
+		}, modName);
 		return ret;
     	
     }
@@ -168,7 +168,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      * @return
      */
     public long hlen(String key){
-    	Long ret = CacheExecute.execute(key, (k,jedis) ->  jedis.hlen(k), mod_name);
+    	Long ret = CacheExecute.execute(key, (k,jedis) ->  jedis.hlen(k), modName);
 		return ret;
     }
     
@@ -181,7 +181,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      * @return
      */
     public boolean hexists(String key,String field){
-    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->jedis.hexists(k, field), mod_name);
+    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->jedis.hexists(k, field), modName);
 		return ret;
     }
 	

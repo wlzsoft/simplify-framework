@@ -22,8 +22,8 @@ import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
 public class RedisManager implements ICacheManager {
 
     @Override
-	public ICacheDao<?,?> getCache(String mod_name) {
-		new CommonRedisDao<>(mod_name);
+	public ICacheDao<?,?> getCache(String modName) {
+		new CommonRedisDao<>(modName);
 		return null;
 	}
 }

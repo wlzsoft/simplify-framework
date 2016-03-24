@@ -42,7 +42,7 @@ public class GeneratorRedisDao extends  BaseRedisDao<String> implements IGenerat
 	public long incr(String key) {
 		Long ret = CacheExecute.execute(key, (k,jedis) -> {
 				return jedis.incr(k);
-		}, mod_name);
+		}, modName);
 		return ret;
 	}
 
@@ -56,7 +56,7 @@ public class GeneratorRedisDao extends  BaseRedisDao<String> implements IGenerat
 	public long incrBy(String key, long value) {
 		Long ret = CacheExecute.execute(key, (k,jedis) -> {
 				return jedis.incrBy(SerializeUtil.serialize(k), value);
-		}, mod_name);
+		}, modName);
 		return ret;
 	}
 }

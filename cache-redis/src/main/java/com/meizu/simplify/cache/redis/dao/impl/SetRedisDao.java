@@ -27,8 +27,8 @@ import com.meizu.simplify.utils.SerializeUtil;
  */
 public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(SetRedisDao.class);
-    public SetRedisDao(String mod_name) {
-		super(mod_name);
+    public SetRedisDao(String modName) {
+		super(modName);
 	}
 
     /**
@@ -54,9 +54,9 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public boolean sadd(String key, Object value,int seconds) {
         
         try {
-            long ret = CacheExecute.getJedis(mod_name).sadd(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
+            long ret = CacheExecute.getJedis(modName).sadd(SerializeUtil.serialize(key), SerializeUtil.serialize(value));
             if(seconds > 0){
-				CacheExecute.getJedis(mod_name).expire(key, seconds);
+				CacheExecute.getJedis(modName).expire(key, seconds);
 			}
             return ret > 0;
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public boolean srem(String key, Object member) {
         
         try {
-            long ret = CacheExecute.getJedis(mod_name).srem(SerializeUtil.serialize(key), SerializeUtil.serialize(member));
+            long ret = CacheExecute.getJedis(modName).srem(SerializeUtil.serialize(key), SerializeUtil.serialize(member));
             return ret > 0;
         } catch (Exception e) {
             LOGGER.error("srem error!", e);
@@ -93,7 +93,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
         
         Set<byte[]> set = null;
         try {
-            set = CacheExecute.getJedis(mod_name).smembers(SerializeUtil.serialize(key));
+            set = CacheExecute.getJedis(modName).smembers(SerializeUtil.serialize(key));
             //序列化
             Set<Object> result = null;
             if (CollectionUtil.isNotEmpty(set)) {
@@ -121,7 +121,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public boolean sismember(String key, Object member) {
         
         try {
-            return CacheExecute.getJedis(mod_name).sismember(SerializeUtil.serialize(key), SerializeUtil.serialize(member));
+            return CacheExecute.getJedis(modName).sismember(SerializeUtil.serialize(key), SerializeUtil.serialize(member));
         } catch (Exception e) {
             LOGGER.error("sismember error!", e);
             return false;
@@ -137,7 +137,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public long scard(String key) {
         
         try {
-            long size = CacheExecute.getJedis(mod_name).scard(SerializeUtil.serialize(key));
+            long size = CacheExecute.getJedis(modName).scard(SerializeUtil.serialize(key));
             return size;
         } catch (Exception e) {
             LOGGER.error("scard error!", e);
@@ -155,7 +155,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public Object spop(String key) {
         
         try {
-            byte[] bytes = CacheExecute.getJedis(mod_name).spop(SerializeUtil.serialize(key));
+            byte[] bytes = CacheExecute.getJedis(modName).spop(SerializeUtil.serialize(key));
             return SerializeUtil.unserialize(bytes);
         } catch (Exception e) {
             LOGGER.error("spop error!", e);
@@ -172,7 +172,7 @@ public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
     public Object srandmember(String key) {
         
         try {
-            byte bytes[] = CacheExecute.getJedis(mod_name).srandmember(SerializeUtil.serialize(key));
+            byte bytes[] = CacheExecute.getJedis(modName).srandmember(SerializeUtil.serialize(key));
             return SerializeUtil.unserialize(bytes);
         } catch (Exception e) {
             LOGGER.error("srandmember error!", e);

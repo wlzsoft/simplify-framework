@@ -26,8 +26,8 @@ import com.meizu.simplify.cache.redis.util.JsonUtil;
 public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonRedisDao.class);
 	
-	public JsonRedisDao(String mod_name) {
-		super(mod_name);
+	public JsonRedisDao(String modName) {
+		super(modName);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 					return JsonUtil.JsonToObject(str);
 				}
 				return null;
-		}, mod_name);
+		}, modName);
 		return ret;
 	}
 
@@ -64,7 +64,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 					return JsonUtil.JsonToObject(str);
 				}
 				return null;
-		}, mod_name);
+		}, modName);
 		return ret;
 	}
 
@@ -85,7 +85,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 					jedis.expire(k, seconds);
 				}
 				return result.equalsIgnoreCase("OK");
-		}, mod_name);
+		}, modName);
 		return ret;
 	}
 	  
@@ -103,7 +103,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
 				 long result = jedis.setnx(k, JsonUtil.ObjectToJson(value));
 		         return result > 0;
-		}, mod_name);
+		}, modName);
         return ret;
     }
 
@@ -121,7 +121,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
 				String result = jedis.setex(k, seconds, JsonUtil.ObjectToJson(value));
 	            return result.equalsIgnoreCase("OK");
-		}, mod_name);
+		}, modName);
         return ret;
     }
     

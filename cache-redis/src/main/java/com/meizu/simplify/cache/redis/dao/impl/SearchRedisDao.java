@@ -21,8 +21,8 @@ import com.meizu.simplify.cache.redis.dao.CacheExecute;
 public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 
 	
-	public SearchRedisDao(String mod_name) {
-		super(mod_name);
+	public SearchRedisDao(String modName) {
+		super(modName);
 	}
 
 	/**
@@ -39,11 +39,11 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 	public  long findCacheIndex(String key,  long data,
 			long beginIndex, long endIndex, Comparator<Long> c) {
 		
-		if (CacheExecute.getJedis(mod_name) == null) {
+		if (CacheExecute.getJedis(modName) == null) {
 			return -1;
 		}
 		
-		if (!CacheExecute.getJedis(mod_name).exists(key)) {
+		if (!CacheExecute.getJedis(modName).exists(key)) {
 			return -1;
 		}
 
@@ -55,7 +55,7 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 		String strMidIndexValue = null;
 		String strEndIndexValue = null;
 		
-		strBeginIndexValue = CacheExecute.getJedis(mod_name).lindex(key, beginIndex);
+		strBeginIndexValue = CacheExecute.getJedis(modName).lindex(key, beginIndex);
 		if (strBeginIndexValue == null) {
 			return -1;
 		}
@@ -63,14 +63,14 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 
 		
 		long midIndex = beginIndex + (endIndex - beginIndex) / 2;
-		strMidIndexValue = CacheExecute.getJedis(mod_name).lindex(key, midIndex);
+		strMidIndexValue = CacheExecute.getJedis(modName).lindex(key, midIndex);
 		if (strMidIndexValue == null) {
 			return -1;
 		}
 		midIndexValue = Long.valueOf(strMidIndexValue);
 		
 		
-		strEndIndexValue = CacheExecute.getJedis(mod_name).lindex(key, endIndex);
+		strEndIndexValue = CacheExecute.getJedis(modName).lindex(key, endIndex);
 		if (strEndIndexValue == null) {
 			return -1;
 		}
@@ -101,11 +101,11 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 	public  long findCacheThanIndex(String key, long data,
 			long beginIndex, long endIndex, Comparator<Long> c) {
 		
-		if (CacheExecute.getJedis(mod_name) == null) {
+		if (CacheExecute.getJedis(modName) == null) {
 			return -1;
 		}
 		
-		if (!CacheExecute.getJedis(mod_name).exists(key)) {
+		if (!CacheExecute.getJedis(modName).exists(key)) {
 			return -1;
 		}
 
@@ -117,7 +117,7 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 		String strMidIndexValue = null;
 		String strEndIndexValue = null;
 		
-		strBeginIndexValue = CacheExecute.getJedis(mod_name).lindex(key, beginIndex);
+		strBeginIndexValue = CacheExecute.getJedis(modName).lindex(key, beginIndex);
 		if (strBeginIndexValue == null) {
 			return -1;
 		}
@@ -125,14 +125,14 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 
 		
 		long midIndex = beginIndex + (endIndex - beginIndex) / 2;
-		strMidIndexValue = CacheExecute.getJedis(mod_name).lindex(key, midIndex);
+		strMidIndexValue = CacheExecute.getJedis(modName).lindex(key, midIndex);
 		if (strMidIndexValue == null) {
 			return -1;
 		}
 		midIndexValue = Long.valueOf(strMidIndexValue);
 		
 		
-		strEndIndexValue = CacheExecute.getJedis(mod_name).lindex(key, endIndex);
+		strEndIndexValue = CacheExecute.getJedis(modName).lindex(key, endIndex);
 		if (strEndIndexValue == null) {
 			return -1;
 		}
@@ -188,11 +188,11 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 	public  long findCacheValueForInsert(String key, long data,
 			long beginIndex, long endIndex) {
 		
-		if (CacheExecute.getJedis(mod_name) == null) {
+		if (CacheExecute.getJedis(modName) == null) {
 			return -1;
 		}
 		
-		if (!CacheExecute.getJedis(mod_name).exists(key)) {
+		if (!CacheExecute.getJedis(modName).exists(key)) {
 			return -1;
 		}
 
@@ -204,13 +204,13 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 		String strMidIndexValue = null;
 		String strEndIndexValue = null;
 		
-		strBeginIndexValue = CacheExecute.getJedis(mod_name).lindex(key, beginIndex);
+		strBeginIndexValue = CacheExecute.getJedis(modName).lindex(key, beginIndex);
 		if (strBeginIndexValue == null) {
 			return -1;
 		}
 		beginIndexValue = Long.valueOf(strBeginIndexValue);
 		
-		strEndIndexValue = CacheExecute.getJedis(mod_name).lindex(key, endIndex);
+		strEndIndexValue = CacheExecute.getJedis(modName).lindex(key, endIndex);
 		if (strEndIndexValue == null) {
 			return -1;
 		}
@@ -224,7 +224,7 @@ public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
 			return beginIndexValue;
 		}
 		long midIndex = beginIndex + (endIndex - beginIndex) / 2;
-		strMidIndexValue = CacheExecute.getJedis(mod_name).lindex(key, midIndex);
+		strMidIndexValue = CacheExecute.getJedis(modName).lindex(key, midIndex);
 		if (strMidIndexValue == null) {
 			return -1;
 		}

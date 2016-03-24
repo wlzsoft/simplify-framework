@@ -22,9 +22,9 @@ import com.meizu.simplify.cache.redis.exception.RedisException;
  */
 public abstract class BaseRedisDao<K extends Serializable>  {
 	
-	public String mod_name;
-	public BaseRedisDao(String mod_name) {
-		this.mod_name = mod_name;
+	public String modName;
+	public BaseRedisDao(String modName) {
+		this.modName = modName;
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public abstract class BaseRedisDao<K extends Serializable>  {
   				} else {
   					throw new RedisException("无效key");
   				}
-  		},mod_name);
+  		},modName);
 		return ret;
 	}
 	/**
