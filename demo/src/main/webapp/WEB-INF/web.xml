@@ -81,7 +81,7 @@
 	    <url-pattern />
 	</filter-mapping>
 	 <filter-mapping>
-	    <filter-name>SecurityFilter</filter-name>
+	    <filter-name>ControllerFilter</filter-name>
 	    <url-pattern />
 	</filter-mapping> -->
   
