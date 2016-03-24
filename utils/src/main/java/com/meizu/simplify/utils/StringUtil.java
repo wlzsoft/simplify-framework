@@ -224,12 +224,12 @@ public class StringUtil {
 	 */
 	public static String removeHtmlLabel(String content) {
 		if (null == content) return "";
-		java.util.regex.Pattern p_html;
-		java.util.regex.Matcher m_html;
+		java.util.regex.Pattern patternHtml;
+		java.util.regex.Matcher matcherHtml;
 		try {
-			p_html = Pattern.compile("<[^>]+>", Pattern.CASE_INSENSITIVE);
-			m_html = p_html.matcher(content);
-			content = m_html.replaceAll("");
+			patternHtml = Pattern.compile("<[^>]+>", Pattern.CASE_INSENSITIVE);
+			matcherHtml = patternHtml.matcher(content);
+			content = matcherHtml.replaceAll("");
 		} catch (Exception e) {
 			return "";
 		}
@@ -245,12 +245,12 @@ public class StringUtil {
 	 */
 	public static String removeIframe(String content) {
 		if (null == content) return "";
-		java.util.regex.Pattern p_html;
-		java.util.regex.Matcher m_html;
+		java.util.regex.Pattern patternHtml;
+		java.util.regex.Matcher matcherHtml;
 		try {
-			p_html = Pattern.compile("<iframe[^>]+>", Pattern.CASE_INSENSITIVE);
-			m_html = p_html.matcher(content);
-			content = m_html.replaceAll("");
+			patternHtml = Pattern.compile("<iframe[^>]+>", Pattern.CASE_INSENSITIVE);
+			matcherHtml = patternHtml.matcher(content);
+			content = matcherHtml.replaceAll("");
 		} catch (Exception e) {
 			return "";
 		}
@@ -266,12 +266,12 @@ public class StringUtil {
 	 */
 	public static String removeStyle(String content) {
 		if (null == content) return "";
-		java.util.regex.Pattern p_html;
-		java.util.regex.Matcher m_html;
+		java.util.regex.Pattern patternHtml;
+		java.util.regex.Matcher matcherHtml;
 		try {
-			p_html = Pattern.compile("<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>", Pattern.CASE_INSENSITIVE);
-			m_html = p_html.matcher(content);
-			content = m_html.replaceAll("");
+			patternHtml = Pattern.compile("<[\\s]*?style[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?style[\\s]*?>", Pattern.CASE_INSENSITIVE);
+			matcherHtml = patternHtml.matcher(content);
+			content = matcherHtml.replaceAll("");
 		} catch (Exception e) {
 			return "";
 		}
@@ -287,12 +287,12 @@ public class StringUtil {
 	 */
 	public static String removeScript(String content) {
 		if (null == content) return "";
-		java.util.regex.Pattern p_html;
-		java.util.regex.Matcher m_html;
+		java.util.regex.Pattern patternHtml;
+		java.util.regex.Matcher matcherHtml;
 		try {
-			p_html = Pattern.compile("<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>", Pattern.CASE_INSENSITIVE);
-			m_html = p_html.matcher(content);
-			content = m_html.replaceAll("");
+			patternHtml = Pattern.compile("<[\\s]*?script[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?script[\\s]*?>", Pattern.CASE_INSENSITIVE);
+			matcherHtml = patternHtml.matcher(content);
+			content = matcherHtml.replaceAll("");
 		} catch (Exception e) {
 			return "";
 		}

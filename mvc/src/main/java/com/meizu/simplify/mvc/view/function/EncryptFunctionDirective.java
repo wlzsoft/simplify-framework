@@ -39,16 +39,16 @@ public class EncryptFunctionDirective extends Directive {
 
 	@Override
 	public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
-		SimpleNode sn_type = (SimpleNode) node.jjtGetChild(0);
-		String type = (String) sn_type.value(context);
+		SimpleNode snType = (SimpleNode) node.jjtGetChild(0);
+		String type = (String) snType.value(context);
 
-		SimpleNode sn_value = (SimpleNode) node.jjtGetChild(1);
-		String value = (String) sn_value.value(context);
+		SimpleNode snValue = (SimpleNode) node.jjtGetChild(1);
+		String value = (String) snValue.value(context);
 
 		String key = "";
-		SimpleNode sn_key = (SimpleNode) node.jjtGetChild(2);
-		if (sn_key != null) {
-			key = (String) sn_key.value(context);
+		SimpleNode snKey = (SimpleNode) node.jjtGetChild(2);
+		if (snKey != null) {
+			key = (String) snKey.value(context);
 		}
 
 	/*	if ("md5".equals(type)) {

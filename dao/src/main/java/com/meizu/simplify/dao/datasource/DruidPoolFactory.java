@@ -57,7 +57,7 @@ public class DruidPoolFactory {
 //			数据库相关:1.数据库配置信息密码要经过加密，不能明文写在配置文件中
 //			dataSource.setUsername("root"); 
 //			dataSource.setPassword("root"); 
-			dataSource.setUrl("jdbc:h2:d:/ms_db/MESSAGE_DATA;MVCC\\=true"); 
+			dataSource.setUrl("jdbc:h2:d:/test_db/TEST_DATA;MVCC\\=true"); 
 			dataSource.setInitialSize(5); 
 			dataSource.setMinIdle(1); 
 			dataSource.setMaxActive(16); // 启用监控统计功能 

@@ -71,7 +71,7 @@ public class PropertiesConfig {
 	private Boolean unicodeTranscoding = true;//暂未启用
 	private Boolean cache = false;//暂未启用
 	// lucence加载器
-	private String directory_provider = "";//暂未启用
+	private String directoryProvider = "";//暂未启用
 	// lucence配置 默认关闭
 	private Integer limitExecutionTime = 0;//暂未启用
 	// 页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
@@ -136,12 +136,15 @@ public class PropertiesConfig {
 	public void setCache(Boolean cache) {
 		this.cache = cache;
 	}
-	public String getDirectory_provider() {
-		return directory_provider;
+	
+	public String getDirectoryProvider() {
+		return directoryProvider;
 	}
-	public void setDirectory_provider(String directory_provider) {
-		this.directory_provider = directory_provider;
+
+	public void setDirectoryProvider(String directoryProvider) {
+		this.directoryProvider = directoryProvider;
 	}
+
 	public Integer getLimitExecutionTime() {
 		return limitExecutionTime;
 	}
