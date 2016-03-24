@@ -29,7 +29,7 @@ import com.meizu.simplify.mvc.view.VelocityForward;
 
 
 /**
- * <p><b>Title:</b><i>安全过滤器</i></p>
+ * <p><b>Title:</b><i>controller过滤器</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -41,8 +41,8 @@ import com.meizu.simplify.mvc.view.VelocityForward;
  * @version Version 0.1
  *
  */
-@WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="SecurityFilter")
-public class SecurityFilter implements Filter {
+@WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter")
+public class ControllerFilter implements Filter {
 
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;

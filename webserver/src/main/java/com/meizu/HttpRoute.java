@@ -9,11 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.meizu.simplify.mvc.SecurityFilter;
+import com.meizu.simplify.mvc.ControllerFilter;
 import com.meizu.util.ByteAndCharConvertUtil;
 
 public class HttpRoute {
-	private static final SecurityFilter filter = new SecurityFilter();
+	private static final ControllerFilter filter = new ControllerFilter();
 
 	public static void route(HttpRequest request, HttpResponse response) {
 
