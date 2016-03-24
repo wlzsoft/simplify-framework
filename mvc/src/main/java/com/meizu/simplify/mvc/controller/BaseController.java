@@ -45,7 +45,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @param <T>
  */
 public class BaseController<T extends Model> {
-	protected WebCache cacheSet = null; 
+	protected WebCache cacheSet = null; //TODO 这个变量有并发修改的高可能，需要移除，放入到方法参数中
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public void init() {}
