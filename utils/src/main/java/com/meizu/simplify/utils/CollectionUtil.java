@@ -12,33 +12,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.meizu.simplify.utils.collection.ICollectionCallBack;
+
 
 /**
- * <p>
- * <b>Title:</b><i>集合工具类</i>
- * </p>
- * <p>
- * Desc: TODO
- * </p>
- * <p>
- * source folder:{@docRoot}
- * </p>
- * <p>
- * Copyright:Copyright(c)2014
- * </p>
- * <p>
- * Company:meizu
- * </p>
- * <p>
- * Create Date:2016年1月6日 下午2:44:11
- * </p>
- * <p>
- * Modified By:luchuangye-
- * </p>
- * <p>
- * Modified Date:2016年1月6日 下午2:44:11
- * </p>
- * 
+ * <p><b>Title:</b><i>集合工具类</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年3月24日 下午4:50:33</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年3月24日 下午4:50:33</p>
  * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version Version 0.1
  *
@@ -211,6 +196,15 @@ public abstract class CollectionUtil {
 		return result;
 	}
 	
+	public static <T> T getItem(T[] sourceList, Comparable<T> call) {
+		for (T t : sourceList) {
+			int res = call.compareTo(t);
+			if(res>0) {
+				return t;
+			}
+		}
+		return null;
+	}
 	/**
 	 * 
 	 * 方法用途: 过滤list中对象的属性，并通过splitChar字符拼接成字符串返回<br>

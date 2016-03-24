@@ -24,13 +24,13 @@ public class FiFoMap<K, V> extends HashMap<K, V> {
 	private int count = 100; // 列队限制
 	private LinkedList<K> keyCount = new LinkedList<K>();
 
-	private ICollectionCallBack callBack = null;
+	private ICollectionCallBack<V> callBack = null;
 
 	public FiFoMap(int count) {
 		this.count = count;
 	}
 	
-	public FiFoMap(int count, ICollectionCallBack callBack) {
+	public FiFoMap(int count, ICollectionCallBack<V> callBack) {
 		this.count = count;
 		this.callBack = callBack;
 	}

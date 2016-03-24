@@ -22,6 +22,7 @@ import com.meizu.simplify.mvc.model.ModelSkip;
 import com.meizu.simplify.mvc.util.AjaxUtils;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
+import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
@@ -132,14 +133,18 @@ public class BaseController<T extends Model> {
 		Method doMethod = null;
 		for ( Method m : methods ) {
 			if (doCmd.equals(m.getName())) {
-				if (doMethod == null) {
-					doMethod = m;
-					break;
-				} else {
-					throw new IllegalArgumentException();
-				}
+				doMethod = m;
+				break;
 			}
 		}
+		CollectionUtil.getItem(methods, new Comparable<Method>() {
+			@Override
+			public int compareTo(Method o) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+		});
 		if (doMethod == null) {
 			throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
 		}
