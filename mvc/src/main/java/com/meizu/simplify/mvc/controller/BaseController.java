@@ -19,6 +19,7 @@ import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelScope;
 import com.meizu.simplify.mvc.model.ModelSkip;
+import com.meizu.simplify.mvc.util.AjaxUtils;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.utils.DataUtil;
@@ -247,8 +248,7 @@ public class BaseController<T extends Model> {
 	 * @param doMethod
 	 */
 	private void analysisAjaxAccess(HttpServletRequest request, HttpServletResponse response, Method doMethod) {
-		String ajaxtag = request.getHeader("x-requested-with");
-		if(ajaxtag == null || !ajaxtag.equals("XMLHttpRequest")) {
+		if(!AjaxUtils.isAjaxRequest(request)) {
 			return;
 		}
 		if (!doMethod.isAnnotationPresent(AjaxAccess.class)) {

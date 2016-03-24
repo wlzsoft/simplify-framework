@@ -21,13 +21,13 @@ public class AjaxUtils {
 	
 	private AjaxUtils() {}
 	
-	public static boolean isAjaxRequest(HttpServletRequest webRequest) {
-		String requestedWith = webRequest.getHeader(X_REQUESTED_WITH);
+	public static boolean isAjaxRequest(HttpServletRequest request) {
+		String requestedWith = request.getHeader(X_REQUESTED_WITH);
 		return requestedWith != null ? "XMLHttpRequest".equals(requestedWith) : false;
 	}
 
-	public static boolean isAjaxUploadRequest(HttpServletRequest webRequest) {
-		return webRequest.getParameter("ajaxUpload") != null;
+	public static boolean isAjaxUploadRequest(HttpServletRequest request) {
+		return request.getParameter("ajaxUpload") != null;
 	}
 	
 
