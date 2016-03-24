@@ -46,7 +46,6 @@ import com.meizu.simplify.webcache.web.CacheBase;
  */
 public class BaseController<T extends Model> {
 	protected WebCache cacheSet = null; //TODO 这个变量有并发修改的高可能，需要移除，放入到方法参数中
-//	protected static final String X_REQUESTED_WITH = "x-requested-with";
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public void init() {}
 	
@@ -106,7 +105,7 @@ public class BaseController<T extends Model> {
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T t) throws ServletException, IOException {
 		return true;
 	}
-
+	
 	/**
 	 * 
 	 * 方法用途: 执行逻辑<br>
@@ -123,6 +122,7 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalAccessException 
 	 */
 	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t, String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+//		RequestAnalysisWrapper.java
 		if (t.getCmd() == null || t.getCmd().length() <= 0) {
 			return null;
 		}
@@ -139,14 +139,66 @@ public class BaseController<T extends Model> {
 				}
 			}
 		}
-		if (doMethod == null) { 
+		if (doMethod == null) {
 			throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
 		}
 		if (doMethod.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 		}
 
-		// 设置参数值
+		Object[] parameValue = analysisRequestParam(request, response, t, doMethod);
+		
+		analysisAjaxAccess(request, response, doMethod);
+		
+
+		// 检查静态规则配置
+		if (doMethod.isAnnotationPresent(WebCache.class)) {
+			this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
+			Cache cache = CacheBase.getCache(cacheSet);
+			if(cache != null){
+				String cacheContent = cache.readCache(cacheSet, staticName,response);
+				if(cacheContent != null){
+					response.setCharacterEncoding(config.getCharset());
+					response.setContentType("text/html; charset=" + config.getCharset());
+					response.getWriter().print(cacheContent);
+					System.out.println("UrlCache -> read Cache.");
+					return null;
+				}
+			}
+		}
+		
+		/*MethodHandles.Lookup lookup = MethodHandles.lookup();  
+	    MethodType type = MethodType.methodType(this.getClass(), doMethod.getParameterTypes());  
+	    MethodHandle mh = lookup.findVirtual(this.getClass(), doMethod.getName(), type);  
+	    ConstantCallSite callSite = new ConstantCallSite(mh);  
+	    MethodHandle invoker = callSite.dynamicInvoker();  
+		IForward result = (IForward) invoker.invoke(parameValue);*/
+		
+		IForward result = null;
+		if(doMethod.getReturnType() == IForward.class) {
+			result = (IForward) doMethod.invoke(this, parameValue);
+		} else {
+//			if(thisUrl.endsWith(".json")) {
+				Object obj = doMethod.invoke(this,parameValue);
+				result = new JsonForward(obj);
+//			}
+		}
+		return result;
+		
+	}
+
+	/**
+	 * 
+	 * 方法用途: 设置参数值<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @param response
+	 * @param t
+	 * @param doMethod
+	 * @return
+	 */
+	private Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,
+			Method doMethod) {
 		Object[] parameValue = new Object[doMethod.getParameterTypes().length];
 		parameValue[0] = request;
 		parameValue[1] = response;
@@ -183,64 +235,46 @@ public class BaseController<T extends Model> {
 				}
 			}
 		}
-		
-		// 检查Ajax跨域配置
-		if (doMethod.isAnnotationPresent(AjaxAccess.class)) {
-			AjaxAccess ajaxAccess = doMethod.getAnnotation(AjaxAccess.class);
-			if (ajaxAccess != null) {
-				if (!StringUtil.isEmpty(ajaxAccess.allowOrigin())) {
-					response.addHeader("Access-Control-Allow-Origin", ajaxAccess.allowOrigin());
-				}
-				if (!StringUtil.isEmpty(ajaxAccess.allowHeaders())) {
-					response.addHeader("Access-Control-Allow-Headers", ajaxAccess.allowHeaders());
-				}
-				if (ajaxAccess.allowMethods() != null) {
-					StringBuffer sb_methods = new StringBuffer();
-					for (Methods method : ajaxAccess.allowMethods()) {
-						sb_methods.append(method.name()).append(",");
-					}
-					if (sb_methods.length() > 0) {
-						sb_methods.delete(sb_methods.length() - 1, sb_methods.length());
-					}
-					response.addHeader("Access-Control-Allow-Methods", sb_methods.toString());
-				}
-				response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
-			}
-		}
+		return parameValue;
+	}
 
-		// 检查静态规则配置
-		if (doMethod.isAnnotationPresent(WebCache.class)) {
-			this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
-			Cache cache = CacheBase.getCache(cacheSet);
-			if(cache != null){
-				String cacheContent = cache.readCache(cacheSet, staticName,response);
-				if(cacheContent != null){
-					response.setCharacterEncoding(config.getCharset());
-					response.setContentType("text/html; charset=" + config.getCharset());
-					response.getWriter().print(cacheContent);
-					System.out.println("UrlCache -> read Cache.");
-					return null;
-				}
+	/**
+	 * 
+	 * 方法用途: 检查并设置Ajax跨域配置<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @param response
+	 * @param doMethod
+	 */
+	private void analysisAjaxAccess(HttpServletRequest request, HttpServletResponse response, Method doMethod) {
+		String ajaxtag = request.getHeader("x-requested-with");
+		if(ajaxtag == null || !ajaxtag.equals("XMLHttpRequest")) {
+			return;
+		}
+		if (!doMethod.isAnnotationPresent(AjaxAccess.class)) {
+			return;
+		}
+		AjaxAccess ajaxAccess = doMethod.getAnnotation(AjaxAccess.class);
+		if (ajaxAccess == null) {
+			return;
+		}
+		if (!StringUtil.isEmpty(ajaxAccess.allowOrigin())) {
+			response.addHeader("Access-Control-Allow-Origin", ajaxAccess.allowOrigin());
+		}
+		if (!StringUtil.isEmpty(ajaxAccess.allowHeaders())) {
+			response.addHeader("Access-Control-Allow-Headers", ajaxAccess.allowHeaders());
+		}
+		response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
+		if (ajaxAccess.allowMethods() != null) {
+			StringBuffer allowMethodSb = new StringBuffer();
+			for (Methods method : ajaxAccess.allowMethods()) {
+				allowMethodSb.append(method.name()).append(",");
 			}
+			if (allowMethodSb.length() > 0) {
+				allowMethodSb.delete(allowMethodSb.length() - 1, allowMethodSb.length());
+			}
+			response.addHeader("Access-Control-Allow-Methods", allowMethodSb.toString());
 		}
-		/*MethodHandles.Lookup lookup = MethodHandles.lookup();  
-	    MethodType type = MethodType.methodType(this.getClass(), doMethod.getParameterTypes());  
-	    MethodHandle mh = lookup.findVirtual(this.getClass(), doMethod.getName(), type);  
-	    ConstantCallSite callSite = new ConstantCallSite(mh);  
-	    MethodHandle invoker = callSite.dynamicInvoker();  
-		IForward result = (IForward) invoker.invoke(parameValue);*/
-		
-		IForward result = null;
-		if(doMethod.getReturnType() == IForward.class) {
-			result = (IForward) doMethod.invoke(this, parameValue);
-		} else {
-//			if(thisUrl.endsWith(".json")) {
-				Object obj = doMethod.invoke(this,parameValue);
-				result = new JsonForward(obj);
-//			}
-		}
-		return result;
-		
 	}
 
 	
