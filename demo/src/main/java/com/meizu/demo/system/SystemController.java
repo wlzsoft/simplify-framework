@@ -14,6 +14,7 @@ import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
+import com.meizu.simplify.webcache.annotation.WebCache;
 
 /**
  * <p><b>Title:</b><i>controller基类</i></p>
@@ -40,8 +41,8 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	}
 	
 	@Override
-	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t,String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
-		return super.execute(request, response, t,staticName);
+	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t,String staticName,WebCache webcache) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+		return super.execute(request, response, t,staticName,webcache);
 	}
 	
 	@Override

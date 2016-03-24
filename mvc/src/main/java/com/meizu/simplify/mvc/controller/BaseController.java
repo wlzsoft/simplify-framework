@@ -47,7 +47,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @param <T>
  */
 public class BaseController<T extends Model> {
-	protected WebCache cacheSet = null; //TODO 这个变量有并发修改的高可能，需要移除，放入到方法参数中
+	
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public void init() {}
 	
@@ -71,7 +71,8 @@ public class BaseController<T extends Model> {
 		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
-			IForward AF = execute(request, response, model,staticName);
+			WebCache cacheSet = null; //TODO 这个变量有并发修改的高可能，需要移除，放入到方法参数中
+			IForward AF = execute(request, response, model,staticName,cacheSet);
 			if (AF != null) {
 				request.setAttribute("formData", model);
 				AF.doAction(request, response, cacheSet, staticName);
@@ -116,6 +117,7 @@ public class BaseController<T extends Model> {
 	 * @param response
 	 * @param t
 	 * @param staticName 
+	 * @param cacheSet 
 	 * @return
 	 * @throws ServletException
 	 * @throws IOException
@@ -123,7 +125,7 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t, String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t, String staticName, WebCache cacheSet) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
 //		RequestAnalysisWrapper.java
 		if (t.getCmd() == null || t.getCmd().length() <= 0) {
 			return null;
@@ -145,7 +147,7 @@ public class BaseController<T extends Model> {
 
 		// 检查静态规则配置
 		if (doMethod.isAnnotationPresent(WebCache.class)) {
-			this.cacheSet = doMethod.getAnnotation(WebCache.class);
+			cacheSet = doMethod.getAnnotation(WebCache.class);
 			Cache cache = CacheBase.getCache(cacheSet);
 			if(cache != null){
 				String cacheContent = cache.readCache(cacheSet, staticName,response);
