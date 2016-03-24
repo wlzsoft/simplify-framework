@@ -145,7 +145,7 @@ public class BaseController<T extends Model> {
 
 		// 检查静态规则配置
 		if (doMethod.isAnnotationPresent(WebCache.class)) {
-			this.cacheSet = (WebCache) doMethod.getAnnotation(WebCache.class);
+			this.cacheSet = doMethod.getAnnotation(WebCache.class);
 			Cache cache = CacheBase.getCache(cacheSet);
 			if(cache != null){
 				String cacheContent = cache.readCache(cacheSet, staticName,response);
