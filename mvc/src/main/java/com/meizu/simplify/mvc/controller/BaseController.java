@@ -338,7 +338,9 @@ public class BaseController<T extends Model> {
 					}
 
 					// 是否滤过
-					if (method.isAnnotationPresent(ModelSkip.class)) continue;
+					if (method.isAnnotationPresent(ModelSkip.class)) {
+						continue;
+					}
 
 					// 取消兼容方式
 					// par = par == null ? request.getParameter(parName) : par;
