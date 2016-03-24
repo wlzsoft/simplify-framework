@@ -46,7 +46,6 @@ import com.meizu.simplify.webcache.web.CacheBase;
  */
 public class BaseController<T extends Model> {
 	protected WebCache cacheSet = null; // 静态规则设置
-	protected String staticName; // 静态标识名字
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public void init() {}
@@ -66,10 +65,12 @@ public class BaseController<T extends Model> {
 	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		HttpServletRequest request = req;
 		T model = setRequestModel(request);
-		this.staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
+		
+		//页面静态化名字		
+		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
-			IForward AF = execute(request, response, model);
+			IForward AF = execute(request, response, model,staticName);
 			if (AF != null) {
 				request.setAttribute("formData", model);
 				AF.doAction(request, response, cacheSet, staticName);
@@ -113,6 +114,7 @@ public class BaseController<T extends Model> {
 	 * @param request
 	 * @param response
 	 * @param t
+	 * @param staticName 
 	 * @return
 	 * @throws ServletException
 	 * @throws IOException
@@ -120,7 +122,7 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t, String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
 		if (t.getCmd() == null || t.getCmd().length() <= 0) {
 			return null;
 		}

@@ -40,8 +40,8 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	}
 	
 	@Override
-	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
-		return super.execute(request, response, t);
+	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t,String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+		return super.execute(request, response, t,staticName);
 	}
 	
 	@Override
