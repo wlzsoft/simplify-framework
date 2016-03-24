@@ -1,5 +1,6 @@
 package com.meizu.simplify.mvc.dto;
 
+import com.meizu.simplify.mvc.controller.BaseController;
 
 /**
  * <p><b>Title:</b><i>Servlet模型</i></p>
@@ -14,12 +15,12 @@ package com.meizu.simplify.mvc.dto;
  * @version Version 0.1
  *
  */
-public class ControllerAnnotationInfo {
-	private Object obj;
+public class ControllerAnnotationInfo<T extends BaseController<?>> {
+	private T obj;
 	
 	private String method = "doView";
 
-	public Object getObj() {
+	public T getObj() {
 		return obj;
 	}
 
@@ -27,7 +28,7 @@ public class ControllerAnnotationInfo {
 		return method;
 	}
 
-	public ControllerAnnotationInfo(Object obj, String method){
+	public ControllerAnnotationInfo(T obj, String method){
 		this.obj = obj;
 		this.method = method;
 	}

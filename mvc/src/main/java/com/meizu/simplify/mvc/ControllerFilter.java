@@ -55,7 +55,7 @@ public class ControllerFilter implements Filter {
 //		if (StringUtil.parseString(request.getQueryString(),"").length() > 0) {
 //			thisUrl += "?" + request.getQueryString();
 //	 	}
-		ControllerAnnotationInfo controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(thisUrl);
+		ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(thisUrl);
 		if(controllerAnnotationInfo !=null) {
 			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
 			return;// [标示]启用原生 filter的chain,三个地方同时打开注释
@@ -95,7 +95,7 @@ public class ControllerFilter implements Filter {
 	 * @param key
 	 * @param params
 	 */
-	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String thisUrl,ControllerAnnotationInfo controllerAnnotationInfo,
+	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String thisUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
 			String[] params) {
 		
 		try {
@@ -106,7 +106,7 @@ public class ControllerFilter implements Filter {
 			request.setAttribute("params", params);
 			String parName = controllerAnnotationInfo.getMethod();
 			request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
-			BaseController<?> bs = (BaseController<?>)controllerAnnotationInfo.getObj();
+			BaseController<?> bs = controllerAnnotationInfo.getObj();
 			bs.process(request, response);
 			long readtime = System.currentTimeMillis() - time;
 //			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));

@@ -20,6 +20,7 @@ import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
+import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
@@ -43,7 +44,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public static Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
+	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerMap = new ConcurrentHashMap<>();
 	private String classPath; 
 	
 	@Override	
@@ -152,7 +153,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 						if(preControlMap!=null && preControlMap.path().length>0) {
 							path = preControlMap.path()[0] + path;
 						}
-						controllerMap.put(path, new ControllerAnnotationInfo(obj, method.getName()));
+						controllerMap.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
 						LOGGER.info("成功添加请求映射 [" + cpath + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
 					}
 				}

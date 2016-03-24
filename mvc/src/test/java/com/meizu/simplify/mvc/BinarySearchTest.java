@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Test;
 
+import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 
 /**
@@ -25,17 +26,17 @@ public class BinarySearchTest {
 
 	@Test
 	public void testKey() {
-		Map<String, ControllerAnnotationInfo> controllerMap = new ConcurrentHashMap<>();
-		controllerMap.put("astest", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("tesdfst", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("twsdfest", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("tesxdt", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("tsxcest", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("tsesest", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("tesdst", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("tsdcest", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("texxcst", new ControllerAnnotationInfo(new Object(), "testName"));
-		controllerMap.put("texxst", new ControllerAnnotationInfo(new Object(), "testName"));
+		Map<String, ControllerAnnotationInfo<?>> controllerMap = new ConcurrentHashMap<>();
+		controllerMap.put("astest", new ControllerAnnotationInfo<BaseController<?>>(new BaseController<>(), "testName"));
+		controllerMap.put("tesdfst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("twsdfest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("tesxdt", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("tsxcest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("tsesest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("tesdst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("tsdcest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("texxcst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("texxst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
 		Set<String> sets = controllerMap.keySet();
 		String[] setarr = new String[sets.size()];
 		sets.toArray(setarr);
@@ -96,7 +97,7 @@ public class BinarySearchTest {
 	       }
 	}
 	
-	private void binarySearch2(String[] arr, String value) {
+	public void binarySearch2(String[] arr, String value) {
 		int low = 0;
 		int high = arr.length-1;
 		while(low<=high) {
