@@ -24,13 +24,13 @@ public class FiFoMap<K, V> extends HashMap<K, V> {
 	private int count = 100; // 列队限制
 	private LinkedList<K> keyCount = new LinkedList<K>();
 
-	private IDxCallBack callBack = null;
+	private ICollectionCallBack callBack = null;
 
 	public FiFoMap(int count) {
 		this.count = count;
 	}
 	
-	public FiFoMap(int count, IDxCallBack callBack) {
+	public FiFoMap(int count, ICollectionCallBack callBack) {
 		this.count = count;
 		this.callBack = callBack;
 	}
@@ -41,7 +41,9 @@ public class FiFoMap<K, V> extends HashMap<K, V> {
 		if (keyCount.size() >= count) {
 			K rkey = keyCount.removeFirst();
 			super.remove(rkey);
-			if (callBack != null) callBack.exec(rkey);
+			if (callBack != null) {
+				callBack.exec(rkey);
+			}
 		}
 		keyCount.add(key);
 		return super.put(key, value);

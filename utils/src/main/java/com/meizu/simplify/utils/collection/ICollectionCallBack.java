@@ -14,6 +14,6 @@ package com.meizu.simplify.utils.collection;
  * @version Version 0.1
  *
  */
-public interface IDxCallBack {
+public interface ICollectionCallBack {
 	public Object exec(Object... objects);
 }
