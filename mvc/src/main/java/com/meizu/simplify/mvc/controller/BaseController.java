@@ -45,7 +45,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @param <T>
  */
 public class BaseController<T extends Model> {
-	protected WebCache cacheSet = null; // 静态规则设置
+	protected WebCache cacheSet = null; 
 //	protected static final String X_REQUESTED_WITH = "x-requested-with";
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public void init() {}
