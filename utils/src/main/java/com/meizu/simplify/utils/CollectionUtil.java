@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.meizu.simplify.utils.collection.ICollectionCallBack;
+import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 
 /**
@@ -196,10 +196,19 @@ public abstract class CollectionUtil {
 		return result;
 	}
 	
-	public static <T> T getItem(T[] sourceList, Comparable<T> call) {
+	/**
+	 * 
+	 * 方法用途: 集合对象数组中，提取满足条件的对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceList 待提取的数组对象
+	 * @param w 提取的条件
+	 * @param call 回调处理确认满足条件的对象
+	 * @return
+	 */
+	public static <T,W> T getItem(T[] sourceList,W w, IEqualCallBack<T,W> call) {
 		for (T t : sourceList) {
-			int res = call.compareTo(t);
-			if(res>0) {
+			boolean res = call.equal(t,w);
+			if(res) {
 				return t;
 			}
 		}

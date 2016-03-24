@@ -27,6 +27,7 @@ import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
+import com.meizu.simplify.utils.collection.IEqualCallBack;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
@@ -130,21 +131,7 @@ public class BaseController<T extends Model> {
 		}
 		String doCmd = t.getCmd();
 		Method[] methods = this.getClass().getMethods();
-		Method doMethod = null;
-		for ( Method m : methods ) {
-			if (doCmd.equals(m.getName())) {
-				doMethod = m;
-				break;
-			}
-		}
-		CollectionUtil.getItem(methods, new Comparable<Method>() {
-			@Override
-			public int compareTo(Method o) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-			
-		});
+		Method doMethod = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
 		if (doMethod == null) {
 			throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
 		}
