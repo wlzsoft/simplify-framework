@@ -123,9 +123,15 @@ public class ControllerFilter implements Filter {
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 			Throwable throwable = e.getTargetException();
 			throwable.printStackTrace();
+			String exceptionMessage = throwable.getMessage();
+			if(exceptionMessage == null) {
+				if(throwable.getClass() == NullPointerException.class) {
+					exceptionMessage = "空指针异常";
+				}
+			}
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(thisUrl.endsWith(".json")) {
-				IForward ifd = new JsonForward(JsonResult.error(throwable.getMessage()));
+				IForward ifd = new JsonForward(JsonResult.error(exceptionMessage));
 				try {
 					ifd.doAction(request, response, null, null);
 				} catch (ServletException | IOException e1) {
