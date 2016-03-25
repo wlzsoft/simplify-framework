@@ -16,6 +16,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.BaseController;
@@ -24,6 +27,7 @@ import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.mvc.view.VelocityForward;
+import com.meizu.simplify.utils.StringUtil;
 
 
 
@@ -43,7 +47,8 @@ import com.meizu.simplify.mvc.view.VelocityForward;
  */
 @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter")
 public class ControllerFilter implements Filter {
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerFilter.class);
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
@@ -109,7 +114,7 @@ public class ControllerFilter implements Filter {
 			BaseController<?> bs = controllerAnnotationInfo.getObj();
 			bs.process(request, response);
 			long readtime = System.currentTimeMillis() - time;
-//			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
+			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
 			
 			// 记录统计信息
 			Statistics.incReadcount();
