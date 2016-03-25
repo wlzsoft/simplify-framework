@@ -41,10 +41,12 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	}
 	
 	@Override
-	public final IForward execute(final HttpServletRequest request, final HttpServletResponse response, final T t,String staticName,WebCache webcache) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
-		return super.execute(request, response, t,staticName,webcache);
+	public void execute(HttpServletRequest request, HttpServletResponse response, T model, String staticName)
+			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			ServletException {
+		super.execute(request, response, model, staticName);
 	}
-	
+
 	@Override
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T model) throws ServletException, IOException {
 		

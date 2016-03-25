@@ -71,12 +71,7 @@ public class BaseController<T extends Model> {
 		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
-			WebCache cacheSet = null; //TODO 这个变量有并发修改的高可能，需要移除，放入到方法参数中
-			IForward AF = execute(request, response, model,staticName,cacheSet);
-			if (AF != null) {
-				request.setAttribute("formData", model);
-				AF.doAction(request, response, cacheSet, staticName);
-			}
+			execute(request, response, model,staticName);
 		}
 		destroy(request, response, model);
 		
@@ -115,7 +110,7 @@ public class BaseController<T extends Model> {
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param t
+	 * @param model
 	 * @param staticName 
 	 * @param cacheSet 
 	 * @return
@@ -125,12 +120,12 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public IForward execute(HttpServletRequest request, HttpServletResponse response, T t, String staticName, WebCache cacheSet) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+	public void execute(HttpServletRequest request, HttpServletResponse response, T model, String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
 //		RequestAnalysisWrapper.java
-		if (t.getCmd() == null || t.getCmd().length() <= 0) {
-			return null;
+		if (model.getCmd() == null || model.getCmd().length() <= 0) {
+			return;
 		}
-		String doCmd = t.getCmd();
+		String doCmd = model.getCmd();
 		Method[] methods = this.getClass().getMethods();
 		Method doMethod = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
 		if (doMethod == null) {
@@ -140,33 +135,15 @@ public class BaseController<T extends Model> {
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 		}
 
-		Object[] parameValue = analysisRequestParam(request, response, t, doMethod);
+		Object[] parameValue = analysisRequestParam(request, response, model, doMethod);
 		
 		analysisAjaxAccess(request, response, doMethod);
 		
-
-		// 检查静态规则配置
-		if (doMethod.isAnnotationPresent(WebCache.class)) {
-			cacheSet = doMethod.getAnnotation(WebCache.class);
-			Cache cache = CacheBase.getCache(cacheSet);
-			if(cache != null){
-				String cacheContent = cache.readCache(cacheSet, staticName,response);
-				if(cacheContent != null){
-					response.setCharacterEncoding(config.getCharset());
-					response.setContentType("text/html; charset=" + config.getCharset());
-					response.getWriter().print(cacheContent);
-					System.out.println("页面缓存 : 读取页面缓存");
-					return null;
-				}
-			}
+		WebCache webCache = doMethod.getAnnotation(WebCache.class);
+		boolean isCache = analysisWebCache(response, staticName, doMethod,webCache);
+		if(isCache) {
+			return;
 		}
-		
-		/*MethodHandles.Lookup lookup = MethodHandles.lookup();  
-	    MethodType type = MethodType.methodType(this.getClass(), doMethod.getParameterTypes());  
-	    MethodHandle mh = lookup.findVirtual(this.getClass(), doMethod.getName(), type);  
-	    ConstantCallSite callSite = new ConstantCallSite(mh);  
-	    MethodHandle invoker = callSite.dynamicInvoker();  
-		IForward result = (IForward) invoker.invoke(parameValue);*/
 		
 		IForward result = null;
 		if(doMethod.getReturnType() == IForward.class) {
@@ -177,8 +154,39 @@ public class BaseController<T extends Model> {
 				result = new JsonForward(obj);
 //			}
 		}
-		return result;
 		
+		if (result != null) {
+			request.setAttribute("formData", model);
+			result.doAction(request, response, webCache, staticName);
+		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 解析页面缓存配置及返回缓存页面<br>
+	 * 操作步骤: TODO<br>
+	 * @param response
+	 * @param staticName
+	 * @param doMethod
+	 * @param webCache
+	 * @return
+	 * @throws IOException
+	 */
+	private boolean analysisWebCache(HttpServletResponse response, String staticName, Method doMethod,WebCache webCache) throws IOException {
+		if (doMethod.isAnnotationPresent(WebCache.class)) {
+			Cache cache = CacheBase.getCache(webCache);
+			if(cache != null){
+				String cacheContent = cache.readCache(webCache, staticName,response);
+				if(cacheContent != null){
+					response.setCharacterEncoding(config.getCharset());
+					response.setContentType("text/html; charset=" + config.getCharset());
+					response.getWriter().print(cacheContent);
+					System.out.println("页面缓存 : 读取页面缓存");
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
