@@ -220,7 +220,7 @@ public class TestController extends SystemController<TestModel> {
 	}
 	
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
-	public IForward doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", param = "1") String enc, @RequestParam(defaultValue = "0", param = "2") String pid, @RequestParam(defaultValue = "0", param = "3") String id) throws ServletException, IOException, InterruptedException {
+	public IForward doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", index = 1) String enc, @RequestParam(defaultValue = "0", index = 2) String pid, @RequestParam(defaultValue = "0", index = 3) String id) throws ServletException, IOException, InterruptedException {
  
 		
 		// 检查是否id为空

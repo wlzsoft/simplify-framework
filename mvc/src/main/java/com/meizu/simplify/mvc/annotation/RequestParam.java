@@ -32,7 +32,7 @@ public @interface RequestParam {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	String defaultValue();
+	String defaultValue() default "";
 	
 	/**
 	 * 
@@ -40,7 +40,7 @@ public @interface RequestParam {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	String param();
+	int index() default 0;
 	/**
 	 * 
 	 * 方法用途: 参数名称<br>
