@@ -137,7 +137,6 @@ public class VelocityForward implements IForward {
 			response.setCharacterEncoding(config.getCharset());
 			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(content);
-			
 		} finally {
 			if (vw != null) {
 				vw.flush();
