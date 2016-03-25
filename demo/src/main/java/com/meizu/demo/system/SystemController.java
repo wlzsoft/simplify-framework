@@ -41,10 +41,10 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	}
 	
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response, T model, String staticName)
+	public void execute(HttpServletRequest request, HttpServletResponse response, T model)
 			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			ServletException {
-		super.execute(request, response, model, staticName);
+		super.execute(request, response, model);
 	}
 
 	@Override

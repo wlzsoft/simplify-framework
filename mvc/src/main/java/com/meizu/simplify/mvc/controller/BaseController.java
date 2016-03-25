@@ -65,11 +65,9 @@ public class BaseController<T extends Model> {
 	public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		T model = setRequestModel(request);
 		
-		//页面静态化名字		
-		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		if (checkPermission(request, response, model)) {
-			execute(request, response, model,staticName);
+			execute(request, response, model);
 		}
 		destroy(request, response, model);
 		
@@ -117,12 +115,16 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void execute(HttpServletRequest request, HttpServletResponse response, T model, String staticName) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+	public void execute(HttpServletRequest request, HttpServletResponse response, T model) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
 //		RequestAnalysisWrapper.java
 		if (model.getCmd() == null || model.getCmd().length() <= 0) {
 			return;
 		}
 		String doCmd = model.getCmd();
+		
+		//页面静态化名字		
+		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
+		
 		Method[] methods = this.getClass().getMethods();
 		Method doMethod = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
 		if (doMethod == null) {
