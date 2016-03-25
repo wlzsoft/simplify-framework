@@ -41,7 +41,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 */
 	public Object getAndSet(String key, Object value) {
 		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String str = jedis.getSet(k, JsonUtil.ObjectToJson(value));
+				String str = jedis.getSet(k, JsonUtil.ObjectToString(value));
 				if(str != null && str.length() > 0){
 					return JsonUtil.JsonToObject(str);
 				}
@@ -80,7 +80,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	public boolean set(String key, Object value,int seconds) {
 		
 		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
-				String result = jedis.set(k, JsonUtil.ObjectToJson(value));
+				String result = jedis.set(k, JsonUtil.ObjectToString(value));
 				if(seconds > 0){
 					jedis.expire(k, seconds);
 				}
@@ -101,7 +101,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      */
     public boolean setnx(String key, Object value) {
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				 long result = jedis.setnx(k, JsonUtil.ObjectToJson(value));
+				 long result = jedis.setnx(k, JsonUtil.ObjectToString(value));
 		         return result > 0;
 		}, modName);
         return ret;
@@ -119,7 +119,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      */
     public boolean setex(String key, int seconds, Object value) {
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String result = jedis.setex(k, seconds, JsonUtil.ObjectToJson(value));
+				String result = jedis.setex(k, seconds, JsonUtil.ObjectToString(value));
 	            return result.equalsIgnoreCase("OK");
 		}, modName);
         return ret;

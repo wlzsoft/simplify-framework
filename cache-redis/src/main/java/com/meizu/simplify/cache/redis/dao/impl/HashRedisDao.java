@@ -45,7 +45,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      */
     public boolean set(String key,  String field, Object value,int seconds){
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				long status = jedis.hset(k, field, JsonUtil.ObjectToJson(value));
+				long status = jedis.hset(k, field, JsonUtil.ObjectToString(value));
 				if(seconds > 0){
 					jedis.expire(k, seconds);
 				}
@@ -90,7 +90,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     	
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
 
-				long status = jedis.hsetnx(k, field, JsonUtil.ObjectToJson(value));
+				long status = jedis.hsetnx(k, field, JsonUtil.ObjectToString(value));
 				if(seconds > 0){
 					jedis.expire(k, seconds);
 				}
@@ -121,7 +121,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     	for(Iterator<String> it = hash.keySet().iterator();it.hasNext();){
     		String k = it.next();
     		Object value = hash.get(k);
-    		map.put(k, JsonUtil.ObjectToJson(value));
+    		map.put(k, JsonUtil.ObjectToString(value));
     	}
     	
     	

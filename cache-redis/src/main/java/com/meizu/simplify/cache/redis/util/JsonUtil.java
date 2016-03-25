@@ -1,6 +1,8 @@
 package com.meizu.simplify.cache.redis.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 /**
  * <p><b>Title:</b><i>JSON工具类</i></p>
@@ -18,7 +20,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 public class JsonUtil {
 	/**
 	 * 
-	 * 方法用途: JSON转换成字符串-带元数据信息<br>
+	 * 方法用途: pojo对象转换成json字符串-带元数据信息<br>
 	 * 操作步骤: 注意：会有的@type用来表示类型,尽量避免使用
 	 *           建议使用场景，容器启动时，不建议用于网络传输中<br>
 	 * @param obj
@@ -30,22 +32,41 @@ public class JsonUtil {
 	
 	/**
 	 * 
-	 * 方法用途: JSON转换成字符串-不带元数据信息<br>
+	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
 	 * 操作步骤: TODO <br>
 	 * @param obj
 	 * @return
 	 */
-	public static String ObjectToJson(Object obj){
+	public static String ObjectToString(Object obj){
     	return JSON.toJSONString(obj,new JsonAfterFilter());
     }
     
 	/**
-	 * 方法用途: 字符还原成JSON<br>
+	 * 方法用途: json字符串转pojo对象<br>
 	 * 操作步骤: TODO<br>
 	 * @param str
 	 * @return
 	 */
     public static Object JsonToObject(String str){
     	return JSON.parse(str);
+    }
+    
+    /**
+	 * 方法用途: json字符串转Array对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @return
+	 */
+    public static JSONArray StringToJSONArray(String str){
+    	return JSON.parseArray(str);
+    }
+    /**
+	 * 方法用途: json字符串转JSONObject对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @return
+	 */
+    public static JSONObject StringToJSONObject(String str){
+    	return JSON.parseObject(str);
     }
 }

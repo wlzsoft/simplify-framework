@@ -29,7 +29,7 @@ public  class  JsonForward extends MessageForward {
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public JsonForward(Object obj) {
 		super("");
-		String message = JsonUtil.ObjectToJson(obj);
+		String message = JsonUtil.ObjectToString(obj);
 		super.setMsg(message);
 	}
 
