@@ -48,8 +48,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  */
 public class BaseController<T extends Model> {
 	
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public void init() {}
+	private PropertiesConfig config;
 	
 	/**
 	 * 
@@ -171,6 +170,9 @@ public class BaseController<T extends Model> {
 	 * @throws IOException
 	 */
 	private boolean analysisWebCache(HttpServletResponse response, String staticName, Method doMethod,WebCache webCache) throws IOException {
+		if(config == null) {
+			config = BeanFactory.getBean(PropertiesConfig.class);
+		}
 		if (doMethod.isAnnotationPresent(WebCache.class)) {
 			Cache cache = CacheBase.getCache(webCache);
 			if(cache != null){
