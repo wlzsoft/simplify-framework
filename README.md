@@ -61,6 +61,8 @@
 53.调整配置信息读取方式，合并多余的properties实例==>>已测试，已通过 2016/3/23
 54.提供配置信息单个配置注入功能
 55.支持配置信息扩展功能，通过res注解，就可以实现配置文件和实体的映射,并生成单例
+56.RequestParam调整了实现方式，需要测试==>>
+57.页面缓存做了调整，防止并发导致的问题,需要测试调整后的可用性==>>
 相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
