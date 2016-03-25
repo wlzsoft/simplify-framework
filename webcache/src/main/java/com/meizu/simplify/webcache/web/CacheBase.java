@@ -27,21 +27,22 @@ public class CacheBase {
 		urlCache = new FiFoMap<String, Object[]>(config.getUrlcacheCount()); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
 	}
 	/**
-	 * 取缓冲器
 	 * 
-	 * @param cacheSet
+	 * 方法用途: 获取具体页面缓存操作机制实现类<br>
+	 * 操作步骤: TODO<br>
+	 * @param webCache
 	 * @return
 	 */
-	public static Cache getCache(WebCache cacheSet) {
+	public static Cache getCache(WebCache webCache) {
 		Cache cache = null;
 		if(config.getDebug()) {
 			return null; 
 		}
-		if (WebCache.CacheMode.Mem == cacheSet.mode()) {
+		if (WebCache.CacheMode.Mem == webCache.mode()) {
 			cache = new MemCache();
-		} else if (WebCache.CacheMode.File == cacheSet.mode()) {
+		} else if (WebCache.CacheMode.File == webCache.mode()) {
 			cache = new FileCache();
-		} else if (WebCache.CacheMode.browser == cacheSet.mode()) {
+		} else if (WebCache.CacheMode.browser == webCache.mode()) {
 			cache = new BrowserCache();
 		}
 		return cache;

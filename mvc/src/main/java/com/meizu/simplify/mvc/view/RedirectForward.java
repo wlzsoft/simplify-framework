@@ -60,7 +60,7 @@ public class RedirectForward implements IForward {
 	}
 	
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
 		if (paramMap.keySet().size() > 0) {
 			StringBuffer w = new StringBuffer("<html><head></head><body onload=\"form1.submit()\"><form id=\"form1\" method=\"post\" action=\"" + url + "\">");
 			for (String key : paramMap.keySet()) {

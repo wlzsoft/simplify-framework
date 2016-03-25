@@ -36,16 +36,16 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public String readCache(WebCache cacheSet, String staticName,Object obj) {
+	public String readCache(WebCache webCache, String staticName,Object obj) {
 		Object[] values = CacheBase.urlCache.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
-		if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
+		if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
 			File directory = new File(getPath());
 //			File directory = new File(config.getFileCachePath());
 			try {
-				if(obj!=null&&cacheSet.enableBrowerCache()) {
+				if(obj!=null&&webCache.enableBrowerCache()) {
 					HttpServletResponse response = (HttpServletResponse) obj;
-					BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
+					BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
 				}
 				FileReader fr = new FileReader(directory.getParent() + "/htmlCache/" + staticName);
 				int ch = 0;
@@ -62,11 +62,11 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public boolean doCache(WebCache cacheSet, String staticName, String content,Object obj) {
+	public boolean doCache(WebCache webCache, String staticName, String content,Object obj) {
 		try{
-			if(obj!=null&&cacheSet.enableBrowerCache()) {
+			if(obj!=null&&webCache.enableBrowerCache()) {
 				HttpServletResponse response = (HttpServletResponse) obj;
-				BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
+				BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
 			}
 			File htmlCache = new File(config.getFileCachePath());
 			if (!htmlCache.exists()) htmlCache.mkdirs();

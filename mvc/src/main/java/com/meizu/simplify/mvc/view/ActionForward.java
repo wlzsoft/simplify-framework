@@ -42,21 +42,21 @@ public class ActionForward implements IForward {
 	}
 
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(str);
 
 		// 跳转前检查静态规则
-		if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
+		if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
 			String content = getPageContent(request, response, rd);
 			
 			// 是否去除空格
-			if(cacheSet.removeSpace()) {
+			if(webCache.removeSpace()) {
 				content = ClearCommentUtil.clear(content);
 				content = StringUtil.removeHtmlSpace(content);
 			}
 
-			Cache cache = CacheBase.getCache(cacheSet);
-			if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
+			Cache cache = CacheBase.getCache(webCache);
+			if(cache != null && cache.doCache(webCache, staticName, content,response)){
 				// 缓存成功.
 			}
 			PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);

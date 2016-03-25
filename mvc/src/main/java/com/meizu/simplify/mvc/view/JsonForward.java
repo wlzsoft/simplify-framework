@@ -34,7 +34,7 @@ public  class  JsonForward extends MessageForward {
 	}
 
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName)
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName)
 			throws ServletException, IOException {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("application/json; charset=" + config.getCharset());

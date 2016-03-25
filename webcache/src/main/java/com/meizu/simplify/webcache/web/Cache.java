@@ -22,21 +22,21 @@ public interface Cache {
 	 * 
 	 * 方法用途: 读取页面缓存内容，浏览器缓存不起作用<br>
 	 * 操作步骤: TODO<br>
-	 * @param cacheSet
+	 * @param webCache
 	 * @param staticName
 	 * @return
 	 */
-	public <T> String readCache(WebCache cacheSet, String staticName,T o);
+	public <T> String readCache(WebCache webCache, String staticName,T o);
 	
 	/**
 	 * 
 	 * 方法用途: 设置缓存，如果是浏览器，通知浏览器端去缓存<br>
 	 * 操作步骤: TODO<br>
-	 * @param cacheSet
+	 * @param webCache
 	 * @param staticName
 	 * @param content
 	 * @param o
 	 * @return
 	 */
-	public <T> boolean  doCache(WebCache cacheSet, String staticName, String content,T o);
+	public <T> boolean  doCache(WebCache webCache, String staticName, String content,T o);
 }

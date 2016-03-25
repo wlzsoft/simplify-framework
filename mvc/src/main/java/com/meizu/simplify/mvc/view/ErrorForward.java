@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 /**
- * <p><b>Title:</b><i>页面处理返回方式</i></p>
+ * <p><b>Title:</b><i>错误页面处理返回方式</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -23,7 +23,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class ErrorForward implements IForward {
 	private String msg = "";
-	private int errorCode = 403; // 错误Code识别
+	private int errorCode = 403; 
 
 	public ErrorForward(String msg) {
 		this.msg = msg;
@@ -43,7 +43,7 @@ public class ErrorForward implements IForward {
 	}
 	
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
 		response.sendError(errorCode, msg);
 	}
 }

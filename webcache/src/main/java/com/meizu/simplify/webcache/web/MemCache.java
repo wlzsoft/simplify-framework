@@ -22,16 +22,16 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
 public class MemCache implements Cache {
 	
 	@Override
-	public String readCache(WebCache cacheSet, String staticName,Object obj) {
+	public String readCache(WebCache webCache, String staticName,Object obj) {
 		
 		try {
 			Object[] values = CacheBase.urlCache.get(staticName);
 			long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 			// 检查存活时间
-			if (time > 0 && time < cacheSet.timeToLiveSeconds() * 1000) {
-				if(obj!=null&&cacheSet.enableBrowerCache()) {
+			if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
+				if(obj!=null&&webCache.enableBrowerCache()) {
 					HttpServletResponse response = (HttpServletResponse) obj;
-					BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
+					BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
 				}
 				return values[0].toString();
 			}
@@ -41,10 +41,10 @@ public class MemCache implements Cache {
 		return null;
 	}
 	@Override
-	public boolean doCache(WebCache cacheSet, String staticName, String content,Object obj) {
-		if(obj!=null&&cacheSet.enableBrowerCache()) {
+	public boolean doCache(WebCache webCache, String staticName, String content,Object obj) {
+		if(obj!=null&&webCache.enableBrowerCache()) {
 			HttpServletResponse response = (HttpServletResponse) obj;
-			BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
+			BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
 		}
 		CacheBase.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });
 		return true;

@@ -60,7 +60,7 @@ public class HttlForward implements IForward {
 	}
 
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache cacheSet, String staticName) throws ServletException, IOException {
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
 
 		// 设置编码
 		setContentType(request, response);
@@ -86,14 +86,14 @@ public class HttlForward implements IForward {
 		try {
 			template.render(parameters, vw);
 			String content = vw.toString();
-			if (cacheSet != null && cacheSet.mode() != WebCache.CacheMode.nil) {
+			if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
 				// 是否去除空格
-				if(cacheSet.removeSpace()) {
+				if(webCache.removeSpace()) {
 					content = ClearCommentUtil.clear(content);
 					content = StringUtil.removeHtmlSpace(content);
 				}
-				Cache cache = CacheBase.getCache(cacheSet);
-				if(cache != null && cache.doCache(cacheSet, staticName, content,response)){
+				Cache cache = CacheBase.getCache(webCache);
+				if(cache != null && cache.doCache(webCache, staticName, content,response)){
 					// 缓存成功.
 				}
 			}

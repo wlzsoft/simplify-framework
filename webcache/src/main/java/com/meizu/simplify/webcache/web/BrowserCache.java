@@ -22,11 +22,8 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
  */
 public class BrowserCache implements Cache {
 	
-	/* (non-Javadoc)
-	 * @see com.meizu.simplify.cache.mvc.Cache#readCache(com.meizu.simplify.cache.annotation.CacheSet, java.lang.String)
-	 */
 	@Override
-	public String readCache(WebCache cacheSet, String staticName,Object obj) {
+	public String readCache(WebCache webCache, String staticName,Object obj) {
 		//浏览器缓存的读取操作由浏览器自己完成，无需程序员控制。 TODO
 		return null;
 	}
@@ -34,13 +31,13 @@ public class BrowserCache implements Cache {
 	/* 
 	 * CacheAspect 类的浏览器缓存设置不起作用
 	 */
-	public boolean doCache(WebCache cacheSet, String staticName, String content,Object obj) {
+	public boolean doCache(WebCache webCache, String staticName, String content,Object obj) {
 		if(obj == null) {
 			return true;
 		}
 		
 		HttpServletResponse response = (HttpServletResponse) obj;
-		BrowserUtil.enableBrowerCache(response,cacheSet.timeToLiveSeconds());
+		BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
 //		BrowserUtil.enableBrowerCache(response,20000);
 		return true;
 	}
