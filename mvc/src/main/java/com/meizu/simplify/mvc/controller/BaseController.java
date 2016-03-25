@@ -63,8 +63,7 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		HttpServletRequest request = req;
+	public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		T model = setRequestModel(request);
 		
 		//页面静态化名字		
