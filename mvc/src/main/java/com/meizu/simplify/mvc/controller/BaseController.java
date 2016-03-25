@@ -155,7 +155,7 @@ public class BaseController<T extends Model> {
 					response.setCharacterEncoding(config.getCharset());
 					response.setContentType("text/html; charset=" + config.getCharset());
 					response.getWriter().print(cacheContent);
-					System.out.println("UrlCache -> read Cache.");
+					System.out.println("页面缓存 : 读取页面缓存");
 					return null;
 				}
 			}
@@ -191,8 +191,7 @@ public class BaseController<T extends Model> {
 	 * @param doMethod
 	 * @return
 	 */
-	private Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,
-			Method doMethod) {
+	private Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,Method doMethod) {
 		Object[] parameValue = new Object[doMethod.getParameterTypes().length];
 		parameValue[0] = request;
 		parameValue[1] = response;
@@ -268,9 +267,6 @@ public class BaseController<T extends Model> {
 		}
 	}
 
-	
-
-
 	/**
 	 * 
 	 * 方法用途: 获取表单数据<br>
@@ -290,43 +286,9 @@ public class BaseController<T extends Model> {
 					String parName = method.getName().substring(3, method.getName().length());
 					String par = request.getParameter(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
 
-					// 检查annotation 设置
-					ModelScope mset = null;
-					if (method.isAnnotationPresent(ModelScope.class)) {
-						mset = (ModelScope) method.getAnnotation(ModelScope.class);
-						if(mset.scope() != null){
-							if(ModelScope.Scope.session == mset.scope()){
-								
-							} else if(ModelScope.Scope.cookie == mset.scope()){
-								
-							} else if(ModelScope.Scope.application == mset.scope()){
-								
-							}
-						}
-						if(mset.charset() != null && mset.charset().length() > 0) {
-							par = StringUtil.coding(par, mset.charset());
-						}
-					}
+					par = analysisModelScope(method, par);
 					
-					ModelCharsFilter stringFilter = null;
-					if (method.isAnnotationPresent(ModelCharsFilter.class)) {
-						stringFilter = (ModelCharsFilter) method.getAnnotation(ModelCharsFilter.class);
-						if(stringFilter.filters() != null){
-							for(ModelCharsFilter.Filter filter : stringFilter.filters()){
-								if(ModelCharsFilter.Filter.Html == filter){
-									par = StringUtil.removeHtmlLabel(par);
-								} else if(ModelCharsFilter.Filter.Script == filter){
-									par = StringUtil.removeScript(par);
-								} else if(ModelCharsFilter.Filter.Style == filter){
-									par = StringUtil.removeStyle(par);
-								} else if(ModelCharsFilter.Filter.iframe == filter){
-									par = StringUtil.removeIframe(par);
-								} else if(ModelCharsFilter.Filter.trim == filter){
-									par = StringUtil.removeHtmlSpace(par);
-								}
-							}
-						}
-					}
+					par = analysisModelCharsFilter(method, par);
 
 					// 是否滤过
 					if (method.isAnnotationPresent(ModelSkip.class)) {
@@ -367,5 +329,64 @@ public class BaseController<T extends Model> {
 			e.printStackTrace();
 			throw new UncheckedException(e);
 		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 解析表单属性值的非法字符过滤清除的设置<br>
+	 * 操作步骤: TODO<br>
+	 * @param method
+	 * @param par
+	 * @return
+	 */
+	private String analysisModelCharsFilter(Method method, String par) {
+		ModelCharsFilter stringFilter = null;
+		if (method.isAnnotationPresent(ModelCharsFilter.class)) {
+			stringFilter = (ModelCharsFilter) method.getAnnotation(ModelCharsFilter.class);
+			if(stringFilter.filters() != null){
+				for(ModelCharsFilter.Filter filter : stringFilter.filters()){
+					if(ModelCharsFilter.Filter.Html == filter){
+						par = StringUtil.removeHtmlLabel(par);
+					} else if(ModelCharsFilter.Filter.Script == filter){
+						par = StringUtil.removeScript(par);
+					} else if(ModelCharsFilter.Filter.Style == filter){
+						par = StringUtil.removeStyle(par);
+					} else if(ModelCharsFilter.Filter.iframe == filter){
+						par = StringUtil.removeIframe(par);
+					} else if(ModelCharsFilter.Filter.trim == filter){
+						par = StringUtil.removeHtmlSpace(par);
+					}
+				}
+			}
+		}
+		return par;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 解析表单属性作用域的设置<br>
+	 * 操作步骤: TODO<br>
+	 * @param method
+	 * @param par
+	 * @return
+	 */
+	private String analysisModelScope(Method method, String par) {
+		ModelScope mset = null;
+		if (method.isAnnotationPresent(ModelScope.class)) {
+			mset = (ModelScope) method.getAnnotation(ModelScope.class);
+			if(mset.scope() != null){
+				if(ModelScope.Scope.session == mset.scope()){
+					
+				} else if(ModelScope.Scope.cookie == mset.scope()){
+					
+				} else if(ModelScope.Scope.application == mset.scope()){
+					
+				}
+			}
+			if(mset.charset() != null && mset.charset().length() > 0) {
+				par = StringUtil.coding(par, mset.charset());
+			}
+		}
+		return par;
 	}
 }
