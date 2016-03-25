@@ -38,20 +38,20 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoPrototypeHook.class);
 
-	@Value("${system.init.bean}")
+	@Value("system.init.bean")
 	private Boolean initBean;
 	
 	@Override
 	public List<BeanEntity<?>> hook(Class<?> clazz) {
 		
-		PropertiesConfig obj = BeanFactory.getBean(PropertiesConfig.class);
+		/*PropertiesConfig obj = BeanFactory.getBean(PropertiesConfig.class);
 		PropertieUtil propertieUtil = obj.getProperties();
 		if(propertieUtil!=null) {
 			initBean = propertieUtil.getBoolean("system.init.bean");
 		}
 		if(initBean !=null && !initBean) {
 			return null;
-		}
+		}*/
 		LOGGER.debug("开始初始化Dao实例....");
 		List<BeanEntity<?>> list = new ArrayList<>();
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, "com.meizu");//扫描Entity注解的实体，获取实体列表
