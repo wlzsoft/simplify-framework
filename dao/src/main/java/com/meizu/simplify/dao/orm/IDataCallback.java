@@ -55,7 +55,7 @@ public interface IDataCallback<T> {
 		for (int i=1; i <= params.length;i++) {
 			Object obj = params[i-1];
 			prepareStatement.setObject(i, obj);
-			LOGGER.info("["+i+","+obj+"]");
+			LOGGER.debug("[参数索引:"+i+",值:"+obj+"]");
 		}
 		return null;
 	}
