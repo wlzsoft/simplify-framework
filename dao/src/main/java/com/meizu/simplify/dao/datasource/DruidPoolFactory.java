@@ -182,7 +182,7 @@ public class DruidPoolFactory {
 				if(!conn.isClosed()) {
 					conn.close();
 				}
-				LOGGER.info(Thread.currentThread().getName() + "连接关闭");
+				LOGGER.debug(Thread.currentThread().getName() + "连接关闭");
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage(), e);
