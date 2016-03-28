@@ -129,6 +129,7 @@ public class ControllerFilter implements Filter {
 					exceptionMessage = "空指针异常";
 				}
 			}
+			response.setStatus(500);
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(requestUrl.endsWith(".json")) {
 				try {
@@ -144,7 +145,7 @@ public class ControllerFilter implements Filter {
 				//response.sendError(500,throwable.getMessage());
 				
 //				方法二：推荐
-				response.setStatus(500);
+				
 				/*String page500 = "<!DOCTYPE html>"+
 								 "<html>"+
 								 "<head>"+
