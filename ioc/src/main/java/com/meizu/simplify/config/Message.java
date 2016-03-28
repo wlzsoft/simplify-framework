@@ -1,7 +1,5 @@
 package com.meizu.simplify.config;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +68,6 @@ public class Message {
 
 	@Reload
 	public void setBasenames(String... basenames) {
-		List<String> resourceBasenames = PropertiesConfig.getResList(MESSAGE_DIR, basenames);
-		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
+		LOGGER.info("加载配置信息文件成功");
 	}
 }
