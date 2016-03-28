@@ -23,7 +23,7 @@ import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
-import com.meizu.simplify.mvc.view.ActionForward;
+import com.meizu.simplify.mvc.view.JSPForward;
 import com.meizu.simplify.mvc.view.BeetlForward;
 import com.meizu.simplify.mvc.view.HttlForward;
 import com.meizu.simplify.mvc.view.IForward;

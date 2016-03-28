@@ -20,7 +20,7 @@ import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelScope;
 import com.meizu.simplify.mvc.model.ModelSkip;
 import com.meizu.simplify.mvc.util.AjaxUtils;
-import com.meizu.simplify.mvc.view.ActionForward;
+import com.meizu.simplify.mvc.view.JSPForward;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.utils.CollectionUtil;
@@ -150,7 +150,7 @@ public class BaseController<T extends Model> {
 			JsonForward.doAction(request, response, webCache, staticName, obj);
 		} else {
 			if(obj instanceof String) {
-				ActionForward.doAction(request, response, webCache, staticName, String.valueOf(obj));
+				JSPForward.doAction(request, response, webCache, staticName, String.valueOf(obj));
 			}
 		}
 		
