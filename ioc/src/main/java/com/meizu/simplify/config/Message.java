@@ -1,5 +1,8 @@
 package com.meizu.simplify.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +10,7 @@ import com.meizu.simplify.config.annotation.Reload;
 import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.utils.StringUtil;
 
 
 /**
@@ -68,6 +72,42 @@ public class Message {
 
 	@Reload
 	public void setBasenames(String... basenames) {
-		LOGGER.info("加载配置信息文件成功");
+		List<String> resourceBasenames = getResList(MESSAGE_DIR, basenames);
+		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
+	}
+	
+	/**
+	 * 方法用途: 根据通配符资源路径获取资源路径列表<br>
+	 * 操作步骤: TODO<br>
+	 * @param resourceDir  资源目录
+	 * @param wildcardResPaths   通配符资源路径
+	 * @return 返回实际匹配的资源路径列表
+	 */
+	public static List<String> getResList(String resourceDir,
+			String... wildcardResPaths) {
+		List<String> resourcePaths = new ArrayList<String>();
+		try {
+			for (Res resource : getRessByWildcard(wildcardResPaths)) {
+				String uri = resource.getURI().toString();
+				String resourcePath = "classpath:" + resourceDir+ StringUtil.substringAfter(uri, resourceDir);
+				resourcePaths.add(StringUtil.substringBeforeLast(resourcePath,"."));
+			}
+		} catch (Exception e) {
+			throw new UncheckedException("获取资源文件时发生异常。", e);
+		}
+		return resourcePaths;
+	}
+
+	private static List<Res> getRessByWildcard(String[] wildcardResPaths) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public class Res {
+
+		public Object getURI() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 }

@@ -29,7 +29,6 @@ public class PropertiesConfig {
 		return propertieUtils;
 	}
 	
-	
 	private Boolean debug = true;
 	// 后续使用枚举类型 TODO
 	private String charset = "UTF-8";
