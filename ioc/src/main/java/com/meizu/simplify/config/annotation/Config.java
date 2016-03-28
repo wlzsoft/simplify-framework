@@ -1,4 +1,11 @@
 package com.meizu.simplify.config.annotation;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 /**
   * <p><b>Title:</b><i>配置信息依赖注入标记</i></p>
  * <p>Desc: TODO:后续迁移到其他位置</p>
@@ -12,6 +19,8 @@ package com.meizu.simplify.config.annotation;
  * @version Version 0.1
  *
  */
+@Target(FIELD)
+@Retention(RUNTIME)
 public @interface Config {
 
 	/**

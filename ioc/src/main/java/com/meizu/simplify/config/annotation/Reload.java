@@ -1,4 +1,11 @@
 package com.meizu.simplify.config.annotation;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import static java.lang.annotation.ElementType.METHOD;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 /**
   * <p><b>Title:</b><i>标记热加载配置文件时，是否调用该方法</i></p>
  * <p>Desc: TODO</p>
@@ -12,6 +19,8 @@ package com.meizu.simplify.config.annotation;
  * @version Version 0.1
  *
  */
+@Target(METHOD)
+@Retention(RUNTIME)
 public @interface Reload {
 
 }
