@@ -1,8 +1,11 @@
 package com.meizu.simplify.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.meizu.simplify.config.annotation.Reload;
 import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.utils.PropertieUtil;
 
 
 /**
@@ -19,16 +22,10 @@ import com.meizu.simplify.utils.PropertieUtil;
  *
  */
 @Bean
-@ReloadableResource
+@ReloadableResource(value="properties/config.properties",prefix="system")
 public class PropertiesConfig {
 
-	private static final String PROPERTIESFILE = "properties/config.properties";
-	private static final PropertieUtil propertieUtils = new PropertieUtil(PROPERTIESFILE);
-
-	public PropertieUtil getProperties() {
-		return propertieUtils;
-	}
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesConfig.class);
 	private Boolean debug = true;
 	// 后续使用枚举类型 TODO
 	private String charset = "UTF-8";
@@ -50,14 +47,6 @@ public class PropertiesConfig {
 	//页面文件缓存路径配置
 	private String fileCachePath = "D:/htmlCache/";
 
-	public PropertiesConfig() {
-		debug = propertieUtils.getBoolean("system.debug", false);
-		charset = propertieUtils.getString("system.charset", null);
-		classpath = propertieUtils.getString("system.classpath", null);
-		directives = propertieUtils.getString("system.directives", null);
-		webcharSet = propertieUtils.getString("system.webcharSet", "ISO-8859-1");
-	}
-	
 	public Boolean getDebug() {
 		return debug;
 	}
@@ -134,5 +123,10 @@ public class PropertiesConfig {
 	
 	public void setFileCachePath(String fileCachePath) {
 		this.fileCachePath = fileCachePath;
+	}
+	
+	@Reload
+	public void setBasenames(String... basenames) {
+		LOGGER.info("加载配置信息文件成功。");
 	}
 }

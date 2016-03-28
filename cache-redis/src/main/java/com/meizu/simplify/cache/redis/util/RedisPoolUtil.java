@@ -33,6 +33,7 @@ public class RedisPoolUtil {
 		if (set.size() == 0) {
 			throw new IllegalArgumentException("redis连接池信息：["+REDIS_CONFIG_FILE+"]配置文件为空 !");
 		}
+		//TODO 可以通过通过ReloadableResource注解的方式来处理，需求自己处理转换-后续考虑是否统一处理
 		redisPoolProperties = propertieUtils.toClass(RedisPoolProperties.class);
 		LOGGER.info("初始redis连接池配置信息:"+propertieUtils.toString());
 	}

@@ -22,7 +22,7 @@ public class ErrorResult extends Result{
 	
 	public ErrorResult(String message) {
 		super(message);
-		BeanFactory.getBean(Message.class).thrown("500", message);
+		BeanFactory.getBean(Message.class).error("500", message);
 		super.setSuccess(false);
 	}
 	

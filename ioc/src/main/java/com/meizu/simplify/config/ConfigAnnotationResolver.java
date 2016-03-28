@@ -65,7 +65,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 				
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
-				LOGGER.debug("bean:"+clazz.getName()+"初始化失败");
+				LOGGER.debug("配置信息:"+clazz.getName()+"初始化失败");
 			}
 			
 		}

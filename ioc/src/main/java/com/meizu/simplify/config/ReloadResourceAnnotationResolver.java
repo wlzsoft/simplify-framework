@@ -1,27 +1,22 @@
 package com.meizu.simplify.config;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dto.AnnotationInfo;
-import com.meizu.simplify.exception.BaseException;
-import com.meizu.simplify.ioc.BeanContainer;
-import com.meizu.simplify.ioc.BeanEntity;
+import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.annotation.Init;
-import com.meizu.simplify.ioc.enums.BeanTypeEnum;
-import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.DataUtil;
+import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>配置实体注入解析器</i></p>
@@ -44,30 +39,16 @@ public class ReloadResourceAnnotationResolver implements IAnnotationResolver<Cla
 	public void resolve(List<Class<?>> resolveList) {
 		resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, "com.meizu");
 		for (Class<?> clazz : resolveList) {
-			LOGGER.info("配置实体注入 初始化:{}",clazz.getName());
-			try {
-				Bean beanAnnotation = clazz.getAnnotation(Bean.class);
-        		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
-        			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
-        			for (Class<?> hookClazz : hookList) {
-						BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
-						Class<?> serviceClass = hookBeanAnno.value();
-						if(serviceClass.equals(clazz)) {
-							Object hookObj = hookClazz.newInstance();
-							List<BeanEntity<?>> listObj = ((IBeanPrototypeHook)hookObj).hook(clazz);
-							BeanFactory.addBeanList(listObj);
-						}
-					}
-        		} else {
-        			Object beanObj = clazz.newInstance();
-        			BeanFactory.addBean(beanObj);
-        		}
-				
-			} catch (InstantiationException | IllegalAccessException e) {
-				e.printStackTrace();
-				LOGGER.debug("bean:"+clazz.getName()+"初始化失败");
+			ReloadableResource reloadableResource = clazz.getAnnotation(ReloadableResource.class);
+			if(reloadableResource == null || StringUtil.isBlank(reloadableResource.value())) {
+				continue;
 			}
-			
+			LOGGER.info("配置实体注入 初始化:{}",clazz.getName());
+			String reloadableResourceValue = reloadableResource.value();
+			String prefix = reloadableResource.prefix();
+			PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue);
+			Object beanObj = propertieUtils.toClass(clazz, prefix);
+   			BeanFactory.addBean(beanObj);
 		}
 	}
 }

@@ -35,7 +35,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  *
  */
 public class AnalysisRequestControllerMethod {
-	private static PropertiesConfig config;
+	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	/**
 	 * 
 	 * 方法用途: 解析页面缓存配置及返回缓存页面<br>

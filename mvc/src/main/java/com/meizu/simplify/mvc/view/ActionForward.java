@@ -35,6 +35,8 @@ import com.meizu.simplify.webcache.web.CacheBase;
  *
  */
 public class ActionForward implements IForward {
+	
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	private String str = null;
 
 	public ActionForward(String str) {
@@ -59,7 +61,7 @@ public class ActionForward implements IForward {
 			if(cache != null && cache.doCache(webCache, staticName, content,response)){
 				// 缓存成功.
 			}
-			PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+			
 			response.setCharacterEncoding(config.getCharset());
 			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(content);

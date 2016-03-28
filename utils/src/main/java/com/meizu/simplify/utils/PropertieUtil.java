@@ -5,8 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map.Entry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Properties;
 import java.util.Set;
 
@@ -29,7 +34,7 @@ import com.meizu.simplify.exception.StartupErrorException;
  */
 public class PropertieUtil {
 	
-//	private Logger LOGGER = LoggerFactory.getLogger(PropertieUtil.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PropertieUtil.class);
 	private Properties props = new Properties();
 	private InputStream jndiInput = null;
 
@@ -60,6 +65,10 @@ public class PropertieUtil {
 			}
 	}
 
+	public Object get(String name) {
+		return props.get(name);
+	}
+	
 	public String getProperty(String name) {
 		return props.getProperty(name);
 	}
@@ -132,46 +141,48 @@ public class PropertieUtil {
 	public Properties getProps() {
 		return props;
 	}
-	
+	/**
+	 * 
+	 * 方法用途: 转换属性文件为pojo对象-无属性前缀<br>
+	 * 操作步骤: TODO<br>
+	 * @param clazz 转换的pojo的具体类型
+	 * @return
+	 */
+	public <T> T toClass(Class<T> clazz){
+		return toClass(clazz,"");
+	}
 	/**
 	 * 
 	 * 方法用途: 转换属性文件为pojo对象<br>
 	 * 操作步骤: TODO<br>
+	 * @param clazz 转换的pojo的具体类型
+	 * @param prefix 配置文件中属性的前缀
 	 * @return
 	 */
-	public <T> T toClass(Class<T> clazz){
+	public <T> T toClass(Class<T> clazz,String prefix){
+		if(StringUtil.isNotBlank(prefix)) {
+			prefix += ".";
+		}
 		try {
 			Object obj = clazz.newInstance();
-			Method[] methodArr = clazz.getMethods();
-			
-			for (Method method : methodArr) {
-				String methodName = method.getName();
-				if(methodName.startsWith("set")) {
-					for (String name : stringPropertyNames()) {
-						if(methodName.substring(3).equalsIgnoreCase(name)) {
-							Object arg= null;
-							Class<?> type = null;
-							try {
-								arg = getInteger(name);
-								type = Integer.class;
-							} catch(Exception ex) {
-								try {
-									arg = getBoolean(name);
-									type = Boolean.class;
-								} catch (Exception e) {
-									arg = getString(name);
-									type = String.class;
-								}
-							} 
-							ReflectionUtil.invokeMethod(obj, methodName,new Class<?>[]{type},new Object[]{arg});
-							break;
-						}
-					}
-				}
+			Field[] fieldArr = clazz.getDeclaredFields();
+   			for (Field field : fieldArr) {
+					Object value = get(prefix+field.getName());
+       				if(value == null) {
+       					continue;
+       				}
+       				if(field.getType() == Boolean.class||field.getType() == boolean.class) {
+       					value = DataUtil.parseBoolean(value);
+       				} else if(field.getType() == Integer.class || field.getType() == int.class){
+       					value = DataUtil.parseInt(value);
+       				}
+					ReflectionUtil.invokeSetterMethod(obj, field.getName(), value);
 			}
+   			
 			return (T) obj;
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
+			LOGGER.debug("配置实体:"+clazz.getName()+"初始化失败");
 		}
 		return null;
 	}
