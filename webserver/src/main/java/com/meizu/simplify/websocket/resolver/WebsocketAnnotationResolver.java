@@ -16,6 +16,7 @@ import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
@@ -34,7 +35,7 @@ import com.meizu.simplify.utils.ObjectUtil;
  * @version Version 0.1
  *
  */
-@Init(9)
+@Init(InitTypeEnum.WEBSOCKET)
 public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketAnnotationResolver.class);
 	

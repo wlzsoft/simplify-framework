@@ -16,6 +16,7 @@ import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.PropertieUtil;
@@ -34,7 +35,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@Init(4)
+@Init(InitTypeEnum.CONFIG)
 public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAnnotationResolver.class);
 	

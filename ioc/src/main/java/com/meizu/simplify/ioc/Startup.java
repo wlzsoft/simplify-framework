@@ -39,11 +39,11 @@ public class Startup {
 		Map<Integer,Class<?>> mapResolve = new ConcurrentHashMap<Integer, Class<?>>();
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
-			Class<?> clazzTemp = mapResolve.get(init.value());
+			Class<?> clazzTemp = mapResolve.get(init.value().value);
 			if(clazzTemp != null) {
 				throw new StartupErrorException("容器启动时，有重复的bean解析操作:["+clazzTemp.getName()+"和"+clazz.getName()+"]冲突");
 			}
-			mapResolve.put(init.value(), clazz);
+			mapResolve.put(init.value().value, clazz);
 		}
 		mapResolve = CollectionUtil.sortMapByKey(mapResolve, true);
 		for (Class<?> clazz : mapResolve.values()) {

@@ -15,17 +15,45 @@ package com.meizu.simplify.ioc.enums;
 public enum InitTypeEnum {
 	
 	/**
-	 * bean
+	 * bean初始化
 	 */
 	BEAN(1),
 	/**
-	 * ioc
+	 *依赖注入 
 	 */
 	IOC(2),
 	/**
-	 * cache
+	 * 配置文件实体初始化
 	 */
-	CACHE(3);
+	RELOADRESOURCE(3),
+	/**
+	 * 依赖注入配置文件属性
+	 */
+	CONFIG(4),
+	/**
+	 * 数据缓存初始化
+	 */
+	CACHE(5),
+	/**
+	 * controller 地址解析初始化
+	 */
+	CONTROL(6),
+	/**
+	 * 事务解析初始化
+	 */
+	TRANS(7),
+	/**
+	 * 页面缓存初始化
+	 */
+	WEBCACHE(8),
+	/**
+	 * websocket解析初始化
+	 */
+	WEBSOCKET(9),
+	/**
+	 * sql数据库表结构创建和修改解析初始化
+	 */
+	DBINIT(10);
 	
 	public final int value;
 	InitTypeEnum(int value) {

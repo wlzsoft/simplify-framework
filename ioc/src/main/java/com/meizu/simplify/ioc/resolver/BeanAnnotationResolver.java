@@ -11,6 +11,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
 
@@ -27,7 +28,7 @@ import com.meizu.simplify.utils.ClassUtil;
  * @version Version 0.1
  *
  */
-@Init(1)
+@Init(InitTypeEnum.BEAN)
 public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanAnnotationResolver.class);

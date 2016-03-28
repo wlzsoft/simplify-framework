@@ -13,6 +13,7 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -30,7 +31,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@Init(2)
+@Init(InitTypeEnum.IOC)
 public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(IocAnnotationResolver.class);
 	@Override

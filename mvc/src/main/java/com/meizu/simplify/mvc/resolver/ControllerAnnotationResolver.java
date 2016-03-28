@@ -17,6 +17,7 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
@@ -40,7 +41,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-@Init(6)
+@Init(InitTypeEnum.CONTROL)
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);

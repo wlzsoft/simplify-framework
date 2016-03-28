@@ -6,6 +6,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
+
 /**
   * <p><b>Title:</b><i>指定容器启动时初始化顺序</i></p>
  * <p>Desc: TODO</p>
@@ -29,6 +31,6 @@ public @interface Init {
 	 * 操作步骤: 按照设定的init索引值在启动过程中执行<br>
 	 * @return
 	 */
-	int value();
+	InitTypeEnum value();
 
 }

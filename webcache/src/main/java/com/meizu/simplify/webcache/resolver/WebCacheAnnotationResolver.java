@@ -15,6 +15,7 @@ import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
@@ -31,7 +32,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-@Init(8)
+@Init(InitTypeEnum.WEBCACHE)
 public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebCacheAnnotationResolver.class);
 	
