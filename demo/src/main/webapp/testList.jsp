@@ -7,7 +7,7 @@
 
  <body>
     <c:forEach items="${testList}" var="test">
-  		${test.id} | ${test.name} | ${test.createTime }|${test.createName }<br>
+  		${test.fid} | ${test.name} | ${test.createTime }|${test.createName }<br>
  	</c:forEach>
  </body>
 </html>
