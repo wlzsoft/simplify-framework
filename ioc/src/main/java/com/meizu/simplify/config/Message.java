@@ -1,5 +1,7 @@
 package com.meizu.simplify.config;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +30,9 @@ public class Message {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Message.class);
 	private static final String MESSAGE_DIR = "/properties/";
-	private static final String MESSAGE_PATH = "classpath*:" + MESSAGE_DIR
-			+ "*messages.xml";
+	private static final String MESSAGE_PATH = "classpath*:" + MESSAGE_DIR+ "*messages.xml";
 
 	public Message() {
-//		setDefaultEncoding(Encoding.UTF_8);
-//		setUseCodeAsDefaultMessage(true);
 		setBasenames(MESSAGE_PATH);
 	}
 
@@ -71,7 +70,7 @@ public class Message {
 
 	@Reload
 	public void setBasenames(String... basenames) {
-//		List<String> resourceBasenames = ResourceUtil.getResList(MESSAGE_DIR, basenames);
-//		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
+		List<String> resourceBasenames = PropertiesConfig.getResList(MESSAGE_DIR, basenames);
+		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
 	}
 }
