@@ -21,8 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.config.annotation.Value;
 import com.meizu.simplify.dao.annotations.Entity;
-import com.meizu.simplify.dao.annotations.Value;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;

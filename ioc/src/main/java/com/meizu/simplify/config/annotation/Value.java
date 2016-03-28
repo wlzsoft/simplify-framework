@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.annotations;
+package com.meizu.simplify.config.annotation;
 /**
   * <p><b>Title:</b><i>配置信息依赖注入标记</i></p>
  * <p>Desc: TODO:后续迁移到其他位置</p>
