@@ -130,6 +130,9 @@ public class PropertiesConfig {
 	@DymaicProperties
 	private PropertieUtil propertieUtil;
 	
+	public void setPropertieUtil(PropertieUtil propertieUtil) {
+		this.propertieUtil = propertieUtil;
+	}
 	public PropertieUtil getProp() {
 		return propertieUtil;
 	}

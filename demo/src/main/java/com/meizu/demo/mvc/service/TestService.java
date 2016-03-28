@@ -1,16 +1,21 @@
 package com.meizu.demo.mvc.service;
 
 import com.meizu.demo.mvc.entity.Test;
-import com.meizu.demo.mvc.entity.User;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 @Bean
 public class TestService {
-
+	@Config("system.debug")
+	private boolean debug;
+	@Config
+	private boolean cache;
 	@CacheDataAdd(key="aaa")
     public Object doSomeThing() {
         System.out.println("2test2d测试");
@@ -26,6 +31,8 @@ public class TestService {
 //	@CacheDataAdd(key="bbb")
 	@CacheDataSearch(key="bbb")
     public Test doSomeThing2() {
+		System.out.println("debug:"+debug+"|cache:"+cache);
+		System.out.println("configtest:"+BeanFactory.getBean(PropertiesConfig.class).getProp().getInteger("configtest"));
         Test test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
         	return null;
