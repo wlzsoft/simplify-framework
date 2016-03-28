@@ -27,7 +27,7 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @Bean
-@ReloadableResource
+//@ReloadableResource
 public class Message {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Message.class);
@@ -70,7 +70,7 @@ public class Message {
 		throw new UncheckedException(get(code, vars));
 	}
 
-	@Reload
+//	@Reload
 	public void setBasenames(String... basenames) {
 		List<String> resourceBasenames = getResList(MESSAGE_DIR, basenames);
 		LOGGER.info("加载配置信息文件" + resourceBasenames + "成功。");
