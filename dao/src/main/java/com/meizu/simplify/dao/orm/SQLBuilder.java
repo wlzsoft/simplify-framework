@@ -239,7 +239,7 @@ public class SQLBuilder<T> {
         
         return sql+""+charValue+")";
     }
-    @Config("{system.isMycat}")
+    @Config("system.isMycat")
     private boolean isMycat = false;
     /**
      * 生成批量新增的SQL
