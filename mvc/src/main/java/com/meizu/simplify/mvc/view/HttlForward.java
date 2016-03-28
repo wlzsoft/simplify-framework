@@ -36,17 +36,14 @@ import httl.Template;
  * @version Version 0.1
  *
  */
-public class HttlForward implements IForward {
-	private String str = null;
-	static Engine engine = null;
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+public class HttlForward  {
+	private static Engine engine = null;
+	private static PropertiesConfig config;
 	public static void init() {
 		engine = Engine.getEngine();
+		config = BeanFactory.getBean(PropertiesConfig.class);
 	}
 
-	public HttlForward(String str) {
-		this.str = str;
-	}
 
 	/**
 	 * 设置内容类型和编码
@@ -54,13 +51,12 @@ public class HttlForward implements IForward {
 	 * @param request
 	 * @param response
 	 */
-	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
+	private static void setContentType(HttpServletRequest request, HttpServletResponse response) {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 
 		// 设置编码
 		setContentType(request, response);
@@ -69,7 +65,7 @@ public class HttlForward implements IForward {
 		Template template = null;
 		try {
 			// 取模版
-			template = engine.getTemplate(str);
+			template = engine.getTemplate(templateUrl);
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
@@ -112,12 +108,5 @@ public class HttlForward implements IForward {
 		
 	}
 
-	public String getStr() {
-		return str;
-	}
-
-	public void setStr(String str) {
-		this.str = str;
-	}
 
 }

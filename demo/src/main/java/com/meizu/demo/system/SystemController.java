@@ -33,18 +33,18 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class SystemController<T extends Model> extends BaseController<T> {
 	
 	@Override
-	public final void process(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public final void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 		request.setAttribute("url", request.getRequestURI());
-		super.process(request, response);
+		super.process(request, response,requestUrl);
 	}
 	
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response, T model)
+	public void execute(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl)
 			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			ServletException {
-		super.execute(request, response, model);
+		super.execute(request, response, model,requestUrl);
 	}
 
 	@Override

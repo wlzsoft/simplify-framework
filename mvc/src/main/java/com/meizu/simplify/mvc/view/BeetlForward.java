@@ -36,11 +36,11 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class BeetlForward implements IForward {
-	private String str = null;
+public class BeetlForward  {
 	private static GroupTemplate gt = null;
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	private static PropertiesConfig config;
 	public static void init() {
+		config = BeanFactory.getBean(PropertiesConfig.class);
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
 		try {
@@ -53,9 +53,6 @@ public class BeetlForward implements IForward {
 		}
 	}
 
-	public BeetlForward(String str) {
-		this.str = str;
-	}
 
 	/**
 	 * 设置内容类型和编码
@@ -63,14 +60,13 @@ public class BeetlForward implements IForward {
 	 * @param request
 	 * @param response
 	 */
-	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
+	private static void setContentType(HttpServletRequest request, HttpServletResponse response) {
 		
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 
 		// 设置编码
 		setContentType(request, response);
@@ -80,7 +76,7 @@ public class BeetlForward implements IForward {
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
 //		gt.setSharedVars(shared);
-		Template template = gt.getTemplate(str);
+		Template template = gt.getTemplate(templateUrl);
 //		Template template = gt.getTemplate("hello,${name}");//字符串模板
 
 		// 将request中的对象赋给模版
@@ -108,12 +104,5 @@ public class BeetlForward implements IForward {
 		
 	}
 
-	public String getStr() {
-		return str;
-	}
-
-	public void setStr(String str) {
-		this.str = str;
-	}
 
 }

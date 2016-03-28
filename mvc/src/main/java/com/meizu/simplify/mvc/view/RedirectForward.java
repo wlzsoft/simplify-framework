@@ -25,52 +25,23 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public class RedirectForward implements IForward {
-	private String url = null;
-	private HashMap<String, String> paramMap = new HashMap<String, String>();
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public RedirectForward(String url) {
-		this.url = url;
+public class RedirectForward  {
+	
+	
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+		response.sendRedirect(templateUrl);
 	}
 	
-	public RedirectForward(String url, HashMap<String, String> paramMap) {
-		this.url = url;
-		this.paramMap = paramMap;
-	}
-	
-	public RedirectForward addPrarm(String key, String value) {
-		paramMap.put(key, value);
-		return this;
-	}
-	
-	public String getUrl() {
-		return url;
-	}
-	
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	public HashMap<String, String> getParamMap() {
-		return paramMap;
-	}
-	
-	public void setParamMap(HashMap<String, String> paramMap) {
-		this.paramMap = paramMap;
-	}
-	
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
-		if (paramMap.keySet().size() > 0) {
-			StringBuffer w = new StringBuffer("<html><head></head><body onload=\"form1.submit()\"><form id=\"form1\" method=\"post\" action=\"" + url + "\">");
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl, HashMap<String, String> paramMap) throws ServletException, IOException {
+		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+		if (paramMap != null && paramMap.keySet().size() > 0) {
+			StringBuffer w = new StringBuffer("<html><head></head><body onload=\"form1.submit()\"><form id=\"form1\" method=\"post\" action=\"" + templateUrl + "\">");
 			for (String key : paramMap.keySet()) {
 				w.append("<input type=\"hidden\"  name=\"" + key + "\" value=\"" + paramMap.get(key) + "\"/>");
 			}
 			w.append("</form></body></html>");
 			response.setContentType("text/html; charset=" + config.getCharset());
 			response.getWriter().print(w.toString());
-		} else {
-			response.sendRedirect(url);
 		}
 	}
 }

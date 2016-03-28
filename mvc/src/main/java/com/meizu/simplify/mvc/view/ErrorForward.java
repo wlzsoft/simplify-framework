@@ -21,29 +21,12 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public class ErrorForward implements IForward {
-	private String msg = "";
-	private int errorCode = 403; 
+public class ErrorForward {
 
-	public ErrorForward(String msg) {
-		this.msg = msg;
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg) throws ServletException, IOException {
+		response.sendError(403, msg);
 	}
-
-	public ErrorForward(String msg, int errorCode) {
-		this.msg = msg;
-		this.errorCode = errorCode;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-	
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,int errorCode,String msg) throws ServletException, IOException {
 		response.sendError(errorCode, msg);
 	}
 }

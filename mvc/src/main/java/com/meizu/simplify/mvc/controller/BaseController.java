@@ -20,6 +20,7 @@ import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelScope;
 import com.meizu.simplify.mvc.model.ModelSkip;
 import com.meizu.simplify.mvc.util.AjaxUtils;
+import com.meizu.simplify.mvc.view.ActionForward;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.utils.CollectionUtil;
@@ -55,17 +56,18 @@ public class BaseController<T extends Model> {
 	 * 操作步骤: TODO<br>
 	 * @param req
 	 * @param response
+	 * @param requestUrl 
 	 * @throws ServletException
 	 * @throws IOException
 	 * @throws InvocationTargetException 
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass(),0);
 		T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass);
 		if (checkPermission(request, response, model)) {
-			execute(request, response, model);
+			execute(request, response, model,requestUrl);
 		}
 		destroy(request, response, model);
 		
@@ -113,7 +115,7 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void execute(HttpServletRequest request, HttpServletResponse response, T model) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+	public void execute(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
 //		RequestAnalysisWrapper.java
 		if (model.getCmd() == null || model.getCmd().length() <= 0) {
 			return;
@@ -142,22 +144,17 @@ public class BaseController<T extends Model> {
 			return;
 		}
 		
-		IForward result = null;
-		if(doMethod.getReturnType() == IForward.class) {
-			result = (IForward) doMethod.invoke(this, parameValue);
+		request.setAttribute("formData", model);
+		Object obj = doMethod.invoke(this,parameValue);
+		if(requestUrl.endsWith(".json")) {
+			JsonForward.doAction(request, response, webCache, staticName, obj);
 		} else {
-//			if(thisUrl.endsWith(".json")) {
-				Object obj = doMethod.invoke(this,parameValue);
-				result = new JsonForward(obj);
-//			}
+			if(obj instanceof String) {
+				ActionForward.doAction(request, response, webCache, staticName, String.valueOf(obj));
+			}
 		}
 		
-		if (result != null) {
-			request.setAttribute("formData", model);
-			result.doAction(request, response, webCache, staticName);
-		}
 	}
 
-	
 	
 }

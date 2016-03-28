@@ -25,19 +25,14 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public  class  JsonForward extends MessageForward {
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public JsonForward(Object obj) {
-		super("");
-		String message = JsonUtil.ObjectToString(obj);
-		super.setMsg(message);
-	}
+public  class  JsonForward {
 
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName)
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj)
 			throws ServletException, IOException {
+		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+		String message = JsonUtil.ObjectToString(obj);
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("application/json; charset=" + config.getCharset());
-		response.getWriter().print(super.getMsg());
+		response.getWriter().print(message);
 	}
 }

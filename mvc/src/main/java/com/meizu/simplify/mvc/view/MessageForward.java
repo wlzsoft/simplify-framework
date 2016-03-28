@@ -24,23 +24,10 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public class MessageForward implements IForward {
-	private String msg = "";
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	public MessageForward(String msg) {
-		this.msg = msg;
-	}
+public class MessageForward {
 
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg) throws ServletException, IOException {
+		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 		response.getWriter().print(msg);

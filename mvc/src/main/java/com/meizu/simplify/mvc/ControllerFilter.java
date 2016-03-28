@@ -96,30 +96,30 @@ public class ControllerFilter implements Filter {
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param thisUrl
+	 * @param requestUrl
 	 * @param key
 	 * @param params
 	 */
-	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String thisUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
+	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
 			String[] params) {
 		
 		try {
 			long time = System.currentTimeMillis();
 			
-			Statistics.getReadMap().put(thisUrl, 0);
+			Statistics.getReadMap().put(requestUrl, 0);
 			
 			request.setAttribute("params", params);
 			String parName = controllerAnnotationInfo.getMethod();
 			request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
 			BaseController<?> bs = controllerAnnotationInfo.getObj();
-			bs.process(request, response);
+			bs.process(request, response,requestUrl);
 			long readtime = System.currentTimeMillis() - time;
-			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", thisUrl, (readtime)));
+			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime)));
 			
 			// 记录统计信息
 			Statistics.incReadcount();
-			Statistics.setReadMaxTime(readtime, thisUrl);
-			Statistics.getReadMap().remove(thisUrl);
+			Statistics.setReadMaxTime(readtime, requestUrl);
+			Statistics.getReadMap().remove(requestUrl);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 			Throwable throwable = e.getTargetException();
 			throwable.printStackTrace();
@@ -130,14 +130,14 @@ public class ControllerFilter implements Filter {
 				}
 			}
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
-			if(thisUrl.endsWith(".json")) {
-				IForward ifd = new JsonForward(JsonResult.error(exceptionMessage));
+			if(requestUrl.endsWith(".json")) {
 				try {
-					ifd.doAction(request, response, null, null);
+					JsonForward.doAction(request, response, null, null, JsonResult.error(exceptionMessage));
 				} catch (ServletException | IOException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			} else if(thisUrl.endsWith(".xml")){//不实现
+			} else if(requestUrl.endsWith(".xml")){//不实现
 				
 			} else {//其他方式的请求,都走html业务视图，可以支持jsp,velocity 等模板引擎
 //	                                方法一
@@ -157,10 +157,10 @@ public class ControllerFilter implements Filter {
 								"</body>"+
 								"</html>";*/
 				
-				IForward iForward = new VelocityForward("/template/framework/500.html");
 				try {
-					iForward.doAction(request, response, null, null);
+					VelocityForward.doAction(request, response, null, null, "/template/framework/500.html");
 				} catch (ServletException | IOException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				

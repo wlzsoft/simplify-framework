@@ -34,18 +34,11 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class ActionForward implements IForward {
+public class ActionForward {
 	
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	private String str = null;
-
-	public ActionForward(String str) {
-		this.str = str;
-	}
-
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(str);
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+		RequestDispatcher rd = request.getRequestDispatcher(templateUrl);
 
 		// 跳转前检查静态规则
 		if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
@@ -84,7 +77,7 @@ public class ActionForward implements IForward {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private String getPageContent(HttpServletRequest request, HttpServletResponse response, RequestDispatcher rd) throws ServletException, IOException {
+	private static String getPageContent(HttpServletRequest request, HttpServletResponse response, RequestDispatcher rd) throws ServletException, IOException {
 		final ByteArrayOutputStream os = new ByteArrayOutputStream();
 		final PrintWriter pw = new PrintWriter(new OutputStreamWriter(os));
 		HttpServletResponse res = new HttpServletResponseWrapper(response) {
@@ -96,14 +89,6 @@ public class ActionForward implements IForward {
 		rd.include(request, res);
 		pw.flush();
 		return os.toString();
-	}
-
-	public String getStr() {
-		return str;
-	}
-
-	public void setStr(String str) {
-		this.str = str;
 	}
 
 }

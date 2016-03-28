@@ -79,7 +79,7 @@ public class TestController extends SystemController<TestModel> {
 	}
 	
 	@RequestMap(path = "/testbeetl/")
-	public IForward doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		
 		User user = new User();
 		user.setName("lcyc123");
@@ -90,11 +90,11 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("user", user);
 		request.setAttribute("tests", testList);
-		return new BeetlForward("/template/beetl/pagefunction.html");
+		return "/template/beetl/pagefunction.html";
 	}
 	
 	@RequestMap(path = "/testhttl/")
-	public IForward doTestHttl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestHttl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		 
 		User user = new User();
 		user.setName("lcy");
@@ -105,31 +105,31 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("user", user);
 		request.setAttribute("tests", testList);
-		return new HttlForward("/template/httl/tests.httl");
+		return "/template/httl/tests.httl";
 	}
 	@RequestMap(path = "/testredirect/")
-	public IForward doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
-		return new RedirectForward("/index.jsp");
+		return "redirect:/index.jsp";
 	}
 	
 	@RequestMap(path = "/testredirect2/")
-	public IForward doTestRedirect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestRedirect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 //		Test test = testService.doSomeThing2();
 		if (request.getMethod().equals("GET")) {
 			
 		}
-		return new RedirectForward("/testjson/");
+		return "redirect:/testjson/";
 	}
 	@RequestMap(path = "/testvelocity3/")
-	public IForward doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		if(true) {
 			throw new BaseDaoException("数据为空");
 		}
-		return new VelocityForward("/template/login.html");
+		return "/template/login.html";
 	}
 	@RequestMap(path = "/testvelocity2/")
-	public IForward doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		String userName = request.getParameter("userName");
 		HttpSession session = request.getSession();
 		/*if (userName != null && userName.equals("admin")) {//服务器内部跳转到首页
@@ -138,93 +138,93 @@ public class TestController extends SystemController<TestModel> {
 			session.setAttribute("admin", userName);
 			HttpRoute.route(request, response);
 		}*/
-		return new VelocityForward("/template/login.html");
+		return "/template/login.html";
 	}
 	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
 	@RequestMap(path = "/testvelocity/")
-	public IForward doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		} else {
 			request.setAttribute("userName", "nologin");
 		}
-		return new VelocityForward("/template/login.html");
+		return "/template/login.html";
 	}
 	
 	@RequestMap(path = "/testwebsocket/")
-	public IForward doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return new VelocityForward("/template/websocket.html");
+		return "/template/websocket.html";
 	}
 	
 //	@WebSocket
 	@RequestMap(path = "/websocket/notice")
-	public IForward doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
+		return "{id:1,name:'"+test.getName()+"'}";//new MessageForward(
 	}	
 	@RequestMap(path = "/testjson.json")
-	public IForward doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public Test doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 //		List<Test> testList = new ArrayList<>();
 //		testList.add(test);
-		return new JsonForward(test);
+		return test;
 	}
 	
 	@RequestMap(path = "/testmessage/")
-	public IForward doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.addTest(null);
-		return new MessageForward("{id:1,name:'"+test.getName()+"'}");
+		return "{id:1,name:'"+test.getName()+"'}";//new MessageForward(
 	}
 	
 	@RequestMap(path = "/testvoid/")
-	public IForward doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTestObj(null);
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return new ActionForward("/index.jsp");
+		return "/index.jsp";
 	}
 	
 	@RequestMap(path = "/test/")
-	public IForward doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTest(null);
 		Test test = testService.doSomeThing2();
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		}
-		return new ActionForward("/index.jsp");
+		return "/index.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect/")
-	public IForward doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
 		request.setAttribute("testList", test);
-		return new ActionForward("/testList.jsp");
+		return "/testList.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect2/")
-	public IForward adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
-		return new ActionForward("/testList.jsp");
+		return "/testList.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect3/")
-	public IForward adoTestSelect3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+	public String adoTestSelect3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Map<String,Object>> test = BaseDao.getInsMap().find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
-		return new ActionForward("/testList.jsp");
+		return "/testList.jsp";
 	}
 	
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
-	public IForward doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", index = 0) String enc, @RequestParam(defaultValue = "0", index = 1) String pid, @RequestParam(defaultValue = "0", index = 2) String id) throws ServletException, IOException, InterruptedException {
+	public String doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0", index = 0) String enc, @RequestParam(defaultValue = "0", index = 1) String pid, @RequestParam(defaultValue = "0", index = 2) String id) throws ServletException, IOException, InterruptedException {
  
 		
 		// 检查是否id为空
-		if (StringUtil.isEmpty(id)) return new MessageForward(StringUtil.format("{0}", "id:null"));
+		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");//new MessageForward(
 		
 		// 存在脚本生成地址，无法使用加密 
 		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorForward(getMsg("VERIFY.FAILED"));
@@ -241,11 +241,11 @@ public class TestController extends SystemController<TestModel> {
 		String isflag = request.getParameter("isflag");
 		String result = "";
 		if (model.getScript() == 1) { 
-			return  new MessageForward(StringUtil.format("<script>document.domain='{0}';{1}({2})</script>", domain, model.getJsonp(), result.toString()));
+			return  StringUtil.format("<script>document.domain='{0}';{1}({2})</script>", domain, model.getJsonp(), result.toString());//new MessageForward(
 		} else if(model.getScript() == 2){
-			return  new MessageForward(StringUtil.format("{0}", result.toString()));
+			return  StringUtil.format("{0}", result.toString());//new MessageForward(
 		} else {
-			return  new MessageForward(StringUtil.format("{0}({1})", model.getJsonp(), result.toString()));
+			return  StringUtil.format("{0}({1})", model.getJsonp(), result.toString());//new MessageForward(
 		}
 	}
 	

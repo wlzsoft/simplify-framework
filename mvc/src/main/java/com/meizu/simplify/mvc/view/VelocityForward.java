@@ -35,9 +35,8 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class VelocityForward implements IForward {
+public class VelocityForward  {
 	//private static SimplePool writerPool = new SimplePool(64);
-	private String str = null;
 	private static PropertiesConfig config;
 	
 	@Deprecated//后续从配置中读取就可以
@@ -86,9 +85,6 @@ public class VelocityForward implements IForward {
 		Velocity.init();
 	}
 
-	public VelocityForward(String str) {
-		this.str = str;
-	}
 
 	/**
 	 * 设置内容类型和编码
@@ -96,19 +92,18 @@ public class VelocityForward implements IForward {
 	 * @param request
 	 * @param response
 	 */
-	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
+	private static void setContentType(HttpServletRequest request, HttpServletResponse response) {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
-	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException {
+	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 
 		// 设置编码
 		setContentType(request, response);
 
 		// 取模版
-		Template template = Velocity.getTemplate(str);
+		Template template = Velocity.getTemplate(templateUrl);
 
 		// 将request中的对象赋给模版
 		VelocityContext context = new VelocityContext();
@@ -164,13 +159,4 @@ public class VelocityForward implements IForward {
 			}
 		}*/
 	}
-
-	public String getStr() {
-		return str;
-	}
-
-	public void setStr(String str) {
-		this.str = str;
-	}
-
 }
