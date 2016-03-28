@@ -1,5 +1,6 @@
 package com.meizu.simplify.config;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -7,13 +8,16 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.annotation.DymaicProperties;
 import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
@@ -48,7 +52,16 @@ public class ReloadResourceAnnotationResolver implements IAnnotationResolver<Cla
 			String reloadableResourceValue = reloadableResource.value();
 			String prefix = reloadableResource.prefix();
 			PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue);
-			propertieUtils.setConfigValue(beanClass, prefix);
+			propertieUtils.setConfigValue(beanObj, prefix);
+			
+			//配置文件动态读取设置
+			Field[] fieldArr = beanClass.getDeclaredFields();
+			for (Field field : fieldArr) {
+				DymaicProperties dymaicProperties = field.getAnnotation(DymaicProperties.class);
+				if(dymaicProperties != null) {
+					ReflectionUtil.invokeSetterMethod(beanObj, field.getName(), propertieUtils);
+				}
+			}
 		}
 	}
 }

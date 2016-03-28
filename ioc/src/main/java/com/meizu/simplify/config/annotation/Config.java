@@ -26,9 +26,10 @@ public @interface Config {
 	/**
 	 * 
 	 * 方法用途: 指定具体配置文件中的属性名，用于注入供bean中使用<br>
-	 * 操作步骤: 需要依赖ioc模块<br>
+	 * 操作步骤: 需要依赖ioc模块
+	 *           注意：默认有空值，如果是空值，那么以被注解的属性的名称为配置项的值来注入<br>
 	 * @return
 	 */
-	String value();
+	String value() default "";
 
 }

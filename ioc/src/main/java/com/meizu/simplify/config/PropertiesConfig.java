@@ -3,9 +3,11 @@ package com.meizu.simplify.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.annotation.DymaicProperties;
 import com.meizu.simplify.config.annotation.Reload;
 import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.utils.PropertieUtil;
 
 
 /**
@@ -124,6 +126,15 @@ public class PropertiesConfig {
 	public void setFileCachePath(String fileCachePath) {
 		this.fileCachePath = fileCachePath;
 	}
+	
+	@DymaicProperties
+	private PropertieUtil propertieUtil;
+	
+	public PropertieUtil getProp() {
+		return propertieUtil;
+	}
+	
+	
 	
 	@Reload
 	public void setBasenames(String... basenames) {
