@@ -1,21 +1,18 @@
 package com.meizu.simplify.config;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.annotation.ReloadableResource;
+import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
-import com.meizu.simplify.utils.ClassUtil;
-import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.PropertieUtil;
-import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
@@ -31,24 +28,26 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@Init(0)
+@Init(2)
 public class ReloadResourceAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReloadResourceAnnotationResolver.class);
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, "com.meizu");
-		for (Class<?> clazz : resolveList) {
-			ReloadableResource reloadableResource = clazz.getAnnotation(ReloadableResource.class);
+		BeanContainer container = BeanFactory.getBeanContainer();
+		Map<String, Object> mapContainer = container.getMapContainer();
+		Collection<Object> containerCollection = mapContainer.values();
+		for (Object beanObj : containerCollection) {
+			Class<?> beanClass = beanObj.getClass();
+			ReloadableResource reloadableResource = beanClass.getAnnotation(ReloadableResource.class);
 			if(reloadableResource == null || StringUtil.isBlank(reloadableResource.value())) {
 				continue;
 			}
-			LOGGER.info("配置实体注入 初始化:{}",clazz.getName());
+			LOGGER.info("配置实体注入 初始化:{}",beanClass.getName());
 			String reloadableResourceValue = reloadableResource.value();
 			String prefix = reloadableResource.prefix();
 			PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue);
-			Object beanObj = propertieUtils.toClass(clazz, prefix);
-   			BeanFactory.addBean(beanObj);
+			propertieUtils.setConfigValue(beanClass, prefix);
 		}
 	}
 }

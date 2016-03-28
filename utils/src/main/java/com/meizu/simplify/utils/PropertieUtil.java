@@ -153,38 +153,47 @@ public class PropertieUtil {
 	}
 	/**
 	 * 
-	 * 方法用途: 转换属性文件为pojo对象<br>
+	 * 方法用途: 转换属性文件为pojo对象-无属性前缀<br>
 	 * 操作步骤: TODO<br>
 	 * @param clazz 转换的pojo的具体类型
 	 * @param prefix 配置文件中属性的前缀
 	 * @return
 	 */
-	public <T> T toClass(Class<T> clazz,String prefix){
+	public <T> T toClass(Class<T> clazz, String prefix){
+		try {
+			return setConfigValue(clazz.newInstance(),prefix);
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+			LOGGER.error("配置实体:"+clazz.getName()+"初始化失败");
+		}
+		return null;
+	}
+	/**
+	 * 
+	 * 方法用途: 转换属性文件为pojo对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param obj 待设置配置文件中值的对象
+	 * @param prefix 配置文件中属性的前缀
+	 * @return
+	 */
+	public <T> T setConfigValue(Object obj,String prefix){
 		if(StringUtil.isNotBlank(prefix)) {
 			prefix += ".";
 		}
-		try {
-			Object obj = clazz.newInstance();
-			Field[] fieldArr = clazz.getDeclaredFields();
-   			for (Field field : fieldArr) {
-					Object value = get(prefix+field.getName());
-       				if(value == null) {
-       					continue;
-       				}
-       				if(field.getType() == Boolean.class||field.getType() == boolean.class) {
-       					value = DataUtil.parseBoolean(value);
-       				} else if(field.getType() == Integer.class || field.getType() == int.class){
-       					value = DataUtil.parseInt(value);
-       				}
-					ReflectionUtil.invokeSetterMethod(obj, field.getName(), value);
-			}
-   			
-			return (T) obj;
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-			LOGGER.debug("配置实体:"+clazz.getName()+"初始化失败");
+		Field[] fieldArr = obj.getClass().getDeclaredFields();
+		for (Field field : fieldArr) {
+				Object value = get(prefix+field.getName());
+   				if(value == null) {
+   					continue;
+   				}
+   				if(field.getType() == Boolean.class||field.getType() == boolean.class) {
+   					value = DataUtil.parseBoolean(value);
+   				} else if(field.getType() == Integer.class || field.getType() == int.class){
+   					value = DataUtil.parseInt(value);
+   				}
+				ReflectionUtil.invokeSetterMethod(obj, field.getName(), value);
 		}
-		return null;
+		return (T) obj;
 	}
 	
 	@Override
