@@ -46,6 +46,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		BeanContainer container = BeanFactory.getBeanContainer();
 		Map<String, Object> mapContainer = container.getMapContainer();
 		Collection<Object> containerCollection = mapContainer.values();
+		//组装所有的配置文件配置信息
 		for (Object beanObj : containerCollection) {
 			Class<?> beanClass = beanObj.getClass();
 			ReloadableResource reloadableResource = beanClass.getAnnotation(ReloadableResource.class);
@@ -58,7 +59,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			PropertieUtil propertieUtil = new PropertieUtil(reloadableResourceValue);
 			propertiesMap.put(reloadableResourceValue, propertieUtil);
 		}
-		
+		//开始注入到bean对应的带config注解的属性的值
 		for (Object beanObj : containerCollection) {
 			Class<?> beanClass = beanObj.getClass();
 			Field[] fieldArr = beanClass.getDeclaredFields();
