@@ -34,7 +34,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@Init(2)
+@Init(4)
 public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAnnotationResolver.class);
 	

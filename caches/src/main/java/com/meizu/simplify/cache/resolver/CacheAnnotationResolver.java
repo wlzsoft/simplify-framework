@@ -33,7 +33,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  * @version Version 0.1
  *
  */
-@Init(3)
+@Init(5)
 public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheAnnotationResolver.class);
 	

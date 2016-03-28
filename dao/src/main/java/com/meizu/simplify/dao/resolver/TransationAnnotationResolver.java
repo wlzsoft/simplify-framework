@@ -31,7 +31,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  * @version Version 0.1
  *
  */
-@Init(5)
+@Init(7)
 public class TransationAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransationAnnotationResolver.class);
 	
