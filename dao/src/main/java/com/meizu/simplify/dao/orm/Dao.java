@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.dao.annotations.Column;
@@ -68,6 +69,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private Map<String, String> columnsMeta = new LinkedHashMap<String, String>();//create dll sql 使用
 	
 	private SQLBuilder<T> sqlBuilder;
+	
+	@Config("system.isMycat")
+    private boolean isMycat = false;
 
 	
 	/**
@@ -310,7 +314,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			T t = list.get(i);
 			temp.add(t);
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),currentColumnFieldNames),temp);
+				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),currentColumnFieldNames, isMycat),temp);
 				for (T t2 : temp) {
 					t2.setFid(maxkey++);//此处需要严格并发测试TODO
 				}
@@ -319,7 +323,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 		}
 		if(temp.size()>0) {
-			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(), currentColumnFieldNames),temp);
+			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(), currentColumnFieldNames, isMycat),temp);
 			for (T t2 : temp) {
 				t2.setFid(maxkey++);//此处需要严格并发测试TODO
 			}

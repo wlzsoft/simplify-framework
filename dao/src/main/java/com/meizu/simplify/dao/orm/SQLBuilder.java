@@ -239,8 +239,7 @@ public class SQLBuilder<T> {
         
         return sql+""+charValue+")";
     }
-    @Config("system.isMycat")
-    private boolean isMycat = false;
+    
     /**
      * 生成批量新增的SQL
      * 
@@ -248,7 +247,7 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String createOfBatch(int size,Map<String, String> currentColumnFieldNames) {
+    public String createOfBatch(int size,Map<String, String> currentColumnFieldNames,boolean isMycat) {
         StringBuilder sqlBuild = new StringBuilder();
          	if(isMycat) {
          		sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/");

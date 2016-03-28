@@ -18,6 +18,7 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -76,13 +77,18 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
                 			String configPath = entry.getKey();
                 			message+="==>>注入的配置文件"+configPath+"中的["+configName+"]配置项";
                 			PropertieUtil propertiesUtil = entry.getValue();
-                			Object configPropertieValue = propertiesUtil.get(configName);
-                			if(configPropertieValue == null) {
+                			Object value = propertiesUtil.get(configName);
+                			if(value == null) {
                 				continue;
                 			}
+                			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
+               					value = DataUtil.parseBoolean(value);
+               				} else if(field.getType() == Integer.class || field.getType() == int.class){
+               					value = DataUtil.parseInt(value);
+               				}
                 			try {
                 				field.setAccessible(true);
-                				field.set(beanObj, configPropertieValue);
+                				field.set(beanObj, value);
                 			} catch (IllegalArgumentException | IllegalAccessException e) {
                 				// TODO Auto-generated catch block
                 				e.printStackTrace();
