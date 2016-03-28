@@ -8,7 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.config.annotation.Value;
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.SqlDTO;
@@ -239,7 +239,7 @@ public class SQLBuilder<T> {
         
         return sql+""+charValue+")";
     }
-    @Value("{system.isMycat}")
+    @Config("{system.isMycat}")
     private boolean isMycat = false;
     /**
      * 生成批量新增的SQL

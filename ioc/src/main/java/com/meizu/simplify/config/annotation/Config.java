@@ -12,7 +12,7 @@ package com.meizu.simplify.config.annotation;
  * @version Version 0.1
  *
  */
-public @interface Value {
+public @interface Config {
 
 	/**
 	 * 

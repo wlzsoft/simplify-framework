@@ -54,7 +54,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
     public AopClassFileTransformer(){
-        String methodStr = Config.getUtil().getProperty("cacheInfos");
+        String methodStr = AopConfig.getUtil().getProperty("cacheInfos");
         String[] it = methodStr.split(";");
     	for (String itor : it) {
     		FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
@@ -62,7 +62,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     		filterList.add(filterMetaInfo); 
 		}
     	
-    	injectionTargetClassPaths = Config.getUtil().getProperty("injectionTargetClassPaths");
+    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
     	if(injectionTargetClassPaths == null || injectionTargetClassPaths.equals("")) {
     		throw new RuntimeException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
     	}

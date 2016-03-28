@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.config.annotation.Value;
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.ioc.BeanEntity;
@@ -38,7 +38,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoPrototypeHook.class);
 
-	@Value("system.init.bean")
+	@Config("system.init.bean")
 	private Boolean initBean;
 	
 	@Override
