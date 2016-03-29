@@ -86,10 +86,13 @@ Files.write( new File( "src/impls/ObjectWithCommands.java" ).toPath(), generateO
     fastjson和jackson是否有提供java8 的 stream api 的json生成方式，毕竟数据库集大的时候，串行处理会有严重性能问题
    已经确认在fastjson-1.1.32版本中开始提供Stream API
 http://www.csdn.net/article/2014-09-25/2821866
-66.IdentityHashMap实现了HashMap的功能，但能避免HashMap并发时的死循环
-
+66.IdentityHashMap实现了HashMap的功能，但能避免HashMap并发时的死循环,高性能循环使用ConcurrentSkipListMap，
+ConcurrentHashMap代替IdentityHashMap和HashMap。IdentityHashMap有其特殊用途，比如序列化或者深度复制。或者记录对象代理。
+举个例子，jvm中的所有对象都是独一无二的，哪怕两个对象是同一个class的对象，而且两个对象的数据完全相同，对于jvm来说，他们也是完全不同的，如果要用一个map来记录这样jvm中的对象，你就需要用IdentityHashMap，而不能使用其他Map实现。==>>已测试，已通过 2016/3/29
 67.提供rest风格的操作，比如支持option 和 delete 等操作update等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
-11正则表达式和非正则表达式的urlcache的map容器要区分开来，正则表达式的容器改成arraylist，非正则表达式如果结果集大，可以分片。提前分析好rest的几种后缀，存起来，空间换时间
+68.正则表达式和非正则表达式的urlcache的map容器要区分开来，正则表达式的容器改成ConcurrentSkipListMap，非正则表达式如果结果集大，可以分片。==>>已测试，已通过 2016/3/29
+69.提前分析好rest的几种后缀，存起来，空间换时间==>>已测试，已通过 2016/3/29
+70.解析指定不同视图的处理器，需要和68及69一同配合解决,待解决
 
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter

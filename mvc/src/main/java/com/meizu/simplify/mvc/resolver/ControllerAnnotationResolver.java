@@ -3,9 +3,12 @@ package com.meizu.simplify.mvc.resolver;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +49,8 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerMap = new ConcurrentHashMap<>();
+	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerRegularExpressionsList = new ConcurrentSkipListMap<>();
+	
 	private String classPath; 
 	
 	@Override	
@@ -154,7 +159,22 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 						if(preControlMap!=null && preControlMap.path().length>0) {
 							path = preControlMap.path()[0] + path;
 						}
-						controllerMap.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
+						String[] endFixArr = new String[] {".json",".xml"};
+						if(path.substring(path.length()-1).equals("$")) {//正则表达式的处理
+							if(!path.contains(".json") && !path.contains(".xml")) {//多视图的解析
+								for (String endFix : endFixArr) {
+									controllerRegularExpressionsList.put(path.substring(0,path.length()-1)+endFix+"$", new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
+								}
+							}
+							controllerRegularExpressionsList.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
+						} else {//非正则表达式处理
+							if(!path.contains(".json") && !path.contains(".xml")) {//多视图解析，可以优化代码，目前是硬编码
+								for (String endFix : endFixArr) {
+									controllerMap.put(path+endFix, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
+								}
+							}
+							controllerMap.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
+						}
 						LOGGER.info("成功添加请求映射 [" + cpath + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
 					}
 				}

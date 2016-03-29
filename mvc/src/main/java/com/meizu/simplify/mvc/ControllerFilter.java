@@ -2,6 +2,7 @@ package com.meizu.simplify.mvc;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +25,6 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.mvc.view.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
@@ -65,8 +65,9 @@ public class ControllerFilter implements Filter {
 			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
 			return;// [标示]启用原生 filter的chain,三个地方同时打开注释
 		} else {
-			//TODO: 提供快速查找的算法，可以key的string转成整型，然后比较整型,不过由于正则无法确定具体值的访问，所以也没法比较
-			for ( String key : ControllerAnnotationResolver.controllerMap.keySet() ) {
+			//由于正则无法确定具体值的访问，所以也没法比较，为了减少循环次数，所以采用空间换时间的方式，分开两个url映射缓存的map，一个用于存储非正则表达式(采用ConcurrentHashMap)，另外一个用于存储正则表达式(采用遍历速度更快的ConcurrentSkipListMap结构)
+			for ( Map.Entry<String,ControllerAnnotationInfo<BaseController<?>>> entrySet : ControllerAnnotationResolver.controllerRegularExpressionsList.entrySet()) {
+				String key = entrySet.getKey();
 				if(!key.contains("$")) {
 					continue;
 				}
@@ -75,7 +76,7 @@ public class ControllerFilter implements Filter {
 				if (matcher.find()) {
 					String[] params = new String[matcher.groupCount() + 1];
 					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
-					controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(key);
+					controllerAnnotationInfo = entrySet.getValue();
 					analysisAndProcess(request, response, thisUrl,controllerAnnotationInfo, params);
 					return; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
