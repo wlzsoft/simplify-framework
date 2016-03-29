@@ -148,6 +148,8 @@ public class BaseController<T extends Model> {
 		Object obj = doMethod.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
 			JsonForward.doAction(request, response, webCache, staticName, obj);
+		} else if(requestUrl.endsWith(".xml")) {
+			
 		} else {
 			if(obj instanceof String) {
 				JSPForward.doAction(request, response, webCache, staticName, String.valueOf(obj));
