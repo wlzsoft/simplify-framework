@@ -163,7 +163,8 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 						}
 						List<String> endFixArr = new ArrayList<>();
 						endFixArr.add(".json");
-						endFixArr.add(".xml");
+						endFixArr.add(".jsonp");
+						endFixArr.add(".html");
 						if(path.endsWith("$")) {//正则表达式的处理
 							if(path.endsWith("/$")) {
 								path = path.substring(0, path.length()-2)+"$";

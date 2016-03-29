@@ -8,35 +8,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
-import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.mvc.annotation.AjaxAccess;
-import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
-import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.model.ModelCharsFilter;
-import com.meizu.simplify.mvc.model.ModelScope;
-import com.meizu.simplify.mvc.model.ModelSkip;
-import com.meizu.simplify.mvc.util.AjaxUtils;
-import com.meizu.simplify.mvc.view.JSPForward;
 import com.meizu.simplify.mvc.view.BeetlForward;
 import com.meizu.simplify.mvc.view.HttlForward;
-import com.meizu.simplify.mvc.view.IForward;
+import com.meizu.simplify.mvc.view.JSPForward;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.mvc.view.JsonpForward;
 import com.meizu.simplify.mvc.view.MessageForward;
 import com.meizu.simplify.mvc.view.RedirectForward;
 import com.meizu.simplify.mvc.view.VelocityForward;
 import com.meizu.simplify.utils.CollectionUtil;
-import com.meizu.simplify.utils.DataUtil;
-import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.web.Cache;
-import com.meizu.simplify.webcache.web.CacheBase;
 
 
 /**
@@ -193,6 +178,7 @@ public class BaseController<T extends Model> {
 				if(obj != null) {
 					request.setAttribute("result", obj);
 				}
+				requestUrl = requestUrl.replace(".html", "");
 				uri = templateUri+requestUrl+extend;
 				JSPForward.doAction(request, response, webCache, staticName, uri);//配置文件中读取
 			}
