@@ -10,9 +10,9 @@ import javax.servlet.annotation.WebListener;
 import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.mvc.view.BeetlForward;
-import com.meizu.simplify.mvc.view.HttlForward;
-import com.meizu.simplify.mvc.view.VelocityForward;
+import com.meizu.simplify.mvc.view.BeetlTemplate;
+import com.meizu.simplify.mvc.view.HttlTemplate;
+import com.meizu.simplify.mvc.view.VelocityTemplate;
 
 /**
   * <p><b>Title:</b><i>系统初始化监听器</i></p>
@@ -37,9 +37,9 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		
 		CachePool.init();
 		Startup.start();
-		VelocityForward.init();
-		HttlForward.init();
-		BeetlForward.init();
+		VelocityTemplate.init();
+		HttlTemplate.init();
+		BeetlTemplate.init();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");
 //		StringUtils.format("Current path -> {0}", systemConfig.getAppPath()));

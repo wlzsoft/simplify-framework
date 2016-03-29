@@ -11,9 +11,9 @@ import java.util.Properties;
 import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.mvc.view.BeetlForward;
-import com.meizu.simplify.mvc.view.HttlForward;
-import com.meizu.simplify.mvc.view.VelocityForward;
+import com.meizu.simplify.mvc.view.BeetlTemplate;
+import com.meizu.simplify.mvc.view.HttlTemplate;
+import com.meizu.simplify.mvc.view.VelocityTemplate;
 public class WebServer {
 	private volatile boolean isShutDowm = false;
 	public static Map<String, String> config = new HashMap<String, String>();
@@ -24,9 +24,9 @@ public class WebServer {
 			//应用级框架代码，不能写死依赖，后续修改成插件形式
 			CachePool.init();
 			Startup.start();
-			VelocityForward.init();
-			HttlForward.init();
-			BeetlForward.init();
+			VelocityTemplate.init();
+			HttlTemplate.init();
+			BeetlTemplate.init();
 			//end
 			init();
 			new WebServer().start();
