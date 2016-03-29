@@ -63,7 +63,35 @@
 56.RequestParam调整了实现方式，需要测试==>>已测试，已通过 2016/3/25
 57.页面缓存做了调整，防止并发导致的问题,需要测试调整后的可用性==>>已测试，已通过 2016/3/25
 18.配置文件热加载实现==>>优先实现
-相关信息：
+58.为了提高性能，尽量减少，请求过程中对象的创建，特别是，没必要的无意义的对象的创建。
+59.使用stream 的并行接口操作集合，生成json数据，特别是数据集大的时候。
+60.优化配置的功能配置信息的读取，使用注解的方式来标注一个pojo，作为配置文件的一个映射，并且支持热加载，还要支持单个属性注入的方式，通过value注解
+61. 需要实现网络通讯模块，类似netty和mina，可用于物联网，互联网，服务化，远程方法调用的使用，用于http的实现，websocket的实现，自定义协议的实现，rest服务端实现，web容器的实现
+62. 使用代码生成代替反射机制，可用javasist等类库，需要优化mvc和dao中使用反射的地方，特别优先优化baseController
+   优先使用代码生成的方式实现（生成的代码要注意，不要使用ifelse语句来判断地址并定位方法，使用直接方法调用，而是使用switch语句，性能更好【http://blog.csdn.net/kehui123/article/details/5298337】）
+63.测试下switch的性能是否比ifelse高许多测试下是否（的确switch的性能更优），equalsIgnoreCase的性能比equals性能高许多，参考http://www.deepinmind.com/%E6%80%A7%E8%83%BD/2014/06/26/string-switch-performance.html
+http://fishermen.iteye.com/blog/430286
+附件在微云网盘中的stringSwitch
+64.考虑是否把javasist修改字节码的方式去调用，直接用jdk自带的功能，启动时生成特定源码并编译再启动 http://www.importnew.com/12548.html
+使用api：import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+Files.write( new File( "src/impls/ObjectWithCommands.java" ).toPath(), generateObjectWithCommands( commands ).getBytes(),
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE );生成代码
+65.视图层优化方案：*IForward接口去掉，相关实现类的方法都使用静态方法，减少对象的创建
+                               *使用过程中，除了特殊的String类型返回值（[url,redirect,forward 等特殊类型，例子：url:userList,redirect:www.baidu.com]，这是可选方案，也可使用强类型标记-IForward改名，并改变其原来的功能作用，只是用于标记处理结果的类型-比如url，redirct或是forward），其他的类型包含普通的string类型，都当成输出数据处理
+                               *考虑视图的指定方式，有rest风格后缀的方式，视图全局配置。如果需要同时使用多个html模版视图，那么可以使用IForward改名的方式，这种反射，也不建议多使用，功能会提供。
+                               *考虑如果同个地址，不通视图，然后有不通的业务逻辑，那么这时可以提供一种特殊后缀，专门用于处理特殊逻辑（针对页面的）
+66.json处理框架fastjson ，所谓序列化是很好的序列化成json字符串的性能。
+   框架中是否缓存序列化后的二进制数据到redis中，是否可以先把数据转json再序列化或是存储，是否会节省redis空间
+    fastjson和jackson是否有提供java8 的 stream api 的json生成方式，毕竟数据库集大的时候，串行处理会有严重性能问题
+   已经确认在fastjson-1.1.32版本中开始提供Stream API
+http://www.csdn.net/article/2014-09-25/2821866
+66.IdentityHashMap实现了HashMap的功能，但能避免HashMap并发时的死循环
+
+67.提供rest风格的操作，比如支持option 和 delete 等操作update等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
+11正则表达式和非正则表达式的urlcache的map容器要区分开来，正则表达式的容器改成arraylist，非正则表达式如果结果集大，可以分片。提前分析好rest的几种后缀，存起来，空间换时间
+
+*相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
 3.druid日志配置：https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_LogFilter
