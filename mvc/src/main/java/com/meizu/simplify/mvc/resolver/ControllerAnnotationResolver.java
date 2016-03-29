@@ -2,6 +2,7 @@ package com.meizu.simplify.mvc.resolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -159,16 +161,26 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 						if(preControlMap!=null && preControlMap.path().length>0) {
 							path = preControlMap.path()[0] + path;
 						}
-						String[] endFixArr = new String[] {".json",".xml"};
-						if(path.substring(path.length()-1).equals("$")) {//正则表达式的处理
-							if(!path.contains(".json") && !path.contains(".xml")) {//多视图的解析
+						List<String> endFixArr = new ArrayList<>();
+						endFixArr.add(".json");
+						endFixArr.add(".xml");
+						if(path.endsWith("$")) {//正则表达式的处理
+							if(path.endsWith("/$")) {
+								path = path.substring(0, path.length()-2)+"$";
+							}
+							boolean isExist = isContainsEndFix(path, endFixArr);
+							if(!isExist) {
 								for (String endFix : endFixArr) {
 									controllerRegularExpressionsList.put(path.substring(0,path.length()-1)+endFix+"$", new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
 								}
 							}
 							controllerRegularExpressionsList.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
 						} else {//非正则表达式处理
-							if(!path.contains(".json") && !path.contains(".xml")) {//多视图解析，可以优化代码，目前是硬编码
+							if(path.endsWith("/")) {
+								path = path.substring(0, path.length()-1);
+							}
+							boolean isExist = isContainsEndFix(path, endFixArr);
+							if(!isExist) {
 								for (String endFix : endFixArr) {
 									controllerMap.put(path+endFix, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
 								}
@@ -180,5 +192,16 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 				}
 			}
 		}
+	}
+
+	private boolean isContainsEndFix(String path, List<String> endFixArr) {
+		boolean isExist = false;
+		for (String endFix : endFixArr) {
+			if(path.contains(endFix)) {//多视图的解析
+				isExist = true;
+				break;
+			}
+		}
+		return isExist;
 	}
 }

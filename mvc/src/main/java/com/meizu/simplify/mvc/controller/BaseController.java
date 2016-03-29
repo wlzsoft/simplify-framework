@@ -151,9 +151,15 @@ public class BaseController<T extends Model> {
 		} else if(requestUrl.endsWith(".xml")) {
 			
 		} else {
+			String templateUri = "";
+			String extend = ".jsp";
+			String uri = "";
 			if(obj instanceof String) {
-				JSPForward.doAction(request, response, webCache, staticName, String.valueOf(obj));
+				uri = String.valueOf(obj);
+			} else {
+				uri = templateUri+requestUrl+extend;
 			}
+			JSPForward.doAction(request, response, webCache, staticName, uri);
 		}
 		
 	}

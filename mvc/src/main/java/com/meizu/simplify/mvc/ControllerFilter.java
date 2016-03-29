@@ -53,16 +53,19 @@ public class ControllerFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		
-		String thisUrl = request.getRequestURI().substring(request.getContextPath().length());// 当前地址
-		while ( thisUrl.indexOf("//") != -1 ) {
-			thisUrl = thisUrl.replace("//", "/"); // 防止用户避过正则
+		String requestUrl = request.getRequestURI().substring(request.getContextPath().length());
+		if(requestUrl.endsWith("/")) {//修复url最后地址为"/"符号的情况
+			requestUrl = requestUrl.substring(0, requestUrl.length()-1);
+		}
+		if( requestUrl.indexOf("//") != -1 ) {// 防止用户避过正则
+			requestUrl = requestUrl.replaceAll("//", "/"); 
 		}
 //		if (StringUtil.parseString(request.getQueryString(),"").length() > 0) {
 //			thisUrl += "?" + request.getQueryString();
 //	 	}
-		ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(thisUrl);
+		ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(requestUrl);
 		if(controllerAnnotationInfo !=null) {
-			analysisAndProcess(request, response, thisUrl, controllerAnnotationInfo, null);
+			analysisAndProcess(request, response, requestUrl, controllerAnnotationInfo, null);
 			return;// [标示]启用原生 filter的chain,三个地方同时打开注释
 		} else {
 			//由于正则无法确定具体值的访问，所以也没法比较，为了减少循环次数，所以采用空间换时间的方式，分开两个url映射缓存的map，一个用于存储非正则表达式(采用ConcurrentHashMap)，另外一个用于存储正则表达式(采用遍历速度更快的ConcurrentSkipListMap结构)
@@ -72,12 +75,12 @@ public class ControllerFilter implements Filter {
 					continue;
 				}
 				Pattern pattern = Pattern.compile("^" + key);
-				Matcher matcher = pattern.matcher(thisUrl);
+				Matcher matcher = pattern.matcher(requestUrl);
 				if (matcher.find()) {
 					String[] params = new String[matcher.groupCount() + 1];
 					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
 					controllerAnnotationInfo = entrySet.getValue();
-					analysisAndProcess(request, response, thisUrl,controllerAnnotationInfo, params);
+					analysisAndProcess(request, response, requestUrl,controllerAnnotationInfo, params);
 					return; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
 			}

@@ -69,7 +69,7 @@ public class TestController extends SystemController<TestModel> {
 		return testList;
 	}
 	
-	@RequestMap(path = "/testrestjson.json")
+	@RequestMap(path = "/testrestjson")
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();
