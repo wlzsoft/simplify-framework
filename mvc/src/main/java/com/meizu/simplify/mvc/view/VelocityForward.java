@@ -35,7 +35,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class VelocityForward  implements IForward{
+public class VelocityForward  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	private static PropertiesConfig config;
 	

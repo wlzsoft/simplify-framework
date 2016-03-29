@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.meizu.simplify.encrypt.des.DESEncrypt;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.view.IForward;
+import com.meizu.simplify.mvc.view.ITemplate;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;

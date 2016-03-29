@@ -10,7 +10,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
- * <p><b>Title:</b><i>回调请求接口</i></p>
+ * <p><b>Title:</b><i>模版处理回调接口</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -22,6 +22,6 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public interface IForward {
+public interface ITemplate {
 	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException;
 }

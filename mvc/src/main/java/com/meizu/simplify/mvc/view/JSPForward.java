@@ -34,7 +34,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class JSPForward implements IForward{
+public class JSPForward implements ITemplate{
 	
 	@Override
 	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {

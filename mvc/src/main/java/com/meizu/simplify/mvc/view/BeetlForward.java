@@ -36,7 +36,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class BeetlForward  implements IForward {
+public class BeetlForward  implements ITemplate {
 	private static GroupTemplate gt = null;
 	private static PropertiesConfig config;
 	public static void init() {

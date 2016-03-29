@@ -36,7 +36,7 @@ import httl.Template;
  * @version Version 0.1
  *
  */
-public class HttlForward  implements IForward{
+public class HttlForward  implements ITemplate{
 	private static Engine engine = null;
 	private static PropertiesConfig config;
 	public static void init() {
