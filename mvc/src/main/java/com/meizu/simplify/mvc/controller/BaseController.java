@@ -153,22 +153,22 @@ public class BaseController<T extends Model> {
 				String[] uriArr = uri.split(":");
 				switch (uriArr[0]) {
 					case "uri":
-						new JSPForward().doAction(request, response, webCache, staticName, uriArr[1]);//配置文件中读取
+						new JSPForward().render(request, response, webCache, staticName, uriArr[1]);//配置文件中读取
 						break;
 					case "redirect":
 						RedirectForward.doAction(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "jsp":
-						new JSPForward().doAction(request, response, webCache, staticName, uriArr[1]);
+						new JSPForward().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "beetl":
-						new BeetlForward().doAction(request, response, webCache, staticName, uriArr[1]);
+						new BeetlForward().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "httl":
-						new HttlForward().doAction(request, response, webCache, staticName, uriArr[1]);
+						new HttlForward().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "velocity":
-						new VelocityForward().doAction(request, response, webCache, staticName, uriArr[1]);
+						new VelocityForward().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					default :
 						MessageForward.doAction(request, response, webCache, staticName, uri);
@@ -180,7 +180,7 @@ public class BaseController<T extends Model> {
 				}
 				requestUrl = requestUrl.replace(".html", "");
 				uri = templateUri+requestUrl+extend;
-				new JSPForward().doAction(request, response, webCache, staticName, uri);//配置文件中读取
+				new JSPForward().render(request, response, webCache, staticName, uri);//配置文件中读取
 			}
 		}
 		

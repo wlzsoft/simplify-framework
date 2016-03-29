@@ -98,7 +98,7 @@ public class VelocityForward  implements ITemplate{
 	}
 
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 
 		// 设置编码
 		setContentType(request, response);
