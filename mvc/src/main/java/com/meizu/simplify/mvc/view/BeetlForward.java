@@ -36,7 +36,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class BeetlForward  {
+public class BeetlForward  implements IForward {
 	private static GroupTemplate gt = null;
 	private static PropertiesConfig config;
 	public static void init() {
@@ -66,7 +66,8 @@ public class BeetlForward  {
 		response.setContentType("text/html; charset=" + config.getCharset());
 	}
 
-	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+	@Override
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 
 		// 设置编码
 		setContentType(request, response);

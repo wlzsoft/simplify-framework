@@ -163,7 +163,7 @@ public class ControllerFilter implements Filter {
 								"</html>";*/
 				
 				try {
-					VelocityForward.doAction(request, response, null, null, "/template/framework/500.html");
+					new VelocityForward().doAction(request, response, null, null, "/template/framework/500.html");
 				} catch (ServletException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

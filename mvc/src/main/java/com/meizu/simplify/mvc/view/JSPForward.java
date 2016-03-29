@@ -34,9 +34,10 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class JSPForward {
+public class JSPForward implements IForward{
 	
-	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+	@Override
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		RequestDispatcher rd = request.getRequestDispatcher(templateUrl);
 

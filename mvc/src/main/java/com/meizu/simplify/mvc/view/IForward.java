@@ -23,5 +23,5 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 public interface IForward {
-	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName) throws ServletException, IOException;
+	public void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException;
 }
