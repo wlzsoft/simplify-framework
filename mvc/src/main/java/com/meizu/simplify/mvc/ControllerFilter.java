@@ -26,7 +26,7 @@ import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.JsonForward;
-import com.meizu.simplify.mvc.view.VelocityForward;
+import com.meizu.simplify.mvc.view.VelocityTemplate;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -163,7 +163,7 @@ public class ControllerFilter implements Filter {
 								"</html>";*/
 				
 				try {
-					new VelocityForward().render(request, response, null, null, "/template/framework/500.html");
+					new VelocityTemplate().render(request, response, null, null, "/template/framework/500.html");
 				} catch (ServletException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

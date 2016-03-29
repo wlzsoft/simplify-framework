@@ -35,13 +35,13 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
-public class VelocityForward  implements ITemplate{
+public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	private static PropertiesConfig config;
 	
 	@Deprecated//后续从配置中读取就可以
 	public static String getPath() {
-		String path = VelocityForward.class.getResource("/").getPath();
+		String path = VelocityTemplate.class.getResource("/").getPath();
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	

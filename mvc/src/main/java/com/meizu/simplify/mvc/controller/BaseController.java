@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.view.BeetlForward;
-import com.meizu.simplify.mvc.view.HttlForward;
-import com.meizu.simplify.mvc.view.JSPForward;
+import com.meizu.simplify.mvc.view.BeetlTemplate;
+import com.meizu.simplify.mvc.view.HttlTemplate;
+import com.meizu.simplify.mvc.view.JspTemplate;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.mvc.view.JsonpForward;
 import com.meizu.simplify.mvc.view.MessageForward;
 import com.meizu.simplify.mvc.view.RedirectForward;
-import com.meizu.simplify.mvc.view.VelocityForward;
+import com.meizu.simplify.mvc.view.VelocityTemplate;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -153,22 +153,22 @@ public class BaseController<T extends Model> {
 				String[] uriArr = uri.split(":");
 				switch (uriArr[0]) {
 					case "uri":
-						new JSPForward().render(request, response, webCache, staticName, uriArr[1]);//配置文件中读取
+						new JspTemplate().render(request, response, webCache, staticName, uriArr[1]);//配置文件中读取
 						break;
 					case "redirect":
 						RedirectForward.doAction(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "jsp":
-						new JSPForward().render(request, response, webCache, staticName, uriArr[1]);
+						new JspTemplate().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "beetl":
-						new BeetlForward().render(request, response, webCache, staticName, uriArr[1]);
+						new BeetlTemplate().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "httl":
-						new HttlForward().render(request, response, webCache, staticName, uriArr[1]);
+						new HttlTemplate().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					case "velocity":
-						new VelocityForward().render(request, response, webCache, staticName, uriArr[1]);
+						new VelocityTemplate().render(request, response, webCache, staticName, uriArr[1]);
 						break;
 					default :
 						MessageForward.doAction(request, response, webCache, staticName, uri);
@@ -180,7 +180,7 @@ public class BaseController<T extends Model> {
 				}
 				requestUrl = requestUrl.replace(".html", "");
 				uri = templateUri+requestUrl+extend;
-				new JSPForward().render(request, response, webCache, staticName, uri);//配置文件中读取
+				new JspTemplate().render(request, response, webCache, staticName, uri);//配置文件中读取
 			}
 		}
 		
