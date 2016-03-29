@@ -28,17 +28,17 @@ public abstract class Model {
 	 */ 
 	private Integer script = 0;
 	
-	private String jsonp = "callback";
-
-	public String getJsonp() {
-		return jsonp;
-	}
-
-	public void setJsonp(String jsonp) {
-		this.jsonp = jsonp;
-	}
+	private String callback = "callback";
 
 	
+	public String getCallback() {
+		return callback;
+	}
+
+	public void setCallback(String callback) {
+		this.callback = callback;
+	}
+
 	public String getCmd() {
 		return cmd;
 	}
