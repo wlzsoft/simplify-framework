@@ -23,14 +23,6 @@ import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
-import com.meizu.simplify.mvc.view.JSPForward;
-import com.meizu.simplify.mvc.view.BeetlForward;
-import com.meizu.simplify.mvc.view.HttlForward;
-import com.meizu.simplify.mvc.view.IForward;
-import com.meizu.simplify.mvc.view.JsonForward;
-import com.meizu.simplify.mvc.view.MessageForward;
-import com.meizu.simplify.mvc.view.RedirectForward;
-import com.meizu.simplify.mvc.view.VelocityForward;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
@@ -69,6 +61,15 @@ public class TestController extends SystemController<TestModel> {
 		return testList;
 	}
 	
+	@RequestMap(path = "/testvoidjson")
+	public void doVoidJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		List<Test> testList = new ArrayList<>();
+		System.out.println(model.getDesc()+","+model.getName());
+		testList.add(test);
+		request.setAttribute("testList", testList);
+	}
+	
 	@RequestMap(path = "/testrestjson")
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
@@ -90,7 +91,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("user", user);
 		request.setAttribute("tests", testList);
-		return "/template/beetl/pagefunction.html";
+		return "beetl:/template/beetl/pagefunction.html";
 	}
 	
 	@RequestMap(path = "/testhttl/")
@@ -105,7 +106,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("user", user);
 		request.setAttribute("tests", testList);
-		return "/template/httl/tests.httl";
+		return "httl:/template/httl/tests.httl";
 	}
 	@RequestMap(path = "/testredirect/")
 	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
@@ -119,14 +120,14 @@ public class TestController extends SystemController<TestModel> {
 		if (request.getMethod().equals("GET")) {
 			
 		}
-		return "redirect:/testjson/";
+		return "redirect:/test/testjson.json";
 	}
-	@RequestMap(path = "/testvelocity3/")
+	@RequestMap(path = "/testvelocity3/")//TODO 这个例子没测试通过，因为异常处理模版用的velocity模版，没有捕获异常
 	public String doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		if(true) {
 			throw new BaseDaoException("数据为空");
 		}
-		return "/template/login.html";
+		return "velocity:/template/login.html";
 	}
 	@RequestMap(path = "/testvelocity2/")
 	public String doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
@@ -138,7 +139,7 @@ public class TestController extends SystemController<TestModel> {
 			session.setAttribute("admin", userName);
 			HttpRoute.route(request, response);
 		}*/
-		return "/template/login.html";
+		return "velocity:/template/login.html";
 	}
 	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
 	@RequestMap(path = "/testvelocity/")
@@ -149,14 +150,14 @@ public class TestController extends SystemController<TestModel> {
 		} else {
 			request.setAttribute("userName", "nologin");
 		}
-		return "/template/login.html";
+		return "velocity:/template/login.html";
 	}
 	
 	@RequestMap(path = "/testwebsocket/")
 	public String doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return "/template/websocket.html";
+		return "velocity:/template/websocket.html";
 	}
 	
 //	@WebSocket
@@ -164,7 +165,7 @@ public class TestController extends SystemController<TestModel> {
 	public String doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return "{id:1,name:'"+test.getName()+"'}";//new MessageForward(
+		return "{id:1,name:'"+test.getName()+"'}";
 	}	
 	@RequestMap(path = "/testjson.json")
 	public Test doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
@@ -177,7 +178,7 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = "/testmessage/")
 	public String doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.addTest(null);
-		return "{id:1,name:'"+test.getName()+"'}";//new MessageForward(
+		return "{id:1,name:'"+test.getName()+"'}";
 	}
 	
 	@RequestMap(path = "/testvoid/")
@@ -185,7 +186,7 @@ public class TestController extends SystemController<TestModel> {
 		testService.addTestObj(null);
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return "/index.jsp";
+		return "jsp:/index.jsp";
 	}
 	
 	@RequestMap(path = "/test/")
@@ -195,28 +196,28 @@ public class TestController extends SystemController<TestModel> {
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		}
-		return "/index.jsp";
+		return "jsp:/index.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect/")
 	public String doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
 		request.setAttribute("testList", test);
-		return "/testList.jsp";
+		return "jsp:/testList.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect2/")
 	public String adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
-		return "/testList.jsp";
+		return "jsp:/testList.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect3/")
 	public String adoTestSelect3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Map<String,Object>> test = BaseDao.getInsMap().find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
-		return "/testList.jsp";
+		return "jsp:/testList.jsp";
 	}
 	
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
@@ -224,7 +225,7 @@ public class TestController extends SystemController<TestModel> {
  
 		
 		// 检查是否id为空
-		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");//new MessageForward(
+		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
 		
 		// 存在脚本生成地址，无法使用加密 
 		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorForward(getMsg("VERIFY.FAILED"));
@@ -235,18 +236,12 @@ public class TestController extends SystemController<TestModel> {
 //		String sDomain = request.getServerName();
 //		if(sDomain.indexOf("meizu.com") > 0)  {
 //		}
-//		resultStr = resultStr.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
 		
 		
 		String isflag = request.getParameter("isflag");
-		String result = "";
-		if (model.getScript() == 1) { 
-			return  StringUtil.format("<script>document.domain='{0}';{1}({2})</script>", domain, model.getJsonp(), result.toString());//new MessageForward(
-		} else if(model.getScript() == 2){
-			return  StringUtil.format("{0}", result.toString());//new MessageForward(
-		} else {
-			return  StringUtil.format("{0}({1})", model.getJsonp(), result.toString());//new MessageForward(
-		}
+		String result = "";//json字符串
+//		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
+		return result;
 	}
 	
 }

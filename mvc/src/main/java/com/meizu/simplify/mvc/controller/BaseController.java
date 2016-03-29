@@ -21,8 +21,14 @@ import com.meizu.simplify.mvc.model.ModelScope;
 import com.meizu.simplify.mvc.model.ModelSkip;
 import com.meizu.simplify.mvc.util.AjaxUtils;
 import com.meizu.simplify.mvc.view.JSPForward;
+import com.meizu.simplify.mvc.view.BeetlForward;
+import com.meizu.simplify.mvc.view.HttlForward;
 import com.meizu.simplify.mvc.view.IForward;
 import com.meizu.simplify.mvc.view.JsonForward;
+import com.meizu.simplify.mvc.view.JsonpForward;
+import com.meizu.simplify.mvc.view.MessageForward;
+import com.meizu.simplify.mvc.view.RedirectForward;
+import com.meizu.simplify.mvc.view.VelocityForward;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
@@ -148,18 +154,48 @@ public class BaseController<T extends Model> {
 		Object obj = doMethod.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
 			JsonForward.doAction(request, response, webCache, staticName, obj);
-		} else if(requestUrl.endsWith(".xml")) {
-			
+		} else if(requestUrl.endsWith(".jsonp")) {
+			JsonpForward.doAction(request, response, webCache, staticName, obj,model,"meizu.com");
 		} else {
+//			String templateUri = "/template/jsp";
 			String templateUri = "";
-			String extend = ".jsp";
+//			String extend = ".jsp";
+			String extend = "";
 			String uri = "";
-			if(obj instanceof String) {
+			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
 				uri = String.valueOf(obj);
+				uri = templateUri+uri+extend;
+				String[] uriArr = uri.split(":");
+				switch (uriArr[0]) {
+					case "uri":
+						JSPForward.doAction(request, response, webCache, staticName, uriArr[1]);//配置文件中读取
+						break;
+					case "redirect":
+						RedirectForward.doAction(request, response, webCache, staticName, uriArr[1]);
+						break;
+					case "jsp":
+						JSPForward.doAction(request, response, webCache, staticName, uriArr[1]);
+						break;
+					case "beetl":
+						BeetlForward.doAction(request, response, webCache, staticName, uriArr[1]);
+						break;
+					case "httl":
+						HttlForward.doAction(request, response, webCache, staticName, uriArr[1]);
+						break;
+					case "velocity":
+						VelocityForward.doAction(request, response, webCache, staticName, uriArr[1]);
+						break;
+					default :
+						MessageForward.doAction(request, response, webCache, staticName, uri);
+				}
+				
 			} else {
+				if(obj != null) {
+					request.setAttribute("result", obj);
+				}
 				uri = templateUri+requestUrl+extend;
+				JSPForward.doAction(request, response, webCache, staticName, uri);//配置文件中读取
 			}
-			JSPForward.doAction(request, response, webCache, staticName, uri);
 		}
 		
 	}
