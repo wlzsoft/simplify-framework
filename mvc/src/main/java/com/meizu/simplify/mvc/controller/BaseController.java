@@ -165,6 +165,7 @@ public class BaseController<T extends Model> {
 						RedirectView.exe(request, response, webCache, staticName, templateUrl);
 						break;
 					default :
+						//messageView和ITemplate的综合处理不优雅，并且会导致一个大的文本对象用于匹配Template的key值 TODO
 						ITemplate temp = TemplateFactory.getTemplate(templateType);
 						if(temp != null) {
 							temp.render(request, response, webCache, staticName, templateUrl);
