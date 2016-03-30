@@ -45,10 +45,6 @@ public class VelocityTemplate  implements ITemplate{
 	
 	private static PropertiesConfig config;
 	
-	public VelocityTemplate() {
-		init();
-	}
-	
 	@Deprecated//后续从配置中读取就可以
 	public static String getPath() {
 		String path = VelocityTemplate.class.getResource("/").getPath();
