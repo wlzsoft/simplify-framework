@@ -24,9 +24,7 @@ public class WebServer {
 			//应用级框架代码，不能写死依赖，后续修改成插件形式
 			CachePool.init();
 			Startup.start();
-			HttlTemplate.init();
 			VelocityTemplate.init();
-			BeetlTemplate.init();
 			//end
 			init();
 			new WebServer().start();

@@ -42,13 +42,16 @@ import httl.Template;
 @Bean
 @TemplateType("httl")
 public class HttlTemplate  implements ITemplate{
-	private static Engine engine = null;
+	private Engine engine = null;
 	@Resource
 	private PropertiesConfig config;
-	public static void init() {
+	public void init() {
 		engine = Engine.getEngine();
 	}
 
+	public HttlTemplate() {
+		init();
+	}
 
 	/**
 	 * 设置内容类型和编码

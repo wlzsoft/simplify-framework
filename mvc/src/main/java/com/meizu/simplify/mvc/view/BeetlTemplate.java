@@ -42,10 +42,15 @@ import com.meizu.simplify.webcache.web.CacheBase;
 @Bean
 @TemplateType("beetl")
 public class BeetlTemplate  implements ITemplate {
-	private static GroupTemplate gt = null;
+	private GroupTemplate gt = null;
 	@Resource
 	private PropertiesConfig config;
-	public static void init() {
+	
+	public BeetlTemplate() {
+		init();
+	}
+	
+	public void init() {
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
 		try {
