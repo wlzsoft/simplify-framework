@@ -37,8 +37,8 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 	@JSONField (format="yyyy-MM-dd HH:mm:ss")
 	public Date updateTime;
 	
-	@Column(value = "deleteflag")
-	public Boolean deleteflag;
+	@Column(value = "deleteFlag")
+	public Boolean deleteFlag;
 	
 	@Transient
 	public String createName;
@@ -77,12 +77,12 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 		this.updateTime = updateTime;
 	}
 
-	public Boolean getDeleteflag() {
-		return deleteflag;
+	public Boolean getDeleteFlag() {
+		return deleteFlag;
 	}
 
-	public void setDeleteflag(Boolean deleteflag) {
-		this.deleteflag = deleteflag;
+	public void setDeleteFlag(Boolean deleteFlag) {
+		this.deleteFlag = deleteFlag;
 	}
 
 	public String getCreateName() {
