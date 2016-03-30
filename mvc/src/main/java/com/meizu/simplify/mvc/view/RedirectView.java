@@ -32,7 +32,7 @@ public class RedirectView  {
 		response.sendRedirect(templateUrl);
 	}
 	
-	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl, HashMap<String, String> paramMap) throws ServletException, IOException {
+	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl, HashMap<String, String> paramMap) throws ServletException, IOException {
 		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		if (paramMap != null && paramMap.keySet().size() > 0) {
 			StringBuffer w = new StringBuffer("<html><head></head><body onload=\"form1.submit()\"><form id=\"form1\" method=\"post\" action=\"" + templateUrl + "\">");
