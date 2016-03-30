@@ -125,7 +125,7 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 			if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
 				//页面级别内容
 				String content = (String) args[0];
-//				String content = getPageContent(request, response, rd);//jvm内存缓存,ActionForward生成，然后传递过来
+//				String content = getPageContent(request, response, rd);//jvm内存缓存,JspTemplate生成，然后传递过来
 //				String content = vw.toString();//文件缓存，Velocity中生成，然后传递过来
 				// 是否去除空格
 				if(webCache.removeSpace()) {

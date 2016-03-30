@@ -228,7 +228,7 @@ public class TestController extends SystemController<TestModel> {
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
 		
 		// 存在脚本生成地址，无法使用加密 
-		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorForward(getMsg("VERIFY.FAILED"));
+		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorView(getMsg("VERIFY.FAILED"));
 
 //		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
 		String domain = null;//CookiesUtil.getDomain(request);

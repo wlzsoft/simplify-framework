@@ -13,11 +13,11 @@ import java.lang.annotation.Target;
  * <p>Desc: 可在controller重复标注requestMap注解：
  *      <pre><code>
         @RequestMaps({@RequestMap("test"), @RequestMap("test2")})
-		public IForward test() {
+		public Test test() {
 		}
 		@RequestMap("test")
         @RequestMap("test2")
-        public IForward test() {
+        public Test test() {
 		}
 		</code></pre></p>
  * <p>source folder:{@docRoot}</p>
