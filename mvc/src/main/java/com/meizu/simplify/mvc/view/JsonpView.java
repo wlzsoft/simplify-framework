@@ -55,7 +55,7 @@ public  class  JsonpView {
 		}
 		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		response.setCharacterEncoding(config.getCharset());
-		response.setContentType("application/json; charset=" + config.getCharset());
+		response.setContentType("application/jsonp; charset=" + config.getCharset());
 		response.getWriter().print(message);
 	}
 }

@@ -136,9 +136,7 @@ public class VelocityTemplate  implements ITemplate{
 					// 缓存成功.
 				}
 			}
-			response.setCharacterEncoding(config.getCharset());
-			response.setContentType("text/html; charset=" + config.getCharset());
-			response.getWriter().print(content);
+			MessageView.exe(request, response, webCache, staticName, content, config);
 		} finally {
 			if (vw != null) {
 				vw.flush();
