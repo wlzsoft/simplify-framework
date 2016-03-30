@@ -19,17 +19,17 @@ public enum InitTypeEnum {
 	 */
 	BEAN(1),
 	/**
-	 *依赖注入 
-	 */
-	IOC(2),
-	/**
 	 * 配置文件实体初始化
 	 */
-	RELOADRESOURCE(3),
+	RELOADRESOURCE(2),
 	/**
 	 * 依赖注入配置文件属性
 	 */
-	CONFIG(4),
+	CONFIG(3),
+	/**
+	 *依赖注入 
+	 */
+	IOC(4),
 	/**
 	 * 数据缓存初始化
 	 */

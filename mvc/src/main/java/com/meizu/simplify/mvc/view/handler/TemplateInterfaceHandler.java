@@ -1,5 +1,6 @@
 package com.meizu.simplify.mvc.view.handler;
 
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
@@ -22,8 +23,19 @@ import com.meizu.simplify.mvc.view.JspTemplate;
 @Bean
 @HandleInterface(ITemplate.class)
 public class TemplateInterfaceHandler implements IInterfaceHandler{
+	
+	@Config("system.templateType")
+	private String templateType;
 	@Override
 	public Class<?> handle() {
-		return JspTemplate.class;
+		if(templateType == null) {
+			templateType = "com.meizu.simplify.mvc.view.JspTemplate";
+		}
+		try {
+			return Class.forName(templateType);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
