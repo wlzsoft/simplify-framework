@@ -12,10 +12,10 @@ import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.ITemplate;
-import com.meizu.simplify.mvc.view.JsonForward;
-import com.meizu.simplify.mvc.view.JsonpForward;
-import com.meizu.simplify.mvc.view.MessageForward;
-import com.meizu.simplify.mvc.view.RedirectForward;
+import com.meizu.simplify.mvc.view.JsonView;
+import com.meizu.simplify.mvc.view.JsonpView;
+import com.meizu.simplify.mvc.view.MessageView;
+import com.meizu.simplify.mvc.view.RedirectView;
 import com.meizu.simplify.mvc.view.TemplateFactory;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
@@ -139,9 +139,9 @@ public class BaseController<T extends Model> {
 		request.setAttribute("formData", model);
 		Object obj = method.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
-			JsonForward.doAction(request, response, webCache, staticName, obj);
+			JsonView.doAction(request, response, webCache, staticName, obj);
 		} else if(requestUrl.endsWith(".jsonp")) {
-			JsonpForward.doAction(request, response, webCache, staticName, obj,model,"meizu.com");
+			JsonpView.doAction(request, response, webCache, staticName, obj,model,"meizu.com");
 		} else {
 //			String templateUri = "/template/jsp";
 			String prefixUri = "";
@@ -162,17 +162,15 @@ public class BaseController<T extends Model> {
 						template.render(request, response, webCache, staticName, templateUrl);//配置文件中读取
 						break;
 					case "redirect":
-						RedirectForward.doAction(request, response, webCache, staticName, templateUrl);
-						break;
-					case "jsp":
-					case "beetl":
-					case "httl":
-					case "velocity":
-						ITemplate temp = TemplateFactory.getTemplate(templateType);
-						temp.render(request, response, webCache, staticName, templateUrl);
+						RedirectView.doAction(request, response, webCache, staticName, templateUrl);
 						break;
 					default :
-						MessageForward.doAction(request, response, webCache, staticName, uri);
+						ITemplate temp = TemplateFactory.getTemplate(templateType);
+						if(temp != null) {
+							temp.render(request, response, webCache, staticName, templateUrl);
+						} else {
+							MessageView.doAction(request, response, webCache, staticName, uri);
+						}
 				}
 				
 			} else {

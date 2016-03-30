@@ -21,7 +21,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public class ErrorForward {
+public class ErrorView {
 
 	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg) throws ServletException, IOException {
 		response.sendError(403, msg);

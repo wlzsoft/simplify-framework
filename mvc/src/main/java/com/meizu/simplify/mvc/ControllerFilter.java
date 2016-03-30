@@ -25,7 +25,7 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.view.JsonForward;
+import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.VelocityTemplate;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -137,7 +137,7 @@ public class ControllerFilter implements Filter {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(requestUrl.endsWith(".json")) {
 				try {
-					JsonForward.doAction(request, response, null, null, JsonResult.error(exceptionMessage));
+					JsonView.doAction(request, response, null, null, JsonResult.error(exceptionMessage));
 				} catch (ServletException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

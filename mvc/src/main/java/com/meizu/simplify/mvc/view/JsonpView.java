@@ -27,7 +27,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-public  class  JsonpForward {
+public  class  JsonpView {
 
 	/**
 	 * 
