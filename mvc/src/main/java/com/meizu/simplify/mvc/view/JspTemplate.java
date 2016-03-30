@@ -48,30 +48,13 @@ public class JspTemplate implements ITemplate{
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(templateUrl);
-
-		// 跳转前检查静态规则
-		if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
-			String content = getPageContent(request, response, rd);
-			
-			// 是否去除空格
-			if(webCache.removeSpace()) {
-				content = ClearCommentUtil.clear(content);
-				content = StringUtil.removeHtmlSpace(content);
-			}
-
-			Cache cache = CacheBase.getCache(webCache);
-			if(cache != null && cache.doCache(webCache, staticName, content,response)){
-				// 缓存成功.
-			}
-			
-			MessageView.exe(request, response, webCache, staticName, content, config);
-		} else {
-			if(rd == null) {
-				throw new UncheckedException("该容器不支持jsp视图");
-			}
-			rd.forward(request, response);
+		if(rd == null) {
+			throw new UncheckedException("该容器不支持jsp视图");
 		}
+		String content = getPageContent(request, response, rd);
+		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 	}
+
 
 	/**
 	 * 获取页面内容

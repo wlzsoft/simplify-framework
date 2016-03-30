@@ -16,13 +16,10 @@ import org.apache.velocity.app.Velocity;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
-import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.web.Cache;
-import com.meizu.simplify.webcache.web.CacheBase;
 
 
 /**
@@ -51,6 +48,7 @@ public class VelocityTemplate  implements ITemplate{
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	
+//	@InitBean //代替构造函数初始化，并且是读取注入的属性值
 	public static void init() {
 		config = BeanFactory.getBean(PropertiesConfig.class);
 //		String classPath = config.getClasspath();
@@ -92,24 +90,12 @@ public class VelocityTemplate  implements ITemplate{
 	}
 	
 
-	/**
-	 * 设置内容类型和编码
-	 * 
-	 * @param request
-	 * @param response
-	 */
-	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
-		response.setCharacterEncoding(config.getCharset());
-		response.setContentType("text/html; charset=" + config.getCharset());
-	}
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 
-		// 设置编码
-		setContentType(request, response);
+		setContentType(request, response,config);
 
-		// 取模版
 		Template template = Velocity.getTemplate(templateUrl);
 
 		// 将request中的对象赋给模版
@@ -125,18 +111,7 @@ public class VelocityTemplate  implements ITemplate{
 			template.merge(context, vw);
 			
 			String content = vw.toString();
-			if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
-				// 是否去除空格
-				if(webCache.removeSpace()) {
-					content = ClearCommentUtil.clear(content);
-					content = StringUtil.removeHtmlSpace(content);
-				}
-				Cache cache = CacheBase.getCache(webCache);
-				if(cache != null && cache.doCache(webCache, staticName, content,response)){
-					// 缓存成功.
-				}
-			}
-			MessageView.exe(request, response, webCache, staticName, content, config);
+			checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		} finally {
 			if (vw != null) {
 				vw.flush();

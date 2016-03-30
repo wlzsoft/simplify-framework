@@ -64,25 +64,10 @@ public class BeetlTemplate  implements ITemplate {
 	}
 
 
-	/**
-	 * 设置内容类型和编码
-	 * 
-	 * @param request
-	 * @param response
-	 */
-	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
-		
-		response.setCharacterEncoding(config.getCharset());
-		response.setContentType("text/html; charset=" + config.getCharset());
-	}
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-
-		// 设置编码
-		setContentType(request, response);
-
-
+		setContentType(request, response,config);
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
@@ -98,18 +83,7 @@ public class BeetlTemplate  implements ITemplate {
 		}
 
 		String content = template.render();	
-		if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
-			// 是否去除空格
-			if(webCache.removeSpace()) {
-				content = ClearCommentUtil.clear(content);
-				content = StringUtil.removeHtmlSpace(content);
-			}
-			Cache cache = CacheBase.getCache(webCache);
-			if(cache != null && cache.doCache(webCache, staticName, content,response)){
-				// 缓存成功.
-			}
-		}
-		MessageView.exe(request, response, webCache, staticName, content, config);
+		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		
 	}
 

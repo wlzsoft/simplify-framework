@@ -12,20 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
-import com.meizu.simplify.utils.ClearCommentUtil;
-import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.web.Cache;
-import com.meizu.simplify.webcache.web.CacheBase;
 
 import httl.Engine;
 import httl.Template;
-
-
 /**
  * <p><b>Title:</b><i>Httl 模板 页面处理返回方式</i></p>
  * <p>Desc: TODO</p>
@@ -41,10 +34,11 @@ import httl.Template;
  */
 @Bean
 @TemplateType("httl")
-public class HttlTemplate  implements ITemplate{
+public class HttlTemplate implements ITemplate {
 	private Engine engine = null;
 	@Resource
 	private PropertiesConfig config;
+
 	public void init() {
 		engine = Engine.getEngine();
 	}
@@ -53,27 +47,11 @@ public class HttlTemplate  implements ITemplate{
 		init();
 	}
 
-	/**
-	 * 设置内容类型和编码
-	 * 
-	 * @param request
-	 * @param response
-	 */
-	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
-		response.setCharacterEncoding(config.getCharset());
-		response.setContentType("text/html; charset=" + config.getCharset());
-	}
-
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-
-		// 设置编码
-		setContentType(request, response);
-
-		
+		setContentType(request, response, config);
 		Template template = null;
 		try {
-			// 取模版
 			template = engine.getTemplate(templateUrl);
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
@@ -82,7 +60,7 @@ public class HttlTemplate  implements ITemplate{
 		// 将request中的对象赋给模版
 		Map<String, Object> parameters = new HashMap<>();
 		Enumeration<String> atts = request.getAttributeNames();
-		while ( atts.hasMoreElements() ) {
+		while (atts.hasMoreElements()) {
 			String name = atts.nextElement();
 			parameters.put(name, request.getAttribute(name));
 		}
@@ -91,19 +69,7 @@ public class HttlTemplate  implements ITemplate{
 		try {
 			template.render(parameters, vw);
 			String content = vw.toString();
-			if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
-				// 是否去除空格
-				if(webCache.removeSpace()) {
-					content = ClearCommentUtil.clear(content);
-					content = StringUtil.removeHtmlSpace(content);
-				}
-				Cache cache = CacheBase.getCache(webCache);
-				if(cache != null && cache.doCache(webCache, staticName, content,response)){
-					// 缓存成功.
-				}
-			}
-			MessageView.exe(request, response, webCache, staticName, content, config);
-			
+			checkCacheAndWrite(request, response, webCache, staticName, content, config);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} finally {
@@ -112,8 +78,7 @@ public class HttlTemplate  implements ITemplate{
 				vw.close();
 			}
 		}
-		
-	}
 
+	}
 
 }
