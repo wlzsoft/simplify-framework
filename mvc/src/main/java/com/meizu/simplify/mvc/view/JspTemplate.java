@@ -15,6 +15,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -40,9 +41,12 @@ import com.meizu.simplify.webcache.web.CacheBase;
 @TemplateType("jsp")
 public class JspTemplate implements ITemplate{
 	
+	
+	@Resource
+	private PropertiesConfig config;
+	
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		RequestDispatcher rd = request.getRequestDispatcher(templateUrl);
 
 		// 跳转前检查静态规则

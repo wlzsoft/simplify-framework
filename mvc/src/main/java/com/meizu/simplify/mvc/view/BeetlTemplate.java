@@ -15,6 +15,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.mvc.view.function.BeetlFunctionDirectivePackage;
 import com.meizu.simplify.utils.ClearCommentUtil;
@@ -42,9 +43,9 @@ import com.meizu.simplify.webcache.web.CacheBase;
 @TemplateType("beetl")
 public class BeetlTemplate  implements ITemplate {
 	private static GroupTemplate gt = null;
-	private static PropertiesConfig config;
+	@Resource
+	private PropertiesConfig config;
 	public static void init() {
-		config = BeanFactory.getBean(PropertiesConfig.class);
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
 		try {
@@ -64,7 +65,7 @@ public class BeetlTemplate  implements ITemplate {
 	 * @param request
 	 * @param response
 	 */
-	private static void setContentType(HttpServletRequest request, HttpServletResponse response) {
+	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
 		
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());

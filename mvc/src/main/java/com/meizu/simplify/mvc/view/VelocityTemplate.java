@@ -16,6 +16,7 @@ import org.apache.velocity.app.Velocity;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -41,7 +42,13 @@ import com.meizu.simplify.webcache.web.CacheBase;
 @TemplateType("velocity")
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
-	private static PropertiesConfig config;
+	
+	@Resource
+	private PropertiesConfig config;
+	
+	public VelocityTemplate() {
+		init();
+	}
 	
 	@Deprecated//后续从配置中读取就可以
 	public static String getPath() {
@@ -49,10 +56,10 @@ public class VelocityTemplate  implements ITemplate{
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	
-	public static void init() {
+	public void init() {
+		config = BeanFactory.getBean(PropertiesConfig.class);
 //		String classPath = config.getClasspath();
 		String classPath = getPath();
-		config = BeanFactory.getBean(PropertiesConfig.class);
 		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
 		Velocity.setProperty(Velocity.OUTPUT_ENCODING, config.getCharset());
 
@@ -88,7 +95,7 @@ public class VelocityTemplate  implements ITemplate{
 
 		Velocity.init();
 	}
-
+	
 
 	/**
 	 * 设置内容类型和编码
@@ -96,7 +103,7 @@ public class VelocityTemplate  implements ITemplate{
 	 * @param request
 	 * @param response
 	 */
-	private static void setContentType(HttpServletRequest request, HttpServletResponse response) {
+	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 	}

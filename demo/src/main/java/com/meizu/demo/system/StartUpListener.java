@@ -37,7 +37,6 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		
 		CachePool.init();
 		Startup.start();
-		VelocityTemplate.init();
 		HttlTemplate.init();
 		BeetlTemplate.init();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));

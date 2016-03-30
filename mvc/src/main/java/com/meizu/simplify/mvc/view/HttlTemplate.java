@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -42,10 +43,10 @@ import httl.Template;
 @TemplateType("httl")
 public class HttlTemplate  implements ITemplate{
 	private static Engine engine = null;
-	private static PropertiesConfig config;
+	@Resource
+	private PropertiesConfig config;
 	public static void init() {
 		engine = Engine.getEngine();
-		config = BeanFactory.getBean(PropertiesConfig.class);
 	}
 
 
@@ -55,7 +56,7 @@ public class HttlTemplate  implements ITemplate{
 	 * @param request
 	 * @param response
 	 */
-	private static void setContentType(HttpServletRequest request, HttpServletResponse response) {
+	private void setContentType(HttpServletRequest request, HttpServletResponse response) {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 	}
