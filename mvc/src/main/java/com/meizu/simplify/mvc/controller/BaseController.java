@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.model.Model;
@@ -41,6 +42,9 @@ public class BaseController<T extends Model> {
 	
 	@Resource
 	private ITemplate template;
+	
+	@Resource
+	private PropertiesConfig config;
 	
 	/**
 	 * 
@@ -170,7 +174,7 @@ public class BaseController<T extends Model> {
 						if(temp != null) {
 							temp.render(request, response, webCache, staticName, templateUrl);
 						} else {
-							MessageView.exe(request, response, webCache, staticName, uri);
+							MessageView.exe(request, response, webCache, staticName, uri,config);
 						}
 				}
 			} else {

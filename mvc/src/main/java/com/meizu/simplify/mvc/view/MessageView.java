@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 
@@ -26,8 +25,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class MessageView {
 
-	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg) throws ServletException, IOException {
-		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg, PropertiesConfig config) throws ServletException, IOException {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 		response.getWriter().print(msg);
