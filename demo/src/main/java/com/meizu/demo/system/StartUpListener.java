@@ -38,6 +38,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		CachePool.init();
 		Startup.start();
 		HttlTemplate.init();
+		VelocityTemplate.init();
 		BeetlTemplate.init();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");

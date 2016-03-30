@@ -25,6 +25,7 @@ public class WebServer {
 			CachePool.init();
 			Startup.start();
 			HttlTemplate.init();
+			VelocityTemplate.init();
 			BeetlTemplate.init();
 			//end
 			init();

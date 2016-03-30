@@ -43,8 +43,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
-	@Resource
-	private PropertiesConfig config;
+	private static PropertiesConfig config;
 	
 	public VelocityTemplate() {
 		init();
@@ -56,7 +55,7 @@ public class VelocityTemplate  implements ITemplate{
 		return path.substring(0, path.lastIndexOf("/"));
 	}
 	
-	public void init() {
+	public static void init() {
 		config = BeanFactory.getBean(PropertiesConfig.class);
 //		String classPath = config.getClasspath();
 		String classPath = getPath();
