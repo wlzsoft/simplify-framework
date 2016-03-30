@@ -101,7 +101,11 @@ public class ReflectionUtil {
     public static Object invokeMethod(final Object obj,final  String methodName,final  Class<?>[] parameterTypes,final Object[] args) {
         Method method = obtainAccessibleMethod(obj, methodName, parameterTypes);
         if (method == null) {
-        	throw new IllegalArgumentException("不能找到对象 [" + obj + "] 的方法 [" + methodName + "("+parameterTypes.getClass()+")] 请检查方法名和方法调用参数是否指定正确"); 
+        	String parameterTypeClsName = "";
+        	if(parameterTypes != null && parameterTypes.length > 0){
+        		parameterTypeClsName = "(" + parameterTypes[0].getName() + ")";
+        	}
+        	throw new IllegalArgumentException("不能找到对象 [" + obj + "] 的方法 [" + methodName + parameterTypeClsName + "] 请检查方法名和方法调用参数是否指定正确");
         }
         try {
         	return method.invoke(obj, args);
