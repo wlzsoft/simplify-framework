@@ -27,7 +27,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public  class  JsonView {
 
-	public static void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj)
+	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj)
 			throws ServletException, IOException {
 		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		String message = JsonUtil.ObjectToString(obj);

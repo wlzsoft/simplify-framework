@@ -137,7 +137,7 @@ public class ControllerFilter implements Filter {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(requestUrl.endsWith(".json")) {
 				try {
-					JsonView.doAction(request, response, null, null, JsonResult.error(exceptionMessage));
+					JsonView.exe(request, response, null, null, JsonResult.error(exceptionMessage));
 				} catch (ServletException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -43,7 +43,7 @@ public  class  JsonpView {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public static <T extends Model> void doAction(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,T model,String domain)
+	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,T model,String domain)
 			throws ServletException, IOException {
 		String message = JsonUtil.ObjectToString(obj);
 		if (model.getScript() == 1) { 

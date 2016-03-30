@@ -139,9 +139,9 @@ public class BaseController<T extends Model> {
 		request.setAttribute("formData", model);
 		Object obj = method.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
-			JsonView.doAction(request, response, webCache, staticName, obj);
+			JsonView.exe(request, response, webCache, staticName, obj);
 		} else if(requestUrl.endsWith(".jsonp")) {
-			JsonpView.doAction(request, response, webCache, staticName, obj,model,"meizu.com");
+			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com");
 		} else {
 //			String templateUri = "/template/jsp";
 			String prefixUri = "";
@@ -162,17 +162,16 @@ public class BaseController<T extends Model> {
 						template.render(request, response, webCache, staticName, templateUrl);//配置文件中读取
 						break;
 					case "redirect":
-						RedirectView.doAction(request, response, webCache, staticName, templateUrl);
+						RedirectView.exe(request, response, webCache, staticName, templateUrl);
 						break;
 					default :
 						ITemplate temp = TemplateFactory.getTemplate(templateType);
 						if(temp != null) {
 							temp.render(request, response, webCache, staticName, templateUrl);
 						} else {
-							MessageView.doAction(request, response, webCache, staticName, uri);
+							MessageView.exe(request, response, webCache, staticName, uri);
 						}
 				}
-				
 			} else {
 				if(obj != null) {
 					request.setAttribute("result", obj);
