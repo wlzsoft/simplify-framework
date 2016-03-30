@@ -38,22 +38,23 @@ public enum InitTypeEnum {
 	 * controller 地址解析初始化
 	 */
 	CONTROL(6),
+	TEMPLATE(7),
 	/**
 	 * 事务解析初始化
 	 */
-	TRANS(7),
+	TRANS(8),
 	/**
 	 * 页面缓存初始化
 	 */
-	WEBCACHE(8),
+	WEBCACHE(9),
 	/**
 	 * websocket解析初始化
 	 */
-	WEBSOCKET(9),
+	WEBSOCKET(10),
 	/**
 	 * sql数据库表结构创建和修改解析初始化
 	 */
-	DBINIT(10);
+	DBINIT(11);
 	
 	public final int value;
 	InitTypeEnum(int value) {

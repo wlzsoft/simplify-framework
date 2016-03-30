@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -34,6 +36,8 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
+@Bean
+@TemplateType("jsp")
 public class JspTemplate implements ITemplate{
 	
 	@Override

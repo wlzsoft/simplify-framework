@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.ioc.annotation.DefaultBean;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 
@@ -22,6 +23,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
+@DefaultBean
 public interface ITemplate {
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException;
 }

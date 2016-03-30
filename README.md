@@ -99,6 +99,7 @@ http://fishermen.iteye.com/blog/430286
 73.通过视图配置文件，来觉得默认视图，通过controller返回的url来判断是否是字符串，是就返回到页面，不是，就解析url，觉得使用配置文件中的默认视频，或是显示指定视图方案，通过url头标识，配置文件中提供默认视图，和其他目前有的，需要支持的视图的指定。
 74.redirect和json和message会使用默认的代码中硬编码的方式匹配
 75.模版引擎只做渲染的事情，不要收到request和reponse等servlet容器相关的api的侵入。
+76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

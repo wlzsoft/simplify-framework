@@ -15,6 +15,8 @@ import org.apache.velocity.app.Velocity;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -35,6 +37,8 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
+@Bean
+@TemplateType("velocity")
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	private static PropertiesConfig config;

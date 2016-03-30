@@ -196,7 +196,7 @@ public class TestController extends SystemController<TestModel> {
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		}
-		return "jsp:/index.jsp";
+		return "uri:/index.jsp";
 	}
 	
 	@RequestMap(path = "/testSelect/")

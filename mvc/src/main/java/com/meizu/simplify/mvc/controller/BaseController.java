@@ -9,15 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.view.BeetlTemplate;
-import com.meizu.simplify.mvc.view.HttlTemplate;
-import com.meizu.simplify.mvc.view.JspTemplate;
+import com.meizu.simplify.mvc.view.ITemplate;
 import com.meizu.simplify.mvc.view.JsonForward;
 import com.meizu.simplify.mvc.view.JsonpForward;
 import com.meizu.simplify.mvc.view.MessageForward;
 import com.meizu.simplify.mvc.view.RedirectForward;
-import com.meizu.simplify.mvc.view.VelocityTemplate;
+import com.meizu.simplify.mvc.view.TemplateFactory;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -40,6 +39,8 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class BaseController<T extends Model> {
 	
+	@Resource
+	private ITemplate template;
 	
 	/**
 	 * 
@@ -117,58 +118,58 @@ public class BaseController<T extends Model> {
 		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		
 		Method[] methods = this.getClass().getMethods();
-		Method doMethod = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
-		if (doMethod == null) {
+		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
+		if (method == null) {
 			throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
 		}
-		if (doMethod.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
+		if (method.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 		}
 
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, doMethod);
+		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, method);
 		
-		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, doMethod);
+		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, method);
 		
-		WebCache webCache = doMethod.getAnnotation(WebCache.class);
-		boolean isCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, doMethod,webCache);
+		WebCache webCache = method.getAnnotation(WebCache.class);
+		boolean isCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, method,webCache);
 		if(isCache) {
 			return;
 		}
 		
 		request.setAttribute("formData", model);
-		Object obj = doMethod.invoke(this,parameValue);
+		Object obj = method.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
 			JsonForward.doAction(request, response, webCache, staticName, obj);
 		} else if(requestUrl.endsWith(".jsonp")) {
 			JsonpForward.doAction(request, response, webCache, staticName, obj,model,"meizu.com");
 		} else {
 //			String templateUri = "/template/jsp";
-			String templateUri = "";
+			String prefixUri = "";
 //			String extend = ".jsp";
 			String extend = "";
 			String uri = "";
 			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
 				uri = String.valueOf(obj);
-				uri = templateUri+uri+extend;
+				uri = prefixUri+uri+extend;
 				String[] uriArr = uri.split(":");
-				switch (uriArr[0]) {
+				String templateType = uriArr[0];
+				String templateUrl = "";
+				if(uriArr.length>1) {
+					templateUrl = uriArr[1];
+				}
+				switch (templateType) {
 					case "uri":
-						new JspTemplate().render(request, response, webCache, staticName, uriArr[1]);//配置文件中读取
+						template.render(request, response, webCache, staticName, templateUrl);//配置文件中读取
 						break;
 					case "redirect":
-						RedirectForward.doAction(request, response, webCache, staticName, uriArr[1]);
+						RedirectForward.doAction(request, response, webCache, staticName, templateUrl);
 						break;
 					case "jsp":
-						new JspTemplate().render(request, response, webCache, staticName, uriArr[1]);
-						break;
 					case "beetl":
-						new BeetlTemplate().render(request, response, webCache, staticName, uriArr[1]);
-						break;
 					case "httl":
-						new HttlTemplate().render(request, response, webCache, staticName, uriArr[1]);
-						break;
 					case "velocity":
-						new VelocityTemplate().render(request, response, webCache, staticName, uriArr[1]);
+						ITemplate temp = TemplateFactory.getTemplate(templateType);
+						temp.render(request, response, webCache, staticName, templateUrl);
 						break;
 					default :
 						MessageForward.doAction(request, response, webCache, staticName, uri);
@@ -179,8 +180,8 @@ public class BaseController<T extends Model> {
 					request.setAttribute("result", obj);
 				}
 				requestUrl = requestUrl.replace(".html", "");
-				uri = templateUri+requestUrl+extend;
-				new JspTemplate().render(request, response, webCache, staticName, uri);//配置文件中读取
+				uri = prefixUri+requestUrl+extend;
+				template.render(request, response, webCache, staticName, uri);//配置文件中读取
 			}
 		}
 		

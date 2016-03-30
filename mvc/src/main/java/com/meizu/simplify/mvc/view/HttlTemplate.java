@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -36,6 +38,8 @@ import httl.Template;
  * @version Version 0.1
  *
  */
+@Bean
+@TemplateType("httl")
 public class HttlTemplate  implements ITemplate{
 	private static Engine engine = null;
 	private static PropertiesConfig config;
