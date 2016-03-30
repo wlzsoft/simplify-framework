@@ -22,6 +22,7 @@ import com.meizu.simplify.mvc.view.JspTemplate;
 @Bean
 @HandleInterface(ITemplate.class)
 public class TemplateInterfaceHandler implements IInterfaceHandler{
+	@Override
 	public Class<?> handle() {
 		return JspTemplate.class;
 	}
