@@ -43,7 +43,7 @@ public  class  JsonpView {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,T model,String domain)
+	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,T model,String domain,PropertiesConfig config)
 			throws ServletException, IOException {
 		String message = JsonUtil.ObjectToString(obj);
 		if (model.getScript() == 1) { 
@@ -53,7 +53,6 @@ public  class  JsonpView {
 		} else {
 			message = StringUtil.format("{0}({1})", model.getCallback(), message);
 		}
-		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("application/jsonp; charset=" + config.getCharset());
 		response.getWriter().print(message);

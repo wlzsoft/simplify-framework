@@ -27,9 +27,8 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public  class  JsonView {
 
-	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj)
+	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,PropertiesConfig config)
 			throws ServletException, IOException {
-		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		String message = JsonUtil.ObjectToString(obj);
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("application/json; charset=" + config.getCharset());

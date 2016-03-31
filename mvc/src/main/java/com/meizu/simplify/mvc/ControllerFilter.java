@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.model.Model;
@@ -109,7 +111,7 @@ public class ControllerFilter implements Filter {
 	 */
 	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
 			String[] params) {
-		
+		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		long time = System.currentTimeMillis();
 		Statistics.getReadMap().put(requestUrl, 0);
 		request.setAttribute("params", params);
@@ -135,7 +137,7 @@ public class ControllerFilter implements Filter {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(requestUrl.endsWith(".json")) {
 				try {
-					JsonView.exe(request, response, null, null, JsonResult.error(exceptionMessage));
+					JsonView.exe(request, response, null, null, JsonResult.error(exceptionMessage),config);
 				} catch (ServletException | IOException e1) {
 					e1.printStackTrace();
 				}
@@ -154,7 +156,7 @@ public class ControllerFilter implements Filter {
 						}
 						
 					};
-					JsonpView.exe(request, response, null, null, JsonResult.error(exceptionMessage),model,"meizu.com");
+					JsonpView.exe(request, response, null, null, JsonResult.error(exceptionMessage),model,"meizu.com",config);
 				} catch (ServletException | IOException e1) {
 					e1.printStackTrace();
 				}

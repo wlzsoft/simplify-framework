@@ -167,9 +167,9 @@ public class BaseController<T extends Model> {
 		request.setAttribute("formData", model);
 		Object obj = method.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
-			JsonView.exe(request, response, webCache, staticName, obj);
+			JsonView.exe(request, response, webCache, staticName, obj,config);
 		} else if(requestUrl.endsWith(".jsonp")) {
-			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com");
+			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com",config);
 		} else {
 			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
 				String uri = String.valueOf(obj);
