@@ -154,6 +154,7 @@ public class ControllerFilter implements Filter {
 								"</html>";*/
 				
 				try {
+					request.setAttribute("exception", throwable);
 					bs.template.render(request, response, null, null, "500");
 				} catch (ServletException | IOException e1) {
 					// TODO Auto-generated catch block

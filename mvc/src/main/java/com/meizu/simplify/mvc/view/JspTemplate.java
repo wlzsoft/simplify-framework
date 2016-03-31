@@ -51,6 +51,9 @@ public class JspTemplate implements ITemplate{
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 //		String prefixUri = "/template/jsp";
 		String prefixUri = "";
+		if(templateUrl.equals("500")) {
+			templateUrl = "/500.jsp";
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(prefixUri+templateUrl+extend);
 		if(rd == null) {
 			throw new UncheckedException("该容器不支持jsp视图");
