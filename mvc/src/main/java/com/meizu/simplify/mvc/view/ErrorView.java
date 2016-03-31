@@ -23,10 +23,10 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class ErrorView {
 
-	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg) throws ServletException, IOException {
+	public static void exe(HttpServletResponse response,String msg) throws IOException  {
 		response.sendError(403, msg);
 	}
-	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,int errorCode,String msg) throws ServletException, IOException {
+	public static void exe(HttpServletResponse response,int errorCode,String msg) throws  IOException {
 		response.sendError(errorCode, msg);
 	}
 }

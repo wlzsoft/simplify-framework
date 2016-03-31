@@ -30,6 +30,7 @@ import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
+import com.meizu.simplify.mvc.view.ErrorView;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.utils.DataUtil;
@@ -163,10 +164,10 @@ public class ControllerFilter implements Filter {
 					e1.printStackTrace();
 				}
 			} else {//其他方式的请求,都走html业务视图，可以支持jsp,velocity 等模板引擎
-//	                                方法一
-				//response.sendError(500,throwable.getMessage());
-//				方法二：推荐
 				try {
+//	                                          方法一
+//					ErrorView.exe(response,500,throwable.getMessage());
+//				           方法二：推荐
 					request.setAttribute("exception", throwable);
 					bs.template.render(request, response, null, null, "500");
 				} catch (ServletException | IOException e1) {

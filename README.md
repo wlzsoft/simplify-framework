@@ -43,7 +43,22 @@ ConcurrentHashMap代替IdentityHashMap和HashMap。IdentityHashMap有其特殊�
 举个例子，jvm中的所有对象都是独一无二的，哪怕两个对象是同一个class的对象，而且两个对象的数据完全相同，对于jvm来说，他们也是完全不同的，如果要用一个map来记录这样jvm中的对象，你就需要用IdentityHashMap，而不能使用其他Map实现。==>>已测试，已通过 2016/3/29
 68.正则表达式和非正则表达式的urlcache的map容器要区分开来，正则表达式的容器改成ConcurrentSkipListMap，非正则表达式如果结果集大，可以分片。==>>已测试，已通过 2016/3/29
 69.提前分析好rest的几种后缀，存起来，空间换时间==>>已测试，已通过 2016/3/29
-
+70.解析指定不同视图的处理器，需要和68及69一同配合解决 ==>>已测试，已通过 2016/3/29
+51.提供更灵活的根据url后缀更换视图的方式，并使用单例的视图对象==>>已测试，已通过 2016/3/30
+52.提供更高性能的一个controller只对应一个地址，这样的controller必须实现特定接口，而这个接口的方法，就是controller的请求映射的方法(没有这个必要，使用代码生成代替反射就可以了)==>>已测试，已通过 2016/3/30
+65.视图层优化方案：*相关非模版的实现类的方法都使用静态方法，其他模版的类使用单例，减少对象的创建
+                               *使用过程中，除了特殊的String类型返回值（[url,redirect,forward 等特殊类型，例子：url:userList,redirect:www.baidu.com]，这是可选方案，也可使用强类型标记-ITemlate，只是用于标记处理结果的类型-比如url，redirct或是forward），其他的类型包含普通的string类型，都当成输出数据处理
+                               *考虑视图的指定方式，有rest风格后缀的方式，视图全局配置。如果需要同时使用多个html模版视图，那么可以使用ITemplate.
+                               *考虑如果同个地址，不通视图，然后有不通的业务逻辑，那么这时可以提供一种特殊后缀，专门用于处理特殊逻辑（针对页面的）==>>已测试，已通过 2016/3/30
+60.优化配置的功能配置信息的读取，使用注解的方式来标注一个pojo，作为配置文件的一个映射，并且支持热加载，还要支持单个属性注入的方式，通过@Config注解 ==>>已测试，已通过 2016/3/29
+71.ErrorView和ioc的Message整合成一个异常处理业务，用于包装throw new 的显示错误信息==>> 已测试，已通过 2016/3/31
+72.Template相关的类都使用bean标注，都是单例==>>已测试，已通过 2016/3/30
+73.通过视图配置文件，来觉得默认视图，通过controller返回的url来判断是否是字符串，是就返回到页面，不是，就解析url，觉得使用配置文件中的默认视频，或是显示指定视图方案，通过url头标识，配置文件中提供默认视图，和其他目前有的，需要支持的视图的指定==>>已测试，已通过 2016/3/30
+74.redirect和json和message会使用默认的代码中硬编码的方式匹配==>>已测试，已通过 2016/3/31
+75.模版引擎只做渲染的事情，不要收到request和reponse等servlet容器相关的api的侵入==>>已测试，已通过 2016/3/31
+78.包装异常信息，封装到Message类中，包含各种类型http状态码的提示,208,300,和默认的500,在最外层异常处理时，需要默认解析，并可覆盖状态码==>>已测试，已通过 2016/3/31
+80.Message提示信息，不要在控制台打印异常信息，因为他们只是提示信息不用使用BaseException,另外定义一个Excpetion，叫MessageException ==>> 已测试，已通过 2016/3/31
+                               
 
 47.模板引擎的性能问题，改用现代模板引擎 (1.模板引擎将模板文件编译成class运行
   			   2.模板中的静态部分采用二进制输出，不需要CPU运行的时候再转码
@@ -51,19 +66,12 @@ ConcurrentHashMap代替IdentityHashMap和HashMap。IdentityHashMap有其特殊�
                目前的现代模板引擎有 smarty4j(没有专业团队维护，移植于php的smarty)或是beetl(推荐)，或是httl
 48.用velocity来合成json串，比直接用那个JSONArray那个快很多，但是瓶颈还在这块，因为我们数据都读到内存里。如果直接拼StringBuffer会快1/3. 更换模板引擎可以提高一下。因为你停留在一个页面，行情列表是需要不停动态刷新的。velocity性能不够理想
 49.SPI机制实现-用以替换和优化java的实现类发现机制，而不是通过扫描某个路径下的class文件的集合的方式,这是一种hack方式，直接用java自己的spi机制，通过ServiceLoader类实现,使用spi而不是api，可用于框架实现插件机制，接口位于调用方一端,考虑视图层使用spi插件机制
-51.提供更灵活的根据url后缀更换视图的方式，并使用单例的视图对象
-52.提供更高性能的一个controller只对应一个地址，这样的controller必须实现特定接口，而这个接口的方法，就是controller的请求映射的方法
-70.解析指定不同视图的处理器，需要和68及69一同配合解决,待解决
 67.提供rest风格的操作，比如支持option 和 delete 等操作update等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
 66.fastjson和jackson是否有提供java8 的 stream api 的json生成方式，毕竟数据库集大的时候，串行处理会有严重性能问题
    已经确认在fastjson-1.1.32版本中开始提供Stream API
 http://www.csdn.net/article/2014-09-25/2821866
 66.json处理框架fastjson ，所谓序列化是很好的序列化成json字符串的性能。
    框架中是否缓存序列化后的二进制数据到redis中，是否可以先把数据转json再序列化或是存储，是否会节省redis空间
-65.视图层优化方案：*IForward接口去掉，相关实现类的方法都使用静态方法，减少对象的创建
-                               *使用过程中，除了特殊的String类型返回值（[url,redirect,forward 等特殊类型，例子：url:userList,redirect:www.baidu.com]，这是可选方案，也可使用强类型标记-IForward改名，并改变其原来的功能作用，只是用于标记处理结果的类型-比如url，redirct或是forward），其他的类型包含普通的string类型，都当成输出数据处理
-                               *考虑视图的指定方式，有rest风格后缀的方式，视图全局配置。如果需要同时使用多个html模版视图，那么可以使用IForward改名的方式，这种反射，也不建议多使用，功能会提供。
-                               *考虑如果同个地址，不通视图，然后有不通的业务逻辑，那么这时可以提供一种特殊后缀，专门用于处理特殊逻辑（针对页面的）
 64.考虑是否把javasist修改字节码的方式去调用，直接用jdk自带的功能，启动时生成特定源码并编译再启动 http://www.importnew.com/12548.html
 使用api：import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -76,8 +84,7 @@ http://fishermen.iteye.com/blog/430286
 附件在微云网盘中的stringSwitch
 18.配置文件热加载实现==>>优先实现
 58.为了提高性能，尽量减少，请求过程中对象的创建，特别是，没必要的无意义的对象的创建。
-59.使用stream 的并行接口操作集合，生成json数据，特别是数据集大的时候。
-60.优化配置的功能配置信息的读取，使用注解的方式来标注一个pojo，作为配置文件的一个映射，并且支持热加载，还要支持单个属性注入的方式，通过value注解
+38.考虑使用Collection中的Stream的并行接口操作集合(注意这个方式，只能遍历一次)来提高大数据json并行解析的速度，特别是数据集大的时候。
 61. 需要实现网络通讯模块，类似netty和mina，可用于物联网，互联网，服务化，远程方法调用的使用，用于http的实现，websocket的实现，自定义协议的实现，rest服务端实现，web容器的实现
 14.压力测试业务请求的性能表现:性能指标，模拟mvc的tomcat，jedis，druid的性能测试，着重是mysql的压力导致tomcat挂掉，而不是mysql挂掉，检查下，是否应该mysql客户端连接频繁重试导致的tomcat挂掉，这时候用的线程资源和连接都是tomcat消耗，需要确认是否是这个问题
 13.事务做更精细化控制，不需要在代码里面硬编码==>>已测试，已通过 2016/2/29 待解决问题：事务重叠问题
@@ -85,25 +92,19 @@ http://fishermen.iteye.com/blog/430286
 17.拦截器模块修改成可配置的方式，通过配置文件的方式，或是注解的方式
 19.极速启动实现==》暂缓
 20.jdbc多数据源及数据分片，主从分离等功能实现，建议以mycat中间件来做这个事情，但是也可以内置实现，部分需求可以没必要使用mycat==》可不实现
-22.模板引擎，velocityForward 不要依赖 servlet相关api，需调整优化==>>暂不处理
-23.提供识别get和post请求的处理，甚至于put和delete等基于rest风格相关的请求处理
+22.模板引擎，velocityTemplate 不要依赖 servlet相关api，需调整优化==>>暂不处理
 24.websocket的实现，可用于集成webserver和消息服务中间件
 33.webcache的ClearCommentUtil.clear中要清除的html页面中，全部用html5的头声明(<!doctype html>)，否则声明头会被清除掉一部分
 34.mvc性能优化，修复请求过程中使用反射的问题,可以使用动态代理，或是修改字节码的方式
 36.连接超时，自动重连功能	
-38.考虑使用Collection中的Stream(注意这个方式，只能遍历一次)来提高大数据json并行解析的速度
 45.整合proguard的特有的东西，还有fha的支持的微信等等的功能,smarty4j使用maven的本地库模式
 46.减少mvc请求时，对象的频繁创建，控制jvm的对象数量，特别是频繁的对象创建和销毁
-71.ErrorForward和ioc的Message整合成一个异常处理业务，用于包装throw new 的显示错误信息
-72.Forward相关的类都使用bean标注，都是单例
-73.通过视图配置文件，来觉得默认视图，通过controller返回的url来判断是否是字符串，是就返回到页面，不是，就解析url，觉得使用配置文件中的默认视频，或是显示指定视图方案，通过url头标识，配置文件中提供默认视图，和其他目前有的，需要支持的视图的指定。
-74.redirect和json和message会使用默认的代码中硬编码的方式匹配
-75.模版引擎只做渲染的事情，不要收到request和reponse等servlet容器相关的api的侵入。
+
 76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
-77.@InitBean注解的实现
-78.包装异常信息，封装到Message类中，包含各种类型http状态码的提示,208,300,和默认的500,在最外层异常处理时，需要默认解析，并可覆盖状态码
 79.dao模块，要考虑实体为非数据库表的对应实体的情况
-80.Message提示信息，不要在控制台打印异常信息，因为他们只是提示信息不用使用BaseException,另外定义一个Excpetion，叫MessageException
+77.@InitBean注解的实现
+23.提供识别get和post请求的处理，甚至于put和delete等基于rest风格相关的请求处理
+
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
