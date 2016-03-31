@@ -126,7 +126,9 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = "/testvelocity3/")//TODO 这个例子没测试通过，因为异常处理模版用的velocity模版，没有捕获异常
 	public String doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		if(true) {
-			Message.error("success","数据为空");
+//			Message.error("success","数据为空");
+			Message.info("success","数据为空");
+//			Message.warn("success","数据为空");
 		}
 		return "velocity:login";
 	}
