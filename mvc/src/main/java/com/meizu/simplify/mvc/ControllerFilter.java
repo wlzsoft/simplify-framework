@@ -21,12 +21,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dto.JsonResult;
+import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.JsonView;
-import com.meizu.simplify.mvc.view.VelocityTemplate;
+import com.meizu.simplify.mvc.view.JsonpView;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -124,35 +127,41 @@ public class ControllerFilter implements Filter {
 					exceptionMessage = "空指针异常";
 				}
 			}
-			response.setStatus(500);
+			if(throwable instanceof BaseException) {
+				response.setStatus(((BaseException)throwable).getErrorCode());
+			} else {
+				response.setStatus(500);
+			}
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(requestUrl.endsWith(".json")) {
 				try {
 					JsonView.exe(request, response, null, null, JsonResult.error(exceptionMessage));
 				} catch (ServletException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			} else if(requestUrl.endsWith(".xml")){//不实现
-				
+			} else if(requestUrl.endsWith(".jsonp")){
+				try {
+					Model model = new Model() {
+						@Override
+						public void setScript(Integer script) {
+							script = DataUtil.parseInt(request.getParameter("script"));
+							super.setScript(script);
+						}
+						@Override
+						public void setCallback(String call) {
+							call = request.getParameter("callback");
+							super.setCallback(call);
+						}
+						
+					};
+					JsonpView.exe(request, response, null, null, JsonResult.error(exceptionMessage),model,"meizu.com");
+				} catch (ServletException | IOException e1) {
+					e1.printStackTrace();
+				}
 			} else {//其他方式的请求,都走html业务视图，可以支持jsp,velocity 等模板引擎
 //	                                方法一
 				//response.sendError(500,throwable.getMessage());
-				
 //				方法二：推荐
-				
-				/*String page500 = "<!DOCTYPE html>"+
-								 "<html>"+
-								 "<head>"+
-								 "<meta charset=\"UTF-8\">"+
-								 "<title>500 错误</title>"+
-								 "</head>"+
-								 "<body>"+
-								 "<!--"+throwable+"-->"+
-								 "哎，出了点问题，先逛逛其他功能，或是联系管理员" +
-								"</body>"+
-								"</html>";*/
-				
 				try {
 					request.setAttribute("exception", throwable);
 					bs.template.render(request, response, null, null, "500");
@@ -160,10 +169,6 @@ public class ControllerFilter implements Filter {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-//				方法三
-//				RequestDispatcher requestDispatcher = request.getRequestDispatcher("500");
-//				requestDispatcher.forward(request, response);
 			}
 //			不同请求风格的异常处理end
 

@@ -99,6 +99,6 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void error(String message) {
-		throw new BaseException(message);
+		throw new BaseException(500,message);
 	}
 }
