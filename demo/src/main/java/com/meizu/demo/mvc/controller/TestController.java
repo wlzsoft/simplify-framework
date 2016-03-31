@@ -91,7 +91,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("user", user);
 		request.setAttribute("tests", testList);
-		return "beetl:/template/beetl/pagefunction.html";
+		return "beetl:pagefunction";
 	}
 	
 	@RequestMap(path = "/testhttl/")
@@ -106,7 +106,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("user", user);
 		request.setAttribute("tests", testList);
-		return "httl:/template/httl/tests.httl";
+		return "httl:tests";
 	}
 	@RequestMap(path = "/testredirect/")
 	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
@@ -127,7 +127,7 @@ public class TestController extends SystemController<TestModel> {
 		if(true) {
 			throw new BaseDaoException("数据为空");
 		}
-		return "velocity:/template/login.html";
+		return "velocity:login";
 	}
 	@RequestMap(path = "/testvelocity2/")
 	public String doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
@@ -139,7 +139,7 @@ public class TestController extends SystemController<TestModel> {
 			session.setAttribute("admin", userName);
 			HttpRoute.route(request, response);
 		}*/
-		return "velocity:/template/login.html";
+		return "velocity:login";
 	}
 	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
 	@RequestMap(path = "/testvelocity/")
@@ -150,14 +150,14 @@ public class TestController extends SystemController<TestModel> {
 		} else {
 			request.setAttribute("userName", "nologin");
 		}
-		return "velocity:/template/login.html";
+		return "velocity:login";
 	}
 	
 	@RequestMap(path = "/testwebsocket/")
 	public String doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return "velocity:/template/websocket.html";
+		return "velocity:websocket";
 	}
 	
 //	@WebSocket

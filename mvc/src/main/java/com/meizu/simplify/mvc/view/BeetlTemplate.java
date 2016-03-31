@@ -13,16 +13,11 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.mvc.view.function.BeetlFunctionDirectivePackage;
-import com.meizu.simplify.utils.ClearCommentUtil;
-import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.web.Cache;
-import com.meizu.simplify.webcache.web.CacheBase;
 
 
 
@@ -43,6 +38,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
 @TemplateType("beetl")
 public class BeetlTemplate  implements ITemplate {
 	private GroupTemplate gt = null;
+	private String extend;
 	@Resource
 	private PropertiesConfig config;
 	
@@ -61,18 +57,23 @@ public class BeetlTemplate  implements ITemplate {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		extend = getExtend();
+		
 	}
+
+	
 
 
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+		String prefixUri = "/template/beetl/";
 		setContentType(request, response,config);
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
 //		gt.setSharedVars(shared);
-		Template template = gt.getTemplate(templateUrl);
+		Template template = gt.getTemplate(prefixUri+templateUrl+extend);
 //		Template template = gt.getTemplate("hello,${name}");//字符串模板
 
 		// 将request中的对象赋给模版

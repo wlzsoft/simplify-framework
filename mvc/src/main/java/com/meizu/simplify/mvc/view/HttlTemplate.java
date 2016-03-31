@@ -33,14 +33,16 @@ import httl.Template;
  *
  */
 @Bean
-@TemplateType("httl")
+@TemplateType(value ="httl",extend = "httl")
 public class HttlTemplate implements ITemplate {
 	private Engine engine = null;
+	private String extend;
 	@Resource
 	private PropertiesConfig config;
-
+	
 	public void init() {
 		engine = Engine.getEngine();
+		extend = getExtend();
 	}
 
 	public HttlTemplate() {
@@ -49,10 +51,11 @@ public class HttlTemplate implements ITemplate {
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
+		String prefixUri = "/template/httl/";
 		setContentType(request, response, config);
 		Template template = null;
 		try {
-			template = engine.getTemplate(templateUrl);
+			template = engine.getTemplate(prefixUri+templateUrl+extend);
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}

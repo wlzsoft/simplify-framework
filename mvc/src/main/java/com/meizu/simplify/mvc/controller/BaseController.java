@@ -140,6 +140,30 @@ public class BaseController<T extends Model> {
 			return;
 		}
 		
+		dispatchView(request, response, model, requestUrl, staticName, method, parameValue, webCache);
+		
+	}
+
+	/**
+	 * 
+	 * 方法用途: 转发到指定视图解析，并输出到浏览器<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param requestUrl
+	 * @param staticName
+	 * @param method
+	 * @param parameValue
+	 * @param webCache
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void dispatchView(HttpServletRequest request, HttpServletResponse response, T model, String requestUrl,
+			String staticName, Method method, Object[] parameValue, WebCache webCache)
+					throws IllegalAccessException, InvocationTargetException, ServletException, IOException {
 		request.setAttribute("formData", model);
 		Object obj = method.invoke(this,parameValue);
 		if(requestUrl.endsWith(".json")) {
@@ -147,14 +171,8 @@ public class BaseController<T extends Model> {
 		} else if(requestUrl.endsWith(".jsonp")) {
 			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com");
 		} else {
-//			String templateUri = "/template/jsp";
-			String prefixUri = "";
-//			String extend = ".jsp";
-			String extend = "";
-			String uri = "";
 			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
-				uri = String.valueOf(obj);
-				uri = prefixUri+uri+extend;
+				String uri = String.valueOf(obj);
 				String[] uriArr = uri.split(":");
 				String templateType = uriArr[0];
 				String templateUrl = "";
@@ -182,11 +200,9 @@ public class BaseController<T extends Model> {
 					request.setAttribute("result", obj);
 				}
 				requestUrl = requestUrl.replace(".html", "");
-				uri = prefixUri+requestUrl+extend;
-				template.render(request, response, webCache, staticName, uri);//配置文件中读取
+				template.render(request, response, webCache, staticName, requestUrl);//配置文件中读取
 			}
 		}
-		
 	}
 
 	

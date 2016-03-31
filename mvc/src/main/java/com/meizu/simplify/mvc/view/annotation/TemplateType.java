@@ -31,4 +31,12 @@ public @interface TemplateType {
 	 */
 	String value();
 
+	/**
+	 * 
+	 * 方法用途: 指定模版文件扩展名<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	String extend() default "html";
+
 }

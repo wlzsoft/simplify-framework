@@ -16,7 +16,6 @@ import org.apache.velocity.app.Velocity;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -40,6 +39,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
+	private String extend;
 	private static PropertiesConfig config;
 	
 	@Deprecated//后续从配置中读取就可以
@@ -47,7 +47,9 @@ public class VelocityTemplate  implements ITemplate{
 		String path = VelocityTemplate.class.getResource("/").getPath();
 		return path.substring(0, path.lastIndexOf("/"));
 	}
-	
+	public VelocityTemplate() {
+		extend = getExtend();
+	}
 //	@InitBean //代替构造函数初始化，并且是读取注入的属性值
 	public static void init() {
 		config = BeanFactory.getBean(PropertiesConfig.class);
@@ -93,10 +95,10 @@ public class VelocityTemplate  implements ITemplate{
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-
+		String prefixUri = "/template/velocity/";
 		setContentType(request, response,config);
 
-		Template template = Velocity.getTemplate(templateUrl);
+		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
 
 		// 将request中的对象赋给模版
 		VelocityContext context = new VelocityContext();
