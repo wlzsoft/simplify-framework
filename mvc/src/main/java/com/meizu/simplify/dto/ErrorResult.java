@@ -1,6 +1,6 @@
 package com.meizu.simplify.dto;
 
-import com.meizu.simplify.exception.Message;
+import com.meizu.simplify.config.info.Message;
 
 /**
  * 

@@ -1,4 +1,6 @@
-package com.meizu.simplify.exception;
+package com.meizu.simplify.config.info;
+
+import com.meizu.simplify.exception.BaseException;
 
 /**
  * <p><b>Title:</b><i>信息提示</i></p>
