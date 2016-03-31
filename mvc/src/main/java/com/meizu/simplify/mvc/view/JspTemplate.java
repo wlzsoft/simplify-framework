@@ -51,6 +51,12 @@ public class JspTemplate implements ITemplate{
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 //		String prefixUri = "/template/jsp";
 		String prefixUri = "";
+		String content = render(request, response, templateUrl, prefixUri);
+		checkCacheAndWrite(request, response, webCache, staticName, content,config);
+	}
+
+	private String render(HttpServletRequest request, HttpServletResponse response, String templateUrl,
+			String prefixUri) throws ServletException, IOException {
 		if(templateUrl.equals("500")) {
 			templateUrl = "/500.jsp";
 		}
@@ -59,7 +65,7 @@ public class JspTemplate implements ITemplate{
 			throw new UncheckedException("该容器不支持jsp视图");
 		}
 		String content = getPageContent(request, response, rd);
-		checkCacheAndWrite(request, response, webCache, staticName, content,config);
+		return content;
 	}
 
 

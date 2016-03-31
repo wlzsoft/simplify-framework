@@ -53,6 +53,12 @@ public class HttlTemplate implements ITemplate {
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/httl/";
 		setContentType(request, response, config);
+		String content = render(request, templateUrl, prefixUri);
+		checkCacheAndWrite(request, response, webCache, staticName, content, config);
+
+	}
+
+	private String render(HttpServletRequest request, String templateUrl, String prefixUri) throws IOException {
 		Template template = null;
 		try {
 			template = engine.getTemplate(prefixUri+templateUrl+extend);
@@ -67,12 +73,11 @@ public class HttlTemplate implements ITemplate {
 			String name = atts.nextElement();
 			parameters.put(name, request.getAttribute(name));
 		}
-
+		String content = "";
 		StringWriter vw = new StringWriter(0);
 		try {
 			template.render(parameters, vw);
-			String content = vw.toString();
-			checkCacheAndWrite(request, response, webCache, staticName, content, config);
+			content = vw.toString();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} finally {
@@ -81,7 +86,7 @@ public class HttlTemplate implements ITemplate {
 				vw.close();
 			}
 		}
-
+		return content;
 	}
 
 }

@@ -66,6 +66,12 @@ public class BeetlTemplate  implements ITemplate {
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/beetl/";
 		setContentType(request, response,config);
+		String content = render(request, templateUrl, prefixUri);	
+		checkCacheAndWrite(request, response, webCache, staticName, content,config);
+		
+	}
+
+	private String render(HttpServletRequest request, String templateUrl, String prefixUri) {
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
@@ -80,9 +86,8 @@ public class BeetlTemplate  implements ITemplate {
 			template.binding(name, request.getAttribute(name));
 		}
 
-		String content = template.render();	
-		checkCacheAndWrite(request, response, webCache, staticName, content,config);
-		
+		String content = template.render();
+		return content;
 	}
 
 

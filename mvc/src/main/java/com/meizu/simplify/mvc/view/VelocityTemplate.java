@@ -14,7 +14,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -100,30 +99,8 @@ public class VelocityTemplate  implements ITemplate{
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/velocity/";
 		setContentType(request, response,config);
-
-		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
-
-		// 将request中的对象赋给模版
-		VelocityContext context = new VelocityContext();
-		Enumeration<String> atts = request.getAttributeNames();
-		while ( atts.hasMoreElements() ) {
-			String name = atts.nextElement();
-			context.put(name, request.getAttribute(name));
-		}
-
-		StringWriter vw = new StringWriter(0);
-		try {
-			template.merge(context, vw);
-			
-			String content = vw.toString();
-			checkCacheAndWrite(request, response, webCache, staticName, content,config);
-		} finally {
-			if (vw != null) {
-				vw.flush();
-				vw.close();
-			}
-		}
-		
+		String content = render(request, templateUrl, prefixUri);
+		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		/*ServletOutputStream output = response.getOutputStream();
 		VelocityWriter vw = null;
 		try {
@@ -143,5 +120,29 @@ public class VelocityTemplate  implements ITemplate{
 				writerPool.put(vw);
 			}
 		}*/
+	}
+	private String render(HttpServletRequest request, String templateUrl, String prefixUri) throws IOException {
+		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
+
+		// 将request中的对象赋给模版
+		VelocityContext context = new VelocityContext();
+		Enumeration<String> atts = request.getAttributeNames();
+		while ( atts.hasMoreElements() ) {
+			String name = atts.nextElement();
+			context.put(name, request.getAttribute(name));
+		}
+
+		StringWriter vw = new StringWriter(0);
+		String content = "";
+		try {
+			template.merge(context, vw);
+			content = vw.toString();
+		} finally {
+			if (vw != null) {
+				vw.flush();
+				vw.close();
+			}
+		}
+		return content;
 	}
 }
