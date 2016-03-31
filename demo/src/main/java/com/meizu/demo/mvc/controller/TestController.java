@@ -127,7 +127,8 @@ public class TestController extends SystemController<TestModel> {
 	public String doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		if(true) {
 //			Message.error("success","数据为空");
-			Message.info("success","数据为空");
+//			Message.info("数据为空");//1.直接错误信息方式
+			Message.info("success","数据为空");//1.读取配置文件信息方式
 //			Message.warn("success","数据为空");
 		}
 		return "velocity:login";
