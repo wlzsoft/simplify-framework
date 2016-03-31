@@ -1,15 +1,12 @@
 package com.meizu.simplify.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 
 /**
- * <p><b>Title:</b><i>配置信息热加载和信息提示</i></p>
- * <p>Desc: 信息提示，通过异常机制，这块可以信息提示和信息热加载做分离，不要放在这一个类中</p>
+ * <p><b>Title:</b><i>信息提示</i></p>
+ * <p>Desc: 通过异常机制实现信息提示</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -20,7 +17,6 @@ import com.meizu.simplify.ioc.annotation.Bean;
  * @version Version 0.1
  *
  */
-@Bean
 public class Message {
 	
 	/**

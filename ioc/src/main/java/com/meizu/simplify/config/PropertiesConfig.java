@@ -11,8 +11,8 @@ import com.meizu.simplify.utils.PropertieUtil;
 
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>配置信息</i></p>
+ * <p>Desc: 支持热加载</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
