@@ -1,0 +1,62 @@
+package com.meizu.simplify.exception;
+
+/**
+ * <p><b>Title:</b><i>信息提示</i></p>
+ * <p>Desc: 通过异常机制实现信息提示,支持i18n国际化</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2015年4月2日 下午4:56:35</p>
+ * <p>Modified By:lcy-</p>
+ * <p>Modified Date:2015年4月2日 下午4:56:35</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @version Version 0.1
+ *
+ */
+public class Message {
+	
+	/**
+	 * 
+	 * 方法用途: 获取信息配置文件中的信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 信息编码
+	 * @param vars 信息变量，可以有多个 
+	 * @return
+	 */
+	public String get(String code, Object... vars) {
+		return null;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 错误提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 信息编码
+	 * @param vars  信息变量，可以有多个 
+	 */
+	public void error(String code, Object... vars) {
+		throw new UncheckedException(get(code, vars));
+	}
+
+	/**
+	 * 
+	 * 方法用途: 错误提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param ex 异常对象
+	 * @param code 信息编码
+	 * @param vars  信息变量，可以有多个 
+	 */
+	public void error(Throwable ex, String code, Object... vars) {
+		throw new UncheckedException(get(code, vars));
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 错误提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public void error(String message) {
+		throw new UncheckedException(message);
+	}
+}
