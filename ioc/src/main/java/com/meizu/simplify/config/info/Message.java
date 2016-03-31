@@ -2,6 +2,7 @@ package com.meizu.simplify.config.info;
 
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p><b>Title:</b><i>信息提示</i></p>
@@ -29,7 +30,7 @@ public class Message {
 	public static String get(String code, Object... values) {
 		MessageConfig messageConfig = BeanFactory.getBean(MessageConfig.class);
 		String message = (String) messageConfig.getProp().get(code);
-		message = String.format(message, values);
+		message = StringUtil.format(message, values);
 		return message;
 	}
 	/**
