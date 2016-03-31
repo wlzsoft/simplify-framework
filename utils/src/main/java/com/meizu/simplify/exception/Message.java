@@ -23,7 +23,7 @@ public class Message {
 	 * @param vars 信息变量，可以有多个 
 	 * @return
 	 */
-	public String get(String code, Object... vars) {
+	public static String get(String code, Object... vars) {
 		return null;
 	}
 
@@ -34,8 +34,8 @@ public class Message {
 	 * @param code 信息编码
 	 * @param vars  信息变量，可以有多个 
 	 */
-	public void error(String code, Object... vars) {
-		throw new UncheckedException(get(code, vars));
+	public static void error(String code, Object... vars) {
+		throw new BaseException(get(code, vars));
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class Message {
 	 * @param code 信息编码
 	 * @param vars  信息变量，可以有多个 
 	 */
-	public void error(Throwable ex, String code, Object... vars) {
-		throw new UncheckedException(get(code, vars));
+	public static void error(Throwable ex, String code, Object... vars) {
+		throw new BaseException(get(code, vars));
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public void error(String message) {
-		throw new UncheckedException(message);
+	public static void error(String message) {
+		throw new BaseException(message);
 	}
 }
