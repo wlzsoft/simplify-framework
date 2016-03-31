@@ -97,10 +97,6 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 		this.remark = remark;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public String getCreateName() {
 		return createName;
 	}
