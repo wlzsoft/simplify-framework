@@ -17,7 +17,7 @@ public class Message {
 	
 	/**
 	 * 
-	 * 方法用途: 获取信息配置文件中的信息<br>
+	 * 方法用途: 获取配置文件中的提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
 	 * @param vars 信息变量，可以有多个 
