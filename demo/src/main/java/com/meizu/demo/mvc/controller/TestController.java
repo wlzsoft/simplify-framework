@@ -15,6 +15,7 @@ import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.SystemController;
+import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -125,7 +126,7 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = "/testvelocity3/")//TODO 这个例子没测试通过，因为异常处理模版用的velocity模版，没有捕获异常
 	public String doTestVelocity3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		if(true) {
-			throw new BaseDaoException("数据为空");
+			Message.error("success","数据为空");
 		}
 		return "velocity:login";
 	}

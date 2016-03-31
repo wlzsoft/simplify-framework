@@ -32,7 +32,26 @@ public class Message {
 		message = String.format(message, values);
 		return message;
 	}
-
+	/**
+	 * 
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 信息编码
+	 * @param values  信息变量，可以有多个 
+	 */
+	public static void info(String code, Object... values) {
+		info(get(code, values));
+	}
+	/**
+	 * 
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 信息编码
+	 * @param values  信息变量，可以有多个 
+	 */
+	public static void warn(String code, Object... values) {
+		warn(get(code, values));
+	}
 	/**
 	 * 
 	 * 方法用途: 错误提示信息<br>
@@ -41,7 +60,7 @@ public class Message {
 	 * @param values  信息变量，可以有多个 
 	 */
 	public static void error(String code, Object... values) {
-		throw new BaseException(get(code, values));
+		error(get(code, values));
 	}
 
 	/**
@@ -53,12 +72,29 @@ public class Message {
 	 * @param values  信息变量，可以有多个 
 	 */
 	public static void error(Throwable ex, String code, Object... values) {
-		throw new BaseException(get(code, values));
+		throw new BaseException(get(code, values),ex);
 	}
-	
 	/**
 	 * 
-	 * 方法用途: 错误提示信息<br>
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void info(String message) {
+		throw new BaseException(208,message);
+	}
+	/**
+	 * 
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void warn(String message) {
+		throw new BaseException(300,message);
+	}
+	/**
+	 * 
+	 * 方法用途: 警告信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
