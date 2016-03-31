@@ -1,6 +1,6 @@
 package com.meizu.simplify.config.info;
 
-import com.meizu.simplify.exception.BaseException;
+import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -73,7 +73,7 @@ public class Message {
 	 * @param values  信息变量，可以有多个 
 	 */
 	public static void error(Throwable ex, String code, Object... values) {
-		throw new BaseException(get(code, values),ex);
+		throw new MessageException(500,get(code, values),ex);
 	}
 	/**
 	 * 
@@ -82,7 +82,7 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void info(String message) {
-		throw new BaseException(208,message);
+		throw new MessageException(208,message);
 	}
 	/**
 	 * 
@@ -91,7 +91,7 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void warn(String message) {
-		throw new BaseException(300,message);
+		throw new MessageException(300,message);
 	}
 	/**
 	 * 
@@ -100,6 +100,6 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void error(String message) {
-		throw new BaseException(500,message);
+		throw new MessageException(500,message);
 	}
 }

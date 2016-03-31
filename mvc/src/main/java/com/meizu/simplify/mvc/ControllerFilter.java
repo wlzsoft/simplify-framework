@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
+import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.controller.BaseController;
@@ -122,17 +123,17 @@ public class ControllerFilter implements Filter {
 			bs.process(request, response,requestUrl);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 			Throwable throwable = e.getTargetException();
-			throwable.printStackTrace();
+			if(throwable instanceof MessageException) {
+				response.setStatus(((BaseException)throwable).getErrorCode());
+			} else {
+				throwable.printStackTrace();
+				response.setStatus(500);
+			}
 			String exceptionMessage = throwable.getMessage();
 			if(exceptionMessage == null) {
 				if(throwable.getClass() == NullPointerException.class) {
 					exceptionMessage = "空指针异常";
 				}
-			}
-			if(throwable instanceof BaseException) {
-				response.setStatus(((BaseException)throwable).getErrorCode());
-			} else {
-				response.setStatus(500);
 			}
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 			if(requestUrl.endsWith(".json")) {

@@ -103,6 +103,7 @@ http://fishermen.iteye.com/blog/430286
 77.@InitBean注解的实现
 78.包装异常信息，封装到Message类中，包含各种类型http状态码的提示,208,300,和默认的500,在最外层异常处理时，需要默认解析，并可覆盖状态码
 79.dao模块，要考虑实体为非数据库表的对应实体的情况
+80.Message提示信息，不要在控制台打印异常信息，因为他们只是提示信息不用使用BaseException,另外定义一个Excpetion，叫MessageException
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
