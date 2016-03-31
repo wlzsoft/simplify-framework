@@ -1,7 +1,6 @@
 package com.meizu.simplify.dto;
 
-import com.meizu.simplify.config.Message;
-import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.exception.Message;
 
 /**
  * 
@@ -22,7 +21,7 @@ public class ErrorResult extends Result{
 	
 	public ErrorResult(String message) {
 		super(message);
-		BeanFactory.getBean(Message.class).error("500", message);
+		Message.error("500", message);
 		super.setSuccess(false);
 	}
 	

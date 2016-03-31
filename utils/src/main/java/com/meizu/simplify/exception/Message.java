@@ -20,10 +20,10 @@ public class Message {
 	 * 方法用途: 获取配置文件中的提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
-	 * @param vars 信息变量，可以有多个 
+	 * @param values 信息变量，可以有多个 
 	 * @return
 	 */
-	public static String get(String code, Object... vars) {
+	public static String get(String code, Object... values) {
 		return null;
 	}
 
@@ -32,10 +32,10 @@ public class Message {
 	 * 方法用途: 错误提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
-	 * @param vars  信息变量，可以有多个 
+	 * @param values  信息变量，可以有多个 
 	 */
-	public static void error(String code, Object... vars) {
-		throw new BaseException(get(code, vars));
+	public static void error(String code, Object... values) {
+		throw new BaseException(get(code, values));
 	}
 
 	/**
@@ -44,10 +44,10 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param ex 异常对象
 	 * @param code 信息编码
-	 * @param vars  信息变量，可以有多个 
+	 * @param values  信息变量，可以有多个 
 	 */
-	public static void error(Throwable ex, String code, Object... vars) {
-		throw new BaseException(get(code, vars));
+	public static void error(Throwable ex, String code, Object... values) {
+		throw new BaseException(get(code, values));
 	}
 	
 	/**
