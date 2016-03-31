@@ -1,6 +1,7 @@
 package com.meizu.simplify.config.info;
 
 import com.meizu.simplify.exception.BaseException;
+import com.meizu.simplify.ioc.BeanFactory;
 
 /**
  * <p><b>Title:</b><i>信息提示</i></p>
@@ -18,7 +19,7 @@ import com.meizu.simplify.exception.BaseException;
 public class Message {
 	
 	/**
-	 * 
+	 * 待测试 TODO
 	 * 方法用途: 获取配置文件中的提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
@@ -26,7 +27,10 @@ public class Message {
 	 * @return
 	 */
 	public static String get(String code, Object... values) {
-		return null;
+		MessageConfig messageConfig = BeanFactory.getBean(MessageConfig.class);
+		String message = (String) messageConfig.getProp().get(code);
+		message = String.format(message, values);
+		return message;
 	}
 
 	/**
