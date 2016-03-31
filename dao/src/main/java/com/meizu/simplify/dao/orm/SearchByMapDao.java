@@ -64,6 +64,11 @@ public class SearchByMapDao {
 		},null);
 		return tList;
 	}
+	
+	public Integer executeUpdate(String sql,Object... params) {
+		logger.info(sql);
+		return SQLExecute.executeUpdate(sql, params);
+	}
 
 	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
 		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
