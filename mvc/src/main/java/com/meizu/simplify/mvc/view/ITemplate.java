@@ -51,10 +51,14 @@ public interface ITemplate {
 	}
 	public default String getExtend() {
 		TemplateType templateType = this.getClass().getAnnotation(TemplateType.class);
-		if(templateType != null) {
-			return templateType.extend();
+		if(templateType == null) {
+			return null;
 		}
-		return null;
+		String extend = templateType.extend();
+		if(StringUtil.isNotBlank(extend)) {
+			extend = "."+extend;
+		}
+		return extend;
 	}
 	
 	/**

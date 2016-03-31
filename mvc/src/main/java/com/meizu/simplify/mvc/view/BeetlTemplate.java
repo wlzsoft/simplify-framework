@@ -61,9 +61,6 @@ public class BeetlTemplate  implements ITemplate {
 		
 	}
 
-	
-
-
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
