@@ -37,6 +37,9 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 	@JSONField (format="yyyy-MM-dd HH:mm:ss")
 	public Date updateTime;
 	
+	@Column(value = "remark")
+	public String remark;
+	
 	@Column(value = "deleteflag")
 	public Boolean deleteflag;
 	
@@ -84,6 +87,14 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 
 	public void setDeleteflag(Boolean deleteflag) {
 		this.deleteflag = deleteflag;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public static long getSerialversionuid() {
