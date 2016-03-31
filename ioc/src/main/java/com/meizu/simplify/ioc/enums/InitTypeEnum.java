@@ -31,30 +31,34 @@ public enum InitTypeEnum {
 	 */
 	IOC(4),
 	/**
+	 * bean创建成功后，执行ioc操作后会调用这个init方法
+	 */
+	INITBEAN(5),
+	/**
 	 * 数据缓存初始化
 	 */
-	CACHE(5),
+	CACHE(6),
 	/**
 	 * controller 地址解析初始化
 	 */
-	CONTROL(6),
-	TEMPLATE(7),
+	CONTROL(7),
+	TEMPLATE(8),
 	/**
 	 * 事务解析初始化
 	 */
-	TRANS(8),
+	TRANS(9),
 	/**
 	 * 页面缓存初始化
 	 */
-	WEBCACHE(9),
+	WEBCACHE(10),
 	/**
 	 * websocket解析初始化
 	 */
-	WEBSOCKET(10),
+	WEBSOCKET(11),
 	/**
 	 * sql数据库表结构创建和修改解析初始化
 	 */
-	DBINIT(11);
+	DBINIT(12);
 	
 	public final int value;
 	InitTypeEnum(int value) {

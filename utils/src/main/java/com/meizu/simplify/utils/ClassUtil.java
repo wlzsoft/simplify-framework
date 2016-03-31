@@ -2,6 +2,7 @@ package com.meizu.simplify.utils;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -37,7 +38,7 @@ public class ClassUtil {
 	
     private ClassUtil() {
     }
-    
+//    ===========================查找类相关的===================================
 	/**
 	 * 
 	 * 方法用途: 查找指定包下继承了指定类或实现了指定接口的类集合<br>
@@ -245,7 +246,25 @@ public class ClassUtil {
 		return classNames;
 	}
 
-	
-	
+//	========================查找方法相关====================================
+	/**
+	 * 
+	 * 方法用途: 查找指定class的方法中上标注有指定注解的方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param annoClass
+	 * @param beanClass
+	 * @return
+	 */
+	public static <T extends Annotation> List<Method> findMethodByAnnotation(Class<T> annoClass,Class<?> beanClass) {
+		Method[] methodArr = beanClass.getMethods();
+		List<Method> resultMethodList = new ArrayList<>();
+		for (Method method : methodArr) {
+			T ib = method.getAnnotation(annoClass);
+			if(ib != null) {
+				resultMethodList.add(method);
+			}
+		}
+		return resultMethodList;
+	}
 
 }

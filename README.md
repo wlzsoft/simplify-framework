@@ -58,7 +58,7 @@ ConcurrentHashMap代替IdentityHashMap和HashMap。IdentityHashMap有其特殊�
 75.模版引擎只做渲染的事情，不要收到request和reponse等servlet容器相关的api的侵入==>>已测试，已通过 2016/3/31
 78.包装异常信息，封装到Message类中，包含各种类型http状态码的提示,208,300,和默认的500,在最外层异常处理时，需要默认解析，并可覆盖状态码==>>已测试，已通过 2016/3/31
 80.Message提示信息，不要在控制台打印异常信息，因为他们只是提示信息不用使用BaseException,另外定义一个Excpetion，叫MessageException ==>> 已测试，已通过 2016/3/31
-                               
+77.@InitBean注解的实现==>>已测试，已通过 2016/3/31
 
 47.模板引擎的性能问题，改用现代模板引擎 (1.模板引擎将模板文件编译成class运行
   			   2.模板中的静态部分采用二进制输出，不需要CPU运行的时候再转码
@@ -102,7 +102,6 @@ http://fishermen.iteye.com/blog/430286
 
 76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
 79.dao模块，要考虑实体为非数据库表的对应实体的情况
-77.@InitBean注解的实现
 23.提供识别get和post请求的处理，甚至于put和delete等基于rest风格相关的请求处理
 
 *相关信息：

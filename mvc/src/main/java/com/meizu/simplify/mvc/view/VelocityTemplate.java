@@ -16,6 +16,8 @@ import org.apache.velocity.app.Velocity;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.InitBean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -40,7 +42,9 @@ public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
 	private String extend;
-	private static PropertiesConfig config;
+	
+	@Resource
+	private PropertiesConfig config;
 	
 	@Deprecated//后续从配置中读取就可以
 	public static String getPath() {
@@ -50,9 +54,8 @@ public class VelocityTemplate  implements ITemplate{
 	public VelocityTemplate() {
 		extend = getExtend();
 	}
-//	@InitBean //代替构造函数初始化，并且是读取注入的属性值
-	public static void init() {
-		config = BeanFactory.getBean(PropertiesConfig.class);
+	@InitBean 
+	public void init() {
 //		String classPath = config.getClasspath();
 		String classPath = getPath();
 		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
