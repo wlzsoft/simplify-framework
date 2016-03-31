@@ -41,7 +41,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class BaseController<T extends Model> {
 	
 	@Resource
-	private ITemplate template;
+	public ITemplate template;
 	
 	@Resource
 	private PropertiesConfig config;

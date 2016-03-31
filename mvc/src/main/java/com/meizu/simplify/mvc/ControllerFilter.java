@@ -107,23 +107,14 @@ public class ControllerFilter implements Filter {
 	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
 			String[] params) {
 		
+		long time = System.currentTimeMillis();
+		Statistics.getReadMap().put(requestUrl, 0);
+		request.setAttribute("params", params);
+		String parName = controllerAnnotationInfo.getMethod();
+		request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
+		BaseController<?> bs = controllerAnnotationInfo.getObj();
 		try {
-			long time = System.currentTimeMillis();
-			
-			Statistics.getReadMap().put(requestUrl, 0);
-			
-			request.setAttribute("params", params);
-			String parName = controllerAnnotationInfo.getMethod();
-			request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
-			BaseController<?> bs = controllerAnnotationInfo.getObj();
 			bs.process(request, response,requestUrl);
-			long readtime = System.currentTimeMillis() - time;
-			LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime)));
-			
-			// 记录统计信息
-			Statistics.incReadcount();
-			Statistics.setReadMaxTime(readtime, requestUrl);
-			Statistics.getReadMap().remove(requestUrl);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 			Throwable throwable = e.getTargetException();
 			throwable.printStackTrace();
@@ -163,7 +154,7 @@ public class ControllerFilter implements Filter {
 								"</html>";*/
 				
 				try {
-					new VelocityTemplate().render(request, response, null, null, "/template/framework/500.html");
+					bs.template.render(request, response, null, null, "framework/500");
 				} catch (ServletException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -182,6 +173,12 @@ public class ControllerFilter implements Filter {
 			e.printStackTrace();
 			throw new UncheckedException(e);
 		}
+		long readtime = System.currentTimeMillis() - time;
+		LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime)));
+		// 记录统计信息
+		Statistics.incReadcount();
+		Statistics.setReadMaxTime(readtime, requestUrl);
+		Statistics.getReadMap().remove(requestUrl);
 	}
 
 	@Override
