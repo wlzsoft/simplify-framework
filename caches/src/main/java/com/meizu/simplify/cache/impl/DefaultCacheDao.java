@@ -1,19 +1,10 @@
 package com.meizu.simplify.cache.impl;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.ICacheDao;
-import com.meizu.simplify.cache.ICacheManager;
-import com.meizu.simplify.cache.annotation.CacheDataDel;
-import com.meizu.simplify.cache.annotation.CacheDataAdd;
-import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 /**

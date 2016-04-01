@@ -1,8 +1,6 @@
 package com.meizu.simplify.cache;
 
 
-import java.util.concurrent.TimeUnit;
-
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 
 
