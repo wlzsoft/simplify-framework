@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.dao.IJsonCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
-import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.cache.redis.util.JsonUtil;
 
 

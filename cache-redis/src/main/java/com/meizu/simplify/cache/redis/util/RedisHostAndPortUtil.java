@@ -1,19 +1,16 @@
 package com.meizu.simplify.cache.redis.util;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.redis.dao.impl.StringRedisDao;
 import com.meizu.simplify.utils.AssertUtil;
-import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
 

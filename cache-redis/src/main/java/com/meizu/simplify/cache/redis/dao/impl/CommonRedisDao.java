@@ -6,7 +6,6 @@ import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
-import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.SerializeUtil;
 
