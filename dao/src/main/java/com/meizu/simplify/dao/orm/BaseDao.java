@@ -41,11 +41,10 @@ public class BaseDao  {
 	 * @param className 结果实体类的名称
 	 * @return
 	 */
-	@Deprecated
-	public static <T extends Object>  SearchByPojoDao<T> getInsPojo (String className) {
-		SearchByPojoDao<T> dao = BeanFactory.getBean(SearchByPojoDao.class);
+	public static SearchByPojoDao getInsPojo () {
+		SearchByPojoDao dao = BeanFactory.getBean(SearchByPojoDao.class);
 		if(dao == null) {
-			throw new UncheckedException("无法获取到"+className+"实体对应的dao[PojoDao]");
+			throw new UncheckedException("无法获取到"+"SearchByPojoDao"+"实体对应的dao[PojoDao]");
 		}
 		return dao;
 	}
@@ -56,11 +55,11 @@ public class BaseDao  {
 	 *        2.第二步：必须在对于的实体类上标注javax.persistence.Entity注解,才能动态生成对应的dao操作类
 	 *        3.第三步：必须在对于的实体类上标注javax.persistence.Table注解,并指定表名，才能知道具体操作哪个表，
 	 *        。。。。具体的信息，参照com.meizu.entity.Test类<br>
-	 * @param classz 业务实体类
+	 * @param entityClass 业务实体类
 	 * @return
 	 */
-	public static <T extends IdEntity<Serializable,Integer>>  Dao<T, Serializable> getIns (Class<T> classz) {
-		String className = classz.getSimpleName();
+	public static <T extends IdEntity<Serializable,Integer>>  Dao<T, Serializable> getIns (Class<T> entityClass) {
+		String className = entityClass.getSimpleName();
 		return getIns(className);
 	}
 	

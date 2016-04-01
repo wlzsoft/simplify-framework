@@ -1,6 +1,5 @@
 package com.meizu.simplify.ioc;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
