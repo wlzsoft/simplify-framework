@@ -10,7 +10,6 @@ import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelScope;
 import com.meizu.simplify.mvc.model.ModelSkip;
 import com.meizu.simplify.utils.DataUtil;
-import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**

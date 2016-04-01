@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**

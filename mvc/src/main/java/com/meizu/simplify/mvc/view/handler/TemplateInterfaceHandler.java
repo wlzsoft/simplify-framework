@@ -5,7 +5,6 @@ import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
 import com.meizu.simplify.mvc.view.ITemplate;
-import com.meizu.simplify.mvc.view.JspTemplate;
 
 /**
   * <p><b>Title:</b><i>模版bean多实现类选择器</i></p>

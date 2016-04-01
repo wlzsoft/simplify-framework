@@ -2,11 +2,7 @@ package com.meizu.simplify.mvc.view;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.meizu.simplify.webcache.annotation.WebCache;
 
 /**
  * <p><b>Title:</b><i>错误页面处理返回方式</i></p>

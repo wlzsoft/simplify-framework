@@ -12,8 +12,6 @@ import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
-import com.meizu.simplify.webcache.util.BrowserUtil;
 import com.meizu.simplify.webcache.web.BrowserCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;

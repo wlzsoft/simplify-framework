@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.cache.redis.util.JsonUtil;
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 

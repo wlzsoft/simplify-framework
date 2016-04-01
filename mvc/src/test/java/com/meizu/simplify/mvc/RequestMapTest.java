@@ -2,8 +2,6 @@ package com.meizu.simplify.mvc;
 
 import org.junit.Test;
 
-import com.meizu.simplify.mvc.annotation.RequestMap;
-
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
