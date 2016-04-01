@@ -236,7 +236,7 @@ public class SQLBuilder<T> {
         	charValue+=",?";
         }
         charValue = charValue.substring(1);
-        
+        logger.info("生成的SQL为: " + sql+""+charValue+")");
         return sql+""+charValue+")";
     }
     
