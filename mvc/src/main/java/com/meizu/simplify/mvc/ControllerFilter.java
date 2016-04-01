@@ -30,7 +30,6 @@ import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.view.ErrorView;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.utils.DataUtil;
@@ -54,6 +53,8 @@ import com.meizu.simplify.utils.StringUtil;
  */
 @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter")
 public class ControllerFilter implements Filter {
+	
+	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerFilter.class);
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -113,7 +114,6 @@ public class ControllerFilter implements Filter {
 	 */
 	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
 			String[] params) {
-		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 		long time = System.currentTimeMillis();
 		Statistics.getReadMap().put(requestUrl, 0);
 		request.setAttribute("params", params);
