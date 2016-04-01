@@ -28,7 +28,7 @@ public class SearchByPojoDao {
 	private static final Logger logger = LoggerFactory.getLogger(SearchByMapDao.class);
 	/**
 	 * 
-	 * 方法用途: 注意，这个方法和Dao类中的find方法重复，后续考虑重构，减少重复代码 TODO<br>
+	 * 方法用途: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
 	 * 操作步骤: TODO<br>
 	 * @param entityClass
 	 * @param sql
