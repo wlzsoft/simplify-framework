@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.meizu</groupId>
@@ -5,7 +6,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>精简程序框架</name>
-  <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
+  <description>精简的程序框架，可以用于�??化web和服务端程序的开�??</description>
   <modules>
   	<module>ioc</module>
   	<module>utils</module>
@@ -18,9 +19,12 @@
   	<module>weaving</module>
   	<module>encrypt</module>
   	<module>stress-tester</module>
+    <module>mongodb</module>
+    <module>message</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <mongo-java-driver>3.1.0</mongo-java-driver>
   </properties>
   	<distributionManagement>
 		<repository>
@@ -33,7 +37,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<repositories>
-	  	<!-- 仓库地址，从上往下进行查找。 -->
+	  	<!-- 仓库地址，从上往下进行查找�?? -->
 	
 		<!-- 如有私服,打开私服地址-->
 		<repository>
@@ -130,10 +134,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
-					<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest” -->
-					<!-- pretest： 每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归
-						 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。
-						 always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5 -->
+					<!-- forkMode 可设置�?�有 “never”， “once”， “always�?? �?? “pertest�?? -->
+					<!-- pretest�?? 每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的�??彻底方式，但也是�??慢的，不适合hudson上持续回�??
+						 once：在�??个进程中进行�??有测试�?�once为默认设置，在Hudson上持续回归时建议使用默认设置�??
+						 always：在�??个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要�??2.6以上提供这个功能，其�?? threadCount：执行时，指定可分配的线程数量�?�只和参数parallel配合使用有效。默认：5 -->
 					<forkMode>always</forkMode>
 					<parallel>methods</parallel>
 					<threadCount>4</threadCount>
@@ -142,7 +146,7 @@
  					<excludes>  
 	                  <exclude>**/TestAll.java</exclude>  
 	                </excludes> 
- 					<!-- cobertura统计单元测试覆盖率 -->
+ 					<!-- cobertura统计单元测试覆盖�?? -->
 					<!-- <systemProperties>
 						<property>
 							<name>net.sourceforge.cobertura.datafile</name>

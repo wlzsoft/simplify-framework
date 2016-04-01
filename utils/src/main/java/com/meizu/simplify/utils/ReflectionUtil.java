@@ -117,7 +117,7 @@ public class ReflectionUtil {
             throw new UncheckedException("参数类型不匹配！");//后续再补充提示信息，指明源数据类型和目录属性类型 TODO
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            LOGGER.error("反射方法调用异常",e.getTargetException());
+            LOGGER.error("反射方法调用异常"+method,e.getTargetException());
             throw new StartupException(e.getTargetException());
         }
         return null;

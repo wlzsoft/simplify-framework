@@ -60,6 +60,17 @@ public class DataUtil {
             return defaultValue;
         }
 	}
+	public static Boolean parseBoolean(Object value, int defaultValue) {
+		if (value == null) {
+			return null;
+		} 
+        try {
+        	return Boolean.parseBoolean(value.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+	}
+
 
 
 	/**
@@ -70,9 +81,12 @@ public class DataUtil {
 	 * @param value
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T extends Serializable> T convertType(Class<?> classType, Object value) {
 		if(classType == Integer.class) {
 			return (T) parseInt(value);
+		}else if(classType == Boolean.class) {
+			return (T) parseBoolean(value);
 		}
 		return (T)value;
 	}

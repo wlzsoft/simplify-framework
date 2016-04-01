@@ -366,7 +366,7 @@ public class SQLBuilder<T> {
         for (int i=0; i < otherIdColumns.size();i++) {
         	String column = otherIdColumns.get(i);
             Object value = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(column));
-            if(isAllField == null||isAllField.length == 0 || isAllField[0] || value != null) {
+            if((isAllField == null||isAllField.length == 0 || isAllField[0] || value != null)&&column!="fid") {
 //              values += ","+column + "=" + handleValue(value);
             	values += ","+column + "=?";
         	}
