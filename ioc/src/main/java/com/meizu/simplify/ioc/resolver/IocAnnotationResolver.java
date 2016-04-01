@@ -1,7 +1,6 @@
 package com.meizu.simplify.ioc.resolver;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
-import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
