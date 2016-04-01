@@ -97,8 +97,7 @@ http://www.csdn.net/article/2014-09-25/2821866
 
 
 76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
-23.提供识别get和post请求的处理，甚至于put和delete等基于rest风格相关的请求处理
-67.提供rest风格的操作，比如支持option 和 delete 等操作update等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
+67.提供识别get和post请求的处理，基于rest风格相关的请求处理提供rest风格的操作，比如支持option 和 delete 等操作update和put等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
 使用api：import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 Files.write( new File( "src/impls/ObjectWithCommands.java" ).toPath(), generateObjectWithCommands( commands ).getBytes(),
