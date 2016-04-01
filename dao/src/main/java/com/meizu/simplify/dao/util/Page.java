@@ -1,7 +1,6 @@
 package com.meizu.simplify.dao.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 

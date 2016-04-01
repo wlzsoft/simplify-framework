@@ -8,10 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.dao.annotations.Table;
-import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.entity.IdEntity;
-import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;

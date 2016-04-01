@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.meizu.simplify.dao.Query;
-import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 
 
