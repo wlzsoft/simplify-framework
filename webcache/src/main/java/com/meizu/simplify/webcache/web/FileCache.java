@@ -5,12 +5,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
 /**
@@ -36,17 +33,13 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public String readCache(WebCache webCache, String staticName,Object obj) {
+	public String readCache(WebCache webCache, String staticName) {
 		Object[] values = CacheBase.urlCache.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
 			File directory = new File(getPath());
 //			File directory = new File(config.getFileCachePath());
 			try {
-				if(obj!=null&&webCache.enableBrowerCache()) {
-					HttpServletResponse response = (HttpServletResponse) obj;
-					BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
-				}
 				FileReader fr = new FileReader(directory.getParent() + "/htmlCache/" + staticName);
 				int ch = 0;
 				StringBuffer sbs = new StringBuffer();

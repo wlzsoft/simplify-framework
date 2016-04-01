@@ -17,6 +17,7 @@ import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
+import com.meizu.simplify.webcache.util.BrowserUtil;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -54,8 +55,11 @@ public class AnalysisRequestControllerMethod {
 		if (doMethod.isAnnotationPresent(WebCache.class)) {
 			Cache cache = CacheBase.getCache(webCache);
 			if(cache != null){
-				String cacheContent = cache.readCache(webCache, staticName,response);
+				String cacheContent = cache.readCache(webCache, staticName);
 				if(cacheContent != null){
+					if(response!=null&&webCache.enableBrowerCache()) {
+						BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
+					}
 					response.setCharacterEncoding(config.getCharset());
 					response.setContentType("text/html; charset=" + config.getCharset());
 					response.getWriter().print(cacheContent);

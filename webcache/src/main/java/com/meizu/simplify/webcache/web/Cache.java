@@ -26,7 +26,7 @@ public interface Cache {
 	 * @param staticName
 	 * @return
 	 */
-	public <T> String readCache(WebCache webCache, String staticName,T o);
+	String readCache(WebCache webCache, String staticName);
 	
 	/**
 	 * 
@@ -37,5 +37,5 @@ public interface Cache {
 	 * @param content
 	 * @return
 	 */
-	public  boolean  doCache(WebCache webCache, String staticName, String content);
+	boolean  doCache(WebCache webCache, String staticName, String content);
 }

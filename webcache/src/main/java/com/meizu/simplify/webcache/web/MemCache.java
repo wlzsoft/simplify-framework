@@ -1,9 +1,6 @@
 package com.meizu.simplify.webcache.web;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.meizu.simplify.webcache.annotation.WebCache;
-import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
 /**
@@ -22,17 +19,13 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
 public class MemCache implements Cache {
 	
 	@Override
-	public String readCache(WebCache webCache, String staticName,Object obj) {
+	public String readCache(WebCache webCache, String staticName) {
 		
 		try {
 			Object[] values = CacheBase.urlCache.get(staticName);
 			long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 			// 检查存活时间
 			if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
-				if(obj!=null&&webCache.enableBrowerCache()) {
-					HttpServletResponse response = (HttpServletResponse) obj;
-					BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
-				}
 				return values[0].toString();
 			}
 		} catch (Exception e) { 

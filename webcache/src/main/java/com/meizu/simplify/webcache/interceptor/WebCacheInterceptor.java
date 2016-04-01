@@ -22,6 +22,7 @@ import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
+import com.meizu.simplify.webcache.util.BrowserUtil;
 import com.meizu.simplify.webcache.web.BrowserCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
@@ -87,8 +88,11 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
 				String staticName = MD5Encrypt.sign(url) + ".lv";
 				//end
-				String cacheContent =cache.readCache(webCache, staticName,response);
+				String cacheContent =cache.readCache(webCache, staticName);
 				if(cacheContent != null){
+					if(response!=null&&webCache.enableBrowerCache()) {
+						BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
+					}
 					//返回缓存的页面
 					context.getCallback().setResult(cacheContent);
 					LOGGER.debug("返回请求["+webCache+"]的缓存页面内容");
