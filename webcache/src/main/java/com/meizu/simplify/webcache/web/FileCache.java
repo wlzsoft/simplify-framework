@@ -55,7 +55,7 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public boolean doCache(WebCache webCache, String staticName, String content) {
+	public boolean setCache(WebCache webCache, String staticName, String content) {
 		try{
 			File htmlCache = new File(config.getFileCachePath());
 			if (!htmlCache.exists()) {

@@ -34,7 +34,7 @@ public class MemCache implements Cache {
 		return null;
 	}
 	@Override
-	public boolean doCache(WebCache webCache, String staticName, String content) {
+	public boolean setCache(WebCache webCache, String staticName, String content) {
 		CacheBase.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });
 		return true;
 	}

@@ -31,7 +31,7 @@ public class BrowserCache {
 	 * @param response
 	 * @return
 	 */
-	public static  boolean doCache(WebCache webCache,HttpServletResponse response) {
+	public static  boolean setCache(WebCache webCache,HttpServletResponse response) {
 		if(response == null) {
 			return false;
 		}

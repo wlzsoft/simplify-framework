@@ -133,11 +133,11 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 					content = ClearCommentUtil.clear(content);
 					content = StringUtil.removeHtmlSpace(content);
 				}
-				BrowserCache.doCache(webCache, response);
+				BrowserCache.setCache(webCache, response);
 				Cache cache = CacheBase.getCache(webCache);
 				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
 				String staticName = MD5Encrypt.sign(url) + ".lv";
-				if(cache != null && cache.doCache(webCache, staticName, content)){
+				if(cache != null && cache.setCache(webCache, staticName, content)){
 					// 缓存成功.
 				}
 			}

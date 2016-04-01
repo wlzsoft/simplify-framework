@@ -37,5 +37,5 @@ public interface Cache {
 	 * @param content
 	 * @return
 	 */
-	boolean  doCache(WebCache webCache, String staticName, String content);
+	boolean  setCache(WebCache webCache, String staticName, String content);
 }
