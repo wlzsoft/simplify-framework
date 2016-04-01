@@ -7,8 +7,6 @@ import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-//import com.meizu.simplify.utils.log.util.DefaultLogManager;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
