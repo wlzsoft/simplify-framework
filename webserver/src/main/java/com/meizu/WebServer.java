@@ -11,9 +11,6 @@ import java.util.Properties;
 import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.mvc.view.BeetlTemplate;
-import com.meizu.simplify.mvc.view.HttlTemplate;
-import com.meizu.simplify.mvc.view.VelocityTemplate;
 public class WebServer {
 	private volatile boolean isShutDowm = false;
 	public static Map<String, String> config = new HashMap<String, String>();
