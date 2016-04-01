@@ -58,7 +58,9 @@ public class FileCache implements Cache {
 	public boolean doCache(WebCache webCache, String staticName, String content) {
 		try{
 			File htmlCache = new File(config.getFileCachePath());
-			if (!htmlCache.exists()) htmlCache.mkdirs();
+			if (!htmlCache.exists()) {
+				htmlCache.mkdirs();
+			}
 			FileWriter fw = new FileWriter(htmlCache.getPath() + "/" + staticName);
 			fw.write(content);
 			fw.close();
