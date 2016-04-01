@@ -10,9 +10,6 @@ import javax.servlet.annotation.WebListener;
 import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.mvc.view.BeetlTemplate;
-import com.meizu.simplify.mvc.view.HttlTemplate;
-import com.meizu.simplify.mvc.view.VelocityTemplate;
 
 /**
   * <p><b>Title:</b><i>系统初始化监听器</i></p>

@@ -16,7 +16,6 @@ import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.SystemController;
 import com.meizu.simplify.config.info.Message;
-import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;

@@ -1,7 +1,6 @@
 package com.meizu.demo.mvc.entity;
 
 import com.meizu.simplify.dao.annotations.Entity;
-import com.meizu.simplify.dao.annotations.Key;
 import com.meizu.simplify.dao.annotations.Table;
 import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.entity.BaseEntity;
