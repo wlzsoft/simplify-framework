@@ -25,7 +25,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class MessageView {
 
-	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String msg, PropertiesConfig config) throws ServletException, IOException {
+	public static void exe(HttpServletRequest request, HttpServletResponse response,String msg, PropertiesConfig config) throws ServletException, IOException {
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
 		response.getWriter().print(msg);

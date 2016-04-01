@@ -39,19 +39,19 @@ public interface ITemplate {
 			String staticName, String content,PropertiesConfig config) throws ServletException, IOException {
 		if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
 			
+			BrowserCache.doCache(webCache, response);
+
 			if(webCache.removeSpace()) {
 				content = ClearCommentUtil.clear(content);
 				content = StringUtil.removeHtmlSpace(content);
 			}
-			
-			BrowserCache.doCache(webCache, response);
 			Cache cache = CacheBase.getCache(webCache);
 			if(cache != null && cache.doCache(webCache, staticName, content)){
 				// 缓存成功
 			}
 			
 		}
-		MessageView.exe(request, response, webCache, staticName, content, config);
+		MessageView.exe(request, response, content, config);
 	}
 	public default String getExtend() {
 		TemplateType templateType = this.getClass().getAnnotation(TemplateType.class);

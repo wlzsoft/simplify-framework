@@ -192,7 +192,7 @@ public class BaseController<T extends Model> {
 						if(temp != null) {
 							temp.render(request, response, webCache, staticName, templateUrl);
 						} else {
-							MessageView.exe(request, response, webCache, staticName, uri,config);
+							MessageView.exe(request, response, uri,config);
 						}
 				}
 			} else {
