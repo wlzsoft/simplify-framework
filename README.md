@@ -84,7 +84,6 @@ http://www.csdn.net/article/2014-09-25/2821866
 17.拦截器模块修改成可配置的方式，通过配置文件的方式，或是注解的方式
 19.极速启动实现==》暂缓
 20.jdbc多数据源及数据分片，主从分离等功能实现，建议以mycat中间件来做这个事情，但是也可以内置实现，部分需求可以没必要使用mycat==》可不实现
-22.模板引擎，velocityTemplate 不要依赖 servlet相关api，需调整优化==>>暂不处理
 24.websocket的实现，可用于集成webserver和消息服务中间件
 33.webcache的ClearCommentUtil.clear中要清除的html页面中，全部用html5的头声明(<!doctype html>)，否则声明头会被清除掉一部分
 34.mvc性能优化，修复请求过程中使用反射的问题,可以使用动态代理，或是修改字节码的方式
@@ -97,6 +96,7 @@ http://www.csdn.net/article/2014-09-25/2821866
 
 
 76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
+80.重构模版引擎：使模版引擎不仅仅使用于html页面，不要依赖servlet的api，可用于解析其他模版，比如sql模版
 67.提供识别get和post请求的处理，基于rest风格相关的请求处理提供rest风格的操作，比如支持option 和 delete 等操作update和put等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
 使用api：import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
