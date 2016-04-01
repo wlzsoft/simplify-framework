@@ -94,10 +94,6 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 				}
 			}
 		} 
-		
-		
-
-		
 		return true;
 	}
 	
