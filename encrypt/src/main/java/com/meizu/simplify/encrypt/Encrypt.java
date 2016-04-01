@@ -1,11 +1,5 @@
 package com.meizu.simplify.encrypt;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
-import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
-
 /**
  * <p><b>Title:</b><i>加密</i></p>
  * <p>Desc: TODO</p>
