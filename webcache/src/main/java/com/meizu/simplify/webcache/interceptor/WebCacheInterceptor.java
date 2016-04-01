@@ -22,6 +22,7 @@ import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.resolver.WebCacheAnnotationResolver;
+import com.meizu.simplify.webcache.web.BrowserCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -128,10 +129,11 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 					content = ClearCommentUtil.clear(content);
 					content = StringUtil.removeHtmlSpace(content);
 				}
+				BrowserCache.doCache(webCache, response);
 				Cache cache = CacheBase.getCache(webCache);
 				String url = request.getServerName() + request.getRequestURI() + StringUtil.parseString(StringUtil.trim(request.getQueryString()),"");
 				String staticName = MD5Encrypt.sign(url) + ".lv";
-				if(cache != null && cache.doCache(webCache, staticName, content,response)){
+				if(cache != null && cache.doCache(webCache, staticName, content)){
 					// 缓存成功.
 				}
 			}

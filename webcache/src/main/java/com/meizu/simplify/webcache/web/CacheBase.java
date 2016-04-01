@@ -43,7 +43,6 @@ public class CacheBase {
 		} else if (WebCache.CacheMode.File == webCache.mode()) {
 			cache = new FileCache();
 		} else if (WebCache.CacheMode.browser == webCache.mode()) {
-			cache = new BrowserCache();
 		}
 		return cache;
 	}

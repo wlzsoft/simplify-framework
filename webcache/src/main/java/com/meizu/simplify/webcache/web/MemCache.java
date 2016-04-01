@@ -41,11 +41,7 @@ public class MemCache implements Cache {
 		return null;
 	}
 	@Override
-	public boolean doCache(WebCache webCache, String staticName, String content,Object obj) {
-		if(obj!=null&&webCache.enableBrowerCache()) {
-			HttpServletResponse response = (HttpServletResponse) obj;
-			BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
-		}
+	public boolean doCache(WebCache webCache, String staticName, String content) {
 		CacheBase.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });
 		return true;
 	}

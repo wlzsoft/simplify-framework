@@ -4,6 +4,7 @@ package com.meizu.simplify.webcache.web;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.webcache.annotation.WebCache;
+import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
@@ -20,25 +21,24 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
  * @version Version 0.1
  *
  */
-public class BrowserCache implements Cache {
+public class BrowserCache {
 	
-	@Override
-	public String readCache(WebCache webCache, String staticName,Object obj) {
-		//浏览器缓存的读取操作由浏览器自己完成，无需程序员控制。 TODO
-		return null;
-	}
-
-	/* 
-	 * CacheAspect 类的浏览器缓存设置不起作用
+	/**
+	 * 
+	 * 方法用途: 设置浏览器缓存<br>
+	 * 操作步骤: 通过response设置返回头信息，来通知浏览器的缓存策略<br>
+	 * @param webCache
+	 * @param response
+	 * @return
 	 */
-	public boolean doCache(WebCache webCache, String staticName, String content,Object obj) {
-		if(obj == null) {
-			return true;
+	public static  boolean doCache(WebCache webCache,HttpServletResponse response) {
+		if(response == null) {
+			return false;
 		}
-		
-		HttpServletResponse response = (HttpServletResponse) obj;
-		BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
-//		BrowserUtil.enableBrowerCache(response,20000);
+		if(webCache.enableBrowerCache() || webCache.mode().equals(CacheMode.browser)) {
+			BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
+//			BrowserUtil.enableBrowerCache(response,20000);
+		}
 		return true;
 	}
 

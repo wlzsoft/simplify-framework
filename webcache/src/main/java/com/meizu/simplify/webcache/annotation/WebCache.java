@@ -41,7 +41,7 @@ public @interface WebCache {
 	CacheMode mode();
 	
 	/**
-	 * 方法用途: 删除空格，压缩减少磁盘空间或内存空间的占用<br>
+	 * 方法用途: 是否[删除空格，压缩减少磁盘空间或内存空间的占用]<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */

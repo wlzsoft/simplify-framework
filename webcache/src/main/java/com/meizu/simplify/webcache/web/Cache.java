@@ -20,7 +20,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public interface Cache {
 	/**
 	 * 
-	 * 方法用途: 读取页面缓存内容，浏览器缓存不起作用<br>
+	 * 方法用途: 读取模版缓存内容<br>
 	 * 操作步骤: TODO<br>
 	 * @param webCache
 	 * @param staticName
@@ -30,13 +30,12 @@ public interface Cache {
 	
 	/**
 	 * 
-	 * 方法用途: 设置缓存，如果是浏览器，通知浏览器端去缓存<br>
+	 * 方法用途: 设置缓存<br>
 	 * 操作步骤: TODO<br>
 	 * @param webCache
 	 * @param staticName
 	 * @param content
-	 * @param o
 	 * @return
 	 */
-	public <T> boolean  doCache(WebCache webCache, String staticName, String content,T o);
+	public  boolean  doCache(WebCache webCache, String staticName, String content);
 }

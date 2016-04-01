@@ -12,6 +12,9 @@ import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
+import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
+import com.meizu.simplify.webcache.util.BrowserUtil;
+import com.meizu.simplify.webcache.web.BrowserCache;
 import com.meizu.simplify.webcache.web.Cache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -36,16 +39,17 @@ public interface ITemplate {
 			String staticName, String content,PropertiesConfig config) throws ServletException, IOException {
 		if (webCache != null && webCache.mode() != WebCache.CacheMode.nil) {
 			
-			// 是否去除空格
 			if(webCache.removeSpace()) {
 				content = ClearCommentUtil.clear(content);
 				content = StringUtil.removeHtmlSpace(content);
 			}
-
+			
+			BrowserCache.doCache(webCache, response);
 			Cache cache = CacheBase.getCache(webCache);
-			if(cache != null && cache.doCache(webCache, staticName, content,response)){
-				// 缓存成功.
+			if(cache != null && cache.doCache(webCache, staticName, content)){
+				// 缓存成功
 			}
+			
 		}
 		MessageView.exe(request, response, webCache, staticName, content, config);
 	}

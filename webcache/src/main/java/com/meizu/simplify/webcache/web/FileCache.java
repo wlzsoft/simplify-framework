@@ -62,12 +62,8 @@ public class FileCache implements Cache {
 	}
 	
 	@Override
-	public boolean doCache(WebCache webCache, String staticName, String content,Object obj) {
+	public boolean doCache(WebCache webCache, String staticName, String content) {
 		try{
-			if(obj!=null&&webCache.enableBrowerCache()) {
-				HttpServletResponse response = (HttpServletResponse) obj;
-				BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
-			}
 			File htmlCache = new File(config.getFileCachePath());
 			if (!htmlCache.exists()) htmlCache.mkdirs();
 			FileWriter fw = new FileWriter(htmlCache.getPath() + "/" + staticName);
