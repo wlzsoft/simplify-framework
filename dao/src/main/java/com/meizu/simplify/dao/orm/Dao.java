@@ -732,6 +732,28 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return page;
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 基于这个方法，再次封装，提供更简便的多表分页查询，sql中带有group by的话，调用此方法 <br>
+	 * 操作步骤: sql通过 druid sqlparser 来解析<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param sql 
+	 * @param params
+	 * @return
+	 */
+	public Page<T> findPageForGroup(Integer currentPage,Integer pageSize,String sql,Object... params) {
+		String countSql = sql.substring(sql.indexOf("from"));
+		countSql = "select count(1) from (" + sql + ") t";
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(countSql,params));
+		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
+		
+		page.setResults(list);
+		return page;
+	}
+	
 	
 	//--------------------------------统计记录数操作-----------------------------------------------------------
 	
