@@ -2,24 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.meizu</groupId>
-	<artifactId>stress-tester</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-
-	<distributionManagement>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>User Porject Snapshot</name>
-            <url>http://10.2.67.20:8081/nexus/content/repositories/snapshots/</url>
-            <!-- 发布时去掉时间戳 -->
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-        <repository>
-            <id>nexus-release</id>
-            <name>User Porject Release</name>
-            <url>http://10.2.67.20:8081/nexus/content/repositories/releases/</url>
-        </repository>
-  </distributionManagement>
+	<parent>
+      <groupId>com.meizu</groupId>
+      <artifactId>simplify-framework</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>stress-tester</artifactId>
+    <packaging>jar</packaging>
+	<name>方法级别压力测试组件</name>
+    <description>用于开发阶段的压力测试</description>
 
 	<!-- 缺少用户名和密码的设置，暂时不可用 -->
 	<!-- <repositories>
@@ -74,86 +65,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<!-- <addClasspath>true</addClasspath> -->
-							<!-- <classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.meizu.Main</mainClass> -->
-							<useUniqueVersions>false</useUniqueVersions>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-						</manifest>
-						
-						<manifestEntries>
-							<Copyright>ros 2015</Copyright>
-							<Project-name>${project.name}</Project-name>
-							<Project-version>${project.version}</Project-version>
-							<Build-Time>${current.timestamp}</Build-Time>
-						</manifestEntries>
-					</archive>
-					<!-- <skip>true</skip> -->
-					</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<!-- <version>2.2</version> -->
-				<version>2.4</version>
-				<configuration>
-					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
-					<descriptors>
-						<descriptor>src/main/assembly/assembly.xml</descriptor>
-					</descriptors>
-					<!-- <appendAssemblyId>false</appendAssemblyId>
-					<finalName>stress-tester</finalName> -->
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-			   <groupId>org.apache.maven.plugins</groupId>
-			   <artifactId>maven-deploy-plugin</artifactId>
-			   <version>2.8.2</version>
-			   <!-- <type>maven-plugin</type> -->
-			   <configuration>
-					<archive>
-						<manifest>
-							<!-- <addClasspath>true</addClasspath> -->
-							<!-- <classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.meizu.Main</mainClass> -->
-							<!-- <useUniqueVersions>false</useUniqueVersions>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries> -->
-						</manifest>
-						
-						<!-- <manifestEntries>
-							<Copyright>ros 2015</Copyright>
-							<Project-name>${project.name}</Project-name>
-							<Project-version>${project.version}</Project-version>
-							<Build-Time>${current.timestamp}</Build-Time>
-						</manifestEntries> -->
-					</archive>
-					<!-- <skip>true</skip> -->
-					</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+			
 		</plugins>
 	</build>
 

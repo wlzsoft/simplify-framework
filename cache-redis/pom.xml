@@ -21,16 +21,18 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-	  <dependency>
-	  	<groupId>com.meizu</groupId>
-	  	<artifactId>stress-tester</artifactId>
-	  	<version>0.0.1-SNAPSHOT</version>
-	  	<exclusions>
-	  		<exclusion>
-	  			<artifactId>commons-logging</artifactId>
-	  			<groupId>commons-logging</groupId>
-	  		</exclusion>
-	  	</exclusions>
-	  </dependency>
+		<!-- 压力测试 -->
+	    <dependency>
+		  	<groupId>com.meizu</groupId>
+		  	<artifactId>stress-tester</artifactId>
+		  	<version>0.0.1-SNAPSHOT</version>
+		  	<scope>test</scope>
+		  	<exclusions>
+		  		<exclusion>
+		  			<artifactId>commons-logging</artifactId>
+		  			<groupId>commons-logging</groupId>
+		  		</exclusion>
+		  	</exclusions>
+		  </dependency>
   </dependencies>
 </project>

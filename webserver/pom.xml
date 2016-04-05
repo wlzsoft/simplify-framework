@@ -80,13 +80,6 @@
 		
 		<!-- 日志相关 end -->
 	    <!-- 测试相关start -->
-	    <!-- 压力测试 -->
-	    <dependency>
-			<groupId>com.meizu</groupId>
-			<artifactId>stress-tester</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
 	    <!-- 单元测试 -->
   		<dependency>
 			<groupId>junit</groupId>

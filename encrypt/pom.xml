@@ -7,26 +7,10 @@
   </parent>
   <artifactId>encrypt</artifactId>
   <packaging>jar</packaging>
-
-  <name>encrypt</name>
+  <name>加密模块</name>
+  <description>封装相关加密算法及表字段加密，自定义加密，通讯加密，防篡改，签名算法</description>
   <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
-  </properties>
-  <distributionManagement>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>User Porject Snapshot</name>
-            <url>http://10.2.67.20:8081/nexus/content/repositories/snapshots/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-        <repository>
-            <id>nexus-release</id>
-            <name>User Porject Release</name>
-            <url>http://10.2.67.20:8081/nexus/content/repositories/releases/</url>
-        </repository>
-  </distributionManagement>
   <dependencies>
 	<dependency>
 			<groupId>junit</groupId>
