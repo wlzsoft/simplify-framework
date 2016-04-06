@@ -171,6 +171,11 @@ public class BaseController<T extends Model> {
 		} else if(requestUrl.endsWith(".jsonp")) {
 			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com",config);
 		} else {
+			String reactive = getDeviceInfo(request);
+			String resolution = request.getHeader("resolution");//800x600
+			if(resolution != null) {//判断分辨率
+				reactive+=resolution;
+			}
 			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
 				String uri = String.valueOf(obj);
 				String[] uriArr = uri.split(":");
@@ -179,9 +184,10 @@ public class BaseController<T extends Model> {
 				if(uriArr.length>1) {
 					templateUrl = uriArr[1];
 				}
+				templateUrl += reactive;
 				switch (templateType) {
 					case "uri":
-						template.render(request, response, webCache, staticName, templateUrl);//配置文件中读取
+						template.render(request, response, webCache, staticName, templateUrl);
 						break;
 					case "redirect":
 						RedirectView.exe(request, response, webCache, staticName, templateUrl);
@@ -200,9 +206,29 @@ public class BaseController<T extends Model> {
 					request.setAttribute("result", obj);
 				}
 				requestUrl = requestUrl.replace(".html", "");
-				template.render(request, response, webCache, staticName, requestUrl);//配置文件中读取
+				requestUrl += reactive;
+				template.render(request, response, webCache, staticName, requestUrl);
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 判断设备类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @return
+	 */
+	private String getDeviceInfo(HttpServletRequest request) {
+		String device = request.getHeader("User-Agent");
+		if(device != null) {//判断设备
+			if(device.contains("Mobile")) {
+				return "Mobile";
+			} else if(device.contains("Pad")){
+				return "Pad";
+			}
+		}
+		return "";
 	}
 
 	
