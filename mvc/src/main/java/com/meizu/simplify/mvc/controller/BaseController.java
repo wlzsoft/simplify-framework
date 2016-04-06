@@ -222,10 +222,10 @@ public class BaseController<T extends Model> {
 	private String getDeviceInfo(HttpServletRequest request) {
 		String device = request.getHeader("User-Agent");
 		if(device != null) {//判断设备
-			if(device.contains("Mobile")) {
-				return "Mobile";
-			} else if(device.contains("Pad")){
+			 if(device.contains("Pad")){
 				return "Pad";
+			} else if(device.contains("Mobile")) {
+				return "Mobile";
 			}
 		}
 		return "";
