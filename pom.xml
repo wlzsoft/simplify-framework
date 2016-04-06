@@ -249,7 +249,16 @@
 								<!-- 多模块聚合 -->
 								<aggregate>true</aggregate>
 							</configuration>
-						</plugin>
+					        <!-- <reportSets>
+					          <reportSet>
+					            <id>aggregate</id>
+					            <inherited>false</inherited>
+					            <reports>
+					              <report>aggregate</report>
+					            </reports>
+					          </reportSet>
+					        </reportSets> -->
+					      </plugin>
 					</reportPlugins>
                 </configuration>
             </plugin>
