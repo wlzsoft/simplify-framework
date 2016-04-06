@@ -97,7 +97,7 @@
 		<artifactId>fluido-skin</artifactId>
 		<version>1.5</version>
 	</skin>
-	<custom>Custom content</custom>
+	<!-- <custom>Custom content</custom> -->
 	  <custom>
 	    <fluidoSkin>
 	      <topBarEnabled>true</topBarEnabled>
