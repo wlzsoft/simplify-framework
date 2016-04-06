@@ -108,6 +108,7 @@ Files.write( new File( "src/impls/ObjectWithCommands.java" ).toPath(), generateO
 63.测试下switch的性能是否比ifelse高许多测试下是否（的确switch的性能更优），equalsIgnoreCase的性能比equals性能高许多，参考http://www.deepinmind.com/%E6%80%A7%E8%83%BD/2014/06/26/string-switch-performance.html
 http://fishermen.iteye.com/blog/430286
 附件在微云网盘中的stringSwitch
+83.maven-site插件使用(命令:clean site site:stage)，及附属插件配置 1.javadoc,2.skin(皮肤),3.template(velocity模版文件),4.site.xml配置
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
