@@ -226,6 +226,8 @@ public class BaseController<T extends Model> {
 				return "Pad";
 			} else if(device.contains("Mobile")) {
 				return "Mobile";
+			} else if(device.contains("ndroid")) {
+				return "Pad";
 			}
 		}
 		return "";
