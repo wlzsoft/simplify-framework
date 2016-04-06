@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.meizu</groupId>
@@ -6,7 +5,85 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>精简程序框架</name>
-  <description>精简的程序框架，可以用于�??化web和服务端程序的开�??</description>
+  <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
+  <url>http://simplify.ros.meizu.com</url>
+  <!-- 项目工程管理 start -->
+  <!-- options: Year of inception -->
+	<inceptionYear>2015</inceptionYear>
+	<!-- options: Project logo picture URL -->
+	<!-- <logo>http://ros.meizu.com/img/logo.gif</logo> -废弃-->
+	<!-- Details of the organization holding the project. Only the name
+        is required. -->
+  	<organization>
+		<name>meizu inc.</name>
+		<url>http://www.meizu.com/</url>
+		<!-- <logo>http://www.meizu.com/meizu-logo.gif</logo> -废弃-->
+	</organization>
+	<!-- options: Project main package -->
+  	<!-- <package>com.meizu.*</package> -废弃-->
+  	<!-- options: GUMP repository ID. Useful only if you use GUMP. -->
+  	<!-- <gumpRepositoryId>ros</gumpRepositoryId> -->
+  	<!-- options: Issue-tracking system URL -->
+	<!-- 问题跟踪 -->
+	<issueManagement>
+		<system>Jira</system>
+		<url>http://10.2.67.31:8083/jira/browse/ros</url>
+		<!-- <system>urltracker</system>
+		<url>http://10.2.67.31/URTracker/Accounts/Login.aspx</url> -->
+	</issueManagement>
+  	<!-- options: Project site address. -->
+  	<!-- <siteAddress>ros.meizu.com</siteAddress> -废弃-->
+  	<!-- options: Project-site deploy directory (physical location) -废弃-->
+  	<!-- <siteDirectory>/www/ros/site/</siteDirectory> -->
+  	<!-- options: Project distribution directory (physical location) -废弃-->
+	<!-- <distributionDirectory>/www/ros/builds/</distributionDirectory> -->
+  	<!-- options: Project source-repository information -->
+  	<!-- 版本控制 -->
+	<scm>
+	<!--<url>https://github.com/lcy19870112/simplify/master</url>
+		<connection>scm:git:git@github.com:lcy19870112/simplify.git</connection>
+		<developerConnection>scm:git:git@github.com:lcy19870112/simplify.git</developerConnection>-->
+		<url>http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</url>
+		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</connection>
+		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</developerConnection>
+	</scm>
+	<!-- 持续集成 -->
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://10.2.67.31:8081/jenkins</url>
+	</ciManagement>
+  	<!-- options: Mailing list information -->
+  	<mailingLists>
+    	<mailingList>
+      		<name>Dev List</name>
+	  		<subscribe>luchuangye@meizu.com</subscribe>
+	  		<unsubscribe>wanglizong@meizu.com</unsubscribe>
+    	</mailingList>
+  	</mailingLists>
+  <!-- Developers involved in this project -->
+  <!-- 开发成员列表 -->
+  <developers>
+		<developer>
+			<id>lcy</id>
+			<name>lcy</name>
+			<email>luchuangye@meizu.com</email>
+			<timezone>8</timezone>
+		</developer>
+		<developer>
+			<id>wlz</id>
+			<name>wlz</name>
+			<email>wanglizong@meizu.com</email>
+			<timezone>8</timezone>
+		</developer>
+	</developers>
+	<!-- 项目授权 -->
+	<licenses>
+		<license>
+			<name>Apache License,Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+	<!-- 项目工程管理  end-->
   <modules>
   	<module>ioc</module>
   	<module>utils</module>
@@ -19,12 +96,9 @@
   	<module>weaving</module>
   	<module>encrypt</module>
   	<module>stress-tester</module>
-    <module>mongodb</module>
-    <module>message</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mongo-java-driver>3.1.0</mongo-java-driver>
   </properties>
   	<distributionManagement>
 		<repository>
@@ -35,9 +109,14 @@
 			<id>snapshots</id>
 			<url>http://10.2.67.20:8081/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<site>
+			<id>tt</id>
+			<name>aaa</name>
+			<url>file://D:/site</url>
+		</site>
 	</distributionManagement>
 	<repositories>
-	  	<!-- 仓库地址，从上往下进行查找�?? -->
+	  	<!-- 仓库地址，从上往下进行查找。 -->
 	
 		<!-- 如有私服,打开私服地址-->
 		<repository>
@@ -52,11 +131,11 @@
             <url>http://maven.oschina.net/content/groups/public</url>
         </repository>
         
-		<repository> 
+		<!-- <repository> 
 			<id>simpleify</id> 
 			<name>simpleify beta</name>
 			<url>https://raw.github.com/simpleify/repository/master</url>
-		</repository>
+		</repository> -->
 		
 	</repositories>
 	
@@ -69,11 +148,11 @@
 	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
 		</pluginRepository>
 		
-		<pluginRepository>
+		<!-- <pluginRepository>
             <id>oschina</id>
             <name>Oschina Releases</name>
             <url>http://maven.oschina.net/content/groups/public</url>
-        </pluginRepository>
+        </pluginRepository> -->
 		
 	</pluginRepositories> 
 	
@@ -101,13 +180,6 @@
 		
 		<!-- 日志相关 end -->
 	    <!-- 测试相关start -->
-	    <!-- 压力测试 -->
-	    <dependency>
-			<groupId>com.meizu</groupId>
-			<artifactId>stress-tester</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
 	    <!-- 单元测试 -->
   		<dependency>
 			<groupId>junit</groupId>
@@ -134,10 +206,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
 				<configuration>
-					<!-- forkMode 可设置�?�有 “never”， “once”， “always�?? �?? “pertest�?? -->
-					<!-- pretest�?? 每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的�??彻底方式，但也是�??慢的，不适合hudson上持续回�??
-						 once：在�??个进程中进行�??有测试�?�once为默认设置，在Hudson上持续回归时建议使用默认设置�??
-						 always：在�??个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要�??2.6以上提供这个功能，其�?? threadCount：执行时，指定可分配的线程数量�?�只和参数parallel配合使用有效。默认：5 -->
+					<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest” -->
+					<!-- pretest： 每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归
+						 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。
+						 always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5 -->
 					<forkMode>always</forkMode>
 					<parallel>methods</parallel>
 					<threadCount>4</threadCount>
@@ -146,7 +218,7 @@
  					<excludes>  
 	                  <exclude>**/TestAll.java</exclude>  
 	                </excludes> 
- 					<!-- cobertura统计单元测试覆盖�?? -->
+ 					<!-- cobertura统计单元测试覆盖率 -->
 					<!-- <systemProperties>
 						<property>
 							<name>net.sourceforge.cobertura.datafile</name>
@@ -155,25 +227,115 @@
 					</systemProperties> -->
 				</configuration>
 			</plugin>
+			<!-- site插件：site:stage 用于生成所有模块的site，site:run 用于生成和运行site，用于查看文档 ,后续增加site插件的详细配置-->
+			<!--文档创建： archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
+			<!-- maven的site文档生成，使用的是Doxia来处理和解析文档的 -->
+			<!-- clean site site:stage -DstagingDirectory=file://D:/site #可以指定生成的路径 -->
+			<plugin>  
+                <!-- 站点生成插件 -->  
+                <groupId>org.apache.maven.plugins</groupId>  
+                <artifactId>maven-site-plugin</artifactId>  
+                <version>3.5</version>  
+                <configuration>  
+                    <!-- 支持国际化 -->  
+                    <locales>zh_CN</locales>
+                    <reportPlugins>
+						<plugin>
+							<!-- 源码查看生成 -->
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.5</version>
+							<configuration>
+								<!-- 多模块聚合 -->
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>
+					</reportPlugins>
+                </configuration>
+            </plugin>
     </plugins>
     <resources>
 		<resource>
 			<directory>src/main/resources</directory>
 			<includes>
-			<include>**/*.xml</include>
-			<include>**/*.properties</include>
+				<include>**/*.xml</include>
+				<include>**/*.properties</include>
 			</includes>
 			<filtering>true</filtering>
 		</resource>
 		<resource>
 			<directory>src/main/java</directory>
 			<includes>
-			<include>**/*.xml</include>
-			<include>**/*.properties</include>
+				<include>**/*.xml</include>
+				<include>**/*.properties</include>
 			</includes>
 			<filtering>true</filtering>
 		</resource>
 	</resources>
     
   </build>
+  
+	<reporting>      
+		<plugins>
+		   <!-- 项目信息过滤-index一定要生成,否则链接问题 -->
+		   <!-- <plugin>          
+			    <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.9</version>       
+			    <reportSets>           
+				   <reportSet>             
+					   <reports>   
+							<report>index</report>
+							<report>dependencies</report>
+							<report>project-team</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						    <report>mailing-list</report>               
+							<report>cim</report>
+							<report>modules</report>
+							<report>plugins</report>
+							<report>help</report>
+							<report>summary</report>           
+					   </reports>           
+				   </reportSet>         
+			   </reportSets>
+		   </plugin>  -->     
+		   <!-- 设置以下环境变量 -->
+		   <!-- JAVA_TOOL_OPTIONS   
+		   -Dfile.encoding=UTF-8 -->
+		   <!-- <plugin>                             
+		   		<groupId>org.apache.maven.plugins</groupId>                            
+		   		<artifactId>maven-javadoc-plugin</artifactId>                            
+		   		<version>2.10.3</version>                            
+		   		<configuration>       
+		   		    <additionalJOption>-J-Dfile.encoding=UTF-8</additionalJOption>
+		   			<aggregate>true</aggregate>                          
+		   			<charset>UTF-8</charset>                                         
+		   			<encoding>UTF-8</encoding>                                        
+		   			<docencoding>UTF-8</docencoding>    
+		   			<tags>  
+			            <tag>  
+			                <name>title</name>  
+			                <placement>a</placement>  
+			                <head>标题</head>  
+			            </tag>  
+			        </tags>                        
+		   		</configuration>        
+		   		<executions>
+			     <execution>
+			      <id>attach-javadocs</id>
+			      <goals>
+			       <goal>jar</goal>
+			      </goals>
+			     </execution>
+			    </executions>        
+		   	</plugin> -->      
+           <!-- <plugin> 
+               <groupId>org.codehaus.mojo</groupId>                                      
+               <artifactId>dashboard-maven-plugin</artifactId>                                      
+               <version>1.0.0-beta-1</version>                             
+           </plugin> -->
+	   </plugins>    
+   </reporting>
 </project>
