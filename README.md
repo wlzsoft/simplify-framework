@@ -94,7 +94,7 @@ http://www.csdn.net/article/2014-09-25/2821866
 
 
 
-
+81.支持服务端多视图响应式设计方案：响应视图，支持设备类型和屏幕尺寸做响应，若要更好体验，需要通过前端工程师和设计师配合
 76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
 80.重构模版引擎：使模版引擎不仅仅使用于html页面，不要依赖servlet的api，可用于解析其他模版，比如sql模版
 67.提供识别get和post请求的处理，基于rest风格相关的请求处理提供rest风格的操作，比如支持option 和 delete 等操作update和put等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
