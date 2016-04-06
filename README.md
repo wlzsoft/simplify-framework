@@ -60,6 +60,7 @@ ConcurrentHashMap代替IdentityHashMap和HashMap。IdentityHashMap有其特殊�
 80.Message提示信息，不要在控制台打印异常信息，因为他们只是提示信息不用使用BaseException,另外定义一个Excpetion，叫MessageException ==>> 已测试，已通过 2016/3/31
 77.@InitBean注解的实现==>>已测试，已通过 2016/3/31
 79.dao模块，要考虑实体为非数据库表的对应实体的情况==>>已测试，已通过 2016/4/1
+81.支持服务端多视图响应式设计方案：响应视图，支持设备类型和屏幕尺寸做响应，若要更好体验，需要通过前端工程师和设计师配合==>>已测试，已通过 2016/4/6
 
 
 47.模板引擎的性能问题，改用现代模板引擎 (1.模板引擎将模板文件编译成class运行
@@ -94,7 +95,7 @@ http://www.csdn.net/article/2014-09-25/2821866
 
 
 
-81.支持服务端多视图响应式设计方案：响应视图，支持设备类型和屏幕尺寸做响应，若要更好体验，需要通过前端工程师和设计师配合
+
 76.sql解析需要加上缓存，可以启动测试模式，不需要缓存，sql可以使用template引擎来渲染
 80.重构模版引擎：使模版引擎不仅仅使用于html页面，不要依赖servlet的api，可用于解析其他模版，比如sql模版
 67.提供识别get和post请求的处理，基于rest风格相关的请求处理提供rest风格的操作，比如支持option 和 delete 等操作update和put等操作，补充get和post的不足，考虑简单的controller都可以不写，在basecontroller中提供默认的通用模块的操作，类似basedao的功能。
