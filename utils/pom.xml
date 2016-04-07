@@ -6,7 +6,8 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>utils</artifactId>
-  
+  <name>工具集</name>
+  <description>通用操作工具集，只针对非web容器的相关工具类</description>
   <dependencies>
 		<dependency>
 			<groupId>com.alibaba</groupId>

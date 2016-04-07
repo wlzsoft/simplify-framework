@@ -7,8 +7,9 @@
   </parent>
   <artifactId>ioc</artifactId>
   
-  <name>ioc</name>
-  <url>http://maven.apache.org</url>
+  <name>依赖注入组件</name>
+  <url>http://simplify.ros.meizu.com/ioc</url>
+  <description>bean容器管理及依赖注入</description>
   <dependencies>
   	<dependency>
   		<groupId>com.meizu</groupId>
