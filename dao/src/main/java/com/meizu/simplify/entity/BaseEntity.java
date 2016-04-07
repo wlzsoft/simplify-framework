@@ -81,8 +81,15 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 	}
 	
 
-	public Boolean getDeleteflag() {
-		return deleteflag;
+	public Integer getDeleteflag() {
+		if(null!=this.deleteflag ){
+			if(this.deleteflag){
+				return 1;
+			}else{
+				return 0;
+			}
+		}
+		return null;
 	}
 
 	public void setDeleteflag(Boolean deleteflag) {
