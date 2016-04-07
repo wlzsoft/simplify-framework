@@ -81,6 +81,13 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 	}
 	
 
+	/**
+	 * 
+	 * 方法用途: 获取删除标记<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 * @author whb
+	 */
 	public Integer getDeleteflag() {
 		if(null!=this.deleteflag ){
 			if(this.deleteflag){
