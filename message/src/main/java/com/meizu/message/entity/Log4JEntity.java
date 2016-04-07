@@ -26,7 +26,8 @@ public class Log4JEntity implements Serializable {
 	private String createTime;// 时间
 	private String LoggerName;// 日志打印类
 	private Integer userId;// 当前用户Id
-	private String userName;// 当前用户名称
+	private String fuserName;// '用户登录账号'
+	private String fnickName;// '昵称'
 	private String sessionId;
 
 	public String getFileName() {
@@ -100,13 +101,20 @@ public class Log4JEntity implements Serializable {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-
-	public String getUserName() {
-		return userName;
+	public String getFuserName() {
+		return fuserName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setFuserName(String fuserName) {
+		this.fuserName = fuserName;
+	}
+
+	public String getFnickName() {
+		return fnickName;
+	}
+
+	public void setFnickName(String fnickName) {
+		this.fnickName = fnickName;
 	}
 
 	public String getSessionId() {

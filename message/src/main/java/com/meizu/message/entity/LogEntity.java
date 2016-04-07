@@ -15,8 +15,10 @@ public class LogEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -9213847583807623555L;
 	
-	private Type type;// 日志类型
-	private String operationModule;// 模块名
+	private String busiType;//业务类型：接口、业务
+	private Type type;//操作类型
+	private String operationModule;// 操作模块
+	private String action;//动作：接口拉取、提交等
 	private String remark;// 描述 节点信息
 	private Terminal terminalName;// 渠道名
 	private Object beans;// 日志记录实体bean
@@ -29,11 +31,24 @@ public class LogEntity implements java.io.Serializable {
 	private String createTime;// 时间
 	private String consumeTime;//方法执行耗时
 	private Integer userId;// 当前用户Id
-	private String userName;// 当前用户名称
+	private String fuserName;// '用户登录账号'
+	private String fnickName;// '昵称'
 	private String sessionId;
 	private String url;
-
 	
+	
+	public String getBusiType() {
+		return busiType;
+	}
+	public void setBusiType(String busiType) {
+		this.busiType = busiType;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
 	public Integer getCount() {
 		return count;
 	}
@@ -115,11 +130,17 @@ public class LogEntity implements java.io.Serializable {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	public String getUserName() {
-		return userName;
+	public String getFuserName() {
+		return fuserName;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setFuserName(String fuserName) {
+		this.fuserName = fuserName;
+	}
+	public String getFnickName() {
+		return fnickName;
+	}
+	public void setFnickName(String fnickName) {
+		this.fnickName = fnickName;
 	}
 	public String getSessionId() {
 		return sessionId;
