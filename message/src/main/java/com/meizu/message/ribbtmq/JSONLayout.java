@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.meizu.message.entity.Log4JEntity;
-import com.meizu.simplify.utils.DateUtils;
+import com.meizu.simplify.utils.DateUtil;
+import com.meizu.simplify.utils.enums.DateFormatEnum;
 import com.meizu.simplify.utils.ip.IpUtil;
 
 /**
@@ -41,7 +42,7 @@ public class JSONLayout extends Layout {
 				Throwable t = ti.getThrowable();
 				entity.setClassName(t.getClass().getCanonicalName());
 				entity.setLevel(event.getLevel().toString());
-				entity.setCreateTime(DateUtils.longToString(System.currentTimeMillis(),DateUtils.FORMAT_6));
+				entity.setCreateTime(DateUtil.formatDate(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 				entity.setMessage(event.getMessage()+ t.getMessage());
 //				entity.setLoggerName(event.getLoggerName());
 				entity.setIp(IpUtil.getLocalIp());
@@ -61,7 +62,7 @@ public class JSONLayout extends Layout {
 	protected void writeBasic(Log4JEntity entity, LoggingEvent event) throws Exception {
 		entity.setClassName(event.categoryName);
 		entity.setLevel(event.getLevel().toString());
-		entity.setCreateTime(DateUtils.longToString(System.currentTimeMillis(),DateUtils.FORMAT_6));
+		entity.setCreateTime(DateUtil.formatDate(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 		entity.setMessage(event.getMessage());
 //		entity.setLoggerName(event.getLoggerName());
 		entity.setIp(IpUtil.getLocalIp());
@@ -79,7 +80,7 @@ public class JSONLayout extends Layout {
 	}
 
 	public static void main(String [] arges){
-		System.out.println(DateUtils.longToString(System.currentTimeMillis(),DateUtils.FORMAT_6));
+		System.out.println(DateUtil.formatDate(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 		
 	}
 }

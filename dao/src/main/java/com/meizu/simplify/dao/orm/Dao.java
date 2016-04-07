@@ -743,6 +743,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param sql 
 	 * @param params
 	 * @return
+	 * @author yhb 2016/4/6
 	 */
 	public Page<T> findPageForGroup(Integer currentPage,Integer pageSize,String sql,Object... params) {
 		String countSql = sql.substring(sql.indexOf("from"));

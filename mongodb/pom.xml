@@ -11,7 +11,7 @@
   <name>mongodb</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
+    <mongo-java-driver>3.2.2</mongo-java-driver>
   </properties>
   <dependencies>
     <dependency>
@@ -35,10 +35,10 @@
 	    <artifactId>dao</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
-	 <dependency>
-	  <groupId>com.hynnet</groupId>
-	  <artifactId>mongo-java-driver</artifactId>
-	  <version>${mongo-java-driver}</version>
+	<dependency>
+		<groupId>org.mongodb</groupId>
+		<artifactId>mongo-java-driver</artifactId>
+		<version>${mongo-java-driver}</version>
 	</dependency>
 	
   </dependencies>

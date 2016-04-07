@@ -46,6 +46,19 @@ public class DateUtil {
 		return getDateFormat(type).format(date);
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 格式化日期-Date转为指定格式字符串<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @param type
+	 * @return
+	 * @author luchuangye 2016/4/7
+	 */
+	public static String formatDate(long timesamp, DateFormatEnum type) {
+		return formatDate(new Date(timesamp));
+	}
+	
 	
     /**
      * 
@@ -78,5 +91,16 @@ public class DateUtil {
         return resultString;
     }
     
+    /**
+	 * 
+	 * 方法用途: 获取当前日期对象<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 * @author whb 2016/4/7
+	 */
+	public static Date getCurrentDate() {
+		Date date = new Date();
+		return date;
+	}
    
 }
