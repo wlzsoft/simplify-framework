@@ -123,8 +123,31 @@
 	      
 	      <copyrightClass>pull-right</copyrightClass>
 	      
+	      <gitHub>
+	        <projectId>apache/maven-skins</projectId>
+	        <ribbonOrientation>right</ribbonOrientation>
+	        <ribbonColor>black</ribbonColor>
+	      </gitHub>
+	      
 	      <!-- <profile>(pre-release|sandbox|retired)</profile> -->
 	      
+	       <weibo> 
+	        <user>simonetripodi</user>
+	        <showUser>true</showUser>
+	        <showFollowers>true</showFollowers>
+	      </weibo>
+	      <baidutongji>
+            <piwikUrl>example.org/piwik</piwikUrl>
+            <idsite>1</idsite>
+          </baidutongji>
+          <qq />
+	      <weixin />
+	      <!-- 捐赠 -->
+	      <flattr>
+	          <thing>12345/Example-Org</thing>
+	          <url>http://example.org/</url>
+	          <style>compact</style>
+	      </flattr>
 	      <skipGenerationDate>true</skipGenerationDate>
 	      <breadcrumbDivider>»</breadcrumbDivider>
 	      
