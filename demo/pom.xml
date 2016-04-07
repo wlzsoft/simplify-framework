@@ -1,0 +1,239 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.meizu</groupId>
+  <artifactId>demo</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>demo Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <repositories>
+	  	<!-- 仓库地址，从上往下进行查找。 -->
+	
+		<!-- 如有私服,打开私服地址-->
+		<repository>
+			<id>nexus</id>
+	  		<name>internal nexus repository</name>
+	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+		</repository>
+		
+		<repository>
+            <id>oschina</id>
+            <name>Oschina Releases</name>
+            <url>http://maven.oschina.net/content/groups/public</url>
+        </repository>
+        
+		<repository> 
+			<id>simpleify</id> 
+			<name>simpleify beta</name>
+			<url>https://raw.github.com/simpleify/repository/master</url>
+		</repository>
+		
+	</repositories>
+	
+	<pluginRepositories> 
+	
+		<!-- 如有私服,打开私服地址-->
+		<pluginRepository>
+			<id>nexus</id>
+	  		<name>internal nexus repository</name>
+	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+		</pluginRepository>
+		
+		<pluginRepository>
+            <id>oschina</id>
+            <name>Oschina Releases</name>
+            <url>http://maven.oschina.net/content/groups/public</url>
+        </pluginRepository>
+		
+	</pluginRepositories> 
+  <dependencies>
+   <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>mvc</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>cache-redis</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>aop</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>dao</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+            <scope>provided</scope>
+		</dependency>
+    <dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+  </dependencies>
+  <build>
+    <finalName>demo</finalName>
+    <plugins>
+    	<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+			<source>1.8</source>
+			<target>1.8</target>
+			</configuration>
+		</plugin>
+    	<!-- 运行命令 mvn jetty:run 或    mvn -Djetty.port=9999 jetty:run -->
+		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
+		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
+		<!-- -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties -->
+		<plugin>
+
+		  <groupId>org.eclipse.jetty</groupId>
+		  <artifactId>jetty-maven-plugin</artifactId>
+		  <version>9.3.0.M2</version>
+			<configuration>
+				<!-- jvmArgs不起作用 -->
+				<!-- <jvmArgs>-javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
+				<contextXml>src/test/java/jetty-config.xml</contextXml>
+				<!--<war>${project.basedir}/${project.build.directory}/${project.artifactId}-${project.version}</war>-->
+				<!--<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>-->
+				<webApp>
+					<!-- <defaultsDescriptor>src/test/java/webdefault.xml</defaultsDescriptor> -->
+                       <contextPath>/</contextPath>
+					<!--<baseResource>${project.basedir}/src/main/webapp</baseResource>-->
+                   </webApp>
+                   <httpConnector>
+                   	<!-- 注意：这个端口的优先级最高，高于‘-Djetty.port’,如果这里指定了端口，那么‘-Djetty.port’指定的端口是无效的 -->
+                   	<!-- <port>8080</port> -->
+                   	<idleTimeout>60000</idleTimeout>
+                       <!-- <maxIdleTime>120000</maxIdleTime>  -->
+                   </httpConnector>
+				<stopKey>stop_jetty_dev</stopKey>
+				<stopPort>9099</stopPort>
+				<!-- <scanIntervalSeconds>3</scanIntervalSeconds> -->
+				<!-- <scanTargetPatterns> 
+                    <scanTargetPattern> 
+                         <directory>src/main/webapp/WEB-INF</directory> 
+                         <excludes> 
+                              <exclude>**/*.jsp</exclude> 
+                              <exclude>**/*.js</exclude> 
+                              <exclude>**/*.css</exclude> 
+                         </excludes> 
+                         <includes> 
+                              <include>**/*.properties</include> 
+                              <include>**/*.xml</include> 
+                         </includes> 
+                    </scanTargetPattern> 
+                    <scanTargetPattern> 
+                         <directory>src/main/resources</directory> 
+                         <includes> 
+                              <include>**/*.properties</include> 
+                              <include>**/*.xml</include> 
+                         </includes> 
+                    </scanTargetPattern> 
+                    <scanTargetPattern> 
+                         <directory>src/main/java</directory> 
+                         <includes> 
+                              <include>**/*.java</include> 
+                              <include>**/*.xml</include> 
+                         </includes> 
+                    </scanTargetPattern> 
+               </scanTargetPatterns> -->
+				<!--<reload>manual</reload>-->
+				<!--<reload>automatic</reload>-->
+				<daemon>true</daemon>
+				<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+                       <filename>${project.build.directory}/access.log</filename>
+                       <retainDays>90</retainDays>
+                       <append>false</append>
+                       <extended>false</extended>
+                       <logTimeZone>GMT+8:00</logTimeZone>
+                   </requestLog>
+                   <!-- <systemProperties>
+                   	<systemProperty>
+                   		<name>productionMode</name>
+                       	<value>${productionMode}</value>
+                       </systemProperty>
+                   </systemProperties> -->
+			</configuration>
+			<!--executions 在install时会起作用执行  -->
+			<!-- 集成测试 -->
+			<executions>
+				<execution>
+					<id>start-jetty</id>
+					<phase>pre-integration-test</phase>
+					<goals>
+						<goal>start</goal>
+						<!--<goal>run</goal>-->
+					</goals>
+					<configuration>
+						<httpConnector>
+	                    	<port>8040</port>
+	                    	<idleTimeout>60000</idleTimeout>
+	                    </httpConnector>
+	                    <!-- <stopKey>stop-jetty</stopKey>
+						<stopPort>9098</stopPort> -->
+						<scanIntervalSeconds>0</scanIntervalSeconds>
+						<!--<daemon>true</daemon>-->
+					</configuration>
+				</execution>
+				<execution>
+					<id>stop-jetty</id>
+					<phase>post-integration-test</phase>
+					<goals>
+						<goal>stop</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		<!-- 单元测试开始-集成javaangent-未测试 -->
+	    <!-- mvn surefire:test或者mvn test 运行单元测试 -->
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-surefire-plugin</artifactId>
+	      <configuration>
+	        <forkMode>pertest</forkMode>
+	        <argLine>-javaagent:${project.basedir}/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
+	        <workingDirectory>${project.basedir}/target</workingDirectory>
+	      </configuration>
+	    </plugin>
+	    <!-- <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-dependency-plugin</artifactId>
+	      <executions>
+	        <execution>
+	          <id>copy</id>
+	          <phase>process-resources</phase>
+	          <goals>
+	            <goal>copy</goal>
+	          </goals>
+	          <configuration>
+	            <artifactItems>
+	              <artifactItem>
+	                <groupId>com.meizu</groupId>
+	                <artifactId>aop</artifactId>
+	                <version>0.0.1-SNAPSHOT</version>
+	                <outputDirectory>${project.build.directory}</outputDirectory>
+	              </artifactItem>
+	            </artifactItems>
+	          </configuration>
+	        </execution>
+	      </executions>
+	    </plugin> -->
+	    <!-- 单元测试结束 -->
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,46 @@
+<!--## 定义变量类型，未定义的变量以Object类型处理 -->
+<!--#set(User user, List<Test> tests)-->
+<html>
+    <body>
+     
+        <!--## 定义宏，可当变量或方法执行 -->
+        <!--#macro(cover(Test test))-->
+            <img alt="${test.name}" src="${test.createName}" />
+        <!--#end-->
+         
+        <!--## 条件判断 -->
+        <!--#if(user.name =="lcy")-->
+        <table>
+         
+            <!--## 循环输出，类型可省，将基于泛型推导 -->
+            <!--#for(Test test : tests)-->
+            <tr>
+                 
+                <!--## 变量输出 -->
+                <td>${test.name}</td>
+                 
+                <!--## 执行宏输出，也可以用${cover} -->
+                <td>$!{cover(test)}</td>
+                 
+                <!--## 变量赋值，类型可省，将基于表达式推导 -->
+                <!--#set(int price = test.fid * test.fid)-->
+                <td>${price}</td>
+            </tr>
+             
+            <!--## 条件中断循环 -->
+            <!--#break(for.index == 10)-->
+             
+            <!--## 当循环数据为空时执行 -->
+            <!--#else-->
+                没有数据。
+            <!--#end-->
+         
+        </table>
+        <!--#else(user)-->
+            没有权限。
+        <!--#else-->
+            没有登录。
+        <!--#end-->
+     
+    </body>
+</html>

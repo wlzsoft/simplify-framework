@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project  name="simplify" combine.self="merge" xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
+	<bannerLeft>
+		<!-- 左上角图片 -->
+		<name>maven</name>
+		<src>http://maven.apache.org/images/apache-maven-project.png</src>   
+		<!-- <src>images/apache-maven-project.png</src>-->
+		<alt>框架logo</alt>    
+		<href>http://maven.apache.org/</href>
+		<border>1</border>
+		<width>20</width>
+		<height>20</height>
+		<title>maven图标</title>
+	</bannerLeft>
+	
+	<bannerRight>      
+		<!-- 右上角图片 -->
+		<name>ros</name>
+		<src>http://maven.apache.org/images/maven-small.gif</src> 
+		<!--<src>images/java_logo.jpg</src>-->
+		<alt>框架logo2</alt>    
+		<href>http://ros.meizu.com</href>
+		<border>1</border>
+		<width>20</width>
+		<height>20</height>
+		<title>maven图标2</title>
+	</bannerRight>
+	<googleAdSenseClient/>
+	<googleAdSenseSlot />
+	<googleAnalyticsAccountId />
+	
+	<!-- 发布信息放在右边 -->
+	<publishDate position="right" />
+	<!-- <publishDate position="none"/> -->
+	<!-- 版本信息放在右边 -->
+	<version position="right" />
+	<poweredBy>
+		<logo name="Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-feather.png" position="left" alt="" border="1" width="20" height="20" target="" title="" />
+	</poweredBy>
+	
+	<body>     
+		<head> <![CDATA[<script src="http://www.google-analytics.com/urchin.js" type="text/javascript" /><title>精简框架</title>]]>22</head>
+		<links>        
+			<item name="Up" href="../dashboard-report.html" />       
+			<item name="Home"  href="http://www.yourcompany.com/projects/build/maven/site/projectname/dashboard-report.html" />           
+		</links>  
+		<breadcrumbs>
+			<!-- 横条链接 -->
+			<item name="lastsweetop" href="http://blog.csdn.net/lastsweetop" />
+			<item name="account" href="http://192.168.115.5:8080/account/index.html"/>
+		</breadcrumbs>
+		
+		<menu ref="parent" />   
+		<menu name="Overview">
+			<item name="Introduction" href="index.html"/>
+			<item name="Goals" href="plugin-info.html"/>
+			<item name="Usage" href="usage.html"/>
+			<item name="FAQ" href="faq.html"/>
+			<item name="Migrate" href="migrate.html"/>
+			<item name="Maven 3" href="maven-3.html"/>
+			<!--
+			 According to http://jira.codehaus.org/browse/MNGSITE-152 
+			-->
+			<item name="License" href="http://www.apache.org/licenses/"/>
+			<item name="Download" href="download.html"/>
+			
+			<item name="Project Summary" href="project-summary.html"/>             
+			<item name="Plugin Management" href="plugin-management.html"/>      
+			<item name="Project Plugins" href="plugins.html"/>            
+			<item name="Source Repository" href="source-repository.html"/>    
+		</menu>       
+		<menu name="Configuration">
+			<item name="Internationalization" href="i18n.html"/>
+			<item name="Site Descriptor" href="../../doxia/doxia-sitetools/doxia-decoration-model/decoration.html"/>
+		</menu>       
+		<menu name="Examples">
+			<item name="Creating Content" href="/examples/creating-content.html"/>
+			<item name="Configuring the Site Descriptor" href="/examples/sitedescriptor.html"/>
+			<item name="Building a multi-module site" href="/examples/multimodule.html"/>
+			<item name="Configuring Reports" href="/examples/configuring-reports.html"/>
+			<item name="Configuring Site Run" href="/examples/siterun.html"/>
+			<item name="Adding a Protocol to Deploy the Site" href="/examples/adding-deploy-protocol.html"/>
+			<item name="Changing the Template File" href="/examples/templatefile.html"/>
+			<item name="Creating Skins" href="/examples/creatingskins.html"/>
+			<item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
+			<item name="Deploying to sourceforge.net" href="/examples/site-deploy-to-sourceforge.net.html"/>
+		</menu>                  
+		<menu ref="modules" /> 
+		<!-- 项目信息报告 inherit表示子模块继承父模块-->
+		<menu ref="reports" inherit="top"></menu>
+		<!--<menu ref="reports"/>--> 
+		<footer><![CDATA[All rights reserved.]]></footer>
+	</body>
+	<skin>
+		<!-- 谷歌皮肤 -->
+		<groupId>com.googlecode.fluido-skin</groupId>
+		<artifactId>fluido-skin</artifactId>
+		<version>1.5</version>
+	</skin>
+	<!-- <custom>Custom content</custom> -->
+	  <custom>
+	    <fluidoSkin>
+	      <topBarEnabled>true</topBarEnabled>
+	      <topBarIcon>
+	        <name>Maven Fluido Skin</name>
+	        <alt>Maven Fluido Skin</alt>
+	        <src>/images/topbar-logo.png</src>
+	        <href>/index.html</href>
+	      </topBarIcon>
+	      <topBarContainerStyle>width: 90%;</topBarContainerStyle>
+	      <navBarStyle>navbar-inverse</navBarStyle>
+	      
+	      <leftColumnClass>span3</leftColumnClass>
+      	  <bodyColumnClass>span9</bodyColumnClass>
+      	  
+      	  <googleSearch>
+	        <sitesearch/>
+	      </googleSearch>
+	      
+	      <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+	      
+	      <copyrightClass>pull-right</copyrightClass>
+	      
+	      <gitHub>
+	        <projectId>apache/maven-skins</projectId>
+	        <ribbonOrientation>right</ribbonOrientation>
+	        <ribbonColor>black</ribbonColor>
+	      </gitHub>
+	      
+	      <!-- <profile>(pre-release|sandbox|retired)</profile> -->
+	      
+	       <twitter> 
+	        <user>simonetripodi</user>
+	        <showUser>true</showUser>
+	        <showFollowers>true</showFollowers>
+	      </twitter>
+	      
+	      <ohloh>
+	        <projectId>3499</projectId>
+	        <widget>factoids</widget>
+	      </ohloh>
+	      
+	      <piwik>
+            <piwikUrl>example.org/piwik</piwikUrl>
+            <idsite>1</idsite>
+          </piwik>
+        
+          <googlePlusOne />
+	      
+	      <facebookLike />
+	      
+	      <flattr>
+	          <thing>12345/Example-Org</thing>
+	          <url>http://example.org/</url>
+	          <style>compact</style>
+	      </flattr>
+	      <skipGenerationDate>true</skipGenerationDate>
+	      <breadcrumbDivider>»</breadcrumbDivider>
+	      
+	      <sideBarEnabled>false</sideBarEnabled>
+	    </fluidoSkin>
+	  </custom>
+</project>

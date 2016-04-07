@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>webcache</artifactId>
+  <name>页面缓存组件</name>
+  <description>支持页面级别缓存，可以与web相关特性功能集成，需依赖浏览器机制</description>
+  
+   <dependencies>
+   
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>cache-redis</artifactId><!-- TODO 页面缓存不走redis缓存，也不要依赖具体缓存实现，后面这里需要改成<artifactId>caches</artifactId> -->
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+            <scope>provided</scope>
+		</dependency>
+  </dependencies>
+</project>

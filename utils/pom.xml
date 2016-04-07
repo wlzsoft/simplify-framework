@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>utils</artifactId>
+  
+  <dependencies>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.7.0</version>
+		</dependency>
+		<!-- 使用objenesis来创建无默认构造函数的类的对象 -->
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<!-- 使用开源工具reflectasm进行反射而非java本身的反射 -->
+		<!-- <dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>reflectasm</artifactId>
+			<version>1.11.0</version>
+		</dependency> -->
+		
+		<!-- 字节码操作工具-TODO 后续废弃掉，这里不需要，只存在于weaving模块中就可以 -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.20.0-GA</version>
+		</dependency>
+		
+		<!-- 序列化框架 -->
+		<dependency>
+		    <groupId>de.ruedigermoeller</groupId>
+		    <artifactId>fst</artifactId>
+		    <version>2.43</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo-shaded</artifactId>
+			<version>3.0.3</version>
+		</dependency> --> 
+		<dependency>
+			<groupId>com.meizu</groupId>
+			<artifactId>encrypt</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- 压力测试 -->
+	    <dependency>
+		  	<groupId>com.meizu</groupId>
+		  	<artifactId>stress-tester</artifactId>
+		  	<version>0.0.1-SNAPSHOT</version>
+		  	<scope>test</scope>
+		  	<exclusions>
+		  		<exclusion>
+		  			<artifactId>commons-logging</artifactId>
+		  			<groupId>commons-logging</groupId>
+		  		</exclusion>
+		  	</exclusions>
+		  </dependency>
+		<!-- 汉语拼音转化 -->
+		<dependency>
+		  <groupId>com.belerweb</groupId>
+		  <artifactId>pinyin4j</artifactId>
+		  <version>2.5.0</version>
+		</dependency>
+  </dependencies>
+</project>

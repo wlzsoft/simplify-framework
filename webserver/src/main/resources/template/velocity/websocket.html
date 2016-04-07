@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>管理后台登陆</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<script type="application/javascript">
+        var NoticeClient = {};
+
+        NoticeClient.socket = null;
+
+        NoticeClient.connect = (function(host) {
+        	
+        	
+        	
+        	 try{
+                 if(NoticeClient.socket == null || NoticeClient.socket.readyState > 1 ) {
+                	 if ('WebSocket' in window) {
+     	                NoticeClient.socket = new WebSocket(host);
+     	            } else if ('MozWebSocket' in window) {
+     	                NoticeClient.socket = new MozWebSocket(host);
+     	            } else {
+     	            	console.log('Error: WebSocket is not supported by this browser.');
+     	                return;
+     	            }
+                 } else {
+                     alert('已经连接啦，请不要重复连接！');
+                 }
+        	 }catch(e){
+                 alert('error:'+e.data);
+                 return;
+             }
+            
+            var readyState = new Array("正在连接", "已建立连接", "正在关闭连接", "已关闭连接");
+            NoticeClient.socket.onopen = function (evt) {
+            	console.log("通知中心已经连接");
+            	console.log('connect success:'+readyState[NoticeClient.socket.readyState]);
+            	NoticeClient.socket.send("通知中心已经连接上");
+            };
+            NoticeClient.socket.onclose = function (evt) {
+            	console.log("通知中心已经关闭:"+readyState[NoticeClient.socket.readyState]);
+            };
+            NoticeClient.socket.onmessage = function (message) {
+            	console.log(message.data);
+            };
+            NoticeClient.socket.onerror = function(evt) { 
+            	console.log('connect error:'+evt.data); 
+            };
+            
+        });
+
+        NoticeClient.init = function() {
+            if (window.location.protocol == 'http:') {
+                NoticeClient.connect('ws://' + window.location.host + '');
+            } else {
+                NoticeClient.connect('wss://' + window.location.host + '/websocket/notice');
+            }
+        };
+        NoticeClient.init();
+        function connect() {
+           NoticeClient.init();
+        }
+        function send() {
+        	NoticeClient.socket.send(document.getElementById('msg').value);
+        }
+        function disconnect() {
+        	NoticeClient.socket.close();
+        }
+</script>
+</HEAD>
+<BODY>
+<input id="msg" type="text"> 
+<button onclick="connect()">Connect</button>
+<button onclick="send()">Send</button>
+<button onclick="disconnect()">Disconnect</button>
+<TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%"  
+border=0>
+  <TR>
+    <TD align=middle>
+     
+      <TABLE cellSpacing=0 cellPadding=0 width=468 bgColor=#ffffff border=0>
+        <TR>
+          <TD align=middle>
+            <TABLE cellSpacing=0 cellPadding=0 width=230 border=0>
+              <FORM name="form1" action="?" method="post" target="_top">
+              <TR height=36>
+                <TD></TD>
+                <TD>用户名</TD>
+                <TD><INPUT 
+                  style="BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid" 
+                  maxLength=30 size=24 value="${userName}" name="username"></TD></TR>
+              <TR height=36>
+                <TD>&nbsp; </TD>
+                <TD>口　令</TD>
+                <TD><INPUT 
+                  style="BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid" 
+                  type="password" maxLength=30 size=24 value="" 
+                name="password"></TD></TR>
+              <TR height=5>
+              <TD>&nbsp; </TD>
+              <TD>验证码</TD>
+                <TD><INPUT 
+                  style="BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; BORDER-LEFT: #000000 1px solid; BORDER-BOTTOM: #000000 1px solid" 
+                  type="text" maxLength=30 size=24 value="" 
+                name="recode"></TD></TR>
+               <TR height="5">
+              </TR>
+              <TR>
+              
+                <TD>&nbsp;</TD>
+                <TD>&nbsp;</TD>
+                <TD><INPUT type=image height=18 width=70 
+                  ></TD></TR></FORM></TABLE></TD>
+          </TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=468 border=0>
+        <TR>
+          <TD></TD></TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=468 border=0>
+        <TR>
+          <TD align=right>&nbsp;</TD></TR></TABLE></TD></TR></TABLE></BODY></HTML>

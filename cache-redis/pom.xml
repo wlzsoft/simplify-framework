@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>cache-redis</artifactId>
+  <name>基于cache模块的redis实现</name>
+  <description>封装了redis调用的相关api</description>
+  <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>caches</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+	  <dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.6.3</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- 压力测试 -->
+	    <dependency>
+		  	<groupId>com.meizu</groupId>
+		  	<artifactId>stress-tester</artifactId>
+		  	<version>0.0.1-SNAPSHOT</version>
+		  	<scope>test</scope>
+		  	<exclusions>
+		  		<exclusion>
+		  			<artifactId>commons-logging</artifactId>
+		  			<groupId>commons-logging</groupId>
+		  		</exclusion>
+		  	</exclusions>
+		  </dependency>
+  </dependencies>
+</project>

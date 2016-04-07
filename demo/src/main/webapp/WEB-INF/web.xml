@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0">
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <display-name>Archetype Created Web Application</display-name>
+  
+  
+  <!-- Druid- WebStatFilter用于采集web-jdbc关联监控的数据。 -->
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+		</init-param>
+		<!-- 缺省sessionStatMaxCount是1000个。你可以按需要进行配置,关闭session统计后无效 -->
+		<init-param>
+			<param-name>sessionStatMaxCount</param-name>
+			<param-value>1000</param-value>
+		</init-param>
+		<!-- 你可以关闭session统计功能 -->
+		<init-param>
+	        <param-name>sessionStatEnable</param-name>
+	        <param-value>false</param-value>
+	    </init-param>
+	    <!-- 你可以配置principalSessionName，使得druid能够知道当前的session的用户是谁 
+	       根据需要，把其中的session_ros_user修改为你user信息保存在session中的sessionName。
+                  注意：如果你session中保存的是非string类型的对象，需要重载toString方法。-->
+		<init-param>
+	        <param-name>principalSessionName</param-name>
+	        <param-value>session_ros_user</param-value>
+	    </init-param>
+	    <!-- 如果你的user信息保存在cookie中，你可以配置principalCookieName，使得druid知道当前的user是谁 -->
+	    <!-- <init-param>
+        <param-name>principalCookieName</param-name>
+        <param-value>xxx.user</param-value>
+    </init-param> -->
+    <!-- druid 0.2.7版本开始支持profile，配置profileEnable能够监控单个url调用的sql列表,此处关闭，后续评估开启 -->
+	    <init-param>
+		    <param-name>profileEnable</param-name>
+		    <param-value>false</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 配置 Druid 监控信息显示页面 -->
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		<init-param>
+			<!-- 允许清空统计数据 -->
+			<param-name>resetEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<!-- 用户名 -->
+			<param-name>loginUsername</param-name>
+			<param-value>druid</param-value>
+		</init-param>
+		<init-param>
+			<!-- 密码 -->
+			<param-name>loginPassword</param-name>
+			<param-value>druid</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+  
+     <!-- 用于控制@WebFilter的顺序：servlet3.0规范的缺陷，最好只保留一个filter，权限控制自定义模块控制，目前已有，需要优化，下面的配置可选，但有多个filter时 -->
+	<!-- <filter-mapping>
+	    <filter-name>LoginFilter</filter-name>
+	    <url-pattern />
+	</filter-mapping>
+	 <filter-mapping>
+	    <filter-name>ControllerFilter</filter-name>
+	    <url-pattern />
+	</filter-mapping> -->
+  
+  
+  <error-page>
+    <error-code>403</error-code>
+    <location>/errors/error_403.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/errors/error_404.jsp</location>
+  </error-page>
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+</web-app>
