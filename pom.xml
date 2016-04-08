@@ -95,7 +95,7 @@
   	<module>aop</module>
   	<module>weaving</module>
   	<module>encrypt</module>
-  	<!-- <module>stress-tester</module> -->
+    <module>stress-tester</module>
   	<module>mongodb</module>
     <module>message</module>
   </modules>
@@ -232,7 +232,7 @@
 				</configuration>
 			</plugin>
 			<!-- site插件：site:stage 用于生成所有模块的site，site:run 用于生成和运行site，用于查看文档 ,后续增加site插件的详细配置-->
-			<!--文档创建： archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
+			<!--文档创建： archetype:create -DgroupId=com.meizu.ros -DartifactId=ros-app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
 			<!-- maven的site文档生成，使用的是Doxia来处理和解析文档的 -->
 			<!-- clean site site:stage -DstagingDirectory=file://D:/site #可以指定生成的路径 -->
 			<plugin>  
@@ -244,27 +244,55 @@
                     <!-- 支持国际化 -->  
                     <locales>zh_CN</locales>
                     <templateFile>${templatePath}/src/site/site.vm</templateFile>
-                    <!-- <reportPlugins>
-						<plugin> -->
+                    <!-- <inputDirectory>${templatePath}/src/site/resources</inputDirectory> -->
+                    <reportPlugins>
+						<plugin>
 							<!-- 源码查看生成 -->
-							<!-- <groupId>org.apache.maven.plugins</groupId>
+							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-jxr-plugin</artifactId>
 							<version>2.5</version>
 							<configuration>
-								多模块聚合
+								<!-- 多模块聚合 -->
 								<aggregate>true</aggregate>
-							</configuration> -->
-					        <!-- <reportSets>
+							</configuration>
+					        <reportSets>
 					          <reportSet>
 					            <id>aggregate</id>
-					            <inherited>false</inherited>
+					            <!-- <inherited>false</inherited> -->
 					            <reports>
 					              <report>aggregate</report>
 					            </reports>
 					          </reportSet>
-					        </reportSets> -->
-					      <!-- </plugin>
-					</reportPlugins> -->
+					        </reportSets>
+					      </plugin>
+					      <!-- 项目信息过滤-index一定要生成,否则链接问题 -->
+						   <plugin>          
+							    <groupId>org.apache.maven.plugins</groupId>
+								<artifactId>maven-project-info-reports-plugin</artifactId>
+								<version>2.9</version>   
+								<configuration>
+									<aggregate>true</aggregate>
+								</configuration>    
+							    <reportSets>           
+								   <reportSet>          
+									   <reports>   
+											<report>index</report>
+											<!-- <report>dependencies</report> -->
+											<report>project-team</report>
+											<report>issue-tracking</report>
+											<report>license</report>
+											<report>scm</report>
+										    <report>mailing-list</report>               
+											<report>cim</report>
+											<report>modules</report>
+											<report>plugins</report>
+											<report>help</report>
+											<report>summary</report>           
+									   </reports>           
+								   </reportSet>         
+							   </reportSets>
+						   </plugin>
+					</reportPlugins>
                 </configuration>
             </plugin>
     </plugins>
@@ -289,32 +317,8 @@
     
   </build>
   
-	<reporting>      
-		<plugins>
-		   <!-- 项目信息过滤-index一定要生成,否则链接问题 -->
-		   <plugin>          
-			    <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.9</version>       
-			    <reportSets>           
-				   <reportSet>             
-					   <reports>   
-							<report>index</report>
-							<!-- <report>dependencies</report> -->
-							<report>project-team</report>
-							<report>issue-tracking</report>
-							<report>license</report>
-							<report>scm</report>
-						    <report>mailing-list</report>               
-							<report>cim</report>
-							<report>modules</report>
-							<report>plugins</report>
-							<report>help</report>
-							<report>summary</report>           
-					   </reports>           
-				   </reportSet>         
-			   </reportSets>
-		   </plugin>      
+	<!-- <reporting>      
+		<plugins> -->
 		   <!-- 设置以下环境变量 -->
 		   <!-- JAVA_TOOL_OPTIONS   
 		   -Dfile.encoding=UTF-8 -->
@@ -350,6 +354,6 @@
                <artifactId>dashboard-maven-plugin</artifactId>                                      
                <version>1.0.0-beta-1</version>                             
            </plugin> -->
-	   </plugins>    
-   </reporting>
+	   <!-- </plugins>    
+   </reporting> -->
 </project>
