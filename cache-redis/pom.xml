@@ -8,6 +8,9 @@
   <artifactId>cache-redis</artifactId>
   <name>基于cache模块的redis实现</name>
   <description>封装了redis调用的相关api</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  </properties>
   <dependencies>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>

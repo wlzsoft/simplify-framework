@@ -8,7 +8,8 @@
   <name>demo Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
-  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	 <templatePath>${project.parent.basedir}</templatePath>
   </properties>
   <repositories>
 	  	<!-- 仓库地址，从上往下进行查找。 -->

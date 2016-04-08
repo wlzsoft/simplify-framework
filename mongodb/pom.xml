@@ -12,6 +12,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mongo-java-driver>3.2.2</mongo-java-driver>
+  	 <templatePath>${project.parent.basedir}</templatePath>
   </properties>
   <dependencies>
     <dependency>

@@ -8,6 +8,9 @@
   <artifactId>utils</artifactId>
   <name>工具集</name>
   <description>通用操作工具集，只针对非web容器的相关工具类</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  </properties>
   <dependencies>
 		<dependency>
 			<groupId>com.alibaba</groupId>

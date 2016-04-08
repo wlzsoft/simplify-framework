@@ -18,6 +18,9 @@
   logback-core-1.1.3.jar
   slf4j-api-1.7.13.jar
   </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>com.meizu</groupId>

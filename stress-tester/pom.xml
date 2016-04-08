@@ -11,7 +11,9 @@
     <packaging>jar</packaging>
 	<name>方法级别压力测试组件</name>
     <description>用于开发阶段的压力测试</description>
-
+	<properties>
+  	  <templatePath>${project.parent.basedir}</templatePath>
+  	</properties>
 	<!-- 缺少用户名和密码的设置，暂时不可用 -->
 	<!-- <repositories>
 		<repository>

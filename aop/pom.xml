@@ -8,6 +8,9 @@
   <artifactId>aop</artifactId>
   <name>切面组件</name>
   <description>切面逻辑处理组件</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>com.meizu</groupId>
