@@ -95,13 +95,16 @@
   	<module>aop</module>
   	<module>weaving</module>
   	<module>encrypt</module>
-  	<module>stress-tester</module>
+  	<!-- <module>stress-tester</module> -->
+  	<module>mongodb</module>
+    <module>message</module>
   	<module>mongodb</module>
   	<module>message</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <templatePath>${basedir}</templatePath>
+    <mongo-java-driver>3.1.0</mongo-java-driver>
   </properties>
   	<distributionManagement>
 		<repository>
