@@ -101,6 +101,7 @@
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <templatePath>${basedir}</templatePath>
   </properties>
   	<distributionManagement>
 		<repository>
@@ -241,6 +242,7 @@
                 <configuration>  
                     <!-- 支持国际化 -->  
                     <locales>zh_CN</locales>
+                    <templateFile>${templatePath}/src/site/site.vm</templateFile>
                     <!-- <reportPlugins>
 						<plugin> -->
 							<!-- 源码查看生成 -->
