@@ -1,40 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project  name="simplify" combine.self="merge" xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
-	<bannerLeft>
+	<!-- <bannerLeft>
 		<name>maven</name>
-		<src>http://ros.res.meizu.com/img/dengluyelog.png</src>   
-		<!-- <src>images/title.png</src>-->
+		<src>images/title.png</src>
 		<alt>项目logo</alt>    
 		<href>http://ros.meizu.com</href>
 		<border>1</border>
 		<width>20</width>
 		<height>20</height>
 		<title>项目logo</title>
-	</bannerLeft>
+	</bannerLeft> -->
 	
-	<bannerRight>      
+	<!-- <bannerRight>      
 		<name>ros</name>
 		<src>http://ros.res.meizu.com/img/dengluyelog.png</src> 
-		<!--<src>images/right.png</src>-->
 		<alt>框架logo</alt>    
 		<href>http://ros.meizu.com</href>
 		<border>1</border>
 		<width>20</width>
 		<height>20</height>
 		<title>框架logo</title>
-	</bannerRight>
+	</bannerRight> -->
 	
 	<!-- 发布信息放在右边 -->
 	<publishDate position="right" />
-	<!-- <publishDate position="none"/> -->
 	<!-- 版本信息放在右边 -->
 	<version position="right" />
-	<poweredBy>
+	<poweredBy><!-- 技术支持 -->
 		<logo name="ros平台" href="http://ros.meizu.com/" img="http://ros.res.meizu.com/img/dengluyelog.png" position="left" alt="" border="1" width="20" height="20" target="" title="" />
 	</poweredBy>
 	
 	<body>     
-		<head> <![CDATA[<title>精简框架</title>]]></head>
+		<head> <![CDATA[<title>精简框架22</title>]]></head>
 		<links name="www">        
 			<item name="仪表盘" href="../dashboard-report.html" />       
 			<item name="主站"  href="http://ros.meizu.com/" />           
@@ -60,19 +57,20 @@
 		<!-- 项目信息报告 inherit表示子模块继承父模块-->
 		<menu ref="reports" inherit="top"></menu>
 		<!--<menu ref="reports"/>--> 
-		<footer><![CDATA[All rights reserved.]]></footer>
+		<!-- <footer><![CDATA[All rights reserved.]]></footer> -->
 	</body>
 	<skin>
 		<groupId>org.apache.maven.skins</groupId>
     	<artifactId>maven-fluido-skin</artifactId>
-    	<version>1.5</version>
+    	<version>1.6-SNAPSHOT</version>
 		<!-- <groupId>org.apache.maven.skins</groupId>
     	<artifactId>maven-default-skin</artifactId>
-    	<version>1.2</version> -->
+    	<version>1.3-SNAPSHOT</version> -->
 	</skin>
 	  <custom>
 	    <fluidoSkin>
 	      <topBarEnabled>true</topBarEnabled>
+	      <navBarStyle>navbar-inverse</navBarStyle><!-- 依赖topBarEnabled -->
 	      <topBarIcon>
 	        <name>bootstrap皮肤</name>
 	        <alt>bootstrap皮肤</alt>
@@ -81,21 +79,12 @@
 	        <href>/index.html</href>
 	      </topBarIcon>
 	      <topBarContainerStyle>width: 90%;</topBarContainerStyle>
-	      <navBarStyle>navbar-inverse</navBarStyle>
-	      
-	      <leftColumnClass>span3</leftColumnClass>
-      	  <bodyColumnClass>span9</bodyColumnClass>
-      	  
 	      <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
-	      
-	      <copyrightClass>pull-right</copyrightClass>
-	      
-	      <!-- <profile>(pre-release|sandbox|retired)</profile> -->
-	      
+	      <copyrightClass>All rights reserved</copyrightClass>
+	      <profile>pre-release</profile>
 	      <skipGenerationDate>true</skipGenerationDate>
 	      <breadcrumbDivider>»</breadcrumbDivider>
-	      
-	      <sideBarEnabled>false</sideBarEnabled>
+	      <sideBarEnabled>true</sideBarEnabled>
 	    </fluidoSkin>
 	  </custom>
 </project>
