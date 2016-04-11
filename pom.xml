@@ -279,7 +279,7 @@
 								   <reportSet>          
 									   <reports>   
 											<report>index</report>
-											<report>dependencies</report>
+											<!-- <report>dependencies</report>
 											<report>dependency-convergence</report>
 											<report>dependency-info</report>
 											<report>dependency-management</report>
@@ -289,12 +289,12 @@
 											<report>license</report>
 											<report>scm</report>
 										    <report>mailing-list</report>               
-											<report>cim</report>
+											<report>cim</report> -->
 											<report>modules</report>
-											<report>plugin-management</report>
+											<!-- <report>plugin-management</report>
 											<report>plugins</report>
 											<report>help</report>
-											<report>summary</report>         
+											<report>summary</report>  -->        
 									   </reports>           
 								   </reportSet>         
 							   </reportSets>

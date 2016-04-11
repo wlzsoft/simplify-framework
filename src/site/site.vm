@@ -37,11 +37,13 @@
             <li class="dropdown-submenu">
                 #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
                 #set ( $currentItemHref = $currentItemHref.replaceAll( '\\', '/' ) )
+                #set ( $currentItemHref = $currentItemHref.replace( '../', '' ) ) 
                 #topLink( $currentItemHref $item.name $item.target )
               <ul class="dropdown-menu">
                 #foreach($subitem in $item.items)
                   #set ( $currentItemHref = $PathTool.calculateLink( $subitem.href, $relativePath ) )
                   #set ( $currentItemHref = $currentItemHref.replaceAll( '\\', '/' ) )
+	              #set ( $currentItemHref = $currentItemHref.replace( '../', '' ) ) 
                   <li>#topLink( $currentItemHref $subitem.name $subitem.target )</li>
                 #end
               </ul>
@@ -49,6 +51,7 @@
           #else
             #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
             #set ( $currentItemHref = $currentItemHref.replaceAll( '\\', '/' ) )
+            #set ( $currentItemHref = $currentItemHref.replace( '../', '' ) ) 
             <li>#topLink( $currentItemHref $item.name $item.target )</li>
           #end
         #end
@@ -258,6 +261,7 @@
   #set ( $collapseClass = "none" )
   #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
   #set ( $currentItemHref = $currentItemHref.replaceAll( '\\', '/' ) )
+  #set ( $currentItemHref = $currentItemHref.replace( '../', '' ) ) 
 ##
   #if ( $item && $item.items && $item.items.size() > 0 )
     #if ( $item.collapse == false )
