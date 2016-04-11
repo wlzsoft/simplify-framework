@@ -85,17 +85,19 @@
 	</licenses>
 	<!-- 项目工程管理  end-->
   <modules>
-  	<module>ioc</module>
+  	<module>demo</module>
+    <module>stress-tester</module>
   	<module>utils</module>
+  	<module>weaving</module>
+  	<module>encrypt</module>
+  	<module>ioc</module>
+  	<module>aop</module>
+  	<module>dao</module>
   	<module>caches</module>
   	<module>webcache</module>
   	<module>mvc</module>
   	<module>cache-redis</module>
-  	<module>dao</module>
-  	<module>aop</module>
-  	<module>weaving</module>
-  	<module>encrypt</module>
-    <module>stress-tester</module>
+    <module>webserver</module>
   	<module>mongodb</module>
     <module>message</module>
   </modules>
@@ -194,6 +196,11 @@
 		</dependency>
 		
 		<!-- 测试相关end -->
+		<!-- <dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>1.5.8</version>
+		</dependency> -->
   </dependencies>
   <build>
     <plugins>
