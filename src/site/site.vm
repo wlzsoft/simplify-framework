@@ -655,7 +655,7 @@
     #if ( $profile.equalsIgnoreCase( "retired" )
           || $profile.equalsIgnoreCase( "pre-release" )
           || $profile.equalsIgnoreCase( "sandbox" ) )
-      <style type="text/css">body{background-image: url('${relativePath}./images/profiles/${profile}.png');}</style>
+      <style type="text/css">body{background-image: url('${relativePath}./images/profiles/${profile}.svg');}</style>
     #end
 
   #end
@@ -1008,7 +1008,7 @@
               && $decoration.body.links.size() > 0 )
             <ul class="nav pull-right">
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">External Links <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">关联站点 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 #topLinks( $decoration.body.links )
                 </ul>
