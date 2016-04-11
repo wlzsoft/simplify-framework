@@ -43,7 +43,7 @@
 		<menu ref="parent" />   
 		<menu ref="modules" /> 
 		<!-- 项目信息报告 inherit表示子模块继承父模块-->
-		<menu ref="reports" /> 
+		<!-- <menu ref="reports" />  -->
 		<menu name="项目信息" inherit="top">
 			<item href="dashboard-report.html" name="控制面板" />
 			<item href="index.html" name="框架概述" />

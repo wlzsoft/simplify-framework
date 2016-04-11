@@ -273,6 +273,7 @@
 								<version>2.9</version>   
 								<configuration>
 									<aggregate>true</aggregate>
+									<customBundle>${project.basedir}/src/site/custom/project-info-reports.properties</customBundle>
 								</configuration>    
 							    <reportSets>           
 								   <reportSet>          
