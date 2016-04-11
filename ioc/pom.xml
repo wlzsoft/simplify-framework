@@ -12,6 +12,7 @@
   <description>bean容器管理及依赖注入</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
   </properties>
   <dependencies>
   	<dependency>

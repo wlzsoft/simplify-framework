@@ -10,6 +10,7 @@
   <description>切面逻辑处理组件</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
   </properties>
   <dependencies>
   	<dependency>

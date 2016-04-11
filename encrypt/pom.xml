@@ -12,6 +12,7 @@
   <url>http://maven.apache.org</url>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
   </properties>
   <dependencies>
 	<dependency>

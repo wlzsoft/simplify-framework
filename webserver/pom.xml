@@ -8,6 +8,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<templatePath>${project.parent.basedir}</templatePath>
+  	<parentsite></parentsite>
   </properties>
   <dependencies>
   		<!-- 依赖simplify-framework -->

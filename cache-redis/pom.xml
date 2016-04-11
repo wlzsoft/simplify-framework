@@ -10,6 +10,7 @@
   <description>封装了redis调用的相关api</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
   </properties>
   <dependencies>
 	  <dependency>

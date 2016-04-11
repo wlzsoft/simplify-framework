@@ -10,6 +10,7 @@
   <description>支持页面级别缓存，可以与web相关特性功能集成，需依赖浏览器机制</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
   </properties>
    <dependencies>
    

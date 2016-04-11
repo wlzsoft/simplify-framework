@@ -10,6 +10,7 @@
   <description>封装数据库操作相关api，及通用实现</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
   </properties>
   <dependencies>
   	<dependency>
