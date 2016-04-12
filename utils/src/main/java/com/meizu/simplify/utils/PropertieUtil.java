@@ -32,7 +32,6 @@ import com.meizu.simplify.exception.StartupErrorException;
  */
 public class PropertieUtil {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PropertieUtil.class);
 	private Properties props = new Properties();
 	private InputStream jndiInput = null;
 
@@ -162,7 +161,8 @@ public class PropertieUtil {
 			return setConfigValue(clazz.newInstance(),prefix);
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
-			LOGGER.error("配置实体:"+clazz.getName()+"初始化失败");
+//			LOGGER.error("配置实体:"+clazz.getName()+"初始化失败");
+			System.err.println("配置实体:"+clazz.getName()+"初始化失败");
 		}
 		return null;
 	}
