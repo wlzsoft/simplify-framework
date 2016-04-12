@@ -243,8 +243,10 @@
 			        <goal>pdf</goal>
 			      </goals>
 			      <configuration>
-			        <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
-			        <includeReports>false</includeReports>
+			      	<aggregate>true</aggregate>
+			      	<locales>zh_CN</locales>
+			        <!-- <outputDirectory>${project.reporting.outputDirectory}</outputDirectory> -->
+			        <includeReports>true</includeReports>
 			      </configuration>
 			    </execution>
 			  </executions>
