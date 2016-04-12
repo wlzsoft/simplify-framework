@@ -96,7 +96,6 @@
   	<module>webcache</module>
   	<module>mvc</module>
   	<module>cache-redis</module>
-    <module>webserver</module>
   	<module>mongodb</module>
     <module>message</module>
   </modules>
@@ -202,6 +201,7 @@
 		</dependency> -->
   </dependencies>
   <build>
+  	<defaultGoal>pdf:pdf</defaultGoal>
     <plugins>
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
@@ -237,6 +237,24 @@
 						</property>
 					</systemProperties> -->
 				</configuration>
+			</plugin>
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-pdf-plugin</artifactId>
+	          <version>1.3</version>
+			  <executions>
+			    <execution>
+			      <id>pdf</id>
+			      <phase>site</phase>
+			      <goals>
+			        <goal>pdf</goal>
+			      </goals>
+			      <configuration>
+			        <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
+			        <includeReports>false</includeReports>
+			      </configuration>
+			    </execution>
+			  </executions>
 			</plugin>
 			<!-- site插件：site:stage 用于生成所有模块的site，site:run 用于生成和运行site，用于查看文档 ,后续增加site插件的详细配置-->
 			<!--文档创建： archetype:create -DgroupId=com.meizu.ros -DartifactId=ros-app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
