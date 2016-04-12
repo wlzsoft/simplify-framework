@@ -41,6 +41,7 @@ public class DruidPoolFactory {
 		try	{
 			PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
 			dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(result.getProps());
+			LOGGER.info(result.toString());
 		} catch (Exception e){
 			try	{
 				if (dataSource != null) {
