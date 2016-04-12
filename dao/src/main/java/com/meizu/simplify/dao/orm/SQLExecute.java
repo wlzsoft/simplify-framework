@@ -65,7 +65,7 @@ public class SQLExecute {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new BaseDaoException("执行sql异常", e);
+			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,null);
 			DruidPoolFactory.close();
@@ -89,11 +89,11 @@ public class SQLExecute {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,null);
 			DruidPoolFactory.close();
 		}
-		return null;
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public class SQLExecute {
 				}
 			}catch(SQLException e){
 				e.printStackTrace();
-				throw new UncheckedException("preparedStatement关闭异常",e);
+				throw new BaseDaoException("preparedStatement关闭异常:"+e.getMessage());
 			}finally{
 				DruidPoolFactory.close();
 			}
@@ -165,6 +165,7 @@ public class SQLExecute {
 			prepareStatement.executeBatch();
 		}catch(Exception e){
 			e.printStackTrace();
+			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		}finally{
 //			free(prepareStatement,rs);
 			DruidPoolFactory.close();
@@ -196,6 +197,7 @@ public class SQLExecute {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 //			DruidPoolFactory.rollback();
 		} finally {
 //			free(prepareStatement,null);
@@ -247,7 +249,8 @@ public class SQLExecute {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-//			查询无需事务处理，无需事务回滚  
+//			查询无需事务处理，无需事务回滚
+			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,rs);
 			DruidPoolFactory.close();
