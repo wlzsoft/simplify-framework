@@ -12,21 +12,6 @@
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
   </properties>
-  <distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>http://10.2.67.20:8081/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://10.2.67.20:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<site>
-			<id>tt</id>
-			<name>aaa</name>
-			<url>file://D:/site</url>
-		</site>
-	</distributionManagement>
   <repositories>
 	  	<!-- 仓库地址，从上往下进行查找。 -->
 	

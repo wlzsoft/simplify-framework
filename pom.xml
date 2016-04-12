@@ -85,7 +85,6 @@
 	</licenses>
 	<!-- 项目工程管理  end-->
   <modules>
-  	<module>demo</module>
     <module>stress-tester</module>
   	<module>utils</module>
   	<module>weaving</module>
