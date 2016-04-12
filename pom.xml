@@ -31,13 +31,6 @@
 		<!-- <system>urltracker</system>
 		<url>http://10.2.67.31/URTracker/Accounts/Login.aspx</url> -->
 	</issueManagement>
-  	<!-- options: Project site address. -->
-  	<!-- <siteAddress>ros.meizu.com</siteAddress> -废弃-->
-  	<!-- options: Project-site deploy directory (physical location) -废弃-->
-  	<!-- <siteDirectory>/www/ros/site/</siteDirectory> -->
-  	<!-- options: Project distribution directory (physical location) -废弃-->
-	<!-- <distributionDirectory>/www/ros/builds/</distributionDirectory> -->
-  	<!-- options: Project source-repository information -->
   	<!-- 版本控制 -->
 	<scm>
 	<!--<url>https://github.com/lcy19870112/simplify/master</url>
