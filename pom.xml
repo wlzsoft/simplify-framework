@@ -330,8 +330,9 @@
 						   			<!-- <failOnError>false</failOnError> -->     
 						   		    <additionalJOption>-J-Dfile.encoding=UTF-8</additionalJOption>
 						   		    <additionalparam>-Xdoclint:none</additionalparam><!-- java1.8 特有功能 -->
-						   			<aggregate>true</aggregate>                          
-						   			<charset>UTF-8</charset>                                         
+						   			<!-- <aggregate>true</aggregate> -->                          
+						   			<charset>UTF-8</charset>           
+						   			<!-- <stylesheetfile>${templatePath}/src/site/stylesheet.css</stylesheetfile>   -->                        
 						   			<encoding>UTF-8</encoding>                                        
 						   			<docencoding>UTF-8</docencoding>    
 						   			<tags>  
