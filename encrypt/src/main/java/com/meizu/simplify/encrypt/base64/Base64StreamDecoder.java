@@ -7,7 +7,6 @@ import java.io.InputStream;
 /**
  * <p><b>Title:</b><i>base64编码算法-正统算法</i></p>
  * <p>Desc: 可用于解码字符串和字节流数据。base64算法的详细说明可以查看 RFC 1521 规范 的5.2小节  
- * <p>
  * 1.解码字符串(string)的用法:
  * <blockquote><pre>
  * String encoded = "d2VibWFzdGVyOnRyeTJndWVTUw";

@@ -243,6 +243,7 @@
 			<!--文档创建： archetype:create -DgroupId=com.meizu.ros -DartifactId=ros-app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
 			<!-- maven的site文档生成，使用的是Doxia来处理和解析文档的 -->
 			<!-- clean site site:stage -DstagingDirectory=file://D:/site #可以指定生成的路径 -->
+			<!-- 生成过慢的结果方法  clean site site:stage -Ddependency.locations.enabled=false-->
 			<plugin>  
                 <!-- 站点生成插件 -->  
                 <groupId>org.apache.maven.plugins</groupId>  
@@ -306,6 +307,38 @@
 								   </reportSet>         
 							   </reportSets>
 						   </plugin>
+						   <!-- 设置以下环境变量 -->
+						   <!-- JAVA_TOOL_OPTIONS   
+						   -Dfile.encoding=UTF-8 -->
+						   <plugin>                             
+						   		<groupId>org.apache.maven.plugins</groupId>                            
+						   		<artifactId>maven-javadoc-plugin</artifactId>                            
+						   		<version>2.10.3</version>                            
+						   		<configuration>  
+						   			<!-- <failOnError>false</failOnError> -->     
+						   		    <additionalJOption>-J-Dfile.encoding=UTF-8</additionalJOption>
+						   		    <additionalparam>-Xdoclint:none</additionalparam><!-- java1.8 特有功能 -->
+						   			<aggregate>true</aggregate>                          
+						   			<charset>UTF-8</charset>                                         
+						   			<encoding>UTF-8</encoding>                                        
+						   			<docencoding>UTF-8</docencoding>    
+						   			<tags>  
+							            <tag>  
+							                <name>title</name>  
+							                <placement>title</placement>  
+							                <head>标题</head>  
+							            </tag>  
+							        </tags>                        
+						   		</configuration>        
+						   		<!-- <executions>
+							     <execution>
+							      <id>attach-javadocs</id>
+							      <goals>
+							       <goal>jar</goal>
+							      </goals>
+							     </execution>
+							    </executions>   -->      
+						   	</plugin>
 					</reportPlugins>
                 </configuration>
             </plugin>
@@ -333,36 +366,6 @@
   
 	<!-- <reporting>      
 		<plugins> -->
-		   <!-- 设置以下环境变量 -->
-		   <!-- JAVA_TOOL_OPTIONS   
-		   -Dfile.encoding=UTF-8 -->
-		   <!-- <plugin>                             
-		   		<groupId>org.apache.maven.plugins</groupId>                            
-		   		<artifactId>maven-javadoc-plugin</artifactId>                            
-		   		<version>2.10.3</version>                            
-		   		<configuration>       
-		   		    <additionalJOption>-J-Dfile.encoding=UTF-8</additionalJOption>
-		   			<aggregate>true</aggregate>                          
-		   			<charset>UTF-8</charset>                                         
-		   			<encoding>UTF-8</encoding>                                        
-		   			<docencoding>UTF-8</docencoding>    
-		   			<tags>  
-			            <tag>  
-			                <name>title</name>  
-			                <placement>a</placement>  
-			                <head>标题</head>  
-			            </tag>  
-			        </tags>                        
-		   		</configuration>        
-		   		<executions>
-			     <execution>
-			      <id>attach-javadocs</id>
-			      <goals>
-			       <goal>jar</goal>
-			      </goals>
-			     </execution>
-			    </executions>        
-		   	</plugin> -->      
            <!-- <plugin> 
                <groupId>org.codehaus.mojo</groupId>                                      
                <artifactId>dashboard-maven-plugin</artifactId>                                      
