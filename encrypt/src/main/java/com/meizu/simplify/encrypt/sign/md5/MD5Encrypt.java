@@ -14,7 +14,7 @@ import com.meizu.simplify.encrypt.sign.Sign;
  * <p>Create Date:2016年1月14日 下午2:21:43</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月14日 下午2:21:43</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

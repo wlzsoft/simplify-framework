@@ -12,7 +12,7 @@ import com.meizu.simplify.mvc.view.ITemplate;
  * <p>Create Date:2016年3月30日 上午9:51:39</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月30日 上午9:51:39</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

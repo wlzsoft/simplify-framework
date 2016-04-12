@@ -22,7 +22,7 @@ import java.io.*;
  * <p>Create Date:2016年3月10日 上午11:29:43</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月10日 上午11:29:43</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version 1.2, 2002/11/01, added encode(byte[]) method to better handle
  *                           binary data (thanks to Sean Graham)
  * @version 1.1, 2000/11/17, fixed bug with sign bit for char values

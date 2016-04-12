@@ -14,7 +14,7 @@ import com.meizu.simplify.cache.redis.RedisPool;
  * <p>Create Date:2016年3月3日 上午11:11:55</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月3日 上午11:11:55</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

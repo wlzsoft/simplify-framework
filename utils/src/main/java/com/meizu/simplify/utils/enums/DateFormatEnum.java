@@ -26,7 +26,7 @@ package com.meizu.simplify.utils.enums;
  * Modified Date:2016年1月27日 下午8:21:41
  * </p>
  * 
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */
@@ -102,7 +102,7 @@ public enum DateFormatEnum {
 	 * <p>Create Date:2016年1月27日 下午8:33:47</p>
 	 * <p>Modified By:luchuangye-</p>
 	 * <p>Modified Date:2016年1月27日 下午8:33:47</p>
-	 * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+	 * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
 	 * @version Version 0.1
 	 *
 	 */

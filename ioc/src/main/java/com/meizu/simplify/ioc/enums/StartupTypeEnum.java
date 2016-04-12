@@ -8,7 +8,7 @@ package com.meizu.simplify.ioc.enums;
  * <p>Create Date:2016年1月7日 下午6:22:39</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月7日 下午6:22:39</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

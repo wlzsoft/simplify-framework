@@ -19,7 +19,7 @@ import com.meizu.simplify.ioc.service.TestService;
  * <p>Create Date:2016年1月8日 下午4:00:33</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月8日 下午4:00:33</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

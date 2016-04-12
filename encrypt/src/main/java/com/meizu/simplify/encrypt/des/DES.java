@@ -24,7 +24,7 @@ import com.meizu.simplify.encrypt.base64.Base64Encrypt;
  * <p>Create Date:2015年5月15日 下午2:47:11</p>
  * <p>Modified By:zll-</p>
  * <p>Modified Date:2015年5月15日 下午2:47:11</p>
- * @author <a href="mailto:zhangliangliang@meizu.com" title="邮箱地址">zll</a>
+ * @author <a href="mailto:zhangliangliang@meizu.com" >zll</a>
  * @version Version 0.1
  *
  */

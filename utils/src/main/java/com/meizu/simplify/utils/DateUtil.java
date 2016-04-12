@@ -14,7 +14,7 @@ import com.meizu.simplify.utils.enums.DateFormatEnum;
  * <p>Create Date:2016年1月27日 下午7:42:12</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月27日 下午7:42:12</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

@@ -12,7 +12,7 @@ import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
  * <p>Create Date:2016年2月26日 下午6:48:07</p>
  * <p>Modified By:wanghb-</p>
  * <p>Modified Date:2016年2月26日 下午6:48:07</p>
- * @author <a href="mailto:wanghb@meizu.com" title="邮箱地址">wanghb</a>
+ * @author <a href="mailto:wanghb@meizu.com" >wanghb</a>
  * @version Version 0.1
  *
  */

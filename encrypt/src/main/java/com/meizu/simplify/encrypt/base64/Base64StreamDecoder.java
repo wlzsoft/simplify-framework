@@ -22,7 +22,7 @@ import java.io.InputStream;
  * <p>Create Date:2016年3月10日 上午11:29:43</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月10日 上午11:29:43</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version 1.1, 2002/11/01, added decodeToBytes() to better handle binary
  *                           data (thanks to Sean Graham)
  * @version 1.0, 2000/06/11

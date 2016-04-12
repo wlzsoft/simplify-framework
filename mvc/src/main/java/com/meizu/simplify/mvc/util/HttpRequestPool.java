@@ -8,7 +8,7 @@ package com.meizu.simplify.mvc.util;
  * <p>Create Date:2016年1月28日 下午3:43:36</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月28日 下午3:43:36</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

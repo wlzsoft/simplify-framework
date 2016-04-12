@@ -19,7 +19,7 @@ import com.meizu.simplify.utils.SerializeUtil;
  * <p>Create Date:2016年1月14日 上午11:52:28</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月14日 上午11:52:28</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  * @param <K>

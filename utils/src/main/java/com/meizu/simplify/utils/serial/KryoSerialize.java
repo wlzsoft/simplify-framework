@@ -13,7 +13,7 @@ package com.meizu.simplify.utils.serial;
  * <p>Create Date:2016年1月14日 下午8:17:32</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月14日 下午8:17:32</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

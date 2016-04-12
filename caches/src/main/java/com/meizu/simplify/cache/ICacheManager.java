@@ -9,7 +9,7 @@ package com.meizu.simplify.cache;
  * <p>Create Date:2016年1月12日 下午3:36:50</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月12日 下午3:36:50</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

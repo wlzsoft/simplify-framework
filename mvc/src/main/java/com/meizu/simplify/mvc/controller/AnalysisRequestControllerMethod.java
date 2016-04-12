@@ -31,7 +31,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * <p>Create Date:2016年3月25日 下午5:59:15</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月25日 下午5:59:15</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

@@ -26,7 +26,7 @@ import com.meizu.simplify.exception.StartupErrorException;
  * <p>Create Date:2015年2月14日 上午11:42:36</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年2月14日 上午11:42:36</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

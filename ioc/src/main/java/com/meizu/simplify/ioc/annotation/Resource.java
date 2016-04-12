@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * <p>Create Date:2016年1月6日 上午10:53:08</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月6日 上午10:53:08</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  * @since ioc 0.1
  */

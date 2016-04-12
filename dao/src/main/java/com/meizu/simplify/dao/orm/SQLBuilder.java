@@ -26,7 +26,7 @@ import com.meizu.simplify.utils.StringUtil;
  * <p>Create Date:2015年3月10日 下午4:29:25</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月10日 下午4:29:25</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  * @param <T>

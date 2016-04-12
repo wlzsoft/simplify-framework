@@ -25,7 +25,7 @@ import com.meizu.simplify.exception.UncheckedException;
  * <p>Create Date:2015年3月25日 下午6:08:10</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月25日 下午6:08:10</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

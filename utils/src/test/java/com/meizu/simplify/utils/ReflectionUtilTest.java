@@ -23,7 +23,7 @@ import com.meizu.simplify.utils.entity.Test2;
  * <p>Create Date:2016年1月11日 下午7:07:02</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月11日 下午7:07:02</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

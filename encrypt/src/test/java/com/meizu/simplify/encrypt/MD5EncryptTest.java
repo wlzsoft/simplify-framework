@@ -16,7 +16,7 @@ import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
  * <p>Create Date:2016年1月12日 下午12:39:28</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月12日 下午12:39:28</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

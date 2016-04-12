@@ -8,34 +8,18 @@
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
   <url>http://simplify.ros.meizu.com</url>
   <!-- 项目工程管理 start -->
-  <!-- options: Year of inception -->
-	<inceptionYear>2015</inceptionYear>
-	<!-- options: Project logo picture URL -->
-	<!-- <logo>http://ros.meizu.com/img/logo.gif</logo> -废弃-->
-	<!-- Details of the organization holding the project. Only the name
-        is required. -->
+	<inceptionYear>2016</inceptionYear>
   	<organization>
 		<name>meizu inc.</name>
 		<url>http://www.meizu.com/</url>
-		<!-- <logo>http://www.meizu.com/meizu-logo.gif</logo> -废弃-->
 	</organization>
-	<!-- options: Project main package -->
-  	<!-- <package>com.meizu.*</package> -废弃-->
-  	<!-- options: GUMP repository ID. Useful only if you use GUMP. -->
-  	<!-- <gumpRepositoryId>ros</gumpRepositoryId> -->
-  	<!-- options: Issue-tracking system URL -->
 	<!-- 问题跟踪 -->
 	<issueManagement>
 		<system>Jira</system>
 		<url>http://10.2.67.31:8083/jira/browse/ros</url>
-		<!-- <system>urltracker</system>
-		<url>http://10.2.67.31/URTracker/Accounts/Login.aspx</url> -->
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
-	<!--<url>https://github.com/lcy19870112/simplify/master</url>
-		<connection>scm:git:git@github.com:lcy19870112/simplify.git</connection>
-		<developerConnection>scm:git:git@github.com:lcy19870112/simplify.git</developerConnection>-->
 		<url>http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</url>
 		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</connection>
 		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</developerConnection>
@@ -43,17 +27,14 @@
 	<!-- 持续集成 -->
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://10.2.67.31:8081/jenkins</url>
+		<url>http://10.2.67.31:8082/</url>
 	</ciManagement>
-  	<!-- options: Mailing list information -->
   	<mailingLists>
     	<mailingList>
-      		<name>Dev List</name>
-	  		<subscribe>luchuangye@meizu.com</subscribe>
-	  		<unsubscribe>wanglizong@meizu.com</unsubscribe>
+      		<name>开发人员列表</name>
+	  		<subscribe>mailto:users-subscribe@meizu.com</subscribe>
     	</mailingList>
   	</mailingLists>
-  <!-- Developers involved in this project -->
   <!-- 开发成员列表 -->
   <developers>
 		<developer>
@@ -306,7 +287,7 @@
 											<report>distribution-management</report>
 											<report>project-team</report>
 											<report>issue-tracking</report>
-											<!-- <report>license</report> -->
+											<report>license</report>
 											<report>scm</report>
 										    <report>mailing-list</report>               
 											<report>cim</report>

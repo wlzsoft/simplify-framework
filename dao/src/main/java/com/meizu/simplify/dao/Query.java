@@ -14,7 +14,7 @@ import com.meizu.simplify.dao.orm.Dao;
  * <p>Create Date:2015年3月18日 下午6:09:27</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月18日 下午6:09:27</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

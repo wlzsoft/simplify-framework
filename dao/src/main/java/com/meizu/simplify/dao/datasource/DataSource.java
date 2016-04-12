@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
  * <p>Create Date:2015年4月28日 下午3:17:17</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年4月28日 下午3:17:17</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

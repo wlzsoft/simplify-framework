@@ -60,7 +60,7 @@
             <item href="issue-tracking.html" name="问题跟踪" />
             <!-- <item href="license.html" name="项目授权" /> -->
             <item href="source-repository.html" name="源代码库" />
-            <item href="mail-lists.html" name="邮件列表" />
+            <!-- <item href="mail-lists.html" name="邮件订阅列表" /> -->
             <item href="integration.html" name="持续集成" />
             <item href="modules.html" name="框架模块" />
             <item href="project-info.html" name="框架基本信息" />

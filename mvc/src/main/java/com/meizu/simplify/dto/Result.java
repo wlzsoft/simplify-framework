@@ -11,7 +11,7 @@ package com.meizu.simplify.dto;
  * <p>Create Date:2014年12月22日 下午2:56:46</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2014年12月22日 下午2:56:46</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  * @param <T>

@@ -21,7 +21,7 @@ import redis.clients.jedis.BinaryClient.LIST_POSITION;
  * <p>Create Date:2016年1月13日 下午5:56:12</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月13日 下午5:56:12</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

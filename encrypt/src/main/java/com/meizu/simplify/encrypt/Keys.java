@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>Create Date:2015年9月17日 下午9:18:51</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年9月17日 下午9:18:51</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

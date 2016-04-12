@@ -8,7 +8,7 @@ package com.meizu.simplify.dto;
  * <p>Create Date:2015年4月2日 下午4:07:08</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年4月2日 下午4:07:08</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

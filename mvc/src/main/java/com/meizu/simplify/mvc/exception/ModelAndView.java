@@ -9,7 +9,7 @@ package com.meizu.simplify.mvc.exception;
  * <p>Create Date:2016年1月27日 下午5:30:37</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月27日 下午5:30:37</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

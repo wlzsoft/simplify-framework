@@ -12,7 +12,7 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
  * <p>Create Date:2014年12月22日 下午2:40:27</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2014年12月22日 下午2:40:27</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

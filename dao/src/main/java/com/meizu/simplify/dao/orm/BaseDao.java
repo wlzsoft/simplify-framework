@@ -16,7 +16,7 @@ import com.meizu.simplify.ioc.BeanFactory;
  * <p>Create Date:2015年3月10日 下午1:42:18</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月10日 下午1:42:18</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  */
 public class BaseDao  {

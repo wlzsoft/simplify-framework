@@ -13,7 +13,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * <p>Create Date:2015年2月14日 下午1:00:57</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年2月14日 下午1:00:57</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

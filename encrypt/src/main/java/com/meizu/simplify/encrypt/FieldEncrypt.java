@@ -14,7 +14,7 @@ import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
  * <p>Create Date:2016年3月10日 下午2:33:40</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月10日 下午2:33:40</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

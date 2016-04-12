@@ -19,7 +19,7 @@ import com.meizu.simplify.utils.ObjectUtil;
  * <p>Create Date:2016年3月9日 下午5:46:06</p>
  * <p>Modified By:meizu-</p>
  * <p>Modified Date:2016年3月9日 下午5:46:06</p>
- * @author <a href="wanghaibin@meizu.com" title="邮箱地址">meizu</a>
+ * @author <a href="wanghaibin@meizu.com" >meizu</a>
  * @version Version 1.0
  *
  */

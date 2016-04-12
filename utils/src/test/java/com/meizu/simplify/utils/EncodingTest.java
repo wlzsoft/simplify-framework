@@ -13,7 +13,7 @@ import com.meizu.simplify.utils.enums.EncodingEnum;
  * <p>Create Date:2016年1月13日 下午4:04:02</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月13日 下午4:04:02</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

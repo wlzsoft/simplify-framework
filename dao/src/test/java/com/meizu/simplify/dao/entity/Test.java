@@ -14,7 +14,7 @@ import com.meizu.simplify.entity.BaseEntity;
  * <p>Create Date:2016年1月28日 下午6:02:55</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月28日 下午6:02:55</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

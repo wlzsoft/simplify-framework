@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
  * <p>Create Date:2016年3月4日 上午10:12:23</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月4日 上午10:12:23</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

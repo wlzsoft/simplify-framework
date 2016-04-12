@@ -10,7 +10,7 @@ package com.meizu.message.enums;
  * <p>Create Date:2014年12月30日 下午5:29:22</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2014年12月30日 下午5:29:22</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

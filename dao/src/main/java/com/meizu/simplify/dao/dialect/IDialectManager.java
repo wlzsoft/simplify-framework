@@ -10,7 +10,7 @@ package com.meizu.simplify.dao.dialect;
  * <p>Create Date:2015年3月9日 下午5:31:54</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月9日 下午5:31:54</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

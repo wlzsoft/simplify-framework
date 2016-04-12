@@ -18,7 +18,7 @@ import javax.servlet.ServletResponse;
  * <p>Create Date:2016年1月21日 下午12:29:43</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月21日 下午12:29:43</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

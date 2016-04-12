@@ -18,7 +18,7 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
  * <p>Create Date:2015年3月19日 下午2:22:11</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月19日 下午2:22:11</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

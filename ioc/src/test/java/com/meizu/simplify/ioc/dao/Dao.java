@@ -12,7 +12,7 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
  * <p>Create Date:2016年1月11日 上午10:59:33</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月11日 上午10:59:33</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

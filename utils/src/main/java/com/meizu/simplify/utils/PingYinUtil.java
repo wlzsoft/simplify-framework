@@ -16,7 +16,7 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
  * <p>Create Date:2016年3月22日 上午9:41:23</p>
  * <p>Modified By:wanglizong-</p>
  * <p>Modified Date:2016年3月22日 上午9:41:23</p>
- * @author <a href="mailto:wanglizong@meizu.com" title="邮箱地址">wanglizong</a>
+ * @author <a href="mailto:wanglizong@meizu.com" >wanglizong</a>
  * @version Version 0.1
  *
  */

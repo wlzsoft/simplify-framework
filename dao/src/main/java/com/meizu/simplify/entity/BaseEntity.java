@@ -16,7 +16,7 @@ import com.meizu.simplify.dao.annotations.Transient;
  * <p>Create Date:2016年3月18日 下午1:09:55</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月18日 下午1:09:55</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

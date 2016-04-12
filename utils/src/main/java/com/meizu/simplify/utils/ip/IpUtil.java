@@ -15,7 +15,7 @@ import java.util.Enumeration;
  * <p>Create Date:2015年8月6日 下午7:43:40</p>
  * <p>Modified By:whb-</p>
  * <p>Modified Date:2015年8月6日 下午7:43:40</p>
- * @author <a href="mailto:wanghaibin@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:wanghaibin@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

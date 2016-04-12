@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  * <p>Create Date:2015年3月9日 下午6:07:21</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年3月9日 下午6:07:21</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

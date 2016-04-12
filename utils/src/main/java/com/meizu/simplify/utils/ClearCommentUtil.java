@@ -22,7 +22,7 @@ import java.util.Map;
  * <p>Create Date:2015年4月3日 下午4:04:30</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年4月3日 下午4:04:30</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

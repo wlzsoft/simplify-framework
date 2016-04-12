@@ -8,7 +8,7 @@ package com.meizu.simplify.cache;
  * <p>Create Date:2016年1月18日 下午6:59:24</p>
  * <p>Modified By:Administrator-</p>
  * <p>Modified Date:2016年1月18日 下午6:59:24</p>
- * @author <a href="mailto:Administrator@meizu.com" title="邮箱地址">Administrator</a>
+ * @author <a href="mailto:Administrator@meizu.com" >Administrator</a>
  * @version Version 0.1
  *
  */

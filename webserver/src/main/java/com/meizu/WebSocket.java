@@ -21,7 +21,7 @@ import com.meizu.simplify.encrypt.sign.sha1.SHA1Encrypt;
  * <p>Create Date:2016年3月4日 下午5:23:19</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月4日 下午5:23:19</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

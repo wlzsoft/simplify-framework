@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * <p>Create Date:2015年1月13日 下午3:32:30</p>
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2015年1月13日 下午3:32:30</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">lcy</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  *
  */

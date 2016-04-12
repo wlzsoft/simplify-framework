@@ -37,7 +37,7 @@ import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
  * <p>Create Date:2016年1月26日 下午6:17:24</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年1月26日 下午6:17:24</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  */

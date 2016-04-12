@@ -10,7 +10,7 @@ package com.meizu.simplify.utils.collection;
  * <p>Create Date:2016年3月24日 下午5:36:46</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月24日 下午5:36:46</p>
- * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
  * @param <T>
