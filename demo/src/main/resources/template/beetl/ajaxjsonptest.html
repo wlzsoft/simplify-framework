@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ajax jsonp 测试</title>
+    <script src="/jquery-1.11.3.min.js"></script>
+    <script>document.domain='meizu.com';</script>
+    <script type="text/javascript">
+        function callback(msg) {
+          alert(msg);
+        }
+    </script>
+  </head>
+  <body>  
+          <script type="text/javascript" src="http://127.0.0.1/test/testvelocity3.jsonp?script=0&callback=callback"></script>
+          <script>
+              (function(){
+                 	$.ajax({
+				        type: "GET",
+				        url: "http://127.0.0.1/test/testvelocity3.jsonp",
+				        dataType:"jsonp", 
+				        data: "",
+			            complete: function (XMLHttpRequest, textStatus){
+			                var data = XMLHttpRequest.responseText;
+			                console.log("data:"+data);
+			                console.log('error: ' + textStatus);
+			            },
+			            success: function(data,a,b){
+			            	console.log("data:"+data);
+			            },  
+			            error:function(XHR, textStatus, errorThrown){
+			            	console.log('error: ' + errorThrown);
+			            }
+				    });  
+              }());
+          </script>
+          <form target="testiframe" action="testvelocity3.jsonp?script=1&callback=callback" method="get">
+              <input type="hidden" name="callback" value="window.parent.callback">
+              <input type="hidden" name="script" value="1">
+              <input type="submit" value="submit">
+          </form>
+          <iframe name="testiframe" style="display:none;"></iframe>
+  </body>
+</html>
+
