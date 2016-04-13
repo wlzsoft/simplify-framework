@@ -645,7 +645,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			
 			String sortMethod = "desc";
 			if(!isDesc) {
-				sortMethod = "asm";
+				sortMethod = "asc";
 			}
 			type.append(" order by ").append(sort).append(" ").append(sortMethod);
 		}
