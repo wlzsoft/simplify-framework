@@ -23,8 +23,9 @@ public abstract class Model {
 	private String cmd = "view";
 	
 	/**
-	 * 是否为Script方式加载  0：jsonp格式
-	 *                     1：jsonp自加载格式，除了数据传输，还有js页面加载触发事件
+	 * 是否为script方式加载  0：jsonp自加载格式
+	 *                     1：jsonp自加载格式，除了数据传输，还有js页面加载触发事件，可用于表单提交到iframe的无刷新表单提交
+	 *                     2: jsonp的wiget组件方式，常用于头部自动加载(也可用模板引擎后台生成达到公用)和用于广告系统的弹出(百度的广告推荐块)
 	 */ 
 	private Integer script = 0;
 	

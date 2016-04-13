@@ -45,13 +45,16 @@ public  class  JsonpView {
 	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,T model,String domain,PropertiesConfig config)
 			throws ServletException, IOException {
 		String message = JsonUtil.ObjectToString(obj);
-		if (model.getScript() == 1) { 
-			message = StringUtil.format("<script>document.domain='{0}';{1}({2})</script>", domain, model.getCallback(), message);
+		//可以通过请求头来限制不合理的请求(request head referer) TODO
+		if (model.getScript() == 1) { //form提交到iframe后，自动执行方式,必须在父级域名下，才能调用iframe的js函数
+			message = StringUtil.format("<script>document.domain='{0}';{1}({2});</script>", domain, model.getCallback(), message);
+//		} else if (model.getScript() == 2) {//通过js 的 document.write 来实现wiget
 		} else {
 			message = StringUtil.format("{0}({1})", model.getCallback(), message);
 		}
 		response.setCharacterEncoding(config.getCharset());
-		response.setContentType("text/javascript; charset=" + config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
+//		response.setContentType("text/javascript; charset=" + config.getCharset());
 		response.getWriter().print(message);
 	}
 }
