@@ -47,13 +47,11 @@ public  class  JsonpView {
 		String message = JsonUtil.ObjectToString(obj);
 		if (model.getScript() == 1) { 
 			message = StringUtil.format("<script>document.domain='{0}';{1}({2})</script>", domain, model.getCallback(), message);
-		} else if(model.getScript() == 2){
-			message = StringUtil.format("{0}", message);
 		} else {
 			message = StringUtil.format("{0}({1})", model.getCallback(), message);
 		}
 		response.setCharacterEncoding(config.getCharset());
-		response.setContentType("application/jsonp; charset=" + config.getCharset());
+		response.setContentType("text/javascript; charset=" + config.getCharset());
 		response.getWriter().print(message);
 	}
 }

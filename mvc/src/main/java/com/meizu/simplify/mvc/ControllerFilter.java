@@ -26,6 +26,7 @@ import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.mvc.controller.AnalysisRequestControllerModel;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.model.Model;
@@ -145,20 +146,21 @@ public class ControllerFilter implements Filter {
 					e1.printStackTrace();
 				}
 			} else if(requestUrl.endsWith(".jsonp")){
+				response.setStatus(208);//特殊情况下，5xx和4xx的状态状态码jsonp是无法处理的，由于不是真的ajax(jQuery框架的实现,自己模拟实现更精细的控制)，使用208来代替错误状态
 				try {
 					Model model = new Model() {
 						@Override
 						public void setScript(Integer script) {
-							script = DataUtil.parseInt(request.getParameter("script"));
 							super.setScript(script);
 						}
 						@Override
 						public void setCallback(String call) {
-							call = request.getParameter("callback");
 							super.setCallback(call);
 						}
 						
 					};
+					model.setScript(DataUtil.parseInt(request.getParameter("script")));
+					model.setCallback(request.getParameter("callback"));
 					JsonpView.exe(request, response, null, null, JsonResult.error(exceptionMessage),model,"meizu.com",config);
 				} catch (ServletException | IOException e1) {
 					e1.printStackTrace();
