@@ -35,11 +35,16 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, "com.meizu");
+		buildAnnotation(Bean.class);
+	}
+
+	public static <T extends Bean> void buildAnnotation(Class<T> clazzAnno) {
+		List<Class<?>> resolveList;
+		resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, "com.meizu");
 		for (Class<?> clazz : resolveList) {
 			LOGGER.info("Bean 初始化:{}",clazz.getName());
 			try {
-				Bean beanAnnotation = clazz.getAnnotation(Bean.class);
+				Bean beanAnnotation = clazz.getAnnotation(clazzAnno);
         		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
         			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
         			for (Class<?> hookClazz : hookList) {
