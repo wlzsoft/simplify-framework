@@ -13,7 +13,7 @@ package com.meizu.simplify.mvc.model;
  * @version Version 0.1
  *
  */
-public abstract class Model {
+public class Model {
 	
 	/**
 	 * 过滤器模式的参数值
