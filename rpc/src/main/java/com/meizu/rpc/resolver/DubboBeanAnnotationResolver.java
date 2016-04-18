@@ -40,7 +40,7 @@ public class DubboBeanAnnotationResolver implements IAnnotationResolver<Class<?>
 
 	public static <T extends ServerBean> void buildAnnotation(Class<T> clazzAnno) {
 		DubboApplication application = BeanFactory.getBean("dubboApplication");
-		DubboProtocol protocol = BeanFactory.getBean("dubboProtocol");
+ 		DubboProtocol protocol = BeanFactory.getBean("dubboProtocol");
 		DubboRegistry registry = BeanFactory.getBean("dubboRegistry");
 		List<Class<?>> resolveList;
 		resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, "com.meizu");
@@ -48,17 +48,18 @@ public class DubboBeanAnnotationResolver implements IAnnotationResolver<Class<?>
 			LOGGER.info("dubbo服务 初始化:{}", clazz.getName());
 			try {
 				ServerBean beanAnnotation = clazz.getAnnotation(clazzAnno);
-				ServiceConfig<T> service = new ServiceConfig<T>(); 
+				Class<?> interfaces=clazz.getInterfaces()[0];
+				ServiceConfig<ServerBean> service = new ServiceConfig<ServerBean>(); 
 				service.setApplication(application);
 				service.setRegistry(registry); // 多个注册中心可以用setRegistries()
 				service.setProtocol(protocol); // 多个协议可以用setProtocols()
-//				service.setInterface(beanAnnotation.getClass());
-//				service.setRef(beanAnnotation);
+				service.setInterface(interfaces.getClass());
+				service.setRef(beanAnnotation);
 				service.setVersion(beanAnnotation.version());
 				service.export();
 			} catch (Exception e) {
 				e.printStackTrace();
-				LOGGER.debug("dubbo服务:" + clazz.getName() + "初始化失败");
+				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败"+e);
 			}
 
 		}

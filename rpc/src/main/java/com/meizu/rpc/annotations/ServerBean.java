@@ -24,7 +24,4 @@ public @interface ServerBean {
 	String value() default "";
 	
 	String version() default "1.0.0";
-	
-	String interfaceName();
-
 }

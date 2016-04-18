@@ -13,6 +13,11 @@
   <dependencies>
   	<dependency>
 	  	<groupId>com.meizu</groupId>
+	    <artifactId>utils</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+  	<dependency>
+	  	<groupId>com.meizu</groupId>
 	    <artifactId>aop</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
@@ -105,16 +110,12 @@
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
 			<version>6.1.26</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.2</version>
+			<exclusions>
+				<exclusion>
+					 <groupId>org.mortbay.jetty</groupId>
+      				 <artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
   </dependencies>
 </project>
