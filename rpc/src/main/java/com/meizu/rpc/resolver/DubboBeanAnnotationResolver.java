@@ -62,7 +62,7 @@ public class DubboBeanAnnotationResolver implements IAnnotationResolver<Class<?>
 				service.setRef(bean);
 				service.setVersion(beanAnnotation.version());
 				service.export();
-//				test();
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败"+e);
