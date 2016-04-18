@@ -30,10 +30,10 @@ public class DubboRegistry extends RegistryConfig{
 	@InitBean
 	public void init() {
 		address=properties.getProp().getString("system.dubbo.registry.address");
+		this.setAddress(address);
 	}
 
 	public DubboRegistry() {
-		super.setAddress(address);
 	}
 	
 }

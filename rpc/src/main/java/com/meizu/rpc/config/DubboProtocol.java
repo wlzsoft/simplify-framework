@@ -24,24 +24,18 @@ public class DubboProtocol  extends ProtocolConfig{
 	
 	private static final long serialVersionUID = -1091315288158711793L;
 	
-	// 服务协议
-	private String name;
-	// 服务端口
-	private Integer port;
-	
 	
 	@Resource
 	private PropertiesConfig properties;
 
 	@InitBean
 	public void init() {
-		name = properties.getProp().getString("system.dubbo.protocol.name");
-		port = properties.getProp().getInteger("system.dubbo.protocol.port");
+		this.setName(properties.getProp().getString("system.dubbo.protocol.name"));
+		this.setPort( properties.getProp().getInteger("system.dubbo.protocol.port"));
 	}
 	
 	public DubboProtocol() {
-		super.setName(name);
-		super.setPort(port);
+		
 	}
 
 }

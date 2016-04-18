@@ -29,7 +29,7 @@ public class DubboApplication  extends ApplicationConfig{
 
 	@InitBean
 	public void init() {
-		applicationName = properties.getProp().getString("system.dubbo.app.name");
+		this.setName(properties.getProp().getString("system.dubbo.app.name"));
 	}
 
 	public DubboApplication() {
