@@ -58,7 +58,11 @@ public enum InitTypeEnum {
 	/**
 	 * sql数据库表结构创建和修改解析初始化
 	 */
-	DBINIT(12);
+	DBINIT(12),
+	/**
+	 * sql数据库表结构创建和修改解析初始化
+	 */
+	DUBBOBEAN(13);
 	
 	public final int value;
 	InitTypeEnum(int value) {
