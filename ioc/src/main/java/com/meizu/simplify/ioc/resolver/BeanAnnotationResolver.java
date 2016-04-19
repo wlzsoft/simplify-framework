@@ -61,19 +61,23 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 					}
         		} else {
         			Object beanObj = null;
+        			String beanName = null;
         			Class<?> hookClazz = getSingleHook(clazz);
         			if(hookClazz == null) {
 						beanObj = clazz.newInstance();
+						beanName = clazz.getName();
         			} else {
         				Object hookObj = hookClazz.newInstance();
-        				beanObj = ((IBeanHook)hookObj).hook(clazz);
+        				BeanEntity<?> beanObjBean = ((IBeanHook)hookObj).hook(clazz);
+        				beanObj = beanObjBean.getBeanObj();
+        				beanName = beanObjBean.getName();
         			}
         			
         			if(beanObj == null) {
         				LOGGER.error("bean:类型为"+clazz.getName()+"的bean实例处理返回空，没有生成注入到容器中的bean对象");
         				continue;
         			}
-        			BeanFactory.addBean(beanObj);
+        			BeanFactory.addBean(beanName,beanObj);
         		}
 				
 			} catch (InstantiationException | IllegalAccessException e) {
@@ -97,7 +101,7 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			Class<?> annoClass = hookBeanAnno.value();
 			Annotation[] annos = clazz.getAnnotations();
 			for (Annotation anno : annos) {
-				if(annoClass.equals(anno.getClass())) {
+				if(annoClass.equals(anno.annotationType())) {
 					return hookClazz;
 				}
 			}

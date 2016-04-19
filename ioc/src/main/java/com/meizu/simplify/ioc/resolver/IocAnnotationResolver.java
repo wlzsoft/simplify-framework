@@ -72,6 +72,7 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		    		resourceName = "";
 		    	}
 		    	
+		    	
 		    	Class<?> iocType = field.getType();
 		    	String message = "依赖注入属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
 		    	if(!resourceName.trim().equals("")) {
@@ -88,7 +89,7 @@ public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		    			}
 		    			iocType = getDefaultBean(iocType,defaultBean);
 		    		} else if(clazzSize<1) {
-		    			throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
+		    			//throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
 		    		} else {
 		    			iocType = clazzList.get(0);
 		    		}

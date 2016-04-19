@@ -1,6 +1,5 @@
 package com.meizu.simplify.ioc.annotation;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,6 +18,7 @@ import java.lang.annotation.Target;
  * @version Version 0.1
  *
  */
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface BeanHook {
@@ -29,6 +29,6 @@ public @interface BeanHook {
 	 * 操作步骤: 此处指定需要创建单个实例的bean的注解的class<br>
 	 * @return
 	 */
-	Class<Annotation> value();
+	Class<?> value();
 
 }
