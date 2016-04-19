@@ -9,6 +9,7 @@
   </parent>
   <artifactId>mongodb</artifactId>
   <name>mongodb</name>
+  <description>mongodb操作 模块 </description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mongo-java-driver>3.2.2</mongo-java-driver>
