@@ -13,6 +13,10 @@ package com.meizu.simplify.ioc.service;
  * @version Version 0.1
  *
  */
+/*
+//单例bean的hook解析标注,需要完善单元测试对于它的测试
+@Bean
+@ClientBean*/
 public interface ITestService {
 
 	IDemoService getDemoService();
