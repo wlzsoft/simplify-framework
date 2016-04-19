@@ -3,6 +3,7 @@ package com.meizu.simplify.aop;
 import java.io.File;
 import java.util.Properties;
 
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.PropertieUtil;
  
 /**
@@ -25,7 +26,7 @@ public class AopConfig {
     	Properties  prop = System.getProperties();
         String config = prop.getProperty("aop.properties");
         if(config == null) {
-        	config = "E:/workspace-new/simplify-framework/weaving/src/main/resources/aop.properties";
+        	throw new UncheckedException("aop.properties配置不存在，请提供");
         }
         propertieUtils = new PropertieUtil(new File(config));
     }
