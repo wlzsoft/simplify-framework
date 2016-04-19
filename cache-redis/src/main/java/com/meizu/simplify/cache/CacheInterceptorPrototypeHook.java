@@ -20,10 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.ioc.BeanEntity;
-import com.meizu.simplify.ioc.annotation.BeanHook;
+import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 
-@BeanHook(CacheInterceptor.class)
+@BeanPrototypeHook(CacheInterceptor.class)
 public class CacheInterceptorPrototypeHook implements IBeanPrototypeHook {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptorPrototypeHook.class);

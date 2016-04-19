@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.BeanHook;
+import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
@@ -46,9 +46,9 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			try {
 				T beanAnnotation = clazz.getAnnotation(clazzAnno);
         		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
-        			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
+        			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, "com.meizu");
         			for (Class<?> hookClazz : hookList) {
-						BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
+						BeanPrototypeHook hookBeanAnno = hookClazz.getAnnotation(BeanPrototypeHook.class);
 						Class<?> serviceClass = hookBeanAnno.value();
 						if(serviceClass.equals(clazz)) {
 							Object hookObj = hookClazz.newInstance();
@@ -58,6 +58,11 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 					}
         		} else {
         			Object beanObj = clazz.newInstance();
+//        			Object beanObj = ((IBeanHook)hookObj).hook(clazz);
+        			if(beanObj == null) {
+        				LOGGER.error("bean:类型为"+clazz.getName()+"的bean实例处理返回空，没有生成注入到容器中的bean对象");
+        				continue;
+        			}
         			BeanFactory.addBean(beanObj);
         		}
 				

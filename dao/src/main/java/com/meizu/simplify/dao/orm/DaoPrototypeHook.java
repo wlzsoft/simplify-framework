@@ -23,13 +23,13 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.ioc.BeanEntity;
-import com.meizu.simplify.ioc.annotation.BeanHook;
+import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 
-@BeanHook(Dao.class)
+@BeanPrototypeHook(Dao.class)
 public class DaoPrototypeHook implements IBeanPrototypeHook {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoPrototypeHook.class);
