@@ -1,4 +1,4 @@
-package com.meizu.simplify.ioc.prototype;
+package com.meizu.simplify.ioc.hook;
 
 import java.util.List;
 

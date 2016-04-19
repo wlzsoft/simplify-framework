@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanHook;
-import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
+import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 
 @BeanHook(Dao.class)
 public class DaoPrototypeHook implements IBeanPrototypeHook {

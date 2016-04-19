@@ -12,7 +12,7 @@ import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
-import com.meizu.simplify.ioc.prototype.IBeanPrototypeHook;
+import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
 
 /**
@@ -44,7 +44,7 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		for (Class<?> clazz : resolveList) {
 			LOGGER.info("Bean 初始化:{}",clazz.getName());
 			try {
-				Bean beanAnnotation = clazz.getAnnotation(clazzAnno);
+				T beanAnnotation = clazz.getAnnotation(clazzAnno);
         		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
         			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
         			for (Class<?> hookClazz : hookList) {
