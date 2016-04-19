@@ -24,7 +24,7 @@
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency> -->
 	  <!-- 以下两个jar后续要删除，不应该出现在mvc模块中，开发阶段为了测试，所以加上 -->
-	  <dependency>
+	    <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
