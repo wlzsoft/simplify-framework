@@ -35,7 +35,7 @@ import com.meizu.simplify.utils.ObjectUtil;
  * @version Version 0.1
  *
  */
-@Init(InitTypeEnum.WEBSOCKET)
+@Init(InitTypeEnum.WEB_SOCKET)
 public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketAnnotationResolver.class);
 	

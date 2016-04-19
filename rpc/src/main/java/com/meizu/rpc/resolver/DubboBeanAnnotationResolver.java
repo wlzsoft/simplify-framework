@@ -29,7 +29,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  * @version Version 3.0
  *
  */
-@Init(InitTypeEnum.DUBBOBEAN)
+@Init(InitTypeEnum.SERVER_BEAN)
 public class DubboBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DubboBeanAnnotationResolver.class);

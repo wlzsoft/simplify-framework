@@ -21,7 +21,7 @@ public enum InitTypeEnum {
 	/**
 	 * 配置文件实体初始化
 	 */
-	RELOADRESOURCE(2),
+	RELOAD_RESOURCE(2),
 	/**
 	 * 依赖注入配置文件属性
 	 */
@@ -33,7 +33,7 @@ public enum InitTypeEnum {
 	/**
 	 * bean创建成功后，执行ioc操作后会调用这个init方法
 	 */
-	INITBEAN(5),
+	INIT_BEAN(5),
 	/**
 	 * 数据缓存初始化
 	 */
@@ -50,19 +50,19 @@ public enum InitTypeEnum {
 	/**
 	 * 页面缓存初始化
 	 */
-	WEBCACHE(10),
+	WEB_CACHE(10),
 	/**
 	 * websocket解析初始化
 	 */
-	WEBSOCKET(11),
+	WEB_SOCKET(11),
 	/**
 	 * sql数据库表结构创建和修改解析初始化
 	 */
-	DBINIT(12),
+	DB_INIT(12),
 	/**
-	 * sql数据库表结构创建和修改解析初始化
+	 * 远程方法调用，远程bean创建初始化
 	 */
-	DUBBOBEAN(13);
+	SERVER_BEAN(13);
 	
 	public final int value;
 	InitTypeEnum(int value) {

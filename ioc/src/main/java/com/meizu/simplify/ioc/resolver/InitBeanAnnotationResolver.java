@@ -29,7 +29,7 @@ import com.meizu.simplify.utils.ClassUtil;
  * @version Version 0.1
  *
  */
-@Init(InitTypeEnum.INITBEAN)
+@Init(InitTypeEnum.INIT_BEAN)
 public class InitBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(InitBeanAnnotationResolver.class);
 	@Override

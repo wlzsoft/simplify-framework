@@ -32,7 +32,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  * @version Version 0.1
  *
  */
-@Init(InitTypeEnum.WEBCACHE)
+@Init(InitTypeEnum.WEB_CACHE)
 public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebCacheAnnotationResolver.class);
 	

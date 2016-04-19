@@ -32,7 +32,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@Init(InitTypeEnum.RELOADRESOURCE)
+@Init(InitTypeEnum.RELOAD_RESOURCE)
 public class ReloadResourceAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReloadResourceAnnotationResolver.class);
 	
