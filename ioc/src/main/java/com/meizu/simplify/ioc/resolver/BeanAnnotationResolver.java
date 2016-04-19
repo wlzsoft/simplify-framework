@@ -69,6 +69,10 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
         			} else {
         				Object hookObj = hookClazz.newInstance();
         				BeanEntity<?> beanObjBean = ((IBeanHook)hookObj).hook(clazz);
+						if (null == beanObjBean) {
+							LOGGER.error(clazz.getName()+"实例处理返回空，没有生成注入到容器中的bean对象");
+	        				continue;
+						}
         				beanObj = beanObjBean.getBeanObj();
         				beanName = beanObjBean.getName();
         			}
