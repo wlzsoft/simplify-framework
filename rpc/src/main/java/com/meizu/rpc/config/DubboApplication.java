@@ -23,13 +23,13 @@ public class DubboApplication  extends ApplicationConfig{
 	private static final long serialVersionUID = -594938967258096101L;
 	
 	@Resource
-	private PropertiesConfig properties;
+	private DubboPropertiesConfig dubboProperties;
 
 	private String applicationName;
 
 	@InitBean
 	public void init() {
-		this.setName(properties.getProp().getString("system.dubbo.app.name"));
+		this.setName(dubboProperties.getProp().getString("dubbo.application.name"));
 	}
 
 	public DubboApplication() {

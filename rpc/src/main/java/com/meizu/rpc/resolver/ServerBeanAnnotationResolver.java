@@ -18,7 +18,7 @@ import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 
 /**
-  * <p><b>Title:</b><i>服务bean创建处理解析器</i></p>
+  * <p><b>Title:</b><i>RPC服务注解解析器</i></p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2016</p>
  * <p>Company:meizu</p>
@@ -64,7 +64,6 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				service.export();
 				
 			} catch (Exception e) {
-				e.printStackTrace();
 				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败"+e);
 			}
 

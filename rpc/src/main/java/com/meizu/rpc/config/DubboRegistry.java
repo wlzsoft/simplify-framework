@@ -23,13 +23,13 @@ public class DubboRegistry extends RegistryConfig{
 	private static final long serialVersionUID = 5690790370979517282L;
 
 	@Resource
-	private PropertiesConfig properties;
+	private DubboPropertiesConfig dubboProperties;
 	
 	private String address;
 	
 	@InitBean
 	public void init() {
-		address=properties.getProp().getString("system.dubbo.registry.address");
+		address=dubboProperties.getProp().getString("dubbo.registry.address");
 		this.setAddress(address);
 	}
 

@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * <p><b>Title:</b><i>RPC服务实例</i></p>
+ * <p><b>Title:</b><i>RPC客户端远程实例</i></p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2016</p>
  * <p>Company:meizu</p>
@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface ServerBean {
+public @interface ClientBean {
 
 	String value() default "";
 	

@@ -2,7 +2,6 @@ package com.meizu.rpc.config;
 
 
 import com.alibaba.dubbo.config.ProtocolConfig;
-import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -26,12 +25,12 @@ public class DubboProtocol  extends ProtocolConfig{
 	
 	
 	@Resource
-	private PropertiesConfig properties;
+	private DubboPropertiesConfig dubboProperties;
 
 	@InitBean
 	public void init() {
-		this.setName(properties.getProp().getString("system.dubbo.protocol.name"));
-		this.setPort( properties.getProp().getInteger("system.dubbo.protocol.port"));
+		this.setName(dubboProperties.getProp().getString("dubbo.protocol.name"));
+		this.setPort(dubboProperties.getProp().getInteger("dubbo.protocol.port"));
 	}
 	
 	public DubboProtocol() {
