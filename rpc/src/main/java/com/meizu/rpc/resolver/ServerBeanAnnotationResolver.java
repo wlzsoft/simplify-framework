@@ -30,9 +30,9 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  *
  */
 @Init(InitTypeEnum.SERVER_BEAN)
-public class DubboBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
+public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DubboBeanAnnotationResolver.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServerBeanAnnotationResolver.class);
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
