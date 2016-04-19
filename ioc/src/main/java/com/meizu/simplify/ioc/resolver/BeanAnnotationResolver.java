@@ -1,5 +1,6 @@
 package com.meizu.simplify.ioc.resolver;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
+import com.meizu.simplify.ioc.hook.IBeanHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
 
@@ -57,8 +60,15 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 						}
 					}
         		} else {
-        			Object beanObj = clazz.newInstance();
-//        			Object beanObj = ((IBeanHook)hookObj).hook(clazz);
+        			Object beanObj = null;
+        			Class<?> hookClazz = getSingleHook(clazz);
+        			if(hookClazz == null) {
+						beanObj = clazz.newInstance();
+        			} else {
+        				Object hookObj = hookClazz.newInstance();
+        				beanObj = ((IBeanHook)hookObj).hook(clazz);
+        			}
+        			
         			if(beanObj == null) {
         				LOGGER.error("bean:类型为"+clazz.getName()+"的bean实例处理返回空，没有生成注入到容器中的bean对象");
         				continue;
@@ -72,5 +82,26 @@ public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			}
 			
 		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 获取单例bean处理hook<br>
+	 * 操作步骤: TODO<br>
+	 * @param clazz
+	 */
+	private static Class<?> getSingleHook(Class<?> clazz) {
+		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
+		for (Class<?> hookClazz : hookList) {
+			BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
+			Class<?> annoClass = hookBeanAnno.value();
+			Annotation[] annos = clazz.getAnnotations();
+			for (Annotation anno : annos) {
+				if(annoClass.equals(anno.getClass())) {
+					return hookClazz;
+				}
+			}
+		}
+		return null;
 	}
 }
