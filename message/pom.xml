@@ -9,6 +9,7 @@
   </parent>
   <artifactId>message</artifactId>
   <name>message</name>
+  <description>消息 模块 </description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<templatePath>${project.parent.basedir}</templatePath>
