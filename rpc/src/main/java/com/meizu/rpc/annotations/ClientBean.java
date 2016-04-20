@@ -23,6 +23,8 @@ public @interface ClientBean {
 
 	String value() default "";
 	
-	String version() default "1.0.0";
+	String version() default "1.0.0";//服务版本，与服务提供者的版本一致
+	
+	boolean check() default true;//启动时检查提供者是否存在，true报错，false忽略
 	
 }

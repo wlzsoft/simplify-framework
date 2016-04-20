@@ -59,10 +59,12 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				service.setRegistry(registry); // 多个注册中心可以用setRegistries()
 				service.setProtocol(protocol); // 多个协议可以用setProtocols()
 				service.setInterface(interfaces);
+				service.setTimeout(beanAnnotation.timeout());
+				service.setLoadbalance(beanAnnotation.loadbalance());
+				service.setConnections(beanAnnotation.connections());
 				service.setRef(bean);
 				service.setVersion(beanAnnotation.version());
 				service.export();
-				
 			} catch (Exception e) {
 				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败"+e);
 			}

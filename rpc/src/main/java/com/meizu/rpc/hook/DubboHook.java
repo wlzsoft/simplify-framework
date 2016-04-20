@@ -1,17 +1,5 @@
 package com.meizu.rpc.hook;
-/**
-  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
- * <p>source folder:{@docRoot}</p>
- * <p>Copyright:Copyright(c)2014</p>
- * <p>Company:meizu</p>
- * <p>Create Date:2016年1月11日 上午10:51:31</p>
- * <p>Modified By:luchuangye-</p>
- * <p>Modified Date:2016年1月11日 上午10:51:31</p>
- * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
- * @version Version 0.1
- *
- */
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -28,14 +16,25 @@ import com.meizu.simplify.ioc.hook.IBeanHook;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.PropertieUtil;
-
+/**
+ * <p>远程bean单例钩子</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2016</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年4月15日 下午4:45:25</p>
+ * <p>Modified By:meizu-</p>
+ * <p>Modified Date:2016年4月15日 下午4:45:25</p>
+ * @author <a href="wanghaibin@meizu.com" title="邮箱地址">meizu</a>
+ * @version Version 3.0
+ *
+ */
 @BeanHook(ClientBean.class)
 public class DubboHook implements IBeanHook {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DubboHook.class);
 			
 	@Override
-	public BeanEntity<?> hook(Class<?> clazz) {
+	public BeanEntity<?> hook(Class<?> clazz){
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, "com.meizu");//扫描ClientBean注解bean
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {
@@ -75,13 +74,14 @@ public class DubboHook implements IBeanHook {
 			reference.setRegistry(registry);
 			reference.setInterface(entityClass);
 			reference.setVersion(beanAnnotation.version());
-			BeanEntity<Object> resultEntity = new BeanEntity<>();
+			reference.setCheck(beanAnnotation.check());
+			BeanEntity<Object> resultEntity = new BeanEntity<Object>();
 			Object obj=reference.get();
 			resultEntity.setName(entityClass.getName());
 			resultEntity.setBeanObj(obj);
 			return resultEntity;
 		}catch(Exception e){
-			LOGGER.error("连接dubbo服务异常！"+e.getMessage());
+			LOGGER.error("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
 			return null;
 		}
 		

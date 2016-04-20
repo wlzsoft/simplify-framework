@@ -1,7 +1,6 @@
 package com.meizu.rpc.config;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
-import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
