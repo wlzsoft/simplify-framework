@@ -72,6 +72,7 @@
   	<module>cache-redis</module>
   	<module>mongodb</module>
     <module>message</module>
+    <module>rpc</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
