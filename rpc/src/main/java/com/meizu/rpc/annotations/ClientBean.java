@@ -25,7 +25,7 @@ public @interface ClientBean {
 	
 	String version() default "1.0.0";//服务版本，与服务提供者的版本一致
 	
-	boolean check() default true;//启动时检查提供者是否存在，true报错，false忽略
+	boolean check() default false;//启动时检查提供者是否存在，true报错，false忽略
 	
 	String url() default "";//直连服务路径,服务绕过注册中心，仅开发测试使用
 }
