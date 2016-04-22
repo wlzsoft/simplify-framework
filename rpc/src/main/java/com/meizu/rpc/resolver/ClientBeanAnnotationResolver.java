@@ -12,6 +12,7 @@ import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.meizu.rpc.annotations.ClientBean;
 import com.meizu.rpc.annotations.ServerBean;
+import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.hook.IBeanHook;
@@ -32,8 +33,8 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @BeanHook(ClientBean.class)
-public class ClientBeanAnnotationResolver implements IBeanHook {
 
+public class ClientBeanAnnotationResolver implements IBeanHook {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBeanAnnotationResolver.class);
 			
 	@Override
@@ -90,7 +91,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			return resultEntity;
 		}catch(Exception e){
 			LOGGER.error("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
-			return null;
+			throw new StartupErrorException("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
 		}
 		
 	}

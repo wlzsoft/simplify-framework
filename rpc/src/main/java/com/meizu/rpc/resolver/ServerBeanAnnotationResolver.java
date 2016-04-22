@@ -46,6 +46,7 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
  		DubboProtocol protocol = BeanFactory.getBean(DubboProtocol.class);
 //		DubboRegistry registry = BeanFactory.getBean(DubboRegistry.class);
 		List<DubboRegistry> registryList=new ArrayList<DubboRegistry>();
+		List<Object> beanList=new ArrayList<Object>();
 		Set<Entry<String, Object>>  resoveBean = BeanFactory.getBeanContainer().getMapContainer().entrySet();
 		for (Entry<String, Object> clazzObj : resoveBean) {
 			Object bean = clazzObj.getValue();
@@ -53,36 +54,38 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 			if(clazz.equals(DubboRegistry.class)){
 				registryList.add((DubboRegistry) bean);
 			}
-		}
-		for (Entry<String, Object> clazzObj : resoveBean) {
-			Object bean = clazzObj.getValue();
-			Class<?> clazz = bean.getClass();
-			try {
-				ServerBean beanAnnotation = clazz.getAnnotation(ServerBean.class);
-				if(beanAnnotation == null) {
-					continue;
-				}
-				LOGGER.info("dubbo服务 初始化:{}", clazz.getName());
-				Class<?> interfaces=clazz.getInterfaces()[0];
-				ServiceConfig<Object> service = new ServiceConfig<Object>(); 
-				service.setApplication(application);
-				service.setRegistries(registryList);
-//				service.setRegistry(registry); // 多个注册中心可以用setRegistries()
-				service.setProtocol(protocol); // 多个协议可以用setProtocols()
-				service.setInterface(interfaces);
-				service.setTimeout(beanAnnotation.timeout());
-				service.setLoadbalance(beanAnnotation.loadbalance());
-				service.setConnections(beanAnnotation.connections());
-				service.setRef(bean);
-				MonitorConfig monitor=new MonitorConfig();
-				monitor.setProtocol("registry");
-				service.setMonitor(monitor);
-				service.setVersion(beanAnnotation.version());
-				service.export();
-			} catch (Exception e) {
-				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败"+e);
+			ServerBean beanAnnotation = clazz.getAnnotation(ServerBean.class);
+			if(beanAnnotation != null) {
+				beanList.add(bean);
 			}
-
+		}
+		if (beanList.size() > 0) {
+			for (Object bean : beanList) {
+				Class<?> clazz = bean.getClass();
+				ServerBean beanAnnotation = clazz.getAnnotation(ServerBean.class);
+				try {
+					LOGGER.info("dubbo服务 初始化:{}", beanAnnotation.getClass().getName());
+					Class<?> interfaces = beanAnnotation.getClass().getInterfaces()[0];
+					ServiceConfig<Object> service = new ServiceConfig<Object>();
+					service.setApplication(application);
+					service.setRegistries(registryList);
+					// service.setRegistry(registry); //
+					// 多个注册中心可以用setRegistries()
+					service.setProtocol(protocol); // 多个协议可以用setProtocols()
+					service.setInterface(interfaces);
+					service.setTimeout(beanAnnotation.timeout());
+					service.setLoadbalance(beanAnnotation.loadbalance());
+					service.setConnections(beanAnnotation.connections());
+					service.setRef(bean);
+					MonitorConfig monitor = new MonitorConfig();
+					monitor.setProtocol("registry");
+					service.setMonitor(monitor);
+					service.setVersion(beanAnnotation.version());
+					service.export();
+				} catch (Exception e) {
+					LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败" + e);
+				}
+			}
 		}
 	}
 	
