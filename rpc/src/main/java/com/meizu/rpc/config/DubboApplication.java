@@ -29,6 +29,7 @@ public class DubboApplication  extends ApplicationConfig{
 	@InitBean
 	public void init() {
 		this.setName(dubboProperties.getProp().getString("dubbo.application.name"));
+		this.setOwner(dubboProperties.getProp().getString("dubbo.application.owner"));
 	}
 
 	public DubboApplication() {

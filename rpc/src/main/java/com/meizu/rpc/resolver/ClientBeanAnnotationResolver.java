@@ -1,11 +1,13 @@
-package com.meizu.rpc.hook;
+package com.meizu.rpc.resolver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.MonitorConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.meizu.rpc.annotations.ClientBean;
@@ -16,8 +18,9 @@ import com.meizu.simplify.ioc.hook.IBeanHook;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.StringUtil;
 /**
- * <p>远程bean单例钩子</p>
+ * <p>clientBean注解解析</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2016</p>
  * <p>Company:meizu</p>
@@ -29,9 +32,9 @@ import com.meizu.simplify.utils.PropertieUtil;
  *
  */
 @BeanHook(ClientBean.class)
-public class DubboHook implements IBeanHook {
+public class ClientBeanAnnotationResolver implements IBeanHook {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DubboHook.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBeanAnnotationResolver.class);
 			
 	@Override
 	public BeanEntity<?> hook(Class<?> clazz){
@@ -66,15 +69,20 @@ public class DubboHook implements IBeanHook {
 			ApplicationConfig application = new ApplicationConfig();
 			application.setName(propertieUtil.getString("dubbo.application.name"));
 			// 连接注册中心配置
-			RegistryConfig registry = new RegistryConfig();
-			registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
+//			RegistryConfig registry = new RegistryConfig();
+//			registry.setAddress();
 			// 引用远程服务
 			ReferenceConfig<Object> reference = new ReferenceConfig<>();
 			reference.setApplication(application);
-			reference.setRegistry(registry);
+//			reference.setRegistry(registry);
+			reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
 			reference.setInterface(entityClass);
 			reference.setVersion(beanAnnotation.version());
 			reference.setCheck(beanAnnotation.check());
+			reference.setUrl(beanAnnotation.url());
+			MonitorConfig monitor=new MonitorConfig();//监控
+			monitor.setProtocol("registry");
+			reference.setMonitor(monitor);
 			BeanEntity<Object> resultEntity = new BeanEntity<Object>();
 			Object obj=reference.get();
 			resultEntity.setName(entityClass.getName());
@@ -85,5 +93,19 @@ public class DubboHook implements IBeanHook {
 			return null;
 		}
 		
+	}
+	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil){
+		String addresss = propertieUtil.getString("dubbo.registry.address");
+		List<RegistryConfig> registries=new ArrayList<RegistryConfig>();
+		if (StringUtil.isNotBlank(addresss)) {
+			String[] addressArry = addresss.split(",");
+			for (int i = 0; i < addressArry.length; i++) {
+				if(StringUtil.isBlank(addressArry[i]))continue;
+				RegistryConfig registry = new RegistryConfig();
+				registry.setAddress(addressArry[i]);
+				registries.add(registry);
+			}
+		}
+		return registries;
 	}
 }

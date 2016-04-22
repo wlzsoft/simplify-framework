@@ -1,5 +1,6 @@
 package com.meizu.rpc.resolver;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.dubbo.config.MonitorConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
 import com.meizu.rpc.annotations.ServerBean;
 import com.meizu.rpc.config.DubboApplication;
@@ -42,8 +44,16 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 	public static <T extends ServerBean> void buildAnnotation(Class<T> clazzAnno) {
 		DubboApplication application = BeanFactory.getBean(DubboApplication.class);
  		DubboProtocol protocol = BeanFactory.getBean(DubboProtocol.class);
-		DubboRegistry registry = BeanFactory.getBean(DubboRegistry.class);
+//		DubboRegistry registry = BeanFactory.getBean(DubboRegistry.class);
+		List<DubboRegistry> registryList=new ArrayList<DubboRegistry>();
 		Set<Entry<String, Object>>  resoveBean = BeanFactory.getBeanContainer().getMapContainer().entrySet();
+		for (Entry<String, Object> clazzObj : resoveBean) {
+			Object bean = clazzObj.getValue();
+			Class<?> clazz = bean.getClass();
+			if(clazz.equals(DubboRegistry.class)){
+				registryList.add((DubboRegistry) bean);
+			}
+		}
 		for (Entry<String, Object> clazzObj : resoveBean) {
 			Object bean = clazzObj.getValue();
 			Class<?> clazz = bean.getClass();
@@ -56,13 +66,17 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				Class<?> interfaces=clazz.getInterfaces()[0];
 				ServiceConfig<Object> service = new ServiceConfig<Object>(); 
 				service.setApplication(application);
-				service.setRegistry(registry); // 多个注册中心可以用setRegistries()
+				service.setRegistries(registryList);
+//				service.setRegistry(registry); // 多个注册中心可以用setRegistries()
 				service.setProtocol(protocol); // 多个协议可以用setProtocols()
 				service.setInterface(interfaces);
 				service.setTimeout(beanAnnotation.timeout());
 				service.setLoadbalance(beanAnnotation.loadbalance());
 				service.setConnections(beanAnnotation.connections());
 				service.setRef(bean);
+				MonitorConfig monitor=new MonitorConfig();
+				monitor.setProtocol("registry");
+				service.setMonitor(monitor);
 				service.setVersion(beanAnnotation.version());
 				service.export();
 			} catch (Exception e) {

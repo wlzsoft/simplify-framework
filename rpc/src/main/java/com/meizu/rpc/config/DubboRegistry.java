@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.RegistryConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 
 /**
  * <p>dubbo连接注册中心配置</p>
@@ -16,20 +17,20 @@ import com.meizu.simplify.ioc.annotation.Resource;
  * @author <a href="wanghaibin@meizu.com" title="邮箱地址">meizu</a>
  * @version Version 3.0
  */
-@Bean
+@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class DubboRegistry extends RegistryConfig{
 	
 	private static final long serialVersionUID = 5690790370979517282L;
 
 	@Resource
 	private DubboPropertiesConfig dubboProperties;
-	
-	private String address;
-	
+
+//	private String address;
+
 	@InitBean
 	public void init() {
-		address=dubboProperties.getProp().getString("dubbo.registry.address");
-		this.setAddress(address);
+//		address = dubboProperties.getProp().getString("dubbo.registry.address");
+//		this.setAddress(address);
 	}
 
 	public DubboRegistry() {

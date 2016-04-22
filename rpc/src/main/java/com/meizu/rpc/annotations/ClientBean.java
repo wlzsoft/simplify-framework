@@ -27,4 +27,5 @@ public @interface ClientBean {
 	
 	boolean check() default true;//启动时检查提供者是否存在，true报错，false忽略
 	
+	String url() default "";//直连服务路径,服务绕过注册中心，仅开发测试使用
 }
