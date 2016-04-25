@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.ITemplate;
 import com.meizu.simplify.mvc.view.JsonView;
@@ -125,8 +126,8 @@ public class BaseController<T extends Model> {
 
 		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, methodFullName);
 		
-		WebCache webCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, methodFullName);
-		if(webCache == null) {
+		WebCacheInfo webCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, methodFullName);
+		if(webCache.getIsCache()) {
 			return;
 		}
 		
@@ -142,7 +143,7 @@ public class BaseController<T extends Model> {
 		}
 		Object obj = method.invoke(this,parameValue);
 		//代码生成区域end
-		dispatchView(request, response, model, requestUrl, staticName, obj, webCache);
+		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
 	}
 

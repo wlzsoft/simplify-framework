@@ -18,6 +18,7 @@ import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.dto.AnnotationListInfo;
+import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.util.AjaxUtils;
@@ -57,22 +58,28 @@ public class AnalysisRequestControllerMethod {
 	 * @return 如果返回空，那么是有缓存，否则无缓存
 	 * @throws IOException
 	 */
-	public static WebCache analysisWebCache(HttpServletResponse response, String staticName, String methodFullName) throws IOException {
+	public static WebCacheInfo analysisWebCache(HttpServletResponse response, String staticName, String methodFullName) throws IOException {
 		if(config == null) {
 			config = BeanFactory.getBean(PropertiesConfig.class);
 		}
+		WebCacheInfo webCacheInfo = new WebCacheInfo();
 		AnnotationInfo<WebCache> webCacheAnno = ControllerAnnotationResolver.webCacheMap.get(methodFullName);
 		if (webCacheAnno == null) {
-			return null;
+//			Message.error("严重错误，无法获取["+methodFullName+"]的WebCache注解信息");
+			webCacheInfo.setIsCache(false);
+			return webCacheInfo;
 		}
 		WebCache webCache = webCacheAnno.getAnnotatoionType();
+		webCacheInfo.setWebcache(webCache);
 		Cache cache = CacheBase.getCache(webCache);
 		if(cache == null){
-			return webCache;
+			webCacheInfo.setIsCache(false);
+			return webCacheInfo;
 		}
 		String cacheContent = cache.readCache(webCache, staticName);
 		if(cacheContent == null){
-			return webCache;
+			webCacheInfo.setIsCache(false);
+			return webCacheInfo;
 		}
 		if(response!=null&&webCache.enableBrowerCache()) {
 			BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
@@ -81,7 +88,8 @@ public class AnalysisRequestControllerMethod {
 		response.setContentType("text/html; charset=" + config.getCharset());
 		response.getWriter().print(cacheContent);
 		System.out.println("页面缓存 : 读取页面缓存");
-		return null;
+		webCacheInfo.setIsCache(true);
+		return webCacheInfo;
 	}
 
 	/**
@@ -98,7 +106,7 @@ public class AnalysisRequestControllerMethod {
 		AnnotationListInfo<AnnotationInfo<RequestParam>> annoListInfo = ControllerAnnotationResolver.requestParamMap.get(methodFullName);
 		if(annoListInfo == null) {
 			//TODO 后续如果需要兼容没有参数的情况下，就不会是严重错误，而是更好的用户体验
-			Message.error("严重错误，无法获取["+methodFullName+"]的注解信息");
+			Message.error("严重错误，无法获取["+methodFullName+"]的RequestParam注解信息");
 			return null;
 		}
 		int methodParamLength = annoListInfo.getCount();
@@ -154,6 +162,7 @@ public class AnalysisRequestControllerMethod {
 		}
 		AnnotationInfo<AjaxAccess> ajaxAccessAnno = ControllerAnnotationResolver.ajaxAccessMap.get(methodFullName);
 		if (ajaxAccessAnno == null) {
+//			Message.error("严重错误，无法获取["+methodFullName+"]的AjaxAccess注解信息");
 			return;
 		}
 		AjaxAccess ajaxAccess = ajaxAccessAnno.getAnnotatoionType();
