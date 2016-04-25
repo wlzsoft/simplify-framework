@@ -114,46 +114,6 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 	}
 	
-	private <T extends Annotation> void resolveRequestParam(Class<?> beanClass, Method method,String cpath) {
-		
-		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等,顺序一致一一对应
-		Class<?>[] parameterTypes = method.getParameterTypes();
-		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-		List<AnnotationInfo<RequestParam>> requestParamAnnoList = new ArrayList<>();
-		for (int i=0; i< parameterTypes.length;i++) {
-			Class<?> paramType = parameterTypes[i];
-			Annotation[] annotationsParamType = parameterAnnotations[i];
-			for (Annotation annotation : annotationsParamType) {//这里的循环次数是0到1次，包含@RequestParam的会循环一次，因为目前参数上只会有RequestParam注解
-				if(annotation.annotationType() == RequestParam.class) {
-					RequestParam requestParam = (RequestParam)annotation;
-					String paramStr = requestParam.name();
-					String exceptionMessage = beanClass.getName()+":"+method.getName()+"方法的第"+(i+1)+"个参数，参数类型为["+paramType.getName()+"]的参数名：只能是字符串，不可以是["+paramStr+"]";
-					if(ObjectUtil.isInt(paramStr)) {
-						throw new StartupErrorException(exceptionMessage+"的整型值");
-					} else if(ObjectUtil.isBoolean(paramStr)) {
-						throw new StartupErrorException(exceptionMessage+"的布尔值");
-					} else if(ObjectUtil.isFloat(paramStr)) {
-						throw new StartupErrorException(exceptionMessage+"的单精度浮点型值");
-					} else if(ObjectUtil.isLong(paramStr)) {
-						throw new StartupErrorException(exceptionMessage+"的长整型值");
-					}
-					AnnotationInfo<RequestParam> annoInfo = new AnnotationInfo<>();
-					annoInfo.setAnnotatoionType(requestParam);
-					annoInfo.setReturnType(paramType);
-					requestParamAnnoList.add(annoInfo);
-				}
-			}
-		}
-		AnnotationListInfo<AnnotationInfo<RequestParam>> annoList= new AnnotationListInfo<>();
-		if(parameterTypes.length<=0) {
-			return;
-		}
-		annoList.setCount(parameterTypes.length);
-		if(requestParamAnnoList.size()>0) {
-			annoList.setAnnoList(requestParamAnnoList);
-		}
-		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
-	}
 	
 	/**
 	 * 
@@ -221,5 +181,46 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			}
 		}
 		return isExist;
+	}
+	
+	private <T extends Annotation> void resolveRequestParam(Class<?> beanClass, Method method,String cpath) {
+		
+		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等,顺序一致一一对应
+		Class<?>[] parameterTypes = method.getParameterTypes();
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		List<AnnotationInfo<RequestParam>> requestParamAnnoList = new ArrayList<>();
+		for (int i=0; i< parameterTypes.length;i++) {
+			Class<?> paramType = parameterTypes[i];
+			Annotation[] annotationsParamType = parameterAnnotations[i];
+			for (Annotation annotation : annotationsParamType) {//这里的循环次数是0到1次，包含@RequestParam的会循环一次，因为目前参数上只会有RequestParam注解
+				if(annotation.annotationType() == RequestParam.class) {
+					RequestParam requestParam = (RequestParam)annotation;
+					String paramStr = requestParam.name();
+					String exceptionMessage = beanClass.getName()+":"+method.getName()+"方法的第"+(i+1)+"个参数，参数类型为["+paramType.getName()+"]的参数名：只能是字符串，不可以是["+paramStr+"]";
+					if(ObjectUtil.isInt(paramStr)) {
+						throw new StartupErrorException(exceptionMessage+"的整型值");
+					} else if(ObjectUtil.isBoolean(paramStr)) {
+						throw new StartupErrorException(exceptionMessage+"的布尔值");
+					} else if(ObjectUtil.isFloat(paramStr)) {
+						throw new StartupErrorException(exceptionMessage+"的单精度浮点型值");
+					} else if(ObjectUtil.isLong(paramStr)) {
+						throw new StartupErrorException(exceptionMessage+"的长整型值");
+					}
+					AnnotationInfo<RequestParam> annoInfo = new AnnotationInfo<>();
+					annoInfo.setAnnotatoionType(requestParam);
+					annoInfo.setReturnType(paramType);
+					requestParamAnnoList.add(annoInfo);
+				}
+			}
+		}
+		AnnotationListInfo<AnnotationInfo<RequestParam>> annoList= new AnnotationListInfo<>();
+		if(parameterTypes.length<=0) {
+			return;
+		}
+		annoList.setCount(parameterTypes.length);
+		if(requestParamAnnoList.size()>0) {
+			annoList.setAnnoList(requestParamAnnoList);
+		}
+		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
 	}
 }
