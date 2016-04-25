@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.cache.redis.util.JsonUtil;
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -26,7 +25,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public  class  JsonView {
 
-	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,PropertiesConfig config)
+	public static void exe(HttpServletRequest request, HttpServletResponse response,Object obj,PropertiesConfig config)
 			throws ServletException, IOException {
 		String message = JsonUtil.ObjectToString(obj);
 		response.setCharacterEncoding(config.getCharset());

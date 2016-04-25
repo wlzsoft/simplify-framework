@@ -10,7 +10,6 @@ import com.meizu.simplify.cache.redis.util.JsonUtil;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -34,15 +33,13 @@ public  class  JsonpView {
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param webCache
-	 * @param staticName
 	 * @param obj
 	 * @param model
 	 * @param domain 通过cookie获取的名字为domain，可以跨域的域名
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,Object obj,T model,String domain,PropertiesConfig config)
+	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response,Object obj,T model,String domain,PropertiesConfig config)
 			throws ServletException, IOException {
 		String message = JsonUtil.ObjectToString(obj);
 		//可以通过请求头来限制不合理的请求(request head referer) TODO

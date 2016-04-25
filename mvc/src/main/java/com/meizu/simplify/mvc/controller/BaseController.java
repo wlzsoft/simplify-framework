@@ -118,9 +118,20 @@ public class BaseController<T extends Model> {
 		}
 		String doCmd = model.getCmd();
 		
-		//页面静态化名字		
-		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
 		String className = this.getClass().getName();
+		String methodFullName = className+":"+doCmd;
+		//页面静态化名字		
+		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".ce";
+
+		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, methodFullName);
+		
+		WebCache webCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, methodFullName);
+		if(webCache == null) {
+			return;
+		}
+		
+		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, methodFullName);
+		//代码生成区域start
 		Method[] methods = this.getClass().getMethods();
 		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
 		if (method == null) {
@@ -129,17 +140,8 @@ public class BaseController<T extends Model> {
 		if (method.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 		}
-
-		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, method);
-		
-		WebCache webCache = method.getAnnotation(WebCache.class);
-		boolean isCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, method,webCache);
-		if(isCache) {
-			return;
-		}
-		
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, className+":"+doCmd);
 		Object obj = method.invoke(this,parameValue);
+		//代码生成区域end
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache);
 		
 	}
@@ -164,9 +166,9 @@ public class BaseController<T extends Model> {
 			String staticName, Object obj, WebCache webCache)
 					throws IllegalAccessException, ServletException, IOException {
 		if(requestUrl.endsWith(".json")) {
-			JsonView.exe(request, response, webCache, staticName, obj,config);
+			JsonView.exe(request, response, obj,config);
 		} else if(requestUrl.endsWith(".jsonp")) {
-			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com",config);
+			JsonpView.exe(request, response, obj,model,"meizu.com",config);
 		} else {
 			request.setAttribute("formData", model);
 			String reactive = getDeviceInfo(request);

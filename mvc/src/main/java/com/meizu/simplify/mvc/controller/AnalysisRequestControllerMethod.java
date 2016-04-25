@@ -52,32 +52,36 @@ public class AnalysisRequestControllerMethod {
 	 * 操作步骤: TODO<br>
 	 * @param response
 	 * @param staticName
-	 * @param doMethod
+	 * @param methodFullName
 	 * @param webCache
-	 * @return
+	 * @return 如果返回空，那么是有缓存，否则无缓存
 	 * @throws IOException
 	 */
-	public static boolean analysisWebCache(HttpServletResponse response, String staticName, Method doMethod,WebCache webCache) throws IOException {
+	public static WebCache analysisWebCache(HttpServletResponse response, String staticName, String methodFullName) throws IOException {
 		if(config == null) {
 			config = BeanFactory.getBean(PropertiesConfig.class);
 		}
-		if (doMethod.isAnnotationPresent(WebCache.class)) {
-			Cache cache = CacheBase.getCache(webCache);
-			if(cache != null){
-				String cacheContent = cache.readCache(webCache, staticName);
-				if(cacheContent != null){
-					if(response!=null&&webCache.enableBrowerCache()) {
-						BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
-					}
-					response.setCharacterEncoding(config.getCharset());
-					response.setContentType("text/html; charset=" + config.getCharset());
-					response.getWriter().print(cacheContent);
-					System.out.println("页面缓存 : 读取页面缓存");
-					return true;
-				}
-			}
+		AnnotationInfo<WebCache> webCacheAnno = ControllerAnnotationResolver.webCacheMap.get(methodFullName);
+		if (webCacheAnno == null) {
+			return null;
 		}
-		return false;
+		WebCache webCache = webCacheAnno.getAnnotatoionType();
+		Cache cache = CacheBase.getCache(webCache);
+		if(cache == null){
+			return webCache;
+		}
+		String cacheContent = cache.readCache(webCache, staticName);
+		if(cacheContent == null){
+			return webCache;
+		}
+		if(response!=null&&webCache.enableBrowerCache()) {
+			BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
+		}
+		response.setCharacterEncoding(config.getCharset());
+		response.setContentType("text/html; charset=" + config.getCharset());
+		response.getWriter().print(cacheContent);
+		System.out.println("页面缓存 : 读取页面缓存");
+		return null;
 	}
 
 	/**
@@ -142,19 +146,17 @@ public class AnalysisRequestControllerMethod {
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param doMethod
+	 * @param methodFullName
 	 */
-	public static void analysisAjaxAccess(HttpServletRequest request, HttpServletResponse response, Method doMethod) {
+	public static void analysisAjaxAccess(HttpServletRequest request, HttpServletResponse response, String methodFullName) {
 		if(!AjaxUtils.isAjaxRequest(request)) {
 			return;
 		}
-		if (!doMethod.isAnnotationPresent(AjaxAccess.class)) {
+		AnnotationInfo<AjaxAccess> ajaxAccessAnno = ControllerAnnotationResolver.ajaxAccessMap.get(methodFullName);
+		if (ajaxAccessAnno == null) {
 			return;
 		}
-		AjaxAccess ajaxAccess = doMethod.getAnnotation(AjaxAccess.class);
-		if (ajaxAccess == null) {
-			return;
-		}
+		AjaxAccess ajaxAccess = ajaxAccessAnno.getAnnotatoionType();
 		if (!StringUtil.isEmpty(ajaxAccess.allowOrigin())) {
 			response.addHeader("Access-Control-Allow-Origin", ajaxAccess.allowOrigin());
 		}

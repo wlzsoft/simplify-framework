@@ -22,6 +22,8 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.mvc.AnnotationResolverCallback;
+import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.BaseController;
@@ -29,6 +31,7 @@ import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
 /**
@@ -61,6 +64,14 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	 * <包名.类名.方法名,注解对象>
 	 */
 	public static Map<String, AnnotationListInfo<AnnotationInfo<RequestParam>>> requestParamMap = new ConcurrentHashMap<>();
+	/**
+	 * <包名.类名.方法名,注解对象>
+	 */
+	public static Map<String, AnnotationInfo<AjaxAccess>> ajaxAccessMap = new ConcurrentHashMap<>();
+	/**
+	 * <包名.类名.方法名,注解对象>
+	 */
+	public static Map<String, AnnotationInfo<WebCache>> webCacheMap = new ConcurrentHashMap<>();
 	
 	private String classPath; 
 	
@@ -101,6 +112,18 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 								if (method.isAnnotationPresent(RequestMap.class)) {
 									resolverRequestMap(beanClass,method,RequestMap.class,cpath);
 									resolveRequestParam(beanClass, method);
+									resolveAnno(beanClass, method,AjaxAccess.class,new AnnotationResolverCallback<AjaxAccess>(){
+										@Override
+										public void resolver(AnnotationInfo<AjaxAccess> annoInfo) {
+											ajaxAccessMap.put(beanClass.getName()+":"+method.getName(), annoInfo);
+										}
+									});
+									resolveAnno(beanClass, method,WebCache.class,new AnnotationResolverCallback<WebCache>(){
+										@Override
+										public void resolver(AnnotationInfo<WebCache> annoInfo) {
+											webCacheMap.put(beanClass.getName()+":"+method.getName(), annoInfo);
+										}
+									});
 								}
 							}
 						}
@@ -222,5 +245,20 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			annoList.setAnnoList(requestParamAnnoList);
 		}
 		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
+	}
+	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno,AnnotationResolverCallback<T> callbak) {
+		LOGGER.debug("Controller相关注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		Object obj = BeanFactory.getBean(beanClass);//如果mvc需要脱离ioc框架，那么这个直接创建实例，而不是从容器获取实例
+		if(obj == null||method == null) {
+			return;
+		}
+		if (!method.isAnnotationPresent(clazzAnno)) {
+			return;
+		}
+		Annotation anno = method.getAnnotation(clazzAnno);
+		AnnotationInfo<Annotation> annoInfo = new AnnotationInfo<>();
+		annoInfo.setAnnotatoionType(anno);
+		annoInfo.setReturnType(method.getReturnType());
+		callbak.resolver((AnnotationInfo<T>) annoInfo);
 	}
 }

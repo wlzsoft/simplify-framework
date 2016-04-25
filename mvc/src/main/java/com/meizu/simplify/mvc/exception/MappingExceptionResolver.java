@@ -83,7 +83,7 @@ public class MappingExceptionResolver {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 		if(requestUrl.endsWith(".json")) {
 			try {
-				JsonView.exe(request, response, null, null, JsonResult.error(exceptionMessage),config);
+				JsonView.exe(request, response, JsonResult.error(exceptionMessage),config);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
@@ -103,7 +103,7 @@ public class MappingExceptionResolver {
 				};
 				model.setScript(DataUtil.parseInt(request.getParameter("script")));
 				model.setCallback(request.getParameter("callback"));
-				JsonpView.exe(request, response, null, null, JsonResult.error(exceptionMessage),model,"meizu.com",config);
+				JsonpView.exe(request, response, JsonResult.error(exceptionMessage),model,"meizu.com",config);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
