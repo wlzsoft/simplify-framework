@@ -130,7 +130,6 @@ public class BaseController<T extends Model> {
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 		}
 
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, method);
 		
 		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, method);
 		
@@ -140,6 +139,7 @@ public class BaseController<T extends Model> {
 			return;
 		}
 		
+		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, method);
 		dispatchView(request, response, model, requestUrl, staticName, method, parameValue, webCache);
 		
 	}
