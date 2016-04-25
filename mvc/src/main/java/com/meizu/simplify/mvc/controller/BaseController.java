@@ -120,7 +120,7 @@ public class BaseController<T extends Model> {
 		
 		//页面静态化名字		
 		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".lv";
-		
+		String className = this.getClass().getName();
 		Method[] methods = this.getClass().getMethods();
 		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
 		if (method == null) {
@@ -138,7 +138,7 @@ public class BaseController<T extends Model> {
 			return;
 		}
 		
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, method);
+		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, className+":"+doCmd);
 		Object obj = method.invoke(this,parameValue);
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache);
 		

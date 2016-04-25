@@ -1,18 +1,23 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestParam;
+import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.util.AjaxUtils;
@@ -39,6 +44,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  *
  */
 public class AnalysisRequestControllerMethod {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisRequestControllerMethod.class);
 	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	/**
 	 * 
@@ -81,47 +87,51 @@ public class AnalysisRequestControllerMethod {
 	 * @param request
 	 * @param response
 	 * @param t
-	 * @param doMethod
+	 * @param methodFullName
 	 * @return
 	 */
-	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,Method doMethod) {
-		Class<?>[] parameterTypes = doMethod.getParameterTypes();
-		Annotation[][] parameterAnnotations = doMethod.getParameterAnnotations();
-		Object[] parameValue = new Object[parameterTypes.length];
+	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,String methodFullName) {
+		AnnotationListInfo<AnnotationInfo<RequestParam>> annoListInfo = ControllerAnnotationResolver.requestParamMap.get(methodFullName);
+		if(annoListInfo == null) {
+			//TODO 后续如果需要兼容没有参数的情况下，就不会是严重错误，而是更好的用户体验
+			Message.error("严重错误，无法获取["+methodFullName+"]的注解信息");
+			return null;
+		}
+		int methodParamLength = annoListInfo.getCount();
+		Object[] parameValue = new Object[methodParamLength];
 		parameValue[0] = request;
 		parameValue[1] = response;
 		parameValue[2] = t;
-		for ( int i = 3; i < parameterTypes.length; i++ ) {
-			
-			AnnotationInfo<RequestParam> ai = ControllerAnnotationResolver.requestParamMap.get(doMethod.getDeclaringClass().getName()+":"+doMethod.getName());
-			RequestParam rp = ai.getAnnotatoionType();
-			for ( int j = 0; j < parameterAnnotations[i].length; j++ ) {
-				if (parameterAnnotations[i][j].annotationType() == RequestParam.class) {
-					RequestParam requestParam = (RequestParam) parameterAnnotations[i][j];
-					int index = requestParam.index();
-					String name = requestParam.name();
-					String defaultValue = requestParam.defaultValue();
-					defaultValue = "null".equals(defaultValue) ? null : defaultValue;
-					Object value = null;
-					
-					if (!StringUtil.isEmpty(request.getParameter(name))) {
-						value = request.getParameter(name);
-					} else if (ObjectUtil.isInt(index)) {
-						if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
-							value = t.getParams()[index];
-						}
-					} else {
-						value = defaultValue;
-					}
-
-					if (value == null) {
-						break;
-					}
-
-					// 将值进行格式化后注入
-					parameValue[i] = DataUtil.convertType(parameterTypes[i], value.toString());
-				}
+		List<AnnotationInfo<RequestParam>> annoInfoList = annoListInfo.getAnnoList();
+		if(annoInfoList == null) {
+			return parameValue;
+		}
+		for (int i = 0; i < annoInfoList.size(); i++) {
+			AnnotationInfo<RequestParam> annoInfo = annoInfoList.get(i);
+			RequestParam requestParam = annoInfo.getAnnotatoionType();
+			if(requestParam == null) {
+				continue;
 			}
+			int index = requestParam.index();
+			String name = requestParam.name();
+			String defaultValue = requestParam.defaultValue();
+			defaultValue = "null".equals(defaultValue) ? null : defaultValue;
+			Object value = null;
+			
+			if (!StringUtil.isEmpty(request.getParameter(name))) {
+				value = request.getParameter(name);
+			} else if (ObjectUtil.isInt(index)) {
+				if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
+					value = t.getParams()[index];
+				}
+			} else {
+				value = defaultValue;
+			}
+			if (value == null) {
+				break;
+			}
+			// 将值进行格式化后注入
+			parameValue[i+3] = DataUtil.convertType(annoInfo.getReturnType(), value.toString());
 		}
 		return parameValue;
 	}

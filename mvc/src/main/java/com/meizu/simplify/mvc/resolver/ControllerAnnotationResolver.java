@@ -25,11 +25,10 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
-import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
-import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.web.CacheBase;
 
 /**
@@ -61,7 +60,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	/**
 	 * <包名.类名.方法名,注解对象>
 	 */
-	public static Map<String, AnnotationInfo<RequestParam>> requestParamMap = new ConcurrentHashMap<>();
+	public static Map<String, AnnotationListInfo<AnnotationInfo<RequestParam>>> requestParamMap = new ConcurrentHashMap<>();
 	
 	private String classPath; 
 	
@@ -120,6 +119,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		List<AnnotationInfo<RequestParam>> requestParamAnnoList = new ArrayList<>();
 		for (int i=0; i< parameterTypes.length;i++) {
 			Class<?> paramType = parameterTypes[i];
 			Annotation[] annotationsParamType = parameterAnnotations[i];
@@ -139,11 +139,20 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 					}
 					AnnotationInfo<RequestParam> annoInfo = new AnnotationInfo<>();
 					annoInfo.setAnnotatoionType(requestParam);
-					annoInfo.setReturnType(RequestParam.class);
-					requestParamMap.put(beanClass.getName()+":"+method.getName(), annoInfo);
+					annoInfo.setReturnType(paramType);
+					requestParamAnnoList.add(annoInfo);
 				}
 			}
 		}
+		AnnotationListInfo<AnnotationInfo<RequestParam>> annoList= new AnnotationListInfo<>();
+		if(parameterTypes.length<=0) {
+			return;
+		}
+		annoList.setCount(parameterTypes.length);
+		if(requestParamAnnoList.size()>0) {
+			annoList.setAnnoList(requestParamAnnoList);
+		}
+		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
 	}
 	
 	/**

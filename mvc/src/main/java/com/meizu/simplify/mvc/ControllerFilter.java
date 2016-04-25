@@ -80,6 +80,7 @@ public class ControllerFilter implements Filter {
 				Matcher matcher = pattern.matcher(requestUrl);
 				if (matcher.find()) {
 					String[] params = new String[matcher.groupCount() + 1];
+					//如果有3个分组，那么执行后，会获取到4个分组，有一个总的分组，那么总的分组会做为第一个分组，也就是匹配到的总路径
 					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
 					controllerAnnotationInfo = entrySet.getValue();
 					analysisAndProcess(request, response, requestUrl,controllerAnnotationInfo, params);
