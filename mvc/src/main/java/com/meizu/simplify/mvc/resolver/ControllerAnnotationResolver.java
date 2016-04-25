@@ -100,7 +100,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 							for (Method method : methodArr) {
 								if (method.isAnnotationPresent(RequestMap.class)) {
 									resolverRequestMap(beanClass,method,RequestMap.class,cpath);
-									resolveRequestParam(beanClass, method,cpath);
+									resolveRequestParam(beanClass, method);
 								}
 							}
 						}
@@ -183,7 +183,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		return isExist;
 	}
 	
-	private <T extends Annotation> void resolveRequestParam(Class<?> beanClass, Method method,String cpath) {
+	private <T extends Annotation> void resolveRequestParam(Class<?> beanClass, Method method) {
 		
 		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等,顺序一致一一对应
 		Class<?>[] parameterTypes = method.getParameterTypes();
