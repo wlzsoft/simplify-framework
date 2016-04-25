@@ -37,10 +37,10 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean before(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
-		Object o = context.getThiz();
+//		Object o = context.getThiz();
 		
-		Map<String,AnnotationInfo> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
-		AnnotationInfo annoInfo = annotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo<Transation>> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo<Transation> annoInfo = annotationInfoMap.get(methodFullName);
 		if(annoInfo == null) {
 			return false;
 		}
@@ -56,10 +56,10 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean after(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
-		Object o = context.getThiz();
+//		Object o = context.getThiz();
 		
-		Map<String,AnnotationInfo> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
-		AnnotationInfo annoInfo = annotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo<Transation>> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo<Transation> annoInfo = annotationInfoMap.get(methodFullName);
 		if(annoInfo == null) {
 			return false;
 		}

@@ -15,12 +15,12 @@ import java.lang.annotation.Annotation;
  * @version Version 0.1
  *
  */
-public class AnnotationInfo {
+public class AnnotationInfo<T extends Annotation> {
 
 	/**
 	 * annotation类型
 	 */
-	private Annotation annotatoionType;
+	private T annotatoionType;
 	
 	private Class<?> returnType;
 
@@ -28,11 +28,11 @@ public class AnnotationInfo {
 		return returnType;
 	}
 
-	public Annotation getAnnotatoionType() {
+	public T getAnnotatoionType() {
 		return annotatoionType;
 	}
 
-	public void setAnnotatoionType(Annotation annotatoionType) {
+	public void setAnnotatoionType(T annotatoionType) {
 		this.annotatoionType = annotatoionType;
 	}
 

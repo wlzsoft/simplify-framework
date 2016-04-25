@@ -8,11 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
-import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
+import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.util.AjaxUtils;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
@@ -90,6 +92,9 @@ public class AnalysisRequestControllerMethod {
 		parameValue[1] = response;
 		parameValue[2] = t;
 		for ( int i = 3; i < parameterTypes.length; i++ ) {
+			
+			AnnotationInfo<RequestParam> ai = ControllerAnnotationResolver.requestParamMap.get(doMethod.getDeclaringClass().getName()+":"+doMethod.getName());
+			RequestParam rp = ai.getAnnotatoionType();
 			for ( int j = 0; j < parameterAnnotations[i].length; j++ ) {
 				if (parameterAnnotations[i][j].annotationType() == RequestParam.class) {
 					RequestParam requestParam = (RequestParam) parameterAnnotations[i][j];

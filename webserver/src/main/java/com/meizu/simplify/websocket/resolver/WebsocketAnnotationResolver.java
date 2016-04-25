@@ -39,7 +39,7 @@ import com.meizu.simplify.utils.ObjectUtil;
 public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebsocketAnnotationResolver.class);
 	
-	public static final Map<String,AnnotationInfo> mappingAnnotationInfo = new ConcurrentHashMap<>();
+	public static final Map<String,AnnotationInfo<Annotation>> mappingAnnotationInfo = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -68,7 +68,7 @@ public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T requestInfo = method.getDeclaredAnnotation(clazzAnno);
 		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
-		AnnotationInfo cai = new AnnotationInfo();
+		AnnotationInfo<Annotation> cai = new AnnotationInfo<>();
 		cai.setAnnotatoionType(requestInfo);
 		cai.setReturnType(method.getReturnType());
 		mappingAnnotationInfo.put(beanClass.getName()+":"+method.getName(), cai);

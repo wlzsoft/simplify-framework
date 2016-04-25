@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.exception.UncheckedException;
@@ -26,7 +27,9 @@ import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.web.CacheBase;
 
 /**
@@ -47,8 +50,18 @@ import com.meizu.simplify.webcache.web.CacheBase;
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
 	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	/**
+	 * <requestMap地址,controller实例>
+	 */
 	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerMap = new ConcurrentHashMap<>();
+	/**
+	 * <requestMap地址,controller实例>
+	 */
 	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerRegularExpressionsList = new ConcurrentSkipListMap<>();
+	/**
+	 * <包名.类名.方法名,注解对象>
+	 */
+	public static Map<String, AnnotationInfo<RequestParam>> requestParamMap = new ConcurrentHashMap<>();
 	
 	private String classPath; 
 	
@@ -87,7 +100,8 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 							
 							for (Method method : methodArr) {
 								if (method.isAnnotationPresent(RequestMap.class)) {
-									resolveAnno(beanClass, method,RequestMap.class,cpath);
+									resolverRequestMap(beanClass,method,RequestMap.class,cpath);
+									resolveRequestParam(beanClass, method,cpath);
 								}
 							}
 						}
@@ -101,25 +115,18 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 	}
 	
-	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno,String cpath) {
+	private <T extends Annotation> void resolveRequestParam(Class<?> beanClass, Method method,String cpath) {
 		
-		resolverRequestInfo(beanClass,method,clazzAnno,cpath);
-		
-//		TypeVariable<?>[] tv = method.getTypeParameters();//泛型方法才会使用到
-
-		
-		//		@RequestParam解析开始
-		//RequestParam 的解析应该迁移到这里，目前requestParma的解析全在BaseController类中 TODO
 		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等
-		Class<?>[] paramTypeClazz = method.getParameterTypes();
-		Annotation[][] annotationTwoArr = method.getParameterAnnotations();
-		for (int i=0; i< paramTypeClazz.length;i++) {
-			Class<?> paramType = paramTypeClazz[i];
-			Annotation[] annotationsParamType = annotationTwoArr[i];
+		Class<?>[] parameterTypes = method.getParameterTypes();
+		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+		for (int i=0; i< parameterTypes.length;i++) {
+			Class<?> paramType = parameterTypes[i];
+			Annotation[] annotationsParamType = parameterAnnotations[i];
 			for (Annotation annotation : annotationsParamType) {//这里的循环次数是0到1次，包含@RequestParam的会循环一次，因为目前参数上只会有RequestParam注解
 				if(annotation.annotationType() == RequestParam.class) {
-					RequestParam param = (RequestParam)annotation;
-					String paramStr = param.name();
+					RequestParam requestParam = (RequestParam)annotation;
+					String paramStr = requestParam.name();
 					String exceptionMessage = beanClass.getName()+":"+method.getName()+"方法的第"+(i+1)+"个参数，参数类型为["+paramType.getName()+"]的参数名：只能是字符串，不可以是["+paramStr+"]";
 					if(ObjectUtil.isInt(paramStr)) {
 						throw new StartupErrorException(exceptionMessage+"的整型值");
@@ -130,10 +137,13 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 					} else if(ObjectUtil.isLong(paramStr)) {
 						throw new StartupErrorException(exceptionMessage+"的长整型值");
 					}
+					AnnotationInfo<RequestParam> annoInfo = new AnnotationInfo<>();
+					annoInfo.setAnnotatoionType(requestParam);
+					annoInfo.setReturnType(RequestParam.class);
+					requestParamMap.put(beanClass.getName()+":"+method.getName(), annoInfo);
 				}
 			}
 		}
-//		@RequestParam解析结束
 	}
 	
 	/**
@@ -142,8 +152,9 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	 * 操作步骤: TODO<br>
 	 * @param beanClass
 	 */
-	public <T extends Annotation>  void resolverRequestInfo(Class<?> beanClass,Method method ,Class<T> clazzAnno,String cpath) {
+	public <T extends Annotation>  void resolverRequestMap(Class<?> beanClass,Method method ,Class<T> clazzAnno,String cpath) {
 		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+//		TypeVariable<?>[] tv = method.getTypeParameters();//泛型方法才会使用到
 		Object obj = BeanFactory.getBean(beanClass);//如果mvc需要脱离ioc框架，那么这个直接创建实例，而不是从容器获取实例
 		if(obj == null) {
 			return;

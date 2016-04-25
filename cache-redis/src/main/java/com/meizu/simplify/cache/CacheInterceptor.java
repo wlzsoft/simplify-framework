@@ -57,13 +57,13 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean before(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
-		Object o = context.getThiz();
+//		Object o = context.getThiz();
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之前 切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
-		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		AnnotationInfo<Annotation> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
@@ -81,13 +81,13 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean after(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
-		Object o = context.getThiz();
+//		Object o = context.getThiz();
 		LOGGER.info("缓存切面切入：["+methodFullName+"]方法之后切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
-		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
+		AnnotationInfo<Annotation> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;

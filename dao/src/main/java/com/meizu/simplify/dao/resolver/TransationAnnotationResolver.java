@@ -1,6 +1,5 @@
 package com.meizu.simplify.dao.resolver;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 public class TransationAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransationAnnotationResolver.class);
 	
-	public static final Map<String,AnnotationInfo> transAnnotationInfoMap = new ConcurrentHashMap<>();
+	public static final Map<String,AnnotationInfo<Transation>> transAnnotationInfoMap = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -59,10 +58,10 @@ public class TransationAnnotationResolver implements IAnnotationResolver<Class<?
 			}
 		}
 	}
-	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
+	private <T extends Transation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T transation = method.getDeclaredAnnotation(clazzAnno);
 		LOGGER.debug("事务注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
-		AnnotationInfo cai = new AnnotationInfo();
+		AnnotationInfo<Transation> cai = new AnnotationInfo<>();
 		cai.setAnnotatoionType(transation);
 		cai.setReturnType(method.getReturnType());
 		transAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);

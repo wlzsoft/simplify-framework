@@ -36,7 +36,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebCacheAnnotationResolver.class);
 	
-	public static final Map<String,AnnotationInfo> webCacheAnnotationInfoMap = new ConcurrentHashMap<>();
+	public static final Map<String,AnnotationInfo<WebCache>> webCacheAnnotationInfoMap = new ConcurrentHashMap<>();
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -59,10 +59,10 @@ public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>
 			}
 		}
 	}
-	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
+	private <T extends WebCache> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T cacheDataAdd = method.getDeclaredAnnotation(clazzAnno);
 		LOGGER.debug("web缓存注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
-		AnnotationInfo cai = new AnnotationInfo();
+		AnnotationInfo<WebCache> cai = new AnnotationInfo<>();
 		cai.setAnnotatoionType(cacheDataAdd);
 		cai.setReturnType(method.getReturnType());
 		webCacheAnnotationInfoMap.put(beanClass.getName()+":"+method.getName(), cai);

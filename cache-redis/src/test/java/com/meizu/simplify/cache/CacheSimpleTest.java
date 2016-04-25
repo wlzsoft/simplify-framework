@@ -18,7 +18,7 @@ public class CacheSimpleTest {
 //		CtClass cc = new AopClassFileTransformer().buildClazz("com/meizu/aop/service/TestService");
 //		new AopClassFileTransformer().transformInit("com/meizu/aop/service/TestService");
 		long start = System.currentTimeMillis();
-			AnnotationInfo cai = new AnnotationInfo();
+			AnnotationInfo<Annotation> cai = new AnnotationInfo<>();
 			CacheDataAdd cacheDataAdd = new CacheDataAdd() {
 				
 				@Override

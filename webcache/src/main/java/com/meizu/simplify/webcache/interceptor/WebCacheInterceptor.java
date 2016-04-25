@@ -69,13 +69,13 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean before(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
-		Object o = context.getThiz();
+//		Object o = context.getThiz();
 		LOGGER.info("web缓存切面切入：["+methodFullName+"]方法之前 切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之前 切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
-		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo<WebCache>> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
+		AnnotationInfo<WebCache> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		// 检查静态规则配置
 		if(anno.annotationType().equals(WebCache.class)) {
@@ -105,13 +105,13 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 	@Override
 	public boolean after(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
-		Object o = context.getThiz();
+//		Object o = context.getThiz();
 		LOGGER.info("web缓存切面切入：["+methodFullName+"]方法之后切入");
 //		System.out.println("缓存切面切入：["+methodFullName+"]方法之后切入");
 		//TODO 需要在存入redis之前对key进行优化精简，不要保存很长的一个字符串，把方法全名做一个16进制列表的对于关系，redis只保存最简短的16进制数据
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
-		Map<String,AnnotationInfo> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
-		AnnotationInfo cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		Map<String,AnnotationInfo<WebCache>> cacheAnnotationInfoMap = WebCacheAnnotationResolver.webCacheAnnotationInfoMap;
+		AnnotationInfo<WebCache> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		// 检查静态规则配置
 		if(anno.annotationType().equals(WebCache.class)) {
