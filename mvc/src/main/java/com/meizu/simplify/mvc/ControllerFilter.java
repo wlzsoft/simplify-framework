@@ -21,19 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.dto.JsonResult;
-import com.meizu.simplify.exception.BaseException;
-import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.mvc.controller.AnalysisRequestControllerModel;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
-import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.view.JsonView;
-import com.meizu.simplify.mvc.view.JsonpView;
-import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -124,60 +117,7 @@ public class ControllerFilter implements Filter {
 		try {
 			bs.process(request, response,requestUrl);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
-			Throwable throwable = e.getTargetException();
-			String exceptionMessage = throwable.getMessage();
-			if(exceptionMessage == null) {
-				if(throwable.getClass() == NullPointerException.class) {
-					exceptionMessage = "空指针异常";
-				}
-			}
-			if(throwable instanceof MessageException) {
-				response.setStatus(((BaseException)throwable).getErrorCode());
-				LOGGER.error("message:"+exceptionMessage);
-			} else {
-				throwable.printStackTrace();
-				response.setStatus(500);
-			}
-//			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
-			if(requestUrl.endsWith(".json")) {
-				try {
-					JsonView.exe(request, response, null, null, JsonResult.error(exceptionMessage),config);
-				} catch (ServletException | IOException e1) {
-					e1.printStackTrace();
-				}
-			} else if(requestUrl.endsWith(".jsonp")){
-				response.setStatus(208);//特殊情况下，5xx和4xx的状态状态码jsonp是无法处理的，由于不是真的ajax(jQuery框架的实现,自己模拟实现更精细的控制)，使用208来代替错误状态
-				try {
-					Model model = new Model() {
-						@Override
-						public void setScript(Integer script) {
-							super.setScript(script);
-						}
-						@Override
-						public void setCallback(String call) {
-							super.setCallback(call);
-						}
-						
-					};
-					model.setScript(DataUtil.parseInt(request.getParameter("script")));
-					model.setCallback(request.getParameter("callback"));
-					JsonpView.exe(request, response, null, null, JsonResult.error(exceptionMessage),model,"meizu.com",config);
-				} catch (ServletException | IOException e1) {
-					e1.printStackTrace();
-				}
-			} else {//其他方式的请求,都走html业务视图，可以支持jsp,velocity 等模板引擎
-				try {
-//	                                          方法一
-//					ErrorView.exe(response,500,throwable.getMessage());
-//				           方法二：推荐
-					request.setAttribute("exception", throwable);
-					bs.template.render(request, response, null, null, "500");
-				} catch (ServletException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-//			不同请求风格的异常处理end
+			MappingExceptionResolver.resolverException(request, response, requestUrl, bs, e,config);
 
 		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace();
@@ -193,6 +133,8 @@ public class ControllerFilter implements Filter {
 		Statistics.setReadMaxTime(readtime, requestUrl);
 		Statistics.getReadMap().remove(requestUrl);
 	}
+
+	
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
