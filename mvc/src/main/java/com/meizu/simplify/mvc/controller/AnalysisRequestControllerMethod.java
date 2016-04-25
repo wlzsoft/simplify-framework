@@ -92,7 +92,6 @@ public class AnalysisRequestControllerMethod {
 		for ( int i = 3; i < parameterTypes.length; i++ ) {
 			for ( int j = 0; j < parameterAnnotations[i].length; j++ ) {
 				if (parameterAnnotations[i][j].annotationType() == RequestParam.class) {
-					parameValue[i] = null;
 					RequestParam requestParam = (RequestParam) parameterAnnotations[i][j];
 					int index = requestParam.index();
 					String name = requestParam.name();
