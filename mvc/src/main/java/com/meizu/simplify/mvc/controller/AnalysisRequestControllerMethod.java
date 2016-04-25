@@ -1,6 +1,7 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,18 +83,20 @@ public class AnalysisRequestControllerMethod {
 	 * @return
 	 */
 	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,Method doMethod) {
-		Object[] parameValue = new Object[doMethod.getParameterTypes().length];
+		Class<?>[] parameterTypes = doMethod.getParameterTypes();
+		Annotation[][] parameterAnnotations = doMethod.getParameterAnnotations();
+		Object[] parameValue = new Object[parameterTypes.length];
 		parameValue[0] = request;
 		parameValue[1] = response;
 		parameValue[2] = t;
-		for ( int i = 3; i < doMethod.getParameterTypes().length; i++ ) {
-			for ( int j = 0; j < doMethod.getParameterAnnotations()[i].length; j++ ) {
-				if (doMethod.getParameterAnnotations()[i][j].annotationType() == RequestParam.class) {
+		for ( int i = 3; i < parameterTypes.length; i++ ) {
+			for ( int j = 0; j < parameterAnnotations[i].length; j++ ) {
+				if (parameterAnnotations[i][j].annotationType() == RequestParam.class) {
 					parameValue[i] = null;
-					RequestParam requestParam = ((RequestParam) doMethod.getParameterAnnotations()[i][j]);
+					RequestParam requestParam = ((RequestParam) parameterAnnotations[i][j]);
 					int index = requestParam.index();
 					String name = requestParam.name();
-					String defaultValue = ((RequestParam) doMethod.getParameterAnnotations()[i][j]).defaultValue();
+					String defaultValue = ((RequestParam) parameterAnnotations[i][j]).defaultValue();
 					defaultValue = "null".equals(defaultValue) ? null : defaultValue;
 					Object value = null;
 					
@@ -112,7 +115,7 @@ public class AnalysisRequestControllerMethod {
 					}
 
 					// 将值进行格式化后注入
-					parameValue[i] = DataUtil.convertType(doMethod.getParameterTypes()[i], value.toString());
+					parameValue[i] = DataUtil.convertType(parameterTypes[i], value.toString());
 				}
 			}
 		}
