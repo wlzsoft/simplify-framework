@@ -73,7 +73,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	public void init() {
 //		String webcharSet = config.getWebcharSet();
 //		String directives = config.getDirectives(); 
-		classPath = config.getClasspath(); 
+		classPath = config.getControllerClasspath(); 
 		// 查找指定class路径
 		if (classPath != null) {
 			String[] classPathArr = classPath.split(",");

@@ -31,7 +31,7 @@ public class PropertiesConfig {
 	private Boolean debug = true;
 	// 后续使用枚举类型 TODO
 	private String charset = "UTF-8";
-	private String classpath = "com.meizu.demo.mvc.controller";
+	private String controllerClasspath = "com.meizu.demo.mvc.controller";
 	private String template = "meizu";
 	// velocity自定义Directive
 	private String directives = "";//暂未启用
@@ -61,11 +61,11 @@ public class PropertiesConfig {
 	public void setCharset(String charset) {
 		this.charset = charset;
 	}
-	public String getClasspath() {
-		return classpath;
+	public String getControllerClasspath() {
+		return controllerClasspath;
 	}
-	public void setClasspath(String classpath) {
-		this.classpath = classpath;
+	public void setControllerClasspath(String controllerClasspath) {
+		this.controllerClasspath = controllerClasspath;
 	}
 	public String getTemplate() {
 		return template;
