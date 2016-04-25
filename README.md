@@ -110,6 +110,9 @@ http://fishermen.iteye.com/blog/430286
 附件在微云网盘中的stringSwitch
 83.maven-site插件使用(命令:clean site site:stage)，及附属插件配置 1.javadoc,2.skin(皮肤),3.template(velocity模版文件),4.site.xml配置
 84.mavent-site插件支持：生成word文档，生成pdf文档，生成ppt文档，生成html文档
+85.TODO 注意使用下面的方式，可能设置头信息(addHead) ,会丢失，无法发送到浏览器的reponse头中
+   response.getWriter().print(message);
+86.if(!AjaxUtils.isAjaxRequest(request)) {//TODO,不是判断ajax的唯一方式，有可能是ajax请求，但是不带这个头信息
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

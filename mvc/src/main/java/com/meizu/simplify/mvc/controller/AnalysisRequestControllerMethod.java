@@ -157,7 +157,7 @@ public class AnalysisRequestControllerMethod {
 	 * @param methodFullName
 	 */
 	public static void analysisAjaxAccess(HttpServletRequest request, HttpServletResponse response, String methodFullName) {
-		if(!AjaxUtils.isAjaxRequest(request)) {
+		if(!AjaxUtils.isAjaxRequest(request)) {//TODO,不是判断ajax的唯一方式，有可能是ajax请求，但是不带这个头信息
 			return;
 		}
 		AnnotationInfo<AjaxAccess> ajaxAccessAnno = ControllerAnnotationResolver.ajaxAccessMap.get(methodFullName);

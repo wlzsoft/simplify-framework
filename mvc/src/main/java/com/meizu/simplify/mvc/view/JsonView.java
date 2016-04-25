@@ -30,6 +30,7 @@ public  class  JsonView {
 		String message = JsonUtil.ObjectToString(obj);
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("application/json; charset=" + config.getCharset());
+//		TODO 注意使用下面的方式，可能设置头信息(addHead) ,会丢失，无法发送到浏览器的reponse头中
 		response.getWriter().print(message);
 	}
 }
