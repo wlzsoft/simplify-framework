@@ -93,10 +93,10 @@ public class AnalysisRequestControllerMethod {
 			for ( int j = 0; j < parameterAnnotations[i].length; j++ ) {
 				if (parameterAnnotations[i][j].annotationType() == RequestParam.class) {
 					parameValue[i] = null;
-					RequestParam requestParam = ((RequestParam) parameterAnnotations[i][j]);
+					RequestParam requestParam = (RequestParam) parameterAnnotations[i][j];
 					int index = requestParam.index();
 					String name = requestParam.name();
-					String defaultValue = ((RequestParam) parameterAnnotations[i][j]).defaultValue();
+					String defaultValue = requestParam.defaultValue();
 					defaultValue = "null".equals(defaultValue) ? null : defaultValue;
 					Object value = null;
 					
