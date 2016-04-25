@@ -116,7 +116,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	
 	private <T extends Annotation> void resolveRequestParam(Class<?> beanClass, Method method,String cpath) {
 		
-		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等
+		//这个参数注解的getParameterAnnotations的长度和getParameterTypes的长度相等,顺序一致一一对应
 		Class<?>[] parameterTypes = method.getParameterTypes();
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 		List<AnnotationInfo<RequestParam>> requestParamAnnoList = new ArrayList<>();
