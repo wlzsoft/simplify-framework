@@ -130,7 +130,6 @@ public class BaseController<T extends Model> {
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
 		}
 
-		
 		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, method);
 		
 		WebCache webCache = method.getAnnotation(WebCache.class);
@@ -140,7 +139,8 @@ public class BaseController<T extends Model> {
 		}
 		
 		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, method);
-		dispatchView(request, response, model, requestUrl, staticName, method, parameValue, webCache);
+		Object obj = method.invoke(this,parameValue);
+		dispatchView(request, response, model, requestUrl, staticName, obj, webCache);
 		
 	}
 
@@ -157,20 +157,18 @@ public class BaseController<T extends Model> {
 	 * @param parameValue
 	 * @param webCache
 	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
 	 * @throws ServletException
 	 * @throws IOException
 	 */
 	private void dispatchView(HttpServletRequest request, HttpServletResponse response, T model, String requestUrl,
-			String staticName, Method method, Object[] parameValue, WebCache webCache)
-					throws IllegalAccessException, InvocationTargetException, ServletException, IOException {
-		request.setAttribute("formData", model);
-		Object obj = method.invoke(this,parameValue);
+			String staticName, Object obj, WebCache webCache)
+					throws IllegalAccessException, ServletException, IOException {
 		if(requestUrl.endsWith(".json")) {
 			JsonView.exe(request, response, webCache, staticName, obj,config);
 		} else if(requestUrl.endsWith(".jsonp")) {
 			JsonpView.exe(request, response, webCache, staticName, obj,model,"meizu.com",config);
 		} else {
+			request.setAttribute("formData", model);
 			String reactive = getDeviceInfo(request);
 			String resolution = request.getHeader("resolution");//800x600
 			if(resolution != null) {//判断分辨率
