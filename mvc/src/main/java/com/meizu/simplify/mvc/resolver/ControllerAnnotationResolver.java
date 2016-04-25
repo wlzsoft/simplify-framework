@@ -245,9 +245,9 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			annoList.setAnnoList(requestParamAnnoList);
 		}
 		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
+		LOGGER.debug("RequestParam注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解");
 	}
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno,AnnotationResolverCallback<T> callbak) {
-		LOGGER.debug("Controller相关注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 		Object obj = BeanFactory.getBean(beanClass);//如果mvc需要脱离ioc框架，那么这个直接创建实例，而不是从容器获取实例
 		if(obj == null||method == null) {
 			return;
@@ -260,5 +260,6 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		annoInfo.setAnnotatoionType(anno);
 		annoInfo.setReturnType(method.getReturnType());
 		callbak.resolver((AnnotationInfo<T>) annoInfo);
+		LOGGER.debug("Controller相关注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 	}
 }
