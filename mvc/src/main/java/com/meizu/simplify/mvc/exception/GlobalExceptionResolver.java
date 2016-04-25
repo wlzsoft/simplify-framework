@@ -20,7 +20,7 @@ package com.meizu.simplify.mvc.exception;
 public class GlobalExceptionResolver {
 
 //	@ExceptionHandler
-//	public @ResponseBody Exception handleBusinessException(HttpServletRequest request,
+//	public Exception handleBusinessException(HttpServletRequest request,
 //			HttpServletResponse response, Object handler, Exception ex) {
 //		return ex;
 //	}

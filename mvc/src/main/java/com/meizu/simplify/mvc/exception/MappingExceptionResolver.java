@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * <p><b>Title:</b><i>安全异常处理</i></p>
+ * <p><b>Title:</b><i>异常解析器</i></p>
  * <p>Desc: TODO：为测试，未使用</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
  * @version Version 0.1
  *
  */
-public class NormalExceptionResolver  /*extends SimpleMappingExceptionResolver*/ {
+public class MappingExceptionResolver {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	public NormalExceptionResolver() {
+	public MappingExceptionResolver() {
 		//spring-repositories.xml文件中已经有全局配置了，这里是具体异常处理类的配置了。重复配置，看需要做差异配置
 //		setExceptionAttribute("ex");//TODO 注意，目前大部分的异常都不会指定到错误页面，要求需要有ex属性名才会。需要调试。
 		//500,404,403在这里其实jsp页面，比如500.jsp，400.jsp
@@ -36,7 +36,7 @@ public class NormalExceptionResolver  /*extends SimpleMappingExceptionResolver*/
 	
 	
 //	@Override
-	protected ModelAndView doResolveException(HttpServletRequest request,
+	protected <T> T doResolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception exception) {
 //		HandlerMethod method = (HandlerMethod) handler;
 //		Annotation[] s = method.getBean().getClass().getAnnotations();
