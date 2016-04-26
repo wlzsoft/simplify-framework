@@ -27,7 +27,7 @@ public class ControllerMethodCodeGenTest {
 	public void test() throws IOException {
 		ITemplate template = new VelocityTemplate();
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("","");
+		parameters.put("a","b");
 		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "");
 		System.out.println(javafileinfo);
 	}
