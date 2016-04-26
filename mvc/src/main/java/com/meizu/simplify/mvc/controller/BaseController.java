@@ -12,7 +12,7 @@ import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.view.ITemplate;
+import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.mvc.view.MessageView;
@@ -40,7 +40,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class BaseController<T extends Model> {
 	
 	@Resource
-	public ITemplate template;
+	public IPageTemplate template;
 	
 	@Resource
 	private PropertiesConfig config;
@@ -187,7 +187,7 @@ public class BaseController<T extends Model> {
 						break;
 					default :
 						//messageView和ITemplate的综合处理不优雅，并且会导致一个大的文本对象用于匹配Template的key值 TODO
-						ITemplate temp = TemplateFactory.getTemplate(templateType);
+						IPageTemplate temp = TemplateFactory.getTemplate(templateType);
 						if(temp != null) {
 							temp.render(request, response, webCache, staticName, templateUrl);
 						} else {

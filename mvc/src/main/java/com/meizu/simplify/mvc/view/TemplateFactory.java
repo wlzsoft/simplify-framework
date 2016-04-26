@@ -1,7 +1,7 @@
 package com.meizu.simplify.mvc.view;
 
 import com.meizu.simplify.mvc.resolver.TemplateAnnotationResolver;
-import com.meizu.simplify.mvc.view.ITemplate;
+import com.meizu.simplify.mvc.view.IPageTemplate;
 
 /**
   * <p><b>Title:</b><i>模版工厂</i></p>
@@ -25,7 +25,7 @@ public class TemplateFactory {
 	 * @param templateType 模版类型
 	 * @return
 	 */
-	public static ITemplate getTemplate(String templateType) {
+	public static IPageTemplate getTemplate(String templateType) {
 		return	TemplateAnnotationResolver.templateMap.get(templateType);
 	}
 

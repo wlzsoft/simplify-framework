@@ -2,6 +2,8 @@ package com.meizu.simplify.mvc.view;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +38,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 @Bean
 @TemplateType("beetl")
-public class BeetlTemplate  implements ITemplate {
+public class BeetlTemplate  implements IPageTemplate {
 	private GroupTemplate gt = null;
 	private String extend;
 	@Resource
@@ -66,26 +68,28 @@ public class BeetlTemplate  implements ITemplate {
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/beetl/";
 		setContentType(request, response,config);
-		String content = render(request, templateUrl, prefixUri);	
+		
+		// 将request中的对象赋给模版
+		Map<String,Object> parameter = new HashMap<String,Object>();
+		Enumeration<String> atts = request.getAttributeNames();
+		while ( atts.hasMoreElements() ) {
+			String name = atts.nextElement();
+			parameter.put(name, request.getAttribute(name));
+		}
+		
+		String content = render(parameter, templateUrl, prefixUri);	
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		
 	}
 
-	private String render(HttpServletRequest request, String templateUrl, String prefixUri) {
+	private String render(Map<String,Object> parameter, String templateUrl, String prefixUri) {
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
 //		gt.setSharedVars(shared);
-		Template template = gt.getTemplate(prefixUri+templateUrl+extend);
 //		Template template = gt.getTemplate("hello,${name}");//字符串模板
-
-		// 将request中的对象赋给模版
-		Enumeration<String> atts = request.getAttributeNames();
-		while ( atts.hasMoreElements() ) {
-			String name = atts.nextElement();
-			template.binding(name, request.getAttribute(name));
-		}
-
+		Template template = gt.getTemplate(prefixUri+templateUrl+extend);
+		template.binding(parameter);
 		String content = template.render();
 		return content;
 	}

@@ -31,7 +31,7 @@ import com.meizu.simplify.webcache.web.CacheBase;
  *
  */
 @DefaultBean
-public interface ITemplate {
+public interface IPageTemplate {
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException;
 	public default void checkCacheAndWrite(HttpServletRequest request, HttpServletResponse response, WebCache webCache,
 			String staticName, String content,PropertiesConfig config) throws ServletException, IOException {

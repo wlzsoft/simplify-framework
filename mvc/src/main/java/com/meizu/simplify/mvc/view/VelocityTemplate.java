@@ -37,7 +37,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 @Bean
 @TemplateType("velocity")
-public class VelocityTemplate  implements ITemplate{
+public class VelocityTemplate  implements IPageTemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
 	private String extend;
@@ -99,7 +99,16 @@ public class VelocityTemplate  implements ITemplate{
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/velocity/";
 		setContentType(request, response,config);
-		String content = render(request, templateUrl, prefixUri);
+		
+		// 将request中的对象赋给模版
+		VelocityContext context = new VelocityContext();
+		Enumeration<String> atts = request.getAttributeNames();
+		while ( atts.hasMoreElements() ) {
+			String name = atts.nextElement();
+			context.put(name, request.getAttribute(name));
+		}
+		
+		String content = render(context, templateUrl, prefixUri);
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		/*ServletOutputStream output = response.getOutputStream();
 		VelocityWriter vw = null;
@@ -121,16 +130,8 @@ public class VelocityTemplate  implements ITemplate{
 			}
 		}*/
 	}
-	private String render(HttpServletRequest request, String templateUrl, String prefixUri) throws IOException {
+	private String render(VelocityContext context, String templateUrl, String prefixUri) throws IOException {
 		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
-
-		// 将request中的对象赋给模版
-		VelocityContext context = new VelocityContext();
-		Enumeration<String> atts = request.getAttributeNames();
-		while ( atts.hasMoreElements() ) {
-			String name = atts.nextElement();
-			context.put(name, request.getAttribute(name));
-		}
 
 		StringWriter vw = new StringWriter(0);
 		String content = "";

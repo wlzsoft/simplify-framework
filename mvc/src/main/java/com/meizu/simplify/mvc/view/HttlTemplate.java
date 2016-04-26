@@ -34,7 +34,7 @@ import httl.Template;
  */
 @Bean
 @TemplateType(value ="httl",extend = "httl")
-public class HttlTemplate implements ITemplate {
+public class HttlTemplate implements IPageTemplate {
 	private Engine engine = null;
 	private String extend;
 	@Resource
@@ -53,19 +53,7 @@ public class HttlTemplate implements ITemplate {
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/httl/";
 		setContentType(request, response, config);
-		String content = render(request, templateUrl, prefixUri);
-		checkCacheAndWrite(request, response, webCache, staticName, content, config);
-
-	}
-
-	private String render(HttpServletRequest request, String templateUrl, String prefixUri) throws IOException {
-		Template template = null;
-		try {
-			template = engine.getTemplate(prefixUri+templateUrl+extend);
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-
+		
 		// 将request中的对象赋给模版
 		Map<String, Object> parameters = new HashMap<>();
 		Enumeration<String> atts = request.getAttributeNames();
@@ -73,6 +61,20 @@ public class HttlTemplate implements ITemplate {
 			String name = atts.nextElement();
 			parameters.put(name, request.getAttribute(name));
 		}
+		
+		String content = render(parameters, templateUrl, prefixUri);
+		checkCacheAndWrite(request, response, webCache, staticName, content, config);
+
+	}
+
+	private String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
+		Template template = null;
+		try {
+			template = engine.getTemplate(prefixUri+templateUrl+extend);
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+		
 		String content = "";
 		StringWriter vw = new StringWriter(0);
 		try {
