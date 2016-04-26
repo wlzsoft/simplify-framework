@@ -19,5 +19,5 @@ import com.meizu.simplify.ioc.annotation.DefaultBean;
  */
 @DefaultBean
 public interface IMethodSelector {
-	public Object invoke(Object obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
+	public Object invoke(BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
 }
