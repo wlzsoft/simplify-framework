@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Test;
+
 import com.meizu.simplify.mvc.view.ITemplate;
 import com.meizu.simplify.mvc.view.VelocityTemplate;
 
@@ -21,11 +23,12 @@ import com.meizu.simplify.mvc.view.VelocityTemplate;
  *
  */
 public class ControllerMethodCodeGenTest {
-	public static void main(String[] args) throws IOException {
+	@Test
+	public void test() throws IOException {
 		ITemplate template = new VelocityTemplate();
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("","");
-		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "/");
+		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "");
 		System.out.println(javafileinfo);
 	}
 }
