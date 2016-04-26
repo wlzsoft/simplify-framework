@@ -53,7 +53,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@AjaxAccess(allowOrigin = "http://ab.mezu.com",allowHeaders="X-Requested-With",allowMethods={Methods.Post},maxAge=30)
 //	@AjaxAccess(allowOrigin = "http://ab.mezu.com")
-	@RequestMap(path = "/testrestajaxjson.json")
+	@RequestMap(path = "/testrestajaxjson")
 	public List<Test> doRestAjaxJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();

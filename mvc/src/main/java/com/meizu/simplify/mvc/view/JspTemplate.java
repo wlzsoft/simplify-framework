@@ -33,7 +33,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType(value = "jsp",extend="")
+@TemplateType(value = "jsp",extend="jsp")
 public class JspTemplate implements ITemplate{
 	
 	
@@ -50,7 +50,7 @@ public class JspTemplate implements ITemplate{
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 //		String prefixUri = "/template/jsp";
-		String prefixUri = "";
+		String prefixUri = config.getTemplate();
 		String content = render(request, response, templateUrl, prefixUri);
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 	}
