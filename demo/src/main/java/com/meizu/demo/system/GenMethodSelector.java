@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.demo.mvc.controller.TestController;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.controller.IMethodSelector;
+import com.meizu.simplify.mvc.model.Model;
 
 /**
   * <p><b>Title:</b><i>动态方法选择器</i></p>
@@ -27,19 +29,17 @@ import com.meizu.simplify.mvc.controller.IMethodSelector;
 @Bean
 public class GenMethodSelector implements IMethodSelector{
 	
+	@Resource
+	private TestController testController;
 	@Override
-	public Object invoke(BaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
 		Object result = null;
-		switch(doCmd) {
-			case "doTestJson":
-				TestController tc = (TestController)obj;
-				result = tc.doTestJson((HttpServletRequest)parameValue[0], (HttpServletResponse)parameValue[1], (TestModel)parameValue[2]);
+		String clazzName = obj.getClass().getSimpleName();
+		switch(clazzName+":"+doCmd) {
+			case "TestController:doTestJson":
+				result = testController.doTestJson(request, response, (TestModel)t);
 				break;
 		}
-		/*Class<?> clazz = obj.getClass();
-		Method[] methods = clazz.getMethods();
-		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
-		Object result = method.invoke(obj,parameValue);*/
 		return result;
 	}
 }
