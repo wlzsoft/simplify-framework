@@ -102,7 +102,7 @@ public class AnalysisRequestControllerMethod {
 	 * @param methodFullName
 	 * @return
 	 */
-	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, HttpServletResponse response, T t,String methodFullName) {
+	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, T t,String methodFullName) {
 		AnnotationListInfo<AnnotationInfo<RequestParam>> annoListInfo = ControllerAnnotationResolver.requestParamMap.get(methodFullName);
 		if(annoListInfo == null) {
 			//TODO 后续如果需要兼容没有参数的情况下，就不会是严重错误，而是更好的用户体验
@@ -111,9 +111,6 @@ public class AnalysisRequestControllerMethod {
 		}
 		int methodParamLength = annoListInfo.getCount();
 		Object[] parameValue = new Object[methodParamLength];
-		parameValue[0] = request;
-		parameValue[1] = response;
-		parameValue[2] = t;
 		List<AnnotationInfo<RequestParam>> annoInfoList = annoListInfo.getAnnoList();
 		if(annoInfoList == null) {
 			return parameValue;

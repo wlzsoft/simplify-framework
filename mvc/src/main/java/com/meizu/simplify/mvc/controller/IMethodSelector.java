@@ -2,7 +2,11 @@ package com.meizu.simplify.mvc.controller;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.meizu.simplify.ioc.annotation.DefaultBean;
+import com.meizu.simplify.mvc.model.Model;
 
 /**
   * <p><b>Title:</b><i>方法选择器</i></p>
@@ -19,5 +23,5 @@ import com.meizu.simplify.ioc.annotation.DefaultBean;
  */
 @DefaultBean
 public interface IMethodSelector {
-	public Object invoke(BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
 }

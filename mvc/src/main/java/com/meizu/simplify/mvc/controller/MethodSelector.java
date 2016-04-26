@@ -3,7 +3,11 @@ package com.meizu.simplify.mvc.controller;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.utils.CollectionUtil;
 
 /**
@@ -23,7 +27,10 @@ import com.meizu.simplify.utils.CollectionUtil;
 public class MethodSelector implements IMethodSelector{
 	
 	@Override
-	public Object invoke(BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+		parameValue[0] = request;
+		parameValue[1] = response;
+		parameValue[2] = t;
 		Class<?> clazz = obj.getClass();
 		Method[] methods = clazz.getMethods();
 		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
