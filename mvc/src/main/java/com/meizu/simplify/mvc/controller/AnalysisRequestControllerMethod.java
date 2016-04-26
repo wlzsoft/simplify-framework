@@ -157,7 +157,10 @@ public class AnalysisRequestControllerMethod {
 	 * @param methodFullName
 	 */
 	public static void analysisAjaxAccess(HttpServletRequest request, HttpServletResponse response, String methodFullName) {
-		if(!AjaxUtils.isAjaxRequest(request)) {//TODO,不是判断ajax的唯一方式，有可能是ajax请求，但是不带这个头信息
+		/*注意：大部分的ajax请求都可以在服务端使用这个头信息判断，但是由于这个头信息不是标准规范，不一定所有浏览器和js库都会支持这个头信息，或是不使用这个名字的头标记
+		 * 所以框架中，要强制要求，所有使用ajax的请求，都必须有X-Requested-With头标记，如果没有，需要强制加上
+		*/
+		if(!AjaxUtils.isAjaxRequest(request)) {
 			return;
 		}
 		AnnotationInfo<AjaxAccess> ajaxAccessAnno = ControllerAnnotationResolver.ajaxAccessMap.get(methodFullName);
