@@ -47,6 +47,9 @@ public class BaseController<T extends Model> {
 	@Resource
 	private PropertiesConfig config;
 	
+	@Resource
+	private IMethodSelector methodSelector;
+	
 	/**
 	 * 
 	 * 方法用途: 拦截处理所有请求<br>
@@ -132,20 +135,12 @@ public class BaseController<T extends Model> {
 		}
 		
 		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, methodFullName);
-		//代码生成区域start
-		Method[] methods = this.getClass().getMethods();
-		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
-		if (method == null) {
-			throw new IllegalArgumentException("无法找到指定类:["+this.getClass()+"] 的方法 :[" + doCmd + "]"); 
-		}
-		if (method.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
-			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
-		}
-		Object obj = method.invoke(this,parameValue);
+		Object obj = methodSelector.invoke(doCmd, parameValue);
 		//代码生成区域end
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
 	}
+	
 
 	/**
 	 * 
