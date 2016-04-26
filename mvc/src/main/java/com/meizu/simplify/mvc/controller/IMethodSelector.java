@@ -16,5 +16,5 @@ import java.lang.reflect.InvocationTargetException;
  *
  */
 public interface IMethodSelector {
-	public Object invoke(String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
+	public Object invoke(Object obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
 }

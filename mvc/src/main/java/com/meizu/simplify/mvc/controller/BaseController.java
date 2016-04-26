@@ -135,8 +135,7 @@ public class BaseController<T extends Model> {
 		}
 		
 		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, response, model, methodFullName);
-		Object obj = methodSelector.invoke(doCmd, parameValue);
-		//代码生成区域end
+		Object obj = methodSelector.invoke(this,doCmd, parameValue);
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
 	}
