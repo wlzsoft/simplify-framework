@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.DefaultBean;
-import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.ClearCommentUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
