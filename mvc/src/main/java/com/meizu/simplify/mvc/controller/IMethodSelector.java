@@ -2,6 +2,8 @@ package com.meizu.simplify.mvc.controller;
 
 import java.lang.reflect.InvocationTargetException;
 
+import com.meizu.simplify.ioc.annotation.DefaultBean;
+
 /**
   * <p><b>Title:</b><i>方法选择器</i></p>
  * <p>Desc: TODO</p>
@@ -15,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
  * @version Version 0.1
  *
  */
+@DefaultBean
 public interface IMethodSelector {
 	public Object invoke(Object obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
 }

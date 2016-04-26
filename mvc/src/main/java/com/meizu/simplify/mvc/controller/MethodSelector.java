@@ -21,6 +21,8 @@ import com.meizu.simplify.utils.CollectionUtil;
  */
 @Bean
 public class MethodSelector implements IMethodSelector{
+	
+	@Override
 	public Object invoke(Object obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
 		Class<?> clazz = obj.getClass();
 		Method[] methods = clazz.getMethods();

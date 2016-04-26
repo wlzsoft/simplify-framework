@@ -2,7 +2,6 @@ package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.mvc.view.MessageView;
 import com.meizu.simplify.mvc.view.RedirectView;
 import com.meizu.simplify.mvc.view.TemplateFactory;
-import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
