@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -101,14 +105,14 @@ public class VelocityTemplate  implements IPageTemplate,ITemplate{
 		setContentType(request, response,config);
 		
 		// 将request中的对象赋给模版
-		VelocityContext context = new VelocityContext();
+		Map<String, Object> parameters = new HashMap<>();
 		Enumeration<String> atts = request.getAttributeNames();
 		while ( atts.hasMoreElements() ) {
 			String name = atts.nextElement();
-			context.put(name, request.getAttribute(name));
+			parameters.put(name, request.getAttribute(name));
 		}
 		
-		String content = render(context, templateUrl, prefixUri);
+		String content = render(parameters, templateUrl, prefixUri);
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		/*ServletOutputStream output = response.getOutputStream();
 		VelocityWriter vw = null;
@@ -130,9 +134,10 @@ public class VelocityTemplate  implements IPageTemplate,ITemplate{
 			}
 		}*/
 	}
-	private String render(VelocityContext context, String templateUrl, String prefixUri) throws IOException {
+	
+	public String render(Map<String, Object> parameters, String templateUrl, String prefixUri) throws IOException {
 		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
-
+		VelocityContext context = new VelocityContext(parameters);
 		StringWriter vw = new StringWriter(0);
 		String content = "";
 		try {

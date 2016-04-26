@@ -1,6 +1,11 @@
 package com.meizu.simplify.codegen;
 
-import com.meizu.simplify.mvc.view.IPageTemplate;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.meizu.simplify.mvc.view.ITemplate;
 import com.meizu.simplify.mvc.view.VelocityTemplate;
 
 /**
@@ -17,7 +22,10 @@ import com.meizu.simplify.mvc.view.VelocityTemplate;
  *
  */
 public class ControllerMethodCodeGen {
-	public static void main(String[] args) {
-		IPageTemplate template = new VelocityTemplate();
+	public static void main(String[] args) throws IOException {
+		ITemplate template = new VelocityTemplate();
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("","");
+		template.render(parameters, "codegen", "/template/velocity/");
 	}
 }
