@@ -1,11 +1,15 @@
 package com.meizu.demo.system;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.meizu.demo.mvc.controller.TestController;
+import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.controller.IMethodSelector;
-import com.meizu.simplify.utils.CollectionUtil;
 
 /**
   * <p><b>Title:</b><i>动态方法选择器</i></p>
@@ -24,17 +28,18 @@ import com.meizu.simplify.utils.CollectionUtil;
 public class GenMethodSelector implements IMethodSelector{
 	
 	@Override
-	public Object invoke(Object obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
-		Class<?> clazz = obj.getClass();
+	public Object invoke(BaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+		Object result = null;
+		switch(doCmd) {
+			case "doTestJson":
+				TestController tc = (TestController)obj;
+				result = tc.doTestJson((HttpServletRequest)parameValue[0], (HttpServletResponse)parameValue[1], (TestModel)parameValue[2]);
+				break;
+		}
+		/*Class<?> clazz = obj.getClass();
 		Method[] methods = clazz.getMethods();
 		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
-		if (method == null) {
-			throw new IllegalArgumentException("无法找到指定类:["+clazz+"] 的方法 :[" + doCmd + "]"); 
-		}
-		if (method.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
-			throw new IllegalArgumentException("类:["+clazz+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
-		}
-		Object result = method.invoke(obj,parameValue);
+		Object result = method.invoke(obj,parameValue);*/
 		return result;
 	}
 }
