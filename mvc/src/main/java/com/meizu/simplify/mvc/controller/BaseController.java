@@ -136,7 +136,7 @@ public class BaseController<T extends Model> {
 		Method[] methods = this.getClass().getMethods();
 		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
 		if (method == null) {
-			throw new IllegalArgumentException("The method named, " + doCmd + ", is not specified by " + this.getClass()); 
+			throw new IllegalArgumentException("无法找到指定类:["+this.getClass()+"] 的方法 :[" + doCmd + "]"); 
 		}
 		if (method.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
 			throw new IllegalArgumentException("类:["+this.getClass()+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
