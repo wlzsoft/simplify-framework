@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.meizu.simplify.mvc.view.BeetlTemplate;
 import com.meizu.simplify.mvc.view.ITemplate;
 import com.meizu.simplify.mvc.view.VelocityTemplate;
 
@@ -25,10 +26,10 @@ import com.meizu.simplify.mvc.view.VelocityTemplate;
 public class ControllerMethodCodeGenTest {
 	@Test
 	public void test() throws IOException {
-		ITemplate template = new VelocityTemplate();
+		ITemplate template = new BeetlTemplate();
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("a","b");
-		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "");
+		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "/codegen/");
 		System.out.println(javafileinfo);
 	}
 }
