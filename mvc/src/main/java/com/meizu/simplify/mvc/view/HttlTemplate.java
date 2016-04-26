@@ -34,7 +34,7 @@ import httl.Template;
  */
 @Bean
 @TemplateType(value ="httl",extend = "httl")
-public class HttlTemplate implements IPageTemplate {
+public class HttlTemplate implements IPageTemplate,ITemplate {
 	private Engine engine = null;
 	private String extend;
 	@Resource
@@ -67,7 +67,8 @@ public class HttlTemplate implements IPageTemplate {
 
 	}
 
-	private String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
+	@Override
+	public String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
 		Template template = null;
 		try {
 			template = engine.getTemplate(prefixUri+templateUrl+extend);

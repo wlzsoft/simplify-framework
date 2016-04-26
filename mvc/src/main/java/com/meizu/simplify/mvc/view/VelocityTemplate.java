@@ -37,7 +37,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 @Bean
 @TemplateType("velocity")
-public class VelocityTemplate  implements IPageTemplate{
+public class VelocityTemplate  implements IPageTemplate,ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
 	private String extend;

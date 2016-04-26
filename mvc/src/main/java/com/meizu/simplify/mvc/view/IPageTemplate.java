@@ -51,17 +51,6 @@ public interface IPageTemplate {
 		}
 		MessageView.exe(request, response, content, config);
 	}
-	public default String getExtend() {
-		TemplateType templateType = this.getClass().getAnnotation(TemplateType.class);
-		if(templateType == null) {
-			return null;
-		}
-		String extend = templateType.extend();
-		if(StringUtil.isNotBlank(extend)) {
-			extend = "."+extend;
-		}
-		return extend;
-	}
 	
 	/**
 	 * 设置内容类型和编码

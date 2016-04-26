@@ -34,7 +34,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 @Bean
 @TemplateType(value = "jsp",extend="jsp")
-public class JspTemplate implements IPageTemplate{
+public class JspTemplate implements IPageTemplate,ITemplate{
 	
 	
 	@Resource

@@ -38,7 +38,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 @Bean
 @TemplateType("beetl")
-public class BeetlTemplate  implements IPageTemplate {
+public class BeetlTemplate  implements IPageTemplate,ITemplate {
 	private GroupTemplate gt = null;
 	private String extend;
 	@Resource
@@ -82,7 +82,8 @@ public class BeetlTemplate  implements IPageTemplate {
 		
 	}
 
-	private String render(Map<String,Object> parameter, String templateUrl, String prefixUri) {
+	@Override
+	public String render(Map<String,Object> parameter, String templateUrl, String prefixUri) {
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");
