@@ -112,18 +112,8 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 								if (method.isAnnotationPresent(RequestMap.class)) {
 									resolverRequestMap(beanClass,method,RequestMap.class,cpath);
 									resolveRequestParam(beanClass, method);
-									resolveAnno(beanClass, method,AjaxAccess.class,new AnnotationResolverCallback<AjaxAccess>(){
-										@Override
-										public void resolver(AnnotationInfo<AjaxAccess> annoInfo) {
-											ajaxAccessMap.put(beanClass.getName()+":"+method.getName(), annoInfo);
-										}
-									});
-									resolveAnno(beanClass, method,WebCache.class,new AnnotationResolverCallback<WebCache>(){
-										@Override
-										public void resolver(AnnotationInfo<WebCache> annoInfo) {
-											webCacheMap.put(beanClass.getName()+":"+method.getName(), annoInfo);
-										}
-									});
+									resolveAnno(beanClass, method,AjaxAccess.class,annoInfo -> ajaxAccessMap.put(beanClass.getName()+":"+method.getName(), annoInfo));
+									resolveAnno(beanClass, method,WebCache.class,annoInfo -> webCacheMap.put(beanClass.getName()+":"+method.getName(), annoInfo));
 								}
 							}
 						}
