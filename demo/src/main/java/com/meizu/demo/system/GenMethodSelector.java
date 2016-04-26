@@ -1,12 +1,15 @@
 package com.meizu.demo.system;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.demo.mvc.controller.TestController;
 import com.meizu.demo.mvc.model.TestModel;
+import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.controller.BaseController;
@@ -35,10 +38,17 @@ public class GenMethodSelector implements IMethodSelector{
 	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
 		Object result = null;
 		String clazzName = obj.getClass().getSimpleName();
-		switch(clazzName+":"+doCmd) {
-			case "TestController:doTestJson":
-				result = testController.doTestJson(request, response, (TestModel)t);
-				break;
+		try {
+			switch(clazzName+":"+doCmd) {
+				case "TestController:doTestJson":
+					result = testController.doTestJson(request, response, (TestModel)t);
+					break;
+				case "TestController:doDemo":
+					result = testController.doDemo(request, response, (TestModel)t,(Integer)parameValue[3],(String)parameValue[4],(String)parameValue[5]);
+					break;
+			}
+		} catch (Exception e) {
+			Message.error(e.getMessage());
 		}
 		return result;
 	}

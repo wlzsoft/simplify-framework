@@ -252,7 +252,7 @@ public class TestController extends SystemController<TestModel> {
 		
 		
 		String isflag = request.getParameter("isflag");
-		String result = "";//json字符串
+		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
 //		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
 		return result;
 	}
