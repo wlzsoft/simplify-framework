@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import com.meizu.simplify.mvc.view.BeetlTemplate;
 import com.meizu.simplify.mvc.view.ITemplate;
-import com.meizu.simplify.mvc.view.VelocityTemplate;
 
 /**
   * <p><b>Title:</b><i>controller的方法地址匹配映射代码生成类</i></p>
