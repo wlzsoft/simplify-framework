@@ -32,31 +32,31 @@ package com.meizu.simplify.utils.enums;
  */
 public enum DateFormatEnum {
 	
-	
+//	第一种风格
 	
 	YEAR("yyyy"),
-	YEAR_TO_MONTH("yyyy" + D.delimiter + "MM"),
-	YEAR_TO_DAY("yyyy" + D.delimiter + "MM" + D.delimiter + "dd"),
-	YEAR_TO_HOUR("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH"),
-	YEAR_TO_MINUTE("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH:mm"),
-	YEAR_TO_SECOND("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH:mm:ss"),
+	YEAR_TO_MONTH("yyyy" + Limiter.DATE_LIMITER + "MM"),
+	YEAR_TO_DAY("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"),
+	YEAR_TO_HOUR("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH"),
+	YEAR_TO_MINUTE("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH"+Limiter.TIME_LIMITER+"mm"),
+	YEAR_TO_SECOND("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss"),
 	/**
 	 * 全日期:默认格式yyyy-MM-dd HH:mm:ss.SSS
 	 */
-	YEAR_TO_MILLISECOND("yyyy" + D.delimiter + "MM" + D.delimiter + "dd HH:mm:ss.SSS"),
+	YEAR_TO_MILLISECOND("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss.SSS"),
 
 	MONTH("MM"),
-	MONTH_TO_DAY("MM" + D.delimiter + "dd"),
-	MONTH_TO_HOUR("MM" + D.delimiter + "dd HH"),
-	MONTH_TO_MINUTE("MM" + D.delimiter + "dd HH:mm"),
-	MONTH_TO_SECOND("MM" + D.delimiter + "dd HH:mm:ss"),
-	MONTH_TO_MILLISECOND("MM" + D.delimiter + "dd HH:mm:ss.SSS"),
+	MONTH_TO_DAY("MM" + Limiter.DATE_LIMITER + "dd"),
+	MONTH_TO_HOUR("MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH"),
+	MONTH_TO_MINUTE("MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm"),
+	MONTH_TO_SECOND("MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss"),
+	MONTH_TO_MILLISECOND("MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss.SSS"),
 
 	DAY("dd"),
-	DAY_TO_HOUR("dd HH"),
-	DAY_TO_MINUTE("dd HH:mm"),
-	DAY_TO_SECOND("dd HH:mm:ss"),
-	DAY_TO_MILLISECOND("dd HH:mm:ss.SSS"),
+	DAY_TO_HOUR("dd"+Limiter.DATE_TIME_LIMITER+"HH"),
+	DAY_TO_MINUTE("dd"+Limiter.DATE_TIME_LIMITER+"HH:mm"),
+	DAY_TO_SECOND("dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss"),
+	DAY_TO_MILLISECOND("dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss.SSS"),
 
 	HOUR("HH"),
 	HOUR_TO_MINUTE("HH:mm"),
@@ -72,7 +72,14 @@ public enum DateFormatEnum {
 	/**
 	 * 毫秒
 	 */
-	MILLISECOND("SSS");
+	MILLISECOND("SSS"),
+	
+//	第二种风格
+	
+	/**
+	 * 全日期:默认格式yyyyMMddHHmmssSSSS :TODO 是否特定情况下，会有4个SSSS
+	 */
+	YEAR_TO_MILLISECOND_N("yyyyMMddHHmmssSSSS");
 	
 	
 	private String formatStr;
@@ -106,7 +113,27 @@ public enum DateFormatEnum {
 	 * @version Version 0.1
 	 *
 	 */
-	public class D {
-		public static final String delimiter = "-"; // 日期分割符
+	public enum Limiter {
+		
+		/**
+		 * 日期分割符
+		 */
+		DATE_LIMITER("-"),
+		/**
+		 * 时间分割符
+		 */
+		TIME_LIMITER(":"),
+		/**
+		 * 日期时间分隔符
+		 */
+		DATE_TIME_LIMITER(" ");
+		private String value;
+		Limiter(String value) {
+			this.value = value;
+		}
+		@Override
+		public String toString() {
+			return value;
+		}
 	}
 }

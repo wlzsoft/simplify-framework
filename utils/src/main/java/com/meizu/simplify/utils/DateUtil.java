@@ -83,10 +83,10 @@ public class DateUtil {
     public static String correct(String dateString) {
         String resultString = dateString;
         if (dateString.indexOf("/") > -1) {
-            resultString = dateString.replace("/", DateFormatEnum.D.delimiter);
+            resultString = dateString.replace("/", DateFormatEnum.Limiter.DATE_LIMITER.toString());
         }
         if (dateString.indexOf("-") > -1) {
-            resultString = dateString.replace("/", DateFormatEnum.D.delimiter);
+            resultString = dateString.replace("/", DateFormatEnum.Limiter.DATE_LIMITER.toString());
         }
         return resultString;
     }
