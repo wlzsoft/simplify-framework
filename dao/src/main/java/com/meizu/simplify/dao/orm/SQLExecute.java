@@ -185,7 +185,10 @@ public class SQLExecute {
 		try {
 			prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			callback.paramCall(prepareStatement);
-			prepareStatement.executeUpdate();
+			Integer resultCount = prepareStatement.executeUpdate();
+			if(resultCount < 1) {
+				throw new BaseDaoException("执行sql异常:保存数据库失败");
+			}
 			ResultSet rs = prepareStatement.getGeneratedKeys();
 			if(rs.next()) {
 				int key=rs.getInt(1);
@@ -199,10 +202,13 @@ public class SQLExecute {
 			e.printStackTrace();
 			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 //			DruidPoolFactory.rollback();
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 //			free(prepareStatement,null);
 			DruidPoolFactory.close();
 		}
+		System.err.println("注意：sql执行正常，但是无法获取主键的自增id的值，请确认是否设置数据库中指定表的主键");
 		return null;
 	}
 	
