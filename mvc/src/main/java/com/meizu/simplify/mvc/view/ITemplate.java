@@ -3,6 +3,7 @@ package com.meizu.simplify.mvc.view;
 import java.io.IOException;
 import java.util.Map;
 
+import com.meizu.simplify.ioc.annotation.DefaultBean;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -20,6 +21,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
+@DefaultBean(BeetlTemplate.class)
 public interface ITemplate {
 	public default String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
 		return null;

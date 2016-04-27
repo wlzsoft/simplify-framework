@@ -55,36 +55,260 @@ import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
  *
  */
 public class FileUtil {
-
+	private static final int DEFAULT_BUFFER_SIZE = 4 * Measure.K;
 	/**
-	 * 
-	 * @param fileName
-	 * @param s
+	 * 构造方法，禁止实例化
 	 */
-	public static void appendToFile(String fileName, String s) {
-		BufferedWriter bw = null;
+	private FileUtil() {
+	}
+	/**
+	 * 方法用途: 创建目录，如果父目录不存在则建立父目录, 类似目录格式 "E:/dd/aa/bb"<br>
+	 * 操作步骤: TODO<br>
+	 * @param targetDir  必须是绝对路径
+	 */
+	public static void createDirectory(String targetDir) {
+		File dir = new File(targetDir);
+		if (dir.exists()) {
+			return;
+		}
+//		方式1：
+		boolean success = dir.mkdirs();
+		if(!success) {
+			throw new RuntimeException("目录:[" + dir + "]创建失败，可能包含特殊字符!");
+		}
+//		方式二：
+		/*dir.mkdir();
+		createDirectory(dir.getParentFile().getAbsolutePath());*/
+	}
+	
+	/**
+	 * 方法用途: 从文件完整路径中截取完整的文件目录<br>
+	 * 操作步骤: TODO<br>
+	 * @param filePath 文件完整路径
+	 * @return 返回从文件完整路径中截取完整的文件目录
+	 */
+	public static String getFullFileDir(String filePath) {
+		int lastSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.DOUBLE_SLASH.toString());
+		int lastBackSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.BACKSLASH.toString());
+		// 如果没找到斜杠和反斜杠则返回空字符串
+		// 如果斜杠位置在反斜杠位置之后则从斜杠位置截取文件目录
+		// 否则从反斜杠位置截取文件目录
+		if (lastSlashIndex == -1 && lastBackSlashIndex == -1) {
+			return "";
+		} else if (lastSlashIndex > lastBackSlashIndex) {
+			return StringUtil.substringBeforeLast(filePath, SpecialCharacterEnum.DOUBLE_SLASH.toString());
+		} else {
+			return StringUtil.substringBeforeLast(filePath,SpecialCharacterEnum.BACKSLASH.toString());
+		}
+	}
+	
+	/**
+	 * 方法用途: 创建一个新文件<br>
+	 * 操作步骤: 根据文件的完整路径创建一个新文件,如果目录不存在时先创建目录再创建文件<br>
+	 * @param targetPath 文件完整路径
+	 * @return 返回创建的File文件对象
+	 */
+	public static File createFile(String targetPath) {
 		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), EncodingEnum.UTF_8.toString()));
-			bw.write(s);
-			bw.flush();
-			bw.close();
-		} catch (Exception e) {
-			System.err.print("write to file error！" + e.getMessage() + " filename=" + fileName);
-			if (bw != null) {
-				try {
-					bw.close();
-				} catch (Exception ie) {
+			String targetDir = getFullFileDir(targetPath);
+			String fileName = targetPath.replace(targetDir, "");
+			File file = createFile(targetDir,fileName,true);
+			return file;
+		} catch (IOException e) {
+			throw new UncheckedException("创建文件时发生错误。", e);
+		}
+	}
+	
+	/**
+	 * 方法用途: 创建一个新文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param targetDir
+	 * @param fileName
+	 * @param overwrite
+	 * @return
+	 * @throws IOException
+	 */
+	public static File createFile(String targetDir, String fileName, boolean overwrite) throws IOException {
+
+		createDirectory(targetDir);
+
+		File file = new File(targetDir, fileName);
+
+		if (file.exists() && !overwrite) {
+			throw new IOException("the file " + targetDir + " exists! But overwrite is FALSE!");
+		}
+
+		if (!file.exists()) {
+			boolean createSuccess = file.createNewFile();
+			if (!createSuccess) {
+				throw new IOException("创建文件[ " + targetDir+fileName + "] 失败!");
+			}
+		}
+		return file;
+
+	}
+	
+	
+	/**
+	 * 方法用途: 保存数据流到文件中<br>
+	 * 操作步骤: TODO<br>
+	 * @param instream
+	 * @param targetDir
+	 * @param fileName
+	 * @param overwrite
+	 * @throws IOException
+	 */
+	public static void saveFile(InputStream instream, String targetDir, String fileName, boolean overwrite) throws IOException {
+
+		File file = createFile(targetDir,fileName,overwrite);
+
+		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+		BufferedInputStream binStream = new BufferedInputStream(instream);
+		try {
+			byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+			int readCount = 0;
+			while ((readCount = binStream.read(buffer)) != -1) {
+				if (readCount < DEFAULT_BUFFER_SIZE) {
+					out.write(buffer, 0, readCount);
+				} else {
+					out.write(buffer);
 				}
+			}
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+			if(binStream != null) {
+				binStream.close();
 			}
 		}
 	}
+	
+	
 
-	public static String converToOSPath(String path) {
+	/**
+	 * 方法用途: 保存文本到文件中<br>
+	 * 操作步骤: TODO<br>
+	 * @param targetFile
+	 * @param content 添加到文件中的文本内容
+	 * @throws Exception
+	 */
+	public static void saveFile(File targetFile, String content) {
+		OutputStreamWriter fw = null;
+		PrintWriter out = null;
+		try {
+			fw = new OutputStreamWriter(new FileOutputStream(targetFile), EncodingEnum.UTF_8.toString());
+			out = new PrintWriter(fw);
+			out.print(content);
+		} catch (Exception ex) {
+			throw new UncheckedException(ex);
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+			if (fw != null) {
+				try {
+					fw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
+	}
+
+	public static boolean updateFile(String fileString, String filePath,String encoding) {
+		boolean flag = false;
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), encoding));
+			bw.append(fileString);
+			bw.flush();
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		} finally {
+			if (bw != null) {
+				try {
+					bw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return flag;
+	}
+	
+	/**
+	 * 方法用途: 保存图片文件到硬盘上<br>
+	 * 操作步骤: TODO<br>
+	 * @param in
+	 * @param path
+	 * @param fileName
+	 * @param formatName
+	 * @param overwrite
+	 * @throws IOException
+	 */
+	public static void saveImage(InputStream in, String path, String fileName, String formatName, boolean overwrite) throws IOException {
+
+		createDirectory(path);
+		File f = new File(path, fileName);
+
+		if (f.exists() && !overwrite) {
+			throw new IOException("the file " + path + " exists! But overwrite is FALSE!");
+		}
+
+		BufferedImage bi = ImageIO.read(in);
+		if (bi == null) {
+			throw new IOException("从InputStream " + in + " 读取图像数据时失败！");
+		}
+
+		boolean success = ImageIO.write(bi, formatName, f);
+		if (!success) {
+			throw new IOException("把文件保存为 " + formatName + " 格式时失败！");
+		}
+	}
+
+	/**
+	 * 方法用途: 保存图片文件到硬盘上<br>
+	 * 操作步骤: TODO<br>
+	 * @param im
+	 * @param path
+	 * @param fileName
+	 * @param formatName
+	 * @param overwrite
+	 * @throws IOException
+	 */
+	public static void saveImage(RenderedImage im, String path, String fileName, String formatName, boolean overwrite) throws IOException {
+
+		createDirectory(path);
+
+		File f = new File(path, fileName);
+
+		if (f.exists() && !overwrite) {
+			throw new IOException("the file " + path + " exists! But overwrite is FALSE!");
+		}
+
+		boolean success = ImageIO.write(im, formatName, f);
+
+		if (!success) {
+			throw new IOException("把文件保存为 " + formatName + " 格式时发生异常！");
+		}
+	}
+
+
+
+	/**
+	 * 方法用途: 路径目录分隔符转换<br>
+	 * 操作步骤: File自带的File.separatorChar可以实现这个方法的功能，但是一些外来的地址，会出现路径的格式不可控的问题，所以需要做路径转换<br>
+	 * @param path
+	 * @return
+	 */
+	public static String separatorCharChange(String path) {
 		if (path == null) {
 			return null;
 		}
-
 		String s = System.getProperty(SpecialCharacterEnum.FILE_SEPARATOR.toString());
 		String WIN = "\\";
 		String UNIX = "/";
@@ -97,7 +321,7 @@ public class FileUtil {
 			replacement = "\\\\";
 		} else if (s.equals(UNIX)) {
 			regex = "[\\\\]{1,}";
-			replacement = "/";
+			replacement = SpecialCharacterEnum.BACKSLASH.toString();
 		} else {
 			throw new IllegalStateException("unknown FILE_SEPARATOR, / OR \\ expected!");
 		}
@@ -105,62 +329,171 @@ public class FileUtil {
 		String result = path.replaceAll(regex, replacement);
 		return result;
 	}
-
-	public static String converToWebPath(String path) {
-
-		if (path == null) {
-			return null;
-		}
-
-		String regex = "[\\\\]{1,}";
-		String result = path.replaceAll(regex, SpecialCharacterEnum.BACKSLASH.toString());
-		return result;
-	}
-
+	
 	/**
-	 * This class copies an input file to output file
-	 * 
-	 * @param String
-	 *            input file to copy from
-	 * @param String
-	 *            output file
+	 * 方法用途: 复制文件,并设置编码<br>
+	 * 操作步骤: TODO<br>
+	 * @param srcFilePath
+	 * @param destFilePath
+	 * @param srcCoding
+	 * @param destCoding
+	 * @return
 	 */
-	public static boolean copy(String input, String output) throws Exception {
-		int BUFSIZE = 65536;
-		FileInputStream fis = new FileInputStream(input);
-		FileOutputStream fos = new FileOutputStream(output);
-
+	public static boolean copyFile(String srcFilePath, String destFilePath,String srcCoding, String destCoding) {
+		boolean flag = false;
+		BufferedReader br = null;
+		BufferedWriter bw = null;
 		try {
-			int s;
-			byte[] buf = new byte[BUFSIZE];
-			while ((s = fis.read(buf)) > -1) {
-				fos.write(buf, 0, s);
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(
+					srcFilePath), srcCoding));
+			bw = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(destFilePath), destCoding));
+			char[] cbuf = new char[1024 * 5];
+			int len = cbuf.length;
+			int off = 0;
+			int ret = 0;
+			while ((ret = br.read(cbuf, off, len)) > 0) {
+				off += ret;
+				len -= ret;
 			}
-
-		} catch (Exception ex) {
-			throw new Exception("makehome" + ex.getMessage());
+			bw.write(cbuf, 0, off);
+			bw.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
-			fis.close();
-			fos.close();
+			try {
+				if (br != null)
+					br.close();
+				if (bw != null)
+					bw.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		return true;
+		return flag;
+	}
+	/**
+	 * 
+	 * 方法用途: 复制文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceFile
+	 * @param targetFile
+	 * @return number of byte written
+	 * @throws IOException
+	 */
+	public static long copyFile(String sourceFile, String targetFile)  {
+		return copyFile(new File(sourceFile),new File(targetFile));
+	}
+	
+	/**
+	 * 方法用途: 拷贝源文件到目标文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceFile 源文件地址
+	 * @param targetFile 目标文件地址
+	 * @return
+	 * @throws Exception
+	 */
+	public static long copyFile(File sourceFile, File targetFile) {
+		if (sourceFile == null || targetFile == null || !sourceFile.isFile())
+			return -1;
+//		boolean flag = false;
+		BufferedInputStream inBuff = null;
+		BufferedOutputStream outBuff = null;
+		long size = 0;
+		try {
+			// 新建文件输入流并对它进行缓冲
+			inBuff = new BufferedInputStream(new FileInputStream(sourceFile));
+			// 新建文件输出流并对它进行缓冲
+			outBuff = new BufferedOutputStream(new FileOutputStream(targetFile));
+			// 缓冲数组
+			byte[] b = new byte[DEFAULT_BUFFER_SIZE];
+			int len;
+			while ((len = inBuff.read(b)) != -1) {
+				outBuff.write(b, 0, len);
+				size += len;
+			}
+			// 刷新此缓冲的输出流
+			outBuff.flush();
+//			flag = true;
+		} catch (Exception e) {
+			size = 0;
+			e.printStackTrace();
+		} finally {
+			try {
+				// 关闭流
+				if (inBuff != null)
+					inBuff.close();
+				if (outBuff != null)
+					outBuff.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return size;
+//		return flag;
+	}
+	/**
+	 * 方法用途: 复制文件夹<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceDirPath
+	 * @param targetDirPath
+	 * @param sourceDestCoding
+	 * @param targetDestCoding
+	 * @return
+	 */
+	public static boolean copyDirectiory(String sourceDirPath,
+			String targetDirPath, String sourceDestCoding,
+			String targetDestCoding) {
+		boolean flag = false;
+		try {
+			// 创建目标文件夹
+			(new File(targetDirPath)).mkdirs();
+			// 获取源文件夹当前下的文件或目录
+			File[] file = (new File(sourceDirPath)).listFiles();
+			for (int i = 0; i < file.length; i++) {
+				if (file[i].isFile()) {
+					// 复制文件
+					String type = file[i].getName().substring(
+							file[i].getName().lastIndexOf(".") + 1);
+
+					if (type.equalsIgnoreCase("txt"))
+						copyFile(file[i].getAbsolutePath(), targetDirPath
+								+ file[i].getName(), sourceDestCoding,
+								targetDestCoding);
+					else
+						copyFile(file[i].getAbsolutePath(), targetDirPath
+								+ file[i].getName());
+				}
+				if (file[i].isDirectory()) {
+					// 复制目录
+					String sourceDir = sourceDirPath + File.separator
+							+ file[i].getName();
+					String targetDir = targetDirPath + File.separator
+							+ file[i].getName();
+					copyDirectiory(sourceDir, targetDir);
+				}
+			}
+			flag = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
 	}
 
 	/**
-	 * This class copies an input files of a directory to another directory not include subdir
-	 * 
-	 * @param String
-	 *            sourcedir the directory to copy from such as:/home/bqlr/images
-	 * @param String
-	 *            destdir the target directory
+	 * 方法用途: This class copies an input files of a directory to another directory not include subdir<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceDir sourceDir the directory to copy from such as:/home/bqlr/images
+	 * @param targetDir targetDir the target directory
+	 * @throws Exception
 	 */
-	public static void CopyDir(String sourcedir, String destdir) throws Exception {
-		File dest = new File(destdir);
-		File source = new File(sourcedir);
+	public static void copyDir(String sourceDir, String targetDir) throws Exception {
+		File dest = new File(targetDir);
+		File source = new File(sourceDir);
 
 		String[] files = source.list();
 		try {
-			makehome(destdir);
+			createDirectory(targetDir);
 		} catch (Exception ex) {
 			throw new Exception("CopyDir:" + ex.getMessage());
 		}
@@ -171,104 +504,151 @@ public class FileUtil {
 			File temp = new File(sourcefile);
 			if (temp.isFile()) {
 				try {
-					copy(sourcefile, destfile);
+					copyFile(sourcefile, destfile);
 				} catch (Exception ex) {
 					throw new Exception("CopyDir:" + ex.getMessage());
 				}
 			}
 		}
 	}
+	
+	/**
+	 * 方法用途: 复制文件夹<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceFilePath
+	 * @param targetFilePath
+	 * @return
+	 */
+	public static boolean copyDirectiory(String sourceFilePath,
+			String targetFilePath) {
+		boolean flag = false;
+		try {
+			// 新建目标目录
+			(new File(sourceFilePath)).mkdirs();
+			// 获取源文件夹当前下的文件或目录
+			File[] file = (new File(sourceFilePath)).listFiles();
+			for (int i = 0; i < file.length; i++) {
+				if (file[i].isFile()) {
+					// 源文件
+					File sourceFile = file[i];
+					// 目标文件
+					File targetFile = new File(new File(targetFilePath)
+							.getAbsolutePath()
+							+ File.separator + file[i].getName());
+					copyFile(sourceFile.getAbsolutePath(), targetFile
+							.getAbsolutePath());
+				}
+				if (file[i].isDirectory()) {
+					// 准备复制的源文件夹
+					String dir1 = sourceFilePath + "/" + file[i].getName();
+					// 准备复制的目标文件夹
+					String dir2 = targetFilePath + "/" + file[i].getName();
+					copyDirectiory(dir1, dir2);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
+
+	
+	/**
+	 * 方法用途: 将输入流复制到输出流<br>
+	 * 操作步骤: TODO<br>
+	 * @param input 输入流
+	 * @param output 输出流
+	 */
+	public static void copyInToOut(InputStream input, OutputStream output) {
+		byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+		int n = 0;
+		try {
+			while (-1 != (n = input.read(buffer))) {
+				output.write(buffer, 0, n);
+			}
+		} catch (IOException e) {
+			throw new UncheckedException("从输入流复制到输出流时发生异常", e);
+		}
+	}
+	
+	/**
+	 * 方法用途: 剪切文件夹<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceFilePath
+	 * @param targetFilePath
+	 * @return
+	 */
+	public static boolean cutDirectiory(String sourceFilePath,
+			String targetFilePath) {
+		boolean flag = false;
+		if (copyDirectiory(sourceFilePath, targetFilePath)) {
+			flag = deleteDirectory(sourceFilePath);
+		}
+		return flag;
+	}
+	
+	
+	/**
+	 * 方法用途: 剪切文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceFilePath
+	 * @param targetFilePath
+	 * @return
+	 */
+	public static boolean cutFile(String sourceFilePath, String targetFilePath) {
+		boolean flag = false;
+		if (copyFile(sourceFilePath, targetFilePath)>0) {
+			flag = deleteFile(sourceFilePath);
+		}
+		return flag;
+	}
+	
+	/**
+	 * 方法用途:  This class moves an input file to output file<br>
+	 * 操作步骤: TODO<br>
+	 * @param input input file to move from
+	 * @param output output file
+	 * @throws Exception
+	 */
+	public static void move(String input, String output) throws Exception {
+		File inputFile = new File(input);
+		File outputFile = new File(output);
+		try {
+			inputFile.renameTo(outputFile);
+		} catch (Exception ex) {
+			throw new Exception("Can not mv" + input + " to " + output + ex.getMessage());
+		}
+	}
 
 	/**
-	 * Copy file
-	 * 
+	 * 方法用途: Move file<br>
+	 * 操作步骤: TODO<br>
 	 * @param from
 	 * @param to
 	 * @return number of byte written
 	 * @throws IOException
 	 */
-	public static long copyFile(File from, File to) throws IOException {
+	public static long moveFile(File from, File to) throws IOException {
 		if (from == null || to == null || !from.isFile())
 			return -1;
 
-		FileInputStream fis = new FileInputStream(from);
-		FileOutputStream fos = new FileOutputStream(to);
-		byte[] buff = new byte[1024];
-		int read = 0;
 		long size = 0;
-		while ((read = fis.read(buff)) > 0) {
-			fos.write(buff, 0, read);
-			size += read;
+		if (from.getParent().equals(to.getParent())) {
+			from.renameTo(to);
+			FileInputStream fis = new FileInputStream(to);
+			size = fis.available();
+			fis.close();
+		} else {
+			size = copyFile(from, to);
+			from.delete();
 		}
-		fos.close();
-		fis.close();
 
 		return size;
 	}
 
-
 	/**
-	 * 
-	 * 创建目录，如果父目录不存在则建立父目录
-	 * 
-	 */
-	public static void createDir(String path) {
-		File f = new File(path);
-
-		if (f.exists()) {
-			return;
-		}
-
-		boolean success = f.mkdirs();
-		if (success) {
-			return;
-		}
-
-		throw new RuntimeException("create dir " + f + " failed!");
-	}
-
-	/**
-	 * Create directory with given path, such as "/dd/aa/bb"
-	 * 
-	 * @param path
-	 *            must be absolute path
-	 */
-	public static void createDirectory(String fullpath) {
-		File dir = new File(fullpath);
-		if (!dir.exists()) {
-			createDirectory(dir.getParentFile().getAbsolutePath());
-			dir.mkdir();
-		}
-	}
-
-	/**
-	 * write the content to a file;
-	 * 
-	 * @param output
-	 * @param content
-	 * @throws Exception
-	 */
-	public static void createFile(String output, String content) throws Exception {
-		OutputStreamWriter fw = null;
-		PrintWriter out = null;
-		try {
-			fw = new OutputStreamWriter(new FileOutputStream(output), EncodingEnum.UTF_8.toString());
-			out = new PrintWriter(fw);
-			out.print(content);
-		} catch (Exception ex) {
-			throw new Exception(ex);
-		} finally {
-			if (out != null)
-				out.close();
-			if (fw != null)
-				fw.close();
-		}
-
-	}
-
-	/**
-	 * File system operation, delete one directory recursively.
-	 * 
+	 * 方法用途: File system operation, delete one directory recursively<br>
+	 * 操作步骤: TODO<br>
 	 * @param dir
 	 */
 	public static void deleteDirectory(File dir) {
@@ -290,19 +670,21 @@ public class FileUtil {
 	
 
 	/**
-	 * 删除给定的文件或者目录
-	 * 
-	 * 如果ignoreFileNotFoundException为true，当找不到给定的文件或者目录时，忽略这个异常；否则，抛出这个异常。
+	 * 方法用途: 删除给定的文件或者目录<br>
+	 * 操作步骤: TODO<br>
+	 * @param targetFile
+	 * @param ignoreFileNotFoundException
+	 * @throws FileNotFoundException 如果ignoreFileNotFoundException为true，当找不到给定的文件或者目录时，忽略这个异常；否则，抛出这个异常
 	 */
-	public static void deleteFile(String path, boolean ignoreFileNotFoundException) throws FileNotFoundException {
+	public static void deleteFile(String targetFile, boolean ignoreFileNotFoundException) throws FileNotFoundException {
 
-		File f = new File(path);
+		File f = new File(targetFile);
 
 		if (!f.exists()) {
 			if (ignoreFileNotFoundException) {
 				return;
 			} else {
-				throw new FileNotFoundException("path: " + path);
+				throw new FileNotFoundException("path: " + targetFile);
 			}
 		}
 
@@ -325,33 +707,231 @@ public class FileUtil {
 			}
 		}
 	}
-
+	
 	/**
+	 * 删除文件方法，如果删除不掉，将该文件加入删除池，下次进行调用时将尝试删除池中的文件
 	 * 
-	 * 如果给定目录为空，就删除此目录
-	 * 
+	 * @param file
+	 *            file
 	 */
-	public static void deleteIfEmptyDir(File dir) {
-
-		if (dir == null || !dir.isDirectory()) {
-			return;
+	public static void deleteFile(File file) {
+		file.delete();// 尝试删除文件
+		if (file.exists()) {
+			deleteFilesPool.add(file);
 		}
+		checkDeletePool();
+	}
+	
+	/**  
+	 * 根据路径删除指定的目录或文件，无论存在与否  
+	 *@param sPath  要删除的目录或文件  
+	 *@return 删除成功返回 true，否则返回 false
+	 */
+	public boolean deleteFolder(String sPath) {
+		boolean flag = false;
+		File file = new File(sPath);
+		// 判断目录或文件是否存在   
+		if (!file.exists()) { // 不存在返回 false   
+			return flag;
+		} else {
+			// 判断是否为文件   
+			if (file.isFile()) { // 为文件时调用删除文件方法   
+				return deleteFile(sPath);
+			} else { // 为目录时调用删除目录方法   
+				return deleteDirectory(sPath);
+			}
+		}
+	}
+	/**  
+	 * 删除单个文件  
+	 * @param   sPath    被删除文件的文件名  
+	 * @return 单个文件删除成功返回true，否则返回false  
+	 */
+	public static boolean deleteFile(String sourceFilePath) {
+		boolean flag = false;
+		File file = new File(sourceFilePath);
+		// 路径为文件且不为空则进行删除   
+		if (file.isFile() && file.exists()) {
+			file.delete();
+			flag = true;
+		}
+		return flag;
+	}
 
-		File[] fs = dir.listFiles();
-		if (fs == null || fs.length == 0) {
-			dir.delete();
+	/**  
+	 * 删除目录（文件夹）以及目录下的文件  
+	 * @param   sPath 被删除目录的文件路径  
+	 * @return  目录删除成功返回true，否则返回false  
+	 */
+	public static boolean deleteDirectory(String sourceFilePath) {
+		//如果sPath不以文件分隔符结尾，自动添加文件分隔符   
+		if (!sourceFilePath.endsWith(File.separator)) {
+			sourceFilePath = sourceFilePath + File.separator;
+		}
+		File dirFile = new File(sourceFilePath);
+		//如果dir对应的文件不存在，或者不是一个目录，则退出   
+		if (!dirFile.exists() || !dirFile.isDirectory()) {
+			return false;
+		}
+		boolean flag = true;
+		//删除文件夹下的所有文件(包括子目录)   
+		File[] files = dirFile.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			//删除子文件   
+			if (files[i].isFile()) {
+				flag = deleteFile(files[i].getAbsolutePath());
+				if (!flag)
+					break;
+			} //删除子目录   
+			else {
+				flag = deleteDirectory(files[i].getAbsolutePath());
+				if (!flag)
+					break;
+			}
+		}
+		if (!flag)
+			return false;
+		//删除当前目录   
+		if (dirFile.delete()) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
 	/**
-	 * 给定一个文件路径，提取其中的文件名和扩展名，要求必须给定扩展名
+	 * 检查池，删除池中文件，如果删除成功则同时从池中移除。
+	 */
+	private static void checkDeletePool() {
+		File file;
+		for (int i = deleteFilesPool.size() - 1; i >= 0; i--) {
+			file = (File) deleteFilesPool.get(i);
+			file.delete();
+			if (file.exists() == false) {
+				deleteFilesPool.remove(i);
+			}
+		}
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(new FileOutputStream(POOL_FILE));
+			out.writeObject(deleteFilesPool);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 删除文件夹（不管是否文件夹为空）<br>
+	 * 注意：非原子操作，删除文件夹失败时，并不能保证没有文件被删除。 * <br>
+	 * <b>示例: </b> <br>
+	 * FileUtils.deleteFolder(&quot;/home/tmp&quot;) 删除成功返回true.<br>
+	 * FileUtils.deleteFolder(&quot;C:\\test&quot;) 删除成功返回true.</br>
 	 * 
+	 * @param delFolder
+	 *            待删除的文件夹
+	 * @return 如果删除成功则返回true，否则返回false
+	 */
+	public static boolean deleteFolder(File delFolder) {
+		// 目录是否已删除
+		boolean hasDeleted = true;
+		// 得到该文件夹下的所有文件夹和文件数组
+		File[] allFiles = delFolder.listFiles();
+
+		for (int i = 0; i < allFiles.length; i++) {
+			// 为true时操作
+			if (hasDeleted) {
+				if (allFiles[i].isDirectory()) {
+					// 如果为文件夹,则递归调用删除文件夹的方法
+					hasDeleted = deleteFolder(allFiles[i]);
+				} else if (allFiles[i].isFile()) {
+					try {// 删除文件
+						if (!allFiles[i].delete()) {
+							// 删除失败,返回false
+							hasDeleted = false;
+						}
+					} catch (Exception e) {
+						// 异常,返回false
+						hasDeleted = false;
+					}
+				}
+			} else {
+				// 为false,跳出循环
+				break;
+			}
+		}
+		if (hasDeleted) {
+			// 该文件夹已为空文件夹,删除它
+			delFolder.delete();
+		}
+		return hasDeleted;
+	}
+
+	/**
+	 * 方法用途: 如果给定目录为空，就删除此目录<br>
+	 * 操作步骤: TODO<br>
+	 * @param targetDir
+	 */
+	public static void deleteIfEmptyDir(File targetDir) {
+
+		if (targetDir == null || !targetDir.isDirectory()) {
+			return;
+		}
+
+		File[] fs = targetDir.listFiles();
+		if (fs == null || fs.length == 0) {
+			targetDir.delete();
+		}
+	}
+	
+	/**
+	 * 方法用途: This class del a directory recursively,that means delete all files and directorys<br>
+	 * 操作步骤: TODO<br>
+	 * @param directory directory the directory that will be deleted
+	 * @throws Exception 
+	 */
+	public static void recursiveRemoveDir(File directory) throws Exception {
+		if (!directory.exists())
+			throw new IOException(directory.toString() + " do not exist!");
+
+		String[] filelist = directory.list();
+		File tmpFile = null;
+		for (int i = 0; i < filelist.length; i++) {
+			tmpFile = new File(directory.getAbsolutePath(), filelist[i]);
+			if (tmpFile.isDirectory()) {
+				recursiveRemoveDir(tmpFile);
+			} else if (tmpFile.isFile()) {
+				try {
+					tmpFile.delete();
+				} catch (Exception ex) {
+					throw new Exception(tmpFile.toString() + " can not be deleted " + ex.getMessage());
+				}
+			}
+		}
+		try {
+			directory.delete();
+		} catch (Exception ex) {
+			throw new Exception(directory.toString() + " can not be deleted " + ex.getMessage());
+		} finally {
+			filelist = null;
+		}
+	}
+
+	/**
+	 * 方法用途: 给定一个文件路径，提取其中的文件名和扩展名，要求必须给定扩展名<br>
+	 * 操作步骤: 
 	 * 例如，给定/a/b.c，返回b.c
-	 * 
 	 * 如果给定/a/b.c.d，返回b.c.d
-	 * 
-	 * 如果给定/a/b/c，返回null
-	 * 
+	 * 如果给定/a/b/c，返回null<br>
+	 * @param path
+	 * @return
 	 */
 	public static String getFileNameAndExt(String path) {
 
@@ -377,14 +957,15 @@ public class FileUtil {
 	}
 
 	/**
-	 * 给定一个文件路径，提取其中的文件名和扩展名，要求必须给定扩展名
-	 * 
+	 * 方法用途: 给定一个文件路径，提取其中的文件名和扩展名，要求必须给定扩展名<br>
+	 * 操作步骤: 
 	 * 例如，给定/a/b.c，返回[b, c]
 	 * 
 	 * 如果给定/a/b.c.d，返回[b.c, d]
 	 * 
-	 * 如果给定/a/b/c，返回null
-	 * 
+	 * 如果给定/a/b/c，返回null<br>
+	 * @param path
+	 * @return
 	 */
 	public static String[] getFileNameAndExt2(String path) {
 
@@ -402,86 +983,6 @@ public class FileUtil {
 		String ext = resultString.substring(dot + 1);
 
 		return new String[] { name, ext };
-	}
-
-	/**
-	 * 
-	 * @param dir
-	 */
-	public static void makeDir(File dir) {
-		if (!dir.exists()) {
-			makeDir(dir.getParentFile());
-			dir.mkdir();
-		}
-	}
-
-	public static void makeDirs(String path) {
-		File dir = new File(path);
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
-	}
-
-	/**
-	 * create a directory
-	 * 
-	 * @param home
-	 * @throws Exception
-	 */
-	public static void makehome(String home) throws Exception {
-		File homedir = new File(home);
-		if (!homedir.exists()) {
-			try {
-				homedir.mkdirs();
-			} catch (Exception ex) {
-				throw new Exception("Can not mkdir :" + home + " Maybe include special charactor!");
-			}
-		}
-	}
-
-	/**
-	 * This class moves an input file to output file
-	 * 
-	 * @param String
-	 *            input file to move from
-	 * @param String
-	 *            output file
-	 * 
-	 */
-	public static void move(String input, String output) throws Exception {
-		File inputFile = new File(input);
-		File outputFile = new File(output);
-		try {
-			inputFile.renameTo(outputFile);
-		} catch (Exception ex) {
-			throw new Exception("Can not mv" + input + " to " + output + ex.getMessage());
-		}
-	}
-
-	/**
-	 * Move file
-	 * 
-	 * @param from
-	 * @param to
-	 * @return number of byte written
-	 * @throws IOException
-	 */
-	public static long moveFile(File from, File to) throws IOException {
-		if (from == null || to == null || !from.isFile())
-			return -1;
-
-		long size = 0;
-		if (from.getParent().equals(to.getParent())) {
-			from.renameTo(to);
-			FileInputStream fis = new FileInputStream(to);
-			size = fis.available();
-			fis.close();
-		} else {
-			size = copyFile(from, to);
-			from.delete();
-		}
-
-		return size;
 	}
 
 	/**
@@ -524,13 +1025,7 @@ public class FileUtil {
 		return bytes;
 	}
 
-	/**
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static List readFileConstant(String fileName) {
+	public static List<String> readFileConstant(String fileName) {
 		List<String> result = new ArrayList<String>();
 		try {
 			BufferedReader d = new BufferedReader(new FileReader(fileName));
@@ -546,17 +1041,11 @@ public class FileUtil {
 			}
 
 		} catch (Exception e) {
-
+			
 		}
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param filename
-	 * @param encode
-	 * @return string readed
-	 */
 	public static String readFromFile(String filename, String encode) {
 		try {
 			FileInputStream fis = new FileInputStream(filename);
@@ -569,263 +1058,111 @@ public class FileUtil {
 		}
 		return "";
 	}
+	
+	/**
+	 * 得到文件内容
+	 * 
+	 * @param fileName
+	 *            文件名称
+	 * @return 文件内容
+	 * @throws Exception
+	 */
+	public static String read(String fileName) throws Exception {
+		return read(new File(fileName));
+	}
 
 	/**
-	 * This class del a directory recursively,that means delete all files and directorys.
+	 * 得到文件内容
 	 * 
-	 * @param File
-	 *            directory the directory that will be deleted.
+	 * @param file
+	 *            文件
+	 * @return 文件内容
+	 * @throws Exception
 	 */
-	public static void recursiveRemoveDir(File directory) throws Exception {
-		if (!directory.exists())
-			throw new IOException(directory.toString() + " do not exist!");
-
-		String[] filelist = directory.list();
-		File tmpFile = null;
-		for (int i = 0; i < filelist.length; i++) {
-			tmpFile = new File(directory.getAbsolutePath(), filelist[i]);
-			if (tmpFile.isDirectory()) {
-				recursiveRemoveDir(tmpFile);
-			} else if (tmpFile.isFile()) {
-				try {
-					tmpFile.delete();
-				} catch (Exception ex) {
-					throw new Exception(tmpFile.toString() + " can not be deleted " + ex.getMessage());
-				}
-			}
-		}
+	public static String read(File file) throws Exception {
+		String fileContent = "";
+		FileInputStream in = null;
 		try {
-			directory.delete();
-		} catch (Exception ex) {
-			throw new Exception(directory.toString() + " can not be deleted " + ex.getMessage());
+			in = new FileInputStream(file);
+			fileContent = read(in);
 		} finally {
-			filelist = null;
+			if (in != null) {
+				in.close();
+			}
 		}
+		return fileContent;
 	}
 
 	/**
-	 * 保存文件到硬盘上
+	 * 得到输入流的内容
 	 * 
-	 * @throws IOException
-	 * 
+	 * @param is
+	 *            输入流
+	 * @return 字符串
+	 * @throws Exception
 	 */
-	public static void save(InputStream in, String path, String fileName, boolean overwrite) throws IOException {
+	public static String read(InputStream is) throws Exception {
+		byte[] result = readBytes(is);
+		return new String(result);
+	}
 
-		FileUtil.createDir(path);
+	/**
+	 * 以byte数组方式得到输入流的内容
+	 * 
+	 * @param fileName
+	 *            文件名称
+	 * @return byte数组
+	 * @throws Exception
+	 */
+	public static byte[] readBytes(String fileName) throws Exception {
+		return readBytes(new FileInputStream(fileName));
+	}
 
-		File f = new File(path, fileName);
+	/**
+	 * 以byte数组方式得到输入流的内容
+	 * 
+	 * @param file
+	 *            文件
+	 * @return byte数组
+	 * @throws Exception
+	 */
+	public static byte[] readBytes(File file) throws Exception {
+		return readBytes(new FileInputStream(file));
+	}
 
-		if (f.exists() && !overwrite) {
-			throw new IOException("the file " + path + " exists! But overwrite is FALSE!");
+	/**
+	 * 以byte数组方式得到输入流的内容
+	 * 
+	 * @param is
+	 *            输入流
+	 * @return byte数组
+	 * @throws Exception
+	 */
+	public static byte[] readBytes(InputStream is) throws Exception {
+		if (is == null || is.available() < 1) {
+			return new byte[0];
 		}
-
-		if (!f.exists()) {
-			boolean createSuccess = f.createNewFile();
-			if (!createSuccess) {
-				throw new IOException("create new file " + path + " failed!");
-			}
-		}
-
-		FileOutputStream out = new FileOutputStream(f);
+		byte[] buff = new byte[DEFAULT_BUFFER_SIZE];
+		byte[] result = new byte[is.available()];
+		int nch;
+		BufferedInputStream in = null;
 		try {
-			byte[] buffer = new byte[1024];
-			while (true) {
-				int reads = in.read(buffer);
-				if (reads == -1) {
-					break;
-				}
-				out.write(buffer, 0, reads);
+			in = new BufferedInputStream(is);
+			int pos = 0;
+			while ((nch = in.read(buff, 0, buff.length)) != -1) {
+				System.arraycopy(buff, 0, result, pos, nch);
+				pos += nch;
 			}
 		} finally {
-			if (out != null) {
-				out.close();
+			if (in != null) {
+				in.close();
 			}
 		}
-	}
-
-	/**
-	 * 保存图片文件到硬盘上
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-	public static void saveImage(InputStream in, String path, String fileName, String formatName, boolean overwrite) throws IOException {
-
-		FileUtil.createDir(path);
-		File f = new File(path, fileName);
-
-		if (f.exists() && !overwrite) {
-			throw new IOException("the file " + path + " exists! But overwrite is FALSE!");
-		}
-
-		BufferedImage bi = ImageIO.read(in);
-		if (bi == null) {
-			throw new IOException("从InputStream " + in + " 读取图像数据时失败！");
-		}
-
-		boolean success = ImageIO.write(bi, formatName, f);
-		if (!success) {
-			throw new IOException("把文件保存为 " + formatName + " 格式时失败！");
-		}
-	}
-
-	/**
-	 * 保存图片文件到硬盘上
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-	public static void saveImage(RenderedImage im, String path, String fileName, String formatName, boolean overwrite) throws IOException {
-
-		FileUtil.createDir(path);
-
-		File f = new File(path, fileName);
-
-		if (f.exists() && !overwrite) {
-			throw new IOException("the file " + path + " exists! But overwrite is FALSE!");
-		}
-
-		boolean success = ImageIO.write(im, formatName, f);
-
-		if (!success) {
-			throw new IOException("把文件保存为 " + formatName + " 格式时发生异常！");
-		}
-	}
-
-	public static void saveStream2File(InputStream instream, File file) throws IOException {
-		final int bufferSize = 2 * 1024;
-		BufferedOutputStream fout = new BufferedOutputStream(new FileOutputStream(file));
-		BufferedInputStream binStream = new BufferedInputStream(instream);
-
-		byte[] buffer = new byte[bufferSize];
-		int readCount = 0;
-		while ((readCount = binStream.read(buffer)) != -1) {
-			if (readCount < bufferSize) {
-				fout.write(buffer, 0, readCount);
-			} else {
-				fout.write(buffer);
-			}
-		}
-		fout.close();
-		binStream.close();
-	}
-
-	public static void writeBytes2File(byte[] bytes, String fileName) throws IOException {
-		FileOutputStream out = new FileOutputStream(fileName);
-		out.write(bytes);
-		out.close();
-	}
-
-	/**
-	 * 写文件
-	 * 
-	 * @param fileName
-	 * @param bytes
-	 */
-	public static void writeToFile(String fileName, byte[] bytes) {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(fileName);
-			fos.write(bytes);
-			fos.flush();
-		} catch (Exception e) {
-			System.err.print("write to file error！" + e.getMessage() + " filename=" + fileName);
-		} finally {
-			try {
-				fos.close();
-			} catch (Exception e) {
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param fileName
-	 * @param s
-	 */
-	public static void writeToFile(String fileName, String s) {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), EncodingEnum.UTF_8.toString()));
-			bw.write(s);
-			bw.flush();
-			bw.close();
-		} catch (Exception e) {
-			System.err.print("write to file error！" + e.getMessage() + " filename=" + fileName);
-			if (bw != null) {
-				try {
-					bw.close();
-				} catch (Exception ie) {
-				}
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param text
-	 * @param filename
-	 * @param encode
-	 */
-	public static void writeToFile(String text, String filename, String encode) {
-		try {
-			byte[] buf = text.getBytes(encode);
-			FileOutputStream fos = new FileOutputStream(filename);
-			fos.write(buf);
-			fos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * @param fileName
-	 * @param sb
-	 */
-	public static void writeToFile(String fileName, StringBuffer sb) {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), EncodingEnum.UTF_8.toString()));
-			bw.write(sb.toString());
-			bw.flush();
-			bw.close();
-		} catch (Exception e) {
-			System.err.print("write to file error！" + e.getMessage() + " filename=" + fileName);
-			if (bw != null) {
-				try {
-					bw.close();
-				} catch (Exception ie) {
-				}
-			}
-		}
-	}
-
-	/**
-	 * 写文件
-	 * 
-	 * @param fileName
-	 * @param s
-	 */
-	public static void writeToFileUTF(String fileName, String s) {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), EncodingEnum.UTF_8.toString()));
-			bw.write(s);
-			bw.flush();
-			bw.close();
-		} catch (Exception e) {
-			System.err.print("write to file error！" + e.getMessage() + " filename=" + fileName);
-			if (bw != null) {
-				try {
-					bw.close();
-				} catch (Exception ie) {
-				}
-			}
-		}
+		return result;
 	}
 	
-	private static final int DEFAULT_BUFFER_SIZE = 4 * Measure.K;
+//	-----------------------------------------------
+	
 
 	/**
 	 * 在已有文件名后增加一个以精确到毫秒的当前时间戳生成随机文件名。
@@ -886,51 +1223,6 @@ public class FileUtil {
 	}
 
 	/**
-	 * 从文件完整路径中截取完整的文件目录。
-	 * 
-	 * @param filePath
-	 *            文件完整路径
-	 * @return 返回从文件完整路径中截取完整的文件目录。
-	 */
-	public static String getFullFileDir(String filePath) {
-		int lastSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.DOUBLE_SLASH.toString());
-		int lastBackSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.BACKSLASH.toString());
-		// 如果没找到斜杠和反斜杠则返回空字符串
-		// 如果斜杠位置在反斜杠位置之后则从斜杠位置截取文件目录
-		// 否则从反斜杠位置截取文件目录
-		if (lastSlashIndex == -1 && lastBackSlashIndex == -1) {
-			return "";
-		} else if (lastSlashIndex > lastBackSlashIndex) {
-			return StringUtil.substringBeforeLast(filePath, SpecialCharacterEnum.DOUBLE_SLASH.toString());
-		} else {
-			return StringUtil.substringBeforeLast(filePath,
-					SpecialCharacterEnum.BACKSLASH.toString());
-		}
-	}
-
-	/**
-	 * 根据文件的完整路径创建一个新文件。如果目录不存在时先创建目录再创建文件。
-	 * 
-	 * @param filePath
-	 *            文件完整路径
-	 * @return 返回创建的File文件对象。
-	 */
-	public static File createFile(String filePath) {
-		try {
-			File fileDir = new File(getFullFileDir(filePath));
-			if (!fileDir.exists()) {
-				fileDir.mkdir();
-			}
-
-			File file = new File(filePath);
-			file.createNewFile();
-			return file;
-		} catch (IOException e) {
-			throw new UncheckedException("创建文件时发生错误。", e);
-		}
-	}
-
-	/**
 	 * 将输入流转换为字节数组。
 	 * 
 	 * @param in
@@ -966,34 +1258,9 @@ public class FileUtil {
 		}
 	}
 
-	/**
-	 * 将输入流复制到输出流。
-	 * 
-	 * @param input
-	 *            输入流
-	 * @param output
-	 *            输出流
-	 */
-	public static void copyInToOut(InputStream input, OutputStream output) {
-		byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-		int n = 0;
-		try {
-			while (-1 != (n = input.read(buffer))) {
-				output.write(buffer, 0, n);
-			}
-		} catch (IOException e) {
-			throw new UncheckedException("从输入流复制到输出流时发生异常", e);
-		}
-	}
-	
-	
-
 	//------------------------------------
-
 	
-	
-		private static final File POOL_FILE = getUniqueFile(FileUtil.class,
-				".deletefiles");
+		private static final File POOL_FILE = getUniqueFile(FileUtil.class,	".deletefiles");
 
 		private static ArrayList<File> deleteFilesPool;
 		static {
@@ -1035,13 +1302,6 @@ public class FileUtil {
 
 		}
 
-		/**
-		 * 构造方法，禁止实例化
-		 */
-		private FileUtil() {
-		}
-
-		
 
 		/**
 		 * 得到短文件名. <br>
@@ -1087,169 +1347,6 @@ public class FileUtil {
 			String shortFileName = getShortFileName(fileName);
 			shortFileName = getFileNameWithoutExt(shortFileName);
 			return shortFileName;
-		}
-
-		/**
-		 * 得到文件内容
-		 * 
-		 * @param fileName
-		 *            文件名称
-		 * @return 文件内容
-		 * @throws Exception
-		 */
-		public static String read(String fileName) throws Exception {
-			return read(new File(fileName));
-		}
-
-		/**
-		 * 得到文件内容
-		 * 
-		 * @param file
-		 *            文件
-		 * @return 文件内容
-		 * @throws Exception
-		 */
-		public static String read(File file) throws Exception {
-			String fileContent = "";
-			FileInputStream in = null;
-			try {
-				in = new FileInputStream(file);
-				fileContent = read(in);
-			} finally {
-				if (in != null) {
-					in.close();
-				}
-			}
-			return fileContent;
-		}
-
-		/**
-		 * 得到输入流的内容
-		 * 
-		 * @param is
-		 *            输入流
-		 * @return 字符串
-		 * @throws Exception
-		 */
-		public static String read(InputStream is) throws Exception {
-			byte[] result = readBytes(is);
-			return new String(result);
-		}
-
-		/**
-		 * 以byte数组方式得到输入流的内容
-		 * 
-		 * @param fileName
-		 *            文件名称
-		 * @return byte数组
-		 * @throws Exception
-		 */
-		public static byte[] readBytes(String fileName) throws Exception {
-			return readBytes(new FileInputStream(fileName));
-		}
-
-		/**
-		 * 以byte数组方式得到输入流的内容
-		 * 
-		 * @param file
-		 *            文件
-		 * @return byte数组
-		 * @throws Exception
-		 */
-		public static byte[] readBytes(File file) throws Exception {
-			return readBytes(new FileInputStream(file));
-		}
-
-		/**
-		 * 以byte数组方式得到输入流的内容
-		 * 
-		 * @param is
-		 *            输入流
-		 * @return byte数组
-		 * @throws Exception
-		 */
-		public static byte[] readBytes(InputStream is) throws Exception {
-			if (is == null || is.available() < 1) {
-				return new byte[0];
-			}
-			byte[] buff = new byte[8192];
-			byte[] result = new byte[is.available()];
-			int nch;
-			BufferedInputStream in = null;
-			try {
-				in = new BufferedInputStream(is);
-				int pos = 0;
-				while ((nch = in.read(buff, 0, buff.length)) != -1) {
-					System.arraycopy(buff, 0, result, pos, nch);
-					pos += nch;
-				}
-			} finally {
-				if (in != null) {
-					in.close();
-				}
-			}
-			return result;
-		}
-
-		/**
-		 * 写文件
-		 * 
-		 * @param content
-		 *            文件内容
-		 * @param file
-		 *            文件对象
-		 * @throws IOException
-		 */
-		public static void write(String content, File file) throws IOException {
-			write(content.getBytes(), file);
-		}
-
-		/**
-		 * 写文件
-		 * 
-		 * @param content
-		 *            文件内容
-		 * @param file
-		 *            文件名
-		 * @throws IOException
-		 */
-		public static void write(String content, String file) throws IOException {
-			write(content, new File(file));
-		}
-
-		/**
-		 * 写文件
-		 * 
-		 * @param bytes
-		 *            文件内容
-		 * @param file
-		 *            文件名
-		 * @throws IOException
-		 */
-		public static void write(byte[] bytes, String file) throws IOException {
-			write(bytes, new File(file));
-		}
-
-		/**
-		 * 写文件
-		 * 
-		 * @param bytes
-		 *            文件内容
-		 * @param file
-		 *            文件
-		 * @throws IOException
-		 */
-		public static void write(byte[] bytes, File file) throws IOException {
-			FileOutputStream out = null;
-			try {
-				out = new FileOutputStream(file);
-				out.write(bytes);
-				out.flush();
-			} finally {
-				if (out != null) {
-					out.close();
-				}
-			}
 		}
 
 		/**
@@ -1303,48 +1400,7 @@ public class FileUtil {
 		}
 
 
-		/**
-		 * 删除文件方法，如果删除不掉，将该文件加入删除池，下次进行调用时将尝试删除池中的文件
-		 * 
-		 * @param file
-		 *            file
-		 */
-		public static void deleteFile(File file) {
-			file.delete();// 尝试删除文件
-			if (file.exists()) {
-				deleteFilesPool.add(file);
-			}
-			checkDeletePool();
-		}
-
-		/**
-		 * 检查池，删除池中文件，如果删除成功则同时从池中移除。
-		 */
-		private static void checkDeletePool() {
-			File file;
-			for (int i = deleteFilesPool.size() - 1; i >= 0; i--) {
-				file = (File) deleteFilesPool.get(i);
-				file.delete();
-				if (file.exists() == false) {
-					deleteFilesPool.remove(i);
-				}
-			}
-			ObjectOutputStream out = null;
-			try {
-				out = new ObjectOutputStream(new FileOutputStream(POOL_FILE));
-				out.writeObject(deleteFilesPool);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				if (out != null) {
-					try {
-						out.close();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
+		
 
 		/**
 		 * 得到唯一文件。一个类处在某个位置的class或jar包中，根据此位置得到此类对应的文件。<br>
@@ -1376,54 +1432,10 @@ public class FileUtil {
 			return name;
 		}
 
-		/**
-		 * 删除文件夹（不管是否文件夹为空）<br>
-		 * 注意：非原子操作，删除文件夹失败时，并不能保证没有文件被删除。 * <br>
-		 * <b>示例: </b> <br>
-		 * FileUtils.deleteFolder(&quot;/home/tmp&quot;) 删除成功返回true.<br>
-		 * FileUtils.deleteFolder(&quot;C:\\test&quot;) 删除成功返回true.</br>
-		 * 
-		 * @param delFolder
-		 *            待删除的文件夹
-		 * @return 如果删除成功则返回true，否则返回false
-		 */
-		public static boolean deleteFolder(File delFolder) {
-			// 目录是否已删除
-			boolean hasDeleted = true;
-			// 得到该文件夹下的所有文件夹和文件数组
-			File[] allFiles = delFolder.listFiles();
-
-			for (int i = 0; i < allFiles.length; i++) {
-				// 为true时操作
-				if (hasDeleted) {
-					if (allFiles[i].isDirectory()) {
-						// 如果为文件夹,则递归调用删除文件夹的方法
-						hasDeleted = deleteFolder(allFiles[i]);
-					} else if (allFiles[i].isFile()) {
-						try {// 删除文件
-							if (!allFiles[i].delete()) {
-								// 删除失败,返回false
-								hasDeleted = false;
-							}
-						} catch (Exception e) {
-							// 异常,返回false
-							hasDeleted = false;
-						}
-					}
-				} else {
-					// 为false,跳出循环
-					break;
-				}
-			}
-			if (hasDeleted) {
-				// 该文件夹已为空文件夹,删除它
-				delFolder.delete();
-			}
-			return hasDeleted;
-		}
+		
 
 		/**
-		 * 得到Java类所在的实际位置。一个类处在某个位置的class或jar包中，根据此位置得到此类对应的文件。<br>
+		 * 得到类所在的实际位置。一个类处在某个位置的class或jar包中，根据此位置得到此类对应的文件。<br>
 		 * 不同位置的类得到的文件是不一样的。
 		 * 
 		 * @param cl
@@ -1544,8 +1556,8 @@ public class FileUtil {
 					out.putNextEntry(new ZipEntry(base)); // 生成下一个压缩节点
 					FileInputStream in = new FileInputStream(f); // 读取文件内容
 					int len;
-					byte[] buf = new byte[1024];
-					while ((len = in.read(buf, 0, 1024)) != -1) {
+					byte[] buf = new byte[DEFAULT_BUFFER_SIZE];
+					while ((len = in.read(buf, 0, DEFAULT_BUFFER_SIZE)) != -1) {
 						out.write(buf, 0, len); // 写入到压缩包
 					}
 					in.close();
@@ -1608,8 +1620,8 @@ public class FileUtil {
 						InputStream is = zipFile.getInputStream(zipEntry);
 						FileOutputStream fos = new FileOutputStream(f);
 						int length = 0;
-						byte[] b = new byte[1024];
-						while ((length = is.read(b, 0, 1024)) != -1) {
+						byte[] b = new byte[DEFAULT_BUFFER_SIZE];
+						while ((length = is.read(b, 0, DEFAULT_BUFFER_SIZE)) != -1) {
 							fos.write(b, 0, length);
 						}
 						is.close();
@@ -1631,281 +1643,9 @@ public class FileUtil {
 			}
 		}
 
-		/**
-		 *  
-		 *  复制文件夹
-		 *  
-		 * @param sourceDirPath
-		 * @param targetDirPath
-		 * @throws IOException
-		 */
-		public static boolean copyDirectiory(String sourceDirPath,
-				String targetDirPath, String sourceDestCoding,
-				String targetDestCoding) {
-			boolean flag = false;
-			try {
-				// 创建目标文件夹
-				(new File(targetDirPath)).mkdirs();
-				// 获取源文件夹当前下的文件或目录
-				File[] file = (new File(sourceDirPath)).listFiles();
-				for (int i = 0; i < file.length; i++) {
-					if (file[i].isFile()) {
-						// 复制文件
-						String type = file[i].getName().substring(
-								file[i].getName().lastIndexOf(".") + 1);
-
-						if (type.equalsIgnoreCase("txt"))
-							copyFile(file[i].getAbsolutePath(), targetDirPath
-									+ file[i].getName(), sourceDestCoding,
-									targetDestCoding);
-						else
-							copyFile(file[i].getAbsolutePath(), targetDirPath
-									+ file[i].getName());
-					}
-					if (file[i].isDirectory()) {
-						// 复制目录
-						String sourceDir = sourceDirPath + File.separator
-								+ file[i].getName();
-						String targetDir = targetDirPath + File.separator
-								+ file[i].getName();
-						copyDirectiory(sourceDir, targetDir);
-					}
-				}
-				flag = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return flag;
-		}
-
-		/**
-		 * 剪切文件夹
-		 * @param sourceFilePath
-		 * @param targetFilePath
-		 * @return
-		 */
-		public static boolean cutDirectiory(String sourceFilePath,
-				String targetFilePath) {
-			boolean flag = false;
-			if (copyDirectiory(sourceFilePath, targetFilePath)) {
-				flag = deleteDirectory(sourceFilePath);
-			}
-			return flag;
-		}
 		
+
 		
-		/**
-		 * 剪切文件
-		 * @param sourceFilePath
-		 * @param targetFilePath
-		 * @return
-		 */
-		public static boolean cutFile(String sourceFilePath, String targetFilePath) {
-			boolean flag = false;
-			if (copyFile(sourceFilePath, targetFilePath)) {
-				flag = deleteFile(sourceFilePath);
-			}
-			return flag;
-		}
-		/**
-		 * 复制文件
-		 */
-		public static boolean copyFile(String sourceFilePath, String targetFilePath) {
-			boolean flag = false;
-			BufferedInputStream inBuff = null;
-			BufferedOutputStream outBuff = null;
-			try {
-				// 新建文件输入流并对它进行缓冲
-				inBuff = new BufferedInputStream(
-						new FileInputStream(sourceFilePath));
-
-				// 新建文件输出流并对它进行缓冲
-				outBuff = new BufferedOutputStream(new FileOutputStream(
-						targetFilePath));
-
-				// 缓冲数组
-				byte[] b = new byte[1024 * 5];
-				int len;
-				while ((len = inBuff.read(b)) != -1) {
-					outBuff.write(b, 0, len);
-				}
-				// 刷新此缓冲的输出流
-				outBuff.flush();
-				flag = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					// 关闭流
-					if (inBuff != null)
-						inBuff.close();
-					if (outBuff != null)
-						outBuff.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return flag;
-		}
-
-		/**
-		 * 复制文件夹
-		 * @param sourceDir
-		 * @param targetDir
-		 * @throws IOException
-		 */
-		public static boolean copyDirectiory(String sourceFilePath,
-				String targetFilePath) {
-			boolean flag = false;
-			try {
-				// 新建目标目录
-				(new File(sourceFilePath)).mkdirs();
-				// 获取源文件夹当前下的文件或目录
-				File[] file = (new File(sourceFilePath)).listFiles();
-				for (int i = 0; i < file.length; i++) {
-					if (file[i].isFile()) {
-						// 源文件
-						File sourceFile = file[i];
-						// 目标文件
-						File targetFile = new File(new File(targetFilePath)
-								.getAbsolutePath()
-								+ File.separator + file[i].getName());
-						copyFile(sourceFile.getAbsolutePath(), targetFile
-								.getAbsolutePath());
-					}
-					if (file[i].isDirectory()) {
-						// 准备复制的源文件夹
-						String dir1 = sourceFilePath + "/" + file[i].getName();
-						// 准备复制的目标文件夹
-						String dir2 = targetFilePath + "/" + file[i].getName();
-						copyDirectiory(dir1, dir2);
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return flag;
-		}
-
-		/**
-		 * 复制文件,并设置编码
-		 * @param srcFileName
-		 * @param destFileName
-		 * @param srcCoding
-		 * @param destCoding
-		 * @throws IOException
-		 */
-		public static boolean copyFile(String srcFilePath, String destFilePath,
-				String srcCoding, String destCoding) {
-			boolean flag = false;
-			BufferedReader br = null;
-			BufferedWriter bw = null;
-			try {
-				br = new BufferedReader(new InputStreamReader(new FileInputStream(
-						srcFilePath), srcCoding));
-				bw = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(destFilePath), destCoding));
-				char[] cbuf = new char[1024 * 5];
-				int len = cbuf.length;
-				int off = 0;
-				int ret = 0;
-				while ((ret = br.read(cbuf, off, len)) > 0) {
-					off += ret;
-					len -= ret;
-				}
-				bw.write(cbuf, 0, off);
-				bw.flush();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (br != null)
-						br.close();
-					if (bw != null)
-						bw.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return flag;
-		}
-
-		/**  
-		 * 根据路径删除指定的目录或文件，无论存在与否  
-		 *@param sPath  要删除的目录或文件  
-		 *@return 删除成功返回 true，否则返回 false
-		 */
-		public boolean deleteFolder(String sPath) {
-			boolean flag = false;
-			File file = new File(sPath);
-			// 判断目录或文件是否存在   
-			if (!file.exists()) { // 不存在返回 false   
-				return flag;
-			} else {
-				// 判断是否为文件   
-				if (file.isFile()) { // 为文件时调用删除文件方法   
-					return deleteFile(sPath);
-				} else { // 为目录时调用删除目录方法   
-					return deleteDirectory(sPath);
-				}
-			}
-		}
-		/**  
-		 * 删除单个文件  
-		 * @param   sPath    被删除文件的文件名  
-		 * @return 单个文件删除成功返回true，否则返回false  
-		 */
-		public static boolean deleteFile(String sourceFilePath) {
-			boolean flag = false;
-			File file = new File(sourceFilePath);
-			// 路径为文件且不为空则进行删除   
-			if (file.isFile() && file.exists()) {
-				file.delete();
-				flag = true;
-			}
-			return flag;
-		}
-
-		/**  
-		 * 删除目录（文件夹）以及目录下的文件  
-		 * @param   sPath 被删除目录的文件路径  
-		 * @return  目录删除成功返回true，否则返回false  
-		 */
-		public static boolean deleteDirectory(String sourceFilePath) {
-			//如果sPath不以文件分隔符结尾，自动添加文件分隔符   
-			if (!sourceFilePath.endsWith(File.separator)) {
-				sourceFilePath = sourceFilePath + File.separator;
-			}
-			File dirFile = new File(sourceFilePath);
-			//如果dir对应的文件不存在，或者不是一个目录，则退出   
-			if (!dirFile.exists() || !dirFile.isDirectory()) {
-				return false;
-			}
-			boolean flag = true;
-			//删除文件夹下的所有文件(包括子目录)   
-			File[] files = dirFile.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				//删除子文件   
-				if (files[i].isFile()) {
-					flag = deleteFile(files[i].getAbsolutePath());
-					if (!flag)
-						break;
-				} //删除子目录   
-				else {
-					flag = deleteDirectory(files[i].getAbsolutePath());
-					if (!flag)
-						break;
-				}
-			}
-			if (!flag)
-				return false;
-			//删除当前目录   
-			if (dirFile.delete()) {
-				return true;
-			} else {
-				return false;
-			}
-		}
 
 		/**
 		 * 读取文件中内容
@@ -1920,7 +1660,7 @@ public class FileUtil {
 			FileInputStream fis = null;
 			try {
 				fis = new FileInputStream(path);
-				byte[] inBuf = new byte[2000];
+				byte[] inBuf = new byte[DEFAULT_BUFFER_SIZE];
 				int len = inBuf.length;
 				int off = 0;
 				int ret = 0;
@@ -1959,76 +1699,7 @@ public class FileUtil {
 			return b;
 		}
 
-		/**
-		 * 将byte写入文件中
-		 * 
-		 * @param fileByte
-		 * @param filePath
-		 * @throws IOException
-		 */
-		public static boolean saveByteToFile(byte[] fileByte, String filePath) {
-			boolean flag = false;
-			OutputStream os = null;
-			try {
-				os = new FileOutputStream(new File(filePath));
-				os.write(fileByte);
-				os.flush();
-			} catch (Exception e) {
-				flag = false;
-				e.printStackTrace();
-			} finally {
-				if (os != null)
-					try {
-						os.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-			}
-			return flag;
-		}
-
-		/**
-		 * 将String写入到文件中
-		 * 
-		 * @param fileByte
-		 * @param filePath
-		 * @throws IOException
-		 */
-		public static boolean saveStringToFile(String fileString, String filePath) {
-			return saveStringToFile(fileString, filePath, "GBK");
-		}
-
-		/**
-		 * 将String写入到文件中
-		 * 
-		 * @param fileByte
-		 * @param filePath
-		 * @throws IOException
-		 */
-		public static boolean saveStringToFile(String fileString, String filePath,
-				String encoding) {
-			boolean flag = false;
-			BufferedWriter bw = null;
-			try {
-				bw = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(filePath), encoding));
-				bw.append(fileString);
-				bw.flush();
-				flag = true;
-			} catch (Exception e) {
-				flag = false;
-				e.printStackTrace();
-			} finally {
-				if (bw != null) {
-					try {
-						bw.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			return flag;
-		}
+		
 
 		
 		/**
