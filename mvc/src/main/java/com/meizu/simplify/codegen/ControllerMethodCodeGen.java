@@ -2,12 +2,12 @@ package com.meizu.simplify.codegen;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.ITemplate;
+import com.meizu.simplify.utils.FileUtil;
 
 /**
   * <p><b>Title:</b><i>controller的方法地址匹配映射代码生成类</i></p>
@@ -29,7 +29,9 @@ public class ControllerMethodCodeGen {
 	public void gen(Map<String, Object> parameters,String outDir) throws IOException {
 		String javaFileName = "GenMethodSelector.java";
 		String javafileinfo = template.render(parameters, javaFileName, "/codegen/");
-		File file = new File(outDir+javaFileName);
 		System.out.println(javafileinfo);
+		File file = FileUtil.createFile(outDir,javaFileName,true);
+		FileUtil.saveFile(file, javafileinfo);
 	}
+	
 }
