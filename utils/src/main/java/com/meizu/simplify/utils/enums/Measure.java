@@ -14,9 +14,9 @@ package com.meizu.simplify.utils.enums;
  *
  */
 public class Measure {
-	/** K字节数 */
+	/** K字节数  K = 1024 bytes*/
 	public static final Integer K = 1024;
-	/** M字节数 */
+	/** M字节数  M = 1024 K bytes*/
 	public static final Integer M = 1024 * K;
 	/** G字节数 */
 	public static final Integer G = 1024 * M;

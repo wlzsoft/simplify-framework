@@ -14,8 +14,16 @@ package com.meizu.simplify.utils.enums;
  *
  */
 public enum SpecialCharacterEnum {
+	
+	/**
+	 * 可以是file的目录分割符，也可以是http等请求连接协议的目录分割符
+	 */
 	BACKSLASH("/"),
-	SLASH("\\"),
+	/**
+	 * 双斜线,可用于匹配windows下的File的目录分隔符
+	 */
+	DOUBLE_SLASH("\\"),
+	FILE_SEPARATOR("file.separator"),
 	LF("\n"),
 	CR("\r"),
 	COMMA(","),
@@ -25,7 +33,7 @@ public enum SpecialCharacterEnum {
 	DOT("."),
 	BAR("|"),
 	UNDERLINE("_");
-	
+
 	private SpecialCharacterEnum(String name){
 		this.name = name;
 	}

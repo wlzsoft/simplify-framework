@@ -54,19 +54,7 @@ import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
  *
  */
 public class FileUtil {
-	public static final String WEB_PATH_SEPA = "/";
-
-	public static final String NON_WEB_PATH_SEPA = "\\";
-
-	public final static String FILE_SEPARATOR = "file.separator";
-
 	private static String ENCODING = "UTF-8";
-
-	/** K = 1024 bytes. */
-	public static final long K_BYTE = 1024;
-
-	/** M = 1024 K bytes. */
-	public static final long M_BYTE = 1024 * K_BYTE;
 
 	/**
 	 * 
@@ -97,7 +85,7 @@ public class FileUtil {
 			return null;
 		}
 
-		String s = System.getProperty(FILE_SEPARATOR);
+		String s = System.getProperty(SpecialCharacterEnum.FILE_SEPARATOR.toString());
 		String WIN = "\\";
 		String UNIX = "/";
 
@@ -125,7 +113,7 @@ public class FileUtil {
 		}
 
 		String regex = "[\\\\]{1,}";
-		String result = path.replaceAll(regex, WEB_PATH_SEPA);
+		String result = path.replaceAll(regex, SpecialCharacterEnum.BACKSLASH.toString());
 		return result;
 	}
 
@@ -882,7 +870,7 @@ public class FileUtil {
 	 * @return 返回从文件完整路径中截取完整的文件名。
 	 */
 	public static String getFullFileName(String filePath) {
-		int lastSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.SLASH.toString());
+		int lastSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.DOUBLE_SLASH.toString());
 		int lastBackSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.BACKSLASH.toString());
 		// 如果没找到斜杠和反斜杠则返回原文件路径
 		// 如果斜杠位置在反斜杠位置之后则从斜杠位置截取文件名
@@ -890,7 +878,7 @@ public class FileUtil {
 		if (lastSlashIndex == -1 && lastBackSlashIndex == -1) {
 			return filePath;
 		} else if (lastSlashIndex > lastBackSlashIndex) {
-			return StringUtil.substringAfterLast(filePath, SpecialCharacterEnum.SLASH.toString());
+			return StringUtil.substringAfterLast(filePath, SpecialCharacterEnum.DOUBLE_SLASH.toString());
 		} else {
 			return StringUtil.substringAfterLast(filePath,
 					SpecialCharacterEnum.BACKSLASH.toString());
@@ -905,7 +893,7 @@ public class FileUtil {
 	 * @return 返回从文件完整路径中截取完整的文件目录。
 	 */
 	public static String getFullFileDir(String filePath) {
-		int lastSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.SLASH.toString());
+		int lastSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.DOUBLE_SLASH.toString());
 		int lastBackSlashIndex = filePath.lastIndexOf(SpecialCharacterEnum.BACKSLASH.toString());
 		// 如果没找到斜杠和反斜杠则返回空字符串
 		// 如果斜杠位置在反斜杠位置之后则从斜杠位置截取文件目录
@@ -913,7 +901,7 @@ public class FileUtil {
 		if (lastSlashIndex == -1 && lastBackSlashIndex == -1) {
 			return "";
 		} else if (lastSlashIndex > lastBackSlashIndex) {
-			return StringUtil.substringBeforeLast(filePath, SpecialCharacterEnum.SLASH.toString());
+			return StringUtil.substringBeforeLast(filePath, SpecialCharacterEnum.DOUBLE_SLASH.toString());
 		} else {
 			return StringUtil.substringBeforeLast(filePath,
 					SpecialCharacterEnum.BACKSLASH.toString());
