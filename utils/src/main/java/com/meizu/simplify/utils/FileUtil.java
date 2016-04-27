@@ -36,6 +36,7 @@ import javax.imageio.ImageIO;
 
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.enums.DateFormatEnum;
+import com.meizu.simplify.utils.enums.EncodingEnum;
 import com.meizu.simplify.utils.enums.Measure;
 import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
 /**
@@ -54,7 +55,6 @@ import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
  *
  */
 public class FileUtil {
-	private static String ENCODING = "UTF-8";
 
 	/**
 	 * 
@@ -64,7 +64,7 @@ public class FileUtil {
 	public static void appendToFile(String fileName, String s) {
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), ENCODING));
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName, true), EncodingEnum.UTF_8.toString()));
 			bw.write(s);
 			bw.flush();
 			bw.close();
@@ -252,7 +252,7 @@ public class FileUtil {
 		OutputStreamWriter fw = null;
 		PrintWriter out = null;
 		try {
-			fw = new OutputStreamWriter(new FileOutputStream(output), ENCODING);
+			fw = new OutputStreamWriter(new FileOutputStream(output), EncodingEnum.UTF_8.toString());
 			out = new PrintWriter(fw);
 			out.print(content);
 		} catch (Exception ex) {
@@ -499,7 +499,7 @@ public class FileUtil {
 		InputStreamReader fr = null;
 		BufferedReader br = null;
 		try {
-			fr = new InputStreamReader(new FileInputStream(input), ENCODING);
+			fr = new InputStreamReader(new FileInputStream(input), EncodingEnum.UTF_8.toString());
 			br = new BufferedReader(fr);
 			while ((len = br.read(buffer)) > -1) {
 				content.append(buffer, 0, len);
@@ -746,7 +746,7 @@ public class FileUtil {
 	public static void writeToFile(String fileName, String s) {
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), ENCODING));
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), EncodingEnum.UTF_8.toString()));
 			bw.write(s);
 			bw.flush();
 			bw.close();
@@ -786,7 +786,7 @@ public class FileUtil {
 	public static void writeToFile(String fileName, StringBuffer sb) {
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), EncodingEnum.UTF_8.toString()));
 			bw.write(sb.toString());
 			bw.flush();
 			bw.close();
@@ -810,7 +810,7 @@ public class FileUtil {
 	public static void writeToFileUTF(String fileName, String s) {
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), EncodingEnum.UTF_8.toString()));
 			bw.write(s);
 			bw.flush();
 			bw.close();
