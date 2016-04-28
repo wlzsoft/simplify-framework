@@ -34,14 +34,14 @@ import com.meizu.simplify.utils.ClassUtil;
  */
 public class MethodSelectorGenBuild {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodSelectorGenBuild.class);
-	public static void init(String classPath,ControllerMethodCodeGen gen) {
+	public static void init(String controllerClassPath,ControllerMethodCodeGen gen) {
 		/**
 		 * <controll类名,controll类对应requestMap方法列表>
 		 */
 		Map<Class<?>,List<Map<String,Object>>> methodMap = new HashMap<>();
 		// 查找指定class路径
-		if (classPath != null) {
-			String[] classPathArr = classPath.split(",");
+		if (controllerClassPath != null) {
+			String[] classPathArr = controllerClassPath.split(",");
 			for (String cpath : classPathArr) {
 				List<Class<?>> controllerClassList = ClassUtil.findClasses(cpath);
 				if (controllerClassList == null || controllerClassList.size()<=0) {
