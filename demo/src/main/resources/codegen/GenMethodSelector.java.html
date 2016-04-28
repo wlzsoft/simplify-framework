@@ -42,7 +42,7 @@ public class GenMethodSelector implements IMethodSelector{
 			switch(clazzName+":"+doCmd) {
 			    <%for(controllerMethodTag in controllerMethodTagList){%>
 				case "${controllerMethodTag.clazz}:${controllerMethodTag.value}":
-					result = ${controllerMethodTag.obj}.${controllerMethodTag.value}(request, response <%for(param in controllerMethodTag.params){if(paramLP.index>=3){%>,(${param.name})<%if(paramLP.index==3){%>t<%}if(paramLP.index>3){%>parameValue[${paramLP.index-1}]<%}}}%>);
+					<%if(controllerMethodTag.returnType != "void"){%>result = <%}%>${controllerMethodTag.obj}.${controllerMethodTag.value}(request, response <%for(param in controllerMethodTag.params){if(paramLP.index>=3){%>,(${param.name})<%if(paramLP.index==3){%>t<%}if(paramLP.index>3){%>parameValue[${paramLP.index-1}]<%}}}%>);
 					break;
     		    <%}%>
 			}

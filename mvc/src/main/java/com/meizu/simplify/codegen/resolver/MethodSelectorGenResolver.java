@@ -89,6 +89,7 @@ public class MethodSelectorGenResolver implements IAnnotationResolver<Class<?>>{
 									Class<?>[] parameterTypes = method.getParameterTypes();
 									Map<String,Object> params = new HashMap<>();
 									params.put("methodName", method.getName());
+									params.put("returnType", method.getReturnType().getName());
 									params.put("params", parameterTypes);
 									methodList.add(params);
 								}
@@ -116,6 +117,7 @@ public class MethodSelectorGenResolver implements IAnnotationResolver<Class<?>>{
 					Map<String,Object> subMap = new HashMap<>();
 					subMap.put("clazz", entry.getKey().getSimpleName());
 					subMap.put("obj", entry.getKey().getSimpleName().toLowerCase());
+					subMap.put("returnType", mi.get("returnType"));
 					subMap.put("value", String.valueOf(mi.get("methodName")));
 					subMap.put("params", mi.get("params"));
 					//方法参数类型抽取
