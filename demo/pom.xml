@@ -236,6 +236,40 @@
 	      </executions>
 	    </plugin> -->
 	    <!-- 单元测试结束 -->
+	    <plugin>
+	    	<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>1.8</version>
+			<dependencies>
+				<dependency>
+					<groupId>jdk</groupId>
+					<artifactId>tools</artifactId>
+					<version>1.8</version>
+					<scope>system</scope>
+					<systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+				</dependency>
+			</dependencies>
+			<executions>
+				<execution>
+					<id>install</id>
+					<phase>install</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+					<configuration>
+						<target>
+							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
+							<!-- <mkdir dir="${project.build.directory}/codegen" /> -->
+							<javac destdir="${project.build.directory}/codegen"  includeantruntime="true">
+								<classpath refid="${mvn-classpath}" />
+								<src path="${project.build.sourceDirectory}" />
+								<include name="com/meizu/simplify/codegen/**" />
+							</javac>
+						</target>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
 </project>
