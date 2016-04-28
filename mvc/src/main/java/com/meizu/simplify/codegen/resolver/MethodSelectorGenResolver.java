@@ -127,8 +127,9 @@ public class MethodSelectorGenResolver implements IAnnotationResolver<Class<?>>{
 			parameters.put("controllerTagList", controllerTagList);
 			parameters.put("controllerMethodTagList", controllerMethodTagList);
 			String javaFileName = "GenMethodSelector.java";
-			gen.gen(parameters, getClass().getClassLoader().getResource("").getPath(),javaFileName);
-			LOGGER.info("Framework codegen [controll代码已生成==>>"+getClass().getClassLoader().getResource("").getPath()+javaFileName+"]");
+			String codegenPath = getClass().getClassLoader().getResource("").getPath().replace("classes", "")+"codegen/";
+			gen.gen(parameters, codegenPath,javaFileName);
+			LOGGER.info("Framework codegen [controll代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
 	}
 	

@@ -29,6 +29,7 @@ public class ControllerMethodCodeGen {
 
 	public void gen(Map<String, Object> parameters, String outDir,String javaFileName) {
 		try {
+			FileUtil.createDirectory(outDir);
 			String javafileinfo = template.render(parameters, javaFileName, "/codegen/");
 			File file = FileUtil.createFile(outDir, javaFileName, true);
 			FileUtil.saveFile(file, javafileinfo);
