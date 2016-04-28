@@ -26,12 +26,16 @@ import com.meizu.simplify.utils.FileUtil;
 public class ControllerMethodCodeGen {
 	@Resource
 	private ITemplate template;
-	public void gen(Map<String, Object> parameters,String outDir) throws IOException {
-		String javaFileName = "GenMethodSelector.java";
-		String javafileinfo = template.render(parameters, javaFileName, "/codegen/");
-		System.out.println(javafileinfo);
-		File file = FileUtil.createFile(outDir,javaFileName,true);
-		FileUtil.saveFile(file, javafileinfo);
+
+	public void gen(Map<String, Object> parameters, String outDir,String javaFileName) {
+		try {
+			String javafileinfo = template.render(parameters, javaFileName, "/codegen/");
+			System.out.println(javafileinfo);
+			File file = FileUtil.createFile(outDir, javaFileName, true);
+			FileUtil.saveFile(file, javafileinfo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -62,7 +62,11 @@ public enum InitTypeEnum {
 	/**
 	 * 远程方法调用，远程bean创建初始化
 	 */
-	SERVER_BEAN(13);
+	SERVER_BEAN(13),
+	/**
+	 * 代码生成 
+	 */
+	METHOD_GEN(14);
 	
 	public final int value;
 	InitTypeEnum(int value) {
