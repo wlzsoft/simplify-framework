@@ -1,6 +1,7 @@
 package com.meizu.simplify.codegen;
 
-import com.meizu.simplify.ioc.Startup;
+import com.meizu.simplify.codegen.resolver.MethodSelectorGenBuild;
+import com.meizu.simplify.mvc.view.BeetlTemplate;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -17,8 +18,8 @@ import com.meizu.simplify.ioc.Startup;
  */
 public class MethodSelectorGenMain {
 	public static void main(String[] args) {
-		Startup.start();
-//		ControllerMethodCodeGen gen = BeanFactory.getBean(ControllerMethodCodeGen.class);
-//		MethodSelectorGenBuild.init("com.meizu.demo.mvc.controller", gen);
+//		Startup.start();
+		ControllerMethodCodeGen gen = new ControllerMethodCodeGen(new BeetlTemplate());
+		MethodSelectorGenBuild.init("com.meizu.demo.mvc.controller", gen);
 	}
 }

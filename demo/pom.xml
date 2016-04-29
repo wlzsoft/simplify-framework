@@ -259,8 +259,8 @@
 					<configuration>
 						<target>
 							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
-							<java classname="com.meizu.simplify.codegen.MethodSelectorGenMain"  append="true" jvm="java"  newenvironment="true">
-								<classpath refid="${mvn-classpath}" />
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.MethodSelectorGenMain"  append="true" jvm="java"  newenvironment="true">
+								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
 							<!-- <mkdir dir="${project.build.directory}/codegen" /> -->

@@ -26,7 +26,13 @@ import com.meizu.simplify.utils.FileUtil;
 public class ControllerMethodCodeGen {
 	@Resource
 	private ITemplate template;
-
+	
+	public ControllerMethodCodeGen() {
+		
+	}
+	public ControllerMethodCodeGen(ITemplate template) {
+		this.template = template;
+	}
 	public void gen(Map<String, Object> parameters, String outDir,String javaFileName) {
 		try {
 			FileUtil.createDirectory(outDir);
