@@ -252,19 +252,23 @@
 			<executions>
 				<execution>
 					<id>install</id>
-					<phase>install</phase>
+					<phase>compile</phase>
 					<goals>
 						<goal>run</goal>
 					</goals>
 					<configuration>
 						<target>
 							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
+							<java classname="com.meizu.simplify.codegen.MethodSelectorGenMain"  append="true" jvm="java"  newenvironment="true">
+								<classpath refid="${mvn-classpath}" />
+								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
+							</java>
 							<!-- <mkdir dir="${project.build.directory}/codegen" /> -->
-							<javac destdir="${project.build.directory}/codegen"  includeantruntime="true">
+							<!-- <javac destdir="${project.build.directory}/codegen"  includeantruntime="true">
 								<classpath refid="${mvn-classpath}" />
 								<src path="${project.build.sourceDirectory}" />
 								<include name="com/meizu/simplify/codegen/**" />
-							</javac>
+							</javac> -->
 						</target>
 					</configuration>
 				</execution>
