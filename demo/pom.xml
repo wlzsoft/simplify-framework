@@ -251,8 +251,8 @@
 			</dependencies>
 			<executions>
 				<execution>
-					<id>install</id>
-					<phase>compile</phase>
+					<id>compile</id>
+					<phase>prepare-package</phase>
 					<goals>
 						<goal>run</goal>
 					</goals>
@@ -263,8 +263,8 @@
 								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
-							<!-- <mkdir dir="${project.build.directory}/classes/com/meizu/simplify/codegen" /> -->
-							<javac destdir="${project.build.directory}/classes/com/meizu/simplify/codegen"  includeantruntime="true">
+							<!-- <mkdir dir="${project.build.directory}/classes" /> -->
+							<javac nowarn="false" destdir="${project.build.directory}/classes"  includeantruntime="true">
 								<classpath path="${mvn-classpath}" />
 								<!-- <src path="${project.build.sourceDirectory}" /> -->
 								<src path="${project.build.directory}/codegen" />

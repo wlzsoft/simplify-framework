@@ -11,7 +11,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 
 /**
   * <p><b>Title:</b><i>controll方法代码生成初始化解析</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: TODO注意：暂不启用，目前是有maven控制，不是容器启动控制</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -31,14 +31,10 @@ public class MethodSelectorGenResolver implements IAnnotationResolver<Class<?>>{
 	
 	@Override	
 	public void resolve(List<Class<?>> resolveList) {
-		init();
+		//TODO 正在使用打开
+//		classPath = config.getControllerClasspath(); 
+//		MethodSelectorGenBuild.init(classPath, gen);
 	}
 	
-	public void init() {
-//		String webcharSet = config.getWebcharSet();
-//		String directives = config.getDirectives(); 
-		classPath = config.getControllerClasspath(); 
-		MethodSelectorGenBuild.init(classPath, gen);
-	}
 	
 }
