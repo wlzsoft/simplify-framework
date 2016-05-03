@@ -17,6 +17,7 @@ import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.utils.ClassUtil;
 /**
@@ -43,23 +44,17 @@ public class MethodSelectorGenBuild {
 		if (controllerClassPath != null) {
 			String[] classPathArr = controllerClassPath.split(",");
 			for (String cpath : classPathArr) {
-				List<Class<?>> controllerClassList = ClassUtil.findClasses(cpath);
+				List<Class<?>> controllerClassList = ClassUtil.findClassesByAnnotationClass(Bean.class, cpath);
 				if (controllerClassList == null || controllerClassList.size()<=0) {
 					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
 				}
 				for (Class<?> controllerClass : controllerClassList) {
-					BeanContainer container = BeanFactory.getBeanContainer();
-					Map<String, Object> mapContainer = container.getMapContainer();
-					Collection<Object> containerCollection = mapContainer.values();
-					for (Object beanObj : containerCollection) {
-						Class<?> beanClass = beanObj.getClass();
-						if(controllerClass == beanClass) {
 							Method[] methodArr = null;
 							try {
-								methodArr = beanClass.getDeclaredMethods();
+								methodArr = controllerClass.getDeclaredMethods();
 							} catch(NoClassDefFoundError e) {
 								e.printStackTrace();
-								throw new BaseException("代码生成：bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+								throw new BaseException("代码生成：bean["+controllerClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
 							}
 							List<Map<String,Object>> methodList = new ArrayList<>();
 							for (Method method : methodArr) {
@@ -73,10 +68,8 @@ public class MethodSelectorGenBuild {
 								}
 							}
 							if(methodList.size()>0) {
-								methodMap.put(beanClass, methodList);
+								methodMap.put(controllerClass, methodList);
 							}
-						}
-					}
 				}
 			}
 			Map<String,Object> parameters = new HashMap<>();

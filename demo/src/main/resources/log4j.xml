@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- 1.输出方式appender：
+org.apache.log4j.RollingFileAppender(滚动文件，自动记录最新日志)
+org.apache.log4j.ConsoleAppender (控制台)
+org.apache.log4j.FileAppender (文件)
+org.apache.log4j.DailyRollingFileAppender (每天产生一个日志文件)
+org.apache.log4j.WriterAppender (将日志信息以流格式发送到任意指定的地方)  
+2.日记记录的优先级priority，优先级由高到低分为
+OFF,FATAL,ERROR,WARN,INFO,DEBUG,ALL。
+off,fatal,error,warn,info,debug,all
+Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
+3.格式说明layout中的参数都以%开始，后面不同的参数代表不同的格式化信息（参数按字母表顺序列出）：
+%c        输出所属类的全名，可在修改为 %c{Num} ,Num类名输出的维（如："org.apache.elathen.ClassName",%C{2}将输出elathen.ClassName）
+%d       输出日志时间其格式为 %d{yyyy-MM-dd HH:mm:ss,SSS}，可指定格式 如 %d{HH:mm:ss} 
+%l        输出日志事件发生位置，包括类目名、发生线程，在代码中的行数 
+%n       换行符
+%m      输出代码指定信息，如info(“message”),输出message
+%p       输出优先级，即 FATAL ,ERROR 等
+%r        输出从启动到显示该log信息所耗费的毫秒数
+%t        输出产生该日志事件的线程名
+-->
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" >
+<!-- 把log4j写入到数据库中  start-->
+	<!-- 把log4j写入到oracle中 -->
+	<!-- <appender name="database" class="org.apache.log4j.jdbc.JDBCAppender">
+		<param name="URL" value="jdbc:oracle:thin:@127.0.0.1:1521:ORA92"/>
+		<param name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+		<param name="user" value="root"/>
+		<param name="password" value="ros123"/>				
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="INSERT INTO SYS_LOG4J(stamp,thread, info_level,class,message) VALUES ('%d', '%t', '%p', '%c', '%m')" />
+		</layout>
+	</appender>		 -->
+	
+	<!-- 	XML中需要的转义字符:[/size] 
+	&(逻辑与)  &amp;        
+	<(小于)    &lt;        
+	>(大于)    &gt;        
+	"(双引号)  &quot;      
+	'(单引号)  &apos; -->
+	<!-- CREATE TABLE `sys_log4j` (
+	  `id` int(11) NOT NULL AUTO_INCREMENT,
+	  `stamp` varchar(255) DEFAULT NULL,
+	  `thread` varchar(255) DEFAULT NULL,
+	  `info_level` varchar(255) DEFAULT NULL,
+	  `class` varchar(255) DEFAULT NULL,
+	  `message` mediumtext,
+	  `time` int(11) DEFAULT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=MyISAM AUTO_INCREMENT=2613 DEFAULT CHARSET=utf8;
+	 -->
+	<!-- 把log4j写入到mysql中 -->
+	<!-- <appender name="database" class="org.apache.log4j.jdbc.JDBCAppender">
+		<param name="URL" value="jdbc:mysql://10.2.67.21:3306/rosdb?characterEncoding=UTF-8"/>
+		<param name="driver" value="com.mysql.jdbc.Driver"/>
+		<param name="user" value="root"/>
+		<param name="password" value="ros123"/>				
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="INSERT INTO sys_log4j(stamp,thread, info_level,class,message,time) VALUES ('%d', '%t', '%p', '%c', &quot;%m&quot;,'%r')" />
+		</layout>
+	</appender> -->	
+<!-- 把log4j写入到数据库中  end-->
+	<!-- <appender name="async" class="org.apache.log4j.AsyncAppender">
+		<param name="BufferSize" value="256" />
+		<appender-ref ref="database" />
+	</appender> -->
+	
+	<appender name="console.out" class="org.apache.log4j.ConsoleAppender">
+		<param name="target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />     
+        </layout>     
+        <!--过滤器设置输出的级别     
+		        设置Filter：
+		包括选择过滤器和设置过滤条件，可选择的过滤器包括：LogLevelMatchFilter、LogLevelRangeFilter、和StringMatchFilter：
+		对LogLevelMatchFilter来说，过滤条件包括LogLevelToMatch和AcceptOnMatch（true|false）， 只有当log信息的LogLevel值与LogLevelToMatch相同，且AcceptOnMatch为true时才会匹配。
+		LogLevelRangeFilter来说，过滤条件包括LogLevelMin、LogLevelMax和AcceptOnMatch，只有当log信息的LogLevel在LogLevelMin、LogLevelMax之间同时AcceptOnMatch为true时才会匹配。
+		对StringMatchFilter来说，过滤条件包括StringToMatch和AcceptOnMatch，只有当log信息的LogLevel值与StringToMatch对应的LogLevel值与相同， 且AcceptOnMatch为true时会匹配。
+		过滤条件处理机制类似于IPTABLE的Responsibility chain，（即先deny、再allow）不过执行顺序刚好相反，后写的条件会被先执行，比如：
+		log4cplus.appender.append_1.filters.1=log4cplus::spi::LogLevelMatchFilterlog4cplus.appender.append_1.filters.1.LogLevelToMatch=TRACElog4cplus.appender.append_1.filters.1.AcceptOnMatch=true#log4cplus.appender.append_1.filters.2=log4cplus::spi::DenyAllFilter
+		会首先执行filters.2的过滤条件，关闭所有过滤器，然后执行filters.1，仅匹配TRACE信息。-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">     
+            <param name="levelMin" value="debug" />     
+            <param name="levelMax" value="info" />     
+            <param name="AcceptOnMatch" value="true" />     
+        </filter>     
+    </appender>     
+    <appender name="console.err" class="org.apache.log4j.ConsoleAppender">
+		<param name="target" value="System.err" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />     
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="warn" />
+			<param name="LevelMax" value="fatal" />
+			<param name="AcceptOnMatch" value="false" />
+		</filter>
+	</appender>
+
+<!-- 没有起到作用 -->
+	<appender name="multicolorConsole" class="org.apache.log4j.ConsoleAppender">
+	    <layout class="com.jcabi.log.MulticolorLayout">
+	        <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" /> 
+	    </layout>
+	</appender>
+
+	
+    <!-- 生成环境不会启用这个记录方式 -->
+	<appender name="file" class="org.apache.log4j.FileAppender">
+		<param name="File" value="/home/log/ros-web/log4j-async.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />  
+		</layout>
+	</appender>	
+	
+	<appender name="rollingFile" class="org.apache.log4j.RollingFileAppender">        
+        <param name="File" value="/home/log/ros-web/log4j-rolling-async.log" /><!-- 设置日志输出文件名 -->     
+        <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->     
+        <param name="Append" value="true" />     
+        <param name="MaxBackupIndex" value="10" />     
+        <layout class="org.apache.log4j.PatternLayout">     
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />     
+        </layout>     
+    </appender>     
+       
+    <appender name="dailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">     
+        <param name="File" value="/home/log/ros-web/log4j-activex.log" />       
+        <!-- <param name="Append" value="true" /> -->
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />       
+        <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="[%d{MMdd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />    
+        </layout>       
+    </appender>
+	
+    
+	<!-- additivity指示是否遵循缺省的继承机制，默认是true
+	     level [? child] : 定义该logger的日志级别-->     
+    <!-- <logger name="com.meizu.log.log4j.activeXLog4j" additivity="false">     
+        <priority value ="info"/>       
+        <level value="debug" />
+        <appender-ref ref="dailyRollingFile" />       
+    </logger> -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="console.out" />
+		<appender-ref ref="console.err" />
+		<!-- <appender-ref ref="multicolorConsole" /> -->
+		<!-- <appender-ref ref="dailyRollingFile" /> -->
+		<!-- <appender-ref ref="async" /> -->
+	</root>
+
+</log4j:configuration>

@@ -263,12 +263,13 @@
 								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
-							<!-- <mkdir dir="${project.build.directory}/codegen" /> -->
-							<!-- <javac destdir="${project.build.directory}/codegen"  includeantruntime="true">
-								<classpath refid="${mvn-classpath}" />
-								<src path="${project.build.sourceDirectory}" />
-								<include name="com/meizu/simplify/codegen/**" />
-							</javac> -->
+							<!-- <mkdir dir="${project.build.directory}/classes/com/meizu/simplify/codegen" /> -->
+							<javac destdir="${project.build.directory}/classes/com/meizu/simplify/codegen"  includeantruntime="true">
+								<classpath path="${mvn-classpath}" />
+								<!-- <src path="${project.build.sourceDirectory}" /> -->
+								<src path="${project.build.directory}/codegen" />
+								<include name="com/meizu/simplify/codegen/*.java" />
+							</javac>
 						</target>
 					</configuration>
 				</execution>
