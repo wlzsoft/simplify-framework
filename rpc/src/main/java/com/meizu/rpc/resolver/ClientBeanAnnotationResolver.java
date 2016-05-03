@@ -33,7 +33,6 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @BeanHook(ClientBean.class)
-
 public class ClientBeanAnnotationResolver implements IBeanHook {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBeanAnnotationResolver.class);
 			
@@ -70,13 +69,14 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			ApplicationConfig application = new ApplicationConfig();
 			application.setName(propertieUtil.getString("dubbo.application.name"));
 			// 连接注册中心配置
-//			RegistryConfig registry = new RegistryConfig();
-//			registry.setAddress();
+			RegistryConfig registry = new RegistryConfig();
+			registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
 			// 引用远程服务
 			ReferenceConfig<Object> reference = new ReferenceConfig<>();
 			reference.setApplication(application);
-//			reference.setRegistry(registry);
-			reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
+			reference.setRegistry(registry);
+//			reference.setProtocol("zookeeper");
+//			reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
 			reference.setInterface(entityClass);
 			reference.setVersion(beanAnnotation.version());
 			reference.setCheck(beanAnnotation.check());

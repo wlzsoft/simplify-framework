@@ -24,12 +24,12 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 3.0
  *
  */
-@BeanPrototypeHook(DubboRegistry.class)
-public class DubboRegistryHook implements IBeanPrototypeHook{
+//@BeanPrototypeHook(DubboRegistry.class)
+public class DubboRegistryHook /*implements IBeanPrototypeHook*/{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DubboRegistryHook.class);
 
-	@Override
+	/*@Override
 	public List<BeanEntity<?>> hook(Class<?> clazz) {
 		List<BeanEntity<?>> list = new ArrayList<BeanEntity<?>>();
 		LOGGER.debug("开始初始化Rpc多个注册中心实例....");
@@ -50,5 +50,5 @@ public class DubboRegistryHook implements IBeanPrototypeHook{
 			LOGGER.error("未读取到dubbo.registry.address属性值");
 		}
 		return list;
-	}
+	}*/
 }
