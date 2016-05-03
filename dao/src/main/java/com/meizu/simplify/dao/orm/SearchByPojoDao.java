@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.utils.ReflectionUtil;
 
 /**
  * <p><b>Title:</b><i>普通对象操作dao，主要用于查询普通对象结果集</i></p>
@@ -44,6 +45,14 @@ public class SearchByPojoDao {
 			}
 			@Override
 			public T resultCall(String columnLabel, Object val,T t) {
+				try {
+					if(val != null) {
+						Class<?> valClazz = val.getClass();
+						ReflectionUtil.invokeSetterMethod(t, columnLabel, val,valClazz);
+					}
+				} catch(IllegalArgumentException ex) {
+					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
+				}
 				return t;
 			}
 		},entityClass);
