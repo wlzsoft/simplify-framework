@@ -76,7 +76,8 @@ public class Message {
 	 * @param values  信息变量，可以有多个 
 	 */
 	public static void error(Throwable ex, String code, Object... values) {
-		throw new MessageException(500,get(code, values),ex);
+		MessageException messageException = new MessageException(500,get(code, values),ex);
+		throw messageException;
 	}
 	/**
 	 * 
@@ -85,7 +86,8 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void info(String message) {
-		throw new MessageException(208,message);
+		MessageException messageException = new MessageException(208,message);
+		throw messageException;
 	}
 	/**
 	 * 
@@ -94,7 +96,8 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void warn(String message) {
-		throw new MessageException(300,message);
+		MessageException messageException = new MessageException(300,message);
+		throw messageException;
 	}
 	/**
 	 * 
@@ -103,6 +106,7 @@ public class Message {
 	 * @param message 错误信息
 	 */
 	public static void error(String message) {
-		throw new MessageException(500,message);
+		MessageException messageException = new MessageException(500,message);
+		throw messageException;
 	}
 }
