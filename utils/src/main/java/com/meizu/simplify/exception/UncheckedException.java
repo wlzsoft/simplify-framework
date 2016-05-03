@@ -37,4 +37,8 @@ public class UncheckedException extends BaseException {
 	public UncheckedException(String message, Throwable target) {
 		super(message, target);
 	}
+	@Override
+	public Throwable fillInStackTrace() {
+		return this;
+	}
 }

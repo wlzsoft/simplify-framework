@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.controller.BaseController;
@@ -118,8 +119,10 @@ public class ControllerFilter implements Filter {
 		try {
 			bs.process(request, response,requestUrl);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
-			MappingExceptionResolver.resolverException(request, response, requestUrl, bs, e,config);
-
+			Throwable throwable = e.getTargetException();
+			MappingExceptionResolver.resolverException(request, response, requestUrl, bs, throwable,config);
+		} catch (BaseException throwable) {//由于在反射优化模式下，不是抛InvocationTargetException异常，而会进入到BaseExceptin及其衍生异常,这里独立处理
+			MappingExceptionResolver.resolverException(request, response, requestUrl, bs, throwable,config);
 		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);

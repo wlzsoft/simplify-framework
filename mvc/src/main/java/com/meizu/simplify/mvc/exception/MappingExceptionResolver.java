@@ -61,8 +61,7 @@ public class MappingExceptionResolver {
 	 * @param e
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
-			BaseController<?> bs, InvocationTargetException e,PropertiesConfig config) {
-		Throwable throwable = e.getTargetException();
+			BaseController<?> bs, Throwable throwable,PropertiesConfig config) {
 		String exceptionMessage = throwable.getMessage();
 		if(exceptionMessage == null) {
 			if(throwable.getClass() == NullPointerException.class) {
