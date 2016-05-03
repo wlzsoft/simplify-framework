@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
-import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1039,9 +1038,9 @@ public class FileUtil {
 				result.add(s);
 				s = d.readLine();
 			}
-
+			d.close();
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		return result;
 	}
@@ -1260,7 +1259,7 @@ public class FileUtil {
 
 	//------------------------------------
 	
-		private static final File POOL_FILE = getUniqueFile(FileUtil.class,	".deletefiles");
+		private static final File POOL_FILE = ClassUtil.getUniqueFile(FileUtil.class,	".deletefiles");
 
 		private static ArrayList<File> deleteFilesPool;
 		static {
@@ -1283,7 +1282,7 @@ public class FileUtil {
 				ObjectInputStream in = null;
 				try {
 					in = new ObjectInputStream(new FileInputStream(POOL_FILE));
-					deleteFilesPool = (ArrayList) in.readObject();
+					deleteFilesPool = (ArrayList<File>) in.readObject();
 
 				} catch (Exception e) {
 					deleteFilesPool = new ArrayList<File>();
@@ -1402,54 +1401,6 @@ public class FileUtil {
 
 		
 
-		/**
-		 * 得到唯一文件。一个类处在某个位置的class或jar包中，根据此位置得到此类对应的文件。<br>
-		 * 不同位置的类得到的文件是不一样的。
-		 * 
-		 * @param cl
-		 *            类
-		 * @param extension
-		 *            带点的文件扩展名
-		 * @return File
-		 */
-		public static File getUniqueFile(Class cl, String extension) {
-			int key = 0;
-			URL url = cl.getResource(getClassNameWithoutPackage(cl) + ".class");
-			if (url != null) {
-				key = url.getPath().hashCode();
-			}
-			File propFile = new File(System.getProperty("java.io.tmpdir"),
-					getClassNameWithoutPackage(cl) + key + extension);
-			return propFile;
-		}
-
-		private static String getClassNameWithoutPackage(Class cl) {
-			String className = cl.getName();
-			int pos = className.lastIndexOf('.') + 1;
-			if (pos == -1)
-				pos = 0;
-			String name = className.substring(pos);
-			return name;
-		}
-
-		
-
-		/**
-		 * 得到类所在的实际位置。一个类处在某个位置的class或jar包中，根据此位置得到此类对应的文件。<br>
-		 * 不同位置的类得到的文件是不一样的。
-		 * 
-		 * @param cl
-		 *            类
-		 * @return 类在系统中的实际文件名
-		 */
-		public static String getRealPathName(Class cl) {
-
-			URL url = cl.getResource(getClassNameWithoutPackage(cl) + ".class");
-			if (url != null) {
-				return url.getPath();
-			}
-			return null;
-		}
 		
 		/**
 		 * 获得 机器上 所有磁盘

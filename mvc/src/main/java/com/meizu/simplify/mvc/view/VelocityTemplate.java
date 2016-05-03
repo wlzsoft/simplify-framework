@@ -22,6 +22,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.view.annotation.TemplateType;
+import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
@@ -49,18 +50,13 @@ public class VelocityTemplate  implements IPageTemplate,ITemplate{
 	@Resource
 	private PropertiesConfig config;
 	
-	@Deprecated//后续从配置中读取就可以
-	public static String getPath() {
-		String path = VelocityTemplate.class.getResource("/").getPath();
-		return path.substring(0, path.lastIndexOf("/"));
-	}
+	
 	public VelocityTemplate() {
 		extend = getExtend();
 	}
 	@InitBean 
 	public void init() {
-//		String classPath = config.getClasspath();
-		String classPath = getPath();
+		String classPath = ClassUtil.getClassPath();
 		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
 		Velocity.setProperty(Velocity.OUTPUT_ENCODING, config.getCharset());
 
@@ -74,21 +70,21 @@ public class VelocityTemplate  implements IPageTemplate,ITemplate{
 		 * Velocity.setProperty("class.resource.loader.modificationCheckInterval"
 		 * , "0"); Velocity.setProperty("class.resource.loader.path", ".");
 		 */
-
 		Velocity.setProperty(Velocity.RESOURCE_LOADER, "file");
 		Velocity.setProperty("file.resource.loader.description", " Velocity File Resource Loader");
 		Velocity.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
-		Velocity.setProperty("file.resource.loader.path", classPath);
-		Velocity.setProperty("file.resource.loader.cache", config.getDebug() ? "false" : "true");
+		Velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, classPath);
+		Velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, config.getDebug() ? "false" : "true");
 		Velocity.setProperty("file.resource.loader.modificationCheckInterval", "5");
 		
 		String directives = "com.meizu.simplify.mvc.view.function.EncryptFunctionDirective";
 		if(!StringUtil.isEmpty(config.getDirectives())) directives += "," + config.getDirectives();
 		Velocity.setProperty("userdirective", directives);
 
-		File file = new File(classPath + "layouts/macros.vm");
+		File file = new File(classPath + "template/velocity/functions/macros.vm");
 		if (file.exists()) Velocity.setProperty("velocimacro.library", file.getAbsolutePath());
 
+		Velocity.setProperty(Velocity.RUNTIME_LOG, classPath+"velocity.log");
 		if (config.getDebug()) {
 			Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, "org.apache.velocity.runtime.log.SimpleLog4JLogSystem");
 			Velocity.setProperty("runtime.log.logsystem.log4j.category", "org.apache.velocity");
