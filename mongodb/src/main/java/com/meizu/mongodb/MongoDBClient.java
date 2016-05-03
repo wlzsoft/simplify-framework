@@ -1,5 +1,6 @@
 package com.meizu.mongodb;
 
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,6 +24,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoException;
 import com.mongodb.WriteResult;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSInputFile;
 
 public class MongoDBClient<T>  {
 	
@@ -31,7 +34,7 @@ public class MongoDBClient<T>  {
 	 * MongoClient的实例代表数据库连接池，是线程安全的，可以被多线程共享，客户端在多线程条件下仅维持一个实例即可
 	 * Mongo是非线程安全的，目前mongodb API中已经建议用MongoClient替代Mongo
 	 */
-	private MongoClient mongoClient = null;
+	public static  MongoClient mongoClient = null;
 	private Class<T> entityClass;
 	
 	@Resource
@@ -232,4 +235,14 @@ public class MongoDBClient<T>  {
 		return mongoClient.getDB(dbName);
 	}
 
+
+	public GridFSInputFile save(String dbName, String collectionName,InputStream io,String name, T t) {
+		DB db = mongoClient.getDB(dbName); // 获取指定的数据库
+		DBCollection dbCollection = db.getCollection(collectionName); // 获取指定的collectionName集合
+		GridFS gfs = new GridFS(dbCollection.getDB());
+		GridFSInputFile mongofile = gfs.createFile(io,name);
+			mongofile.setMetaData((DBObject) JSON.parse(t.toString()));
+			mongofile.save();
+			return mongofile;
+	}
 }
