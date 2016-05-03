@@ -116,6 +116,8 @@ http://fishermen.iteye.com/blog/430286
 87.重构请求方法反射调用部分代码，便于代码生成集成
 88.代码生成功能实现，用于优化反射代理的代码,这块代码在生成环境启用
 89.网页加载的进度条：在body的最上方出现
+90.使用异常对象池的概念来解决频繁创建异常对象的开销
+91.使用ThreadLocal来解决异常非通用信息的传递
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
