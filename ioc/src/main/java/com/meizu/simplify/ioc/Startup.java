@@ -1,9 +1,9 @@
 package com.meizu.simplify.ioc;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.enums.StartupTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
@@ -36,14 +37,14 @@ public class Startup {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
 	public static StartupTypeEnum start() {
 		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, "com.meizu");
-		Map<Integer,Class<?>> mapResolve = new ConcurrentHashMap<Integer, Class<?>>();
+		Map<InitTypeEnum,Class<?>> mapResolve = new EnumMap<InitTypeEnum, Class<?>>(InitTypeEnum.class);
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
-			Class<?> clazzTemp = mapResolve.get(init.value().value);
+			Class<?> clazzTemp = mapResolve.get(init.value());
 			if(clazzTemp != null) {
 				throw new StartupErrorException("容器启动时，有重复的bean解析操作:["+clazzTemp.getName()+"和"+clazz.getName()+"]冲突");
 			}
-			mapResolve.put(init.value().value, clazz);
+			mapResolve.put(init.value(), clazz);
 		}
 		mapResolve = CollectionUtil.sortMapByKey(mapResolve, true);
 		for (Class<?> clazz : mapResolve.values()) {
