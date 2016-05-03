@@ -69,10 +69,17 @@ public class MappingExceptionResolver {
 			}
 		}
 		if(throwable instanceof MessageException) {
-			response.setStatus(((BaseException)throwable).getErrorCode());
+			int statuscode = ((BaseException)throwable).getErrorCode();
+			response.setStatus(statuscode);
 //	                      设置日志输出级别，不定义则默认不输出警告等错误日志信息
 //			setWarnLogCategory(MappingExceptionResolver.class.getName());
-			LOGGER.error("message:"+exceptionMessage);// TODO 分析出业务数据，展现更个性化的日志信息，可以配合  解析LogByMethod的信息
+			if(statuscode==208) {
+				LOGGER.info("message:"+exceptionMessage);
+			} else if(statuscode == 300) {
+				LOGGER.warn("message:"+exceptionMessage);
+			} else {
+				LOGGER.error("message:"+exceptionMessage);// TODO 分析出业务数据，展现更个性化的日志信息，可以配合  解析LogByMethod的信息
+			}
 		} else {
 			throwable.printStackTrace();
 //	                     指定默认的返回码，默认是200

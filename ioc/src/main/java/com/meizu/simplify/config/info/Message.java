@@ -10,7 +10,7 @@ import com.meizu.simplify.utils.StringUtil;
  *          注意：1.异常机制[因为使用了sync同步，并且需要填充构建线程堆栈信息]，所以性能低下，大并发下表现更明显，如果是高并发业务，需要慎重考虑使用
  *                2.异常机制可以使的代码的简洁性和通用性得到提升，所以又不应该在业务处理时完全抛弃掉
  *                3.可以考虑使用代码生成来替换掉异常构建，类似controller的methodinvokegen
- *          异常问题优化方案：已经解决，已对MessageException做了优化，具体看这个异常类</p>
+ *          异常问题优化方案：对MessageException做优化，具体看这个异常类</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

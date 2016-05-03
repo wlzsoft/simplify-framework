@@ -3,7 +3,8 @@ package com.meizu.simplify.exception;
 /**
  * <p><b>Title:</b><i>消息异常</i></p>
  * <p>Desc: 用于最终用户端提示信息
- *          注意：异常不会抛出到控制台中
+ *          注意：1.异常不会抛出到控制台中
+ *                2.异常单例方式，减少异常创建(异常是存在于线程中，无法如此适用)
  *          </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -17,7 +18,6 @@ package com.meizu.simplify.exception;
  */
 public class MessageException extends BaseException{
 	private static final long serialVersionUID = -8437206478990172399L;
-
 	public MessageException(int errorCode, String message, Throwable target) {
 		super(errorCode, message, target);
 	}
