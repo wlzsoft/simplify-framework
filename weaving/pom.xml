@@ -60,6 +60,25 @@
 				<!-- <skip>true</skip> -->
 				</configuration>
 		</plugin>
+  		<plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-dependency-plugin</artifactId>  
+            <executions>  
+                <execution>  
+                    <id>copy-dependencies</id>  
+                    <phase>package</phase>  
+                    <goals>  
+                        <goal>copy-dependencies</goal>  
+                    </goals>  
+                    <configuration>  
+                    	<includeArtifactIds>utils,javassist</includeArtifactIds>
+                        <outputDirectory>../weaving/target</outputDirectory>  
+                        <excludeTransitive>false</excludeTransitive>  
+                        <stripVersion>true</stripVersion>  
+                    </configuration>  
+                </execution>  
+            </executions>  
+        </plugin>  
   	</plugins>
   </build>
 </project>
