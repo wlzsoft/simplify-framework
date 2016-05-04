@@ -199,7 +199,7 @@ public class TestController extends SystemController<TestModel> {
 		testService.addTestObj(null);
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
-		return "jsp:/index.jsp";
+		return "jsp:/index";
 	}
 	
 	@RequestMap(path = "/test/")
@@ -209,7 +209,7 @@ public class TestController extends SystemController<TestModel> {
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		}
-		return "uri:/index.jsp";
+		return "uri:/index";
 	}
 	
 	@RequestMap(path = "/testSelect/")
