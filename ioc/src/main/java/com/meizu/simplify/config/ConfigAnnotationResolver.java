@@ -62,45 +62,56 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		//开始注入到bean对应的带config注解的属性的值
 		for (Object beanObj : containerCollection) {
 			Class<?> beanClass = beanObj.getClass();
-			Field[] fieldArr = beanClass.getDeclaredFields();
-			for (Field field : fieldArr) {
-                if (field.isAnnotationPresent(Config.class)) {
-                	Config config = field.getAnnotation(Config.class);
-                	String configName = config.value();
-                	if(ObjectUtil.isNull(configName)) {
-                		configName = "";
-                	}
-                	Class<?> iocType = field.getType();
-                	String message = "依赖注入配置文件属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
-                	if(StringUtil.isNotBlank(configName)) {
-                		Set<Entry<String, PropertieUtil>> propertiesSet = propertiesMap.entrySet();
-                		for (Entry<String, PropertieUtil> entry : propertiesSet) {
-                			String configPath = entry.getKey();
-                			message+="==>>注入的配置文件"+configPath+"中的["+configName+"]配置项";
-                			PropertieUtil propertiesUtil = entry.getValue();
-                			Object value = propertiesUtil.get(configName);
-                			if(value == null) {
-                				continue;
-                			}
-                			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
-               					value = DataUtil.parseBoolean(value);
-               				} else if(field.getType() == Integer.class || field.getType() == int.class){
-               					value = DataUtil.parseInt(value);
-               				}
-                			try {
-                				field.setAccessible(true);
-                				field.set(beanObj, value);
-                			} catch (IllegalArgumentException | IllegalAccessException e) {
-                				// TODO Auto-generated catch block
-                				e.printStackTrace();
-                			}
-                			break;
-                		}
-                	}
-                	LOGGER.debug(message);
-                }
+			injectObjectForConfigAnno(beanObj, beanClass);
+			Class<?>  parentClass = null;
+			while((parentClass = beanClass.getSuperclass()) != null) {
+				if(parentClass == Class.class) {
+					break;
+				}
+				injectObjectForConfigAnno(beanObj, parentClass);
+				beanClass = parentClass;
 			}
 		}
 		
+	}
+	private void injectObjectForConfigAnno(Object beanObj, Class<?> beanClass) {
+		Field[] fieldArr = beanClass.getDeclaredFields();
+		for (Field field : fieldArr) {
+		    if (field.isAnnotationPresent(Config.class)) {
+		    	Config config = field.getAnnotation(Config.class);
+		    	String configName = config.value();
+		    	if(StringUtil.isBlank(configName)) {
+		    		configName = field.getName();
+		    	}
+		    	Class<?> iocType = field.getType();
+		    	String message = "依赖注入配置文件属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
+		    	if(StringUtil.isNotBlank(configName)) {
+		    		Set<Entry<String, PropertieUtil>> propertiesSet = propertiesMap.entrySet();
+		    		for (Entry<String, PropertieUtil> entry : propertiesSet) {
+		    			String configPath = entry.getKey();
+		    			message+="==>>注入的配置文件"+configPath+"中的["+configName+"]配置项";
+		    			PropertieUtil propertiesUtil = entry.getValue();
+		    			Object value = propertiesUtil.get(configName);
+		    			if(value == null) {
+		    				continue;
+		    			}
+		    			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
+		   					value = DataUtil.parseBoolean(value);
+		   				} else if(field.getType() == Integer.class || field.getType() == int.class){
+		   					value = DataUtil.parseInt(value);
+		   				}
+		    			try {
+		    				field.setAccessible(true);
+		    				field.set(beanObj, value);
+		    			} catch (IllegalArgumentException | IllegalAccessException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		    			break;
+		    		}
+		    	}
+		    	LOGGER.debug(message);
+		    }
+		}
 	}
 }

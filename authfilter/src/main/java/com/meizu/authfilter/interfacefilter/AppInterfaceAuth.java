@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.mvc.controller.BaseController;
@@ -31,18 +32,23 @@ import com.meizu.simplify.utils.enums.DateFormatEnum;
  */
 public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 
+	/**
+	 * key的默认值：KISEIKSDHIFEK*$*#23
+	 */
+	@Config
+	private String authkey;
+	@Config
+	private Boolean isAuth;
 	@Override
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T t)
 			throws ServletException, IOException {
-		String authkey = "KISEIKSDHIFEK*$*#23";
-		if(request.getPathInfo()!=null&&request.getPathInfo().contains("error")) {// 有bug，测试方便，暂时先这样，正式发布之前一定要修改
+		if(isAuth == null || !isAuth) {
 			return true;
 		}
 		String rosAuth = request.getHeader("ros-auth");
 		if(StringUtil.isEmpty(rosAuth)) {
 			response.setStatus(403);
 			Message.error("没有授权");
-//			return false;
 		}
 		String key = "";
 		String reqTime = request.getHeader("reqTime");
@@ -66,8 +72,6 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 			                                   //注意参数之间使用‘|’符号拼接，注意时间搓，是long类型的
 			response.setStatus(403);
 			Message.error("授权失败:"+" 传递的序列-"+rosAuth+",_本地构建序列-"+modSec);
-//			request.getRequestDispatcher("/error/403.json?message=授权失败").forward(request, response);
-//			return false;
 		}
 		return true;
 	}
