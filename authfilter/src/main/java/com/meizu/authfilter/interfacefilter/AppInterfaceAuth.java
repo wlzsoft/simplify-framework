@@ -1,10 +1,16 @@
 package com.meizu.authfilter.interfacefilter;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
 
 /**
- * <p><b>Title:</b><i>服务端接口认证</i></p>
+ * <p><b>Title:</b><i>app接口认证</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -16,6 +22,13 @@ import com.meizu.simplify.mvc.model.Model;
  * @version Version 0.1
  *
  */
-public class InterfaceAuth <T extends Model> extends BaseController<T> {
+public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 
+	@Override
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T t)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		return super.checkPermission(request, response, t);
+	}
+	
 }
