@@ -1172,7 +1172,7 @@ public class FileUtil {
 	 */
 	public static String getRandomFileName(String fileName) {
 		return getFileName(fileName) + "-"
-				+ DateUtil.formatDate(new Date(), DateFormatEnum.YEAR_TO_MILLISECOND_N)
+				+ DateUtil.format(new Date(), DateFormatEnum.YEAR_TO_MILLISECOND_N)
 				+ getFileType(fileName);
 	}
 

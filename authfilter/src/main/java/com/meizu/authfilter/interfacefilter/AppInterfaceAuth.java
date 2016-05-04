@@ -1,13 +1,20 @@
 package com.meizu.authfilter.interfacefilter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.config.info.Message;
+import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.utils.DateUtil;
+import com.meizu.simplify.utils.StringUtil;
+import com.meizu.simplify.utils.enums.DateFormatEnum;
 
 /**
  * <p><b>Title:</b><i>app接口认证</i></p>
@@ -27,8 +34,41 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 	@Override
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T t)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		return super.checkPermission(request, response, t);
+		String authkey = "KISEIKSDHIFEK*$*#23";
+		if(request.getPathInfo()!=null&&request.getPathInfo().contains("error")) {// 有bug，测试方便，暂时先这样，正式发布之前一定要修改
+			return true;
+		}
+		String rosAuth = request.getHeader("ros-auth");
+		if(StringUtil.isEmpty(rosAuth)) {
+			response.setStatus(403);
+			Message.error("没有授权");
+		}
+		String key = "";
+		String reqTime = request.getHeader("reqTime");
+		String reqTime2 = request.getHeader("reqTime2");
+		if(StringUtil.isEmpty(reqTime)) {
+			if(StringUtil.isEmpty(reqTime2)) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:00:00");
+				String dateStr = sdf.format(new Date());
+				key+=dateStr;
+			} else {
+				key+=reqTime2;
+			}
+		} else {
+			String dateStr = DateUtil.parseAndFormat(reqTime, DateFormatEnum.YEAR_TO_SECOND, DateFormatEnum.YEAR_TO_MINUTE_N);
+			dateStr = MD5Encrypt.sign(dateStr + authkey.substring(5));
+			key+=dateStr;
+		}
+		String modSec = MD5Encrypt.sign(key+authkey);
+		
+		if(!rosAuth.equalsIgnoreCase(modSec)) {//md5((md5（所有请求参数拼接 +精确到分钟的时间搓（yyyy-MM-dd HH:mm））。substring(0,26))+32位key),如果无任何请求参数，那么使用“dros”值代替 ，key 不能对外泄露。 这个方式用于防止数据篡改。
+			                                   //注意参数之间使用‘|’符号拼接，注意时间搓，是long类型的
+			response.setStatus(403);
+			Message.error("授权失败:"+" 传递的序列-"+rosAuth+",_本地构建序列-"+modSec);
+//			request.getRequestDispatcher("/error/403.json?message=授权失败").forward(request, response);
+//			return false;
+		}
+		return true;
 	}
 	
 }

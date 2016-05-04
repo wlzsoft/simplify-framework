@@ -42,7 +42,7 @@ public class JSONLayout extends Layout {
 				Throwable t = ti.getThrowable();
 				entity.setClassName(t.getClass().getCanonicalName());
 				entity.setLevel(event.getLevel().toString());
-				entity.setCreateTime(DateUtil.formatDate(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
+				entity.setCreateTime(DateUtil.format(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 				entity.setMessage(event.getMessage()+ t.getMessage());
 //				entity.setLoggerName(event.getLoggerName());
 				entity.setIp(IpUtil.getLocalIp());
@@ -62,7 +62,7 @@ public class JSONLayout extends Layout {
 	protected void writeBasic(Log4JEntity entity, LoggingEvent event) throws Exception {
 		entity.setClassName(event.categoryName);
 		entity.setLevel(event.getLevel().toString());
-		entity.setCreateTime(DateUtil.formatDate(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
+		entity.setCreateTime(DateUtil.format(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 		entity.setMessage(event.getMessage());
 //		entity.setLoggerName(event.getLoggerName());
 		entity.setIp(IpUtil.getLocalIp());
@@ -80,7 +80,7 @@ public class JSONLayout extends Layout {
 	}
 
 	public static void main(String [] arges){
-		System.out.println(DateUtil.formatDate(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
+		System.out.println(DateUtil.format(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 		
 	}
 }

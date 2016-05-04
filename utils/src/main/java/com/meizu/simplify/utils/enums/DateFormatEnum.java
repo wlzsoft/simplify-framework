@@ -1,31 +1,15 @@
 package com.meizu.simplify.utils.enums;
 
+
 /**
- * <p>
- * <b>Title:</b><i>日期格式</i>
- * </p>
- * <p>
- * Desc: TODO
- * </p>
- * <p>
- * source folder:{@docRoot}
- * </p>
- * <p>
- * Copyright:Copyright(c)2014
- * </p>
- * <p>
- * Company:meizu
- * </p>
- * <p>
- * Create Date:2016年1月27日 下午8:21:41
- * </p>
- * <p>
- * Modified By:luchuangye-
- * </p>
- * <p>
- * Modified Date:2016年1月27日 下午8:21:41
- * </p>
- * 
+ * <p><b>Title:</b><i>日期格式</i></p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年5月4日 下午2:28:08</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:2016年5月4日 下午2:28:08</p>
  * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
@@ -35,10 +19,25 @@ public enum DateFormatEnum {
 //	第一种风格
 	
 	YEAR("yyyy"),
+	/**
+	 * yyyy-MM
+	 */
 	YEAR_TO_MONTH("yyyy" + Limiter.DATE_LIMITER + "MM"),
+	/**
+	 * yyyy-MM-dd
+	 */
 	YEAR_TO_DAY("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"),
+	/**
+	 * yyyy-MM-dd HH
+	 */
 	YEAR_TO_HOUR("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH"),
+	/**
+	 * yyyy-MM-dd HH:mm
+	 */
 	YEAR_TO_MINUTE("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH"+Limiter.TIME_LIMITER+"mm"),
+	/**
+	 * yyyy-MM-dd HH:mm:ss
+	 */
 	YEAR_TO_SECOND("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss"),
 	/**
 	 * 全日期:默认格式yyyy-MM-dd HH:mm:ss.SSS
@@ -56,6 +55,9 @@ public enum DateFormatEnum {
 	DAY_TO_HOUR("dd"+Limiter.DATE_TIME_LIMITER+"HH"),
 	DAY_TO_MINUTE("dd"+Limiter.DATE_TIME_LIMITER+"HH:mm"),
 	DAY_TO_SECOND("dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss"),
+	/**
+	 * yyyy-MM-dd HH:mm:ss.SSS
+	 */
 	DAY_TO_MILLISECOND("dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss.SSS"),
 
 	HOUR("HH"),
@@ -76,6 +78,7 @@ public enum DateFormatEnum {
 	
 //	第二种风格
 	
+	YEAR_TO_MINUTE_N("yyyyMMddHHmm"),
 	/**
 	 * 全日期:默认格式yyyyMMddHHmmssSSSS :TODO 是否特定情况下，会有4个SSSS
 	 */

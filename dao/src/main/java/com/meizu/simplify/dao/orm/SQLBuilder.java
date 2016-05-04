@@ -152,7 +152,7 @@ public class SQLBuilder<T> {
             value = "\'" + value + "\'";
         } else if (value instanceof Date||value instanceof java.sql.Date) {//对应实体中java.sql.Date类型 的属性处理
             Date date = (Date) value;
-            String dateStr = DateUtil.formatDate(date);
+            String dateStr = DateUtil.format(date);
             value = "'"+dateStr+"'";
         } else if (value instanceof Boolean) {
             Boolean v = (Boolean) value;
