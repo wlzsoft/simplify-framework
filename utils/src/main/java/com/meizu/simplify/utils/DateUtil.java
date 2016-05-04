@@ -2,6 +2,8 @@ package com.meizu.simplify.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EnumMap;
+import java.util.Map;
 
 import com.meizu.simplify.utils.enums.DateFormatEnum;
 
@@ -19,6 +21,17 @@ import com.meizu.simplify.utils.enums.DateFormatEnum;
  *
  */
 public class DateUtil {
+	
+	/**
+	 * 按日期格式创建初始化SimpleDateFormat对象，避免每次格式化日期的时候都创建一次SimpleDateFormat
+	 */
+	private static final Map<DateFormatEnum,SimpleDateFormat> simpleDateFormatMap = new EnumMap<>(DateFormatEnum.class);
+	static {
+		DateFormatEnum[] dfeArr = DateFormatEnum.values();
+		for (DateFormatEnum dateFormatEnum : dfeArr) {
+			simpleDateFormatMap.put(dateFormatEnum, new SimpleDateFormat(dateFormatEnum.value()));
+		}
+	}
 	/**
 	 * 
 	 * 方法用途: 格式化日期-Date转为[yyyy-MM-dd HH:mm:ss.SSS]格式字符串<br>
@@ -34,15 +47,15 @@ public class DateUtil {
 	 * 方法用途: 格式化日期-Date转为指定格式字符串<br>
 	 * 操作步骤: TODO<br>
 	 * @param date  java.util.Date格式
-	 * @param type yyyy-MM-dd HH:mm:ss | yyyy年MM月dd日 HH时mm分ss秒
+	 * @param pattern yyyy-MM-dd HH:mm:ss | yyyy年MM月dd日 HH时mm分ss秒
 	 * @return
 	 */
-	public static String format(Date date, DateFormatEnum type) {
+	public static String format(Date date, DateFormatEnum pattern) {
 		if (date == null) {
 			return null;
 		}
 		try {
-			return getDateFormat(type).format(date);
+			return getDateFormat(pattern).format(date);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,11 +67,11 @@ public class DateUtil {
 	 * 方法用途: 格式化日期-Date转为指定格式字符串<br>
 	 * 操作步骤: TODO<br>
 	 * @param date
-	 * @param type
+	 * @param pattern
 	 * @return
 	 * @author luchuangye 2016/4/7
 	 */
-	public static String format(long timesamp, DateFormatEnum type) {
+	public static String format(long timesamp, DateFormatEnum pattern) {
 		return format(new Date(timesamp));
 	}
 	
@@ -70,12 +83,11 @@ public class DateUtil {
      * @param type
      * @return
      */
-    private static SimpleDateFormat getDateFormat(DateFormatEnum type) {
-        String pattern = type.value();
-        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+    private static SimpleDateFormat getDateFormat(DateFormatEnum pattern) {
+        SimpleDateFormat sdf = simpleDateFormatMap.get(pattern);
         // TimeZone zone = new SimpleTimeZone(28800000, "Asia/Shanghai");
-        // formatter.setTimeZone(zone);
-        return formatter;
+        // sdf.setTimeZone(zone);
+        return sdf;
     }
 	
     /**
@@ -136,12 +148,12 @@ public class DateUtil {
 	 * 
 	 * 方法用途: 据参数格式化字符串为日期<br>
 	 * 操作步骤: TODO<br>
-	 * @param str 字符串形式的日期
+	 * @param dateStr 字符串形式的日期
 	 * @param pattern 格式化格式
 	 * @return 根据字符串格式化后的日期
 	 */
-	public static Date parse(String str, DateFormatEnum pattern) {
-		return parse(str,pattern,null);
+	public static Date parse(String dateStr, DateFormatEnum pattern) {
+		return parse(dateStr,pattern,null);
 	}
 	
 	/**
