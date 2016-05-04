@@ -42,6 +42,7 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 		if(StringUtil.isEmpty(rosAuth)) {
 			response.setStatus(403);
 			Message.error("没有授权");
+//			return false;
 		}
 		String key = "";
 		String reqTime = request.getHeader("reqTime");
