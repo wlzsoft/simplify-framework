@@ -98,7 +98,7 @@ public class MethodSelectorGenBuild {
 			parameters.put("controllerTagList", controllerTagList);
 			parameters.put("controllerMethodTagList", controllerMethodTagList);
 			String javaFileName = "GenMethodSelector.java";
-			String codegenPath = MethodSelectorGenBuild.class.getClassLoader().getResource("").getPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
+			String codegenPath = ClassUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
 			gen.gen(parameters, codegenPath,javaFileName);
 			LOGGER.info("Framework codegen [controll代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
