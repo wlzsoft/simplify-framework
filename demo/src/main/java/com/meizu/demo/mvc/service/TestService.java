@@ -80,7 +80,7 @@ public class TestService {
 	private ITemplate template;
 	public void testSqlTemplate() throws IOException {
 		Map<String, Object> parameters = null;
-		String sql = template.render(parameters, "test", "/com/meizu/demo/mvc/dao/","sql");
+		String sql = template.render(parameters, "test", "/com/meizu/demo/mvc/dao/",".sql");
 //		Test test = BaseDao.getInsPojo().find(Test.class, sql).get(0);
         System.out.println("ִ测试sql模版:"+sql);
     }
