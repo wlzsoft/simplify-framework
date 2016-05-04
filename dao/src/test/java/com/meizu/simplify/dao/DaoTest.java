@@ -59,12 +59,13 @@ public class DaoTest {
 	@Test
 	public void s1_insertTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setName("lcy");
+		t.setName("卢创业");
 		t.setCreateId(1);
 		t.setUpdateId(1);
 		t.setCreateTime(new Date());
 		t.setUpdateTime(new Date());
 		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
+		System.out.println("saveGenId:"+t.getFid());
 		key = t.getFid();
 	}
 	
