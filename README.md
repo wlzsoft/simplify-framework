@@ -119,6 +119,7 @@ http://fishermen.iteye.com/blog/430286
 90.使用异常对象池的概念来解决频繁创建异常对象的开销
 91.使用ThreadLocal来解决异常非通用信息的传递
 92.由于正则表达式解析性能很差，解决方案A.使用普通方式匹配参数路径。解决方案B.缓存正则表达式的编译过程，减少编译的成本。解决方案C.避免使用。解决方案D.结合实际使用，可以第一次匹配到的路径做缓存一段时间。在这个时间内，这个路径会在指定的map中命中
+93.dao模块，中午插入乱码的问题，排查及解决
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
