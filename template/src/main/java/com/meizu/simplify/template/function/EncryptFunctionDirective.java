@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view.function;
+package com.meizu.simplify.template.function;
 
 import java.io.IOException;
 import java.io.Writer;

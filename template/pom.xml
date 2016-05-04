@@ -5,9 +5,13 @@
     <artifactId>simplify-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>mvc</artifactId>
-  <name>mvc简易框架</name>
-  <description>实现基本mvc功能</description>
+  <artifactId>template</artifactId>
+  <name>模版引擎</name>
+  <description>实现模版引擎基础封装：1.用于html页面模版
+  									 2.用于xml模版
+  									 3.用于java代码模版
+  									 4.用于sql语句模版
+  </description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
@@ -18,28 +22,11 @@
 	    <artifactId>utils</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
-	  <!-- <dependency>
+	  <dependency>
 	  	<groupId>com.meizu</groupId>
-	    <artifactId>aop</artifactId>
+	    <artifactId>ioc</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
-	  </dependency> -->
-	  <!-- 以下两个jar后续要删除，不应该出现在mvc模块中，开发阶段为了测试，所以加上 -->
-	    <dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-            <scope>provided</scope>
-		</dependency>
-		<dependency>
-		  	<groupId>com.meizu</groupId>
-		    <artifactId>webcache</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-		  </dependency>
-		  <dependency>
-		  	<groupId>com.meizu</groupId>
-		    <artifactId>template</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-		  </dependency>
+	  </dependency>
 		  <!-- 模板引擎一 -->
 		  <dependency>
 			<groupId>org.apache.velocity</groupId>

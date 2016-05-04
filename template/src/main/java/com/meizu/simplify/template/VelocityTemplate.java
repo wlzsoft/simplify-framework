@@ -1,15 +1,9 @@
-package com.meizu.simplify.mvc.view;
+package com.meizu.simplify.template;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -19,12 +13,10 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.template.function.EncryptFunctionDirective;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -42,7 +34,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 @Bean
 @TemplateType("velocity")
-public class VelocityTemplate  implements IPageTemplate,ITemplate{
+public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
 	private String extend;
@@ -95,41 +87,6 @@ public class VelocityTemplate  implements IPageTemplate,ITemplate{
 	
 
 
-	@Override
-	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-		String prefixUri = "/template/velocity/";
-		setContentType(request, response,config);
-		
-		// 将request中的对象赋给模版
-		Map<String, Object> parameters = new HashMap<>();
-		Enumeration<String> atts = request.getAttributeNames();
-		while ( atts.hasMoreElements() ) {
-			String name = atts.nextElement();
-			parameters.put(name, request.getAttribute(name));
-		}
-		
-		String content = render(parameters, templateUrl, prefixUri);
-		checkCacheAndWrite(request, response, webCache, staticName, content,config);
-		/*ServletOutputStream output = response.getOutputStream();
-		VelocityWriter vw = null;
-		try {
-			vw = (VelocityWriter) writerPool.get();
-			if (vw == null) {
-				vw = new StringWriter();  //new VelocityWriter(new OutputStreamWriter(output, config.getCharset()), 4 * 1024, true);
-			} else {
-				vw.recycle(new OutputStreamWriter(output, config.getCharset()));
-			}
-			template.merge(context, vw);
-		} finally {
-			if (vw != null) {
-				try {
-					vw.flush();
-				} catch ( IOException e ) {}
-				vw.recycle(null);
-				writerPool.put(vw);
-			}
-		}*/
-	}
 	
 	public String render(Map<String, Object> parameters, String templateUrl, String prefixUri) throws IOException {
 		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);

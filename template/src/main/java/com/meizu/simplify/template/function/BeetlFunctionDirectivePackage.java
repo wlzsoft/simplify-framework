@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view.function;
+package com.meizu.simplify.template.function;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 

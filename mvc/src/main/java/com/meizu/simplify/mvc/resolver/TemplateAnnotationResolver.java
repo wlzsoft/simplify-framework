@@ -14,7 +14,7 @@ import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.view.IPageTemplate;
-import com.meizu.simplify.mvc.view.annotation.TemplateType;
+import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.utils.CollectionUtil;
 
 /**

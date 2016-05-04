@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view.annotation;
+package com.meizu.simplify.template.annotation;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

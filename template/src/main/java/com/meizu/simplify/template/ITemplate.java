@@ -1,10 +1,10 @@
-package com.meizu.simplify.mvc.view;
+package com.meizu.simplify.template;
 
 import java.io.IOException;
 import java.util.Map;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
-import com.meizu.simplify.mvc.view.annotation.TemplateType;
+import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.utils.StringUtil;
 
 

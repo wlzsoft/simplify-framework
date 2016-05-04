@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.mvc.view.ITemplate;
+import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.utils.FileUtil;
 
 /**
