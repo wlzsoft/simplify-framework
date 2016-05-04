@@ -73,6 +73,7 @@
   	<module>mongodb</module>
     <module>message</module>
     <module>rpc</module>
+    <module>authfilter</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,15 +83,18 @@
     <slf4j-api.version>1.7.13</slf4j-api.version>
 	<log4j.version>1.2.9</log4j.version>
   </properties>
-  	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>http://10.2.67.20:8081/nexus/content/repositories/releases</url>
-		</repository>
+  <distributionManagement>
 		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://10.2.67.20:8081/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>User Porject Snapshot</name>
+            <url>http://10.2.67.20:8081/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-release</id>
+            <name>User Porject Release</name>
+            <url>http://10.2.67.20:8081/nexus/content/repositories/releases/</url>
+        </repository>
 		<site>
 			<id>tt</id>
 			<name>aaa</name>
