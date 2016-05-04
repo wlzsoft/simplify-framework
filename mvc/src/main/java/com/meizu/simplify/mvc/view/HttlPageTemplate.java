@@ -29,7 +29,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType(value ="httl",extend = "httl")
+@TemplateType(value ="httl")
 public class HttlPageTemplate implements IPageTemplate {
 	@Resource
 	private PropertiesConfig config;

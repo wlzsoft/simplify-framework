@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
+import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -27,11 +28,11 @@ public interface ITemplate {
 		return null;
 	}
 	public default String getExtend() {
-		TemplateType templateType = this.getClass().getAnnotation(TemplateType.class);
-		if(templateType == null) {
+		TemplateExtend templateExtend = this.getClass().getAnnotation(TemplateExtend.class);
+		if(templateExtend == null) {
 			return null;
 		}
-		String extend = templateType.extend();
+		String extend = templateExtend.extend();
 		if(StringUtil.isNotBlank(extend)) {
 			extend = "."+extend;
 		}

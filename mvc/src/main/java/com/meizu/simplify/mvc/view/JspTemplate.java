@@ -16,6 +16,7 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.ITemplate;
+import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
@@ -34,7 +35,8 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType(value = "jsp",extend="jsp")
+@TemplateType(value = "jsp")
+@TemplateExtend(extend="jsp")
 public class JspTemplate implements IPageTemplate,ITemplate{
 	
 	

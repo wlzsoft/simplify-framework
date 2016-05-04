@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
-  * <p><b>Title:</b><i>用于标识类为模版类,并指定唯一标识</i></p>
- * <p>Desc: TemplateType需要配合TemplateExtend一起使用</p>
+  * <p><b>Title:</b><i>用于标识类为模版类，并指定模版扩展名</i></p>
+ * <p>Desc: TemplateExtend可以独立于TemplateType注解使用</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -21,13 +21,14 @@ import java.lang.annotation.Target;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface TemplateType {
+public @interface TemplateExtend {
 
 	/**
 	 * 
-	 * 方法用途: 用于指定模版唯一标识<br>
+	 * 方法用途: 指定模版文件扩展名<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	String value();
+	String extend() default "html";
+
 }

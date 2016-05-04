@@ -13,6 +13,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.function.EncryptFunctionDirective;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -32,6 +33,7 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @Bean
+@TemplateExtend
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	

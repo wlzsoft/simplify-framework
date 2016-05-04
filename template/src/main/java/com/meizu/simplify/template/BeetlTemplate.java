@@ -11,6 +11,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.function.BeetlFunctionDirectivePackage;
 
 
@@ -29,6 +30,7 @@ import com.meizu.simplify.template.function.BeetlFunctionDirectivePackage;
  *
  */
 @Bean
+@TemplateExtend
 public class BeetlTemplate  implements ITemplate {
 	private GroupTemplate gt = null;
 	private String extend;
