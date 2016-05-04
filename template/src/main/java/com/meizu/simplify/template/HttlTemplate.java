@@ -8,7 +8,6 @@ import java.util.Map;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.annotation.TemplateType;
 
 import httl.Engine;
 import httl.Template;
@@ -26,7 +25,6 @@ import httl.Template;
  *
  */
 @Bean
-@TemplateType(value ="httl",extend = "httl")
 public class HttlTemplate implements ITemplate {
 	private Engine engine = null;
 	private String extend;

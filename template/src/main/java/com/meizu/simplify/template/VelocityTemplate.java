@@ -13,7 +13,6 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.template.function.EncryptFunctionDirective;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -33,7 +32,6 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @Bean
-@TemplateType("velocity")
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
@@ -87,7 +85,7 @@ public class VelocityTemplate  implements ITemplate{
 	
 
 
-	
+	@Override
 	public String render(Map<String, Object> parameters, String templateUrl, String prefixUri) throws IOException {
 		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
 		VelocityContext context = new VelocityContext(parameters);

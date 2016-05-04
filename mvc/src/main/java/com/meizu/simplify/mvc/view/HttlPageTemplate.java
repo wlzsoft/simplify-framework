@@ -1,8 +1,6 @@
 package com.meizu.simplify.mvc.view;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.ITemplate;
+import com.meizu.simplify.template.HttlTemplate;
 import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.webcache.annotation.WebCache;
-
-import httl.Engine;
-import httl.Template;
 /**
  * <p><b>Title:</b><i>Httl 模板 页面处理返回方式</i></p>
  * <p>Desc: TODO</p>
@@ -35,20 +30,11 @@ import httl.Template;
  */
 @Bean
 @TemplateType(value ="httl",extend = "httl")
-public class HttlTemplate implements IPageTemplate,ITemplate {
-	private Engine engine = null;
-	private String extend;
+public class HttlPageTemplate implements IPageTemplate {
 	@Resource
 	private PropertiesConfig config;
-	
-	public void init() {
-		engine = Engine.getEngine();
-		extend = getExtend();
-	}
-
-	public HttlTemplate() {
-		init();
-	}
+	@Resource
+	private HttlTemplate httlTemplate;
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
@@ -63,34 +49,10 @@ public class HttlTemplate implements IPageTemplate,ITemplate {
 			parameters.put(name, request.getAttribute(name));
 		}
 		
-		String content = render(parameters, templateUrl, prefixUri);
+		String content = httlTemplate.render(parameters, templateUrl, prefixUri);
 		checkCacheAndWrite(request, response, webCache, staticName, content, config);
 
 	}
 
-	@Override
-	public String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
-		Template template = null;
-		try {
-			template = engine.getTemplate(prefixUri+templateUrl+extend);
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-		
-		String content = "";
-		StringWriter vw = new StringWriter(0);
-		try {
-			template.render(parameters, vw);
-			content = vw.toString();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} finally {
-			if (vw != null) {
-				vw.flush();
-				vw.close();
-			}
-		}
-		return content;
-	}
 
 }

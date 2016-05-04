@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.meizu.simplify.mvc.view.BeetlTemplate;
+import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.template.ITemplate;
 
 /**

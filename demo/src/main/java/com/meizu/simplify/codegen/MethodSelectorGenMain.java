@@ -1,7 +1,7 @@
 package com.meizu.simplify.codegen;
 
 import com.meizu.simplify.codegen.resolver.MethodSelectorGenBuild;
-import com.meizu.simplify.mvc.view.BeetlTemplate;
+import com.meizu.simplify.template.BeetlTemplate;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
