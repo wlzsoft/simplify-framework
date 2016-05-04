@@ -52,8 +52,7 @@ public class BeetlPageTemplate  implements IPageTemplate {
 			String name = atts.nextElement();
 			parameter.put(name, request.getAttribute(name));
 		}
-		
-		String content = beetlTemplate.render(parameter, templateUrl, prefixUri);	
+		String content = beetlTemplate.render(parameter, templateUrl, prefixUri,beetlTemplate.extend);	
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		
 	}

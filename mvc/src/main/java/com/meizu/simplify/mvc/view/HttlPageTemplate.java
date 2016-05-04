@@ -49,7 +49,7 @@ public class HttlPageTemplate implements IPageTemplate {
 			parameters.put(name, request.getAttribute(name));
 		}
 		
-		String content = httlTemplate.render(parameters, templateUrl, prefixUri);
+		String content = httlTemplate.render(parameters, templateUrl, prefixUri,httlTemplate.extend);
 		checkCacheAndWrite(request, response, webCache, staticName, content, config);
 
 	}

@@ -1,5 +1,8 @@
 package com.meizu.demo.mvc.service;
 
+import java.io.IOException;
+import java.util.Map;
+
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
@@ -9,6 +12,8 @@ import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.template.ITemplate;
 
 @Bean
 public class TestService {
@@ -70,6 +75,14 @@ public class TestService {
 	public void addTestObj(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);
         System.out.println("ִ测试添加功能:"+test.getName());
+    }
+	@Resource
+	private ITemplate template;
+	public void testSqlTemplate() throws IOException {
+		Map<String, Object> parameters = null;
+		String sql = template.render(parameters, "test", "/com/meizu/demo/mvc/dao/","sql");
+//		Test test = BaseDao.getInsPojo().find(Test.class, sql).get(0);
+        System.out.println("ִ测试sql模版:"+sql);
     }
 
 

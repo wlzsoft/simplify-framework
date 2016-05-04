@@ -37,7 +37,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class VelocityTemplate  implements ITemplate{
 	//private static SimplePool writerPool = new SimplePool(64);
 	
-	private String extend;
+	public String extend;
 	
 	@Resource
 	private PropertiesConfig config;
@@ -86,9 +86,12 @@ public class VelocityTemplate  implements ITemplate{
 	}
 	
 
-
 	@Override
-	public String render(Map<String, Object> parameters, String templateUrl, String prefixUri) throws IOException {
+	public String render(Map<String,Object> parameter, String templateUrl, String prefixUri) throws IOException{
+		return render(parameter, templateUrl, prefixUri,extend);
+	}
+	@Override
+	public String render(Map<String, Object> parameters, String templateUrl, String prefixUri,String extend) throws IOException {
 		Template template = Velocity.getTemplate(prefixUri+templateUrl+extend);
 		VelocityContext context = new VelocityContext(parameters);
 		StringWriter vw = new StringWriter(0);

@@ -10,6 +10,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.function.BeetlFunctionDirectivePackage;
@@ -33,14 +34,17 @@ import com.meizu.simplify.template.function.BeetlFunctionDirectivePackage;
 @TemplateExtend
 public class BeetlTemplate  implements ITemplate {
 	private GroupTemplate gt = null;
-	private String extend;
+	public String extend;
 	@Resource
 	private PropertiesConfig config;
 	
 	public BeetlTemplate() {
 		init();
 	}
-	
+	@InitBean
+	public void initconfig() {
+		
+	}
 	public void init() {
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
 		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
@@ -60,6 +64,10 @@ public class BeetlTemplate  implements ITemplate {
 
 	@Override
 	public String render(Map<String,Object> parameter, String templateUrl, String prefixUri) {
+		return render(parameter, templateUrl, prefixUri,extend);
+	}
+	@Override
+	public String render(Map<String,Object> parameter, String templateUrl, String prefixUri,String extend) {
 //		共享变量-静态变量-全局变量
 //		Map<String,Object> shared = new HashMap<String,Object>();
 //		shared.put("type", "all");

@@ -51,7 +51,7 @@ public class VelocityPageTemplate  implements IPageTemplate{
 			parameters.put(name, request.getAttribute(name));
 		}
 		
-		String content = velocityTemplate.render(parameters, templateUrl, prefixUri);
+		String content = velocityTemplate.render(parameters, templateUrl, prefixUri,velocityTemplate.extend);
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		/*ServletOutputStream output = response.getOutputStream();
 		VelocityWriter vw = null;

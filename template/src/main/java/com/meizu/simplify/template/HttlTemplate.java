@@ -29,7 +29,7 @@ import httl.Template;
 @TemplateExtend(extend = "httl")
 public class HttlTemplate implements ITemplate {
 	private Engine engine = null;
-	private String extend;
+	public String extend;
 	@Resource
 	private PropertiesConfig config;
 	
@@ -42,9 +42,12 @@ public class HttlTemplate implements ITemplate {
 		init();
 	}
 
-
 	@Override
-	public String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
+	public String render(Map<String,Object> parameter, String templateUrl, String prefixUri) throws IOException{
+		return render(parameter, templateUrl, prefixUri,extend);
+	}
+	@Override
+	public String render(Map<String, Object> parameters,String templateUrl, String prefixUri,String extend) throws IOException {
 		Template template = null;
 		try {
 			template = engine.getTemplate(prefixUri+templateUrl+extend);

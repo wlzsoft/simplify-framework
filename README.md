@@ -122,6 +122,7 @@ http://fishermen.iteye.com/blog/430286
 93.dao模块，中文插入乱码的问题，排查及解决==>> 已测试，已通过 2016/05/04 [由于jdbc连接字符串适用了&amp;转码导致的问题，在spring中需要转码，但是config.properties中不需要]
 94.日期SimpleDateFormat需要安装日期格式缓存起来，不要重复创建==>> 已测试，已通过 2016/05/04
 95.分页问题：目前只考虑到pc端分页，没有考虑移动端分页。所以要考虑多种分页变种的解决方案
+96.jsp的模版处理有问题，全部无法处理，需要检查并解决掉
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

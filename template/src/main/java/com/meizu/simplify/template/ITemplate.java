@@ -24,9 +24,36 @@ import com.meizu.simplify.utils.StringUtil;
  */
 @DefaultBean(BeetlTemplate.class)
 public interface ITemplate {
+	/**
+	 * 方法用途: 执行模版渲染，并获取模版渲染后的静态内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param parameters 业务参数值
+	 * @param templateUrl 模版地址
+	 * @param prefixUri 模版地址前缀
+	 * @param extend 模版扩展名
+	 * @return 解析后的模版
+	 * @throws IOException
+	 */
+	public default String render(Map<String, Object> parameters,String templateUrl, String prefixUri,String extend) throws IOException {
+		return null;
+	}
+	/**
+	 * 方法用途: 执行模版渲染，并获取模版渲染后的静态内容<br>
+	 * 操作步骤: TODO<br>
+	 * @param parameters 业务参数值
+	 * @param templateUrl 模版地址
+	 * @param prefixUri 模版地址前缀
+	 * @return 解析后的模版
+	 * @throws IOException
+	 */
 	public default String render(Map<String, Object> parameters,String templateUrl, String prefixUri) throws IOException {
 		return null;
 	}
+	/**
+	 * 方法用途: 获取模版文件扩展名<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	public default String getExtend() {
 		TemplateExtend templateExtend = this.getClass().getAnnotation(TemplateExtend.class);
 		if(templateExtend == null) {

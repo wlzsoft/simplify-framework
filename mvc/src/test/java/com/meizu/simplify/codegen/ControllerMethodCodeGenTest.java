@@ -28,7 +28,7 @@ public class ControllerMethodCodeGenTest {
 		ITemplate template = new BeetlTemplate();
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("a","b");
-		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "/codegen/");
+		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "/codegen/","html");
 		System.out.println(javafileinfo);
 	}
 }

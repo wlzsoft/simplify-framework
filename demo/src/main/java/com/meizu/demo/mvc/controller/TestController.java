@@ -232,6 +232,16 @@ public class TestController extends SystemController<TestModel> {
 		request.setAttribute("testList", test);
 		return "jsp:/testList.jsp";
 	}
+	@RequestMap(path = "/testSqlTemplate/")
+	public String testSqlTemplate(HttpServletRequest request, HttpServletResponse response, TestModel model)   {
+		try {
+			testService.testSqlTemplate();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "beetl:ajaxjsonptest";
+	}
 	
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
 	public String doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer pid, @RequestParam(defaultValue = "0", index = 2) String id, @RequestParam(defaultValue = "0", index = 3) String ids) throws ServletException, IOException, InterruptedException {
