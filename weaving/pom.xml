@@ -16,7 +16,9 @@
   //如果废弃掉，那么后续的插件的日志功能会失效，只能用System.out.println代替，还是加上，然后考虑jetty的日志参数设置
   logback-classic-1.1.3.jar
   logback-core-1.1.3.jar
-  slf4j-api-1.7.13.jar</description>
+  slf4j-api-1.7.13.jar
+  注意：以上依赖jar包的版本号不可以被修改
+  </description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
