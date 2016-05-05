@@ -685,7 +685,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,T params) {
 	
-		Page<T> page = new Page<T>(currentPage,pageSize,count(params));
+		Page<T> page = new Page<T>(currentPage,pageSize,count(params),true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
 		page.setResults(list);
 		return page;
@@ -707,7 +707,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Deprecated
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(sql.replace("select * from", "select count(1) from"),params));
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(sql.replace("select * from", "select count(1) from"),params),true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
 		page.setResults(list);
 		return page;
@@ -726,7 +726,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
 		String countSql = sql.substring(sql.indexOf("from"));
 		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count("select count(1) "+countSql,params));
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count("select count(1) "+countSql,params),true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
 		page.setResults(list);
 		return page;
@@ -746,7 +746,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Page<T> findPageForGroup(Integer currentPage,Integer pageSize,String sql,Object... params) {
 		String countSql = sql.substring(sql.indexOf("from"));
 		countSql = "select count(1) from (" + sql + ") t";
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(countSql,params));
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(countSql,params),true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
 		
 		page.setResults(list);

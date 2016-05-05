@@ -129,7 +129,7 @@ public class MongoDBClient<T>  {
 			while (cursor.hasNext()) {
 				list.add(JSON.parseObject(JSON.toJSONString(cursor.next()),entityClass));
 			}
-			resultList = new Page(currentPage, pageSize, count);// 创建返回的结果集
+			resultList = new Page(currentPage, pageSize, count,true);// 创建返回的结果集
 			resultList.setResults(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());

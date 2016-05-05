@@ -63,6 +63,18 @@ public class Page<T> implements IPage<T> {
 	 * @param totalRecord 数据库中总记录条数
 	 */
 	public Page(int currentPage, int pageSize,int totalRecord) {
+		this(currentPage,pageSize,totalRecord,true);
+	}
+	/**
+	 * 构造方法
+	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
+	 * 根据当前页码、页大小（每页数据个数）、当前页数据列表、数据总个数构造分页数据对象的实例
+	 * @param currentPage 当前页码
+	 * @param pageSize 页大小（每页数据个数）
+	 * @param totalRecord 数据库中总记录条数
+	 * @param isReturnLastPage TODO 注意：为了兼容移动端和pc端多种风格的分页，提供一个控制参数，来指定是否需要返回最后一页记录
+	 */
+	public Page(int currentPage, int pageSize,int totalRecord,boolean isReturnLastPage) {
 
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
@@ -74,8 +86,12 @@ public class Page<T> implements IPage<T> {
 			totalPage = totalRecord / pageSize;
 		}
 
-		if (totalPage < currentPage) {
-			this.currentPage = totalPage;
+		if (currentPage > totalPage ) {//确保如果记录数大于数据库总记录数时[isReturnLastPage为true永远返回数据库最后一页,否则返回下一页空记录]
+			if(isReturnLastPage) {
+				this.currentPage = totalPage;
+			} else {
+				this.currentPage = totalPage+1;
+			}
 		} else {
 			this.currentPage = currentPage;
 		}
@@ -110,7 +126,7 @@ public class Page<T> implements IPage<T> {
 	 * @return
 	 */
 	public static <E> Page<E> emptyPage() {
-		return (Page<E>) new Page(0, 0, 0);
+		return (Page<E>) new Page(0, 0, 0,true);
 	}
 
 	public String getSortname() {
