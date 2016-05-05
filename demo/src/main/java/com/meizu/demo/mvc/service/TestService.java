@@ -77,8 +77,6 @@ public class TestService {
         test = BaseDao.getIns(Test.class).findById(1);
         System.out.println("ִ测试添加功能:"+test.getName());
     }
-	@Resource
-	private ITemplate template;
 	public void testSqlTemplate() throws IOException {
 		Map<String, Object> parameters = null;
 		Test test = BaseDao.getInsPojo().find(Test.class, SqlTemplateFactory.getSql("test", parameters)).get(0);
