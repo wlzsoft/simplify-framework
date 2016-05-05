@@ -61,7 +61,7 @@ public class JspTemplate implements IPageTemplate,ITemplate{
 	private String render(HttpServletRequest request, HttpServletResponse response, String templateUrl,
 			String prefixUri) throws ServletException, IOException {
 		if(templateUrl.equals("500")) {
-			templateUrl = "/500.jsp";
+			templateUrl = "/500";
 		}
 		RequestDispatcher rd = request.getRequestDispatcher(prefixUri+templateUrl+extend);
 		if(rd == null) {
