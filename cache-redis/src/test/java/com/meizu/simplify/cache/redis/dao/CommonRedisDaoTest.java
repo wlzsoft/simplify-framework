@@ -17,9 +17,11 @@ public class CommonRedisDaoTest {
 		StressTestUtils.testAndPrint(100, 1000, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
-					ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
-					jedis.set("age", "3");
-					System.out.println(jedis.get("age"));
+				long start = System.currentTimeMillis();
+				ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
+				jedis.set("age", "3");
+				System.out.println(jedis.get("age"));
+				System.out.println((System.currentTimeMillis()-start)+"ms");
 				return null;
 			}
 		});
