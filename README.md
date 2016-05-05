@@ -123,6 +123,7 @@ http://fishermen.iteye.com/blog/430286
 94.日期SimpleDateFormat需要安装日期格式缓存起来，不要重复创建==>> 已测试，已通过 2016/05/04
 95.分页问题：目前只考虑到pc端分页，没有考虑移动端分页。所以要考虑多种分页变种的解决方案
 96.jsp的模版处理有问题，全部无法处理，需要检查并解决掉
+97.目前需要对aop.properties手动进行拦截方法的配置，很是繁琐，解决方案是：任何模块（比如Cache）实现了IInterceptor接口的实现都需要提供对aop.properties的配置生成功能,aop.properties可以使用模版引擎来处理，后续aop.properties对开发人员透明
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
