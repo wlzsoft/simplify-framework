@@ -40,7 +40,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAnnotationResolver.class);
 	
-	private Map<String,PropertieUtil> propertiesMap = new ConcurrentHashMap<>();
+	private Map<String,PropertieUtil> propertiesMap = new ConcurrentHashMap<>(4);
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();

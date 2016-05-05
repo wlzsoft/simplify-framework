@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public final class BeanContainer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanContainer.class);
-	private final Map<String,Object> mapContainer = new ConcurrentHashMap<>();
+	private final Map<String,Object> mapContainer = new ConcurrentHashMap<>(128);
 	
 	public Map<String, Object> getMapContainer() {
 		return mapContainer;
