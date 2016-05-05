@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * @version Version 0.1
  *
  */
-public class BeanContainer {
+public final class BeanContainer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanContainer.class);
 	private final Map<String,Object> mapContainer = new ConcurrentHashMap<>();

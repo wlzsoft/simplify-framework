@@ -15,7 +15,7 @@ import java.util.List;
  * @version Version 0.1
  *
  */
-public class BeanFactory {
+public final class BeanFactory {
 	private static final BeanContainer beanContainer = new BeanContainer();
 
 	public static BeanContainer getBeanContainer() {

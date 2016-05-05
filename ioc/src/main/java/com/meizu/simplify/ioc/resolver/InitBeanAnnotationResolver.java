@@ -30,7 +30,7 @@ import com.meizu.simplify.utils.ClassUtil;
  *
  */
 @Init(InitTypeEnum.INIT_BEAN)
-public class InitBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
+public final class InitBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(InitBeanAnnotationResolver.class);
 	@Override
 	public void resolve(List<Class<?>> resolveList) {

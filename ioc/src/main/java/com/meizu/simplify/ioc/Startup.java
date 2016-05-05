@@ -32,7 +32,7 @@ import com.meizu.simplify.utils.ReflectionUtil;
  * @version Version 0.1
  *
  */
-public class Startup {
+public final class Startup {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
 	public static StartupTypeEnum start() {

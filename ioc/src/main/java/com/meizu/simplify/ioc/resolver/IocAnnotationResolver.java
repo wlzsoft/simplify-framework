@@ -34,7 +34,7 @@ import com.meizu.simplify.utils.ObjectUtil;
  *
  */
 @Init(InitTypeEnum.IOC)
-public class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
+public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(IocAnnotationResolver.class);
 	@Override
 	public void resolve(List<Class<?>> resolveList) {

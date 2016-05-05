@@ -12,7 +12,7 @@ package com.meizu.simplify.ioc;
  * @version Version 0.1
  *
  */
-public class BeanEntity<T extends Object> {
+public final class BeanEntity<T extends Object> {
 	
 	private String name;
 	

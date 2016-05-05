@@ -32,7 +32,7 @@ import com.meizu.simplify.utils.ClassUtil;
  *
  */
 @Init(InitTypeEnum.BEAN)
-public class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
+public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanAnnotationResolver.class);
 	
