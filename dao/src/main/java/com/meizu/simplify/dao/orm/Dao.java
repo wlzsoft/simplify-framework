@@ -95,7 +95,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		List<String> columnArr = new ArrayList<>(currentColumnFieldNames.keySet());
 		List<String> otherIdColumn = new ArrayList<>();
-		for (String columnName : columnArr) {
+//		for (String columnName : columnArr) { //TODO 不使用迭代器的方式访问ArrayList，可以带来更好的遍历性能
+		for (int i = 0; i < columnArr.size(); i++) {
+			String columnName = columnArr.get(0);
 			if(!columnName.equals(pkName)) {
 				otherIdColumn.add(columnName);
 			}
