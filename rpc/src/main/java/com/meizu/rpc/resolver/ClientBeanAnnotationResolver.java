@@ -81,9 +81,9 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			reference.setVersion(beanAnnotation.version());
 			reference.setCheck(beanAnnotation.check());
 			reference.setUrl(beanAnnotation.url());
-			MonitorConfig monitor=new MonitorConfig();//监控
-			monitor.setProtocol("registry");
-			reference.setMonitor(monitor);
+//			MonitorConfig monitor=new MonitorConfig();//监控
+//			monitor.setProtocol("registry");
+//			reference.setMonitor(monitor);
 			BeanEntity<Object> resultEntity = new BeanEntity<Object>();
 			Object obj=reference.get();
 			resultEntity.setName(entityClass.getName());
