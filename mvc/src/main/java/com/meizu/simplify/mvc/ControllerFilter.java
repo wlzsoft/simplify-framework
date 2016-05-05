@@ -133,7 +133,7 @@ public class ControllerFilter implements Filter {
 			throw new UncheckedException(e);
 		}
 		long readtime = System.currentTimeMillis() - time;
-		LOGGER.debug(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime)));
+		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime)));
 		// 记录统计信息
 		Statistics.incReadcount();
 		Statistics.setReadMaxTime(readtime, requestUrl);
