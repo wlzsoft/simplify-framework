@@ -1,9 +1,9 @@
-package com.meizu.demo.service;
+package com.meizu.demo.mvc.service;
 
 import java.io.IOException;
 import java.util.Map;
 
-import com.meizu.demo.entity.Test;
+import com.meizu.demo.mvc.entity.Test;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.config.PropertiesConfig;

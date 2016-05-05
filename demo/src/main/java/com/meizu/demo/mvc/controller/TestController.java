@@ -1,4 +1,4 @@
-package com.meizu.demo.controller;
+package com.meizu.demo.mvc.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.meizu.demo.entity.Test;
-import com.meizu.demo.entity.User;
-import com.meizu.demo.model.TestModel;
-import com.meizu.demo.service.TestService;
+import com.meizu.demo.mvc.entity.Test;
+import com.meizu.demo.mvc.entity.User;
+import com.meizu.demo.mvc.model.TestModel;
+import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.SystemController;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.dao.orm.BaseDao;

@@ -1,4 +1,4 @@
-package com.meizu.demo.entity;
+package com.meizu.demo.mvc.entity;
 
 import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.dao.annotations.Table;

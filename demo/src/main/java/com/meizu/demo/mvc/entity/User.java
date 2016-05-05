@@ -1,4 +1,4 @@
-package com.meizu.demo.entity;
+package com.meizu.demo.mvc.entity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
