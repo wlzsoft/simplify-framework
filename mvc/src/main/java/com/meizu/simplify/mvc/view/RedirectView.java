@@ -2,6 +2,8 @@ package com.meizu.simplify.mvc.view;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +36,14 @@ public class RedirectView  {
 	
 	public static void exe(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl, HashMap<String, String> paramMap) throws ServletException, IOException {
 		PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-		if (paramMap != null && paramMap.keySet().size() > 0) {
+		if(paramMap == null) {
+			return;
+		}
+		Set<Entry<String, String>> paramSet = paramMap.entrySet();
+		if (paramSet.size() > 0) {
 			StringBuffer w = new StringBuffer("<html><head></head><body onload=\"form1.submit()\"><form id=\"form1\" method=\"post\" action=\"" + templateUrl + "\">");
-			for (String key : paramMap.keySet()) {
-				w.append("<input type=\"hidden\"  name=\"" + key + "\" value=\"" + paramMap.get(key) + "\"/>");
+			for (Entry<String, String> paramEntry : paramSet) {
+				w.append("<input type=\"hidden\"  name=\"" + paramEntry.getKey() + "\" value=\"" + paramEntry.getValue() + "\"/>");
 			}
 			w.append("</form></body></html>");
 			response.setContentType("text/html; charset=" + config.getCharset());

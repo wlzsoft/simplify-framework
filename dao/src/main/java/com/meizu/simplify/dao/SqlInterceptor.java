@@ -105,7 +105,8 @@ public class SqlInterceptor implements IInterceptor {
  
             } else {
                 MetaObject metaObject = configuration.newMetaObject(parameterObject);
-                for (ParameterMapping parameterMapping : parameterMappings) {
+                for (int i=0; i < parameterMappings.size();i++) {
+                	ParameterMapping parameterMapping = parameterMappings.get(i);
                     String propertyName = parameterMapping.getProperty();
                     if (metaObject.hasGetter(propertyName)) {
                         Object obj = metaObject.getValue(propertyName);

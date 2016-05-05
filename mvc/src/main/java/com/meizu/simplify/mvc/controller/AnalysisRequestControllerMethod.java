@@ -175,7 +175,9 @@ public class AnalysisRequestControllerMethod {
 		response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
 		if (ajaxAccess.allowMethods() != null) {
 			StringBuffer allowMethodSb = new StringBuffer();
-			for (Methods method : ajaxAccess.allowMethods()) {
+			Methods[] allowMethodArr = ajaxAccess.allowMethods();
+			for (int i=0; i < allowMethodArr.length; i++) {
+				Methods method = allowMethodArr[0];
 				allowMethodSb.append(method.name()).append(",");
 			}
 			if (allowMethodSb.length() > 0) {

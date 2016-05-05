@@ -49,7 +49,9 @@ public enum EncodingEnum {
      * @return
      */
     public static String getName(int index) {
-        for (EncodingEnum c : EncodingEnum.values()) {
+    	EncodingEnum[] encodingEnumArr = EncodingEnum.values();
+        for (int i=0; i < encodingEnumArr.length;i++) {
+        	EncodingEnum c = encodingEnumArr[i];
             if (c.getIndex() == index) {
                 return c.name;
             }

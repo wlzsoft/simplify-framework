@@ -28,7 +28,8 @@ public class DateUtil {
 	private static final Map<DateFormatEnum,SimpleDateFormat> simpleDateFormatMap = new EnumMap<>(DateFormatEnum.class);
 	static {
 		DateFormatEnum[] dfeArr = DateFormatEnum.values();
-		for (DateFormatEnum dateFormatEnum : dfeArr) {
+		for (int i=0; i < dfeArr.length; i++) {
+			DateFormatEnum dateFormatEnum = dfeArr[i];
 			simpleDateFormatMap.put(dateFormatEnum, new SimpleDateFormat(dateFormatEnum.value()));
 		}
 	}

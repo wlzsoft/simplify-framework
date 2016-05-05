@@ -36,7 +36,9 @@ public class AnalysisRequestControllerModel {
 	public static <T extends Model> T setRequestModel(HttpServletRequest request,Class<T>  entityClass) {
 		try {
 			T model = entityClass.newInstance();
-			for ( Method method : entityClass.getMethods() ) {
+			Method[] modelMethodArr = entityClass.getMethods();
+			for ( int i=0; i < modelMethodArr.length;i++ ) {
+				Method method = modelMethodArr[i];
 				if (method != null && method.getName().indexOf("set") == 0) {
 					int parLength = method.getParameterTypes().length;
 					if (parLength != 1) continue;

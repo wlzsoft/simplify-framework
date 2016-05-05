@@ -176,17 +176,18 @@ public class PropertieUtil {
 			prefix += ".";
 		}
 		Field[] fieldArr = obj.getClass().getDeclaredFields();
-		for (Field field : fieldArr) {
-				Object value = get(prefix+field.getName());
-   				if(value == null) {
-   					continue;
-   				}
-   				if(field.getType() == Boolean.class||field.getType() == boolean.class) {
-   					value = DataUtil.parseBoolean(value);
-   				} else if(field.getType() == Integer.class || field.getType() == int.class){
-   					value = DataUtil.parseInt(value);
-   				}
-				ReflectionUtil.invokeSetterMethod(obj, field.getName(), value);
+		for (int i=0; i < fieldArr.length; i++) {
+			Field field = fieldArr[i];
+			Object value = get(prefix+field.getName());
+			if(value == null) {
+				continue;
+			}
+			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
+				value = DataUtil.parseBoolean(value);
+			} else if(field.getType() == Integer.class || field.getType() == int.class){
+				value = DataUtil.parseInt(value);
+			}
+			ReflectionUtil.invokeSetterMethod(obj, field.getName(), value);
 		}
 		return (T) obj;
 	}

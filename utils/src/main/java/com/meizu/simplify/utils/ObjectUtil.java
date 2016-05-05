@@ -43,7 +43,8 @@ public class ObjectUtil {
 	 * @return 
 	 */
 	public static boolean isNull(Object... str) {
-		for (Object s : str) {
+		for (int i=0; i < str.length; i++) {
+			Object s = str[i];
 			if (isNotNull(s)) {
 				return false;
 			}

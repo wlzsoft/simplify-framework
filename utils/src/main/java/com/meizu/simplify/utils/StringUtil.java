@@ -59,7 +59,8 @@ public class StringUtil {
 	 * @return 
 	 */
 	public static boolean isEmpty(String... str) {
-		for (String s : str) {
+		for (int i=0; i < str.length; i++) {
+			String s = str[i];
 			if (StringUtil.isNotEmpty(s)) {
 				return false;
 			}
@@ -74,7 +75,8 @@ public class StringUtil {
 	 * @return
 	 */
 	public static boolean isBlank(String... str) {
-		for (String s : str) {
+		for (int i=0; i < str.length; i++) {
+			String s = str[i];
 			if (StringUtil.isNotBlank(s)) {
 				return false;
 			}
@@ -385,12 +387,13 @@ public class StringUtil {
 	 */
 	public static String bytes2Hex(byte[] bytes) {
 		StringBuilder sb = new StringBuilder();
-		for (byte b : bytes) {
-			int i = b & 0xFF;
-			if (i <= 0xF) {
+		for (int i=0; i < bytes.length; i++) {
+			byte b = bytes[i];
+			int r = b & 0xFF;
+			if (r <= 0xF) {
 				sb.append("0");
 			}
-			sb.append(Integer.toHexString(i));
+			sb.append(Integer.toHexString(r));
 		}
 		return sb.toString();
 	}
@@ -523,7 +526,8 @@ public class StringUtil {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder();
-		for (Object obj : arr) {
+		for (int i=0; i < arr.length; i++) {
+			Object obj = arr[i];
 			sb.append(separator).append(obj);
 		}
 		return sb.toString().substring(1);

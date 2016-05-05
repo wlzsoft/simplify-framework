@@ -127,7 +127,7 @@ public abstract class CollectionUtil {
 		AssertUtil.isTrue(source != null, "目标集合不能为空。");
 		target.clear();
 		if (!source.isEmpty()) {
-			for (T o : source) {
+			for (T o : source) {//TODO 是否使用迭代器，这里比较特殊，有可能是set，也可能是list，慎重考虑
 				target.add(o);
 			}
 		}
@@ -160,7 +160,8 @@ public abstract class CollectionUtil {
 		});
 
 		Map<K, V> result = new LinkedHashMap<K, V>();
-		for (Entry<K, V> entry : entries) {
+		for (int i=0; i < entries.size(); i++) {
+			Entry<K, V> entry = entries.get(i);
 			result.put(entry.getKey(), entry.getValue());
 		}
 		return result;
@@ -190,7 +191,8 @@ public abstract class CollectionUtil {
 		});
 
 		Map<K, V> result = new LinkedHashMap<K, V>();
-		for (Entry<K, V> entry : entries) {
+		for (int i=0; i < entries.size(); i++) {
+			Entry<K, V> entry = entries.get(i);
 			result.put(entry.getKey(), entry.getValue());
 		}
 		return result;
@@ -206,7 +208,8 @@ public abstract class CollectionUtil {
 	 * @return
 	 */
 	public static <T,W> T getItem(T[] sourceList,W w, IEqualCallBack<T,W> call) {
-		for (T t : sourceList) {
+		for (int i=0; i < sourceList.length; i++) {
+			T t = sourceList[0];
 			boolean res = call.equal(t,w);
 			if(res) {
 				return t;
