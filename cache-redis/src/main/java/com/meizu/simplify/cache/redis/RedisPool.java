@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -96,13 +98,13 @@ public class RedisPool {
 		if (hostAndPortMap.isEmpty()) {
 			throw new RuntimeException(" redis config error !!! ");
 		}
-		
-		for (Iterator<String> it = hostAndPortMap.keySet().iterator(); it
-				.hasNext();) {
-			String modName = it.next();
-			List<HostAndPort> hostList = hostAndPortMap.get(modName);
+		Set<Entry<String, List<HostAndPort>>> hostAndPortSet = hostAndPortMap.entrySet();
+		for (Entry<String, List<HostAndPort>> entry : hostAndPortSet) {
+			String modName = entry.getKey();
+			List<HostAndPort> hostList = entry.getValue();
 			List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
-			for (HostAndPort hnp : hostList) {
+			for (int i = 0; i < hostList.size(); i++) {
+				HostAndPort hnp = hostList.get(i);
 				LOGGER.info("[redis - list],host:{},port:{}", new Object[] {hnp.host, hnp.port });
 				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
 				

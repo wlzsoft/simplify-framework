@@ -18,6 +18,7 @@ public enum CacheExpireTimeEnum {
 	
 	/**
 	 * 缓存时效 5分钟钟
+	 * 注意：乘法计算的过程是在启动时计算的，没有频繁计算，否则需要使用位运算的位移来计算来提高性能
 	 */
 	CACHE_EXP_SENDCONDs(60*5),
 	
