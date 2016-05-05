@@ -141,29 +141,29 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     		        	String methodFullName = className+":"+methodName;
 //    		        	LOGGER.info("AOP：对方法["+methodFullName+"]进行逻辑切入");
     		        	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
-    	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
-    	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
-    	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
+	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
+	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
+	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
 //    	                	ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
-    	                	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
+	                	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
 //    	                	ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
-    	                	ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
-    	                	//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
-    	                	String returnTypeName = ctmethod.getReturnType().getName();
-    	                	StringBuilder builder = new StringBuilder();
-    	                	builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
-    	                		   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
-							if(!returnTypeName.equals("void")) {
-								builder.append("if(beforeObject != null) {")
-								.append( "    return ("+returnTypeName+")beforeObject;")
-							    .append( "}");
-							}
-							 
-            			    ctmethod.insertBefore(builder.toString());
-    	                	ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
-    	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
-    	                	ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
-    	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
+	                	ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
+	                	//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
+	                	String returnTypeName = ctmethod.getReturnType().getName();
+	                	StringBuilder builder = new StringBuilder();
+	                	builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
+	                		   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
+						if(!returnTypeName.equals("void")) {
+							builder.append("if(beforeObject != null) {")
+							.append( "    return ("+returnTypeName+")beforeObject;")
+						    .append( "}");
+						}
+						 
+        			    ctmethod.insertBefore(builder.toString());
+	                	ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
+	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
+	                	ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
+	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
     		        }
     		        return ctclass;
     	        } catch (CannotCompileException e) {
