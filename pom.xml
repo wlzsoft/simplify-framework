@@ -70,6 +70,7 @@
   	<module>webcache</module>
   	<module>mvc</module>
   	<module>template</module>
+  	<module>config</module>
   	<module>cache-redis</module>
   	<module>mongodb</module>
     <module>message</module>
