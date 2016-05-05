@@ -10,6 +10,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -80,9 +81,8 @@ public class TestService {
 	private ITemplate template;
 	public void testSqlTemplate() throws IOException {
 		Map<String, Object> parameters = null;
-		String sql = template.render(parameters, "test", "/com/meizu/demo/mvc/dao/",".sql");
-//		Test test = BaseDao.getInsPojo().find(Test.class, sql).get(0);
-        System.out.println("ִ测试sql模版:"+sql);
+		Test test = BaseDao.getInsPojo().find(Test.class, SqlTemplateFactory.getSql("test", parameters)).get(0);
+        System.out.println("ִ测试sql模版:"+test.getName());
     }
 
 
