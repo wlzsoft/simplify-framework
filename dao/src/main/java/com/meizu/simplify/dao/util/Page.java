@@ -242,7 +242,9 @@ public class Page<T> implements IPage<T> {
 	}
 
 	/**
-	 * 取总页数
+	 * 方法用途: 取总页数<br>
+	 * 操作步骤: TODO<br>
+	 * @return
 	 */
 	public long getTotalPageCount() {
 		if (totalRecord % pageSize == 0)
@@ -318,8 +320,11 @@ public class Page<T> implements IPage<T> {
 	}
 
 	/**
-	 * 获取任一页第一条数据在数据集的位置，每页条数使用默认值
+	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage
 	 * @see #getStartOfPage(long,long)
+	 * @return
 	 */
 	protected static long getStartOfPage(long currentPage) {
 		return getStartOfPage(currentPage, DEFAULT_PAGE_SIZE);
