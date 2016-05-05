@@ -209,7 +209,7 @@ public abstract class CollectionUtil {
 	 */
 	public static <T,W> T getItem(T[] sourceList,W w, IEqualCallBack<T,W> call) {
 		for (int i=0; i < sourceList.length; i++) {
-			T t = sourceList[0];
+			T t = sourceList[i];
 			boolean res = call.equal(t,w);
 			if(res) {
 				return t;

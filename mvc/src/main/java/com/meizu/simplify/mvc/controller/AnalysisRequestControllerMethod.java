@@ -177,7 +177,7 @@ public class AnalysisRequestControllerMethod {
 			StringBuffer allowMethodSb = new StringBuffer();
 			Methods[] allowMethodArr = ajaxAccess.allowMethods();
 			for (int i=0; i < allowMethodArr.length; i++) {
-				Methods method = allowMethodArr[0];
+				Methods method = allowMethodArr[i];
 				allowMethodSb.append(method.name()).append(",");
 			}
 			if (allowMethodSb.length() > 0) {
