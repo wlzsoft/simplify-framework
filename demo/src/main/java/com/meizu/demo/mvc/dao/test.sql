@@ -1,1 +1,1 @@
-select * from test_web;
+select fid,name from test_web;
