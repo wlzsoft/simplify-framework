@@ -14,12 +14,25 @@ package com.meizu.simplify.utils.enums;
  *
  */
 public class Measure {
-	/** K字节数  K = 1024 bytes*/
+	/** 
+	 *  K字节数  K = 1024 bytes 
+	 *  1024 = 2的10次方
+	 */
 	public static final Integer K = 1024;
-	/** M字节数  M = 1024 K bytes*/
-	public static final Integer M = 1024 * K;
-	/** G字节数 */
-	public static final Integer G = 1024 * M;
-	/** T字节数 */
-	public static final Integer T = 1024 * G;
+	/** 
+	 *  M字节数  M = 1024 K bytes
+	 *  M = K * 1024
+	 *  注意：乘法计算的过程是在启动时计算的，没有频繁计算，否则需要使用位运算的位移来计算来提高性能
+	 */
+	public static final Integer M = K << 10;
+	/** 
+	 *  G字节数 
+	 *  G = M * 1024
+	 */
+	public static final Integer G = M << 10;
+	/** 
+	 *  T字节数
+	 *  T = G * 1024 
+	 */
+	public static final Integer T = G << 10;
 }
