@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,6 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
-//import com.meizu.util.BeanUtils;
 /**
  * 
  * <p><b>Title:</b><i> 基础泛型DAO实现类</i></p>
@@ -57,10 +55,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	private Class<T> entityClass;
 	
-	//主键列名
+	/**
+	 * 主键列名
+	 */
 	private String pkName;
 
-	//columnName=FieldName
+	/**
+	 * columnName=FieldName
+	 */
 	private Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
 
 	private Map<String, String> columnsMeta = new LinkedHashMap<String, String>();//create dll sql 使用
@@ -97,7 +99,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		List<String> otherIdColumn = new ArrayList<>();
 //		for (String columnName : columnArr) { //TODO 不使用迭代器的方式访问ArrayList，可以带来更好的遍历性能
 		for (int i = 0; i < columnArr.size(); i++) {
-			String columnName = columnArr.get(0);
+			String columnName = columnArr.get(i);
 			if(!columnName.equals(pkName)) {
 				otherIdColumn.add(columnName);
 			}
@@ -111,7 +113,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		String [] copyListToArray = Stream.of(otherIdColumn).toArray(String[]::new); 
 		//类似hadoop中的map 和 reduce，用于并行计算
 		Stream.of(otherIdColumn).map(ArrayList<String>::new).peek(System.out::println).findFirst();*/
-		
 		
 		sqlBuilder = new SQLBuilder<T>(otherIdColumn,columnArr,
 				table.name(), pkName,columnsMeta );
@@ -528,7 +529,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public List<T> findByIds(PK[] idArr) {
-		return find(sqlBuilder.findByIds(idArr.length),idArr);
+		return find(sqlBuilder.findByIds(idArr.length),(Object[])idArr);
 	}
 	@Override
 	public List<T> findByMutil(String name, String values) {
