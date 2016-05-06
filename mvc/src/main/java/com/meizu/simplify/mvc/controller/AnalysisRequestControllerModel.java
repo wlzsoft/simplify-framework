@@ -40,9 +40,11 @@ public class AnalysisRequestControllerModel {
 			for ( int i=0; i < modelMethodArr.length;i++ ) {
 				Method method = modelMethodArr[i];
 				if (method != null && method.getName().indexOf("set") == 0) {
-					int parLength = method.getParameterTypes().length;
-					if (parLength != 1) continue;
-					Class<?> type = method.getParameterTypes()[0];
+					Class<?>[] parameterTypes = method.getParameterTypes();
+					if (parameterTypes.length != 1) {
+						continue;
+					}
+					Class<?> type = parameterTypes[0];
 					String parName = method.getName().substring(3, method.getName().length());
 					String par = request.getParameter(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
 
@@ -62,7 +64,9 @@ public class AnalysisRequestControllerModel {
 						// 将值进行格式化后注入
 						if (type.isArray()) {
 							String[] pars = request.getParameterValues(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
-							if (pars != null && pars.length == 1) pars = pars[0].split(",");
+							if (pars != null && pars.length == 1) {
+								pars = pars[0].split(",");
+							}
 							method2.invoke(model, new Object[] { DataUtil.convertType(type, pars) });
 						} else {
 							method2.invoke(model, new Object[] { DataUtil.convertType(type, par) });

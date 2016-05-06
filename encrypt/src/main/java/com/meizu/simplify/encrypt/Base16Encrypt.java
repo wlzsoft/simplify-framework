@@ -38,8 +38,9 @@ public class Base16Encrypt {
 	}
 
 	private static char[] encode16(byte[] data) {
-		if (data == null || data.length == 0)
+		if (data == null || data.length == 0) {
 			return new char[0];
+		}
 		int l = data.length;
 
 		char[] out = new char[l << 1];

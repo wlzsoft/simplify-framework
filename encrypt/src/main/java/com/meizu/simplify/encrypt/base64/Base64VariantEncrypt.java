@@ -155,8 +155,9 @@ public class Base64VariantEncrypt {
 	}
 
 	public static byte[] decode64(String base64) {
-		if (base64 == null || base64.isEmpty())
+		if (base64 == null || base64.isEmpty()) {
 			return new byte[0];
+		}
 		byte[] encodeBytes = base64.getBytes(CHARSET);
 		return decode64(encodeBytes);
 	}
