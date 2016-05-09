@@ -15,6 +15,7 @@ import com.meizu.simplify.codegen.CodeGenUtil;
 import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.utils.ClassUtil;
 /**
  * <p><b>Title:</b><i>dao的entity转sql的代码生成处理</i></p>
@@ -42,7 +43,7 @@ public class SqlByDaoEntityGenBuild {
 			for (String cpath : classPathArr) {
 				List<Class<?>> entityClassList = ClassUtil.findClassesByAnnotationClass(Entity.class, cpath);
 				if (entityClassList == null || entityClassList.size()<=0) {
-					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Entity被注册，请检查config.properties文件system.classpath的配置");
+					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Entity被注册，请检查config.properties文件system.controllerClasspath的配置");
 				}
 				for (Class<?> entityClass : entityClassList) {
 					Method[] methodArr = null;
@@ -98,5 +99,9 @@ public class SqlByDaoEntityGenBuild {
 			gen.gen(parameters, codegenPath,javaFileName);
 			LOGGER.info("Framework codegen [dao代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
+	}
+	public static void main(String[] args) {
+		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
+		init("com.meizu.demo.mvc.controller", gen);
 	}
 }

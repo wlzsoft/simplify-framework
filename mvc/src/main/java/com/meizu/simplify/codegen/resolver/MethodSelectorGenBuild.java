@@ -47,7 +47,7 @@ public class MethodSelectorGenBuild {
 			for (String cpath : classPathArr) {
 				List<Class<?>> controllerClassList = ClassUtil.findClassesByAnnotationClass(Bean.class, cpath);
 				if (controllerClassList == null || controllerClassList.size()<=0) {
-					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
+					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.controllerClasspath的配置");
 				}
 				for (Class<?> controllerClass : controllerClassList) {
 					Method[] methodArr = null;

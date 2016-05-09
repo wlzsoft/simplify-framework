@@ -91,7 +91,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			for (String cpath : classPathArr) {
 				List<Class<?>> controllerClassList = ClassUtil.findClasses(cpath);
 				if (controllerClassList == null || controllerClassList.size()<=0) {
-					throw new UncheckedException("没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
+					throw new UncheckedException("没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.controllerClasspath的配置");
 				}
 				for (Class<?> controllerClass : controllerClassList) {
 					BeanContainer container = BeanFactory.getBeanContainer();
