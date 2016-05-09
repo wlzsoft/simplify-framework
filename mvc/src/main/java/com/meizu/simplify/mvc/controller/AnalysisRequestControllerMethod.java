@@ -1,7 +1,6 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;

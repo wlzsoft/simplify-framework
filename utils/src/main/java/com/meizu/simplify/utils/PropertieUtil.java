@@ -138,7 +138,7 @@ public class PropertieUtil {
 	/**
 	 * 
 	 * 方法用途: 转换属性文件为pojo对象-无属性前缀<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 注意：这个方法只能用于启动时调用<br>
 	 * @param clazz 转换的pojo的具体类型
 	 * @return
 	 */
@@ -166,7 +166,7 @@ public class PropertieUtil {
 	/**
 	 * 
 	 * 方法用途: 转换属性文件为pojo对象<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 注意：这个方法只能用于启用时调用<br>
 	 * @param obj 待设置配置文件中值的对象
 	 * @param prefix 配置文件中属性的前缀
 	 * @return

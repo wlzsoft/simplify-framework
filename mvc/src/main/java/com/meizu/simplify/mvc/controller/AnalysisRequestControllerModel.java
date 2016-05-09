@@ -13,8 +13,8 @@ import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>解析http中的表单数据</i></p>
+ * <p>Desc: TODO 待优化，使用了运行时反射</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
