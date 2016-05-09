@@ -1,6 +1,6 @@
-package com.meizu.simplify.codegen;
+package com.meizu.simplify.codegen.resolver;
 
-import com.meizu.simplify.codegen.resolver.MethodSelectorGenBuild;
+import com.meizu.simplify.codegen.CodeGenUtil;
 import com.meizu.simplify.template.BeetlTemplate;
 
 /**
