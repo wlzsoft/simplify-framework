@@ -50,27 +50,27 @@ public class MethodSelectorGenBuild {
 					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Controller被注册，请检查config.properties文件system.classpath的配置");
 				}
 				for (Class<?> controllerClass : controllerClassList) {
-							Method[] methodArr = null;
-							try {
-								methodArr = controllerClass.getDeclaredMethods();
-							} catch(NoClassDefFoundError e) {
-								e.printStackTrace();
-								throw new BaseException("代码生成：bean["+controllerClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
-							}
-							List<Map<String,Object>> methodList = new ArrayList<>();
-							for (Method method : methodArr) {
-								if (method.isAnnotationPresent(RequestMap.class)) {
-									Class<?>[] parameterTypes = method.getParameterTypes();
-									Map<String,Object> params = new HashMap<>();
-									params.put("methodName", method.getName());
-									params.put("returnType", method.getReturnType().getName());
-									params.put("params", parameterTypes);
-									methodList.add(params);
-								}
-							}
-							if(methodList.size()>0) {
-								methodMap.put(controllerClass, methodList);
-							}
+					Method[] methodArr = null;
+					try {
+						methodArr = controllerClass.getDeclaredMethods();
+					} catch(NoClassDefFoundError e) {
+						e.printStackTrace();
+						throw new BaseException("代码生成：bean["+controllerClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+					}
+					List<Map<String,Object>> methodList = new ArrayList<>();
+					for (Method method : methodArr) {
+						if (method.isAnnotationPresent(RequestMap.class)) {
+							Class<?>[] parameterTypes = method.getParameterTypes();
+							Map<String,Object> params = new HashMap<>();
+							params.put("methodName", method.getName());
+							params.put("returnType", method.getReturnType().getName());
+							params.put("params", parameterTypes);
+							methodList.add(params);
+						}
+					}
+					if(methodList.size()>0) {
+						methodMap.put(controllerClass, methodList);
+					}
 				}
 			}
 			Map<String,Object> parameters = new HashMap<>();
