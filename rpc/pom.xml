@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>rpc</artifactId>
-  <name>rpc</name>
+  <name>RPC远程服务调用 模块</name>
   <description>RPC远程服务调用 模块 </description>
   <dependencies>
   	<dependency>
