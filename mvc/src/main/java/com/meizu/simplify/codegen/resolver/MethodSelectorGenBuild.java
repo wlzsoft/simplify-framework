@@ -19,6 +19,7 @@ import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.annotation.RequestMap;
+import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.utils.ClassUtil;
 /**
  * <p><b>Title:</b><i>controll方法代码生成处理</i></p>
@@ -102,5 +103,10 @@ public class MethodSelectorGenBuild {
 			gen.gen(parameters, codegenPath,javaFileName);
 			LOGGER.info("Framework codegen [controll代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
+	}
+	public static void main(String[] args) {
+//		Startup.start();
+		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
+		MethodSelectorGenBuild.init("com.meizu.demo.mvc.controller", gen);
 	}
 }
