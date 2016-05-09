@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>mongodb</artifactId>
-  <name>mongodb</name>
+  <name>mongodb操作 模块</name>
   <description>mongodb操作 模块 </description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
