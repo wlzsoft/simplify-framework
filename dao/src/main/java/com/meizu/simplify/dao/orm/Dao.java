@@ -217,11 +217,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	/**
-	 * 方法用途: 获取实体类的主键值。<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: 获取实体类的主键值<br>
+	 * 操作步骤: 注意-不建议在运行时使用，由于使用了反射，性能低下<br>
 	 * @param entity 业务实体
-	 * @return 返回实体类的主键值。
+	 * @return 返回实体类的主键值
 	 */
+	@Deprecated
 	public Serializable getId(T entity) {
 		return (Serializable) ReflectionUtil.invokeGetterMethod(entity, getIdName());
 	}
@@ -234,8 +235,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public String getIdName() {
 		return currentColumnFieldNames.get(pkName);
 	}
-	
-	
 	
 	//--------------------------------保存操作-----------------------------------------------------------
 	
