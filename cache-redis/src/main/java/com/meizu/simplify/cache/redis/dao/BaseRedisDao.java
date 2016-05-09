@@ -36,16 +36,24 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 * @param seconds
 	 * @return
 	 */
-	public long expire(K key, CacheExpireTimeEnum export, TimeEnum seconds) {
-		
+	public long expire(String key, CacheExpireTimeEnum export, TimeEnum seconds) {
 		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
-  				if(k instanceof String) {
-  					return jedis.expire(k.toString(), export.timesanmp());
-  				} else if(k instanceof byte[]){
-  					return jedis.expire((byte[])k, export.timesanmp());
-  				} else {
-  					throw new RedisException("无效key");
-  				}
+  			return jedis.expire(k, export.timesanmp());
+  		},modName);
+		return ret;
+	}
+	/**
+	 * 
+	 * 方法用途: 指定key设置过期时间<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param export
+	 * @param seconds
+	 * @return
+	 */
+	public long expire(byte[] key, CacheExpireTimeEnum export, TimeEnum seconds) {
+		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
+  			return jedis.expire(k, export.timesanmp());
   		},modName);
 		return ret;
 	}
