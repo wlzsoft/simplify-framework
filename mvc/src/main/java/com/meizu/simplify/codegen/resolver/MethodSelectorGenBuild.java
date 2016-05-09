@@ -104,9 +104,4 @@ public class MethodSelectorGenBuild {
 			LOGGER.info("Framework codegen [controll代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
 	}
-	public static void main(String[] args) {
-//		Startup.start();
-		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
-		MethodSelectorGenBuild.init("com.meizu.demo.mvc.controller", gen);
-	}
 }
