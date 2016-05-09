@@ -43,7 +43,7 @@ public class SqlByDaoEntityGenBuild {
 			for (String cpath : classPathArr) {
 				List<Class<?>> entityClassList = ClassUtil.findClassesByAnnotationClass(Entity.class, cpath);
 				if (entityClassList == null || entityClassList.size()<=0) {
-					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Entity被注册，请检查config.properties文件system.controllerClasspath的配置");
+					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Entity被注册，请检查config.properties文件system.entityClasspath的配置");
 				}
 				for (Class<?> entityClass : entityClassList) {
 					Method[] methodArr = null;
@@ -102,6 +102,6 @@ public class SqlByDaoEntityGenBuild {
 	}
 	public static void main(String[] args) {
 		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
-		init("com.meizu.demo.mvc.controller", gen);
+		init("com.meizu.demo.mvc.entity", gen);
 	}
 }
