@@ -12,7 +12,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.codegen.ControllerMethodCodeGen;
+import com.meizu.simplify.codegen.CodeGenUtil;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
@@ -35,7 +35,7 @@ import com.meizu.simplify.utils.ClassUtil;
  */
 public class MethodSelectorGenBuild {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodSelectorGenBuild.class);
-	public static void init(String controllerClassPath,ControllerMethodCodeGen gen) {
+	public static void init(String controllerClassPath,CodeGenUtil gen) {
 		/**
 		 * <controll类名,controll类对应requestMap方法列表>
 		 */

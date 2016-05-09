@@ -10,7 +10,7 @@ import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.utils.FileUtil;
 
 /**
-  * <p><b>Title:</b><i>controller的方法地址匹配映射代码生成类</i></p>
+  * <p><b>Title:</b><i>模版渲染生成文件工具类</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -23,14 +23,14 @@ import com.meizu.simplify.utils.FileUtil;
  *
  */
 @Bean
-public class ControllerMethodCodeGen {
+public class CodeGenUtil {
 	@Resource
 	private ITemplate template;
 	
-	public ControllerMethodCodeGen() {
+	public CodeGenUtil() {
 		
 	}
-	public ControllerMethodCodeGen(ITemplate template) {
+	public CodeGenUtil(ITemplate template) {
 		this.template = template;
 	}
 	public void gen(Map<String, Object> parameters, String outDir,String javaFileName) {

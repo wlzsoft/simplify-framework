@@ -19,7 +19,7 @@ import com.meizu.simplify.template.BeetlTemplate;
 public class MethodSelectorGenMain {
 	public static void main(String[] args) {
 //		Startup.start();
-		ControllerMethodCodeGen gen = new ControllerMethodCodeGen(new BeetlTemplate());
+		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
 		MethodSelectorGenBuild.init("com.meizu.demo.mvc.controller", gen);
 	}
 }
