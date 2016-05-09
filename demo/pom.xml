@@ -259,7 +259,7 @@
 					<configuration>
 						<target>
 							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
-							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.MethodSelectorGenMain"  append="true" jvm="java"  newenvironment="true">
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.MethodSelectorGenMain"  args="com.meizu.demo.mvc.controller" append="true" jvm="java"  newenvironment="true">
 								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>

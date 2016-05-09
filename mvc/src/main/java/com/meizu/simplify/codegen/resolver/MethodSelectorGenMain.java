@@ -20,6 +20,7 @@ public class MethodSelectorGenMain {
 	public static void main(String[] args) {
 //		Startup.start();
 		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
-		MethodSelectorGenBuild.init("com.meizu.demo.mvc.controller", gen);
+		System.out.println("controll需要生成代码的扫描目录:"+args[0]);
+		MethodSelectorGenBuild.init(args[0], gen);
 	}
 }
