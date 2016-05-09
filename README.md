@@ -125,6 +125,9 @@ http://fishermen.iteye.com/blog/430286
 96.jsp的模版处理有问题，全部无法处理，需要检查并解决掉
 97.目前需要对aop.properties手动进行拦截方法的配置，很是繁琐，解决方案是：任何模块（比如Cache）实现了IInterceptor接口的实现都需要提供对aop.properties的配置生成功能,aop.properties可以使用模版引擎来处理，后续aop.properties对开发人员透明
 98.确认eclipse是否有类似sublime的多行选择功能
+99.redis-集群优化：基于分布式集群的测试，减少redis单cpu线程的阻塞影响，可用codis或是官方的redis cluster来测试，并选择可靠方案
+100.redis-程序优化:不要所有的缓存都使用通用的二进制数据存储，比如即时排序，就不行。部分情况为了优化性能：可以采用双层hash来优化内存
+或是通过多个hash结构来分摊存储所有记录,有性能要求的地方，要按需求来优化处理，选址合适的数据结构
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
