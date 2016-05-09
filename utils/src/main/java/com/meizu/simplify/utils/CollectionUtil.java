@@ -28,7 +28,7 @@ import com.meizu.simplify.utils.collection.IEqualCallBack;
  * @version Version 0.1
  *
  */
-public abstract class CollectionUtil {
+public class CollectionUtil {
 	
 	/**
 	 * 方法用途: 判断指定的集合是否为空<br>
