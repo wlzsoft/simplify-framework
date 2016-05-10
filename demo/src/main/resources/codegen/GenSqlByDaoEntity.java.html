@@ -44,4 +44,21 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 		}
 		return result;
 	}
+	
+	@Override
+	public void invokeSet(Object t, String columnName, Object val) {
+	String clazzName = t.getClass().getSimpleName();
+		try {
+			switch(clazzName+":"+columnName) {
+			    <%for(methodTag in methodTagList){%>
+					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
+				case "${methodTag.clazz}:${methodTag.value}":
+					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%>(${param.name})val<%}%>);
+					break;
+    		    <%}}}}%>
+			}
+		} catch (Exception e) {
+			Message.error(e.getMessage());
+		}
+	}
 }

@@ -454,20 +454,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	
-	/**
-	 * 
-	 * 方法用途: 匹配数据库字段类型和实体属性类型，并转换成实体类型<br>
-	 * 操作步骤: TODO<br>
-	 * @param val
-	 * @return
-	 */
-	private Class<?> mapperOrmType(Object val) {
-		Class<?> valClazz = val.getClass();
-		if(valClazz == Timestamp.class) {
-			valClazz = Date.class;
-		}
-		return valClazz;
-	}
 	
 	public List<T> find(String sql,Object... params) {
 		logger.info(sql);
@@ -482,11 +468,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				if(key == null) {
 					return t;
 				}
-				
 				try {
 					if(val != null) {
-						Class<?> valClazz = mapperOrmType(val);
-						ReflectionUtil.invokeSetterMethod(t, key, val,valClazz);
+						selector.invokeSet(t, key, val);
 					}
 				} catch(IllegalArgumentException ex) {
 					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());

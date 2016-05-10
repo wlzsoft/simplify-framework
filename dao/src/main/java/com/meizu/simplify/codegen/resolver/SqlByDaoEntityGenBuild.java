@@ -77,13 +77,14 @@ public class SqlByDaoEntityGenBuild {
 					Map<String,Object> subMap = new HashMap<>();
 					subMap.put("clazz", entry.getKey().getSimpleName());
 					subMap.put("obj", entry.getKey().getSimpleName().toLowerCase());
-//					Class<?>[] parameterTypes = method.getParameterTypes();
+					Class<?>[] parameterTypes = method.getParameterTypes();
 					subMap.put("value", method.getName());
 					subMap.put("returnType", method.getReturnType().getName());
 					boolean isStatic = Modifier.isStatic(method.getModifiers());
 					boolean isFinal = Modifier.isFinal(method.getModifiers());
 					subMap.put("isStatic", isStatic);
 					subMap.put("isFinal", isFinal);
+					subMap.put("params", parameterTypes);
 					//方法参数类型抽取
 					entityMethodTagList.add(subMap);
 				}

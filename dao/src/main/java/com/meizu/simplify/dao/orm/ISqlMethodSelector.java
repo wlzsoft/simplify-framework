@@ -17,5 +17,6 @@ import com.meizu.simplify.ioc.annotation.DefaultBean;
  */
 @DefaultBean
 public interface ISqlMethodSelector {
-	public  Object invoke(Object t,String columnName) ;
+	public  Object invoke(Object t,String columnName);
+	public  void invokeSet(Object t,String columnName,Object val);
 }
