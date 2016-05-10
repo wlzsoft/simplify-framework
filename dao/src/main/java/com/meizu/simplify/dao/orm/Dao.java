@@ -28,6 +28,7 @@ import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -72,6 +73,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Config("system.isMycat")
     private boolean isMycat = false;
 
+	@Resource
+	private ISqlMethodSelector selector;
 	
 	/**
 	 * @param clazz  业务实体类
@@ -363,7 +366,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				int count = 0;
 				for (int i=0; i < cList.size(); i++) {
 					String columnName = cList.get(i);
-					Object value = ReflectionUtil.invokeGetterMethod(t, columnName);
+					Object value = selector.invoke(t, columnName);
 					if(((isAllField == null || isAllField)||value != null)&&columnName!="fid") {
 						prepareStatement.setObject(count+1,value);
 						count++;
