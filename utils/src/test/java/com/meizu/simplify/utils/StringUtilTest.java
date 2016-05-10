@@ -122,4 +122,11 @@ public class StringUtilTest {
 		Assert.assertEquals("sdf,sd23f,sasdf,234sdf", joinStr);
 	}
 	
+	@Test
+	public void joinByNull() {
+		List<String> list = new ArrayList<>();
+		String joinStr = StringUtil.join(list, ",");
+		Assert.assertNull(joinStr);
+	}
+	
 }
