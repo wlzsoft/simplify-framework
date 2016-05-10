@@ -57,8 +57,6 @@ public class AnalysisRequestControllerModel {
 						continue;
 					}
 
-					// 取消兼容方式
-					// par = par == null ? request.getParameter(parName) : par;
 					if (par != null) {
 						Method method2 = entityClass.getMethod(method.getName(), new Class[] { type });
 						// 将值进行格式化后注入
