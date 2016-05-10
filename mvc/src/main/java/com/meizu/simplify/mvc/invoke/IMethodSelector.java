@@ -10,7 +10,7 @@ import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
 
 /**
-  * <p><b>Title:</b><i>方法选择器</i></p>
+  * <p><b>Title:</b><i>controller方法选择器</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -24,5 +24,18 @@ import com.meizu.simplify.mvc.model.Model;
  */
 @DefaultBean
 public interface IMethodSelector {
+	/**
+	 * 方法用途: controller方法选择处理<br>
+	 * 操作步骤: 用于请求地址的路由<br>
+	 * @param request
+	 * @param response
+	 * @param t
+	 * @param obj
+	 * @param doCmd
+	 * @param parameValue
+	 * @return
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
 	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
 }

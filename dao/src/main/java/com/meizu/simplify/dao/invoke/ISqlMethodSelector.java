@@ -3,7 +3,7 @@ package com.meizu.simplify.dao.invoke;
 import com.meizu.simplify.ioc.annotation.DefaultBean;
 
 /**
-  * <p><b>Title:</b><i>方法选择器</i></p>
+  * <p><b>Title:</b><i>sql对应的实体的set和get方法选择器</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -17,6 +17,20 @@ import com.meizu.simplify.ioc.annotation.DefaultBean;
  */
 @DefaultBean
 public interface ISqlMethodSelector {
+	/**
+	 * 方法用途: get方法选择器处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param t
+	 * @param columnName
+	 * @return
+	 */
 	public  Object invoke(Object t,String columnName);
+	/**
+	 * 方法用途: set方法选择器处理<br>
+	 * 操作步骤: TODO<br>
+	 * @param t
+	 * @param columnName
+	 * @param val
+	 */
 	public  void invokeSet(Object t,String columnName,Object val);
 }
