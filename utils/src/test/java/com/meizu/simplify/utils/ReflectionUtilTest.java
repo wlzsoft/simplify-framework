@@ -1,6 +1,9 @@
 package com.meizu.simplify.utils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -13,6 +16,7 @@ import org.junit.rules.ExpectedException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.demo.DemoService;
 import com.meizu.simplify.utils.entity.Test2;
+import com.meizu.simplify.utils.entity.TestImpl;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -109,6 +113,24 @@ public class ReflectionUtilTest  {
 		for (Entry<String, Object> entry : set) {
 			System.out.println(entry.getKey()+"="+entry.getValue());
 		}
+	}
+	@Test
+	public void getAllField() {
+		
+		List<Field> list = ReflectionUtil.getAllField(TestImpl.class);
+		for (Field field : list) {
+			System.out.println(field.getName());
+		}
+		
+	}
+	@Test
+	public void getAllMethod() {
+		
+		List<Method> list = ReflectionUtil.getAllMethod(TestImpl.class);
+		for (Method field : list) {
+			System.out.println(field.getName());
+		}
+		
 	}
 
 }

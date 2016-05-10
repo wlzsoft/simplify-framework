@@ -1,6 +1,7 @@
 package com.meizu.simplify.codegen.resolver;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 /**
  * <p><b>Title:</b><i>dao的entity转sql的代码生成处理</i></p>
  * <p>Desc: TODO</p>
@@ -36,7 +38,7 @@ public class SqlByDaoEntityGenBuild {
 		/**
 		 * <类名,类对应requestMap方法列表>
 		 */
-		Map<Class<?>,List<Map<String,Object>>> methodMap = new HashMap<>();
+		Map<Class<?>,List<Method>> methodMap = new HashMap<>();
 		// 查找指定class路径
 		if (entityClassPath != null) {
 			String[] classPathArr = entityClassPath.split(",");
@@ -46,48 +48,42 @@ public class SqlByDaoEntityGenBuild {
 					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Entity被注册，请检查config.properties文件system.entityClasspath的配置");
 				}
 				for (Class<?> entityClass : entityClassList) {
-					Method[] methodArr = null;
+					List<Method> methodArr = null;
 					try {
-						methodArr = entityClass.getDeclaredMethods();
+//						methodArr = entityClass.getDeclaredMethods();
+						methodArr = ReflectionUtil.getAllMethod(entityClass);
 					} catch(NoClassDefFoundError e) {
 						e.printStackTrace();
 						throw new BaseException("代码生成：bean["+entityClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
 					}
-					List<Map<String,Object>> methodList = new ArrayList<>();
-					for (Method method : methodArr) {
-						if (method.isAnnotationPresent(Entity.class)) {
-							Class<?>[] parameterTypes = method.getParameterTypes();
-							Map<String,Object> params = new HashMap<>();
-							params.put("methodName", method.getName());
-							params.put("returnType", method.getReturnType().getName());
-							params.put("params", parameterTypes);
-							methodList.add(params);
-						}
-					}
-					if(methodList.size()>0) {
-						methodMap.put(entityClass, methodList);
+					if(methodArr.size()>0) {
+						methodMap.put(entityClass, methodArr);
 					}
 				}
 			}
 			Map<String,Object> parameters = new HashMap<>();
-			Set<Entry<Class<?>, List<Map<String,Object>>>> set = methodMap.entrySet();
+			Set<Entry<Class<?>, List<Method>>> set = methodMap.entrySet();
 			List<Map<String,String>> entityTagList = new ArrayList<>();
 			List<Map<String,Object>> entityMethodTagList = new ArrayList<>();
-			for (Entry<Class<?>, List<Map<String,Object>>> entry : set) {
+			for (Entry<Class<?>, List<Method>> entry : set) {
 				//类信息抽取
 				Map<String,String> map = new HashMap<>();
 				map.put("clazz", entry.getKey().getName());
 				map.put("value", entry.getKey().getSimpleName().toLowerCase());
 				entityTagList.add(map);
 				//方法信息抽取
-				List<Map<String,Object>> methodInfoList = entry.getValue();
-				for (Map<String,Object> mi : methodInfoList) {
+				List<Method> methodInfoList = entry.getValue();
+				for (Method method : methodInfoList) {
 					Map<String,Object> subMap = new HashMap<>();
 					subMap.put("clazz", entry.getKey().getSimpleName());
 					subMap.put("obj", entry.getKey().getSimpleName().toLowerCase());
-					subMap.put("returnType", mi.get("returnType"));
-					subMap.put("value", String.valueOf(mi.get("methodName")));
-					subMap.put("params", mi.get("params"));
+//					Class<?>[] parameterTypes = method.getParameterTypes();
+					subMap.put("value", method.getName());
+					subMap.put("returnType", method.getReturnType().getName());
+					boolean isStatic = Modifier.isStatic(method.getModifiers());
+					boolean isFinal = Modifier.isFinal(method.getModifiers());
+					subMap.put("isStatic", isStatic);
+					subMap.put("isFinal", isFinal);
 					//方法参数类型抽取
 					entityMethodTagList.add(subMap);
 				}

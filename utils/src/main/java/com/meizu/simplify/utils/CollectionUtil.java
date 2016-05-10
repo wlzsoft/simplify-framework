@@ -33,8 +33,7 @@ public class CollectionUtil {
 	/**
 	 * 方法用途: 判断指定的集合是否为空<br>
 	 * 操作步骤: TODO<br>
-	 * @param collection
-	 *            待判断的集合
+	 * @param collection 待判断的集合
 	 * @return 返回指定的集合是否为空
 	 */
 	public static Boolean isEmpty(Collection<?> collection) {
@@ -44,8 +43,7 @@ public class CollectionUtil {
 	/**
 	 * 方法用途: 判断指定的集合是否不为空<br>
 	 * 操作步骤: TODO<br>
-	 * @param collection
-	 *            待判断的集合
+	 * @param collection 待判断的集合
 	 * @return 返回指定的集合是否不为空
 	 */
 	public static Boolean isNotEmpty(Collection<?> collection) {
@@ -55,8 +53,7 @@ public class CollectionUtil {
 	/**
 	 * 方法用途: 判断指定的数组是否为空<br>
 	 * 操作步骤: TODO<br>
-	 * @param array
-	 *            待判断的数组
+	 * @param array  待判断的数组
 	 * @return 返回指定的数组是否为空
 	 */
 	public static Boolean isEmpty(Object[] array) {
@@ -66,8 +63,7 @@ public class CollectionUtil {
 	/**
 	 * 方法用途: 判断指定的数组是否不为空<br>
 	 * 操作步骤: TODO<br>
-	 * @param array
-	 *            待判断的数组
+	 * @param array  待判断的数组
 	 * @return 返回指定的数组是否不为空
 	 */
 	public static Boolean isNotEmpty(Object[] array) {
@@ -77,8 +73,7 @@ public class CollectionUtil {
 	/**
 	 * 方法用途: 判断指定的Map是否为空<br>
 	 * 操作步骤: TODO<br>
-	 * @param map
-	 *            待判断的Map
+	 * @param map  待判断的Map
 	 * @return 返回指定的Map是否为空
 	 */
 	public static Boolean isEmpty(Map<?, ?> map) {
@@ -88,39 +83,65 @@ public class CollectionUtil {
 	/**
 	 * 方法用途: 判断指定的Map是否不为空<br>
 	 * 操作步骤: TODO<br>
-	 * 
-	 * @param map
-	 *            待判断的Map
+	 * @param map 待判断的Map
 	 * @return 返回指定的Map是否不为空
 	 */
 	public static Boolean isNotEmpty(Map<?, ?> map) {
 		return !isEmpty(map);
 	}
+	
 	/**
 	 * 方法用途: 判断数组中是否包含指定元素<br>
 	 * 操作步骤: TODO<br>
-	 * @param <T>
-	 *            数组类型
-	 * @param elements
-	 *            数组
-	 * @param elementToFind
-	 *            待查找的元素
+	 * @param <T> 数组类型
+	 * @param elements 数组
+	 * @param elementByFind 待查找的元素
 	 * @return 如果数组中包含指定元素返回true，否则返回false
 	 */
-	public static <T> Boolean contains(T[] elements, T elementToFind) {
+	public static <T> Boolean contains(T[] elements, T elementByFind) {
 		List<T> elementsList = Arrays.asList(elements);
-		return elementsList.contains(elementToFind);
+		return elementsList.contains(elementByFind);
+	}
+	
+	/**
+	 * 方法用途: 判断数组中,是否包含满足条件的元素<br>
+	 * 操作步骤: TODO<br>
+	 * @param <T>  数组类型
+	 * @param elements 数组
+	 * @param elementByFind 待查找的元素
+	 * @param call 回调处理确认满足条件的对象
+	 * @return 如果数组中包含指定元素返回true，否则返回false
+	 */
+	public static <T,W> Boolean contains(T[] elements, W elementByFind,IEqualCallBack<T,W> call) {
+		List<T> elementsList = Arrays.asList(elements);
+		return contains(elementsList,elementByFind,call);
+	}
+	
+	/**
+	 * 方法用途: 集合对象数组中，是否包含满足条件的对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceList 待提取的数组对象
+	 * @param elementByFind 提取的条件
+	 * @param call 回调处理确认满足条件的对象
+	 * @return
+	 */
+	public static <T,W> Boolean contains(List<T> sourceList,W elementByFind, IEqualCallBack<T,W> call) {
+		for (int i=0; i < sourceList.size(); i++) {
+			T t = sourceList.get(i);
+			boolean res = call.equal(t,elementByFind);
+			if(res) {
+				return res;
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 * 方法用途: 复制集合<br>
 	 * 操作步骤: TODO<br>
-	 * @param <T>
-	 *            集合元素类型
-	 * @param source
-	 *            源集合
-	 * @param target
-	 *            目标集合
+	 * @param <T> 集合元素类型
+	 * @param source 源集合
+	 * @param target 目标集合
 	 */
 	public static <T> void copy(Collection<T> source, Collection<T> target) {
 		AssertUtil.isTrue(source != null, "源集合不能为空。");
@@ -134,7 +155,6 @@ public class CollectionUtil {
 	}
 	
 	/**
-	 * 
 	 * 方法用途: 根据值对Map进行排序<br>
 	 * 操作步骤: TODO<br>
 	 * @param <K> 键类型
@@ -168,7 +188,6 @@ public class CollectionUtil {
 	}
 	
 	/**
-	 * 
 	 * 方法用途: 根据键对Map进行排序<br>
 	 * 操作步骤: TODO<br>
 	 * @param <K> 键类型
@@ -199,7 +218,6 @@ public class CollectionUtil {
 	}
 	
 	/**
-	 * 
 	 * 方法用途: 集合对象数组中，提取满足条件的对象<br>
 	 * 操作步骤: TODO<br>
 	 * @param sourceList 待提取的数组对象
@@ -217,17 +235,13 @@ public class CollectionUtil {
 		}
 		return null;
 	}
+	
 	/**
-	 * 
 	 * 方法用途: 过滤list中对象的属性，并通过splitChar字符拼接成字符串返回<br>
 	 * 操作步骤: TODO<br>
-	 * 
-	 * @param sourceList
-	 *            源list集合
-	 * @param field
-	 *            抽取字段属性
-	 * @param splitChar
-	 *            拼接所用字符
+	 * @param sourceList 源list集合
+	 * @param field 抽取字段属性
+	 * @param splitChar 拼接所用字符
 	 * @return 拼接后结果
 	 */
 	public static <T> String filterAndFormat(List<T> sourceList, String field, String splitChar) {
@@ -238,16 +252,11 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 
 	 * 方法用途: 过滤list中对象的属性，并通过splitChar字符拼接成字符串返回<br>
 	 * 操作步骤: TODO<br>
-	 * 
-	 * @param sourceList
-	 *            源list集合
-	 * @param field
-	 *            抽取字段属性
-	 * @param splitChar
-	 *            拼接所用字符
+	 * @param sourceList 源list集合
+	 * @param field 抽取字段属性
+	 * @param splitChar 拼接所用字符
 	 * @return 拼接后结果
 	 */
 	public static <T> List<Serializable> filterAndFormatByList(List<T> sourceList, String field, String splitChar) {
@@ -257,16 +266,11 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 
 	 * 方法用途: 过滤list中对象的属性，并通过splitChar字符拼接成字符串返回<br>
 	 * 操作步骤: TODO<br>
-	 * 
-	 * @param sourceList
-	 *            源list集合
-	 * @param field
-	 *            抽取字段属性
-	 * @param splitChar
-	 *            拼接所用字符
+	 * @param sourceList 源list集合
+	 * @param field 抽取字段属性
+	 * @param splitChar 拼接所用字符
 	 * @return 拼接后结果
 	 */
 	public static <T> String filterAndFormatByString(List<T> sourceList, String field, String splitChar) {
@@ -281,16 +285,11 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 
 	 * 方法用途: 过滤list中对象的属性，并通过splitChar字符拼接成字符串返回<br>
 	 * 操作步骤: TODO<br>
-	 * 
-	 * @param sourceList
-	 *            源list集合
-	 * @param field
-	 *            抽取字段属性
-	 * @param splitChar
-	 *            拼接所用字符
+	 * @param sourceList 源list集合
+	 * @param field 抽取字段属性
+	 * @param splitChar 拼接所用字符
 	 * @return 拼接后结果
 	 */
 	public static <T> Serializable[] filterAndFormatByArr(List<T> sourceList, String field, String splitChar) {
@@ -301,17 +300,12 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 
 	 * 方法用途: 字符串集合转字符串<br>
 	 * 操作步骤: 为给定字符串集合的值的两遍添加上指定字符，并转化成字符串，以指定字符分隔<br>
-	 * 
 	 * @param types
-	 * @param appendLeft
-	 *            在每个值的左边加上字符,例如单引号' 例如双引号" 例如百分号%
-	 * @param appendRight
-	 *            在每个值的右边加上字符,例如单引号' 例如双引号" 例如百分号%
-	 * @param splitStr
-	 *            指定分隔的字符
+	 * @param appendLeft 在每个值的左边加上字符,例如单引号' 例如双引号" 例如百分号%
+	 * @param appendRight 在每个值的右边加上字符,例如单引号' 例如双引号" 例如百分号%
+	 * @param splitStr 指定分隔的字符
 	 * @return
 	 */
 	public static String listToStringBySplit(List<String> types, String appendLeft, String appendRight,
@@ -327,15 +321,11 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 
 	 * 方法用途: 字符串集合转字符串<br>
 	 * 操作步骤: 为给定字符串集合的值的两遍添加上指定字符，并转化成字符串，以逗号分隔<br>
-	 * 
 	 * @param types
-	 * @param appendLeft
-	 *            在每个值的左边加上字符,例如单引号' 例如双引号" 例如百分号%
-	 * @param appendRight
-	 *            在每个值的右边加上字符,例如单引号' 例如双引号" 例如百分号%
+	 * @param appendLeft 在每个值的左边加上字符,例如单引号' 例如双引号" 例如百分号%
+	 * @param appendRight 在每个值的右边加上字符,例如单引号' 例如双引号" 例如百分号%
 	 * @return
 	 */
 	public static String listToStringBySplit(List<String> types, String appendLeft, String appendRight) {

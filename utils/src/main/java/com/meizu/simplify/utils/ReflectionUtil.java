@@ -5,6 +5,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 
 /**
@@ -319,6 +324,63 @@ public class ReflectionUtil {
 		}
 		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
 			buildFieldInfo(class1.getSuperclass(),param,map);
+		}
+	}
+//-----------------------获取class的基本信息-----------------------------
+	/**
+	 * 方法用途: 获取class的所有方法，包含所有父类的方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @return
+	 */
+	public static List<Method> getAllMethod(Class<?> entityClass) {
+		List<Method> methodList = new ArrayList<>();
+		getAllMethod(entityClass, methodList);
+		return methodList;
+	}
+	/**
+	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @param methodList
+	 * @return
+	 */
+	private static void getAllMethod(Class<?> entityClass,List<Method> methodList) {
+		Method[] methods = entityClass.getDeclaredMethods();
+		for (Method method : methods) {
+			Boolean isContains = CollectionUtil.contains(methodList, method,(m,w) -> method.getName().equals(m.getName()) );
+			if(!isContains){
+				methodList.add(method);
+			}
+		}
+		if(entityClass.getSuperclass() != Object.class && entityClass.getSuperclass() != null) {
+			getAllMethod(entityClass.getSuperclass(),methodList);
+		}
+	}
+	/**
+	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @param fieldList
+	 * @return
+	 */
+	public static List<Field> getAllField(Class<?> entityClass) {
+		List<Field> fieldList = new ArrayList<>();
+		getAllField(entityClass, fieldList);
+		return fieldList;
+	}
+	/**
+	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @param fieldList
+	 * @return
+	 */
+	private static void getAllField(Class<?> entityClass,List<Field> fieldList) {
+		Field[] fields = entityClass.getDeclaredFields();
+		Collections.addAll(fieldList, fields);
+		if(entityClass.getSuperclass() != Object.class && entityClass.getSuperclass() != null) {
+			getAllField(entityClass.getSuperclass(),fieldList);
 		}
 	}
 	

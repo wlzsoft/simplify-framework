@@ -1,16 +1,12 @@
 package com.meizu.simplify.codegen;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.mvc.controller.BaseController;
-import com.meizu.simplify.mvc.controller.IMethodSelector;
-import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.dao.orm.ISqlMethodSelector;
+<%for(tag in tagList){%>
+import ${tag.clazz};
+<%}%>
 <% 
  var date = date();
 %>
@@ -28,23 +24,20 @@ import com.meizu.simplify.mvc.model.Model;
  *
  */
 @Bean
-public class GenMethodSelector implements IMethodSelector{
-	
-	<%for(controllerTag in tagList){%>
-	@Resource private ${controllerTag.clazz}  ${controllerTag.value};
-	<%}%>
+public class GenSqlByDaoEntity implements ISqlMethodSelector{
 	
 	@Override
-	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+	public Object invoke(Object t, String columnName) {
 		Object result = null;
-		String clazzName = obj.getClass().getSimpleName();
+		String clazzName = t.getClass().getSimpleName();
 		try {
-			switch(clazzName+":"+doCmd) {
-			    <%for(controllerMethodTag in methodTagList){%>
-				case "${controllerMethodTag.clazz}:${controllerMethodTag.value}":
-					<%if(controllerMethodTag.returnType != "void"){%>result = <%}%>${controllerMethodTag.obj}.${controllerMethodTag.value}(request, response <%for(param in controllerMethodTag.params){if(paramLP.index>=3){%>,(${param.name})<%if(paramLP.index==3){%>t<%}if(paramLP.index>3){%>parameValue[${paramLP.index-1}]<%}}}%>);
+			switch(clazzName+":"+columnName) {
+			    <%for(methodTag in methodTagList){%>
+					<%if(methodTag.returnType != "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
+				case "${methodTag.clazz}:${methodTag.value}":
+					result = ((${methodTag.clazz})t).${methodTag.value}();
 					break;
-    		    <%}%>
+    		    <%}}}}%>
 			}
 		} catch (Exception e) {
 			Message.error(e.getMessage());
