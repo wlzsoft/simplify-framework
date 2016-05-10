@@ -528,7 +528,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String join(Collection<?> collection, String separator) {
-		if(collection == null) {
+		if(collection == null||collection.size() ==0) {//fixed lcy 增加集合长度为0的判断
 			return null;
 		}
 		return join(collection.toArray(),separator);
