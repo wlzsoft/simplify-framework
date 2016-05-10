@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.dao.invoke;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
 

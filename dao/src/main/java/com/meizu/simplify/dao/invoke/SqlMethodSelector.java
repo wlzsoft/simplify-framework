@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.dao.invoke;
 
 import java.sql.Timestamp;
 import java.util.Date;

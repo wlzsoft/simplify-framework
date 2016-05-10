@@ -25,6 +25,7 @@ import com.meizu.simplify.dao.annotations.Table;
 import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
+import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.dao.util.Page;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;

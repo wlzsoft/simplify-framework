@@ -264,6 +264,13 @@
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
 						</target>
+						<target>
+							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.SqlByDaoEntityGenBuild"  args="com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
+								<!-- <classpath refid="${mvn-classpath}" /> -->
+								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
+							</java>
+						</target>
 					</configuration>
 				</execution>
 				<execution>

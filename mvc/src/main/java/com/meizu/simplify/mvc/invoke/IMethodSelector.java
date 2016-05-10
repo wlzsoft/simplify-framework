@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.controller;
+package com.meizu.simplify.mvc.invoke;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
+import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
 
 /**

@@ -11,6 +11,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
+import com.meizu.simplify.mvc.invoke.IMethodSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.mvc.view.JsonView;

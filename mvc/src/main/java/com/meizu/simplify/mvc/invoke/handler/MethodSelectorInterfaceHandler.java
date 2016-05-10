@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view.handler;
+package com.meizu.simplify.mvc.invoke.handler;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
-import com.meizu.simplify.mvc.controller.IMethodSelector;
-import com.meizu.simplify.mvc.controller.MethodSelector;
+import com.meizu.simplify.mvc.invoke.IMethodSelector;
+import com.meizu.simplify.mvc.invoke.MethodSelector;
 import com.meizu.simplify.utils.ClassUtil;
 
 /**
