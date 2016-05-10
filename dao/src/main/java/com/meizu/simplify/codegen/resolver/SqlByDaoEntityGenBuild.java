@@ -79,6 +79,7 @@ public class SqlByDaoEntityGenBuild {
 					subMap.put("obj", entry.getKey().getSimpleName().toLowerCase());
 					Class<?>[] parameterTypes = method.getParameterTypes();
 					subMap.put("value", method.getName());
+					subMap.put("fieldName", method.getName().substring(3).toLowerCase());
 					subMap.put("returnType", method.getReturnType().getName());
 					boolean isStatic = Modifier.isStatic(method.getModifiers());
 					boolean isFinal = Modifier.isFinal(method.getModifiers());

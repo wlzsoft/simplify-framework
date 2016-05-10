@@ -3,7 +3,6 @@ package com.meizu.simplify.codegen;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
-import com.meizu.simplify.utils.StringUtil;
 <%for(tag in tagList){%>
 import ${tag.clazz};
 <%}%>
@@ -28,14 +27,13 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 	
 	@Override
 	public Object invoke(Object t, String columnName) {
-		columnName = "get" + StringUtil.capitalize(columnName);
 		Object result = null;
 		String clazzName = t.getClass().getSimpleName();
 		try {
 			switch(clazzName+":"+columnName) {
 			    <%for(methodTag in methodTagList){%>
 					<%if(methodTag.returnType != "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
-				case "${methodTag.clazz}:${methodTag.value}":
+				case "${methodTag.clazz}:${methodTag.fieldName}":
 					result = ((${methodTag.clazz})t).${methodTag.value}();
 					break;
     		    <%}}}}%>
@@ -48,13 +46,12 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 	
 	@Override
 	public void invokeSet(Object t, String columnName, Object val) {
-		columnName = "set" + StringUtil.capitalize(columnName);
 		String clazzName = t.getClass().getSimpleName();
 		try {
 			switch(clazzName+":"+columnName) {
 			    <%for(methodTag in methodTagList){%>
 					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
-				case "${methodTag.clazz}:${methodTag.value}":
+				case "${methodTag.clazz}:${methodTag.fieldName}":
 					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%>(${param.name})val<%}%>);
 					break;
     		    <%}}}}%>
