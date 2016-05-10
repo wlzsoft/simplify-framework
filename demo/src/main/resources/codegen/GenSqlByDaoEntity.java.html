@@ -27,6 +27,7 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 	
 	@Override
 	public Object invoke(Object t, String columnName) {
+		columnName = "get" + StringUtil.capitalize(columnName);
 		Object result = null;
 		String clazzName = t.getClass().getSimpleName();
 		try {
@@ -46,7 +47,8 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 	
 	@Override
 	public void invokeSet(Object t, String columnName, Object val) {
-	String clazzName = t.getClass().getSimpleName();
+		columnName = "set" + StringUtil.capitalize(columnName);
+		String clazzName = t.getClass().getSimpleName();
 		try {
 			switch(clazzName+":"+columnName) {
 			    <%for(methodTag in methodTagList){%>
