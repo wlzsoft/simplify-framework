@@ -19,6 +19,7 @@ import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
+import com.meizu.simplify.utils.StringUtil;
 /**
  * <p><b>Title:</b><i>dao的entity转sql的代码生成处理</i></p>
  * <p>Desc: TODO</p>
@@ -79,7 +80,7 @@ public class SqlByDaoEntityGenBuild {
 					subMap.put("obj", entry.getKey().getSimpleName().toLowerCase());
 					Class<?>[] parameterTypes = method.getParameterTypes();
 					subMap.put("value", method.getName());
-					subMap.put("fieldName", method.getName().substring(3).toLowerCase());
+					subMap.put("fieldName", StringUtil.lowerCaseByFirst(method.getName().substring(3)));
 					subMap.put("returnType", method.getReturnType().getName());
 					boolean isStatic = Modifier.isStatic(method.getModifiers());
 					boolean isFinal = Modifier.isFinal(method.getModifiers());

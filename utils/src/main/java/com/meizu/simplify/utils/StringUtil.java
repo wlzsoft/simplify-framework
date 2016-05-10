@@ -132,6 +132,27 @@ public class StringUtil {
 	
 	/**
 	 * 
+	 * 方法用途: 转换字符串第一个字母为小写<br>
+	 * 操作步骤: TODO<br>
+	 * @param str 待处理字符串
+	 * @return 返回转换后的字符串
+	 */
+	public static String lowerCaseByFirst(String str) {
+		if(isBlank(str)) {
+			throw new UncheckedException("字符串为空，无法转换为第一个字母为小写");
+		}
+		str = str.trim();
+		String upperChar = str.substring(0,1).toLowerCase();
+		if(str.length()>1) {
+			str = upperChar+str.substring(1);
+		} else {
+			str = upperChar;
+		}
+		return str;
+	}
+	
+	/**
+	 * 
 	 * 方法用途: 截取最后一个分隔符前的字符串内容<br>
 	 * 操作步骤: TODO<br>
 	 * @param str 待截取的字符串
