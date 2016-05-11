@@ -26,12 +26,10 @@ import com.meizu.simplify.ioc.Startup;
  */
 @WebListener("系统初始化监听器")
 public class StartUpListener implements ServletContextListener,ServletContextAttributeListener {
-//	private SystemConfig systemConfig = SystemConfig.getInstance(); 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext context = sce.getServletContext();
 		context.setInitParameter("type", "ALL");
-		
 		CachePool.init();
 		Startup.start();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
