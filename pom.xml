@@ -75,6 +75,7 @@
   	<module>mongodb</module>
     <module>message</module>
     <module>rpc</module>
+    <module>listener</module>
     <module>authfilter</module>
   </modules>
   <properties>
