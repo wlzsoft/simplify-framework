@@ -2,7 +2,6 @@ package com.meizu.simplify.codegen.resolver;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +14,8 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.codegen.CodeGenUtil;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.ioc.BeanContainer;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.annotation.RequestMap;
-import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.utils.ClassUtil;
 /**
  * <p><b>Title:</b><i>controll方法代码生成处理</i></p>
