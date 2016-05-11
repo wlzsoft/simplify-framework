@@ -19,7 +19,6 @@ import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.DataUtil;
-import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
 
@@ -55,7 +54,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			}
 			LOGGER.info("配置属性单个注入 初始化:{}",beanClass.getName());
 			String reloadableResourceValue = reloadableResource.value();
-			String prefix = reloadableResource.prefix();
+//			String prefix = reloadableResource.prefix();
 			PropertieUtil propertieUtil = new PropertieUtil(reloadableResourceValue);
 			propertiesMap.put(reloadableResourceValue, propertieUtil);
 		}
