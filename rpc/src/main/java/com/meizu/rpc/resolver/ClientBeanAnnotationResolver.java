@@ -41,6 +41,9 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, "com.meizu");//扫描ClientBean注解bean
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {
+				if(!clazz.getName().equals(entityClass.getName())){
+					continue;
+				}
 				List<Class<?>> allIpmlClass=ClassUtil.findClassesByParentClass(entityClass, "com.meizu");
 				Boolean isRemote = false;
 				if (CollectionUtil.isEmpty(allIpmlClass)) {
