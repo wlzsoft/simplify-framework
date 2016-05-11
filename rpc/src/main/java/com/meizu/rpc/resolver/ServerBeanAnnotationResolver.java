@@ -12,6 +12,7 @@ import com.alibaba.dubbo.config.MonitorConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
 import com.meizu.rpc.annotations.ServerBean;
 import com.meizu.rpc.config.DubboApplication;
+import com.meizu.rpc.config.DubboMonitor;
 import com.meizu.rpc.config.DubboProtocol;
 import com.meizu.rpc.config.DubboRegistry;
 import com.meizu.simplify.exception.StartupErrorException;
@@ -46,6 +47,7 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 		DubboApplication application = BeanFactory.getBean(DubboApplication.class);
  		DubboProtocol protocol = BeanFactory.getBean(DubboProtocol.class);
 		DubboRegistry registry = BeanFactory.getBean(DubboRegistry.class);
+		DubboMonitor monitor = BeanFactory.getBean(DubboMonitor.class);
 //		List<DubboRegistry> registryList=new ArrayList<DubboRegistry>();
 //		List<Object> beanList=new ArrayList<Object>();
 		Set<Entry<String, Object>>  resoveBean = BeanFactory.getBeanContainer().getMapContainer().entrySet();
@@ -65,6 +67,7 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				ServiceConfig<Object> service = new ServiceConfig<Object>(); 
 				service.setApplication(application);
 				service.setRegistry(registry);
+				service.setMonitor(monitor);
 				service.setProtocol(protocol);
 				service.setInterface(interfaces);
 				service.setTimeout(beanAnnotation.timeout());

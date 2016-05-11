@@ -71,6 +71,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			// 连接注册中心配置
 			RegistryConfig registry = new RegistryConfig();
 			registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
+			registry.setGroup(propertieUtil.getString("dubbo.registry.group"));
 			// 引用远程服务
 			ReferenceConfig<Object> reference = new ReferenceConfig<>();
 			reference.setApplication(application);
@@ -81,9 +82,12 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			reference.setVersion(beanAnnotation.version());
 			reference.setCheck(beanAnnotation.check());
 			reference.setUrl(beanAnnotation.url());
-//			MonitorConfig monitor=new MonitorConfig();//监控
-//			monitor.setProtocol("registry");
-//			reference.setMonitor(monitor);
+			String monitorPro=propertieUtil.getString("dubbo.monitor.protocol");
+			if (StringUtil.isNotBlank(monitorPro)) {
+				MonitorConfig monitor = new MonitorConfig();// 监控
+				monitor.setProtocol(monitorPro);
+				reference.setMonitor(monitor);
+			}
 			BeanEntity<Object> resultEntity = new BeanEntity<Object>();
 			Object obj=reference.get();
 			resultEntity.setName(entityClass.getName());
