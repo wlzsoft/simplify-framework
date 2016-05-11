@@ -42,6 +42,9 @@ public enum InitTypeEnum {
 	 * controller 地址解析初始化
 	 */
 	CONTROL(7),
+	/**
+	 * 模版引擎初始化
+	 */
 	TEMPLATE(8),
 	/**
 	 * 事务解析初始化
