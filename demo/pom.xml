@@ -173,9 +173,11 @@
 			</configuration>
 			<!--executions 在install时会起作用执行  -->
 			<!-- 集成测试 -->
+			<!-- 集成测试是对功能的测试，对于大部分web模块来说需要启动web容器，进行集成测试   -->
 			<executions>
 				<execution>
 					<id>start-jetty</id>
+					<!--集成测试前启动jetty-->
 					<phase>pre-integration-test</phase>
 					<goals>
 						<goal>start</goal>
@@ -194,6 +196,7 @@
 				</execution>
 				<execution>
 					<id>stop-jetty</id>
+					<!--集成测试结束停止jetty-->
 					<phase>post-integration-test</phase>
 					<goals>
 						<goal>stop</goal>
@@ -207,10 +210,43 @@
 	      <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-surefire-plugin</artifactId>
 	      <configuration>
+	        <!-- <skip>true</skip> -->
 	        <forkMode>pertest</forkMode>
 	        <argLine>-javaagent:${project.basedir}/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
 	        <workingDirectory>${project.basedir}/target</workingDirectory>
 	      </configuration>
+	      <!-- 测试代码进行单元测试和集成测试区分，一般有两种方式： 
+  				 一是使用maven profile，通过profile区分 
+   				二是根据生命周期，配置maven surefire 插件不同生命周期的includes或/exclueds属性 
+   				方式二的配置如下：在src/test/java中把单元测试代码放在unit包，集成测试代码放在integration包 -->
+   		   <executions>
+               <execution>
+                   <id>run-integration-test</id>
+                   <phase>integration-test</phase>
+                   <goals>
+                       <goal>test</goal>
+                   </goals>
+                   <configuration>
+                       <skip>false</skip>
+                       <includes>
+                           <include>**/integration/**/*.java</include>
+                       </includes>
+                   </configuration>
+               </execution>
+               <execution>
+                   <id>run-test</id>
+                   <phase>test</phase>
+                   <goals>
+                       <goal>test</goal>
+                   </goals>
+                   <configuration>
+                       <skip>false</skip>
+                       <includes>
+                           <include>**/unit/**/*.java</include>
+                       </includes>
+                   </configuration>
+               </execution>
+           </executions>
 	    </plugin>
 	    <!-- <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>

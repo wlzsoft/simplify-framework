@@ -1,4 +1,4 @@
-package com.meizu.demo;
+package com.meizu.demo.unit;
 
 
 import org.junit.Before;
