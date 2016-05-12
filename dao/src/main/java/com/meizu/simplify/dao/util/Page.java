@@ -22,7 +22,7 @@ import com.meizu.simplify.exception.UncheckedException;
  */
 public class Page<T> implements IPage<T> {
 
-	private static final long serialVersionUID = 528967450681022746L;
+	private static final long serialVersionUID = 528967450281022746L;
 
 	//为了安全，考虑到order by 无法使用预处理，这里使用正则过滤特殊的字符 start
 	static String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|"
@@ -53,7 +53,9 @@ public class Page<T> implements IPage<T> {
 	private String sortname; // 排序字段
 	private String sortorder; // 排序属性
 	private List<T> results;// 对应的当前页存放记录
-	
+	public Page(){
+		
+	}
 	/**
 	 * 构造方法
 	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
