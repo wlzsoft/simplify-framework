@@ -47,7 +47,7 @@ public class BeetlTemplate  implements ITemplate {
 	}
 	public void init() {
 //		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();//字符串模板
-		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();		
+		BeetlClasspathResourceLoader resourceLoader = new BeetlClasspathResourceLoader();		
 		try {
 			Configuration cfg = Configuration.defaultConfiguration();
 			gt = new GroupTemplate(resourceLoader, cfg);
