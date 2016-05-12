@@ -4,7 +4,7 @@ import com.meizu.simplify.ioc.BeanEntity;
 
 /**
   * <p><b>Title:</b><i>bean单例钩子处理</i></p>
- * <p>Desc: 用于bean的多实例创建定制操作</p>
+ * <p>Desc: 用于bean的单实例创建定制操作</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
