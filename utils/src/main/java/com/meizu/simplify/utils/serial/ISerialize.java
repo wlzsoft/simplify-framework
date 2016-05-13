@@ -2,7 +2,8 @@ package com.meizu.simplify.utils.serial;
 
 /**
  * <p><b>Title:</b><i>序列化接口</i></p>
- * <p>Desc: 注意：必须提供唯一的serialVersionUID值，实现序列化接口</p>
+ * <p>Desc: 注意：必须提供唯一的serialVersionUID值，实现序列化接口
+ * Fst , kryo , hessian , Protostuff ,Protostuff-Runtime, java等各种序列化方案，目前建议使用Fst序列化</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

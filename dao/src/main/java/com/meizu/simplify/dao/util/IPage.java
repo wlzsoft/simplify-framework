@@ -2,13 +2,14 @@ package com.meizu.simplify.dao.util;
 
 
 
+//import java.io.Externalizable;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 
  * <p><b>Title:</b><i>支持泛型的分页数据接口</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: Externalizable的作用，是否代替Serializable</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -20,7 +21,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public interface IPage<T> extends Serializable {
+public interface IPage<T> extends /*Externalizable,*/Serializable {
 	
 	/**
 	 * 
