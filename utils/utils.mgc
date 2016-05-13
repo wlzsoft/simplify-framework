@@ -27,7 +27,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="com.meizu.simplify.exception.BaseException" x="468" y="173">
+    <Class name="com.meizu.simplify.exception.BaseException" x="724" y="166">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -37,7 +37,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
     <Class name="com.meizu.simplify.exception.StartupErrorException"
-        x="569" y="312">
+        x="796" y="301">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -58,7 +58,7 @@
         <Communication destinationClassName="com.meizu.simplify.utils.StringUtil"/>
     </Class>
     <Class name="com.meizu.simplify.exception.UncheckedException"
-        x="466" y="75">
+        x="723" y="86">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -129,7 +129,7 @@
         <Communication destinationClassName="com.meizu.simplify.utils.StringUtil"/>
         <Communication destinationClassName="com.meizu.simplify.utils.DateUtil"/>
     </Class>
-    <Class name="com.meizu.simplify.exception.MessageException" x="260" y="170">
+    <Class name="com.meizu.simplify.exception.MessageException" x="498" y="172">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -222,7 +222,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Communication destinationClassName="com.meizu.simplify.utils.StringUtil"/>
     </Class>
-    <Class name="com.meizu.simplify.exception.StartupException" x="405" y="308">
+    <Class name="com.meizu.simplify.exception.StartupException" x="620" y="299">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>

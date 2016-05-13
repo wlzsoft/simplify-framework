@@ -81,6 +81,7 @@ public class AnalysisRequestControllerMethod {
 			return webCacheInfo;
 		}
 		if(response!=null&&webCache.enableBrowerCache()) {
+//			 TODO cache-control max-age 0    需要验证是否google浏览器刷新，都会强制带这个标识，去检测下，只是通过浏览器的banner导航，才会使用缓存，因为浏览器的刷新，就是为了检测服务器是否有新内容
 			BrowserUtil.enableBrowerCache(response,webCache.timeToLiveSeconds());
 		}
 		response.setCharacterEncoding(config.getCharset());
