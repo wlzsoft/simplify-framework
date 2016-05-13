@@ -42,6 +42,18 @@ public class MD5Encrypt {
 		return Sign.sign(source, "MD5");
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 转大写<br>
+	 * 操作步骤: TODO<br>
+	 * @param source
+	 * @return
+	 */
+	public static String signToUpperCase(String source) {
+		return Sign.sign(source, "MD5").toUpperCase();
+	}
+	
+	
 	public static byte[] sign(byte[] source) {
 		return Sign.hashSign(source, "MD5");
 	}
