@@ -53,8 +53,12 @@ public class Page<T> implements IPage<T> {
 	private String sortname; // 排序字段
 	private String sortorder; // 排序属性
 	private List<T> results;// 对应的当前页存放记录
+	
+	/**
+	 * 该无参构造方法紧用于序列化的时候需要调用：1.比如远程方法调用时候会用到序列化
+	 * 和具体的序列化框架有关,需要确认是否在反序列化时触发
+	 */
 	public Page(){
-		
 	}
 	/**
 	 * 构造方法
