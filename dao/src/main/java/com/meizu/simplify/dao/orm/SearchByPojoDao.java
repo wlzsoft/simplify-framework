@@ -83,7 +83,19 @@ public class SearchByPojoDao {
 		return tList;
 	}
 	
-
+	/**
+	 * 
+	 * 方法用途: 普通pojo的分页查询
+	 * 操作步骤: TODO<br>
+	 * 
+	 * @param entityClass
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sql
+	 * @param params
+	 * @author Geny
+	 * @return
+	 */
 	public <T> Page<T> findPage(Class<T> entityClass, Integer currentPage, Integer pageSize, String sql, Object... params) {
 		String countSql = sql.substring(sql.indexOf("from"));
 		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
