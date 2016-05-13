@@ -20,16 +20,16 @@ public class PasswordEncrypt {
 	 * 
 	 * 方法用途: 密码验证<br>
 	 * 操作步骤: TODO<br>
-	 * @param plaintext
-	 * @param ciphertext
+	 * @param password 待验证密码
+	 * @param passwordEncrtyed 已加密过的密码
 	 * @return
 	 */
-	public static boolean passwordVerify(String plaintext, String ciphertext) {
-		if (plaintext == null || ciphertext == null) {
+	public static boolean passwordVerify(String password, String passwordEncrtyed) {
+		if (password == null || passwordEncrtyed == null) {
 			return false;
 		}
-		String decrypted = Decrypt.fieldDecrypt(ciphertext);
-		String md5 = MD5Encrypt.hashMd5(plaintext);
+		String decrypted = Decrypt.fieldDecrypt(passwordEncrtyed);
+		String md5 = MD5Encrypt.hashMd5(password);
 		return md5.equals(decrypted);
 	}
 	
@@ -37,14 +37,14 @@ public class PasswordEncrypt {
 	 * 
 	 * 方法用途: 数据表密码加密<br>
 	 * 操作步骤: TODO<br>
-	 * @param plaintext
+	 * @param password 待加密密码
 	 * @return
 	 */
-	public static String passwordEncrypt(String plaintext) {
-		if (plaintext == null) {
-			return plaintext;
+	public static String passwordEncrypt(String password) {
+		if (password == null) {
+			return password;
 		}
-		String md5 = MD5Encrypt.hashMd5(plaintext);
+		String md5 = MD5Encrypt.hashMd5(password);
 		return FieldEncrypt.fieldEncrypt("password", md5);
 	}
 }
