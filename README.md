@@ -133,6 +133,7 @@ http://fishermen.iteye.com/blog/430286
 103.抽取出listener模版，可以简化web项目的集成
 104.dao模版的sql编写还是比较繁琐,需要简化
 105.封装代码生成模版，并抽取到公用的模块中 ==>>已测试，已通过 2016/5/12
+106.修复ioc框架的spi识别机制:必须有淘汰错误对象，错误接口的能力，防止数据乱入
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

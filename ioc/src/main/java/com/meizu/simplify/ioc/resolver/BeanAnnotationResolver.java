@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -75,6 +76,10 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 						}
         				beanObj = beanObjBean.getBeanObj();
         				beanName = beanObjBean.getName();
+        				String returnBeanName = beanObj.getClass().getName();
+        				if(returnBeanName != clazz.getName()) {
+        					throw new StartupErrorException("bean:类型为"+clazz.getName()+"的bean实例处理返回的对象类型为:"+returnBeanName+"类型不匹配");
+        				}
         			}
         			
         			if(beanObj == null) {
@@ -84,9 +89,12 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
         			BeanFactory.addBean(beanName,beanObj);
         		}
 				
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException e) {
 				e.printStackTrace();
-				LOGGER.debug("bean:"+clazz.getName()+"初始化失败");
+				LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>请检查是否构造函数执行过程出错");
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>或是构造函数未提供，或设置为私有的");
 			}
 			
 		}
