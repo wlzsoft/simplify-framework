@@ -4,7 +4,8 @@ import java.util.List;
 
 /**
   * <p><b>Title:</b><i>解析器</i></p>
- * <p>Desc: 解析各种注解信息</p>
+ * <p>Desc: 解析各种注解信息
+ *          注意后续其他模块都需要以spi插件机制集成到框架中</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
