@@ -166,6 +166,17 @@ public class TestController extends SystemController<TestModel> {
 		return "velocity:login";
 	}
 	
+	@RequestMap(path = "/testfreemarker/")
+	public String doTestFreemarker(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+		if(test != null) {
+			request.setAttribute("userName", test.getName());
+		} else {
+			request.setAttribute("userName", "nologin");
+		}
+		return "freemarker:login";
+	}
+	
 	@RequestMap(path = "/testwebsocket/")
 	public String doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();

@@ -2,12 +2,7 @@ package com.meizu.simplify.template;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -19,7 +14,6 @@ import com.meizu.simplify.utils.ClassUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.Version;
 
 
 /**
@@ -47,10 +41,9 @@ public class FreemarkerTemplate  implements ITemplate{
 	}
 	@InitBean 
 	public void init() {
-		String classPath = ClassUtil.getClassPath();
 		// 创建一个FreeMarker实例  
         cfg = new Configuration(Configuration.VERSION_2_3_24);  
-       
+        cfg.setClassForTemplateLoading(FreemarkerTemplate.class,"/");       
 	}
 	
 	public Configuration getConfiguration() {

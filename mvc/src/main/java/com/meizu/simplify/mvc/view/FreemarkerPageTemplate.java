@@ -31,7 +31,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType("velocity")
+@TemplateType("freemarker")
 public class FreemarkerPageTemplate  implements IPageTemplate{
 	@Resource
 	private PropertiesConfig config;
@@ -41,8 +41,6 @@ public class FreemarkerPageTemplate  implements IPageTemplate{
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
 		String prefixUri = "/template/freemarker/";
-		// 指定FreeMarker模板文件的位置  
-		freemarkerTemplate.getConfiguration().setServletContextForTemplateLoading(request.getServletContext(), prefixUri);  
 		setContentType(request, response,config);
 		// 将request中的对象赋给模版
 		Map<String, Object> parameters = new HashMap<>();
@@ -52,7 +50,7 @@ public class FreemarkerPageTemplate  implements IPageTemplate{
 			parameters.put(name, request.getAttribute(name));
 		}
 		
-		String content = freemarkerTemplate.render(parameters, templateUrl, "",freemarkerTemplate.extend);
+		String content = freemarkerTemplate.render(parameters, templateUrl, prefixUri,freemarkerTemplate.extend);
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 	}
 	
