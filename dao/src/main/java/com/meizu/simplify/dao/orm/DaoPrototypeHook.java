@@ -13,6 +13,7 @@ package com.meizu.simplify.dao.orm;
  *
  */
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.dao.exception.BaseDaoException;
+import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
@@ -30,15 +32,15 @@ import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 
 @BeanPrototypeHook(Dao.class)
-public class DaoPrototypeHook implements IBeanPrototypeHook {
+public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Serializable,Integer>, Serializable>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoPrototypeHook.class);
 
 	@Override
-	public List<BeanEntity<?>> hook(Class<?> clazz) {
-		
+	public List<BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>>> hook(
+			Class<Dao<IdEntity<Serializable, Integer>, Serializable>> clazz) {
 		LOGGER.debug("开始初始化Dao实例....");
-		List<BeanEntity<?>> list = new ArrayList<>();
+		List<BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>>> list = new ArrayList<>();
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, "com.meizu");//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
@@ -48,9 +50,9 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 				char[] chars = beanName.toCharArray();
 				chars[0] = Character.toLowerCase(chars[0]);
 				beanName = new String(chars) + "BaseDao";
-				BeanEntity<Object> beanEntity = new BeanEntity<>();
+				BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>> beanEntity = new BeanEntity<>();
 				beanEntity.setName(beanName);
-				Object dao = buildDaoObject(clazz, entityClass);
+				Dao<IdEntity<Serializable, Integer>, Serializable> dao = buildDaoObject(clazz, entityClass);
 				beanEntity.setBeanObj(dao);
 				list.add(beanEntity);
 				LOGGER.info("已注入bean:DAO[{}]", beanName);
@@ -68,10 +70,10 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 	 * @param entityClass
 	 * @return
 	 */
-	private Object buildDaoObject(Class<?> clazz, Class<?> entityClass) {
-		Object dao = null;
+	private <T> T buildDaoObject(Class<T> clazz, Class<?> entityClass) {
+		T dao = null;
 		try {
-			Constructor<?> constructor = clazz.getDeclaredConstructor(Class.class);
+			Constructor<T> constructor = clazz.getDeclaredConstructor(Class.class);
 			dao = ReflectionUtil.instantiateClass(constructor,entityClass);
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
@@ -79,6 +81,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook {
 		}
 		return dao;
 	}
+
 	
 
 }

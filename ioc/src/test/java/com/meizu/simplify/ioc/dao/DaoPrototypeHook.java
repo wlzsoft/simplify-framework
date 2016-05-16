@@ -21,21 +21,22 @@ import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 
 @BeanPrototypeHook(Dao.class)
-public class DaoPrototypeHook implements IBeanPrototypeHook {
+public class DaoPrototypeHook implements IBeanPrototypeHook<Dao> {
 
 	@Override
-	public List<BeanEntity<?>> hook(Class<?> clazz) {
-		List<BeanEntity<?>> list = new ArrayList<>();
-		BeanEntity<Object> beanEntity = new BeanEntity<>();
+	public List<BeanEntity<Dao>> hook(Class<Dao> clazz) {
+		List<BeanEntity<Dao>> list = new ArrayList<>();
+		BeanEntity<Dao> beanEntity = new BeanEntity<>();
 		beanEntity.setName("test1BaseDao");
 		beanEntity.setBeanObj(new Dao());
 		list.add(beanEntity);
 		
-		BeanEntity<Object> beanEntity2 = new BeanEntity<>();
+		BeanEntity<Dao> beanEntity2 = new BeanEntity<>();
 		beanEntity2.setName("test2BaseDao");
 		beanEntity2.setBeanObj(new Dao());
 		list.add(beanEntity2);
 		return list;
 	}
+	
 
 }

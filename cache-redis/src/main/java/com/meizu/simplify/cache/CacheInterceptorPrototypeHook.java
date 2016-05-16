@@ -24,19 +24,19 @@ import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 
 @BeanPrototypeHook(CacheInterceptor.class)
-public class CacheInterceptorPrototypeHook implements IBeanPrototypeHook {
+public class CacheInterceptorPrototypeHook implements IBeanPrototypeHook<CacheInterceptor> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheInterceptorPrototypeHook.class);
-
+	
 	@Override
-	public List<BeanEntity<?>> hook(Class<?> clazz) {
+	public List<BeanEntity<CacheInterceptor>> hook(Class<CacheInterceptor> clazz) {
 		
 		LOGGER.debug("开始初始化CacheInterceptor实例....");
-		List<BeanEntity<?>> list = new ArrayList<>();
+		List<BeanEntity<CacheInterceptor>> list = new ArrayList<>();
 		
 		//init beforeCacheInterceptor
 		String beanName = "beforeCacheInterceptor";
-		BeanEntity<Object> beanEntity = new BeanEntity<>();
+		BeanEntity<CacheInterceptor> beanEntity = new BeanEntity<>();
 		beanEntity.setName(beanName);
 		beanEntity.setBeanObj(CacheInterceptor.getBeforeInstance());
 		list.add(beanEntity);
@@ -51,5 +51,7 @@ public class CacheInterceptorPrototypeHook implements IBeanPrototypeHook {
 		
 		return list;
 	}
+
+	
 
 }

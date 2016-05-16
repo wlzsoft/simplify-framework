@@ -16,8 +16,9 @@ import com.meizu.simplify.ioc.BeanEntity;
  * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
+ * @param <T>实例类型
  */
-public interface IBeanPrototypeHook {
+public interface IBeanPrototypeHook<T> {
 	/**
 	 * 
 	 * 方法用途: bean初始化钩子方法<br>
@@ -25,5 +26,5 @@ public interface IBeanPrototypeHook {
 	 * @param clazz
 	 * @return
 	 */
-	List<BeanEntity<?>> hook(Class<?> clazz);
+	List<BeanEntity<T>> hook(Class<T> clazz);
 }
