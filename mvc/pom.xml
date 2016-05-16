@@ -40,32 +40,5 @@
 		    <artifactId>template</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		  </dependency>
-		  <!-- 模板引擎一 -->
-		  <dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>1.7</version>
-		  </dependency>
-		  <!-- 模板引擎二 freemarker -->
-		  
-		  <!-- 现代模板引擎-性能更好 -->
-		  <!-- 现代模板引擎一-暂未托管到maven上-->
-		  <!-- <dependency>
-		     <groupId>org.lilystudio</groupId>
-		     <artifactId>smarty4j</artifactId>
-		     <version>1.0.1</version>
-		  </dependency> -->
-		  <!-- 现代模板引擎二 -->
-		  <dependency>
-            <groupId>com.github.httl</groupId>
-            <artifactId>httl</artifactId>
-            <version>1.0.11</version>
-          </dependency>
-          <!-- 现代模板引擎三 -->
-          <dependency>
-		    <groupId>com.ibeetl</groupId>
-		    <artifactId>beetl</artifactId>
-		    <version>2.2.5</version>
-		  </dependency>
   </dependencies>
 </project>
