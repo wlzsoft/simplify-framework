@@ -11,7 +11,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p><b>Title:</b><i>模版处理回调接口</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 注意：后续所有的模版引擎，都需要通过独立成模块，以插件形式接入到框架中</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

@@ -61,11 +61,6 @@
 			<version>3.0.3</version>
 			<scope>test</scope>
 		</dependency> 
-		<dependency>
-			<groupId>com.meizu</groupId>
-			<artifactId>encrypt</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<!-- 压力测试 -->
 	    <dependency>
 		  	<groupId>com.meizu</groupId>
