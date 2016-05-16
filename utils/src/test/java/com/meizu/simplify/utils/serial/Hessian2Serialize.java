@@ -9,7 +9,8 @@ import com.caucho.hessian.io.HessianOutput;
 
 /**
   * <p><b>Title:</b><i>Hessian2序列化支持</i></p>
- * <p>Desc: 和resin同一公司开发的组件，对servlet容器的集成提供了支持</p>
+ * <p>Desc: 和resin同一公司开发的组件，对servlet容器的集成提供了支持
+ *          hession序列化的时候时间没有大幅减少，但是序列化后的对象体积减小了一半，用于网络传输的带宽减少了，传输速度快了</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
