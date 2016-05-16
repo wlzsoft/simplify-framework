@@ -102,7 +102,7 @@ public class SerialTest {
 	    System.out.println("fst序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time2) + "ms size:=" + size);
 	    
-	    /*size = 0;
+	    size = 0;
 	    long time3 = System.currentTimeMillis();
 	    serial = new KryoSerialize<>();
 	    for (int i = 0; i < 10000; i++) {
@@ -112,7 +112,18 @@ public class SerialTest {
 	    }
 	    System.out.println("kryo序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time3) + "ms size:=" + size);
-*/
+	    
+	    size = 0;
+	    long time4 = System.currentTimeMillis();
+	    serial = new Hessian2Serialize<>();
+	    for (int i = 0; i < 10000; i++) {
+	      byte[] serialize = serial.serialize(bean);
+	      size += serialize.length;
+	      User u = serial.unserialize(serialize);
+	    }
+	    System.out.println("Hessian2序列化方案[序列化10000次]耗时："
+	        + (System.currentTimeMillis() - time4) + "ms size:=" + size);
+
 		
 	}
 }
