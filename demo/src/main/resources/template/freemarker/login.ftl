@@ -1,7 +1,7 @@
 <!DOCTYPE HTML><!-- hehehe -->
 <HTML>
 <HEAD>
-<TITLE>管理后台登陆velocity</TITLE>
+<TITLE>管理后台登陆freemarker</TITLE>
 <META http-equiv=Content-Type content="text/html; charset=utf-8">
 </HEAD>
 <BODY>
