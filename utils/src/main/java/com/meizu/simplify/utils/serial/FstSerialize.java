@@ -5,6 +5,7 @@ import org.nustaq.serialization.FSTConfiguration;
 /**
  * <p><b>Title:</b><i>Fst序列化实现，兼容性很好-推荐使用</i></p>
  * <p>Desc: 性能最优优于Kryo,但是压缩率低于Kryo，差距不大
+ *          缺少反序列化的数据完整性校验，用于局域网传输，并无大碍,用于互联网有风险
  * </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
