@@ -42,18 +42,25 @@
 			<artifactId>javassist</artifactId>
 			<version>3.20.0-GA</version>
 		</dependency>
-		
+		<!-- 序列化及远程服务调用 -->
+		<dependency>
+		    <groupId>com.caucho</groupId>
+		    <artifactId>hessian</artifactId>
+		    <version>4.0.38</version>
+		    <scope>test</scope>
+		</dependency>
 		<!-- 序列化框架 -->
 		<dependency>
 		    <groupId>de.ruedigermoeller</groupId>
 		    <artifactId>fst</artifactId>
 		    <version>2.43</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo-shaded</artifactId>
 			<version>3.0.3</version>
-		</dependency> --> 
+			<scope>test</scope>
+		</dependency> 
 		<dependency>
 			<groupId>com.meizu</groupId>
 			<artifactId>encrypt</artifactId>

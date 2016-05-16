@@ -1,8 +1,8 @@
 package com.meizu.simplify.utils.serial;
 
-//import com.esotericsoftware.kryo.Kryo;
-//import com.esotericsoftware.kryo.io.Input;
-//import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 
 /**
  * <p><b>Title:</b><i>Kryo序列化实现，兼容性不是很好</i></p>
@@ -22,30 +22,30 @@ public class KryoSerialize<T> implements ISerialize<T>{
 
 	public KryoSerialize() {
 	}
-//	static Kryo kryo = new Kryo();
+	static Kryo kryo = new Kryo();
 
 	@Override
 	public  byte[] serialize(T obj) {
-//		Kryo kryo = new Kryo();
-//		byte[] buffer = new byte[2048];
-//		try (Output output = new Output(buffer);) {
-//
-//			kryo.writeClassAndObject(output, obj);
-//			return output.toBytes();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		Kryo kryo = new Kryo();
+		byte[] buffer = new byte[2048];
+		try (Output output = new Output(buffer);) {
+
+			kryo.writeClassAndObject(output, obj);
+			return output.toBytes();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public  T unserialize(byte[] src) {
-//		try (Input input = new Input(src);) {
-//			return (T) kryo.readClassAndObject(input);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try (Input input = new Input(src);) {
+			return (T) kryo.readClassAndObject(input);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

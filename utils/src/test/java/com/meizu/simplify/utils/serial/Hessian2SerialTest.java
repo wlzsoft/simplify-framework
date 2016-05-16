@@ -19,9 +19,9 @@ import com.meizu.simplify.stresstester.core.StressTask;
  * @version Version 0.1
  *
  */
-public class FstSerialTest {
+public class Hessian2SerialTest {
 	@Test
-	public void testFstSet() {
+	public void testHessian2Set() {
 		User usr = new User("101001", "testname");
 		usr.setAddr("sfsdfsfff");
 		usr.setPhone("131321324234324");
@@ -29,7 +29,7 @@ public class FstSerialTest {
 		StressTestUtils.testAndPrint(1000, 10000, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
-				ISerialize<User> serial = new FstSerialize<>();
+				ISerialize<User> serial = new Hessian2Serialize<>();
 				byte[] barray = serial.serialize(usr);
 				User object = serial.unserialize(barray);
 				return null;
