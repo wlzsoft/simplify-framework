@@ -137,7 +137,7 @@ http://fishermen.iteye.com/blog/430286
 107.考虑 java的反序列化攻击:http://itindex.net/detail/54975-java-%E5%BA%8F%E5%88%97%E5%8C%96
 108.提供Fst , kryo , hessian , Protostuff , java的序列化性能比较，特别测试hessian序列化
 109.序列化是否必须带无参的构造函数
-110.指定同类型多例bean创建的确切类型
+110.指定同类型多例bean创建的确切类型==>> 已测试，已通过  2016/5/16
 111.提供Init的注解的实例支持bean托管
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter

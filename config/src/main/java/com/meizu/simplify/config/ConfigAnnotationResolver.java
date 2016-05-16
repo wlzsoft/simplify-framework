@@ -24,7 +24,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>配置属性单个注入解析器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 注意：可启用容器托管，不建议启用容器托管,保证模块的独立性，不依赖容器,并且本身这个模块也是bean容器初始化的一个过程，本身配置的注解信息就无法获取到</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

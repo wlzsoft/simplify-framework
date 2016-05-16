@@ -18,7 +18,7 @@ import com.meizu.simplify.utils.ClassUtil;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 注意：可启用容器托管，只获取部分ioc注入功能</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

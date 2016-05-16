@@ -50,7 +50,10 @@ public final class Startup {
 		for (Class<?> clazz : mapResolve.values()) {
 			LOGGER.info("resolver invoke:{}",clazz.getName());
 			try {
-				Object obj = clazz.newInstance();
+				Object obj = BeanFactory.getBean(clazz.getName());//启动阶段可提供容器托管
+				if(obj == null) {
+					obj = clazz.newInstance();
+				}
 				ReflectionUtil.invokeMethod(obj, "resolve", new Class[]{List.class}, new Object[]{new ArrayList<>()});
 			} catch (InstantiationException | IllegalAccessException e) {
 				// TODO Auto-generated catch block

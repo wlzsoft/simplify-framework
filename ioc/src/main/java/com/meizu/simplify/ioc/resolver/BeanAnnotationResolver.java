@@ -21,7 +21,7 @@ import com.meizu.simplify.utils.ClassUtil;
 
 /**
   * <p><b>Title:</b><i>对象创建处理解析器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 注意：无法启用容器托管，不允许使用bean注解</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

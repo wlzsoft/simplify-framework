@@ -19,7 +19,9 @@ import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.AnnotationResolverCallback;
@@ -48,10 +50,12 @@ import com.meizu.simplify.webcache.web.CacheBase;
  * @version Version 0.1
  *
  */
+@Bean
 @Init(InitTypeEnum.CONTROL)
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+	@Resource
+	private PropertiesConfig config;
 	/**
 	 * <requestMap地址,controller实例>
 	 */
