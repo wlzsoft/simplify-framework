@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.AfterFilter;
 import com.meizu.simplify.cache.CacheProxyDao;
 import com.meizu.simplify.cache.ICacheDao;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.ObjectUtil;
 
 /**
@@ -23,6 +24,7 @@ import com.meizu.simplify.utils.ObjectUtil;
  * @version Version 1.0
  *
  */
+@Bean
 public class JsonAfterFilter extends AfterFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AfterFilter.class);

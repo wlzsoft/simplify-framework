@@ -6,8 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.cache.redis.util.JsonUtil;
+import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.utils.JsonUtil;
 
 
 /**
@@ -25,9 +26,9 @@ import com.meizu.simplify.config.PropertiesConfig;
  */
 public  class  JsonView {
 
-	public static void exe(HttpServletRequest request, HttpServletResponse response,Object obj,PropertiesConfig config)
+	public static void exe(HttpServletRequest request, HttpServletResponse response,Object obj,PropertiesConfig config,JsonResolver jsonResolver)
 			throws ServletException, IOException {
-		String message = JsonUtil.ObjectToString(obj);
+		String message = jsonResolver.ObjectToString(obj);
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("application/json; charset=" + config.getCharset());
 //		TODO 注意使用下面的方式，可能设置头信息(addHead) ,会丢失，无法发送到浏览器的reponse头中

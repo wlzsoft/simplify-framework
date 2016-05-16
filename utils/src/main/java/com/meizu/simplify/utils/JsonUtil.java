@@ -1,8 +1,9 @@
-package com.meizu.simplify.cache.redis.util;
+package com.meizu.simplify.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.meizu.simplify.exception.BaseException;
 /**
@@ -38,8 +39,8 @@ public class JsonUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String ObjectToString(Object obj){
-    	return JSON.toJSONString(obj,new JsonAfterFilter());
+	public static String ObjectToString(Object obj,SerializeFilter afterFilter){
+    	return JSON.toJSONString(obj,afterFilter);
     }
     
 	/**

@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.dao.IJsonCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
-import com.meizu.simplify.cache.redis.util.JsonUtil;
+import com.meizu.simplify.cache.redis.util.JsonResolver;
+import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.utils.JsonUtil;
 
 
 /**
@@ -40,7 +42,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 */
 	public Object getAndSet(String key, Object value) {
 		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String str = jedis.getSet(k, JsonUtil.ObjectToString(value));
+				String str = jedis.getSet(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				if(str != null && str.length() > 0){
 					return JsonUtil.JsonToObject(str);
 				}
@@ -79,7 +81,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	public boolean set(String key, Object value,int seconds) {
 		
 		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
-				String result = jedis.set(k, JsonUtil.ObjectToString(value));
+				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				if(seconds > 0){
 					jedis.expire(k, seconds);
 				}
@@ -100,7 +102,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      */
     public boolean setnx(String key, Object value) {
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				 long result = jedis.setnx(k, JsonUtil.ObjectToString(value));
+				 long result = jedis.setnx(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 		         return result > 0;
 		}, modName);
         return ret;
@@ -118,7 +120,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      */
     public boolean setex(String key, int seconds, Object value) {
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String result = jedis.setex(k, seconds, JsonUtil.ObjectToString(value));
+				String result = jedis.setex(k, seconds, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 	            return result.equalsIgnoreCase("OK");
 		}, modName);
         return ret;

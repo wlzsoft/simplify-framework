@@ -7,10 +7,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
+import com.meizu.simplify.exception.BaseException;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
+import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.invoke.IMethodSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.IPageTemplate;
@@ -49,6 +53,8 @@ public class BaseController<T extends Model> {
 	@Resource
 	private IMethodSelector methodSelector;
 	
+	@Resource
+	private JsonResolver jsonResolver;	
 	/**
 	 * 
 	 * 方法用途: 拦截处理所有请求<br>
@@ -62,13 +68,26 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass(),0);
-		T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass);
-		if (checkPermission(request, response, model)) {
-			execute(request, response, model,requestUrl);
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl)  {
+		try {
+			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass(),0);
+			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass);
+			if (checkPermission(request, response, model)) {
+				execute(request, response, model,requestUrl);
+			}
+			destroy(request, response, model);
+		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
+			Throwable throwable = e.getTargetException();
+			MappingExceptionResolver.resolverException(request, response, requestUrl, this, throwable,config,jsonResolver);
+		} catch (BaseException throwable) {//由于在反射优化模式下，不是抛InvocationTargetException异常，而会进入到BaseExceptin及其衍生异常,这里独立处理
+			MappingExceptionResolver.resolverException(request, response, requestUrl, this, throwable,config,jsonResolver);
+		} catch (IllegalAccessException | IllegalArgumentException e) {
+			e.printStackTrace();
+			throw new UncheckedException(e);
+		} catch (ServletException | IOException e) {
+			e.printStackTrace();
+			throw new UncheckedException(e);
 		}
-		destroy(request, response, model);
 		
 	}
 
@@ -160,9 +179,9 @@ public class BaseController<T extends Model> {
 			String staticName, Object obj, WebCache webCache)
 					throws IllegalAccessException, ServletException, IOException {
 		if(requestUrl.endsWith(".json")) {
-			JsonView.exe(request, response, obj,config);
+			JsonView.exe(request, response, obj,config,jsonResolver);
 		} else if(requestUrl.endsWith(".jsonp")) {
-			JsonpView.exe(request, response, obj,model,"meizu.com",config);
+			JsonpView.exe(request, response, obj,model,"meizu.com",config,jsonResolver);
 		} else {
 			request.setAttribute("formData", model);
 			String reactive = getDeviceInfo(request);

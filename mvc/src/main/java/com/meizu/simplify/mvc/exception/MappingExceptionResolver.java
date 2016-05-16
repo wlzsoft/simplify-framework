@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
@@ -61,7 +62,7 @@ public class MappingExceptionResolver {
 	 * @param e
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
-			BaseController<?> bs, Throwable throwable,PropertiesConfig config) {
+			BaseController<?> bs, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
 		String exceptionMessage = throwable.getMessage();
 		if(exceptionMessage == null) {
 			if(throwable.getClass() == NullPointerException.class) {
@@ -89,7 +90,7 @@ public class MappingExceptionResolver {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 		if(requestUrl.endsWith(".json")) {
 			try {
-				JsonView.exe(request, response, JsonResult.error(exceptionMessage),config);
+				JsonView.exe(request, response, JsonResult.error(exceptionMessage),config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
@@ -109,7 +110,7 @@ public class MappingExceptionResolver {
 				};
 				model.setScript(DataUtil.parseInt(request.getParameter("script")));
 				model.setCallback(request.getParameter("callback"));
-				JsonpView.exe(request, response, JsonResult.error(exceptionMessage),model,"meizu.com",config);
+				JsonpView.exe(request, response, JsonResult.error(exceptionMessage),model,"meizu.com",config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}

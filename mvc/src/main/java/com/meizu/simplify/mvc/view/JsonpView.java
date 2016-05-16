@@ -6,9 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.cache.redis.util.JsonUtil;
+import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.utils.JsonUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -39,9 +40,10 @@ public  class  JsonpView {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response,Object obj,T model,String domain,PropertiesConfig config)
+	public static <T extends Model> void exe(HttpServletRequest request, HttpServletResponse response,Object obj,T model,String domain,PropertiesConfig config,JsonResolver jsonResolver)
 			throws ServletException, IOException {
-		String message = JsonUtil.ObjectToString(obj);
+		
+		String message = jsonResolver.ObjectToString(obj);
 		//可以通过请求头来限制不合理的请求(request head referer) TODO
 		if (model.getScript() == 1) { //form提交到iframe后，自动执行方式,必须在父级域名下，才能调用iframe的js函数
 			message = StringUtil.format("<script>document.domain='{0}';{1}({2});</script>", domain, model.getCallback(), message);

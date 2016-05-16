@@ -31,7 +31,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class SystemController<T extends Model> extends BaseController<T> {
 	
 	@Override
-	public final void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl) throws ServletException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public final void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl)  {
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 		request.setAttribute("url", request.getRequestURI());
