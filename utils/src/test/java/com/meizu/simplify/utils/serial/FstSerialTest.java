@@ -1,10 +1,12 @@
 package com.meizu.simplify.utils.serial;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
-import com.meizu.simplify.utils.entity.User;
 import com.meizu.simplify.stresstester.StressTestUtils;
 import com.meizu.simplify.stresstester.core.StressTask;
+import com.meizu.simplify.utils.entity.User;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -35,5 +37,19 @@ public class FstSerialTest {
 				return null;
 			}
 		});
+	}
+	@Test
+	public void testFstDataIntegrityCheck() throws IOException, ClassNotFoundException {
+		// 对字符串Hello World进行反序列化
+		String str = "Hello World !";
+		ISerialize<String> serial = new KryoSerialize<>();
+		byte[] barray = serial.serialize(str);
+		// 此处模拟数据失真，故意只截取序列化结果中的一部分数据
+		byte[] copy = new byte[barray.length - 5];
+		System.arraycopy(barray, 0, copy, 0, copy.length);
+
+		// 对失真的序列化结果进行反序列化,用于检测反序列化时是否能成功，是失真后的结果，或是抛异常
+		String object = serial.unserialize(copy);
+		System.out.println(object);
 	}
 }

@@ -6,7 +6,8 @@ import com.esotericsoftware.kryo.io.Output;
 
 /**
  * <p><b>Title:</b><i>Kryo序列化实现，兼容性不是很好</i></p>
- * <p>Desc: 压缩率最低低于Fst，但是性能低于Fst，两者差距不大</p>
+ * <p>Desc: 压缩率最低低于Fst，但是性能低于Fst，两者差距不大
+ *          Kryo优于Fst的一个地方是，有对反序列化时对数据完整性做校验，不完整会抛异常</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -17,7 +18,6 @@ import com.esotericsoftware.kryo.io.Output;
  * @version Version 0.1
  *
  */
-@Deprecated
 public class KryoSerialize<T> implements ISerialize<T>{
 
 	public KryoSerialize() {

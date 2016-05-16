@@ -10,7 +10,8 @@ import com.caucho.hessian.io.HessianOutput;
 /**
   * <p><b>Title:</b><i>Hessian2序列化支持</i></p>
  * <p>Desc: 和resin同一公司开发的组件，对servlet容器的集成提供了支持
- *          hession序列化的时候时间没有大幅减少，但是序列化后的对象体积减小了一半，用于网络传输的带宽减少了，传输速度快了</p>
+ *          hession序列化的时候时间没有大幅减少，但是序列化后的对象体积减小了一半，用于网络传输的带宽减少了，传输速度快了
+ *          缺少反序列化的数据完整性校验，用于局域网传输，并无大碍,用于互联网有风险</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
