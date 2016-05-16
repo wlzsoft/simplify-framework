@@ -24,9 +24,9 @@ public class JsonResolver {
 	private SerializeFilter afterFilter;
 	public String ObjectToString(Object obj ) {
 		if(afterFilter == null) {
-			return JsonUtil.ObjectToJsonAndContainMeta(obj);
+			return JsonUtil.objectToStringAndContainMeta(obj);
 		} else {
-			return JsonUtil.ObjectToString(obj, afterFilter);
+			return JsonUtil.objectToString(obj, afterFilter);
 		}
 	}
 }

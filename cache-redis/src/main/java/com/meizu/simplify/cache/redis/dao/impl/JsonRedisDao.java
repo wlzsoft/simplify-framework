@@ -44,7 +44,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
 				String str = jedis.getSet(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				if(str != null && str.length() > 0){
-					return JsonUtil.JsonToObject(str);
+					return JsonUtil.jsonToObject(str);
 				}
 				return null;
 		}, modName);
@@ -62,7 +62,7 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
 				String str =  jedis.get(k);
 				if(str != null && str.length() > 0){
-					return JsonUtil.JsonToObject(str);
+					return JsonUtil.jsonToObject(str);
 				}
 				return null;
 		}, modName);

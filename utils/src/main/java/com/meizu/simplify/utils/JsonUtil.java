@@ -28,7 +28,7 @@ public class JsonUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String ObjectToJsonAndContainMeta(Object obj){
+	public static String objectToStringAndContainMeta(Object obj){
     	return JSON.toJSONString(obj, SerializerFeature.WriteClassName);
     }
 	
@@ -39,7 +39,7 @@ public class JsonUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String ObjectToString(Object obj,SerializeFilter afterFilter){
+	public static String objectToString(Object obj,SerializeFilter afterFilter){
     	return JSON.toJSONString(obj,afterFilter);
     }
     
@@ -49,7 +49,7 @@ public class JsonUtil {
 	 * @param str
 	 * @return
 	 */
-    public static Object JsonToObject(String str){
+    public static Object jsonToObject(String str){
     	return JSON.parse(str);
     }
     
@@ -59,7 +59,7 @@ public class JsonUtil {
 	 * @param str
 	 * @return
 	 */
-    public static JSONArray StringToJSONArray(String str){
+    public static JSONArray stringToJSONArray(String str){
     	return JSON.parseArray(str);
     }
     /**
@@ -68,7 +68,7 @@ public class JsonUtil {
 	 * @param str
 	 * @return
 	 */
-    public static JSONObject StringToJSONObject(String str){
+    public static JSONObject stringToJSONObject(String str){
     	try {
     		return JSON.parseObject(str);
     	} catch(Exception ex) {

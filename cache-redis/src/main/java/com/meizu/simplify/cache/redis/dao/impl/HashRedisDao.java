@@ -70,7 +70,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     	Object ret = CacheExecute.execute(key, (k,jedis) ->  {
 				String str = jedis.hget(k,field);
 				if(str != null && str.length() > 0){
-					return JsonUtil.JsonToObject(str);
+					return JsonUtil.jsonToObject(str);
 				}
 				return null;
 		}, modName);
