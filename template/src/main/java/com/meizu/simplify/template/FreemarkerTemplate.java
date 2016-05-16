@@ -9,7 +9,6 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.annotation.TemplateExtend;
-import com.meizu.simplify.utils.ClassUtil;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -18,7 +17,7 @@ import freemarker.template.TemplateException;
 
 /**
  * <p><b>Title:</b><i>Freemarker 页面处理返回方式</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 有良好的中文文档，目前有活跃社区，并且最近有版本更新，并且是持续更新，使用相对繁琐，但是定制灵活，功能强大,性能表现不错</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

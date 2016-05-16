@@ -21,7 +21,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p><b>Title:</b><i>Velocity 页面处理返回方式</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 已经有几年没有更新过内容了，但是使用简单，入手快，性能也不弱,社区不活跃</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
