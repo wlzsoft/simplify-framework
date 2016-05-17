@@ -1,6 +1,7 @@
 package com.meizu.simplify.ioc.resolver;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -43,8 +44,28 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	}
 
 	public static <T extends Bean> void buildAnnotation(Class<T> clazzAnno) {
-		List<Class<?>> resolveList;
-		resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, "com.meizu");
+		List<Class<?>> resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, "com.meizu");//提供构建bean的总数据源
+		List<Class<?>> resolvePreCoreList = new ArrayList<>();//提供预先构建bean的数据源
+		List<Class<?>> resolveExtendList = new ArrayList<>();//提供扩展构建bean的数据源
+		for (Class<?> clazz : resolveList) {
+			Annotation[] annoArr = clazz.getAnnotations();
+			if(annoArr.length==1) {//只包含bean注解
+				resolvePreCoreList.add(clazz);
+			} else {
+				resolveExtendList.add(clazz);
+			}
+		}
+		buildAction(clazzAnno, resolvePreCoreList);
+		buildAction(clazzAnno, resolveExtendList);
+	}
+
+	/**
+	 * 方法用途: 开始构建bean<br>
+	 * 操作步骤: TODO<br>
+	 * @param clazzAnno
+	 * @param resolveList
+	 */
+	private static <T extends Bean> void buildAction(Class<T> clazzAnno, List<Class<?>> resolveList) {
 		for (Class<?> clazz : resolveList) {
 			LOGGER.info("Bean 初始化:{}",clazz.getName());
 			try {
