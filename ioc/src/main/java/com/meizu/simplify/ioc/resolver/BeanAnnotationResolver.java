@@ -49,7 +49,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 			LOGGER.info("Bean 初始化:{}",clazz.getName());
 			try {
 				T beanAnnotation = clazz.getAnnotation(clazzAnno);
-        		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {
+        		if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
         			List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, "com.meizu");
         			for (Class<?> hookClazz : hookList) {
 						BeanPrototypeHook hookBeanAnno = hookClazz.getAnnotation(BeanPrototypeHook.class);
@@ -60,14 +60,14 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 							BeanFactory.addBeanList(listObj);
 						}
 					}
-        		} else {
+        		} else {//同类型单例处理，只会返回一个实例
         			Object beanObj = null;
         			String beanName = null;
         			Class<?> hookClazz = getSingleHook(clazz);
         			if(hookClazz == null) {
 						beanObj = clazz.newInstance();
 						beanName = clazz.getName();
-        			} else {
+        			} else {//三种情况会异常：1.BeanEntity的beanName为空  2.BeanEntity的beanName和interfaceName不一致 3.bean的class列表中的clazz的name和interfaceName不一致
         				Object hookObj = hookClazz.newInstance();
         				BeanEntity<?> beanObjBean = ((IBeanHook)hookObj).hook(clazz);
 						if (null == beanObjBean) {
@@ -76,10 +76,33 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 						}
         				beanObj = beanObjBean.getBeanObj();
         				beanName = beanObjBean.getName();
-//        				String returnBeanName = beanObj.getClass().getName();
-//        				if(beanName != clazz.getName()) {
-//        					throw new StartupErrorException("bean:类型为"+clazz.getName()+"的bean实例处理返回的对象类型为:"+beanName+"类型不匹配");
-//        				}
+        				String returnBeanName = null;
+        				String interfaceName = null;
+        				Class<?>[] interfaces = beanObj.getClass().getInterfaces();
+        				for (Class<?> interfaceClass : interfaces) {//抽取出真实类的接口
+        					if(interfaceClass.getName().equals(clazz.getName())) {//如果包含，返回beanName为null
+        						returnBeanName = interfaceClass.getName();
+        						if(beanName == null) {
+        							beanName = returnBeanName;
+        							beanObjBean.setName(returnBeanName);
+        						}
+        						break;
+        					} else {//如不包含，寻找相关的业务类，用于错误提示，[包名为com.meizu要做成可配置 ,适应不同的包名结构TODO]
+        						if(interfaceClass.getName().startsWith("com.meizu")) {
+        							interfaceName = interfaceClass.getName();
+        						}
+        					}
+						}
+        				if(beanName == null||beanName.equals("")) {
+        					throw new StartupErrorException("bean:类型为"+clazz.getName()+"的BeanEntity实例处理返回的对象名Name属性为空,请检查确认");
+        				}
+        				if(returnBeanName ==null) {
+        					String endError = "";
+        					if(!beanName.equals(interfaceName)) {
+        						endError = ",并且BeanEntity返回的Name值:"+beanName+"和真实的类型:"+interfaceName+"的类型不一致";
+        					}
+        					throw new StartupErrorException("bean:类型为"+clazz.getName()+"的bean实例处理返回的对象类型为:"+interfaceName+"类型不匹配"+endError);
+        				}
         			}
         			
         			if(beanObj == null) {
