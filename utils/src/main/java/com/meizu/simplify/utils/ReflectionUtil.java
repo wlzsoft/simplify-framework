@@ -1,13 +1,20 @@
 package com.meizu.simplify.utils;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,7 +86,29 @@ public class ReflectionUtil {
     	invokeSetterMethod(obj,propertyName,value,value.getClass());
     }
     
-    
+    /**
+     * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
+     * 如无法找到, 返回Object.class.
+     * @return the first generic declaration, or Object.class if cannot be determined
+     */
+    public static <T> Class<T> getSuperClassGenricType(final Class clazz) {
+        return getSuperClassGenricType(clazz, 0);
+    }
+    /**
+     * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
+     * 如无法找到, 返回Object.class.
+     * <p/>
+     * 如public UserDao extends HibernateDao<User,Long>
+     *
+     * @param clazz clazz The class to introspect
+     * @param index the Index of the generic ddeclaration,start from 0.
+     * @return the index generic declaration, or Object.class if cannot be determined
+     */
+    public  static <T> Class<T> getSuperClassGenricType(final Class<T> clazz, final int index) {
+        Type genType = clazz.getGenericSuperclass();// 得到泛型父类
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        return (Class<T>) params[index];
+    }
     /**
      * 
      * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
@@ -304,10 +333,35 @@ public class ReflectionUtil {
 	 * @param param
 	 * @return
 	 */
-	public  static <T extends Object> Map<String, Object> bean2Map(T param) {
-		Map<String,Object> map = new ConcurrentHashMap<>();
-		buildFieldInfo(param.getClass(),param,map);
-		return map;
+	public static <T extends Object> Map<String, Object> bean2Map(T bean) {
+		Map<String, Object> returnMap = new ConcurrentHashMap<>();
+		try {
+			Class<?> type = bean.getClass();
+			BeanInfo beanInfo = Introspector.getBeanInfo(type);
+			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+			for (int i = 0; i < propertyDescriptors.length; ++i) {
+				PropertyDescriptor descriptor = propertyDescriptors[i];
+				String propertyName = descriptor.getName();
+				if (!(propertyName.equals("class"))) {
+					Method readMethod = descriptor.getReadMethod();
+					if (readMethod == null) {
+						continue;
+					}
+					Object result = readMethod.invoke(bean, new Object[0]);
+					if (result != null)
+						returnMap.put(propertyName, result);
+					else {
+						returnMap.put(propertyName, "");
+					}
+				}
+			}
+			return returnMap;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// Map<String,Object> map = new ConcurrentHashMap<>();
+		// buildFieldInfo(param.getClass(),param,map);
+		return returnMap;
 	}
 	
 	/**

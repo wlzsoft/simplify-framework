@@ -1,6 +1,8 @@
 package com.meizu.simplify.utils;
 
+import java.beans.IntrospectionException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.meizu.simplify.utils.collection.IEqualCallBack;
 
@@ -331,5 +334,39 @@ public class CollectionUtil {
 	public static String listToStringBySplit(List<String> types, String appendLeft, String appendRight) {
 		return listToStringBySplit(types, appendLeft, appendRight, ",");
 	}
+	/**
+	 * 
+	 * 方法用途: 实现将一个List转化为Map<br>
+	 * 操作步骤: TODO<br>
+	 * @param keyName 转换对象属性名
+	 * @param list 需要转换的源list
+	 * @return
+	 */
+	public static <T> Map<String, T> listToMap(String keyName, List<T> list) {
 
+		Map<String, T> map = new ConcurrentHashMap<String, T>();
+
+		if (list != null && list.size() != 0) {
+			for (T t : list) {
+				Map<String, Object> mapField;
+				try {
+					mapField = ReflectionUtil.bean2Map(t);
+					Object fieldValue = mapField.get(keyName);
+					String valueForString = "";
+					try {
+						valueForString = String.valueOf(fieldValue);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (valueForString.trim().equals("")) {
+						continue;
+					}
+					map.put(valueForString, t);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return map;
+	}
 }
