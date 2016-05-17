@@ -76,10 +76,10 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 						}
         				beanObj = beanObjBean.getBeanObj();
         				beanName = beanObjBean.getName();
-        				String returnBeanName = beanObj.getClass().getName();
-        				if(returnBeanName != clazz.getName()) {
-        					throw new StartupErrorException("bean:类型为"+clazz.getName()+"的bean实例处理返回的对象类型为:"+returnBeanName+"类型不匹配");
-        				}
+//        				String returnBeanName = beanObj.getClass().getName();
+//        				if(beanName != clazz.getName()) {
+//        					throw new StartupErrorException("bean:类型为"+clazz.getName()+"的bean实例处理返回的对象类型为:"+beanName+"类型不匹配");
+//        				}
         			}
         			
         			if(beanObj == null) {
