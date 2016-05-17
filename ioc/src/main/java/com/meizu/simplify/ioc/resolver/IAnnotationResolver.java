@@ -25,5 +25,13 @@ public interface IAnnotationResolver<R extends Object> {
 	 * @param resolveList 解析的数据列表
 	 */
 	void resolve(List<R> resolveList);
+	/**
+	 * 方法用途: 解析执行bean实例，并进行依赖注入<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanName
+	 */
+	default void resolveBeanObj(String beanName) {
+		
+	}
 
 }

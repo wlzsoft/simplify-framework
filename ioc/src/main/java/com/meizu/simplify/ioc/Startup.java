@@ -16,7 +16,6 @@ import com.meizu.simplify.ioc.enums.StartupTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
-import com.meizu.simplify.utils.ReflectionUtil;
 
 /**
   * <p><b>Title:</b><i>bean管理容器启动器</i></p>
@@ -35,7 +34,42 @@ import com.meizu.simplify.utils.ReflectionUtil;
 public final class Startup {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
+	
+	/**
+	 * 方法用途: 容器启动入口方法<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	public static StartupTypeEnum start() {
+		return startCallback(null,new AnnoCallback() {
+			@Override
+			public void invoke(IAnnotationResolver<Class<?>> ir, Class<?> beanObj) {
+				ir.resolve(new ArrayList<>());
+			}
+		});
+	}
+	
+	/**
+	 * 方法用途: 容器的单个bean实例的解析处理入口<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanClass
+	 * @return
+	 */
+	public static StartupTypeEnum startBeanObj(Class<?> beanClass) {
+		return startCallback(beanClass,new AnnoCallback() {
+			@Override
+			public void invoke(IAnnotationResolver<Class<?>> ir, Class<?> beanClass) {
+				ir.resolveBeanObj(beanClass.getName());
+			}
+		});
+	}
+	
+	/**
+	 * 方法用途: 获取启用时注解解析处理器的处理器列表<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static Map<InitTypeEnum, Class<?>> getAnnotationResolverList() {
 		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, "com.meizu");
 		Map<InitTypeEnum,Class<?>> mapResolve = new EnumMap<InitTypeEnum, Class<?>>(InitTypeEnum.class);
 		for (Class<?> clazz : resolveList) {
@@ -47,6 +81,18 @@ public final class Startup {
 			mapResolve.put(init.value(), clazz);
 		}
 		mapResolve = CollectionUtil.sortMapByKey(mapResolve, true);
+		return mapResolve;
+	}
+	
+	
+	
+	/**
+	 * 方法用途: 容器的单个bean实例的解析处理入口<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	private static StartupTypeEnum startCallback(Class<?> beanClass,AnnoCallback call) {
+		Map<InitTypeEnum, Class<?>> mapResolve = getAnnotationResolverList();
 		for (Class<?> clazz : mapResolve.values()) {
 			LOGGER.info("resolver invoke:{}",clazz.getName());
 			try {
@@ -54,7 +100,9 @@ public final class Startup {
 				if(obj == null) {
 					obj = clazz.newInstance();
 				}
-				ReflectionUtil.invokeMethod(obj, "resolve", new Class[]{List.class}, new Object[]{new ArrayList<>()});
+				@SuppressWarnings("unchecked")
+				IAnnotationResolver<Class<?>> ir = (IAnnotationResolver<Class<?>>)obj;
+				call.invoke(ir,beanClass);
 			} catch (InstantiationException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -71,6 +119,10 @@ public final class Startup {
 				
 		}
 		return StartupTypeEnum.SUCCESS;
+	}
+	
+	interface AnnoCallback  {
+		void invoke(IAnnotationResolver<Class<?>> ianno,Class<?> beanClass);
 	}
 
 }

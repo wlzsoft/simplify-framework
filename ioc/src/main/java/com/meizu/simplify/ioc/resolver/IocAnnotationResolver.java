@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,19 +41,29 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
 		Map<String, Object> mapContainer = container.getMapContainer();
-		Collection<Object> containerCollection = mapContainer.values();
-		for (Object beanObj : containerCollection) {
-			Class<?> beanClass = beanObj.getClass();
-			injectObjectForResourceAnno(beanObj, beanClass);
-			
-			Class<?>  parentClass = null;
-			while((parentClass = beanClass.getSuperclass()) != null) {
-				if(parentClass == Class.class) {
-					break;
-				}
-				injectObjectForResourceAnno(beanObj, parentClass);
-				beanClass = parentClass;
+		Set<String> containerCollection = mapContainer.keySet();
+		for (String beanName : containerCollection) {
+			resolveBeanObj(beanName);
+		}
+	}
+	/**
+	 * 方法用途: 解析执行bean实例，并进行依赖注入<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanObj
+	 */
+	@Override
+	public void resolveBeanObj(String beanName) {
+		Object beanObj = BeanFactory.getBean(beanName);
+		Class<?> beanClass = beanObj.getClass();
+		injectObjectForResourceAnno(beanObj, beanClass);
+		
+		Class<?>  parentClass = null;
+		while((parentClass = beanClass.getSuperclass()) != null) {
+			if(parentClass == Class.class) {
+				break;
 			}
+			injectObjectForResourceAnno(beanObj, parentClass);
+			beanClass = parentClass;
 		}
 	}
 	/**

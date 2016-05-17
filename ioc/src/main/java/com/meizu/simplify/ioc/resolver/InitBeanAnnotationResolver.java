@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,18 +37,23 @@ public final class InitBeanAnnotationResolver implements IAnnotationResolver<Cla
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
 		Map<String, Object> mapContainer = container.getMapContainer();
-		Collection<Object> containerCollection = mapContainer.values();
-		for (Object beanObj : containerCollection) {
-			Class<?> beanClass = beanObj.getClass();
-			List<Method> initMethodList = ClassUtil.findMethodByAnnotation(InitBean.class,beanClass);
-			for (Method method : initMethodList) {
-				try {
-					method.invoke(beanObj);
-					LOGGER.info("已调用bean["+beanClass.getName()+"]的初始化方法:"+method.getName());
-					break;
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
-				}
+		Set<String> containerCollection = mapContainer.keySet();
+		for (String beanName : containerCollection) {
+			resolveBeanObj(beanName);
+		}
+	}
+	@Override
+	public void resolveBeanObj(String beanName) {
+		Object beanObj = BeanFactory.getBean(beanName);
+		Class<?> beanClass = beanObj.getClass();
+		List<Method> initMethodList = ClassUtil.findMethodByAnnotation(InitBean.class,beanClass);
+		for (Method method : initMethodList) {
+			try {
+				method.invoke(beanObj);
+				LOGGER.info("已调用bean["+beanClass.getName()+"]的初始化方法:"+method.getName());
+				break;
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
 			}
 		}
 	}

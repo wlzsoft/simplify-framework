@@ -12,10 +12,8 @@ import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.meizu.rpc.annotations.ClientBean;
 import com.meizu.rpc.annotations.ServerBean;
-import com.meizu.rpc.config.DubboApplication;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanEntity;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.hook.IBeanHook;
 import com.meizu.simplify.utils.ClassUtil;
@@ -71,7 +69,9 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			ClientBean beanAnnotation = entityClass.getAnnotation(ClientBean.class);
 			PropertieUtil propertieUtil=new PropertieUtil("properties/dubbo.properties");
 			// 当前应用配置
-			DubboApplication application2 = BeanFactory.getBean(DubboApplication.class);
+//			Startup.startBeanObj(DubboPropertiesConfig.class);
+//			Startup.startBeanObj(DubboApplication.class);
+//			DubboApplication application2 = BeanFactory.getBean(DubboApplication.class);
 			ApplicationConfig application = new ApplicationConfig();
 			application.setName(propertieUtil.getString("dubbo.application.name"));
 			// 连接注册中心配置

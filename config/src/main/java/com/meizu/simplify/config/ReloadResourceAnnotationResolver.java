@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,26 +41,32 @@ public class ReloadResourceAnnotationResolver implements IAnnotationResolver<Cla
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
 		Map<String, Object> mapContainer = container.getMapContainer();
-		Collection<Object> containerCollection = mapContainer.values();
-		for (Object beanObj : containerCollection) {
-			Class<?> beanClass = beanObj.getClass();
-			ReloadableResource reloadableResource = beanClass.getAnnotation(ReloadableResource.class);
-			if(reloadableResource == null || StringUtil.isBlank(reloadableResource.value())) {
-				continue;
-			}
-			LOGGER.info("配置实体注入 初始化:{}",beanClass.getName());
-			String reloadableResourceValue = reloadableResource.value();
-			String prefix = reloadableResource.prefix();
-			PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue);
-			propertieUtils.setConfigValue(beanObj, prefix);
-			
-			//配置文件动态读取设置
-			Field[] fieldArr = beanClass.getDeclaredFields();
-			for (Field field : fieldArr) {
-				DymaicProperties dymaicProperties = field.getAnnotation(DymaicProperties.class);
-				if(dymaicProperties != null) {
-					ReflectionUtil.invokeSetterMethod(beanObj, field.getName(), propertieUtils);
-				}
+		Set<String> containerCollection = mapContainer.keySet();
+		for (String beanName : containerCollection) {
+			resolveBeanObj(beanName);
+		}
+	}
+
+	@Override
+	public void resolveBeanObj(String beanName) {
+		Object beanObj = BeanFactory.getBean(beanName);
+		Class<?> beanClass = beanObj.getClass();
+		ReloadableResource reloadableResource = beanClass.getAnnotation(ReloadableResource.class);
+		if(reloadableResource == null || StringUtil.isBlank(reloadableResource.value())) {
+			return;
+		}
+		LOGGER.info("配置实体注入 初始化:{}",beanClass.getName());
+		String reloadableResourceValue = reloadableResource.value();
+		String prefix = reloadableResource.prefix();
+		PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue);
+		propertieUtils.setConfigValue(beanObj, prefix);
+		
+		//配置文件动态读取设置
+		Field[] fieldArr = beanClass.getDeclaredFields();
+		for (Field field : fieldArr) {
+			DymaicProperties dymaicProperties = field.getAnnotation(DymaicProperties.class);
+			if(dymaicProperties != null) {
+				ReflectionUtil.invokeSetterMethod(beanObj, field.getName(), propertieUtils);
 			}
 		}
 	}
