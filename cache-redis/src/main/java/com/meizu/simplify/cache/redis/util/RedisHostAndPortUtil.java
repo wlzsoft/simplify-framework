@@ -48,7 +48,7 @@ public class RedisHostAndPortUtil {
 			}
 			List<HostAndPort> hostList = new ArrayList<HostAndPort>();
 			for (String hostDef : envHosts) {
-				final String[] hostAndPort = hostDef.split(":");
+				final String[] hostAndPort = hostDef.split("@");
 				if (null == hostAndPort) {
 					continue;
 				}
