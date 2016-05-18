@@ -1,4 +1,4 @@
-package com.meizu.simplify.cache.redis.util;
+package com.meizu.simplify.util;
 
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.meizu.simplify.ioc.annotation.Bean;

@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.exception.BaseException;
@@ -23,6 +22,7 @@ import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.mvc.view.MessageView;
 import com.meizu.simplify.mvc.view.RedirectView;
 import com.meizu.simplify.mvc.view.TemplateFactory;
+import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;

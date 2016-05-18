@@ -22,5 +22,16 @@ public class UserService {
 		public void delUser(Integer id) {
 
 		}
+		
+		@CacheDataAdd(key="aaa")
+	    public Object doSomeThing(User bb) {
+	        System.out.println("ִtest2测试");
+	        return true;
+	    }
+		@CacheDataAdd(key="bbb")
+	    public Object doSomeThing2(String aa) {
+	        System.out.println("ִtest2测试2");
+	        return true;
+	    }
 
 	}

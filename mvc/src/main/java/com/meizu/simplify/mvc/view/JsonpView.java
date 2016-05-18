@@ -6,9 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.JsonUtil;
 import com.meizu.simplify.utils.StringUtil;
 

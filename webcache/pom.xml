@@ -25,9 +25,15 @@
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
-	    <artifactId>cache-redis</artifactId><!-- TODO 页面缓存不走redis缓存，也不要依赖具体缓存实现，后面这里需要改成<artifactId>caches</artifactId> -->
+	    <artifactId>aop</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
+	  <!-- TODO 页面缓存不走redis缓存，也不要依赖具体缓存实现，后面这里需要改成<artifactId>caches</artifactId> -->
+	  <!-- <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>cache-redis</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency> -->
 	  <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

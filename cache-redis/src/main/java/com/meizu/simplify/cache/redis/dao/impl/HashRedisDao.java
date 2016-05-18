@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.dao.IHashCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
-import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.JsonUtil;
 
 /**

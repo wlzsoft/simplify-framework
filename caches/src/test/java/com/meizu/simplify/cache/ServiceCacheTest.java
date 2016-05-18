@@ -1,9 +1,11 @@
-package com.meizu.simplify.mvc;
+package com.meizu.simplify.cache;
 
 import org.junit.Test;
 
+import com.meizu.simplify.cache.entity.User;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
+import com.meizu.simplify.ioc.service.TestService;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -20,20 +22,20 @@ import com.meizu.simplify.ioc.Startup;
  * @version Version 0.1
  *
  */
-public class MvcTest {
+public class ServiceCacheTest {
 	@Test
 	public void testMvc() {
 		Startup.start();
 		long start = System.currentTimeMillis();
 		User bb = new User();
 		bb.setName("yyyyy");
-		BeanFactory.getBean(TestService.class).doSomeThing(bb);
+		BeanFactory.getBean(UserService.class).doSomeThing(bb);
 		System.out.println((System.currentTimeMillis() - start) + "ms");
 	}
 	@Test
 	public  void testCache() {
     	long start = System.currentTimeMillis();
-        TestService h = new TestService();
+    	UserService h = new UserService();
         User bb = new User();
         bb.setName("yyyyy");
         h.doSomeThing(bb);

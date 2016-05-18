@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
@@ -20,6 +19,7 @@ import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
+import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 

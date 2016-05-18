@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.redis.util.JsonResolver;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
@@ -29,6 +28,7 @@ import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
+import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.StringUtil;
 
 
