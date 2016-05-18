@@ -1,18 +1,23 @@
 package com.meizu.rpc.resolver;
 
-import java.util.ArrayList;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.dubbo.config.MonitorConfig;
+import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
+import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
 import com.meizu.rpc.annotations.ServerBean;
 import com.meizu.rpc.config.DubboApplication;
 import com.meizu.rpc.config.DubboMonitor;
+import com.meizu.rpc.config.DubboPropertiesConfig;
 import com.meizu.rpc.config.DubboProtocol;
 import com.meizu.rpc.config.DubboRegistry;
 import com.meizu.simplify.exception.StartupErrorException;
@@ -34,23 +39,27 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  *
  */
 @Init(InitTypeEnum.SERVER_BEAN)
-public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
+public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?>> ,Closeable{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerBeanAnnotationResolver.class);
+	
+	 private final Set<ServiceConfig<?>> serviceConfigs = new ConcurrentHashSet<ServiceConfig<?>>();
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		buildAnnotation(ServerBean.class);
 	}
 
-	public static <T extends ServerBean> void buildAnnotation(Class<T> clazzAnno) {
+	public  <T extends ServerBean> void buildAnnotation(Class<T> clazzAnno) {
 		DubboApplication application = BeanFactory.getBean(DubboApplication.class);
  		DubboProtocol protocol = BeanFactory.getBean(DubboProtocol.class);
 		DubboRegistry registry = BeanFactory.getBean(DubboRegistry.class);
 		DubboMonitor monitor = BeanFactory.getBean(DubboMonitor.class);
+		DubboPropertiesConfig dubboProperties=BeanFactory.getBean(DubboPropertiesConfig.class);;
 //		List<DubboRegistry> registryList=new ArrayList<DubboRegistry>();
 //		List<Object> beanList=new ArrayList<Object>();
 		Set<Entry<String, Object>>  resoveBean = BeanFactory.getBeanContainer().getMapContainer().entrySet();
+		String loadbalanceConfig=dubboProperties.getProp().getString("dubbo.service.loadbalance");
 		for (Entry<String, Object> clazzObj : resoveBean) {
 			Object bean = clazzObj.getValue();
 			Class<?> clazz = bean.getClass();
@@ -71,10 +80,11 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				service.setProtocol(protocol);
 				service.setInterface(interfaces);
 				service.setTimeout(beanAnnotation.timeout());
-				service.setLoadbalance(beanAnnotation.loadbalance());
-				service.setConnections(beanAnnotation.connections());
+//				String loadbalance=beanAnnotation.loadbalance().getValue();
+				service.setLoadbalance(loadbalanceConfig);
 				service.setRef(bean);
 				service.setVersion(beanAnnotation.version());
+				serviceConfigs.add(service);
 				service.export();
 			} catch (Exception e) {
 				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败" + e);
@@ -83,6 +93,18 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 
 		}
 		
+	}
+
+	@Override
+	public void close() throws IOException {
+		for (ServiceConfig<?> serviceConfig : serviceConfigs) {
+			try {
+				LOGGER.info(serviceConfig+" unexport start........");
+				serviceConfig.unexport();
+			} catch (Throwable e) {
+				LOGGER.error(e.getMessage()+serviceConfig+" unexport exception", e);
+			}
+		}
 	}
 	
 }
