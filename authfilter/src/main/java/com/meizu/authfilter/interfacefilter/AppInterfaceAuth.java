@@ -42,9 +42,16 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 	@Override
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T t)
 			throws ServletException, IOException {
+	    String url=	request.getRequestURI();
+		
 		if(isAuth == null || !isAuth) {
 			return true;
 		}
+		
+		if(url.equals("/upgradeApp/uploadSaleAppPackage.json")){ //不拦截APP 下载的url
+			return true;
+		}
+		
 		String rosAuth = request.getHeader("ros-auth");
 		if(StringUtil.isEmpty(rosAuth)) {
 			response.setStatus(403);
