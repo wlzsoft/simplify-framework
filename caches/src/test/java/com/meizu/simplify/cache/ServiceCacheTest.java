@@ -5,7 +5,6 @@ import org.junit.Test;
 import com.meizu.simplify.cache.entity.User;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.ioc.service.TestService;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
