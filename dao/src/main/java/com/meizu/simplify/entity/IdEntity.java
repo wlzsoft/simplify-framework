@@ -18,7 +18,7 @@ public class IdEntity<T,PK extends Serializable> implements Serializable,AutoClo
 		this.fid = fid;
 	}
 	@Override
-	public void close() throws Exception {
+	public void close() throws Exception {//TODO 需要做严格测试，是否被调用
 		System.out.println(this.getClass().getName()+":"+this.fid+">> 已经销毁");
 	}
 	

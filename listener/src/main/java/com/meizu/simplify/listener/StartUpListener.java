@@ -50,6 +50,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("系统停止运行");
 		DruidPoolFactory.closePool();
+//		是否整合到 DataSourceManager 的 AutoCloseable 的方法中，确认AutoCloseable的可靠性 TODO
 	}
 
 	@Override
