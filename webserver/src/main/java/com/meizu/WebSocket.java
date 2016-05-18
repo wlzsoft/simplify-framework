@@ -39,7 +39,7 @@ public class WebSocket {
             this.request = request;
         }
 		
-		public void exec2() {
+		public void exec() {
 			try {
                 System.out.println("client["+(i++)+"] connected: " + socket.getInetAddress() + ":" + socket.getPort());
                 PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);

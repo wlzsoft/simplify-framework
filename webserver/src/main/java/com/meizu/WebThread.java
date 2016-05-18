@@ -107,7 +107,7 @@ public class WebThread implements Runnable {
 				}
 				String upgrade = request.getHeader("Upgrade");
 				if(upgrade!= null&&upgrade.equals("websocket")) {
-					new Handler(this.socket,br,request).exec2();
+					new Handler(this.socket,br,request).exec();
 					return;
 				}
 				// 解析请求头完毕
