@@ -125,4 +125,9 @@ public final class Startup {
 		void invoke(IAnnotationResolver<Class<?>> ianno,Class<?> beanClass);
 	}
 
+	public static void stop() {
+		IStopRelease isr = BeanFactory.getBean("com.meizu.simplify.dao.DaoStopRelease");
+		isr.release();
+	}
+
 }
