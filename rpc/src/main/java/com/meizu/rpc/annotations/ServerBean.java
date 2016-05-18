@@ -25,10 +25,11 @@ public @interface ServerBean {
 	
 	String version() default "1.0.0";//服务版本，建议使用两位或以上数字版本
 	
-	int timeout() default 1000;//远程服务调用超时时间(毫秒)
+	int timeout() default 5000;//远程服务调用超时时间(毫秒)
 	
-	int connections() default 100;//对每个提供者的最大连接数
+	int connections() default 500;//对每个提供者的最大连接数
 	
-	String loadbalance() default "random";//负载均衡策略，可选值：random,roundrobin,leastactive、consistenthash，分别表示：随机，轮循，最少活跃调用，一致性Hash
+	//TODO 配置文件获取
+//	LoadbalanceEnum loadbalance() default LoadbalanceEnum.RANDOM;//负载均衡策略
 	
 }

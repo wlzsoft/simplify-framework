@@ -4,15 +4,12 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
-import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
 import com.meizu.rpc.annotations.ServerBean;
 import com.meizu.rpc.config.DubboApplication;

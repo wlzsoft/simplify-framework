@@ -1,7 +1,10 @@
 package com.meizu.rpc.resolver;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +36,11 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @BeanHook(ClientBean.class)
-public class ClientBeanAnnotationResolver implements IBeanHook {
+public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBeanAnnotationResolver.class);
-			
+	private final ConcurrentMap<String, ReferenceConfig<?>> referenceConfigs = new ConcurrentHashMap<String, ReferenceConfig<?>>();
+	
 	@Override
 	public BeanEntity<?> hook(Class<?> clazz){
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, "com.meizu");//扫描ClientBean注解bean
@@ -68,42 +73,46 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 		try{
 			ClientBean beanAnnotation = entityClass.getAnnotation(ClientBean.class);
 			PropertieUtil propertieUtil=new PropertieUtil("properties/dubbo.properties");
-			// 当前应用配置
-//			Startup.startBeanObj(DubboPropertiesConfig.class);
-//			Startup.startBeanObj(DubboApplication.class);
-//			DubboApplication application2 = BeanFactory.getBean(DubboApplication.class);
-			ApplicationConfig application = new ApplicationConfig();
-			application.setName(propertieUtil.getString("dubbo.application.name"));
-			// 连接注册中心配置
-			RegistryConfig registry = new RegistryConfig();
-			registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
-			registry.setGroup(propertieUtil.getString("dubbo.registry.group"));
-			// 引用远程服务
-			ReferenceConfig<Object> reference = new ReferenceConfig<>();
-			reference.setApplication(application);
-			reference.setRegistry(registry);
-//			reference.setProtocol("zookeeper");
-//			reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
-			reference.setInterface(entityClass);
-			reference.setVersion(beanAnnotation.version());
-			reference.setCheck(beanAnnotation.check());
-			reference.setUrl(beanAnnotation.url());
-			String monitorPro=propertieUtil.getString("dubbo.monitor.protocol");
-			if (StringUtil.isNotBlank(monitorPro)) {
-				MonitorConfig monitor = new MonitorConfig();// 监控
-				monitor.setProtocol(monitorPro);
-				reference.setMonitor(monitor);
+//			String group=propertieUtil.getString("dubbo.registry.group");
+			String key =  entityClass.getName() + ":" + beanAnnotation.version();
+			ReferenceConfig<?> reference =referenceConfigs.get(key);
+			if (reference == null) {
+				ApplicationConfig application = new ApplicationConfig();
+				application.setName(propertieUtil.getString("dubbo.application.name"));
+				// 连接注册中心配置
+				RegistryConfig registry = new RegistryConfig();
+				registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
+//				registry.setGroup(group);
+//				registry.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
+				// 引用远程服务
+				reference = new ReferenceConfig<>();
+				reference.setApplication(application);
+				reference.setRegistry(registry);
+				reference.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
+//				reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
+				reference.setInterface(entityClass);
+				reference.setVersion(beanAnnotation.version());
+				reference.setCheck(beanAnnotation.check());
+				reference.setUrl(beanAnnotation.url());
+				String monitorPro=propertieUtil.getString("dubbo.monitor.protocol");
+				if (StringUtil.isNotBlank(monitorPro)) {
+					MonitorConfig monitor = new MonitorConfig();// 监控
+					monitor.setProtocol(monitorPro);
+					reference.setMonitor(monitor);
+				}
 			}
 			BeanEntity<Object> resultEntity = new BeanEntity<Object>();
 			Object obj=reference.get();
 			resultEntity.setName(entityClass.getName());
 			resultEntity.setBeanObj(obj);
+			referenceConfigs.putIfAbsent(key, reference);
 			return resultEntity;
 		}catch(Exception e){
 			LOGGER.error("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
 			throw new StartupErrorException("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
+		}finally{
+			
 		}
-		
 	}
 	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil){
 		String addresss = propertieUtil.getString("dubbo.registry.address");
@@ -118,5 +127,16 @@ public class ClientBeanAnnotationResolver implements IBeanHook {
 			}
 		}
 		return registries;
+	}
+	@Override
+	public void close() throws IOException {
+		for (ReferenceConfig<?> referenceConfig : referenceConfigs.values()) {
+            try {
+            	LOGGER.info(referenceConfig+" destroy start..........");
+                referenceConfig.destroy();
+            } catch (Throwable e) {
+            	LOGGER.error(referenceConfig+" destroy exception"+e.getMessage(), e);
+            }
+        }
 	}
 }
