@@ -33,6 +33,16 @@ public class JsonUtil {
     }
 	
 	/**
+	 * 方法用途: pojo对象转换成json字符串-带元数据信息<br>
+	 * 操作步骤:TODO <br>
+	 * @param obj
+	 * @return
+	 */
+	public static String objectToString(Object obj){
+    	return JSON.toJSONString(obj);
+    }
+	
+	/**
 	 * 
 	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
 	 * 操作步骤: TODO <br>
