@@ -27,7 +27,21 @@ import com.meizu.simplify.utils.PropertieUtil;
 public class DruidPoolFactory {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DruidPoolFactory.class);
-			
+	
+	private String dataSourceStr = "";
+	
+	public String getDataSourceStr() {
+		return dataSourceStr;
+	}
+
+	public void setDataSourceStr(String dataSourceStr) {
+		this.dataSourceStr = dataSourceStr;
+	}
+	
+	public static String getDataSourceInfo()   {
+		return factory.getDataSourceStr();
+	}
+
 	// 线程共享变量,用于事务管理
 	public static ThreadLocal<Connection> container = new ThreadLocal<Connection>();
 	
@@ -36,12 +50,13 @@ public class DruidPoolFactory {
 	private DruidPoolFactory(){
 		createDataSource();
 	}
+	
 	private DruidDataSource dataSource = null;
 	private DruidDataSource createDataSource() {
 		try	{
 			PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
 			dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(result.getProps());
-			LOGGER.info(result.toString());
+			dataSourceStr = result.toString();
 		} catch (Exception e){
 			try	{
 				if (dataSource != null) {
