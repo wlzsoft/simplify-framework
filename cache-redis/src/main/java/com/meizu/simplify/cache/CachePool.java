@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.redis.RedisPool;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.InitBean;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -18,6 +20,7 @@ import com.meizu.simplify.cache.redis.RedisPool;
  * @version Version 0.1
  *
  */
+@Bean
 public class CachePool {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CachePool.class);
 	
@@ -25,7 +28,8 @@ public class CachePool {
 	public static boolean cache = true;//注入,从config.properties 的 cache.switch //是否启用缓存 
 	public static boolean jvmcache = false;//注入，从config.properties 的 redis.switch //是否启用redis缓存
 	
-	public static void init() {
+	@InitBean
+	public void init() {
 		if (cache) {
 			if (jvmcache) {
 				LOGGER.info("Framework jvm cached -> ok.");

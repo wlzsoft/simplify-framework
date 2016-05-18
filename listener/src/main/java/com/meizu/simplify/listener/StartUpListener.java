@@ -9,7 +9,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import com.meizu.simplify.cache.CachePool;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
@@ -34,7 +33,6 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext context = sce.getServletContext();
 		context.setInitParameter("type", "ALL");
-		CachePool.init();
 		Startup.start();
 //		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
 //		"meizu demo Services v1.0.0.0 Start");
