@@ -126,8 +126,11 @@ public final class Startup {
 	}
 
 	public static void stop() {
-		IStopRelease isr = BeanFactory.getBean("com.meizu.simplify.dao.DaoStopRelease");
-		isr.release();
+		List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, "com.meizu");
+		for (Class<?> clazz : classList) {
+			IStopRelease isr = BeanFactory.getBean(clazz.getName());
+			isr.release();
+		}
 	}
 
 }
