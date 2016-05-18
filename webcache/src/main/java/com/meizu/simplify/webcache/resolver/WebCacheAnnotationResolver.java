@@ -1,6 +1,5 @@
 package com.meizu.simplify.webcache.resolver;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.exception.CacheException;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -18,6 +16,7 @@ import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.webcache.annotation.WebCache;
+import com.meizu.simplify.webcache.exception.WebCacheException;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -49,7 +48,7 @@ public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>
 				methodArr = beanClass.getDeclaredMethods();
 			} catch(NoClassDefFoundError e) {
 				e.printStackTrace();
-				throw new CacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+				throw new WebCacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
 			}
 			
 			for (Method method : methodArr) {
