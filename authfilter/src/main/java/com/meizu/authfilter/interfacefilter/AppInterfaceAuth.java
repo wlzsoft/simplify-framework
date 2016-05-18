@@ -59,15 +59,11 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 		}
 		String key = "";
 		String reqTime = request.getHeader("reqTime");
-		String reqTime2 = request.getHeader("reqTime2");
+		//String reqTime2 = request.getHeader("reqTime2");
 		if(StringUtil.isEmpty(reqTime)) {
-			if(StringUtil.isEmpty(reqTime2)) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:00:00");
 				String dateStr = sdf.format(new Date());
 				key+=dateStr;
-			} else {
-				key+=reqTime2;
-			}
 		} else {
 			String dateStr = DateUtil.parseAndFormat(reqTime, DateFormatEnum.YEAR_TO_SECOND, DateFormatEnum.YEAR_TO_MINUTE_N);
 			dateStr = MD5Encrypt.sign(dateStr + authkey.substring(5));
