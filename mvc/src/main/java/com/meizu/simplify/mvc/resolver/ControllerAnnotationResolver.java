@@ -249,11 +249,11 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		if (!method.isAnnotationPresent(clazzAnno)) {
 			return;
 		}
-		T anno = method.getAnnotation(clazzAnno.asSubclass(Annotation.class));
-		AnnotationInfo<T> annoInfo = new AnnotationInfo<>();
+		Annotation anno = method.getAnnotation(clazzAnno);
+		AnnotationInfo<Annotation> annoInfo = new AnnotationInfo<>();
 		annoInfo.setAnnotatoionType(anno);
 		annoInfo.setReturnType(method.getReturnType());
-		callbak.resolver(annoInfo);
+		callbak.resolver((AnnotationInfo<T>)annoInfo);
 		LOGGER.debug("Controller相关注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
 	}
 }
