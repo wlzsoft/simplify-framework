@@ -57,8 +57,8 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 			response.setStatus(403);
 			Message.error("没有授权");
 		}
-		
-		String dateStr = DateUtil.parseAndFormat(new Date().toString(), DateFormatEnum.YEAR_TO_SECOND, DateFormatEnum.YEAR_TO_MINUTE_N);
+		String reqTime = request.getHeader("reqTime");
+		String dateStr = DateUtil.parseAndFormat(reqTime, DateFormatEnum.YEAR_TO_SECOND, DateFormatEnum.YEAR_TO_MINUTE_N);
 		dateStr = MD5Encrypt.sign(dateStr + authkey.substring(5));
 		String key =dateStr;
 		String modSec = MD5Encrypt.sign(key+authkey);
