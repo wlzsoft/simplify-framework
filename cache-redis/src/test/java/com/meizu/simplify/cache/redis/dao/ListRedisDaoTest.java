@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.meizu.simplify.cache.entity.User;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.enums.TimeEnum;
 import com.meizu.simplify.cache.redis.dao.impl.ListRedisDao;
 import com.meizu.simplify.stresstester.StressTestUtils;
 import com.meizu.simplify.stresstester.core.StressTask;
-import com.meizu.simplify.utils.entity.User;
 
 public class ListRedisDaoTest {
 	public static ListRedisDao client = new ListRedisDao("redis_ref_hosts");
