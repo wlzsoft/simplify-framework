@@ -57,22 +57,10 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 			response.setStatus(403);
 			Message.error("没有授权");
 		}
-		String key = "";
-		String reqTime = request.getHeader("reqTime");
-		String reqTime2 = request.getHeader("reqTime2");
-		if(StringUtil.isEmpty(reqTime)) {
-			if(StringUtil.isEmpty(reqTime2)) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:00:00");
-				String dateStr = sdf.format(new Date());
-				key+=dateStr;
-			} else {
-				key+=reqTime2;
-			}
-		} else {
-			String dateStr = DateUtil.parseAndFormat(reqTime, DateFormatEnum.YEAR_TO_SECOND, DateFormatEnum.YEAR_TO_MINUTE_N);
-			dateStr = MD5Encrypt.sign(dateStr + authkey.substring(5));
-			key+=dateStr;
-		}
+		
+		String dateStr = DateUtil.parseAndFormat(new Date().toString(), DateFormatEnum.YEAR_TO_SECOND, DateFormatEnum.YEAR_TO_MINUTE_N);
+		dateStr = MD5Encrypt.sign(dateStr + authkey.substring(5));
+		String key =dateStr;
 		String modSec = MD5Encrypt.sign(key+authkey);
 		
 		if(!rosAuth.equalsIgnoreCase(modSec)) {//md5((md5（所有请求参数拼接 +精确到分钟的时间搓（yyyy-MM-dd HH:mm））。substring(0,26))+32位key),如果无任何请求参数，那么使用“dros”值代替 ，key 不能对外泄露。 这个方式用于防止数据篡改。
