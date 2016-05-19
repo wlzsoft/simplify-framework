@@ -1,4 +1,4 @@
-package com.meizu.simplify.enums.log;
+package com.meizu.simplify.enums;
 
 /**
  * 

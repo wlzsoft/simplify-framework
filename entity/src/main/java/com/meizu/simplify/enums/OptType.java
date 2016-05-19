@@ -1,8 +1,8 @@
-package com.meizu.simplify.enums.log;
+package com.meizu.simplify.enums;
 
 /**
  * 
- * <p><b>Title:</b><i>日志类型</i></p>
+ * <p><b>Title:</b><i>操作类型</i></p>
  * <p>Desc: </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -14,7 +14,7 @@ package com.meizu.simplify.enums.log;
  * @version Version 3.0
  *
  */
-public enum Type {
+public enum OptType {
 	/**
 	 * 添加
 	 */

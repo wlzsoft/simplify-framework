@@ -1,7 +1,7 @@
 package com.meizu.simplify.entity.log;
 
-import com.meizu.simplify.enums.log.Terminal;
-import com.meizu.simplify.enums.log.Type;
+import com.meizu.simplify.enums.OptType;
+import com.meizu.simplify.enums.Terminal;
 
 /**
  * <p><b>Title:</b><i>业务日志实体</i></p>
@@ -19,7 +19,7 @@ public class LogEntity implements java.io.Serializable {
 	private static final long serialVersionUID = -9213847583807623555L;
 	
 	private String busiType;//业务类型：接口、业务
-	private Type type;//操作类型
+	private OptType type;//操作类型
 	private String operationModule;// 操作模块
 	private String action;//动作：接口拉取、提交等
 	private String remark;// 描述 节点信息
@@ -66,11 +66,11 @@ public class LogEntity implements java.io.Serializable {
 		this.beans = beans;
 	}
 
-	public Type getType() {
+	public OptType getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(OptType type) {
 		this.type = type;
 	}
 
