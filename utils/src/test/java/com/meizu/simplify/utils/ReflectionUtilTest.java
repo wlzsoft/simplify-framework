@@ -115,6 +115,20 @@ public class ReflectionUtilTest  {
 		}
 	}
 	@Test
+	public void beanToMapByFinalTest() {
+		
+		Test2 test = new Test2();
+		test.setId(1);
+		test.setName("lcy");
+		expectedException.expect(IllegalArgumentException.class);
+		expectedException.expectMessage("不能找到对象 [" + test + "] 的方法 [getSeri] 请检查方法名和方法调用参数是否指定正确");
+		Map<String, Object> paramMap = ReflectionUtil.bean2Map(test,true);
+		Set<Entry<String, Object>> set = paramMap.entrySet();
+		for (Entry<String, Object> entry : set) {
+			System.out.println(entry.getKey()+"="+entry.getValue());
+		}
+	}
+	@Test
 	public void getAllField() {
 		
 		List<Field> list = ReflectionUtil.getAllField(TestImpl.class);
