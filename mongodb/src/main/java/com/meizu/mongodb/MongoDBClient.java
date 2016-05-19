@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.dao.util.Page;
+import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.mongodb.BasicDBObject;

@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.util;
+package com.meizu.simplify.entity.page;
 
 import java.util.ArrayList;
 import java.util.List;

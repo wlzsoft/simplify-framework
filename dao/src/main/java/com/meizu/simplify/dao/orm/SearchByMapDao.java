@@ -9,7 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.util.Page;
+import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.DataUtil;
 /**

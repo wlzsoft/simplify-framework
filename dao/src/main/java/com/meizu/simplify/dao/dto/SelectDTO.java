@@ -1,6 +1,6 @@
 package com.meizu.simplify.dao.dto;
 
-import com.meizu.simplify.dao.util.Page;
+import com.meizu.simplify.entity.page.Page;
 
 
 /**

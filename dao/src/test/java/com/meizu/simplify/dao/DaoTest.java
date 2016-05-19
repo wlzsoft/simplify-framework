@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
-import com.meizu.simplify.dao.util.Page;
+import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.Startup;
 
 /**

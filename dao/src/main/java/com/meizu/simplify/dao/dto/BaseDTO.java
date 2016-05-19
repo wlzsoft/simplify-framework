@@ -3,7 +3,7 @@ package com.meizu.simplify.dao.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.meizu.simplify.dao.util.Page;
+import com.meizu.simplify.entity.page.Page;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
