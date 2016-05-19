@@ -320,7 +320,10 @@ public class ReflectionUtil {
 		Field[] fields = type.getDeclaredFields();
 		for (Field field : fields) {
 			String fieldName = field.getName();
-			returnMap.put(fieldName, invokeGetterMethod(bean, field.getName()));
+			Object fieldValue = invokeGetterMethod(bean, field.getName());
+			if(fieldValue != null) {
+				returnMap.put(fieldName, fieldValue);
+			}
 		}
 		if(type.getSuperclass() != Object.class && type.getSuperclass() != null) {
 			buildFieldInfo(type.getSuperclass(),bean,returnMap);
