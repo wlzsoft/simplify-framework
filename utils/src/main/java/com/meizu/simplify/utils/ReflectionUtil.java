@@ -292,41 +292,51 @@ public class ReflectionUtil {
 		}
 		return null;
 	}
-
+    
+    /**
+	 * 
+	 * 方法用途: 实体转map<br>
+	 * 操作步骤: 默认不包含final的属性<br>
+	 * @param bean 待转换的bean对象
+	 * @return
+	 */
+	public static <T extends Object> Map<String, Object> bean2Map(T bean) {
+		return bean2Map(bean,false);
+	}
 	/**
 	 * 
 	 * 方法用途: 实体转map<br>
 	 * 操作步骤: TODO<br>
-	 * @param param
+	 * @param bean 待转换的bean对象
+	 * @param isContainFinal 是否包含final属性
 	 * @return
 	 */
-	public static <T extends Object> Map<String, Object> bean2Map(T bean) {
+	public static <T extends Object> Map<String, Object> bean2Map(T bean,boolean isContainFinal) {
 		Map<String, Object> returnMap = new ConcurrentHashMap<>();
-		buildFieldInfo(bean.getClass(),bean,returnMap);
+		buildFieldInfo(bean.getClass(),bean,returnMap,isContainFinal);
 		return returnMap;
 	}
 	
 	/**
 	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
 	 * 操作步骤: TODO<br>
-	 * @param class1
-	 * @param trans 
-	 * @throws IntrospectionException 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
+	 * @param type
+	 * @param bean 
+	 * @param returnMap 
+	 * @param isContainFinal 
 	 */
-	private static <T> void buildFieldInfo(Class<? extends T> type,T bean,Map<String,Object> returnMap) {
+	private static <T> void buildFieldInfo(Class<? extends T> type,T bean,Map<String,Object> returnMap,boolean isContainFinal) {
 		Field[] fields = type.getDeclaredFields();
 		for (Field field : fields) {
+			if(!isContainFinal&&Modifier.isFinal(field.getModifiers())) {//不包含final字段，但是实际实体却包含，那么抛弃掉这个字段
+				continue;
+			}
 			String fieldName = field.getName();
 			Object fieldValue = invokeGetterMethod(bean, field.getName());
-			if(fieldValue != null) {
-				returnMap.put(fieldName, fieldValue);
-			}
+			returnMap.put(fieldName, fieldValue);
 		}
 		if(type.getSuperclass() != Object.class && type.getSuperclass() != null) {
-			buildFieldInfo(type.getSuperclass(),bean,returnMap);
+			buildFieldInfo(type.getSuperclass(),bean,returnMap,isContainFinal);
 		}
 	}
 	
