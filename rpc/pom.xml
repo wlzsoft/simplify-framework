@@ -11,19 +11,9 @@
   <name>RPC远程服务调用 模块</name>
   <description>RPC远程服务调用 模块 </description>
   <dependencies>
-  	<dependency>
-	  	<groupId>com.meizu</groupId>
-	    <artifactId>utils</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
-	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>config</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
-	  </dependency>
-  	<dependency>
-	  	<groupId>com.meizu</groupId>
-	    <artifactId>aop</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	  </dependency>
 	<dependency>
@@ -65,11 +55,23 @@
 			<groupId>org.apache.zookeeper</groupId>
 			<artifactId>zookeeper</artifactId>
 			<version>3.3.3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.sgroschupf</groupId>
 			<artifactId>zkclient</artifactId>
 			<version>0.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.netflix.curator</groupId>
