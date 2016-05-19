@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.meizu.simplify.dao.annotations.Entity;
-import com.meizu.simplify.dao.annotations.Table;
-import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.entity.BaseEntity;
+import com.meizu.simplify.entity.annotations.Entity;
+import com.meizu.simplify.entity.annotations.Table;
+import com.meizu.simplify.entity.annotations.Transient;
 
 @Entity
 @Table(name="sys_user")

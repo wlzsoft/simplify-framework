@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.meizu.simplify.dao.annotations.Column;
-import com.meizu.simplify.dao.annotations.Transient;
+import com.meizu.simplify.entity.annotations.Column;
+import com.meizu.simplify.entity.annotations.Transient;
 
 /**
  * <p><b>Title:</b><i>基础实体类</i></p>

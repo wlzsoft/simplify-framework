@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.annotations;
+package com.meizu.simplify.entity.annotations;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;

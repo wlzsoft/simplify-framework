@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.codegen.CodeGenUtil;
-import com.meizu.simplify.dao.annotations.Entity;
+import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.template.BeetlTemplate;

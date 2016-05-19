@@ -6,10 +6,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.annotations.Entity;
-import com.meizu.simplify.dao.annotations.Table;
-import com.meizu.simplify.dao.annotations.Transient;
 import com.meizu.simplify.entity.IdEntity;
+import com.meizu.simplify.entity.annotations.Entity;
+import com.meizu.simplify.entity.annotations.Table;
+import com.meizu.simplify.entity.annotations.Transient;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;

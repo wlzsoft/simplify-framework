@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.annotations;
+package com.meizu.simplify.entity.annotations;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

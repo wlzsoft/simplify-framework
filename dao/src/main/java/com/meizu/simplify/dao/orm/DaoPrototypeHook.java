@@ -21,9 +21,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.annotations.Entity;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.entity.IdEntity;
+import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
