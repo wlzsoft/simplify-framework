@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>entity</artifactId>
+  <name>通用实体</name>
+  <description>pojo类,dto类，page类等等，从dao模块和其他模块中分离处理，避免api会依赖dao等模块
+  </description>
+   <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>utils</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	  </dependency>
+  </dependencies>
+</project>
