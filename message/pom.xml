@@ -28,6 +28,11 @@
 		<version>${project.parent.version}</version>
 	</dependency>
 	<dependency>
+		<groupId>com.meizu</groupId>
+		<artifactId>entity</artifactId>
+		<version>${project.parent.version}</version>
+	</dependency>
+	<dependency>
 	  <groupId>com.rabbitmq</groupId>
 	  <artifactId>amqp-client</artifactId>
 	  <version>3.3.4</version>

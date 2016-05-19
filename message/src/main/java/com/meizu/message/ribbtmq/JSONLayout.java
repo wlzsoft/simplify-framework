@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.meizu.message.entity.Log4JEntity;
+import com.meizu.simplify.entity.log.Log4JEntity;
 import com.meizu.simplify.utils.DateUtil;
 import com.meizu.simplify.utils.enums.DateFormatEnum;
 import com.meizu.simplify.utils.ip.IpUtil;

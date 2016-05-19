@@ -61,6 +61,7 @@
   <modules>
     <module>stress-tester</module>
   	<module>utils</module>
+  	<module>entity</module>
   	<module>weaving</module>
   	<module>encrypt</module>
   	<module>ioc</module>

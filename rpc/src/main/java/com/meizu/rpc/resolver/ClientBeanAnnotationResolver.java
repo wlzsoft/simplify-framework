@@ -114,6 +114,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 			
 		}
 	}
+	
 	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil){
 		String addresss = propertieUtil.getString("dubbo.registry.address");
 		List<RegistryConfig> registries=new ArrayList<RegistryConfig>();

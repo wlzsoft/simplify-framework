@@ -122,7 +122,7 @@ public class ControllerFilter implements Filter {
 		BaseController<?> bs = controllerAnnotationInfo.getObj();
 		bs.process(request, response,requestUrl);
 		long readtime = System.currentTimeMillis() - time;
-		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime)));
+		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+request.getSession().getId());
 		// 记录统计信息
 		Statistics.incReadcount();
 		Statistics.setReadMaxTime(readtime, requestUrl);
