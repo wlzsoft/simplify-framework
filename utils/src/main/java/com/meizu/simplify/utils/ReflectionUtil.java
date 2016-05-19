@@ -1,9 +1,6 @@
 package com.meizu.simplify.utils;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -12,9 +9,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 
 /**
@@ -86,29 +80,7 @@ public class ReflectionUtil {
     	invokeSetterMethod(obj,propertyName,value,value.getClass());
     }
     
-    /**
-     * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
-     * 如无法找到, 返回Object.class.
-     * @return the first generic declaration, or Object.class if cannot be determined
-     */
-    public static <T> Class<T> getSuperClassGenricType(final Class clazz) {
-        return getSuperClassGenricType(clazz, 0);
-    }
-    /**
-     * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
-     * 如无法找到, 返回Object.class.
-     * <p/>
-     * 如public UserDao extends HibernateDao<User,Long>
-     *
-     * @param clazz clazz The class to introspect
-     * @param index the Index of the generic ddeclaration,start from 0.
-     * @return the index generic declaration, or Object.class if cannot be determined
-     */
-    public  static <T> Class<T> getSuperClassGenricType(final Class<T> clazz, final int index) {
-        Type genType = clazz.getGenericSuperclass();// 得到泛型父类
-        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-        return (Class<T>) params[index];
-    }
+    
     /**
      * 
      * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
@@ -189,20 +161,15 @@ public class ReflectionUtil {
         return null;
     }
     
-    
-    
-    
-    
    
     /**
-     * 直接读取对象属性值 忽视private/protected修饰符，不经过getter函数
-     * 
+     * 方法用途: 直接读取对象属性值 忽视private/protected修饰符，不经过getter函数<br>
+     * 操作步骤: 注意：和invokeGetterMethod功能重复，后续确认抛弃掉其中一个方法 TODO<br>
      * @param obj
      * @param fieldName
      * @return
      */
-    public static <T> T obtainFieldValue(final Object obj,
-            final String fieldName,Class<T> classz) {
+    public static <T> T obtainFieldValue(final Object obj, final String fieldName,Class<T> classz) {
     	Field field = getField(obj,fieldName);
         T retval = null;
         try {
@@ -221,13 +188,13 @@ public class ReflectionUtil {
     /**
      * 
      * 方法用途: 直接读取对象属性值 忽视private/protected修饰符，不经过getter函数<br>
-     * 操作步骤: 注意：和invokeGetterMethod功能重复，后续确认抛弃掉其中一个方法 TODO<br>
+     * 操作步骤: 注意：和invokeGetterMethod功能重复，后续确认抛弃掉其中一个方法 TODO
+     *           和obtainFieldValue(final Object obj, final String fieldName,Class<T> classz)方法重叠,考虑是否去掉一个<br>
      * @param obj
      * @param fieldName
      * @return
      */
-    public static Object obtainFieldValue(final Object obj,
-            final String fieldName) {
+    public static Object obtainFieldValue(final Object obj, final String fieldName) {
     	Field field = getField(obj,fieldName);
         Object retval = null;
         try {
@@ -335,32 +302,7 @@ public class ReflectionUtil {
 	 */
 	public static <T extends Object> Map<String, Object> bean2Map(T bean) {
 		Map<String, Object> returnMap = new ConcurrentHashMap<>();
-		try {
-			Class<?> type = bean.getClass();
-			BeanInfo beanInfo = Introspector.getBeanInfo(type);
-			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-			for (int i = 0; i < propertyDescriptors.length; ++i) {
-				PropertyDescriptor descriptor = propertyDescriptors[i];
-				String propertyName = descriptor.getName();
-				if (!(propertyName.equals("class"))) {
-					Method readMethod = descriptor.getReadMethod();
-					if (readMethod == null) {
-						continue;
-					}
-					Object result = readMethod.invoke(bean, new Object[0]);
-					if (result != null)
-						returnMap.put(propertyName, result);
-					else {
-						returnMap.put(propertyName, "");
-					}
-				}
-			}
-			return returnMap;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// Map<String,Object> map = new ConcurrentHashMap<>();
-		// buildFieldInfo(param.getClass(),param,map);
+		buildFieldInfo(bean.getClass(),bean,returnMap);
 		return returnMap;
 	}
 	
@@ -369,17 +311,22 @@ public class ReflectionUtil {
 	 * 操作步骤: TODO<br>
 	 * @param class1
 	 * @param trans 
+	 * @throws IntrospectionException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	private static <T> void buildFieldInfo(Class<? extends T> class1,T param,Map<String,Object> map) {
-		Field[] fields = class1.getDeclaredFields();
+	private static <T> void buildFieldInfo(Class<? extends T> type,T bean,Map<String,Object> returnMap) {
+		Field[] fields = type.getDeclaredFields();
 		for (Field field : fields) {
 			String fieldName = field.getName();
-			map.put(fieldName, invokeGetterMethod(param, field.getName()));
+			returnMap.put(fieldName, invokeGetterMethod(bean, field.getName()));
 		}
-		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
-			buildFieldInfo(class1.getSuperclass(),param,map);
+		if(type.getSuperclass() != Object.class && type.getSuperclass() != null) {
+			buildFieldInfo(type.getSuperclass(),bean,returnMap);
 		}
 	}
+	
 //-----------------------获取class的基本信息-----------------------------
 	/**
 	 * 方法用途: 获取class的所有方法，包含所有父类的方法<br>
@@ -437,6 +384,32 @@ public class ReflectionUtil {
 			getAllField(entityClass.getSuperclass(),fieldList);
 		}
 	}
-	
+//	----------------------------获取class的父类的泛型参数的类型-------------------------------
+
+	/**
+     * 方法用途: 通过反射, 获得Class定义中声明的父类的第一个泛型参数的类型,如无法找到, 返回Object.class<br>
+     * 操作步骤: TODO 后续需要做单元测试支撑<br>
+     * @param clazz 需要获取实现父类的泛型参数的源类
+     * @author wanghaibin
+     * @return 返回第一个泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
+     */
+    public static <T> Class<T> getSuperClassGenricType(final Class<?> clazz) {
+        return getSuperClassGenricType(clazz, 0);
+    }
+    
+    /**
+     * 方法用途: 通过反射, 获得Class定义中声明的父类声明的泛型参数的类型,如无法找到, 返回Object.class<br>
+     * 操作步骤: 如public UserDao extends Dao<User,Long>， 返回的是Class<User>或是Class<Long>,具体根据index参数来决定
+     *           TODO 后续需要做单元测试支撑<br>
+     * @param clazz 需要获取实现父类的泛型参数的源类
+     * @param index 这个参数值从0开始，用于选择需要返回的实现类或接口的泛型参数的索引
+     * @author wanghaibin
+     * @return 返回指定索引的泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
+     */
+    public  static <T> Class<T> getSuperClassGenricType(final Class<?> clazz, final int index) {
+        Type genType = clazz.getGenericSuperclass();// 得到泛型父类
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        return (Class<T>) params[index];
+    }
     
 }
