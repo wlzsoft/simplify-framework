@@ -11,7 +11,7 @@ package com.meizu.simplify.enums.log;
  * <p>Modified By:lcy-</p>
  * <p>Modified Date:2014年12月30日 下午5:29:07</p>
  * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
- * @version Version 0.1
+ * @version Version 3.0
  *
  */
 public enum Type {
