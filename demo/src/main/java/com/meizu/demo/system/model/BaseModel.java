@@ -3,7 +3,7 @@ package com.meizu.demo.system.model;
 import com.meizu.simplify.mvc.model.Model;
 
 /**
- * <p><b>Title:</b><i>表单基础模型</i></p>
+ * <p><b>Title:</b><i>基础表单模型</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -11,14 +11,13 @@ import com.meizu.simplify.mvc.model.Model;
  * <p>Create Date:2016年3月29日 下午4:49:47</p>
  * <p>Modified By:luchuangye-</p>
  * <p>Modified Date:2016年3月29日 下午4:49:47</p>
- * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
+ * @author <a href="mailto:luchuangye@meizu.com">luchuangye</a>
  * @version Version 0.1
  *
  */
 public class BaseModel extends Model {
 
 	private Integer order = 0;
-	
 	private Integer currentPage;
 	private Integer pageSize;
 	
@@ -45,6 +44,4 @@ public class BaseModel extends Model {
 	public void setOrder(Integer order) {
 		this.order = order;
 	}
-
-	
 }
