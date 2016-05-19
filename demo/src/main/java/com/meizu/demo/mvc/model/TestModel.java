@@ -1,6 +1,6 @@
 package com.meizu.demo.mvc.model;
 
-import com.meizu.demo.system.model.BaseModel;
+import com.meizu.simplify.mvc.model.BaseModel;
 import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelCharsFilter.Filter;
 import com.meizu.simplify.mvc.model.ModelScope;

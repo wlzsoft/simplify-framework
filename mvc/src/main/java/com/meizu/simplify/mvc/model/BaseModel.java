@@ -1,6 +1,4 @@
-package com.meizu.demo.system.model;
-
-import com.meizu.simplify.mvc.model.Model;
+package com.meizu.simplify.mvc.model;
 
 /**
  * <p><b>Title:</b><i>基础表单模型</i></p>
