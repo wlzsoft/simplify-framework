@@ -33,10 +33,8 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		ServletContext context = sce.getServletContext();
 		context.setInitParameter("type", "ALL");
 		Startup.start();
-//		systemConfig.setAppPath(_config.getServletContext().getRealPath(""));
-//		"meizu demo Services v1.0.0.0 Start");
-//		StringUtils.format("Current path -> {0}", systemConfig.getAppPath()));
-//		"Start in " + DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
+		String servletContextPath = sce.getServletContext().getRealPath("");
+		System.out.println("web容器所在路径:"+servletContextPath);
 		List<Class<?>> listenerHandlerList= ClassUtil.findClassesByInterfaces(IListenerHandler.class, "com.meizu");
 		if(listenerHandlerList != null && listenerHandlerList.size()>0) {
 			IListenerHandler handler = (IListenerHandler) BeanFactory.getBean(listenerHandlerList.get(0));

@@ -1,6 +1,7 @@
 package com.meizu.simplify.ioc;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.meizu.simplify.ioc.enums.StartupTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.DateUtil;
 
 /**
   * <p><b>Title:</b><i>bean管理容器启动器</i></p>
@@ -41,12 +43,14 @@ public final class Startup {
 	 * @return
 	 */
 	public static StartupTypeEnum start() {
-		return startCallback(null,new AnnoCallback() {
+		StartupTypeEnum status = startCallback(null,new AnnoCallback() {
 			@Override
 			public void invoke(IAnnotationResolver<Class<?>> ir, Class<?> beanObj) {
 				ir.resolve(new ArrayList<>());
 			}
 		});
+		LOGGER.info("Start in " + DateUtil.format(new Date()));
+		return status;
 	}
 	
 	/**
