@@ -340,6 +340,7 @@ public class CollectionUtil {
 	 * 操作步骤: TODO<br>
 	 * @param keyName 转换对象属性名
 	 * @param list 需要转换的源list
+	 * @author wanghaibin
 	 * @return
 	 */
 	public static <T> Map<String, T> listToMap(String keyName, List<T> list) {
