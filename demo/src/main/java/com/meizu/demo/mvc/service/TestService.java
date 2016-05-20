@@ -13,15 +13,13 @@ import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.ITemplate;
 
 @Bean
 public class TestService {
 	@Config("system.debug")
 	private boolean debug;
 	@Config
-	private boolean cache;
+	private boolean unicodeTranscoding = false;
 	@CacheDataAdd(key="aaa")
     public Object doSomeThing() {
         System.out.println("2test2d测试");
@@ -37,7 +35,7 @@ public class TestService {
 //	@CacheDataAdd(key="bbb")
 	@CacheDataSearch(key="bbb")
     public Test doSomeThing2() {
-		System.out.println("debug:"+debug+"|cache:"+cache);
+		System.out.println("debug:"+debug+"|unicodeTranscoding:"+unicodeTranscoding);
 		System.out.println("cache.key.timeout:"+BeanFactory.getBean(PropertiesConfig.class).getProp().getInteger("cache.key.timeout"));
         Test test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {

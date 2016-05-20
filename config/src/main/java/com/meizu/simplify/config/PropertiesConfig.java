@@ -38,7 +38,6 @@ public class PropertiesConfig {
 	private Integer urlcacheCount = 100;//暂未启用
 
 	private Boolean unicodeTranscoding = true;//暂未启用
-	private Boolean cache = false;//暂未启用
 	// lucence加载器
 	private String directoryProvider = "";//暂未启用
 	// lucence配置 默认关闭
@@ -90,12 +89,6 @@ public class PropertiesConfig {
 	}
 	public void setUnicodeTranscoding(Boolean unicodeTranscoding) {
 		this.unicodeTranscoding = unicodeTranscoding;
-	}
-	public Boolean getCache() {
-		return cache;
-	}
-	public void setCache(Boolean cache) {
-		this.cache = cache;
 	}
 	
 	public String getDirectoryProvider() {
