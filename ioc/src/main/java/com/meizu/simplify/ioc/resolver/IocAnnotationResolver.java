@@ -1,6 +1,7 @@
 package com.meizu.simplify.ioc.resolver;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -90,8 +91,8 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    		message+="==>>注入多例中的["+resourceName+"]实例";
 		    	}
 		    	Object iocBean = null;
-		    	if(iocType.isInterface()) {
-		    		List<Class<?>> clazzList = ClassUtil.findClassesByInterfaces(iocType,"com.meizu");
+		    	if(iocType.isInterface()||Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
+		    		List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,"com.meizu");
 		    		int clazzSize = clazzList.size();
 		    		if(clazzSize>1) {
 		    			DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
