@@ -50,10 +50,6 @@ public class WebCacheInterceptor extends Handler implements  IInterceptor{
 	
 	private HttpServletResponse response;
 	
-//	后续删除，这里测试下配置文件常量的读取方式
-//	@value("system.charSet") 
-//	public static String charSet = "utf-8";
-	
 	private static final WebCacheInterceptor CACHE_BEFORE_INTERCEPTOR = new WebCacheInterceptor();
 	private static final WebCacheInterceptor CACHE_AFTER_INTERCEPTOR = new WebCacheInterceptor(); 
 	private WebCacheInterceptor() {
