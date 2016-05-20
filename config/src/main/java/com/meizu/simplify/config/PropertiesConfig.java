@@ -31,7 +31,7 @@ public class PropertiesConfig {
 	private Boolean debug = true;
 	// 后续使用枚举类型 TODO
 	private String charset = "UTF-8";
-	private String controllerClasspath = "com.meizu.demo.mvc.controller";
+	private String controllerClasspath = "com.meizu";
 	private String template = "meizu";
 	//页面缓存总数[url请求]
 	private Integer pageCacheCount = 100;
