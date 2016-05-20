@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  * 
- * <p><b>Title:</b><i> First In First Out Map</i></p>
+ * <p><b>Title:</b><i>先进先出 HashMap</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
