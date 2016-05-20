@@ -33,10 +33,11 @@ public class PropertiesConfig {
 	private String charset = "UTF-8";
 	private String controllerClasspath = "com.meizu.demo.mvc.controller";
 	private String template = "meizu";
+	//页面缓存总数[url请求]
+	private Integer pageCacheCount = 100;
+	
 	// velocity自定义Directive
 	private String directives = "";//暂未启用
-	private Integer urlcacheCount = 100;//暂未启用
-
 	private Boolean unicodeTranscoding = true;//暂未启用
 	// lucence加载器
 	private String directoryProvider = "";//暂未启用
@@ -78,11 +79,11 @@ public class PropertiesConfig {
 	public void setDirectives(String directives) {
 		this.directives = directives;
 	}
-	public Integer getUrlcacheCount() {
-		return urlcacheCount;
+	public Integer getPageCacheCount() {
+		return pageCacheCount;
 	}
-	public void setUrlcacheCount(Integer urlcacheCount) {
-		this.urlcacheCount = urlcacheCount;
+	public void setPageCacheCount(Integer pageCacheCount) {
+		this.pageCacheCount = pageCacheCount;
 	}
 	public Boolean getUnicodeTranscoding() {
 		return unicodeTranscoding;

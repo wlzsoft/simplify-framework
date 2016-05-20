@@ -31,7 +31,7 @@ public class FileCache implements Cache {
 	
 	@Override
 	public String readCache(WebCache webCache, String staticName) {
-		Object[] values = CacheBase.urlCache.get(staticName);
+		Object[] values = CacheBase.urlPageCacheMap.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
 			File directory = new File(ClassUtil.getClassPath());
@@ -61,7 +61,7 @@ public class FileCache implements Cache {
 			FileWriter fw = new FileWriter(htmlCache.getPath() + "/" + staticName);
 			fw.write(content);
 			fw.close();
-			CacheBase.urlCache.put(staticName, new Object[] { "", System.currentTimeMillis() });
+			CacheBase.urlPageCacheMap.put(staticName, new Object[] { "", System.currentTimeMillis() });
 			return true;
 		} catch(Exception e){
 			return false;

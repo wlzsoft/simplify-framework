@@ -21,10 +21,10 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class CacheBase {
 	private static PropertiesConfig config;
-	public static FiFoMap<String, Object[]> urlCache; 
+	public static FiFoMap<String, Object[]> urlPageCacheMap; 
 	public static void init() {
 		config = BeanFactory.getBean(PropertiesConfig.class);
-		urlCache = new FiFoMap<String, Object[]>(config.getUrlcacheCount()); // url请求缓存,对urlcache的缓存记录方式做了先进先出模式
+		urlPageCacheMap = new FiFoMap<String, Object[]>(config.getPageCacheCount()); // url请求页面缓存,对页面的缓存记录方式做了先进先出模式
 	}
 	/**
 	 * 

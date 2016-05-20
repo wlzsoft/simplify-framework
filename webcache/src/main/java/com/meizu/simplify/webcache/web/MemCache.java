@@ -22,7 +22,7 @@ public class MemCache implements Cache {
 	public String readCache(WebCache webCache, String staticName) {
 		
 		try {
-			Object[] values = CacheBase.urlCache.get(staticName);
+			Object[] values = CacheBase.urlPageCacheMap.get(staticName);
 			long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 			// 检查存活时间
 			if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
@@ -35,7 +35,7 @@ public class MemCache implements Cache {
 	}
 	@Override
 	public boolean setCache(WebCache webCache, String staticName, String content) {
-		CacheBase.urlCache.put(staticName, new Object[] { content, System.currentTimeMillis() });
+		CacheBase.urlPageCacheMap.put(staticName, new Object[] { content, System.currentTimeMillis() });
 		return true;
 	}
 	
