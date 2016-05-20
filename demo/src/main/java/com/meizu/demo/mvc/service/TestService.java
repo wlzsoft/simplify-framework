@@ -38,7 +38,7 @@ public class TestService {
 	@CacheDataSearch(key="bbb")
     public Test doSomeThing2() {
 		System.out.println("debug:"+debug+"|cache:"+cache);
-		System.out.println("configtest:"+BeanFactory.getBean(PropertiesConfig.class).getProp().getInteger("configtest"));
+		System.out.println("cache.key.timeout:"+BeanFactory.getBean(PropertiesConfig.class).getProp().getInteger("cache.key.timeout"));
         Test test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
         	return null;

@@ -35,6 +35,7 @@ public class RedisHostAndPortUtil {
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
 	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
+	public static String redisInfo;
 	static {
 		Set<Entry<Object, Object>> set = propertieUtils.propertys();
 		if (set.size() == 0) {
@@ -92,8 +93,7 @@ public class RedisHostAndPortUtil {
 			}
 			strb.append("]");
 		}
-		LOGGER.info(strb.toString());
-		
+		redisInfo = strb.toString();
 	}
 	
 	public static Map<String, List<HostAndPort>> getRedisServers() {
