@@ -1,6 +1,10 @@
 package com.meizu.simplify.ioc;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
@@ -96,6 +100,12 @@ public final class Startup {
 	 * @return
 	 */
 	private static StartupTypeEnum startCallback(Class<?> beanClass,AnnoCallback call) {
+        //安全退出机制:平滑停止
+        Runtime.getRuntime().addShutdownHook(new Thread() {  
+            public void run() {  
+               Startup.stop();  
+            }  
+        }); 
 		Map<InitTypeEnum, Class<?>> mapResolve = getAnnotationResolverList();
 		for (Class<?> clazz : mapResolve.values()) {
 			LOGGER.info("resolver invoke:{}",clazz.getName());
@@ -129,12 +139,19 @@ public final class Startup {
 		void invoke(IAnnotationResolver<Class<?>> ianno,Class<?> beanClass);
 	}
 
+	/**
+	 * 方法用途: 应用程序退出的触发条件<br>
+	 * 操作步骤: 1.自动结束：应用没有存活线程或只有后台线程时
+		2.System.exit(0) 或 System.exit(-1)
+		3.kill 或 ctrl+C
+		4.kill -9 强制退出<br>
+	 */
 	public static void stop() {
 		List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, "com.meizu");
 		for (Class<?> clazz : classList) {
 			IStopRelease isr = BeanFactory.getBean(clazz.getName());
 			isr.release();
 		}
+		LOGGER.info("系统已经停止运行，资源已释放");
 	}
-
 }

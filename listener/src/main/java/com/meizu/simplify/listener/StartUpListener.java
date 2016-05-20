@@ -46,7 +46,6 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("servlet容器停止运行");
-		Startup.stop();
 	}
 
 	@Override
