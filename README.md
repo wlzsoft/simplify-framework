@@ -145,6 +145,7 @@ http://fishermen.iteye.com/blog/430286
 115.重构：使得各个模块都相对独立，不要互相依赖==>>已测试，已通过 2016/5/18
 116.重构：使得能够满足模块化的需要
 117.单元测试提供：ReflectionUtil.getSuperClassGenricType需要提供，严格测试
+118.调整配置文件及读取方式，做到0配置，也就是提供默认配置,并且可以支持在PropertiesConfig(标注了@ReloadableResource的)等配置实体中指定默认值，并且@Config的注入的值也可以使用PropertiesConfig实体的默认值，在@Config的属性没有默认值时，以PropertiesConfig的为准
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
