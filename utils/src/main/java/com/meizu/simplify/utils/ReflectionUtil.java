@@ -1,6 +1,5 @@
 package com.meizu.simplify.utils;
 
-import java.beans.IntrospectionException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -10,9 +9,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -312,7 +311,8 @@ public class ReflectionUtil {
 	 * @return
 	 */
 	public static <T extends Object> Map<String, Object> bean2Map(T bean,boolean isContainFinal) {
-		Map<String, Object> returnMap = new ConcurrentHashMap<>();
+//		Map<String, Object> returnMap = new ConcurrentHashMap<>();
+		Map<String, Object> returnMap = new HashMap<>();//FIXED author:wanghb date:2016-05-20
 		buildFieldInfo(bean.getClass(),bean,returnMap,isContainFinal);
 		return returnMap;
 	}
