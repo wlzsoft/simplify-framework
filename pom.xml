@@ -20,9 +20,9 @@
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
-		<url>http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</url>
-		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</connection>
-		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/rosgap/source/trunk/simplify</developerConnection>
+		<url>http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</url>
+		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</connection>
+		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</developerConnection>
 	</scm>
 	<!-- 持续集成 -->
 	<ciManagement>
@@ -196,6 +196,19 @@
 			<target>1.8</target>
 			</configuration>
 		</plugin>
+		<!-- 版本管理插件 -->
+		<plugin>  
+		  <groupId>org.apache.maven.plugins</groupId>  
+		  <artifactId>maven-release-plugin</artifactId>  
+		  <version>2.5.3</version>
+		  <!-- <username>lcy</username>
+    	  <password>lcy</password> --> 
+		  <configuration>  
+		    <tagBase>http://10.2.67.20/svn/rosTeam/team-framework/tags/</tagBase>
+		    <!-- <tagNameFormat>v@{project.version}</tagNameFormat> -->
+		    <!-- <releaseProfiles>release</releaseProfiles> -->
+		  </configuration>  
+		</plugin>  
 		<!-- 解决maven test命令时console出现中文乱码乱码 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
