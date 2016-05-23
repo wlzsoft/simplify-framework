@@ -35,12 +35,22 @@ public class DateUtil {
 	}
 	/**
 	 * 
-	 * 方法用途: 格式化日期-Date转为[yyyy-MM-dd HH:mm:ss.SSS]格式字符串<br>
+	 * 方法用途: 格式化日期-Date转为[yyyy-MM-dd HH:mm:ss]格式字符串<br>
 	 * 操作步骤: TODO<br>
 	 * @param date
 	 * @return
 	 */
 	public static String format(Date date) {
+		return format(date, DateFormatEnum.YEAR_TO_SECOND);
+	}
+	/**
+	 * 
+	 * 方法用途: 格式化日期-Date转为[yyyy-MM-dd HH:mm:ss.SSS]格式字符串<br>
+	 * 操作步骤: 全日期格式 TODO 考虑到微妙级别,更精准的日期格式 <br>
+	 * @param date
+	 * @return
+	 */
+	public static String formatAll(Date date) {
 		return format(date, DateFormatEnum.YEAR_TO_MILLISECOND);
 	}
 	/**

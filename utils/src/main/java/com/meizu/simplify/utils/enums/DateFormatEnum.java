@@ -42,7 +42,7 @@ public enum DateFormatEnum {
 	/**
 	 * 全日期:默认格式yyyy-MM-dd HH:mm:ss.SSS
 	 */
-	YEAR_TO_MILLISECOND("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss"),
+	YEAR_TO_MILLISECOND("yyyy" + Limiter.DATE_LIMITER + "MM" + Limiter.DATE_LIMITER + "dd"+Limiter.DATE_TIME_LIMITER+"HH:mm:ss.SSS"),
 
 	MONTH("MM"),
 	MONTH_TO_DAY("MM" + Limiter.DATE_LIMITER + "dd"),
