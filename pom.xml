@@ -204,6 +204,13 @@
 		  <!-- <username>lcy</username>
     	  <password>lcy</password> --> 
 		  <configuration>  
+		  	<checkModificationExcludes>
+		  		<checkModificationExclude>target</checkModificationExclude>
+		  		<checkModificationExclude>.settings</checkModificationExclude>
+		  		<checkModificationExclude>.project</checkModificationExclude>
+		  		<checkModificationExclude>.classpath</checkModificationExclude>
+		  		<checkModificationExclude>.svn</checkModificationExclude>
+		  	</checkModificationExcludes>
 		    <tagBase>http://10.2.67.20/svn/rosTeam/team-framework/tags/</tagBase>
 		    <!-- <tagNameFormat>v@{project.version}</tagNameFormat> -->
 		    <!-- <releaseProfiles>release</releaseProfiles> -->
