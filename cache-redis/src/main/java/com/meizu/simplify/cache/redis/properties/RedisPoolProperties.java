@@ -13,12 +13,12 @@ package com.meizu.simplify.cache.redis.properties;
  *
  */
 public class RedisPoolProperties {
-	private Integer maxWaitMillis;
-	private Integer maxIdle;
-	private Integer maxTotal;
-	private Integer minIdle;
-	private Boolean testOnBorrow;
-	private Boolean testWhileIdle;
+	private Integer maxWaitMillis = 10000;
+	private Integer maxIdle = 1000;
+	private Integer maxTotal = 5000;
+	private Integer minIdle = 20;
+	private Boolean testOnBorrow = true;
+	private Boolean testWhileIdle = false;
 //	private Integer timeBetweenEvictionRunsMillis = 30000;
 //	private Integer numTestsPerEvictionRun= 10000;
 	public Integer getMaxWaitMillis() {
@@ -56,6 +56,11 @@ public class RedisPoolProperties {
 	}
 	public void setMinIdle(Integer minIdle) {
 		this.minIdle = minIdle;
+	}
+	@Override
+	public String toString() {
+		return "[maxWaitMillis=" + maxWaitMillis + ", maxIdle=" + maxIdle + ", maxTotal=" + maxTotal
+				+ ", minIdle=" + minIdle + ", testOnBorrow=" + testOnBorrow + ", testWhileIdle=" + testWhileIdle + "]";
 	}
 
 }
