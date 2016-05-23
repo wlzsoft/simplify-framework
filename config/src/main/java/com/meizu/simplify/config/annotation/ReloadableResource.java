@@ -37,4 +37,11 @@ public @interface ReloadableResource {
 	 * @return
 	 */
 	String prefix() default "";
+	
+	/**
+	 * 方法用途: 配置文件是否存在检查<br>
+	 * 操作步骤: 如果开启检查，那么如果配置文件不存在，就会抛致命错误，那么服务无法启动<br>
+	 * @return
+	 */
+	boolean exsisCheck() default false;
 }
