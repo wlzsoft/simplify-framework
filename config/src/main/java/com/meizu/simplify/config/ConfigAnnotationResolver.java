@@ -57,7 +57,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			LOGGER.info("配置属性单个注入 初始化:{}",beanClass.getName());
 			String reloadableResourceValue = reloadableResource.value();
 //			String prefix = reloadableResource.prefix();
-			PropertieUtil propertieUtil = new PropertieUtil(reloadableResourceValue);
+			PropertieUtil propertieUtil = new PropertieUtil(reloadableResourceValue,false);
 			propertiesMap.put(reloadableResourceValue, propertieUtil);
 			propertieBeanMap.put(reloadableResourceValue, beanObj);
 		}

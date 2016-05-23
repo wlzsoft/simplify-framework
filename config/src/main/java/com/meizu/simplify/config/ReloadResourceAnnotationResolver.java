@@ -58,7 +58,7 @@ public class ReloadResourceAnnotationResolver implements IAnnotationResolver<Cla
 		LOGGER.info("配置实体注入 初始化:{}",beanClass.getName());
 		String reloadableResourceValue = reloadableResource.value();
 		String prefix = reloadableResource.prefix();
-		PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue);
+		PropertieUtil propertieUtils = new PropertieUtil(reloadableResourceValue,false);
 		propertieUtils.setConfigValue(beanObj, prefix);
 		
 		//配置文件动态读取设置

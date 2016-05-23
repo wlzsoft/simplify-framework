@@ -32,16 +32,30 @@ public class PropertieUtil {
 	private Properties props = new Properties();
 	private InputStream jndiInput = null;
 
+	/**
+	 * 构造方法：默认如果文件不存在，会抛致命异常，服务无法启动
+	 * @param fileName
+	 */
 	public PropertieUtil(String fileName) {
+		this(fileName,true);
+	}
+	/**
+	 * 构建方法：构建一个配置文件对象，如果文件不存在，可以指定是否抛出异常
+	 * @param fileName
+	 * @param isError 文件不存在是否抛致命异常
+	 */
+	public PropertieUtil(String fileName,boolean isError) {
 		try {
 			jndiInput = PropertieUtil.class.getClassLoader().getResourceAsStream(fileName);
-			props.load(jndiInput);
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			String message = "配置文件["+fileName+"]不存在";
-//			LOGGER.info(message);
-			System.out.println(message);
-			throw new StartupErrorException(message);
+			if(jndiInput == null) {
+				String message = "配置文件["+fileName+"]不存在";
+				System.err.println(message);
+				if(isError) {
+					throw new StartupErrorException(message);
+				}
+			} else {
+				props.load(jndiInput);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -53,7 +67,7 @@ public class PropertieUtil {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 //				LOGGER.info("配置文件["+file.getName()+"]不存在");
-				System.out.println("配置文件["+file.getName()+"]不存在");
+				System.err.println("配置文件["+file.getName()+"]不存在");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
