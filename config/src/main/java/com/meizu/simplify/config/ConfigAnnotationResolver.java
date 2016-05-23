@@ -20,6 +20,7 @@ import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
@@ -40,6 +41,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAnnotationResolver.class);
 	
 	private Map<String,PropertieUtil> propertiesMap = new ConcurrentHashMap<>(4);
+	private Map<String,Object> propertieBeanMap = new ConcurrentHashMap<>(4);
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();
@@ -57,6 +59,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 //			String prefix = reloadableResource.prefix();
 			PropertieUtil propertieUtil = new PropertieUtil(reloadableResourceValue);
 			propertiesMap.put(reloadableResourceValue, propertieUtil);
+			propertieBeanMap.put(reloadableResourceValue, beanObj);
 		}
 		//开始注入到bean对应的带config注解的属性的值
 		for (Object beanObj : containerCollection) {
@@ -92,7 +95,19 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		    			PropertieUtil propertiesUtil = entry.getValue();
 		    			Object value = propertiesUtil.get(configName);
 		    			if(value == null) {
-		    				continue;
+		    				Object propertiesBeanObj = propertieBeanMap.get(configPath);
+		    				Class<?> propertiesBeanClass = propertiesBeanObj.getClass();
+		    				ReloadableResource reloadableResource = propertiesBeanClass.getAnnotation(ReloadableResource.class);
+		    				if(StringUtil.isNotBlank(reloadableResource.prefix())) {
+		    					configName = configName.replace(reloadableResource.prefix()+".", "");
+		    				}
+		    				try {
+		    					value = ReflectionUtil.invokeGetterMethod(propertiesBeanObj, configName);//读取带有ReloadableResource的Bean实例中的属性默认值
+		    				}catch(java.lang.IllegalArgumentException iae) {
+		    				}
+		    				if(value == null) {
+		    					continue;
+		    				}
 		    			}
 		    			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
 		   					value = DataUtil.parseBoolean(value);

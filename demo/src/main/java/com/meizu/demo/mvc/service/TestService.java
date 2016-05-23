@@ -17,7 +17,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean
 public class TestService {
 	@Config("system.debug")
-	private boolean debug;
+	private Boolean debug;
 	@Config
 	private boolean unicodeTranscoding = false;
 	@CacheDataAdd(key="aaa")

@@ -1,20 +1,11 @@
 package com.meizu.simplify.dao.datasource;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.config.annotation.Config;
-import com.meizu.simplify.dao.exception.DataAccessException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
-import com.meizu.simplify.utils.PropertieUtil;
 
 
 /**

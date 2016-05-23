@@ -148,6 +148,8 @@ http://fishermen.iteye.com/blog/430286
 118.调整配置文件及读取方式，做到0配置，也就是提供默认配置,并且可以支持在PropertiesConfig(标注了@ReloadableResource的)等配置实体中指定默认值，并且@Config的注入的值也可以使用PropertiesConfig实体的默认值，在@Config的属性没有默认值时，以PropertiesConfig的为准
 119.system.controllerClasspath等path有关的配置，要支持多路径的。多个路径用逗号隔开，可以支持默认com.meizu的大路径扫描，如果对性能要求求，才指定具体路径，并指定多路径，主要为启动加速
 120.减少代码的硬编码的字符串:目前比较多的是com.meizu这样的字符串
+121.fastjson格式化的日期等格式的处理，通过注解的方式来处理
+122.如何做到框架的可测试，是否单元测试就够了，谁来确保，框架是被测试通过的
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
