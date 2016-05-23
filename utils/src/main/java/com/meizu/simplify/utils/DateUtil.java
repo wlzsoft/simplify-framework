@@ -80,7 +80,7 @@ public class DateUtil {
 	 * @param date
 	 * @param pattern
 	 * @return
-	 * @author luchuangye 2016/4/7
+	 * @author wanghaibin 2016/4/7
 	 */
 	public static String format(long timesamp, DateFormatEnum pattern) {
 		return format(new Date(timesamp));
