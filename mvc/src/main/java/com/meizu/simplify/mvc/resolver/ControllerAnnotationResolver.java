@@ -127,7 +127,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			LOGGER.info("Framework 测试模式是否开启 -> " + config.getDebug());
 			LOGGER.info("Framework 页面缓存总数[url请求] -> " + config.getPageCacheCount());
 			LOGGER.info("Framework 字符编码格式 -> " + config.getCharset());
-			LOGGER.info("Framework v0.0.1-SNAPSHOT Init");
+			LOGGER.info("Framework v1.0.1-SNAPSHOT Init");
 		}
 	}
 	

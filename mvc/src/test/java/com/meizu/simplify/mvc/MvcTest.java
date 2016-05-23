@@ -7,7 +7,7 @@ import com.meizu.simplify.ioc.Startup;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc:-verbose:class -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-0.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/weaving/src/main/resources/aop.properties
+ * <p>Desc:-verbose:class -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/weaving/src/main/resources/aop.properties
  *   通过verbose:class 可以打印详细的classload所load的class有哪些，和整个loaded的过程
  * </p>
  * <p>source folder:{@docRoot}</p>

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.meizu</groupId>
   <artifactId>webserver</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>web服务器</name>
   <description>轻量web服务器，支持http协议</description>
   <properties>
@@ -15,37 +15,37 @@
   		<dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>mvc</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>cache-redis</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>aop</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>dao</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>demo</artifactId><!-- 测试使用，后续webserver稳定，就不需要绑定demo了,而是可以做为demo等的容器 -->
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <!-- <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>rosapp-server</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>ros-web</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency> -->
 	  <dependency>
 			<groupId>javax.servlet</groupId>
@@ -57,7 +57,7 @@
   		<dependency>
 			<groupId>com.meizu</groupId>
 			<artifactId>encrypt</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- 日志相关 begin -->
 		<!-- slf4j启用彩色日志jansi -->

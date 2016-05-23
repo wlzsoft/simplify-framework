@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.meizu</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>rpc</artifactId>
   <name>RPC远程服务调用 模块</name>
@@ -14,7 +14,7 @@
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>config</artifactId>
-	    <version>0.0.1-SNAPSHOT</version>
+	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
 	<dependency>
 		<groupId>com.alibaba</groupId>
