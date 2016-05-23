@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.meizu</groupId>
   <artifactId>simplify-framework</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <packaging>pom</packaging>
   <name>精简程序框架</name>
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
@@ -20,9 +20,9 @@
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
-		<url>http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</url>
-		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</connection>
-		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</developerConnection>
+		<url>http://10.2.67.20/svn/rosTeam/team-framework/tags/simplify-framework-0.0.1</url>
+		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/tags/simplify-framework-0.0.1</connection>
+		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/tags/simplify-framework-0.0.1</developerConnection>
 	</scm>
 	<!-- 持续集成 -->
 	<ciManagement>
@@ -204,6 +204,8 @@
 		  <!-- <username>lcy</username>
     	  <password>lcy</password> --> 
 		  <configuration>  
+		  	<mavenHome>D:\apache-maven-3.3.9</mavenHome>
+		  	<arguments>-Dmaven.test.skip=true</arguments>
 		  	<checkModificationExcludes>
 		  		<checkModificationExclude>target</checkModificationExclude>
 		  		<checkModificationExclude>.settings</checkModificationExclude>
