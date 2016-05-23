@@ -83,7 +83,7 @@ public class DateUtil {
 	 * @author wanghaibin 2016/4/7
 	 */
 	public static String format(long timesamp, DateFormatEnum pattern) {
-		return format(new Date(timesamp));
+		return format(new Date(timesamp),pattern);
 	}
 	
 	
