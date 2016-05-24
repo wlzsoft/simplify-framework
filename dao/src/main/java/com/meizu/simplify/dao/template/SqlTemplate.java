@@ -7,6 +7,7 @@ import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.ITemplate;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>sql模版渲染</i></p>
@@ -28,6 +29,9 @@ public class SqlTemplate {
 	@Config("system.sqlTemplatePath")
 	private String sqlTemplatePath;
 	public String render(String sqlName,Map<String, Object> parameters) {
+		if(StringUtil.isBlank(sqlTemplatePath)) {
+			sqlTemplatePath = "";
+		}
 		try {
 			String sql = template.render(parameters, sqlName, sqlTemplatePath,".sql");
 			return sql;
