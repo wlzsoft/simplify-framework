@@ -141,7 +141,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
             throws IllegalClassFormatException {
     	CtClass ctclass = buildClazz(className);
         try {
-        	 printAopMappingInfo();
+//        	 printAopMappingInfo();
 			return ctclass.toBytecode();
 		} catch (IOException | CannotCompileException e) {
 			e.printStackTrace();
@@ -256,6 +256,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      */
     public static void premain(String agentArgs, Instrumentation ins) {
         ins.addTransformer(new AopClassFileTransformer());
+        AopClassFileTransformer.printAopMappingInfo();
       
     }
     

@@ -156,7 +156,7 @@ public class ClassUtil {
 			String jarPath = URLDecoder.decode(url.toExternalForm(),
 					EncodingEnum.UTF_8.toString());
 //			LOGGER.debug("开始获取[{}]中的类名...", jarPath);
-			System.out.println("开始获取[{}]中的类名..."+jarPath);
+			System.out.println("开始获取["+jarPath+"]中的类名...");
 			jarPath = StringUtil.substringAfter(jarPath, "jar:file:");
 			jarPath = StringUtil.substringBeforeLast(jarPath, "!");
 			JarFile jarInputStream = new JarFile(jarPath);
@@ -208,7 +208,7 @@ public class ClassUtil {
 		try {
 			String dirPath = URLDecoder.decode(url.getFile(), EncodingEnum.UTF_8.toString());
 //			LOGGER.debug("开始获取[{}]中的类名...", dirPath);
-			System.out.println("开始获取[{}]中的类名..."+ dirPath);
+			System.out.println("开始获取["+dirPath+"]中的类名...");
 			return getClassNamesFromDir(new File(dirPath), packageName);
 		} catch (Exception e) {
 			throw new UncheckedException("从目录中获取类名时发生异常。", e);
