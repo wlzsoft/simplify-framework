@@ -30,7 +30,6 @@ import javassist.NotFoundException;
 public class AopClassFileTransformer implements ClassFileTransformer {
 	
 //	private static final Logger LOGGER = DefaultLogManager.getLogger();
-//	private static final Logger LOGGER = LoggerFactory.getLogger(AopClassFileTransformer.class);
 	private class FilterMetaInfo {
 		private String filterName;
 		//默认不匹配
@@ -114,70 +113,77 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		
         		String methodNameStr = classInfo.split(":")[1];
         		String[] methodArr = methodNameStr.split(",");
-        		 try {
-//        			CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
-//        			再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
-        			ClassPool.doPruning = true;//减少对象内存占用
-//        			LOGGER.info("AOP：javasist开始精简["+className+"]对象字节码");
-        			System.out.println("AOP：javasist开始精简["+className+"]对象字节码");
-//        	                    通过类全路径名获取class字节码文件数据
-        			ClassPool pool = ClassPool.getDefault();
-//        			pool.insertClassPath(new ClassClassPath(this.getClass())); 
-//        			pool.insertClassPath(new ByteArrayClassPath(name, b)); 
-//        			pool.insertClassPath("com.meizu.simplify.aop.InterceptResult");
-        			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
-        			for (String targetClassPath : targetClassPathArr) {
-        				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来
-        				//因为启动修改class文件时依赖他
-        				pool.insertClassPath(targetClassPath); 
-					}
-//        			InputStream inputStream = null; 
-//        			CtClass ctclass = pool.makeClass(inputStream); 
-    	        	CtClass ctclass = pool.get(className);
-//    	        	if(!ctclass.hasAnnotation(Bean.class)) {
-//    	        		return ctclass;
-//    	        	}
-    		        for(String methodName : methodArr){
-    		        	String methodFullName = className+":"+methodName;
-//    		        	LOGGER.info("AOP：对方法["+methodFullName+"]进行逻辑切入");
-    		        	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
-	                    CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
-	                	ctmethod.addLocalVariable("startTime", CtClass.longType);
-	                	ctmethod.addLocalVariable("endTime", CtClass.longType);
-//    	                	ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
-	                	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
-//    	                	ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
-	                	ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
-	                	//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
-	                	String returnTypeName = ctmethod.getReturnType().getName();
-	                	StringBuilder builder = new StringBuilder();
-	                	builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
-	                		   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
-						if(!returnTypeName.equals("void")) {
-							builder.append("if(beforeObject != null) {")
-							.append( "    return ("+returnTypeName+")beforeObject;")
-						    .append( "}");
-						}
-						 
-        			    ctmethod.insertBefore(builder.toString());
-	                	ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
-	                	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
-	                	ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
-	                	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
-    		        }
-    		        return ctclass;
-    	        } catch (CannotCompileException e) {
-    	            e.printStackTrace();
-    	            System.out.println("framework:buildClazz");
-    	        } catch (NotFoundException e) {
-    	            e.printStackTrace();
-    	            System.out.println("framework:NotFound(找不到相关class文件):1.请检查aop.properties中injectionTargetClassPaths属性是否有设置有误");
-    	        }
-        		break;
+        		CtClass ctclass = embed(className, methodArr);
+        		return ctclass;
         	}
         }
 //      printAopMappingInfo();
         return null;
+	}
+
+
+
+	private CtClass embed(String className, String[] methodArr) {
+		try {
+//        	CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
+//        	再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
+			ClassPool.doPruning = true;//减少对象内存占用
+//        	LOGGER.info("AOP：javasist开始精简["+className+"]对象字节码");
+			System.out.println("AOP：javasist开始精简["+className+"]对象字节码");
+//        	通过类全路径名获取class字节码文件数据
+			ClassPool pool = ClassPool.getDefault();
+//        	pool.insertClassPath(new ClassClassPath(this.getClass())); 
+//        	pool.insertClassPath(new ByteArrayClassPath(name, b)); 
+//        	pool.insertClassPath("com.meizu.simplify.aop.InterceptResult");
+			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
+			for (String targetClassPath : targetClassPathArr) {
+				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来
+				//因为启动修改class文件时依赖他
+				pool.insertClassPath(targetClassPath); 
+			}
+//        	InputStream inputStream = null; 
+//        	CtClass ctclass = pool.makeClass(inputStream); 
+			CtClass ctclass = pool.get(className);
+//    	    if(!ctclass.hasAnnotation(Bean.class)) {
+//    	    	return ctclass;
+//    	    }
+		    for(String methodName : methodArr){
+		    	String methodFullName = className+":"+methodName;
+//    		    LOGGER.info("AOP：对方法["+methodFullName+"]进行逻辑切入");
+		    	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
+		        CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
+		    	ctmethod.addLocalVariable("startTime", CtClass.longType);
+		    	ctmethod.addLocalVariable("endTime", CtClass.longType);
+//    	        ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
+		    	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
+//    	        ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
+		    	ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
+		    	//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
+		    	String returnTypeName = ctmethod.getReturnType().getName();
+		    	StringBuilder builder = new StringBuilder();
+		    	builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
+		    		   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
+				if(!returnTypeName.equals("void")) {
+					builder.append("if(beforeObject != null) {")
+					       .append("    return ("+returnTypeName+")beforeObject;")
+				           .append("}");
+				}
+				 
+			    ctmethod.insertBefore(builder.toString());
+		    	ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
+		    	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
+		    	ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
+		    	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
+		    }
+		    return ctclass;
+		} catch (CannotCompileException e) {
+		    e.printStackTrace();
+		    System.out.println("framework:buildClazz");
+		} catch (NotFoundException e) {
+		    e.printStackTrace();
+		    System.out.println("framework:NotFound(找不到相关class文件):1.请检查aop.properties中injectionTargetClassPaths属性是否有设置有误");
+		}
+		return null;
 	}
 
     
