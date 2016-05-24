@@ -109,17 +109,17 @@
 	  	<!-- 仓库地址，从上往下进行查找。 -->
 	
 		<!-- 如有私服,打开私服地址-->
-		<!-- <repository>
+		<repository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
 	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
-		</repository> -->
+		</repository>
 		
-		<repository>
+		<!-- <repository>
             <id>oschina</id>
             <name>Oschina Releases</name>
             <url>http://maven.oschina.net/content/groups/public</url>
-        </repository>
+        </repository> -->
         
 		<!-- <repository> 
 			<id>simpleify</id> 
