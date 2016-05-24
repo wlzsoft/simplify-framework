@@ -106,7 +106,9 @@ public class ClassUtil {
 			try {
 				classes.add(Class.forName(className));
 			} catch (Throwable e) {
-				LOGGER.warn("加载[" + className + "]类时发生异常。", e);
+//				LOGGER.warn("加载[" + className + "]类时发生异常。", e);
+				e.printStackTrace();
+				System.err.println("加载[" + className + "]类时发生异常。"+e.getMessage());
 			}
 		}
 		return classes;
