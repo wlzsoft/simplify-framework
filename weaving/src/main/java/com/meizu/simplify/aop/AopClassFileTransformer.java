@@ -65,7 +65,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     private String injectionTargetClassPaths = null;
     public AopClassFileTransformer(){
     	//1.配置文件指定用于织入的方法
-        String methodStr = AopConfig.getUtil().getProperty("cacheInfos");
+        String methodStr = AopConfig.getUtil().getProperty("filterInfos");
         String[] it = methodStr.split(";");
     	for (String itor : it) {
     		FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
