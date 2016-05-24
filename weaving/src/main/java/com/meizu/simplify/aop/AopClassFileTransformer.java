@@ -1,12 +1,18 @@
 package com.meizu.simplify.aop;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -31,14 +37,21 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	
 //	private static final Logger LOGGER = DefaultLogManager.getLogger();
 	private class FilterMetaInfo {
-		private String filterName;
+		private String filterClassName;
+		private String[] methodNameArr;
 		//默认不匹配
 		private Boolean isMatch = false;
-		public String getFilterName() {
-			return filterName;
+		public String getFilterClassName() {
+			return filterClassName;
 		}
-		public void setFilterName(String filterName) {
-			this.filterName = filterName;
+		public void setFilterClassName(String filterClassName) {
+			this.filterClassName = filterClassName;
+		}
+		public String[] getMethodNameArr() {
+			return methodNameArr;
+		}
+		public void setMethodNameArr(String[] methodNameArr) {
+			this.methodNameArr = methodNameArr;
 		}
 		public Boolean getIsMatch() {
 			return isMatch;
@@ -51,12 +64,46 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
     public AopClassFileTransformer(){
+    	//1.配置文件指定用于织入的方法
         String methodStr = AopConfig.getUtil().getProperty("cacheInfos");
         String[] it = methodStr.split(";");
     	for (String itor : it) {
     		FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
-    		filterMetaInfo.setFilterName(itor);
-    		filterList.add(filterMetaInfo); 
+    		String className = itor.split(":")[0];
+    		String methodNameStr = itor.split(":")[1];
+    		String[] methodArr = methodNameStr.split(",");
+    		filterMetaInfo.setFilterClassName(className);
+    		filterMetaInfo.setMethodNameArr(methodArr);
+    		addFilterMethod(filterMetaInfo);
+		}
+    	
+    	//2.需要扫描的用于织入的标准了注解的信息的方法
+    	String injectionTargetAnnotation = AopConfig.getUtil().getProperty("injectionTargetAnnotation");
+    	String[] injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
+    	List<Class<?>> listClazz = ClassUtil.findClasses("com.meizu");
+    	for (Class<?> classInfo : listClazz) {
+    		try {
+    			List<String> methodTempStr = new ArrayList<>();
+    			for (String injectionTargetAnno : injectionTargetAnnotationArr) {
+    				Class<Annotation> annoClass = (Class<Annotation>) Class.forName(injectionTargetAnno);
+    				Method[] methodArr = classInfo.getMethods();
+    				for (Method method : methodArr) {
+						Annotation anno = method.getAnnotation(annoClass);
+						if(anno!=null) {
+							methodTempStr.add(method.getName());
+						}
+					}
+				}
+    			if(methodTempStr.size()>0) {
+    				FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
+    				filterMetaInfo.setFilterClassName(classInfo.getName());
+    				filterMetaInfo.setMethodNameArr(methodTempStr.toArray(new String[methodTempStr.size()]));
+    				addFilterMethod(filterMetaInfo);
+    			}
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
 		}
     	
     	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
@@ -65,6 +112,23 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	}
     	
     }
+
+
+
+	private void addFilterMethod(FilterMetaInfo filterMetaInfo) {
+		boolean isContain = CollectionUtil.contains(filterList, filterMetaInfo,new IEqualCallBack<FilterMetaInfo,FilterMetaInfo>(){
+			@Override
+			public boolean equal(FilterMetaInfo o, FilterMetaInfo w) {
+				if(o.getFilterClassName().equals(w.getFilterClassName())) {
+					return true;
+				}
+				return false;
+			}
+			});
+		if(!isContain) {
+			filterList.add(filterMetaInfo); 
+		}
+	}
 
 	
 	
@@ -77,6 +141,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
             throws IllegalClassFormatException {
     	CtClass ctclass = buildClazz(className);
         try {
+        	 printAopMappingInfo();
 			return ctclass.toBytecode();
 		} catch (IOException | CannotCompileException e) {
 			e.printStackTrace();
@@ -105,19 +170,12 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         className = className.replaceAll("/", ".");
         
         for(FilterMetaInfo filterMetaInfo : filterList){
-        	String classInfo = filterMetaInfo.getFilterName();
-        	if (classInfo.startsWith(className)){
+        	if (filterMetaInfo.getFilterClassName().equals(className)){
         		filterMetaInfo.setIsMatch(true);
-//        		LOGGER.info("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
-        		System.out.println("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
-        		
-        		String methodNameStr = classInfo.split(":")[1];
-        		String[] methodArr = methodNameStr.split(",");
-        		CtClass ctclass = embed(className, methodArr);
+        		CtClass ctclass = embed(className, filterMetaInfo.getMethodNameArr());
         		return ctclass;
         	}
         }
-//      printAopMappingInfo();
         return null;
 	}
 
@@ -125,6 +183,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 
 	private CtClass embed(String className, String[] methodArr) {
 		try {
+//    		LOGGER.info("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
+    		System.out.println("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
 //        	CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
 //        	再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
 			ClassPool.doPruning = true;//减少对象内存占用
@@ -210,7 +270,11 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         for(FilterMetaInfo filterMetaInfo : filterList){
         	if(!filterMetaInfo.getIsMatch()) {
         		isNoMatch = true;
-        		messageFilter += filterMetaInfo.getFilterName();
+        		messageFilter += filterMetaInfo.getFilterClassName();
+        		String[] methodNameArr = filterMetaInfo.getMethodNameArr();
+        		for (String methodName : methodNameArr) {
+        			messageFilter += methodName;
+				}
         	}
         }
         if(isNoMatch) {
