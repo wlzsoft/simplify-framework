@@ -75,11 +75,11 @@
 		  	</exclusions>
 		  </dependency>
 		<!-- 汉语拼音转化 -->
-		<dependency>
+		<!-- <dependency>
 		  <groupId>com.belerweb</groupId>
 		  <artifactId>pinyin4j</artifactId>
 		  <version>2.5.0</version>
-		</dependency>
+		</dependency> -->
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>

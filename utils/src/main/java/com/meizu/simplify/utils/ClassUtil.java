@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.enums.EncodingEnum;
 import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
@@ -31,7 +34,7 @@ import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
  */
 public class ClassUtil {
 	
-//	private static Logger LOGGER = LoggerFactory.getLogger(ClassUtil.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(ClassUtil.class);
 	
     private ClassUtil() {
     }
@@ -103,9 +106,9 @@ public class ClassUtil {
 			try {
 				classes.add(Class.forName(className));
 			} catch (Throwable e) {
-//				LOGGER.warn("加载[" + className + "]类时发生异常。", e);
+				LOGGER.warn("加载[" + className + "]类时发生异常。", e);
 				e.printStackTrace();
-				System.err.println("加载[" + className + "]类时发生异常。"+e.getMessage());
+//				System.err.println("加载[" + className + "]类时发生异常。"+e.getMessage());
 			}
 		}
 		return classes;
@@ -155,8 +158,8 @@ public class ClassUtil {
 		try {
 			String jarPath = URLDecoder.decode(url.toExternalForm(),
 					EncodingEnum.UTF_8.toString());
-//			LOGGER.debug("开始获取[{}]中的类名...", jarPath);
-			System.out.println("开始获取["+jarPath+"]中的类名...");
+			LOGGER.debug("开始获取[{}]中的类名...", jarPath);
+//			System.out.println("开始获取["+jarPath+"]中的类名...");
 			jarPath = StringUtil.substringAfter(jarPath, "jar:file:");
 			jarPath = StringUtil.substringBeforeLast(jarPath, "!");
 			JarFile jarInputStream = new JarFile(jarPath);
@@ -167,8 +170,8 @@ public class ClassUtil {
 			}
 			jarInputStream.close();
 		} catch (Exception e) {
-//			LOGGER.warn("获取jar包中的类名时发生异常。", e);
-			System.err.println("获取jar包中的类名时发生异常。"+ e);
+			LOGGER.warn("获取jar包中的类名时发生异常。", e);
+//			System.err.println("获取jar包中的类名时发生异常。"+ e);
 			
 		}
 		return classNames;
@@ -207,8 +210,8 @@ public class ClassUtil {
 	private static List<String> getClassNamesFromDir(URL url, String packageName) {
 		try {
 			String dirPath = URLDecoder.decode(url.getFile(), EncodingEnum.UTF_8.toString());
-//			LOGGER.debug("开始获取[{}]中的类名...", dirPath);
-			System.out.println("开始获取["+dirPath+"]中的类名...");
+			LOGGER.debug("开始获取[{}]中的类名...", dirPath);
+//			System.out.println("开始获取["+dirPath+"]中的类名...");
 			return getClassNamesFromDir(new File(dirPath), packageName);
 		} catch (Exception e) {
 			throw new UncheckedException("从目录中获取类名时发生异常。", e);
@@ -244,8 +247,8 @@ public class ClassUtil {
 				}
 			}
 		} catch (Exception e) {
-//			LOGGER.warn("获取目录中的类名时发生异常。", e);
-			System.err.println("获取目录中的类名时发生异常。"+ e);
+			LOGGER.warn("获取目录中的类名时发生异常。", e);
+//			System.err.println("获取目录中的类名时发生异常。"+ e);
 		}
 		return classNames;
 	}

@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 import javassist.CannotCompileException;
@@ -66,21 +67,28 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     public AopClassFileTransformer(){
     	//1.配置文件指定用于织入的方法
         String methodStr = AopConfig.getUtil().getProperty("filterInfos");
-        String[] it = methodStr.split(";");
-    	for (String itor : it) {
-    		FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
-    		String className = itor.split(":")[0];
-    		String methodNameStr = itor.split(":")[1];
-    		String[] methodArr = methodNameStr.split(",");
-    		filterMetaInfo.setFilterClassName(className);
-    		filterMetaInfo.setMethodNameArr(methodArr);
-    		addFilterMethod(filterMetaInfo);
-		}
+        if(StringUtil.isNotBlank(methodStr)) {
+        	String[] it = methodStr.split(";");
+        	for (String itor : it) {
+        		FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
+        		String className = itor.split(":")[0];
+        		String methodNameStr = itor.split(":")[1];
+        		String[] methodArr = methodNameStr.split(",");
+        		filterMetaInfo.setFilterClassName(className);
+        		filterMetaInfo.setMethodNameArr(methodArr);
+        		addFilterMethod(filterMetaInfo);
+        	}
+        }
     	
     	//2.需要扫描的用于织入的标准了注解的信息的方法
     	String injectionTargetAnnotation = AopConfig.getUtil().getProperty("injectionTargetAnnotation");
+    	if(StringUtil.isBlank(injectionTargetAnnotation)) {
+    		if(filterList.size()<1) {
+    			throw new RuntimeException("请检查aop.properties中filterInfos和injectionTargetAnnotation属性的设置，两个属性必须设置其中一个");
+    		}
+    	}
     	String[] injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
-    	List<Class<?>> listClazz = ClassUtil.findClasses("com.meizu");
+    	List<Class<?>> listClazz = ClassUtil.findClasses("com.meizu.demo");//不要引入Classutil类了，直接通过模版形式，生成配置文件
     	for (Class<?> classInfo : listClazz) {
     		try {
     			List<String> methodTempStr = new ArrayList<>();
