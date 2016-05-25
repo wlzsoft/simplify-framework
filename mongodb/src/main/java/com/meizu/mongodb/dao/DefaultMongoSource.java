@@ -5,6 +5,7 @@ import com.meizu.mongodb.config.MongodbPropertiesConfig;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.utils.PropertieUtil;
 import com.mongodb.client.MongoDatabase;
 /**
  * <p>Desc:默认数据源 </p>
@@ -29,12 +30,13 @@ public class DefaultMongoSource extends MongoConn {
 	@Config("mongo.databaseName")
 	private String defaultDbName;
 	@Config("mongo.url")
-	private String defaultUrl;
+	private String url;
 
 	public DefaultMongoSource() {
-		host = this.defaultHost;
-		dbName = this.defaultDbName;
-		url = this.defaultUrl;
+		PropertieUtil propertieUtil = new PropertieUtil("properties/mongo.properties");
+		host = propertieUtil.getString("mongo.host");
+		dbName = propertieUtil.getString("mongo.databaseName");
+		url = propertieUtil.getString("mongo.url");
 		this.setDb(getDatabase());
 	}
 
