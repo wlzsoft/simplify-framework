@@ -347,17 +347,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     }
     
     /**
-     * 
-     * 方法用途: 在main方法执行后，执行本方法<br>
-     * 操作步骤: TODO:测试未通过，需要通过VirtualMachine 加装jar包的方式，暂不实现 <br>
-     * @param agentArgs
-     * @param ins
-     */
-    public static void agentmain (String agentArgs, Instrumentation ins) {
-    	System.out.println("main方法启动了");
-    }
-    
-    /**
      * 方法用途: 打印Aop映射信息<br>
      * 操作步骤: 用于输出aop.properties文件中配置的切面类，是否被注入业务逻辑<br>
      */
