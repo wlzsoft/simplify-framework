@@ -144,7 +144,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		if (className == null || className.indexOf("/") == -1) {
 			return null;
 		}
-        if(!className.startsWith(Constants.packagePrefix.replace(".", "/"))/*||className.startsWith(Constants.packagePrefix.replace(".", "/")+"/simplify")*/){//TODO 带验证，如果模块多的情况，是否会有问题
+        if(!className.startsWith(Constants.packagePrefix.replace(".", "/"))){
         	return null;
         }
         className = className.replaceAll("/", ".");
@@ -200,14 +200,13 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			CtClass ctClass = null;
 			try {
 				ctClass = pool.makeClass(inputStream);
+			    //ctClass = pool.get(className);//使用javaagent的字节码进行编译，避免了NOTFound的异常，无需再扫描class文件，减少insertClassPath方法的调用
 			} catch (IOException | RuntimeException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			if(ctClass == null) {
 				return null;
 			}
-//			CtClass ctClass = pool.get(className);
 			//3.过滤掉不需要aop注入的实例对象
 			boolean isFilterBean = filterBean(ctClass);
 			if(!isFilterBean) {
