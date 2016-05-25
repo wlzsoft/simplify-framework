@@ -344,7 +344,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      */
     public static void premain(String agentArgs, Instrumentation ins) {
         ins.addTransformer(new AopClassFileTransformer());
-        printAopMappingInfo();
+//        printAopMappingInfo();
     }
     
     /**
