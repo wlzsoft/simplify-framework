@@ -150,6 +150,9 @@ http://fishermen.iteye.com/blog/430286
 120.减少代码的硬编码的字符串:目前比较多的是com.meizu这样的字符串
 121.fastjson格式化的日期等格式的处理，通过注解的方式来处理
 122.如何做到框架的可测试，是否单元测试就够了，谁来确保，框架是被测试通过的
+123.检查为什么StartupError异常后，服务没有停止掉
+124.weaving模版重构，使其更智能，提供配置文件和注解方式，来扫描需要进入织入的方法,并减少类的扫描，通过javaagent自己的机制获取到，直接获取当前class字节码
+125.调整精简优化配置文件的个数和属性值，减少配置文件依赖
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

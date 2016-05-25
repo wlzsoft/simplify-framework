@@ -368,4 +368,29 @@ public class CollectionUtil {
 		}
 		return map;
 	}
+
+	/**
+	 * 方法用途: 删除数组重复元素-针对基本数据类型,如果是普通复杂对象，那么需要重写equals方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param strArr
+	 * @return 返回list
+	 */
+	public static  <T extends Serializable>  List<T> duplicate(T[] strArr) {
+		List<T> tList = new ArrayList<>();
+		for (T t : strArr) {
+			boolean isContains = contains(tList, t,new IEqualCallBack<T, T>() {
+				@Override
+				public boolean equal(T o, T w) {
+					if(o.equals(w)) {
+						return true;
+					}
+					return false;
+				}
+			});
+			if(!isContains) {
+				tList.add(t);
+			}
+		}
+		return tList;
+	}
 }

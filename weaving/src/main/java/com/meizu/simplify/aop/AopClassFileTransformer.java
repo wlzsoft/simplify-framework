@@ -1,16 +1,16 @@
 package com.meizu.simplify.aop;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.annotation.Annotation;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
-import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.collection.IEqualCallBack;
@@ -36,7 +36,7 @@ import javassist.NotFoundException;
  */
 public class AopClassFileTransformer implements ClassFileTransformer {
 	
-//	private static final Logger LOGGER = DefaultLogManager.getLogger();
+	//private static final Logger LOGGER = DefaultLogManager.getLogger();
 	private class FilterMetaInfo {
 		private String filterClassName;
 		private String[] methodNameArr;
@@ -60,10 +60,18 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		public void setIsMatch(Boolean isMatch) {
 			this.isMatch = isMatch;
 		}
-		
 	}
+	
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
+    private String[] injectionTargetAnnotationArr = {"com.meizu.simplify.cache.annotation.CacheDataSearch",
+										    		"com.meizu.simplify.cache.annotation.CacheDataDel",
+										    		"com.meizu.simplify.cache.annotation.CacheDataAdd",
+										    		"com.meizu.simplify.dao.annotations.Transation"};
+    
+    /**
+     * 默认构建方法：javaagent只绑定一个实例,方法只调用一次
+     */
     public AopClassFileTransformer(){
     	//1.配置文件指定用于织入的方法
         String methodStr = AopConfig.getUtil().getProperty("filterInfos");
@@ -74,176 +82,157 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		String className = itor.split(":")[0];
         		String methodNameStr = itor.split(":")[1];
         		String[] methodArr = methodNameStr.split(",");
+        		List<String> methodList = CollectionUtil.duplicate(methodArr);
+        		methodArr = methodList.toArray(new String[methodList.size()]);
         		filterMetaInfo.setFilterClassName(className);
         		filterMetaInfo.setMethodNameArr(methodArr);
         		addFilterMethod(filterMetaInfo);
         	}
         }
-    	
-    	//2.需要扫描的用于织入的标准了注解的信息的方法
+        
+        //2.需要扫描的用于织入的标准了注解的信息的方法
     	String injectionTargetAnnotation = AopConfig.getUtil().getProperty("injectionTargetAnnotation");
-    	if(StringUtil.isBlank(injectionTargetAnnotation)) {
-    		if(filterList.size()<1) {
-    			throw new RuntimeException("请检查aop.properties中filterInfos和injectionTargetAnnotation属性的设置，两个属性必须设置其中一个");
-    		}
+    	if(injectionTargetAnnotation != null) {
+    		injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
     	}
-    	String[] injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
-    	List<Class<?>> listClazz = ClassUtil.findClasses("com.meizu.demo");//不要引入Classutil类了，直接通过模版形式，生成配置文件
-    	for (Class<?> classInfo : listClazz) {
-    		try {
-    			List<String> methodTempStr = new ArrayList<>();
-    			for (String injectionTargetAnno : injectionTargetAnnotationArr) {
-    				Class<Annotation> annoClass = (Class<Annotation>) Class.forName(injectionTargetAnno);
-    				Method[] methodArr = classInfo.getMethods();
-    				for (Method method : methodArr) {
-						Annotation anno = method.getAnnotation(annoClass);
-						if(anno!=null) {
-							methodTempStr.add(method.getName());
-						}
-					}
-				}
-    			if(methodTempStr.size()>0) {
-    				FilterMetaInfo filterMetaInfo = new FilterMetaInfo();
-    				filterMetaInfo.setFilterClassName(classInfo.getName());
-    				filterMetaInfo.setMethodNameArr(methodTempStr.toArray(new String[methodTempStr.size()]));
-    				addFilterMethod(filterMetaInfo);
-    			}
-    		} catch (ClassNotFoundException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-		}
     	
     	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
     	if(injectionTargetClassPaths == null || injectionTargetClassPaths.equals("")) {
     		throw new RuntimeException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
     	}
-    	
     }
 
-
-
+    /**
+	 * 方法用途: 添加需要过滤的方法到集合中，并且去重<br>
+	 * 操作步骤: TODO<br>
+	 * @param filterMetaInfo
+	 */
 	private void addFilterMethod(FilterMetaInfo filterMetaInfo) {
-		boolean isContain = CollectionUtil.contains(filterList, filterMetaInfo,new IEqualCallBack<FilterMetaInfo,FilterMetaInfo>(){
-			@Override
-			public boolean equal(FilterMetaInfo o, FilterMetaInfo w) {
-				if(o.getFilterClassName().equals(w.getFilterClassName())) {
-					return true;
-				}
-				return false;
-			}
-			});
+		boolean isContain = isContainForFilterList(filterMetaInfo.getFilterClassName());
 		if(!isContain) {
 			filterList.add(filterMetaInfo); 
 		}
 	}
-
-	
 	
     /**
-     * 字节码加载到虚拟机前调用这个方法来修改字节码，达到aop织入
+     * 字节码加载到虚拟机前调用这个方法来修改字节码，达到aop织入：    这个方法被多次调用，一个class元数据对象会调用一次这个方法，如果放回null，那么字节码不会被修改
      */
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer)
             throws IllegalClassFormatException {
-    	CtClass ctclass = buildClazz(className);
+    	CtClass ctClass = buildClazz(className,classfileBuffer);
         try {
-//        	 printAopMappingInfo();
-			return ctclass.toBytecode();
+			return ctClass.toBytecode();
 		} catch (IOException | CannotCompileException e) {
 			e.printStackTrace();
-			System.out.println("framework:transform");
+			System.err.println("framework:transform：字节码编译失败");
 		}
         return null;
     }
-
 
 	/**
 	 * 
 	 * 方法用途: 第三方逻辑切入<br>
 	 * 操作步骤: TODO<br>
 	 * @param className
+	 * @param classfileBuffer 
 	 * @return
 	 */
-	public CtClass buildClazz(String className) {
-		
+	public CtClass buildClazz(String className, byte[] classfileBuffer) {
 		if (className == null || className.indexOf("/") == -1) {
 			return null;
 		}
-		
-        if(!className.startsWith("com/meizu")){
+        if(!className.startsWith("com/meizu/demo")){
         	return null;
         }
         className = className.replaceAll("/", ".");
-        
-        for(FilterMetaInfo filterMetaInfo : filterList){
-        	if (filterMetaInfo.getFilterClassName().equals(className)){
-        		filterMetaInfo.setIsMatch(true);
-        		CtClass ctclass = embed(className, filterMetaInfo.getMethodNameArr());
-        		return ctclass;
-        	}
-        }
-        return null;
+        CtClass ctClass = embed(className);
+		return ctClass;
 	}
 
-
-
-	private CtClass embed(String className, String[] methodArr) {
+	/**
+	 * 方法用途: 过滤掉不需要aop注入的实例对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param ctClass
+	 */
+	private boolean filterBean(CtClass ctClass) {
 		try {
-//    		LOGGER.info("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
-    		System.out.println("AOP：开始对类["+className+"]的相关方法进行逻辑切入");
-//        	CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
-//        	再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
-			ClassPool.doPruning = true;//减少对象内存占用
-//        	LOGGER.info("AOP：javasist开始精简["+className+"]对象字节码");
-			System.out.println("AOP：javasist开始精简["+className+"]对象字节码");
-//        	通过类全路径名获取class字节码文件数据
+			Object[] obj = ctClass.getAnnotations();
+			for (Object object : obj) {
+				Annotation anno = (Annotation) object;
+				String annoName = anno.annotationType().getName();
+				if(annoName.equals("com.meizu.simplify.ioc.annotation.Bean")) {
+					return true;
+				}
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * 方法用途: 待嵌入的类<br>
+	 * 操作步骤: TODO<br>
+	 * @param className
+	 * @return
+	 */
+	private CtClass embed(String className) {
+		try {
 			ClassPool pool = ClassPool.getDefault();
-//        	pool.insertClassPath(new ClassClassPath(this.getClass())); 
-//        	pool.insertClassPath(new ByteArrayClassPath(name, b)); 
-//        	pool.insertClassPath("com.meizu.simplify.aop.InterceptResult");
+			//0.对类进行精简
+    		//CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
+    		//再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
+			ClassPool.doPruning = true;//减少对象内存占用
+			//1.设置切入类的classpath
+			//pool.insertClassPath(new ClassClassPath(this.getClass())); 
+			//pool.insertClassPath(new ByteArrayClassPath(name, b)); 
 			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
-			for (String targetClassPath : targetClassPathArr) {
-				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来
-				//因为启动修改class文件时依赖他
+			for (String targetClassPath : targetClassPathArr) {//通过类全路径名[包名.类名]获取class字节码文件数据
+				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来,因为启动修改class文件时依赖他
 				pool.insertClassPath(targetClassPath); 
 			}
-//        	InputStream inputStream = null; 
-//        	CtClass ctclass = pool.makeClass(inputStream); 
-			CtClass ctclass = pool.get(className);
-//    	    if(!ctclass.hasAnnotation(Bean.class)) {
-//    	    	return ctclass;
-//    	    }
-		    for(String methodName : methodArr){
-		    	String methodFullName = className+":"+methodName;
-//    		    LOGGER.info("AOP：对方法["+methodFullName+"]进行逻辑切入");
-		    	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
-		        CtMethod ctmethod = ctclass.getDeclaredMethod(methodName);
-		    	ctmethod.addLocalVariable("startTime", CtClass.longType);
-		    	ctmethod.addLocalVariable("endTime", CtClass.longType);
-//    	        ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
-		    	ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
-//    	        ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
-		    	ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
-		    	//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
-		    	String returnTypeName = ctmethod.getReturnType().getName();
-		    	StringBuilder builder = new StringBuilder();
-		    	builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
-		    		   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
-				if(!returnTypeName.equals("void")) {
-					builder.append("if(beforeObject != null) {")
-					       .append("    return ("+returnTypeName+")beforeObject;")
-				           .append("}");
+			//2.获取CtClass之前，要确保调用pool.insertClassPath来设置需要获取类的classpath
+			//InputStream inputStream = null; 
+			//CtClass ctClass = pool.makeClass(inputStream); 
+			CtClass ctClass = pool.get(className);
+			//3.过滤掉不需要aop注入的实例对象
+			boolean isFilterBean = filterBean(ctClass);
+			if(!isFilterBean) {
+				return null;
+			}
+			boolean isInvokeEmbedMethod = false;
+			//5.是否包含配置文件指定的方法的切入操作
+			for(FilterMetaInfo filterMetaInfo : filterList){
+	        	if (!filterMetaInfo.getFilterClassName().equals(className)){
+	        		continue;
+	        	}
+        		filterMetaInfo.setIsMatch(true);
+        		String[] methodArr = filterMetaInfo.getMethodNameArr();
+        		for(String methodName : methodArr){
+        			CtMethod ctMethod = ctClass.getDeclaredMethod(methodName);
+        			embedMethod(pool, className, ctMethod);
+        			isInvokeEmbedMethod = true;
+        		}
+        	}
+			//6.是否包含注解标注的方法的切入操作
+			boolean isContainForFilterList = isContainForFilterList(className);//针对类级别的去重，如果需要使用注解识别，那么需要在配置文件中删掉配置的重复信息
+			if(isContainForFilterList) {//跳过filterList中存在的方法的数据处理
+				printAopEmbedMethodSuccessInfo(className, ctClass, isInvokeEmbedMethod);
+				return ctClass;//返回之前成功织入的方法
+			}
+			CtMethod[] methodArr = ctClass.getMethods();
+			for (CtMethod ctMethod : methodArr) {
+				boolean isContainsAnno = isContainsAnno(className, pool, ctMethod);
+				if(!isContainsAnno){//跳过不包含指定配置文件中注解的方法
+					continue;
 				}
-				 
-			    ctmethod.insertBefore(builder.toString());
-		    	ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
-		    	ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
-		    	ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
-		    	ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
-		    }
-		    return ctclass;
+				embedMethod(pool, className, ctMethod);
+				isInvokeEmbedMethod = true;
+			}
+			printAopEmbedMethodSuccessInfo(className, ctClass, isInvokeEmbedMethod);
+		    return ctClass;
 		} catch (CannotCompileException e) {
 		    e.printStackTrace();
 		    System.out.println("framework:buildClazz");
@@ -254,9 +243,100 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		return null;
 	}
 
-    
+	private void printAopEmbedMethodSuccessInfo(String className, CtClass ctClass, boolean isInvokeEmbedMethod) {
+		if(isInvokeEmbedMethod) {
+			System.out.println("AOP: 包含Bean注解的对象["+ctClass.getName()+"]已启用aop功能");
+			System.out.println("AOP：字节码操作工具启用精简["+className+"]对象字节码");
+			System.out.println("AOP：已对类["+className+"]的相关方法进行逻辑切入");
+		}
+	}
+
+	/**
+	 * 方法用途: 进行注解方法切入之前，需要先过滤掉filterList已经处理过的方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param methodName
+	 * @return
+	 */
+	private boolean isContainForFilterList(String methodName) {
+		boolean isContainForFilterList = CollectionUtil.contains(filterList, methodName,new IEqualCallBack<FilterMetaInfo,String>(){
+			@Override
+			public boolean equal(FilterMetaInfo o, String w) {
+				if(o.getFilterClassName().equals(w)) {
+					return true;
+				}
+				return false;
+			}
+			});
+		return isContainForFilterList;
+	}
+
+	/**
+	 * 方法用途: 判读是否包含配置文件中指定的注解<br>
+	 * 操作步骤: TODO<br>
+	 * @param className
+	 * @param pool
+	 * @param method
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws CannotCompileException
+	 * @throws NotFoundException
+	 */
+	private boolean isContainsAnno(String className, ClassPool pool, CtMethod method)
+			throws CannotCompileException, NotFoundException {
+		Object[] annos = new Object[]{};
+		try {
+			annos = method.getAnnotations();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		for (Object methodAnnoObj : annos) {
+			Annotation methodAnno = (Annotation) methodAnnoObj;
+			for (String injectionTargetAnno : injectionTargetAnnotationArr) {
+				if(methodAnno.annotationType().getName().equals(injectionTargetAnno)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 方法用途: 方法的嵌入<br>
+	 * 操作步骤: TODO<br>
+	 * @param pool
+	 * @param className
+	 * @param ctmethod
+	 * @throws CannotCompileException
+	 * @throws NotFoundException
+	 */
+	private void embedMethod(ClassPool pool, String className, CtMethod ctmethod)
+			throws CannotCompileException, NotFoundException {
+		String methodFullName = className+":"+ctmethod.getName();
+    	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
+		ctmethod.addLocalVariable("startTime", CtClass.longType);
+		ctmethod.addLocalVariable("endTime", CtClass.longType);
+		//ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
+		ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
+		//ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
+		ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
+		//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
+		String returnTypeName = ctmethod.getReturnType().getName();
+		StringBuilder builder = new StringBuilder();
+		builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
+			   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
+		if(!returnTypeName.equals("void")) {
+			builder.append("if(beforeObject != null) {")
+			       .append("    return ("+returnTypeName+")beforeObject;")
+		           .append("}");
+		}
+		ctmethod.insertBefore(builder.toString());
+		ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
+		ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
+		ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
+		ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
+	}
+
     /**
-     * 
      * 方法用途: 在main函数执行前，执行本方法<br>
      * 操作步骤: 添加新的字节码转换器，来修改字节码<br>
      * @param agentArgs
@@ -264,12 +344,20 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      */
     public static void premain(String agentArgs, Instrumentation ins) {
         ins.addTransformer(new AopClassFileTransformer());
-        AopClassFileTransformer.printAopMappingInfo();
-      
     }
     
     /**
      * 
+     * 方法用途: 在main方法执行后，执行本方法<br>
+     * 操作步骤: TODO:测试未通过，需要通过VirtualMachine 加装jar包的方式，暂不实现 <br>
+     * @param agentArgs
+     * @param ins
+     */
+    public static void agentmain (String agentArgs, Instrumentation ins) {
+    	System.out.println("main方法启动了");
+    }
+    
+    /**
      * 方法用途: 打印Aop映射信息<br>
      * 操作步骤: 用于输出aop.properties文件中配置的切面类，是否被注入业务逻辑<br>
      */
@@ -290,6 +378,4 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         	System.out.println(messageFilter);
         }
     }
-   
-
 }
