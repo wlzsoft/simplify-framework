@@ -344,6 +344,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      */
     public static void premain(String agentArgs, Instrumentation ins) {
         ins.addTransformer(new AopClassFileTransformer());
+        printAopMappingInfo();
     }
     
     /**
@@ -359,7 +360,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
         		messageFilter += filterMetaInfo.getFilterClassName();
         		String[] methodNameArr = filterMetaInfo.getMethodNameArr();
         		for (String methodName : methodNameArr) {
-        			messageFilter += methodName;
+        			messageFilter += methodName+",";
 				}
         	}
         }
