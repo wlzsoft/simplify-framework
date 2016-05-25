@@ -1,5 +1,6 @@
 package com.meizu.simplify.aop;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.ioc.BeanFactory;
 
@@ -20,8 +21,8 @@ import com.meizu.simplify.ioc.BeanFactory;
 public interface IInterceptor {
 	public  static <T extends Object> T initBefore(String methodFullName,InterceptResult ir,Object o,Object... args ) {
 		Handler handle = BeanFactory.getBean("beforeCacheInterceptor");//CacheInterceptor.getBeforeInstance();
-//		handle.setNextHandler(BeanFactory.getBean("com.meizu.simplify.aop.log.LogInterceptor"))//业务处理成功后才需要记录日志，这里无需设置日志过滤器
-		handle.setNextHandler(BeanFactory.getBean("com.meizu.simplify.dao.TransationInterceptor"));
+//		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.aop.log.LogInterceptor"))//业务处理成功后才需要记录日志，这里无需设置日志过滤器
+		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor"));
 //		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);
@@ -33,8 +34,8 @@ public interface IInterceptor {
 	
 	public static Object initAfter(String methodFullName,InterceptResult ir,Object o,Object... args ) {
 		Handler handle = BeanFactory.getBean("afterCacheInterceptor");//CacheInterceptor.getAfterInstance();
-		handle.setNextHandler(BeanFactory.getBean("com.meizu.simplify.aop.log.LogInterceptor"));
-		handle.setNextHandler(BeanFactory.getBean("com.meizu.simplify.dao.TransationInterceptor"));
+		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.aop.log.LogInterceptor"));
+		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor"));
 //		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);

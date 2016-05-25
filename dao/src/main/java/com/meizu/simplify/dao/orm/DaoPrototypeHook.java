@@ -21,6 +21,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Entity;
@@ -41,7 +42,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Seriali
 			Class<Dao<IdEntity<Serializable, Integer>, Serializable>> clazz) {
 		LOGGER.debug("开始初始化Dao实例....");
 		List<BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>>> list = new ArrayList<>();
-		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, "com.meizu");//扫描Entity注解的实体，获取实体列表
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, Constants.packagePrefix);//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {

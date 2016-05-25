@@ -15,6 +15,7 @@ import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.meizu.rpc.annotations.ClientBean;
 import com.meizu.rpc.annotations.ServerBean;
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanHook;
@@ -43,13 +44,13 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 	
 	@Override
 	public BeanEntity<?> hook(Class<?> clazz){
-		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, "com.meizu");//扫描ClientBean注解bean
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, Constants.packagePrefix);//扫描ClientBean注解bean
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {
 				if(!clazz.getName().equals(entityClass.getName())){
 					continue;
 				}
-				List<Class<?>> allIpmlClass=ClassUtil.findClassesByParentClass(entityClass, "com.meizu");
+				List<Class<?>> allIpmlClass=ClassUtil.findClassesByParentClass(entityClass, Constants.packagePrefix);
 				Boolean isRemote = false;
 				if (CollectionUtil.isEmpty(allIpmlClass)) {
 					isRemote = true;

@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -50,7 +51,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	}
 
 	public static <T extends Bean> void buildAnnotation(Class<T> clazzAnno) {
-		List<Class<?>> resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, "com.meizu");//提供构建bean的总数据源
+		List<Class<?>> resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, Constants.packagePrefix);//提供构建bean的总数据源
 		List<Class<?>> resolvePreCoreList = new ArrayList<>();//提供预先构建bean的数据源
 		List<Class<?>> resolveExtendList = new ArrayList<>();//提供扩展构建bean的数据源
 		for (Class<?> clazz : resolveList) {
@@ -89,7 +90,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 		try {
 			T beanAnnotation = clazz.getAnnotation(clazzAnno);
 			if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
-				List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, "com.meizu");
+				List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, Constants.packagePrefix);
 				for (Class<?> hookClazz : hookList) {
 					BeanPrototypeHook hookBeanAnno = hookClazz.getAnnotation(BeanPrototypeHook.class);
 					Class<?> serviceClass = hookBeanAnno.value();
@@ -127,7 +128,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 							}
 							break;
 						} else {//如不包含，寻找相关的业务类，用于错误提示，[包名为com.meizu要做成可配置 ,适应不同的包名结构TODO]
-							if(interfaceClass.getName().startsWith("com.meizu")) {
+							if(interfaceClass.getName().startsWith(Constants.packagePrefix)) {
 								interfaceName = interfaceClass.getName();
 							}
 						}
@@ -167,7 +168,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 * @param clazz
 	 */
 	private static Class<?> getSingleHook(Class<?> clazz) {
-		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, "com.meizu");
+		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, Constants.packagePrefix);
 		for (Class<?> hookClazz : hookList) {
 			BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
 			Class<?> annoClass = hookBeanAnno.value();

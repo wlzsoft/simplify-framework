@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 
 import org.junit.Test;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.entity.User;
 import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
@@ -43,7 +44,7 @@ public class CacheSimpleTest {
 			};
 			cai.setAnnotatoionType(cacheDataAdd);
 			cai.setReturnType(Object.class);
-			CacheAnnotationResolver.cacheAnnotationInfoMap.put("com.meizu.simplify.aop.service.TestService:doSomeThing", cai);
+			CacheAnnotationResolver.cacheAnnotationInfoMap.put(Constants.packagePrefix+".simplify.aop.service.TestService:doSomeThing", cai);
 			 User bb = new User();
 		        bb.setName("yyyyy");
 //		        类加载冲突 ，后续打开 TODO

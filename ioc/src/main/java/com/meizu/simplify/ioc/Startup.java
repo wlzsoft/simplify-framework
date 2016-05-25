@@ -1,10 +1,6 @@
 package com.meizu.simplify.ioc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
@@ -13,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.ioc.annotation.Init;
@@ -78,7 +75,7 @@ public final class Startup {
 	 * @return
 	 */
 	public static Map<InitTypeEnum, Class<?>> getAnnotationResolverList() {
-		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, "com.meizu");
+		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, Constants.packagePrefix);
 		Map<InitTypeEnum,Class<?>> mapResolve = new EnumMap<InitTypeEnum, Class<?>>(InitTypeEnum.class);
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
@@ -147,7 +144,7 @@ public final class Startup {
 		4.kill -9 强制退出<br>
 	 */
 	public static void stop() {
-		List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, "com.meizu");
+		List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, Constants.packagePrefix);
 		for (Class<?> clazz : classList) {
 			IStopRelease isr = BeanFactory.getBean(clazz.getName());
 			isr.release();

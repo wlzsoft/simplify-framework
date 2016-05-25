@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.ioc.dao.Dao;
 import com.meizu.simplify.ioc.service.ITestService;
 import com.meizu.simplify.ioc.service.TestService;
@@ -31,7 +32,7 @@ public  class BeanFactoryTest {
 	}
 	@Test
 	public void getBean() {
-		Object obj = BeanFactory.getBean("com.meizu.simplify.ioc.service.TestService");
+		Object obj = BeanFactory.getBean(Constants.packagePrefix+".simplify.ioc.service.TestService");
 		LOGGER.debug(obj+"");
 	}
 	@Test

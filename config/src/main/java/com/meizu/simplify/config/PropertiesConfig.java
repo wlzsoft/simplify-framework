@@ -3,6 +3,7 @@ package com.meizu.simplify.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.config.annotation.DymaicProperties;
 import com.meizu.simplify.config.annotation.Reload;
 import com.meizu.simplify.config.annotation.ReloadableResource;
@@ -31,7 +32,7 @@ public class PropertiesConfig {
 	private Boolean debug = true;
 	// 后续使用枚举类型 TODO
 	private String charset = "UTF-8";
-	private String controllerClasspath = "com.meizu";
+	private String controllerClasspath = Constants.packagePrefix;
 	private String template = "meizu";
 	//页面缓存总数[url请求]
 	private Integer pageCacheCount = 100;

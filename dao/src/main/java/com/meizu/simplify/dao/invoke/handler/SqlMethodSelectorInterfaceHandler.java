@@ -2,6 +2,7 @@ package com.meizu.simplify.dao.invoke.handler;
 
 import java.util.List;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.dao.invoke.SqlMethodSelector;
 import com.meizu.simplify.exception.StartupErrorException;
@@ -29,7 +30,7 @@ public class SqlMethodSelectorInterfaceHandler implements IInterfaceHandler{
 	
 	@Override
 	public Class<?> handle() {
-		List<Class<?>> methodSelectorList = ClassUtil.findClassesByInterfaces(ISqlMethodSelector.class, "com.meizu");
+		List<Class<?>> methodSelectorList = ClassUtil.findClassesByInterfaces(ISqlMethodSelector.class, Constants.packagePrefix);
 		for (Class<?> methodSelectorClazz : methodSelectorList) {
 			if(SqlMethodSelector.class != methodSelectorClazz) {
 				return methodSelectorClazz;

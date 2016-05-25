@@ -2,6 +2,7 @@ package com.meizu.simplify.mvc.invoke.handler;
 
 import java.util.List;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -29,7 +30,7 @@ public class MethodSelectorInterfaceHandler implements IInterfaceHandler{
 	
 	@Override
 	public Class<?> handle() {
-		List<Class<?>> methodSelectorList = ClassUtil.findClassesByInterfaces(IMethodSelector.class, "com.meizu");
+		List<Class<?>> methodSelectorList = ClassUtil.findClassesByInterfaces(IMethodSelector.class, Constants.packagePrefix);
 		for (Class<?> methodSelectorClazz : methodSelectorList) {
 			if(MethodSelector.class != methodSelectorClazz) {
 				return methodSelectorClazz;

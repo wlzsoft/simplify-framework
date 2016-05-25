@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.exception.BaseException;
@@ -127,7 +128,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			LOGGER.info("Framework 测试模式是否开启 -> " + config.getDebug());
 			LOGGER.info("Framework 页面缓存总数[url请求] -> " + config.getPageCacheCount());
 			LOGGER.info("Framework 字符编码格式 -> " + config.getCharset());
-			LOGGER.info("Framework v1.0.1-SNAPSHOT Init");
+			LOGGER.info("Framework "+Constants.version+" Init");
 		}
 	}
 	

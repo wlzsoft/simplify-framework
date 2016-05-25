@@ -12,6 +12,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.codegen.CodeGenUtil;
 import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.exception.BaseException;
@@ -101,6 +102,6 @@ public class SqlByDaoEntityGenBuild {
 	}
 	public static void main(String[] args) {
 		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
-		init("com.meizu.demo.mvc.entity", gen);
+		init(Constants.packagePrefix+".demo.mvc.entity", gen);
 	}
 }

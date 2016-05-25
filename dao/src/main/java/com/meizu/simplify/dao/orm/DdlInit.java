@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.entity.annotations.Table;
@@ -35,7 +36,7 @@ public class DdlInit implements IAnnotationResolver<Class<?>>{//TODO 后续可�
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, "com.meizu");//扫描Entity注解的实体，获取实体列表
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, Constants.packagePrefix);//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {

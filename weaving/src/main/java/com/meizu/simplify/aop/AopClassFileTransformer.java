@@ -1,8 +1,6 @@
 package com.meizu.simplify.aop;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.annotation.Annotation;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -11,6 +9,7 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.collection.IEqualCallBack;
@@ -64,10 +63,10 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
-    private String[] injectionTargetAnnotationArr = {"com.meizu.simplify.cache.annotation.CacheDataSearch",
-										    		"com.meizu.simplify.cache.annotation.CacheDataDel",
-										    		"com.meizu.simplify.cache.annotation.CacheDataAdd",
-										    		"com.meizu.simplify.dao.annotations.Transation"};
+    private String[] injectionTargetAnnotationArr = {Constants.packagePrefix+".simplify.cache.annotation.CacheDataSearch",
+										    		Constants.packagePrefix+".simplify.cache.annotation.CacheDataDel",
+										    		Constants.packagePrefix+".simplify.cache.annotation.CacheDataAdd",
+										    		Constants.packagePrefix+".simplify.dao.annotations.Transation"};
     
     /**
      * 默认构建方法：javaagent只绑定一个实例,方法只调用一次
@@ -162,7 +161,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			for (Object object : obj) {
 				Annotation anno = (Annotation) object;
 				String annoName = anno.annotationType().getName();
-				if(annoName.equals("com.meizu.simplify.ioc.annotation.Bean")) {
+				if(annoName.equals(Constants.packagePrefix+".simplify.ioc.annotation.Bean")) {
 					return true;
 				}
 			}
@@ -318,7 +317,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		//ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
 		ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
 		//ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
-		ctmethod.addLocalVariable("ir",pool.get("com.meizu.simplify.aop.InterceptResult"));
+		ctmethod.addLocalVariable("ir",pool.get(Constants.packagePrefix+".simplify.aop.InterceptResult"));
 		//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
 		String returnTypeName = ctmethod.getReturnType().getName();
 		StringBuilder builder = new StringBuilder();
@@ -331,7 +330,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		}
 		ctmethod.insertBefore(builder.toString());
 		ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
-		ctmethod.insertAfter("com.meizu.simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
+		ctmethod.insertAfter(Constants.packagePrefix+".simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
 		ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
 		ctmethod.insertAfter("System.out.println(\"方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
 	}

@@ -2,7 +2,6 @@ package com.meizu.simplify.ioc.resolver;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +9,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.Constants;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -92,7 +92,7 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    	}
 		    	Object iocBean = null;
 		    	if(iocType.isInterface()||Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
-		    		List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,"com.meizu");
+		    		List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,Constants.packagePrefix);
 		    		int clazzSize = clazzList.size();
 		    		if(clazzSize>1) {
 		    			DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
@@ -136,9 +136,9 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		if(defaultBeanClass != Object.class) {
 			return defaultBeanClass;
 		} 
-		List<Class<?>> handleInterfaceList = ClassUtil.findClassesByAnnotationClass(HandleInterface.class, "com.meizu");
+		List<Class<?>> handleInterfaceList = ClassUtil.findClassesByAnnotationClass(HandleInterface.class, Constants.packagePrefix);
 		if(handleInterfaceList.size() < 1) {
-			throw new UncheckedException("没有查找到相应的@HandleInterface注解标注的类，确保指定扫描包名正确["+"com.meizu"+"]");
+			throw new UncheckedException("没有查找到相应的@HandleInterface注解标注的类，确保指定扫描包名正确["+Constants.packagePrefix+"]");
 		}
 		for (Class<?> handleInterfaceClass : handleInterfaceList) {
 			Object obj = BeanFactory.getBean(handleInterfaceClass);
