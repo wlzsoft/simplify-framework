@@ -142,7 +142,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		if (className == null || className.indexOf("/") == -1) {
 			return null;
 		}
-        if(!className.startsWith("com/meizu/demo")){
+        if(!className.startsWith(Constants.packagePrefix.replace(".", "/"))||className.startsWith(Constants.packagePrefix.replace(".", "/")+"/simplify")){
         	return null;
         }
         className = className.replaceAll("/", ".");
