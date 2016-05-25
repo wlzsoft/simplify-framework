@@ -1,6 +1,8 @@
 package com.meizu.simplify.aop;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -142,11 +144,11 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		if (className == null || className.indexOf("/") == -1) {
 			return null;
 		}
-        if(!className.startsWith(Constants.packagePrefix.replace(".", "/"))||className.startsWith(Constants.packagePrefix.replace(".", "/")+"/simplify")){
+        if(!className.startsWith(Constants.packagePrefix.replace(".", "/"))/*||className.startsWith(Constants.packagePrefix.replace(".", "/")+"/simplify")*/){//TODO 带验证，如果模块多的情况，是否会有问题
         	return null;
         }
         className = className.replaceAll("/", ".");
-        CtClass ctClass = embed(className);
+        CtClass ctClass = embed(className,classfileBuffer);
 		return ctClass;
 	}
 
@@ -175,9 +177,10 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	 * 方法用途: 待嵌入的类<br>
 	 * 操作步骤: TODO<br>
 	 * @param className
+	 * @param classfileBuffer 
 	 * @return
 	 */
-	private CtClass embed(String className) {
+	private CtClass embed(String className, byte[] classfileBuffer) {
 		try {
 			ClassPool pool = ClassPool.getDefault();
 			//0.对类进行精简
@@ -193,9 +196,18 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 				pool.insertClassPath(targetClassPath); 
 			}
 			//2.获取CtClass之前，要确保调用pool.insertClassPath来设置需要获取类的classpath
-			//InputStream inputStream = null; 
-			//CtClass ctClass = pool.makeClass(inputStream); 
-			CtClass ctClass = pool.get(className);
+			InputStream inputStream = new ByteArrayInputStream(classfileBuffer); 
+			CtClass ctClass = null;
+			try {
+				ctClass = pool.makeClass(inputStream);
+			} catch (IOException | RuntimeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			if(ctClass == null) {
+				return null;
+			}
+//			CtClass ctClass = pool.get(className);
 			//3.过滤掉不需要aop注入的实例对象
 			boolean isFilterBean = filterBean(ctClass);
 			if(!isFilterBean) {
