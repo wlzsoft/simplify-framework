@@ -1,4 +1,4 @@
-package com.meizu.mongodb;
+package com.meizu.mongodb.dao;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -11,54 +11,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
-import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.InitBean;
-import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-
-public class MongoDBClient<T>  {
-	
-	private static final Logger logger = LoggerFactory.getLogger(MongoDBClient.class);
-	public static  MongoClient mongoClient = null;
+/**
+ * <p>dao操作基类</p>
+ * <p>Desc: TODO</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2016</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:2016年5月23日 上午11:41:35</p>
+ * <p>Modified By:meizu-</p>
+ * <p>Modified Date:2016年5月23日 上午11:41:35</p>
+ * @author <a href="mailto:wanghaibin@meizu.com" title="邮箱地址">wanghaibin</a>
+ * @version Version 3.0
+ * @param <T> collection集合
+ */
+public class MongoBaseDao<T> {
+	private static final Logger logger = LoggerFactory.getLogger(MongoBaseDao.class);
 	private Class<T> entityClass;
-	
-	@Resource
-	private PropertiesConfig properties;
+	private MongoCollection<Document> dbCollection;
 
-	public MongoDBClient() {
-	}
-	
 	@InitBean
 	public void init() {
 		entityClass = getEntityClass();
-		if (mongoClient == null) {
-			MongoClientOptions.Builder build = new MongoClientOptions.Builder();
-			build.connectionsPerHost(50);// 与目标数据库能够建立的最大connection数量为50
-			build.threadsAllowedToBlockForConnectionMultiplier(100); //初始化100个线程
-			build.maxWaitTime(1000 * 60 * 2);//在成功获取到一个可用数据库连接之前的最长等待时间2分钟
-			build.connectTimeout(1000 * 60 * 1); // 与数据库建立连接的timeout设置为1分钟
-			MongoClientOptions myOptions = build.build();
-			try {
-				// 数据库连接实例
-				mongoClient = new MongoClient(properties.getProp().getString("system.mongo.host"), myOptions);
-			} catch (MongoException e) {
-				logger.error(e.getMessage());
-			}
-		}
 	}
-
 	/**
 	 * 方法用途: 数据删除
 	 * 操作步骤: TODO<br>
@@ -68,26 +51,18 @@ public class MongoDBClient<T>  {
 	 * @param value 值
 	 * @return
 	 */
-	public boolean delete(String dbName, String collectionName, String key, Object value) {
-		 MongoDatabase db = null;
-		 MongoCollection<Document> dbCollection = null;
+	public boolean delete( String key, Object value) {
 		if (key == null || value == null) {
 			logger.error("删除mongodb数据字段和值不能为空！" + key + ":" + value);
 			return false;
 		}
 		try {
-			db = getDB(dbName); // 获取指定的数据库
-			dbCollection = getCollection(db,collectionName); // 获取指定的collectionName集合
 			BasicDBObject delObj=new BasicDBObject();
 			delObj.put(key, value);
 			dbCollection.deleteMany(delObj);
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-		} finally {
-			if (null != db) {
-				db = null;
-			}
 		}
 		return false;
 	}
@@ -99,13 +74,9 @@ public class MongoDBClient<T>  {
 	 * @param deleMap 删除条件（key：字段名，value：对应值）
 	 * @return
 	 */
-	public boolean delete(String dbName, String collectionName, Map<String, Object> deleMap) {
-		 MongoDatabase db = null;
-		 MongoCollection<Document> dbCollection = null;
+	public boolean delete(Map<String, Object> deleMap) {
 		if (null != deleMap && deleMap.size() > 0) {
 			try {
-				db = getDB(dbName); // 获取指定的数据库
-				dbCollection = getCollection(db,collectionName); // 获取指定的collectionName集合
 				DeleteResult result = null; // 删除返回结果
 				BasicDBObject delObj=buildSearchFilter(deleMap);
 				result = dbCollection.deleteMany(delObj); // 执行删除操作
@@ -115,11 +86,6 @@ public class MongoDBClient<T>  {
 				return false;
 			} catch (Exception e) {
 				logger.error(e.getMessage());
-			} finally {
-				if (null != db) {
-					db = null;
-					dbCollection=null;
-				}
 			}
 		} else {
 			logger.error("删除mongodb数据字段和值不能为空！");
@@ -138,17 +104,12 @@ public class MongoDBClient<T>  {
 	 * @return
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Page<T> findByPage(String dbName, String collectionName, Map<String, Object> map, int pageSize, int currentPage) {
+	public Page<T> findByPage( Map<String, Object> map, int pageSize, int currentPage) {
 		Page<T> resultList = null;
-		MongoDatabase db = null;
-		MongoCollection<Document> dbCollection = null;
-		DBCursor cursor = null;
 		long startTime = System.currentTimeMillis();
 		try {
-			db = getDB(dbName); // 获取数据库实例
-			dbCollection = getCollection(db,collectionName); // 获取数据库中指定的collection集合
 			BasicDBObject queryObj=buildSearchFilter(map);
-			Long count = dbCollection.count(queryObj);// 总条数
+			Long count = getDbCollection().count(queryObj);// 总条数
 			List<T> list = new ArrayList<T>();
 			Block<Document> printBlock = new Block<Document>() {
 			     public void apply(final Document document) {
@@ -161,10 +122,6 @@ public class MongoDBClient<T>  {
 			resultList.setResults(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-		} finally {
-			if (null != cursor) {
-				cursor.close();
-			}
 		}
 		logger.info("总耗时：" + (System.currentTimeMillis() - startTime) + "毫秒");
 		return resultList;
@@ -178,23 +135,12 @@ public class MongoDBClient<T>  {
 	 * @param t
 	 * @return
 	 */
-	public boolean inSertOne(String dbName, String collectionName, T t) {
-		MongoDatabase db = null;
-		MongoCollection<Document> dbCollection = null;
-		db = getDB(dbName); // 获取数据库实例
-		dbCollection = getCollection(db,collectionName); // 获取数据库中指定的collection集合
+	public boolean inSertOne( T t) {
 		try {
 			dbCollection.insertOne(buildDocument(t));
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-		} finally {
-			if (null != db) {
-				db = null;
-			}
-			if (dbCollection != null) {
-				dbCollection = null;
-			}
 		}
 		return false;
 	}
@@ -208,13 +154,9 @@ public class MongoDBClient<T>  {
 	 * @param value
 	 * @return
 	 */
-	public boolean isExit(String dbName, String collectionName, String key, Object value) {
-		MongoDatabase db = null;
-		MongoCollection<Document> dbCollection = null;
+	public boolean isExit( String key, Object value) {
 		if (key != null && value != null) {
 			try {
-				db = getDB(dbName); // 获取数据库实例
-				dbCollection = getCollection(db,collectionName); // 获取数据库中指定的collection集合
 				BasicDBObject obj = new BasicDBObject(); // 构建查询条件
 				obj.put(key, value);
 				if (dbCollection.count(obj) > 0) {
@@ -224,47 +166,35 @@ public class MongoDBClient<T>  {
 				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
-			} finally {
-				if (null != db) {
-					db = null;
-				}
 			}
 		}
 		return false;
 	}
-	@Deprecated
-	//TODO 需修复
-	public boolean update(String dbName, String collectionName,String key, Object value,T t) {
-		MongoDatabase db = null;
-		MongoCollection<Document> dbCollection = null;
+	/**
+	 * 方法用途: 更新数据<br>
+	 * 操作步骤: TODO<br>
+	 * @param key 字段名称
+	 * @param value 字段值
+	 * @param t 需要更新的数据
+	 * @return
+	 */
+	public boolean update(String key, Object value, T t) {
 		UpdateResult result = null;
-		if (null==key || value==null) {
+		if (null == key || value == null) {
 			return false;
 		} else {
 			try {
-				db = getDB(dbName); // 获取数据库实例
-				dbCollection = getCollection(db,collectionName); // 获取数据库中指定的collection集合
-				result = dbCollection.updateMany(Filters.eq(key, value), buildDocument(t));
-				if(result.getModifiedCount()>0){
+				result = dbCollection.updateOne(Filters.eq(key, value), buildDocument(t));
+				if (result.getModifiedCount() > 0) {
 					return true;
 				}
 			} catch (Exception e) {
 				logger.error(e.getMessage());
-			} finally {
-				if (null != db) {
-					db = null;
-				}
 			}
 		}
 		return false;
 	}
 
-	private MongoDatabase getDB(String dbName) {
-		return mongoClient.getDatabase(dbName);
-	}
-	private MongoCollection<Document> getCollection(MongoDatabase db,String collectionName) {
-		return db.getCollection(collectionName);
-	}
 	private Class<T> getEntityClass() {
 		return ReflectionUtil.getSuperClassGenricType(getClass());
 	}
@@ -281,8 +211,8 @@ public class MongoDBClient<T>  {
 			try {
 				String fieldName = field.getName();
 				String upperName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-				Object value=t.getClass().getMethod("get" + upperName).invoke(t);
-				doc.append(fieldName,value);
+				Object value = t.getClass().getMethod("get" + upperName).invoke(t);
+				doc.append(fieldName, value);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -309,4 +239,11 @@ public class MongoDBClient<T>  {
 		}
 		return queryObj;
 	}
+	public MongoCollection<Document> getDbCollection() {
+		return dbCollection;
+	}
+	public void setDbCollection(MongoCollection<Document> dbCollection) {
+		this.dbCollection = dbCollection;
+	}
+	
 }
