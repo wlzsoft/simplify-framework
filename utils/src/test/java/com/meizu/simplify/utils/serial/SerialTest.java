@@ -3,10 +3,10 @@ package com.meizu.simplify.utils.serial;
 import org.junit.Test;
 import org.nustaq.serialization.FSTConfiguration;
 
-import com.meizu.simplify.utils.SerializeUtil;
-import com.meizu.simplify.utils.entity.User;
 import com.meizu.simplify.stresstester.StressTestUtils;
 import com.meizu.simplify.stresstester.core.StressTask;
+import com.meizu.simplify.utils.SerializeUtil;
+import com.meizu.simplify.utils.entity.User;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -34,7 +34,7 @@ public class SerialTest {
 				FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 				byte barray[] = conf.asByteArray(usr);
 				User object = (User) conf.asObject(barray);
-//				System.out.println(object.getName());
+				System.out.println(object.getName());
 				return null;
 			}
 		});
@@ -51,6 +51,7 @@ public class SerialTest {
 				ISerialize<User> serial = new DefaultSerialize<>();
 				byte barray[] = serial.serialize(usr);
 				User object = serial.unserialize(barray);
+				System.out.println(object);
 				return null;
 			}
 		});
@@ -68,6 +69,7 @@ public class SerialTest {
 			public Object doTask() throws Exception {
 				byte barray[] = SerializeUtil.serialize(usr);
 				User object = SerializeUtil.unserialize(barray);
+				System.out.println(object.getName());
 				return null;
 			}
 		});
@@ -98,6 +100,7 @@ public class SerialTest {
 	      byte[] serialize = serial.serialize(bean);
 	      size += serialize.length;
 	      User u = serial.unserialize(serialize);
+	      System.out.println(u.getName());
 	    }
 	    System.out.println("fst序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time2) + "ms size:=" + size);
@@ -109,17 +112,20 @@ public class SerialTest {
 	      byte[] serialize = serial.serialize(bean);
 	      size += serialize.length;
 	      User u = serial.unserialize(serialize);
+	      System.out.println(u.getName());
 	    }
 	    System.out.println("kryo序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time3) + "ms size:=" + size);
 	    
 	    size = 0;
 	    long time4 = System.currentTimeMillis();
-	    serial = new Hessian2Serialize<>();
+	    @SuppressWarnings("deprecation")
+	    ISerialize<User> serial2 = new Hessian2Serialize<>();
 	    for (int i = 0; i < 10000; i++) {
-	      byte[] serialize = serial.serialize(bean);
+	      byte[] serialize = serial2.serialize(bean);
 	      size += serialize.length;
-	      User u = serial.unserialize(serialize);
+	      User u = serial2.unserialize(serialize);
+	      System.out.println(u.getName());
 	    }
 	    System.out.println("Hessian2序列化方案[序列化10000次]耗时："
 	        + (System.currentTimeMillis() - time4) + "ms size:=" + size);

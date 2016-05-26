@@ -1,6 +1,5 @@
 package com.meizu.simplify.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;

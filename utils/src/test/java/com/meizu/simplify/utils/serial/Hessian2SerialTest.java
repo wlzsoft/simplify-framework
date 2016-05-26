@@ -2,9 +2,9 @@ package com.meizu.simplify.utils.serial;
 
 import org.junit.Test;
 
-import com.meizu.simplify.utils.entity.User;
 import com.meizu.simplify.stresstester.StressTestUtils;
 import com.meizu.simplify.stresstester.core.StressTask;
+import com.meizu.simplify.utils.entity.User;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -29,9 +29,11 @@ public class Hessian2SerialTest {
 		StressTestUtils.testAndPrint(1000, 10000, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
+				@SuppressWarnings("deprecation")
 				ISerialize<User> serial = new Hessian2Serialize<>();
 				byte[] barray = serial.serialize(usr);
 				User object = serial.unserialize(barray);
+				System.out.println(object.getName());
 				return null;
 			}
 		});

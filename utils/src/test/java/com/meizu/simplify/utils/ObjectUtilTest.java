@@ -1,11 +1,7 @@
 package com.meizu.simplify.utils;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import com.meizu.simplify.exception.UncheckedException;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

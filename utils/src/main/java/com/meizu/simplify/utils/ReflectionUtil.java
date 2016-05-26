@@ -168,7 +168,8 @@ public class ReflectionUtil {
      * @param fieldName
      * @return
      */
-    public static <T> T obtainFieldValue(final Object obj, final String fieldName,Class<T> classz) {
+    @SuppressWarnings("unchecked")
+	public static <T> T obtainFieldValue(final Object obj, final String fieldName,Class<T> classz) {
     	Field field = getField(obj,fieldName);
         T retval = null;
         try {
@@ -181,7 +182,6 @@ public class ReflectionUtil {
             e.printStackTrace();
         }
         return retval;
-         
     }
     
     /**
@@ -406,7 +406,7 @@ public class ReflectionUtil {
      * @author wanghaibin
      * @return 返回第一个泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
      */
-    public static <T> Class<T> getSuperClassGenricType(final Class<?> clazz) {
+    public static Class<?> getSuperClassGenricType(final Class<?> clazz) {
         return getSuperClassGenricType(clazz, 0);
     }
     
@@ -419,10 +419,10 @@ public class ReflectionUtil {
      * @author wanghaibin
      * @return 返回指定索引的泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
      */
-    public  static <T> Class<T> getSuperClassGenricType(final Class<?> clazz, final int index) {
+    public  static  Class<?> getSuperClassGenricType(final Class<?> clazz, final int index) {
         Type genType = clazz.getGenericSuperclass();// 得到泛型父类
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-        return (Class<T>) params[index];
+        return (Class<?>) params[index];
     }
     
 }

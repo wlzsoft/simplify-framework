@@ -59,6 +59,7 @@ public class ReflectionUtilTest  {
 		expectedException.expectMessage("SuperClassGenricType的父类是Object");
 		SuperClassGenricType obj = new SuperClassGenricType();
 		String test = obj.test();
+		System.out.println(test);
 		
 	}
 	@Test

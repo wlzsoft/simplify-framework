@@ -41,6 +41,7 @@ public class Hessian2Serialize<T> implements ISerialize<T>{
 	    return os.toByteArray();  
 	}  
 	
+	@SuppressWarnings("unchecked")
 	@Override	
 	public T unserialize(byte[] sec) {
 		if(sec==null) {

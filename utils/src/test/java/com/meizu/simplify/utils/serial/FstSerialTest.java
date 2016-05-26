@@ -34,6 +34,7 @@ public class FstSerialTest {
 				ISerialize<User> serial = new FstSerialize<>();
 				byte[] barray = serial.serialize(usr);
 				User object = serial.unserialize(barray);
+				System.out.println(object.getName());
 				return null;
 			}
 		});

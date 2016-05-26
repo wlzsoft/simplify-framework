@@ -107,7 +107,7 @@ public class NewExceptionTest {
 	/**
 	 * 自定义java对象.
 	 */
-	public static class CustomObject extends HashMap {
+	public static class CustomObject extends HashMap<String,String> {
 
 		private static final long serialVersionUID = 567393976548105L;
 
