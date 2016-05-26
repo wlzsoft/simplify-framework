@@ -134,10 +134,10 @@ public class DefaultMongoDao{
 	 * @param t
 	 * @return
 	 */
-	public boolean inSertOne(Class<?> entityClass) {
-		MongoCollection<Document> dbCollection=this.getConllection(entityClass.getSimpleName());
+	public boolean inSertOne(Object entity) {
+		MongoCollection<Document> dbCollection=this.getConllection(entity.getClass().getSimpleName());
 		try {
-			dbCollection.insertOne(buildDocument(entityClass));
+			dbCollection.insertOne(buildDocument(entity));
 			return true;
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -202,14 +202,14 @@ public class DefaultMongoDao{
 	 * @param t
 	 * @return
 	 */
-	private Document buildDocument(Class<?> entityClass) {
+	private Document buildDocument(Object entityClass) {
 		Document doc = new Document();
-		Field[] fields = entityClass.getDeclaredFields();
+		Field[] fields = entityClass.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			try {
 				String fieldName = field.getName();
 				String upperName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-				Object value = entityClass.getMethod("get" + upperName).invoke(entityClass);
+				Object value = entityClass.getClass().getMethod("get" + upperName).invoke(entityClass);
 				doc.append(fieldName, value);
 			} catch (Exception e) {
 				System.out.println(e);

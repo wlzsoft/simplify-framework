@@ -11,18 +11,12 @@
   <name>mongodb操作 模块</name>
   <description>mongodb操作 模块 </description>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mongo-java-driver>3.2.2</mongo-java-driver>
-  	 <templatePath>${project.parent.basedir}</templatePath>
-  	 <parentsite></parentsite>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<mongo-java-driver>3.2.2</mongo-java-driver>
+	<templatePath>${project.parent.basedir}</templatePath>
+	<parentsite></parentsite>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>ioc</artifactId>

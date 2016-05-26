@@ -39,54 +39,54 @@ public class MongoFileDaoTest {
 	
 	@Test
 	public void testSave() {
-		DataBase dataBase = new DataBase();
-		dataBase.setToken("fdfdfdfdf");
-		dataBase.setContentType("text/plain");
-		try {
-			TestDao systemLogDao = BeanFactory.getBean(TestDao.class);
-			InputStream streamToUploadFrom = new FileInputStream(new File("E:/daily.log"));
-			String l=systemLogDao.save(streamToUploadFrom, "测试名称", dataBase);
-			System.out.println(l.toString());
-		} catch (FileNotFoundException e) {
-			System.out.println(e);
-		}
+//		DataBase dataBase = new DataBase();
+//		dataBase.setToken("fdfdfdfdf");
+//		dataBase.setContentType("text/plain");
+//		try {
+//			DefaultMongoDao systemLogDao = BeanFactory.getBean(DefaultMongoDao.class);
+//			InputStream streamToUploadFrom = new FileInputStream(new File("E:/daily.log"));
+//			String l=systemLogDao.save(streamToUploadFrom, "测试名称", dataBase);
+//			System.out.println(l.toString());
+//		} catch (FileNotFoundException e) {
+//			System.out.println(e);
+//		}
 	}
 	@Test
 	public void testDown() {
-		DataBase dataBase = new DataBase();
-		dataBase.setToken("fdfdfdfdf");
-		try {
-			TestDao systemLogDao = BeanFactory.getBean(TestDao.class);
-			byte[] tt=systemLogDao.downloadStreamByName("测试名称");
-			System.out.println(tt.length);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+//		DataBase dataBase = new DataBase();
+//		dataBase.setToken("fdfdfdfdf");
+//		try {
+//			DefaultMongoDao systemLogDao = BeanFactory.getBean(DefaultMongoDao.class);
+//			byte[] tt=systemLogDao.downloadStreamByName("测试名称");
+//			System.out.println(tt.length);
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
 	}
 	@Test
 	public void findById() {
-		try {
-			TestDao systemLogDao = BeanFactory.getBean(TestDao.class);
-			GridFSFile file=systemLogDao.findById("574508dd3ea3d40c70940ece");
-			if(null!=file){
-				System.out.println(file.getFilename());
-			}else{
-				System.out.println("空");
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+//		try {
+//			DefaultMongoDao systemLogDao = BeanFactory.getBean(DefaultMongoDao.class);
+//			GridFSFile file=systemLogDao.findById("574508dd3ea3d40c70940ece");
+//			if(null!=file){
+//				System.out.println(file.getFilename());
+//			}else{
+//				System.out.println("空");
+//			}
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
 	}
 	@Test
 	public void findByName() {
-		try {
-			TestDao systemLogDao = BeanFactory.getBean(TestDao.class);
-			List<GridFSFile> fileList = systemLogDao.findByName("测试名称");
-			for(GridFSFile gf:fileList){
-				System.out.println(gf.getObjectId()+gf.getFilename());
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+//		try {
+//			DefaultMongoDao systemLogDao = BeanFactory.getBean(DefaultMongoDao.class);
+//			List<GridFSFile> fileList = systemLogDao.findByName("测试名称");
+//			for(GridFSFile gf:fileList){
+//				System.out.println(gf.getObjectId()+gf.getFilename());
+//			}
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
 	}
 }
