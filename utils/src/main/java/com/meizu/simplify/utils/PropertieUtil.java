@@ -184,7 +184,7 @@ public class PropertieUtil {
 	 * @param prefix 配置文件中属性的前缀
 	 * @return
 	 */
-	public <T> T setConfigValue(Object obj,String prefix){
+	public <T extends Object> T setConfigValue(T obj,String prefix){
 		if(StringUtil.isNotBlank(prefix)) {
 			prefix += ".";
 		}

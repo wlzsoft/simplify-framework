@@ -29,11 +29,11 @@ public class IpUtil {
 	 */
 	public static String getLocalIp() throws SocketException {
 
-		Enumeration e1 = (Enumeration) NetworkInterface.getNetworkInterfaces();
+		Enumeration<NetworkInterface> e1 = NetworkInterface.getNetworkInterfaces();
 		String ip = "";
 		while (e1.hasMoreElements()) {
 			NetworkInterface ni = (NetworkInterface) e1.nextElement();
-			Enumeration e2 = ni.getInetAddresses();
+			Enumeration<InetAddress> e2 = ni.getInetAddresses();
 			while (e2.hasMoreElements()) {
 				InetAddress ia = (InetAddress) e2.nextElement();
 				if (ia instanceof Inet6Address)

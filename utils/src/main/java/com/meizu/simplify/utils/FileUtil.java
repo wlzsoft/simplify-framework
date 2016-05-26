@@ -1259,459 +1259,453 @@ public class FileUtil {
 
 	//------------------------------------
 	
-		private static final File POOL_FILE = ClassUtil.getUniqueFile(FileUtil.class,	".deletefiles");
+	private static final File POOL_FILE = ClassUtil.getUniqueFile(FileUtil.class, ".deletefiles");
 
-		private static ArrayList<File> deleteFilesPool;
-		static {
-			try {
-				initPool();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	private static ArrayList<File> deleteFilesPool;
+	static {
+		try {
+			initPool();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 
-		/**
-		 * 读出以前未删除的文件列表
-		 * 
-		 * @throws Exception
-		 * @throws IOException
-		 */
-		@SuppressWarnings("unchecked")
-		private static void initPool() {
-			if (POOL_FILE.exists() && POOL_FILE.canRead()) {
-				ObjectInputStream in = null;
-				try {
-					in = new ObjectInputStream(new FileInputStream(POOL_FILE));
-					deleteFilesPool = (ArrayList<File>) in.readObject();
+	/**
+	 * 读出以前未删除的文件列表
+	 * 
+	 * @throws Exception
+	 * @throws IOException
+	 */
+	@SuppressWarnings("unchecked")
+	private static void initPool() {
+		if (POOL_FILE.exists() && POOL_FILE.canRead()) {
+			ObjectInputStream in = null;
+			try {
+				in = new ObjectInputStream(new FileInputStream(POOL_FILE));
+				deleteFilesPool = (ArrayList<File>) in.readObject();
 
-				} catch (Exception e) {
-					deleteFilesPool = new ArrayList<File>();
-				} finally {
-					if (in != null) {
-						try {
-							in.close();
-						} catch (Exception e) {// do nothing
-
-						}
-					}
-				}
-			} else {
+			} catch (Exception e) {
 				deleteFilesPool = new ArrayList<File>();
-			}
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (Exception e) {// do nothing
 
+					}
+				}
+			}
+		} else {
+			deleteFilesPool = new ArrayList<File>();
 		}
 
+	}
 
-		/**
-		 * 得到短文件名. <br>
-		 * <br>
-		 * <b>示例: </b> <br>
-		 * FileUtils.getShortFileName(&quot;/home/app/config.xml&quot;) 返回
-		 * &quot;config.xml&quot;
-		 * FileUtils.getShortFileName(&quot;C:\\test\\config.xml&quot;) 返回
-		 * &quot;config.xml&quot;</br>
-		 * 
-		 * @param fileName
-		 *            文件名
-		 * @return 短文件名
-		 */
-		public static String getShortFileName(String fileName) {
-			String shortFileName = "";
-			int pos = fileName.lastIndexOf('\\');
-			if (pos == -1) {
-				pos = fileName.lastIndexOf('/');
-			}
-			if (pos > -1) {
-				shortFileName = fileName.substring(pos + 1);
+	/**
+	 * 得到短文件名. <br>
+	 * <br>
+	 * <b>示例: </b> <br>
+	 * FileUtils.getShortFileName(&quot;/home/app/config.xml&quot;) 返回
+	 * &quot;config.xml&quot;
+	 * FileUtils.getShortFileName(&quot;C:\\test\\config.xml&quot;) 返回
+	 * &quot;config.xml&quot;</br>
+	 * 
+	 * @param fileName
+	 *            文件名
+	 * @return 短文件名
+	 */
+	public static String getShortFileName(String fileName) {
+		String shortFileName = "";
+		int pos = fileName.lastIndexOf('\\');
+		if (pos == -1) {
+			pos = fileName.lastIndexOf('/');
+		}
+		if (pos > -1) {
+			shortFileName = fileName.substring(pos + 1);
+		} else {
+			shortFileName = fileName;
+		}
+		return shortFileName;
+	}
+
+	/**
+	 * 得到不带扩展名的短文件名. <br>
+	 * <br>
+	 * <b>示例: </b> <br>
+	 * FileUtils.getShortFileNameWithoutExt(&quot;/home/app/config.xml&quot;) 返回
+	 * &quot;config&quot;<br>
+	 * FileUtils.getShortFileNameWithoutExt(&quot;C:\\test\\config.xml&quot;) 返回
+	 * &quot;config&quot;</br>
+	 * 
+	 * @param fileName
+	 *            文件名
+	 * @return 短文件名
+	 */
+	public static String getShortFileNameWithoutExt(String fileName) {
+		String shortFileName = getShortFileName(fileName);
+		shortFileName = getFileNameWithoutExt(shortFileName);
+		return shortFileName;
+	}
+
+	/**
+	 * 返回不带扩展名的文件名
+	 * 
+	 * @param fileName
+	 *            原始文件名
+	 * @return 不带扩展名的文件名
+	 */
+	public static String getFileNameWithoutExt(String fileName) {
+		String shortFileName = fileName;
+		if (fileName.indexOf('.') > -1) {
+			shortFileName = fileName.substring(0, fileName.lastIndexOf('.'));
+		}
+		return shortFileName;
+	}
+
+	/**
+	 * 返回文件扩展名,带“.”
+	 * 
+	 * @param fileName
+	 *            原始文件名
+	 * @return 文件扩展名
+	 */
+	public static String getFileNameExt(String fileName) {
+		String fileExt = "";
+		if (fileName.indexOf('.') > -1) {
+			fileExt = fileName.substring(fileName.lastIndexOf('.'));
+		}
+		return fileExt;
+	}
+
+	/**
+	 * 得到唯一文件
+	 * 
+	 * @param fileName
+	 *            原始文件名
+	 * @return File
+	 */
+	public synchronized static File getUniqueFile(File repository, String fileName) {
+		String shortFileName = getShortFileName(fileName);
+		String tempFileName = getFileNameWithoutExt(shortFileName);
+		File file = new File(repository, shortFileName);
+		String fileExt = getFileNameExt(shortFileName);
+		while (file.exists()) {
+			file = new File(repository, tempFileName + "-" + Math.abs(Math.random() * 1000000) + fileExt);
+		}
+		return file;
+	}
+		
+	/**
+	 * 获得 机器上 所有磁盘
+	 * 
+	 * @return
+	 */
+	public static List<String> getDiskPath() {
+		List<String> disks = new ArrayList<String>();
+		File[] fs = File.listRoots();
+		for (int i = 0; i < fs.length; i++) {
+			disks.add(fs[i].getPath());
+		}
+		return disks;
+	}
+
+	/**
+	 * 递归读取文件下面的所有文件
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	public static List<File> listFiles(String filePath) {
+		return listFiles(filePath, null);
+	}
+
+	/**
+	 * 递归读取文件下面的满足过滤器要求的文件
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	public static List<File> listFiles(String filePath, FileFilter filter) {
+		List<File> fileList = new ArrayList<File>();
+		try {
+			File file = new File(filePath);
+			File[] files = null;
+			if (null != filter) {
+				files = file.listFiles(filter);
 			} else {
-				shortFileName = fileName;
+				files = file.listFiles();
 			}
-			return shortFileName;
-		}
-
-		/**
-		 * 得到不带扩展名的短文件名. <br>
-		 * <br>
-		 * <b>示例: </b> <br>
-		 * FileUtils.getShortFileNameWithoutExt(&quot;/home/app/config.xml&quot;) 返回
-		 * &quot;config&quot;<br>
-		 * FileUtils.getShortFileNameWithoutExt(&quot;C:\\test\\config.xml&quot;) 返回
-		 * &quot;config&quot;</br>
-		 * 
-		 * @param fileName
-		 *            文件名
-		 * @return 短文件名
-		 */
-		public static String getShortFileNameWithoutExt(String fileName) {
-			String shortFileName = getShortFileName(fileName);
-			shortFileName = getFileNameWithoutExt(shortFileName);
-			return shortFileName;
-		}
-
-		/**
-		 * 返回不带扩展名的文件名
-		 * 
-		 * @param fileName
-		 *            原始文件名
-		 * @return 不带扩展名的文件名
-		 */
-		public static String getFileNameWithoutExt(String fileName) {
-			String shortFileName = fileName;
-			if (fileName.indexOf('.') > -1) {
-				shortFileName = fileName.substring(0, fileName.lastIndexOf('.'));
-			}
-			return shortFileName;
-		}
-
-		/**
-		 * 返回文件扩展名,带“.”
-		 * 
-		 * @param fileName
-		 *            原始文件名
-		 * @return 文件扩展名
-		 */
-		public static String getFileNameExt(String fileName) {
-			String fileExt = "";
-			if (fileName.indexOf('.') > -1) {
-				fileExt = fileName.substring(fileName.lastIndexOf('.'));
-			}
-			return fileExt;
-		}
-
-		/**
-		 * 得到唯一文件
-		 * 
-		 * @param fileName
-		 *            原始文件名
-		 * @return File
-		 */
-		public synchronized static File getUniqueFile(File repository,
-				String fileName) {
-			String shortFileName = getShortFileName(fileName);
-			String tempFileName = getFileNameWithoutExt(shortFileName);
-			File file = new File(repository, shortFileName);
-			String fileExt = getFileNameExt(shortFileName);
-			while (file.exists()) {
-				file = new File(repository, tempFileName + "-"
-						+ Math.abs(Math.random() * 1000000) + fileExt);
-			}
-			return file;
-		}
-
-
-		
-
-		
-		/**
-		 * 获得 机器上 所有磁盘
-		 * @return
-		 */
-		public static List<String> getDiskPath() {
-			List<String> disks = new ArrayList<String>();
-			File[] fs = File.listRoots();
-			for (int i = 0; i < fs.length; i++) {
-				disks.add(fs[i].getPath());
-			}
-			return disks;
-		}
-
-		/**
-		 * 递归读取文件下面的所有文件
-		 * @param filePath
-		 * @return
-		 */
-		public static List<File> listFiles(String filePath) {
-			return listFiles(filePath, null);
-		}
-
-		/**
-		 * 递归读取文件下面的满足过滤器要求的文件
-		 * @param filePath
-		 * @return
-		 */
-		public static List<File> listFiles(String filePath, FileFilter filter) {
-			List<File> fileList = new ArrayList<File>();
-			try {
-				File file = new File(filePath);
-				File[] files = null;
-				if (null != filter) {
-					files = file.listFiles(filter);
+			for (int i = 0; i < files.length; i++) {
+				File tempFile = files[i];
+				if (tempFile.isDirectory()) {
+					String subDirName = tempFile.getPath();
+					List<File> list = null;
+					list = listFiles(subDirName, filter);
+					for (int j = 0; j < list.size(); j++) {
+						fileList.add(list.get(j));
+					}
 				} else {
-					files = file.listFiles();
-				}
-				for (int i = 0; i < files.length; i++) {
-					File tempFile = files[i];
-					if (tempFile.isDirectory()) {
-						String subDirName = tempFile.getPath();
-						List<File> list = null;
-						list = listFiles(subDirName, filter);
-						for (int j = 0; j < list.size(); j++) {
-							fileList.add(list.get(j));
-						}
-					} else {
-						if (!tempFile.isFile()) {
-							continue;
-						}
-						fileList.add(tempFile);
+					if (!tempFile.isFile()) {
+						continue;
 					}
-					if (i == (files.length - 1)) {
-						return fileList;
-					}
+					fileList.add(tempFile);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+				if (i == (files.length - 1)) {
+					return fileList;
+				}
 			}
-			return fileList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
+		return fileList;
+	}
 
-		/**
-		 * 用zip格式压缩文件
-		 * @param zipFileName 压缩后的文件名 包含路径 如："c:\\test.zip"
-		 * @param inputFile 要压缩的文件 可以是文件或文件夹 如："c:\\test" 或 "c:\\test.doc"
-		 * @throws Exception
+	/**
+	 * 用zip格式压缩文件
+	 * @param zipFileName
+	 *            压缩后的文件名 包含路径 如："c:\\test.zip"
+	 * @param inputFile
+	 *            要压缩的文件 可以是文件或文件夹 如："c:\\test" 或 "c:\\test.doc"
+	 * @throws Exception
+	 *             ant下的zip工具默认压缩编码为UTF-8编码，
+	 *             而winRAR软件压缩是用的windows默认的GBK或者GB2312编码
+	 *             用ant压缩后放到windows上面会出现中文文件名乱码，用winRAR压缩的文件，用ant解压也会出现乱码，
+	 *             所以，在用ant处理winRAR压缩的文件时，要设置压缩编码
+	 */
+	public static boolean zip(String sourceFilePath, String targetFileName) {
+		boolean flag = false;
+		try {
+			File f = new File(sourceFilePath);
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(targetFileName));
+			// 设置压缩编码
+			// out.setEncoding("GBK");//设置为GBK后在windows下就不会乱码了，如果要放到Linux或者Unix下就不要设置了
+			flag = zip(out, f, "");// 递归压缩方法
+			out.close();
+			return flag;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-		 *ant下的zip工具默认压缩编码为UTF-8编码，而winRAR软件压缩是用的windows默认的GBK或者GB2312编码
+	private static boolean zip(ZipOutputStream out, File f, String base) {
+		try {
+			if (f.isDirectory()) { // 如果是文件夹，则获取下面的所有文件
+				File[] fl = f.listFiles();
+				out.putNextEntry(new ZipEntry(base + "/"));// 此处要将文件写到文件夹中只用在文件名前加"/"再加文件夹名
+				base = base.length() == 0 ? "" : base + "/";
+				for (int i = 0; i < fl.length; i++) {
+					zip(out, fl[i], base + fl[i].getName());
+				}
+			} else { // 如果是文件，则压缩
+				out.putNextEntry(new ZipEntry(base)); // 生成下一个压缩节点
+				FileInputStream in = new FileInputStream(f); // 读取文件内容
+				int len;
+				byte[] buf = new byte[DEFAULT_BUFFER_SIZE];
+				while ((len = in.read(buf, 0, DEFAULT_BUFFER_SIZE)) != -1) {
+					out.write(buf, 0, len); // 写入到压缩包
+				}
+				in.close();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-		 *用ant压缩后放到windows上面会出现中文文件名乱码，用winRAR压缩的文件，用ant解压也会出现乱码，
+	/**
+	 * 
+	 * 解压缩zip文件，支持中文
+	 * 
+	 * @param zipFilePath
+	 *            要解压的zip文件对象
+	 * @param outputFileName
+	 *            要解压到某个指定的目录下
+	 * @throws IOException
+	 * 
+	 */
+	public static boolean unZip(String zipFilePath, String outputFileName) {
+		return unZip(zipFilePath, outputFileName, false);
+	}
 
-		 *所以，在用ant处理winRAR压缩的文件时，要设置压缩编码
-		 */
-		public static boolean zip(String sourceFilePath, String targetFileName) {
-			boolean flag = false;
-			try {
-				File f = new File(sourceFilePath);
-				ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
-						targetFileName));
-				//设置压缩编码
-				//out.setEncoding("GBK");//设置为GBK后在windows下就不会乱码了，如果要放到Linux或者Unix下就不要设置了
-				flag = zip(out, f, "");// 递归压缩方法
-				out.close();
-				return flag;
-			} catch (Exception e) {
-				e.printStackTrace();
+	/**
+	 * 
+	 * 解压缩zip文件，支持中文
+	 * 
+	 * @param zipFilePath
+	 *            要解压的zip文件对象
+	 * @param outputFileName
+	 *            要解压到某个指定的目录下
+	 * @param deleteFile
+	 *            解压完毕后,是否同时删除压缩文件
+	 * @throws IOException
+	 * 
+	 */
+	public static boolean unZip(String zipFilePath, String outputFileName, boolean deleteFile) {
+		try {
+			File file = new File(zipFilePath);
+			if (!file.exists()) {
 				return false;
 			}
-		}
-
-		private static boolean zip(ZipOutputStream out, File f, String base) {
-			try {
-				if (f.isDirectory()) { // 如果是文件夹，则获取下面的所有文件
-					File[] fl = f.listFiles();
-					out.putNextEntry(new ZipEntry(base + "/"));// 此处要将文件写到文件夹中只用在文件名前加"/"再加文件夹名
-					base = base.length() == 0 ? "" : base + "/";
-					for (int i = 0; i < fl.length; i++) {
-						zip(out, fl[i], base + fl[i].getName());
+			ZipFile zipFile = new ZipFile(file);
+			Enumeration<? extends ZipEntry> e = zipFile.entries();
+			while (e.hasMoreElements()) {
+				ZipEntry zipEntry = e.nextElement();
+				if (zipEntry.isDirectory()) {
+					String name = zipEntry.getName();
+					name = name.substring(0, name.length() - 1);
+					File f = new File(outputFileName + name);
+					f.mkdirs();
+				} else {
+					File f = new File(outputFileName + zipEntry.getName());
+					f.getParentFile().mkdirs();
+					f.createNewFile();
+					InputStream is = zipFile.getInputStream(zipEntry);
+					FileOutputStream fos = new FileOutputStream(f);
+					int length = 0;
+					byte[] b = new byte[DEFAULT_BUFFER_SIZE];
+					while ((length = is.read(b, 0, DEFAULT_BUFFER_SIZE)) != -1) {
+						fos.write(b, 0, length);
 					}
-				} else { // 如果是文件，则压缩
-					out.putNextEntry(new ZipEntry(base)); // 生成下一个压缩节点
-					FileInputStream in = new FileInputStream(f); // 读取文件内容
-					int len;
-					byte[] buf = new byte[DEFAULT_BUFFER_SIZE];
-					while ((len = in.read(buf, 0, DEFAULT_BUFFER_SIZE)) != -1) {
-						out.write(buf, 0, len); // 写入到压缩包
-					}
-					in.close();
-				}
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-
-		/**
-		 * 
-		 * 解压缩zip文件，支持中文
-		 * 
-		 * @param zipFilePath
-		 *            要解压的zip文件对象
-		 * @param outputFileName
-		 *            要解压到某个指定的目录下
-		 * @throws IOException
-		 * 
-		 */
-		public static boolean unZip(String zipFilePath, String outputFileName) {
-			return unZip(zipFilePath, outputFileName, false);
-		}
-
-		/**
-		 * 
-		 * 解压缩zip文件，支持中文
-		 * 
-		 * @param zipFilePath
-		 *            要解压的zip文件对象
-		 * @param outputFileName
-		 *            要解压到某个指定的目录下
-		 * @param deleteFile
-		 *            解压完毕后,是否同时删除压缩文件
-		 * @throws IOException
-		 * 
-		 */
-		public static boolean unZip(String zipFilePath, String outputFileName,
-				boolean deleteFile) {
-			try {
-				File file = new File(zipFilePath);
-				if (!file.exists()) {
-					return false;
-				}
-				ZipFile zipFile = new ZipFile(file);
-				Enumeration e = zipFile.entries();
-				while (e.hasMoreElements()) {
-					ZipEntry zipEntry = (ZipEntry) e.nextElement();
-					if (zipEntry.isDirectory()) {
-						String name = zipEntry.getName();
-						name = name.substring(0, name.length() - 1);
-						File f = new File(outputFileName + name);
-						f.mkdirs();
-					} else {
-						File f = new File(outputFileName + zipEntry.getName());
-						f.getParentFile().mkdirs();
-						f.createNewFile();
-						InputStream is = zipFile.getInputStream(zipEntry);
-						FileOutputStream fos = new FileOutputStream(f);
-						int length = 0;
-						byte[] b = new byte[DEFAULT_BUFFER_SIZE];
-						while ((length = is.read(b, 0, DEFAULT_BUFFER_SIZE)) != -1) {
-							fos.write(b, 0, length);
-						}
-						is.close();
-						fos.close();
-					}
-				}
-
-				if (zipFile != null) {
-					zipFile.close();
-				}
-
-				if (deleteFile) {
-					file.deleteOnExit();
-				}
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-
-		
-
-		
-
-		/**
-		 * 读取文件中内容
-		 * 
-		 * @param path
-		 * @return
-		 * @throws IOException
-		 */
-		public static String readFileToString(String path, String destCoding)
-				throws IOException {
-			String resultStr = null;
-			FileInputStream fis = null;
-			try {
-				fis = new FileInputStream(path);
-				byte[] inBuf = new byte[DEFAULT_BUFFER_SIZE];
-				int len = inBuf.length;
-				int off = 0;
-				int ret = 0;
-				while ((ret = fis.read(inBuf, off, len)) > 0) {
-					off += ret;
-					len -= ret;
-				}
-				resultStr = new String(new String(inBuf, 0, off, destCoding)
-						.getBytes());
-			} finally {
-				if (fis != null)
-					fis.close();
-			}
-			return resultStr;
-		}
-
-		/**
-		 * 文件转成字节数组
-		 * 
-		 * @param path
-		 * @return
-		 * @throws IOException
-		 */
-		public static byte[] readFileToBytes(String path) throws IOException {
-			byte[] b = null;
-			InputStream is = null;
-			File f = new File(path);
-			try {
-				is = new FileInputStream(f);
-				b = new byte[(int) f.length()];
-				is.read(b);
-			} finally {
-				if (is != null)
 					is.close();
+					fos.close();
+				}
 			}
-			return b;
+
+			if (zipFile != null) {
+				zipFile.close();
+			}
+
+			if (deleteFile) {
+				file.deleteOnExit();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
+	}
 
-		
-
-		
-		/**
-		 * 文件续传
-		 * @param srcFile
-		 * @param destFile
-		 * @return
-		 */
-		public static boolean runUnFinished(String srcFilePath, String destFilePath) {
-			boolean flag = false;
-			File destFile = new File(destFilePath);
-	       if (destFile.exists()) {
-	       	FileChannel fin = null;
-	       	FileChannel fout = null;
-	           try {
-	               
-	               RandomAccessFile randomSrcFile = new RandomAccessFile(srcFilePath,"rw");
-	               long destFileSize = destFile.length();
-	               
-	               RandomAccessFile randomDestFile = new RandomAccessFile(destFile, "rw");
-	               randomSrcFile.seek(destFileSize - 1024 * 2);
-	               randomDestFile.seek(destFileSize - 1024 * 2);
-	               fin = randomSrcFile.getChannel();
-	               fout = randomDestFile.getChannel();
-
-	               while (true) {
-	                   int length = 1024 * 1024 * 2;
-
-	                   if (fin.position() == fin.size()) {
-	                       fin.close();
-	                       fout.close();
-	                       break;
-	                   }
-
-	                   if ((fin.size() - fin.position()) < 1024 * 1024 * 2 * 10) {
-	                       length = (int) (fin.size() - fin.position());
-	                   } else {
-	                       length = 1024 * 1024 * 2 * 10;
-	                   }
-	                   fin.transferTo(fin.position(), length, fout);
-	                   fin.position(fin.position() + length);
-	               }
-	               flag = true;
-	           } catch (Exception e) {
-	           	flag = false;
-	               e.printStackTrace();
-	           }finally{
-	           	try {
-		            	if(null != fin)fin.close();
-		            	if(null != fout) fout.close();
-	           	} catch (IOException e) {
-	           		e.printStackTrace();
-	           	}
-	           }
-	       }
-	       return flag;
-	   }
-		
-		public static String getFileExtName(File file){
-			String fileName = file.getName();
-			String extName = fileName.substring(fileName.lastIndexOf('.') + 1);
-			return extName;
+	/**
+	 * 读取文件中内容
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static String readFileToString(String path, String destCoding) throws IOException {
+		String resultStr = null;
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(path);
+			byte[] inBuf = new byte[DEFAULT_BUFFER_SIZE];
+			int len = inBuf.length;
+			int off = 0;
+			int ret = 0;
+			while ((ret = fis.read(inBuf, off, len)) > 0) {
+				off += ret;
+				len -= ret;
+			}
+			resultStr = new String(new String(inBuf, 0, off, destCoding).getBytes());
+		} finally {
+			if (fis != null)
+				fis.close();
 		}
+		return resultStr;
+	}
+
+	/**
+	 * 文件转成字节数组
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] readFileToBytes(String path) throws IOException {
+		byte[] b = null;
+		InputStream is = null;
+		File f = new File(path);
+		try {
+			is = new FileInputStream(f);
+			b = new byte[(int) f.length()];
+			is.read(b);
+		} finally {
+			if (is != null)
+				is.close();
+		}
+		return b;
+	}
+
+	/**
+	 * 文件续传
+	 * 
+	 * @param srcFile
+	 * @param destFile
+	 * @return
+	 */
+	public static boolean runUnFinished(String srcFilePath, String destFilePath) {
+		boolean flag = false;
+		File destFile = new File(destFilePath);
+		if (destFile.exists()) {
+			FileChannel fin = null;
+			FileChannel fout = null;
+			RandomAccessFile randomSrcFile = null;
+			RandomAccessFile randomDestFile = null;
+			try {
+				randomSrcFile = new RandomAccessFile(srcFilePath, "rw");
+				long destFileSize = destFile.length();
+				randomDestFile = new RandomAccessFile(destFile, "rw");
+				randomSrcFile.seek(destFileSize - 1024 * 2);
+				randomDestFile.seek(destFileSize - 1024 * 2);
+				fin = randomSrcFile.getChannel();
+				fout = randomDestFile.getChannel();
+				while (true) {
+					int length = 1024 * 1024 * 2;
+
+					if (fin.position() == fin.size()) {
+						fin.close();
+						fout.close();
+						break;
+					}
+					if ((fin.size() - fin.position()) < 1024 * 1024 * 2 * 10) {
+						length = (int) (fin.size() - fin.position());
+					} else {
+						length = 1024 * 1024 * 2 * 10;
+					}
+					fin.transferTo(fin.position(), length, fout);
+					fin.position(fin.position() + length);
+				}
+				flag = true;
+			} catch (Exception e) {
+				flag = false;
+				e.printStackTrace();
+			} finally {
+				try {
+					if(randomSrcFile != null) {
+						randomSrcFile.close();
+					}
+					if(randomDestFile != null) {
+						randomDestFile.close();
+					}
+					if (null != fin) {
+						fin.close();
+					}
+					if (null != fout) {
+						fout.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return flag;
+	}
+		
+	public static String getFileExtName(File file) {
+		String fileName = file.getName();
+		String extName = fileName.substring(fileName.lastIndexOf('.') + 1);
+		return extName;
+	}
 }
