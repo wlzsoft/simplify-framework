@@ -99,7 +99,7 @@ public class StringUtilTest {
 	
 	@Test
 	public void removeSpace() {
-		Assert.assertEquals(StringUtil.removeHtmlSpace("\r\nChuangye lcy"),"Chuangye lcy");
+		Assert.assertEquals(StringUtil.removeHtmlSpace("\r\nChuangye lcy")," Chuangye lcy");
 	}
 	
 	@Test

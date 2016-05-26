@@ -323,7 +323,7 @@ public class StringUtil {
 	
 	/**
 	 * 
-	 * 方法用途: 去除html页面中的所有空格<br>
+	 * 方法用途: 去除html页面中的所有空格，并且替换成功普通空格<br>
 	 * 操作步骤: 注意，不是普通空格，而是html标准中，可以被浏览器解析的空格标记，主要是\r\n和\s标记
 	 *           另外：如果普通标签内有\r\n标记，会出现bug ，比如 <input name=""> 这个标签，input和name之间是\r\n标签<br>
 	 * @param content
