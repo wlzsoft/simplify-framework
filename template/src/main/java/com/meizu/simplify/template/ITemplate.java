@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
 import com.meizu.simplify.template.annotation.TemplateExtend;
-import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.utils.StringUtil;
 
 

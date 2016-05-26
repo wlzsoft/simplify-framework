@@ -50,7 +50,7 @@ public class EncryptFunctionDirective extends Directive {
 		if (snKey != null) {
 			key = (String) snKey.value(context);
 		}
-
+		System.out.println("EncryptFunctionDirective:"+key+"|"+value+"|"+type);
 	/*	if ("md5".equals(type)) {
 			writer.write(MD5Encrypt.sign(value));
 		} else if ("e_base64".equals(type)) {
