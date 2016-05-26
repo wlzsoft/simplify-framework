@@ -195,8 +195,9 @@ public class MongoBaseDao<T> {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Class<T> getEntityClass() {
-		return ReflectionUtil.getSuperClassGenricType(getClass());
+		return (Class<T>) ReflectionUtil.getSuperClassGenricType(getClass());
 	}
 	/**
 	 * 方法用途: 构建单个实体<br>
