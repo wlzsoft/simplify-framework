@@ -1,7 +1,7 @@
 package com.meizu.demo.unit;
 
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.meizu.simplify.aop.InterceptResult;
@@ -22,8 +22,8 @@ import com.meizu.simplify.ioc.Startup;
  */
 public class AopTest {
 	
-	@Before
-	public void init() {
+	@BeforeClass
+	public static void init() {
 		Startup.start();
 	}
 	

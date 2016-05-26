@@ -1,7 +1,7 @@
 package com.meizu.simplify.ioc;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +26,8 @@ import com.meizu.simplify.ioc.service.TestService;
  */
 public  class BeanFactoryTest {
 	private Logger LOGGER = LoggerFactory.getLogger(BeanFactoryTest.class);
-	@Before
-	public void before() {
+	@BeforeClass
+	public static void before() {
 		Startup.start();
 	}
 	@Test

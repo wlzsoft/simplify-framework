@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -32,8 +32,8 @@ import com.meizu.simplify.ioc.Startup;
 public class DaoTest {
 
 	private static Integer key;
-	@Before
-	public void before() {
+	@BeforeClass
+	public static void before() {
 		Startup.start();
 	}
 	
