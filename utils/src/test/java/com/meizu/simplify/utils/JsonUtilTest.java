@@ -1,4 +1,4 @@
-package com.meizu.simplify.util;
+package com.meizu.simplify.utils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

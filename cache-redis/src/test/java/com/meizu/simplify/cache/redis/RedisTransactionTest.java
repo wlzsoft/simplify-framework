@@ -1,5 +1,7 @@
 package com.meizu.simplify.cache.redis;
 
+import org.junit.Test;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -32,9 +34,10 @@ public class RedisTransactionTest {
 
 	private static JedisPool pool = new JedisPool(new JedisPoolConfig(), host);
 
-	private long rowCount = 1000000; // 100万
+	private long rowCount = 10000; // 100万
 
-	public static void main(String[] args) {
+	@Test
+	public  void test() {
 		long start = System.currentTimeMillis();
 		new RedisTransactionTest().noTransactionNoPipeline();
 		System.out.println("noTransactionNoPipeline use " + (System.currentTimeMillis() - start) / 1000);

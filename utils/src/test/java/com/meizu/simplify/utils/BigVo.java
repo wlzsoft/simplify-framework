@@ -1,4 +1,4 @@
-package com.meizu.simplify.util;
+package com.meizu.simplify.utils;
 /**
   * <p><b>Title:</b><i>超大实体对象，用于测试fastjson的stream的api的json转换速度</i></p>
  * <p>Desc: TODO</p>
