@@ -3,7 +3,6 @@ package com.meizu.simplify.aop;
 import java.io.File;
 import java.util.Properties;
 
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.PropertieUtil;
  
 /**

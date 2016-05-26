@@ -12,13 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.meizu.simplify.Constants;
-import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 import javassist.CannotCompileException;
-import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
