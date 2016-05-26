@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -37,6 +38,19 @@ public class DaoTest {
 		Startup.start();
 	}
 	
+	@Before
+	public void s1_insertTest() {
+		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
+		t.setName("卢创业");
+		t.setCreateId(1);
+		t.setUpdateId(1);
+		t.setCreateTime(new Date());
+		t.setUpdateTime(new Date());
+		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
+		System.out.println("saveGenId:"+t.getFid());
+		key = t.getFid();
+	}
+	
 	@Test
 	public void getIdNameTest() {
 		Assert.assertEquals("fid", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getIdName());
@@ -56,18 +70,7 @@ public class DaoTest {
 		Assert.assertTrue(key>0);
 	}
 	
-	@Test
-	public void s1_insertTest() {
-		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setName("卢创业");
-		t.setCreateId(1);
-		t.setUpdateId(1);
-		t.setCreateTime(new Date());
-		t.setUpdateTime(new Date());
-		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
-		System.out.println("saveGenId:"+t.getFid());
-		key = t.getFid();
-	}
+	
 	
 	@Test
 	public void s2_findUniqueTest() {
@@ -94,6 +97,7 @@ public class DaoTest {
 	
 	@Test
 	public void s2_findByIdTest() {
+		System.out.println("aa:"+key);
 		Assert.assertNotNull(BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findById(key).getName());
 	}
 	@Test
