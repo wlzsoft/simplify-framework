@@ -34,6 +34,7 @@
   		<groupId>com.meizu</groupId>
   		<artifactId>aop</artifactId>
   		<version>1.0.1-SNAPSHOT</version>
+  		<scope>provided</scope>
   	</dependency>
   	<!-- 字节码操作工具 -->
 	<dependency>
