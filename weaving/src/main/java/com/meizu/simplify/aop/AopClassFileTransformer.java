@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.meizu.simplify.Constants;
+import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.collection.IEqualCallBack;
 
 import javassist.CannotCompileException;
+import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -62,7 +64,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			this.isMatch = isMatch;
 		}
 	}
-	
+	ClassPool pool = ClassPool.getDefault();
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
     private String[] injectionTargetAnnotationArr = {Constants.packagePrefix+".simplify.cache.annotation.CacheDataSearch",
@@ -74,6 +76,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
      * 默认构建方法：javaagent只绑定一个实例,方法只调用一次
      */
     public AopClassFileTransformer(){
+//    	一.配置读取
     	//1.配置文件指定用于织入的方法
         String methodStr = AopConfig.getUtil().getProperty("filterInfos");
         if(StringUtil.isNotBlank(methodStr)) {
@@ -98,9 +101,28 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	}
     	
     	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
-    	if(injectionTargetClassPaths == null || injectionTargetClassPaths.equals("")) {
-    		throw new RuntimeException("请检查aop.properties中injectionTargetClassPaths属性是否有设置");
-    	}
+    	try {
+    		//二.织入初始化
+			//0.对类进行精简
+			//CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
+			//再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
+			ClassPool.doPruning = true;//减少对象内存占用
+			//1.设置切入类的classpath
+			if(StringUtil.isBlank(injectionTargetClassPaths)) {
+				String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+				jarPath = jarPath.replace("weaving", "aop");
+				pool.insertClassPath(jarPath); 
+			} else {
+				String[] targetClassPathArr = injectionTargetClassPaths.split(";");
+				for (String targetClassPath : targetClassPathArr) {//通过类全路径名[包名.类名]获取class字节码文件数据
+					//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来,因为启动修改class文件时依赖他
+					pool.insertClassPath(targetClassPath); 
+				}
+			}
+		} catch (NotFoundException e) {
+		    e.printStackTrace();
+		    System.out.println("framework:NotFound(找不到相关class文件):1.请检查aop.properties中injectionTargetClassPaths属性是否有设置有误");
+		}
     }
 
     /**
@@ -182,19 +204,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	 */
 	private CtClass embed(String className, byte[] classfileBuffer) {
 		try {
-			ClassPool pool = ClassPool.getDefault();
-			//0.对类进行精简
-    		//CtClass对象调用writeFile()，toClass()或者toBytecode()转换成字节码，那么会冻结这个CtClass对象
-    		//再设置ClassPool.doPruning=true，会在冻结对象的时候对这个对象进行精简
-			ClassPool.doPruning = true;//减少对象内存占用
-			//1.设置切入类的classpath
-			//pool.insertClassPath(new ClassClassPath(this.getClass())); 
-			//pool.insertClassPath(new ByteArrayClassPath(name, b)); 
-			String[] targetClassPathArr = injectionTargetClassPaths.split(";");
-			for (String targetClassPath : targetClassPathArr) {//通过类全路径名[包名.类名]获取class字节码文件数据
-				//Caused by: javassist.NotFoundException,注意：如果待修改的class字节码文件所依赖的其他字节码文件，如果不在classpath，会报这个异常，需要加入进来,因为启动修改class文件时依赖他
-				pool.insertClassPath(targetClassPath); 
-			}
+			
 			//2.获取CtClass之前，要确保调用pool.insertClassPath来设置需要获取类的classpath
 			InputStream inputStream = new ByteArrayInputStream(classfileBuffer); 
 			CtClass ctClass = null;

@@ -26,7 +26,7 @@ public class AopConfig {
     	Properties  prop = System.getProperties();
         String config = prop.getProperty("aop.properties");
         if(config == null) {
-        	throw new UncheckedException("aop.properties配置不存在，请提供");
+        	System.err.println("aop.properties配置不存在，请提供");
         }
         propertieUtils = new PropertieUtil(new File(config));
     }
