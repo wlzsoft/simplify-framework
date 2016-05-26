@@ -43,8 +43,8 @@ public class DESEncryptTest {
 			
 //			String token=encrypt("meizu&123456","meizuall");
 			String token64 = DES.encrypt64("meizu&123456","meizuall");
-			
 			token64 = DES.encrypt64("meizu&123456","meizuall");
+			System.out.println(token64);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

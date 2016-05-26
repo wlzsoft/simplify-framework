@@ -1,7 +1,5 @@
 package com.meizu.simplify.encrypt;
 
-import java.lang.reflect.Array;
-
 import org.junit.Test;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5;

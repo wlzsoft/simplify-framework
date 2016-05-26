@@ -2,7 +2,6 @@ package com.meizu.simplify.ioc.resolver;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
