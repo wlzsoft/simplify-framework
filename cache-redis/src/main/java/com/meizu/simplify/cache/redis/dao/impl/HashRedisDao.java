@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.dao.IHashCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
-import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.JsonUtil;
 
 /**
@@ -46,7 +44,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
      */
     public boolean set(String key,  String field, Object value,int seconds){
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				long status = jedis.hset(k, field, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				long status = jedis.hset(k, field, JsonUtil.objectToString(value));
 				if(seconds > 0){
 					jedis.expire(k, seconds);
 				}
@@ -91,7 +89,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     	
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
 
-				long status = jedis.hsetnx(k, field, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				long status = jedis.hsetnx(k, field, JsonUtil.objectToString(value));
 				if(seconds > 0){
 					jedis.expire(k, seconds);
 				}
@@ -122,7 +120,7 @@ public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao 
     	for(Iterator<String> it = hash.keySet().iterator();it.hasNext();){
     		String k = it.next();
     		Object value = hash.get(k);
-    		map.put(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+    		map.put(k, JsonUtil.objectToString(value));
     	}
     	
     	

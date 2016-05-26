@@ -3,10 +3,12 @@ package com.meizu.simplify.cache.redis.dao;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.cache.redis.dao.impl.HashRedisDao;
+import com.meizu.simplify.ioc.Startup;
 
 import redis.clients.jedis.ShardedJedis;
 

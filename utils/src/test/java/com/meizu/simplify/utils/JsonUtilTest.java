@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSONReader;
@@ -25,49 +26,65 @@ import com.alibaba.fastjson.JSONWriter;
  */
 public class JsonUtilTest {
 
+	private static String path = null;
+	@BeforeClass
+	public static void init() {
+		path  = JsonUtilTest.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+	}
 	@Test
 	public void testSerialForStreamApi() throws IOException {
-		JSONWriter writer = new JSONWriter(new FileWriter("/tmp/huge.json"));
+		FileWriter fw = new FileWriter(path+"tmp/huge2.json");
+		JSONWriter writer = new JSONWriter(fw);
 		  writer.startArray();
 		  for (int i = 0; i < 1000 * 1000; ++i) {
-		        writer.writeValue(new BigVo());
+		        writer.writeValue(new BigVo(i));
 		  }
 		  writer.endArray();
 		  writer.close();
+		  fw.close();
+		  FileUtil.deleteFile(path+"tmp/huge2.json");
 	}
 	
 	@Test
 	public void testSerialForStreamApi2() throws IOException {
-		 JSONWriter writer = new JSONWriter(new FileWriter("/tmp/huge.json"));
+		FileWriter fw = new FileWriter(path+"tmp/huge2.json");
+		 JSONWriter writer = new JSONWriter(fw);
 		  writer.startObject();
 		  for (int i = 0; i < 1000 * 1000; ++i) {
 		        writer.writeKey("x" + i);
-		        writer.writeValue(new BigVo());
+		        writer.writeValue(new BigVo(i));
 		  }
 		  writer.endObject();
 		  writer.close();
+		  fw.close();
+		  FileUtil.deleteFile(path+"tmp/huge2.json");
 	}
 	
 	@Test
 	public void testUnSerialForStreamApi() throws FileNotFoundException {
-		JSONReader reader = new JSONReader(new FileReader("/tmp/huge.json"));
+		JSONReader reader = new JSONReader(new FileReader(path+"tmp/huge.json"));
 		  reader.startArray();
 		  while(reader.hasNext()) {
 		        BigVo vo = reader.readObject(BigVo.class);
-		        // handle vo ...
+		        vo.getAuc();
 		  }
 		  reader.endArray();
 		  reader.close();
 	}
 	
-	@Test
+	/**
+	 * 方法用途: 数据格式必须是json对象<br>
+	 * 操作步骤: 废弃，huge.json是数组格式<br>
+	 * @throws FileNotFoundException
+	 */
+//	@Test
 	public void testUnSerialForStreamApi2() throws FileNotFoundException {
-		JSONReader reader = new JSONReader(new FileReader("/tmp/huge.json"));
+		JSONReader reader = new JSONReader(new FileReader(path+"tmp/huge.json"));
 		  reader.startObject();
 		  while(reader.hasNext()) {
 		        String key = reader.readString();
 		        BigVo vo = reader.readObject(BigVo.class);
-		        // handle vo ...
+		        vo.getAuc();
 		  }
 		  reader.endObject();
 		  reader.close();
