@@ -27,7 +27,8 @@ public class SystemPluginSpiTest {
     	ServiceLoader<ISystemPlugin> operations = ServiceLoader.load(ISystemPlugin.class);
  		Iterator<ISystemPlugin> operationIterator = operations.iterator();
  		while (operationIterator.hasNext()) {
- 			ISystemPlugin spi = operationIterator.next();//com.meizu.simplify.spi.IReloadPlugin
+ 			ISystemPlugin spi = operationIterator.next();//com.meizu.simplify.ioc.ReloadPlugin
+ 			System.out.println("spi机制测试"+spi);
  		}
     }
 }

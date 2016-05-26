@@ -1,1 +1,1 @@
-com.meizu.simplify.spi.IReloadPlugin
+com.meizu.simplify.ioc.ReloadPlugin
