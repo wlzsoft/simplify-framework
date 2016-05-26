@@ -65,7 +65,6 @@ public class PropertieUtil {
 				jndiInput = new FileInputStream(file);
 				props.load(jndiInput);
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 //				LOGGER.info("配置文件["+file.getName()+"]不存在");
 				System.err.println("配置文件["+file.getName()+"]不存在");
 			} catch (IOException e) {
