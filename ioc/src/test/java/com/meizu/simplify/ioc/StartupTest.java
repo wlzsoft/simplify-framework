@@ -28,7 +28,7 @@ public class StartupTest {
 	@Test
 	public void stop() {
 		try {
-			TestRuntime.main(new String[]{"java -version"});
+			TestRuntime.main(new String[]{"ping"});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,7 +49,7 @@ public class StartupTest {
 	static class TestRuntime {
 //		java -jar newProcessTest.jar java -version
 		public static void main(String[] args) throws IOException {
-			Process process = Runtime.getRuntime().exec(args);
+			Process process = Runtime.getRuntime().exec(args[0]);
 			exeProcess(process);
 			System.out.println("===============ProcessBuilder redirectErrorStream(false)======================");
 			Process process2 = new ProcessBuilder().redirectErrorStream(false).command(Arrays.asList(args)).start();
