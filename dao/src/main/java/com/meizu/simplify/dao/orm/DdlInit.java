@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.Constants;
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.entity.annotations.Table;
 import com.meizu.simplify.entity.annotations.Transient;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
@@ -31,11 +33,16 @@ import com.meizu.simplify.utils.CollectionUtil;
  *
  */
 @Init(InitTypeEnum.DB_INIT)
+@Bean
 public class DdlInit implements IAnnotationResolver<Class<?>>{//TODO 后续可以resove使用注解的方式，而不用实现特定接口，而且不一定是解析注解
 	private static final Logger LOGGER = LoggerFactory.getLogger(DdlInit.class);
-	
+	@Config
+	private boolean isInitDB;
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
+		if(isInitDB) {
+			return;
+		}
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, Constants.packagePrefix);//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
