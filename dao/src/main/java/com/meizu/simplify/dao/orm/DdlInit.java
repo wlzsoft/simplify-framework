@@ -36,7 +36,7 @@ import com.meizu.simplify.utils.CollectionUtil;
 @Bean
 public class DdlInit implements IAnnotationResolver<Class<?>>{//TODO 后续可以resove使用注解的方式，而不用实现特定接口，而且不一定是解析注解
 	private static final Logger LOGGER = LoggerFactory.getLogger(DdlInit.class);
-	@Config
+	@Config("system.isInitDB")
 	private boolean isInitDB;
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
