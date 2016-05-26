@@ -40,7 +40,7 @@ public class Base64StreamEncoder extends FilterOutputStream {
   }
 
 
-  /*public void write(byte[] buf, int off, int len) throws IOException {
+  public void write(byte[] buf, int off, int len) throws IOException {
 	  byte[] encodingTable = Base64Encrypt.encodingTable;
 	  int charCount = 0;
 	  int carryOver = 0;
@@ -110,9 +110,9 @@ public class Base64StreamEncoder extends FilterOutputStream {
       out.write(encodingTable[lookup]);
       out.write('=');
     }
-  }*/
-  
-  //字节流文件转换成base64的方式，建议使用上面方法
+  }
+
+  //字节流文件转换成base64的方式，建议使用上面方法，目前调用上面的方法不会依赖这个方法
   public void write(byte[] buf) throws IOException {
 		byte[] bytes = Base64Encrypt.encodeTwo(buf, 0);
 //		if (bytes.length % 57 == 0) {
@@ -122,9 +122,20 @@ public class Base64StreamEncoder extends FilterOutputStream {
 		try (OutputStream ostream = out) {
 			out.flush();
 		}
-	}
-
-
+  }
+  /**
+   * 下面的实现有bug，值不完全一致，可使用类中第一个方法的实现，待合并成更简洁的方法
+   */
+  /*public void write(byte[] buf, int off, int len) throws IOException {
+	  byte[] bytes = Base64Encrypt.encodeTwo(buf, off);
+//		if (bytes.length % 57 == 0) {
+//	        out.write('\n');
+//	      }
+		out.write(bytes);
+		try (OutputStream ostream = out) {
+			out.flush();
+		}
+  }*/
   
 
   

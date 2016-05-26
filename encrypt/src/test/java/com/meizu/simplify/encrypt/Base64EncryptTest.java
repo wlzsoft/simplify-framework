@@ -1,8 +1,12 @@
 package com.meizu.simplify.encrypt;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.StringWriter;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.meizu.simplify.encrypt.base64.Base64StreamDecoder;
@@ -29,24 +33,28 @@ public class Base64EncryptTest {
 	@Test
 	public void base64Decoder() throws Exception {
 		
-		String[] args = new String[] {"C:/Users/Administrator/Desktop/test.txt"};
+		String[] args = new String[] {"C:/Users/Administrator/Desktop/test2.txt"};
 		if (args.length != 1) {
 			System.err.println("Usage: java com.meizu.simplify.encrypt.base64.Base64Decoder fileToDecode");
 			return;
 		}
-
+//		InputStream is = new FileInputStream(args[0]);
 		Base64StreamDecoder decoder = null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			decoder = new Base64StreamDecoder(new BufferedInputStream(new FileInputStream(args[0])));
+			decoder = new Base64StreamDecoder(new BufferedInputStream(this.getClass().getResourceAsStream("/test2.txt")));
 			byte[] buf = new byte[4 * 1024]; // 4K buffer
 			int bytesRead;
 			while ((bytesRead = decoder.read(buf)) != -1) {
-				System.out.write(buf, 0, bytesRead);
+				baos.write(buf, 0, bytesRead);
 			}
 		} finally {
-			if (decoder != null)
+			if (decoder != null) {
 				decoder.close();
+			}
 		}
+		String result = new String(baos.toByteArray());
+		Assert.assertEquals(result, "哈哈。谢谢了");
 	}
 	@Test
 	public void base64Encoder() throws Exception {
@@ -59,9 +67,12 @@ public class Base64EncryptTest {
 
 		Base64StreamEncoder encoder = null;
 		BufferedInputStream in = null;
+//		InputStream is = new FileInputStream(args[0])
+		InputStream is = this.getClass().getResourceAsStream("/test.txt");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			encoder = new Base64StreamEncoder(System.out);
-			in = new BufferedInputStream(new FileInputStream(args[0]));
+			encoder = new Base64StreamEncoder(baos);
+			in = new BufferedInputStream(is);
 
 			byte[] buf = new byte[4 * 1024]; // 4K buffer
 			int bytesRead;
@@ -69,11 +80,15 @@ public class Base64EncryptTest {
 				encoder.write(buf, 0, bytesRead);
 			}
 		} finally {
-			if (in != null)
+			if (in != null) {
 				in.close();
-			if (encoder != null)
+			}
+			if (encoder != null) {
 				encoder.close();
+			}
 		}
+		String result = new String(baos.toByteArray());
+		Assert.assertEquals(result, "5ZOI5ZOI44CC6LCi6LCi5LqG");
 	}
 	@Test
 	public void test() {

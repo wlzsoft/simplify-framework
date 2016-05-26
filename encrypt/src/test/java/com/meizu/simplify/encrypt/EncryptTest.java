@@ -1,9 +1,9 @@
 package com.meizu.simplify.encrypt;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -79,9 +79,10 @@ public class EncryptTest {
 		
 		print("=================================");
 		print("=============文件加解密===========");
-		String file1 = "C:\\Users\\Administrator\\Desktop\\测试.txt";
-		String file2 = "C:\\Users\\Administrator\\Desktop\\测试.enc";
-		String file3 = "C:\\Users\\Administrator\\Desktop\\测试.enc.zip";
+		String file1 = "/EncryptTest.txt";
+		InputStream in = this.getClass().getResourceAsStream(file1);
+		String file2 = "/EncryptTest.enc";
+		String file3 = "/EncryptTest.enc.zip";
 		print("待加密文件：" + file1);
 		print("加密后文件：" + file2);
 		print("解密后文件：" + file3);
@@ -95,12 +96,11 @@ public class EncryptTest {
 		byte[] rc4Key = Keys.calcRc4Key("ff", keybyte);
 		print("文件加密秘钥：" + new String(rc4Key));
 		print("===========开始加密文件===========");
-		FileInputStream in = null;
 		FileOutputStream out = null;
 
+		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 		try {
-			in = new FileInputStream(file1);
-			out = new FileOutputStream(file2);
+			out = new FileOutputStream(path+file2.substring(1));
 			FileEncrypt.streamEncrypt(in, out, keybyte);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -123,9 +123,9 @@ public class EncryptTest {
 			}
 		}
 		print("===========开始解密文件===========");
+		in = this.getClass().getResourceAsStream(file2);
 		try {
-			in = new FileInputStream(file2);
-			out = new FileOutputStream(file3);
+			out = new FileOutputStream(path+file3.substring(1));
 			FileDecrypt.streamDecrypt(in, out, keybyte);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
