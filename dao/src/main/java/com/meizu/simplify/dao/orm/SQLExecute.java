@@ -145,7 +145,6 @@ public class SQLExecute {
 	public static void executeBatch(IDataCallback<Integer> callback,String... sqlArr){
 		Connection conn = null;
 		PreparedStatement prepareStatement = null;
-		ResultSet rs = null;
 		try{
 			conn = DruidPoolFactory.getConnection();
 			if(sqlArr == null) {

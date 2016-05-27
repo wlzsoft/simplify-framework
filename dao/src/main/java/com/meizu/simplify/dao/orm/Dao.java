@@ -588,19 +588,21 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param params
 	 * @return
 	 */
-	public List<T> query(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
+	public List<? extends IdEntity<Serializable,Integer>> query(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
 		Query query = createQuery(sql, dto.getWhereValues());
 		query.add(WhereDTO.eq("1", "1"));//
 		
-		List<T> list = query.setSortName(sort).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
+		List<? extends IdEntity<Serializable,Integer>> list = query.setSortName(sort).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
 		return list;
 		
 	}
 	
 	private Query createQuery(String sql, Object... params) {
-		Query query = new Query(this,sql,params);
+		@SuppressWarnings("unchecked")
+		Dao<? extends IdEntity<Serializable,Integer>, Serializable> dao =  (Dao<? extends IdEntity<Serializable, Integer>, Serializable>) this;
+		Query query = new Query(dao,sql,params);
 		return query;
 	}
 	

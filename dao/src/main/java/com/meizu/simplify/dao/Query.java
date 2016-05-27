@@ -1,9 +1,11 @@
 package com.meizu.simplify.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.orm.Dao;
+import com.meizu.simplify.entity.IdEntity;
 
 /**
  * <p><b>Title:</b><i>mybatis查询条件封装</i></p>
@@ -26,8 +28,8 @@ public class Query {
 	private String sortMethod;
 	private int currentRecord;
 	private int pageSize;
-	private Dao dao;
-	public Query(Dao dao,String sql, Object... params) {
+	private Dao<? extends IdEntity<Serializable,Integer>, Serializable> dao;
+	public Query(Dao<? extends IdEntity<Serializable,Integer>, Serializable> dao,String sql, Object... params) {
 		this.sql = sql;
 		this.params = params;
 		this.dao = dao;
@@ -57,10 +59,9 @@ public class Query {
 		return this;
 	}
 	
-	public <T> List<T> list() {
-		List<T> list = dao.find(sql +" order by "+sortName +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,params);
+	public <T extends IdEntity<Serializable,Integer>> List<? extends IdEntity<Serializable,Integer>> list() {
+		List<? extends IdEntity<Serializable,Integer>> list = dao.find(sql +" order by "+sortName +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,params);
 		return list;
-		
 	}
 
 	public <T> T uniqueResult() {

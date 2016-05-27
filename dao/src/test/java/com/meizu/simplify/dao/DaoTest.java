@@ -65,6 +65,7 @@ public class DaoTest {
 		t.setUpdateId(1);
 		t.setCreateTime(new Date());
 		t.setUpdateTime(new Date());
+		@SuppressWarnings("deprecation")
 		Integer key = (Integer) BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getId(t);
 		System.out.println(key);
 		Assert.assertTrue(key>0);
@@ -106,11 +107,13 @@ public class DaoTest {
 	}
 	@Test
 	public void s2_findPageSqlTest() {
+		@SuppressWarnings("deprecation")
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from test_web where name=?","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSqlTest() {
+		@SuppressWarnings("deprecation")
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}

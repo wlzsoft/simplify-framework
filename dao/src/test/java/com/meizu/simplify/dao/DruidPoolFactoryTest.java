@@ -20,7 +20,7 @@ public class DruidPoolFactoryTest {
 	@Test
 	public void testPool() {
 		
-		Connection conn2 = DruidPoolFactory.getConnection();
+//		Connection conn2 = DruidPoolFactory.getConnection();
 		// 开启事务1
 		DruidPoolFactory.startTransaction();
 		System.out.println("执行事务操作111111111111111....");

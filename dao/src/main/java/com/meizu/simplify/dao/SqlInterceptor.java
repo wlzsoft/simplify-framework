@@ -1,10 +1,5 @@
 package com.meizu.simplify.dao;
  
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.aop.Context;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.dao.dialect.IDialectManager;
@@ -27,19 +22,29 @@ import com.meizu.simplify.ioc.annotation.Resource;
  *
  */
 public class SqlInterceptor implements IInterceptor {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SqlInterceptor.class);
-    private Properties properties;
-    
-    
+	
     @Resource
 	private IDialectManager dialectManager;
-
-
+    
+    /*private Properties properties;
 	private String dialectName;
 
 	public void setDialectName(String dialectName) {
 		this.dialectName = dialectName;
 	}
+	
+	 public void setProperties(Properties properties) {
+	        this.properties = properties;
+//			String dialectClass =   properties.getProperty("dialect");   
+//			
+//			try {
+//				dialect = (IDialect) Class.forName(dialectClass).newInstance();
+//			} catch (Exception e) {
+//				throw new RuntimeException(
+//						"cannot create dialect instance by dialectClass:"
+//								+ dialectClass, e);
+//			}
+	    }*/
 
  
    /* public Object intercept(Invocation invocation) throws Throwable {
@@ -128,20 +133,6 @@ public class SqlInterceptor implements IInterceptor {
     }*/
  
     
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-//		String dialectClass =   properties.getProperty("dialect");   
-//		
-//		try {
-//			dialect = (IDialect) Class.forName(dialectClass).newInstance();
-//		} catch (Exception e) {
-//			throw new RuntimeException(
-//					"cannot create dialect instance by dialectClass:"
-//							+ dialectClass, e);
-//		}
-    }
-
-
 	@Override
 	public boolean before(Context context, Object... args) {
 		// TODO Auto-generated method stub
