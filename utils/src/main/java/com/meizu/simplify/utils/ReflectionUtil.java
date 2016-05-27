@@ -5,8 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,7 +77,6 @@ public class ReflectionUtil {
     	invokeSetterMethod(obj,propertyName,value,value.getClass());
     }
     
-    
     /**
      * 
      * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
@@ -91,7 +88,6 @@ public class ReflectionUtil {
     public static Object invokeMethod(final Object obj, final String methodName) {
         return invokeMethod(obj, methodName,null,null);
     }
-    
     
     /**
      * 
@@ -159,7 +155,6 @@ public class ReflectionUtil {
         }
         return null;
     }
-    
    
     /**
      * 方法用途: 直接读取对象属性值 忽视private/protected修饰符，不经过getter函数<br>
@@ -256,8 +251,6 @@ public class ReflectionUtil {
         return null;
     }
  
-    
-    
     /**
      * 
      * 方法用途: 设置构造函数为可访问<br>
@@ -302,6 +295,7 @@ public class ReflectionUtil {
 	public static <T extends Object> Map<String, Object> bean2Map(T bean) {
 		return bean2Map(bean,false);
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 实体转map<br>
@@ -352,6 +346,7 @@ public class ReflectionUtil {
 		getAllMethod(entityClass, methodList);
 		return methodList;
 	}
+	
 	/**
 	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
 	 * 操作步骤: TODO<br>
@@ -371,6 +366,7 @@ public class ReflectionUtil {
 			getAllMethod(entityClass.getSuperclass(),methodList);
 		}
 	}
+	
 	/**
 	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
 	 * 操作步骤: TODO<br>
@@ -383,6 +379,7 @@ public class ReflectionUtil {
 		getAllField(entityClass, fieldList);
 		return fieldList;
 	}
+	
 	/**
 	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
 	 * 操作步骤: TODO<br>
