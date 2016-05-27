@@ -36,3 +36,28 @@ public class Measure {
 	 */
 	public static final Integer T = G << 10;
 }
+enum MeasureEnum {
+	K ,
+	M {
+		@Override
+		public Integer getValue() {
+			return K.getValue() << 10;
+		}
+	},
+	G {
+		@Override
+		public Integer getValue() {
+			return M.getValue() << 10;
+		}
+	},
+	T {
+		@Override
+		public Integer getValue() {
+			return G.getValue() << 10;
+		}
+	};
+	private  Integer value = 1024;
+	public Integer getValue(){
+		return value;
+	}
+}
