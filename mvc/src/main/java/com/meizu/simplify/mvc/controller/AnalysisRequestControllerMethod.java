@@ -6,9 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.dto.AnnotationInfo;
@@ -44,7 +41,6 @@ import com.meizu.simplify.webcache.web.CacheBase;
  *
  */
 public class AnalysisRequestControllerMethod {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisRequestControllerMethod.class);
 	private static PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
 	/**
 	 * 

@@ -242,6 +242,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
 		LOGGER.debug("RequestParam注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解");
 	}
+	@SuppressWarnings("unchecked")
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno,AnnotationResolverCallback<T> callbak) {
 		Object obj = BeanFactory.getBean(beanClass);//如果mvc需要脱离ioc框架，那么这个直接创建实例，而不是从容器获取实例
 		if(obj == null||method == null) {

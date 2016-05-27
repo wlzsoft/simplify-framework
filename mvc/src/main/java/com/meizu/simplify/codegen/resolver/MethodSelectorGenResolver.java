@@ -2,9 +2,6 @@ package com.meizu.simplify.codegen.resolver;
 
 import java.util.List;
 
-import com.meizu.simplify.codegen.CodeGenUtil;
-import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
@@ -24,10 +21,9 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  */
 @Init(InitTypeEnum.METHOD_GEN)
 public class MethodSelectorGenResolver implements IAnnotationResolver<Class<?>>{
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	private CodeGenUtil gen = BeanFactory.getBean(CodeGenUtil.class);
-	
-	private String classPath; 
+//	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
+//	private CodeGenUtil gen = BeanFactory.getBean(CodeGenUtil.class);
+//	private String classPath; 
 	
 	@Override	
 	public void resolve(List<Class<?>> resolveList) {

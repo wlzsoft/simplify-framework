@@ -96,6 +96,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 					Class<?> serviceClass = hookBeanAnno.value();
 					if(serviceClass.equals(clazz)) {
 						Object hookObj = hookClazz.newInstance();
+						@SuppressWarnings({ "unchecked", "rawtypes" })
 						List<BeanEntity<?>> listObj = ((IBeanPrototypeHook)hookObj).hook(clazz);
 						BeanFactory.addBeanList(listObj);
 					}
