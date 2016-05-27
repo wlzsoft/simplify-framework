@@ -15,8 +15,9 @@ package com.meizu.simplify.aop;
 public class InterceptResult {
 	private Object result;
 
-	public Object getResult() {
-		return result;
+	@SuppressWarnings("unchecked")
+	public <T extends Object> T getResult() {
+		return (T) result;
 	}
 
 	public void setResult(Object result) {

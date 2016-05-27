@@ -32,7 +32,7 @@ public class LogInterceptor extends Handler implements  IInterceptor{
 	public boolean before(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
-		LOGGER.info("日志切面切入：["+methodFullName+"]方法之前 切入");
+		LOGGER.info("日志切面切入：["+methodFullName+"]方法之前 切入"+o);
 		return true;
 	}
 	
@@ -40,7 +40,7 @@ public class LogInterceptor extends Handler implements  IInterceptor{
 	public boolean after(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();
 		Object o = context.getThiz();
-		LOGGER.info("日志切面切入：["+methodFullName+"]方法之后切入");
+		LOGGER.info("日志切面切入：["+methodFullName+"]方法之后切入"+o);
 		return true;
 	}
 

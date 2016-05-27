@@ -29,7 +29,7 @@ public interface IInterceptor {
 		context.setThis(o);
 		context.setType(ContextTypeEnum.BEFORE);
 		handle.invoke(context,args);//无需指定参数，暂无传递参数，后续有需要再添加
-		return (T) context.getCallback().getResult();
+		return context.getCallback().getResult();
 	}
 	
 	public static Object initAfter(String methodFullName,InterceptResult ir,Object o,Object... args ) {
