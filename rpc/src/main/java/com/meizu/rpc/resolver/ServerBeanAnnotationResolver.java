@@ -87,7 +87,6 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				LOGGER.error("dubbo服务:" + clazz.getName() + "初始化失败" + e);
 				throw new StartupErrorException("注册dubbo"+clazz.getName()+"服务异常"+e.getMessage());
 			}
-
 		}
 		
 	}

@@ -1,7 +1,6 @@
 package com.meizu.rpc.resolver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -115,21 +114,20 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 			
 		}
 	}
-	
-	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil){
-		String addresss = propertieUtil.getString("dubbo.registry.address");
-		List<RegistryConfig> registries=new ArrayList<RegistryConfig>();
-		if (StringUtil.isNotBlank(addresss)) {
-			String[] addressArry = addresss.split(",");
-			for (int i = 0; i < addressArry.length; i++) {
-				if(StringUtil.isBlank(addressArry[i]))continue;
-				RegistryConfig registry = new RegistryConfig();
-				registry.setAddress(addressArry[i]);
-				registries.add(registry);
-			}
-		}
-		return registries;
-	}
+//	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil){
+//		String addresss = propertieUtil.getString("dubbo.registry.address");
+//		List<RegistryConfig> registries=new ArrayList<RegistryConfig>();
+//		if (StringUtil.isNotBlank(addresss)) {
+//			String[] addressArry = addresss.split(",");
+//			for (int i = 0; i < addressArry.length; i++) {
+//				if(StringUtil.isBlank(addressArry[i]))continue;
+//				RegistryConfig registry = new RegistryConfig();
+//				registry.setAddress(addressArry[i]);
+//				registries.add(registry);
+//			}
+//		}
+//		return registries;
+//	}
 	@Override
 	public void close() throws IOException {
 		for (ReferenceConfig<?> referenceConfig : referenceConfigs.values()) {
