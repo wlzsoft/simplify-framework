@@ -6,9 +6,6 @@ import java.util.concurrent.ConcurrentMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.enums.BeanTypeEnum;
-
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: 考虑新标准JSR-107(jCache)的实现</p>

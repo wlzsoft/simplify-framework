@@ -1,8 +1,5 @@
 package com.meizu.simplify.cache.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -25,8 +22,6 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean("cachedDao")
 public class DefaultCacheDao<K,V> implements ICacheDao<K,V> {
 	
-	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-
 	@Override
 	public boolean exists(K key) {
 		// TODO Auto-generated method stub
