@@ -56,7 +56,7 @@ public class ControllerFilter implements Filter {
 			requestUrl = requestUrl.replaceAll("//", "/"); 
 		}
 //		if (StringUtil.parseString(request.getQueryString(),"").length() > 0) {
-//			thisUrl += "?" + request.getQueryString();
+//			requestUrl += "?" + request.getQueryString();
 //	 	}
 		ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(requestUrl);
 		if(controllerAnnotationInfo !=null) {
