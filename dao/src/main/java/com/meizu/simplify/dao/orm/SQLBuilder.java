@@ -133,10 +133,13 @@ public class SQLBuilder<T> {
             }
            
         }
-        whereName = whereName.substring(4);
         SqlDTO dto = new SqlDTO();
-        dto.setWhereName(whereName);
-        dto.setWhereValues(values.toArray());
+        // FIXED geny 2016-05-27 增加空字符串判断
+        if(!StringUtil.isEmpty(whereName)){
+        	 whereName = whereName.substring(4);
+             dto.setWhereName(whereName);
+             dto.setWhereValues(values.toArray());
+        }
         return dto;
     }
      
@@ -519,8 +522,11 @@ public class SQLBuilder<T> {
 		
 		StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ")
-                .append(getTableName())
-        		.append(" WHERE " + where);
+                .append(getTableName());
+        // FIXED geny 2016-05-27 增加空字符串判断
+        if(!StringUtil.isEmpty(where)){
+        	sqlBuild.append(" WHERE " + where);
+        }
         String sql = sqlBuild.toString();
          
         //logger.info("生成的SQL为: " + sql);
