@@ -132,7 +132,8 @@ public class Page<T> implements IPage<T> {
 	 * @return
 	 */
 	public static <E> Page<E> emptyPage() {
-		return (Page<E>) new Page(0, 0, 0,true);
+		Page<E> page = new Page<>(0, 0, 0,true);
+		return (Page<E>) page;
 	}
 
 	public String getSortname() {
