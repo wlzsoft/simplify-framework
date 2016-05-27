@@ -19,12 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -45,9 +42,6 @@ import com.meizu.simplify.utils.StringUtil;
  */
 @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter")
 public class ControllerFilter implements Filter {
-	
-	private PropertiesConfig config = BeanFactory.getBean(PropertiesConfig.class);
-	private JsonResolver jsonResolver = BeanFactory.getBean(JsonResolver.class);
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerFilter.class);
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
