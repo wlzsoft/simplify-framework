@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p><b>Title:</b><i>表单model属性的作用域，生命周期</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 标注于set方法上</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

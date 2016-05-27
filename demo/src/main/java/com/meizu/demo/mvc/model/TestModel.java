@@ -23,20 +23,20 @@ public class TestModel extends BaseModel {
 		this.name = name;
 	}
 
-	@ModelScope(charset = "utf-8") // 这个目前只对字符设置起作用，范围作用域的设置没有实现
 	public Integer getAge() {
 		return age;
 	}
 
+	@ModelScope(charset = "utf-8") // 这个目前只对字符设置起作用，范围作用域的设置没有实现
 	public void setAge(Integer age) {
 		this.age = age;
 	}
 
-	@ModelCharsFilter(filters = { Filter.Html, Filter.Script })
 	public String getDesc() {
 		return desc;
 	}
 
+	@ModelCharsFilter(filters = { Filter.Html, Filter.Script })
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}

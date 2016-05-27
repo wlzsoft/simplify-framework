@@ -44,7 +44,7 @@ public class AnalysisRequestControllerModel {
 					if (parameterTypes.length != 1) {
 						continue;
 					}
-					Class<?> type = parameterTypes[0];
+					Class<?> type = parameterTypes[0];//pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
 					String paramName = method.getName().substring(3, method.getName().length());
 					String paramValue = request.getParameter(Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1));
 
@@ -58,16 +58,15 @@ public class AnalysisRequestControllerModel {
 					}
 
 					if (paramValue != null) {
-						Method method2 = entityClass.getMethod(method.getName(), new Class[] { type });
 						// 将值进行格式化后注入
 						if (type.isArray()) {
 							String[] paramValueArr = request.getParameterValues(Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1));
 							if (paramValueArr != null && paramValueArr.length == 1) {
 								paramValueArr = paramValueArr[0].split(",");
 							}
-							method2.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
+							method.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
 						} else {
-							method2.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
+							method.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
 						}
 					}
 				}
