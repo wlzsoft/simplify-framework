@@ -31,47 +31,50 @@ public class AnalysisRequestControllerModel {
 	 * 方法用途: 获取表单数据<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
+	 * @param modelClass
 	 * @return
 	 */
-	public static <T extends Model> T setRequestModel(HttpServletRequest request,Class<T>  entityClass) {
+	public static <T extends Model> T setRequestModel(HttpServletRequest request,Class<T>  modelClass) {
 		try {
-			T model = entityClass.newInstance();
-			Method[] modelMethodArr = entityClass.getMethods();
+			T model = modelClass.newInstance();
+			Method[] modelMethodArr = modelClass.getMethods();
 			for ( int i=0; i < modelMethodArr.length;i++ ) {
 				Method method = modelMethodArr[i];
-				if (method != null && method.getName().indexOf("set") == 0) {
-					Class<?>[] parameterTypes = method.getParameterTypes();
-					if (parameterTypes.length != 1) {
+				String methodName = method.getName();
+				if (methodName.indexOf("set") < 0) {
+					continue;
+				}
+				Class<?>[] parameterTypes = method.getParameterTypes();
+				if (parameterTypes.length != 1) {
+					continue;
+				}
+				Class<?> type = parameterTypes[0];//pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
+				String paramName = methodName.substring(3, methodName.length());
+				paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
+
+				// 将值进行格式化后注入
+				if (type.isArray()) {//TODO 针对set属性值为数组类型的处理，需要精细测试，并确认是否有必要，这种方式目前没有大批量用
+					String[] paramValueArr = request.getParameterValues(paramName);
+					if (paramValueArr != null && paramValueArr.length == 1) {
+						paramValueArr = paramValueArr[0].split(",");
+					}
+					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
+				} else {
+					String paramValue = request.getParameter(paramName);
+					if (paramValue == null) {
 						continue;
 					}
-					Class<?> type = parameterTypes[0];//pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
-					String paramName = method.getName().substring(3, method.getName().length());
-					String paramValue = request.getParameter(Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1));
-
 					paramValue = analysisModelScope(method, paramValue);
-					
 					paramValue = analysisModelCharsFilter(method, paramValue);
-
 					// 是否滤过
 					if (method.isAnnotationPresent(ModelSkip.class)) {
 						continue;
 					}
-
-					if (paramValue != null) {
-						// 将值进行格式化后注入
-						if (type.isArray()) {
-							String[] paramValueArr = request.getParameterValues(Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1));
-							if (paramValueArr != null && paramValueArr.length == 1) {
-								paramValueArr = paramValueArr[0].split(",");
-							}
-							method.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
-						} else {
-							method.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
-						}
-					}
+					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
 				}
 			}
-			Method method = entityClass.getMethod("setParams", new Class[] { String[].class });
+			//针对rest风格url参数的设置
+			Method method = modelClass.getMethod("setParams", new Class[] { String[].class });
 			Object paramObj = request.getAttribute("params");
 			if(paramObj != null) {
 				String[] params = (String[])paramObj;
@@ -79,10 +82,10 @@ public class AnalysisRequestControllerModel {
 			} else {
 				method.invoke(model, new Object[] { null });
 			}
-
+			//指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
 			String cmd = (String) request.getAttribute("cmd");
 			if (cmd != null) {
-				method = entityClass.getMethod("setCmd", new Class[] { String.class });
+				method = modelClass.getMethod("setCmd", new Class[] { String.class });
 				method.invoke(model, new Object[] { cmd });
 			}
 			return model;
