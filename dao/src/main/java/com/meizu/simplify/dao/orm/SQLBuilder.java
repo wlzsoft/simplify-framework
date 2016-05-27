@@ -12,7 +12,6 @@ import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
-import com.meizu.simplify.utils.DateUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
  
@@ -134,7 +133,7 @@ public class SQLBuilder<T> {
            
         }
         SqlDTO dto = new SqlDTO();
-        // FIXED geny 2016-05-27 增加空字符串判断
+        // FIXED geny 2016-05-27 增加空字符串判断 风险提醒：这个分支会导致拖死数据库 ，考虑整合优化  TODO 整合块1
         if(!StringUtil.isEmpty(whereName)){
         	 whereName = whereName.substring(4);
              dto.setWhereName(whereName);
@@ -150,7 +149,7 @@ public class SQLBuilder<T> {
      * @param field 
      * @return
      */
-    private Object handleValue(Object value) {
+   /* private Object handleValue(Object value) {
         if (value instanceof String) {
             value = "\'" + value + "\'";
         } else if (value instanceof Date||value instanceof java.sql.Date) {//对应实体中java.sql.Date类型 的属性处理
@@ -164,10 +163,7 @@ public class SQLBuilder<T> {
             value = "''";
         }
         return value;
-    }
-    
-    
-    
+    }*/
     
     /**
      * 
@@ -501,29 +497,13 @@ public class SQLBuilder<T> {
          
         return sql;
     }
-     
-    /**
-     * 生成查询数量的SQL
-     * 
-     * @return
-     */
-    public String findAllCount() {
-        StringBuilder sqlBuild = new StringBuilder();
-        sqlBuild.append("SELECT COUNT(1) ").append(" FROM ")
-                .append(getTableName());
-        String sql = sqlBuild.toString();
-         
-        //logger.info("生成的SQL为: " + sql);
-         
-        return sql;
-    }
 
 	public String findBy(String where) {
 		
 		StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("SELECT ").append(columnsStr).append(" FROM ")
                 .append(getTableName());
-        // FIXED geny 2016-05-27 增加空字符串判断
+        // FIXED geny 2016-05-27 增加空字符串判断 风险提醒：这个分支会导致拖死数据库  TODO 整合块2
         if(!StringUtil.isEmpty(where)){
         	sqlBuild.append(" WHERE " + where);
         }
@@ -533,12 +513,28 @@ public class SQLBuilder<T> {
          
         return sql;
 	}
+	
     public  String count(String where) {
     	StringBuilder sqlBuild = new StringBuilder();
     	sqlBuild.append("select count(1) from ").append(getTableName());
         return sqlBuild.toString() +" where "+where;
     }
     
+    /**
+     * 方法用途: 查询整表数据总量-无过滤条件-慎重使用<br>
+     * 操作步骤: TODO<br>
+     * @return
+     */
+    public String count() {
+        StringBuilder sqlBuild = new StringBuilder();
+        sqlBuild.append("SELECT COUNT(1) ").append(" FROM ")
+                .append(getTableName());
+        String sql = sqlBuild.toString();
+         
+        //logger.info("生成的SQL为: " + sql);
+         
+        return sql;
+    }
 
 	public void setTableIndexLocal(Integer index) {
 		tableIndexLocal.set(index);

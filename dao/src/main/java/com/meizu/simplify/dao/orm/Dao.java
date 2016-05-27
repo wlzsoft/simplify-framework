@@ -618,6 +618,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @return
 	 */
 	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,T params) {
+		if(params == null) {//FIXED lcy 2016/5/27 风险提醒：这个分支会导致拖死数据库，但是又有这样的业务场景(考虑说服用户-企业用户)-如果是针对个人的系统，不建议使用,需要考虑更好的方案,如果有提供分页，可以考虑放开  TODO 整合块3
+			return find(currentRecord,pageSize,sort,isDesc,sqlBuilder.findAll());
+		}
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
 		List<T> list = find(currentRecord,pageSize,sort,isDesc,sql,dto.getWhereValues());
@@ -746,6 +749,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer count(T param) {
+		if(param == null) {//FIXED lcy 2016/5/27 风险提醒：这个分支会导致拖死数据库，但是又有这样的业务场景(考虑说服用户-企业用户)-如果是针对个人的系统，不建议使用,需要考虑更好的方案  TODO 整合块4
+			return BaseDao.getInsMap().count(sqlBuilder.count());
+		}
 		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
 		return BaseDao.getInsMap().count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
 	}
