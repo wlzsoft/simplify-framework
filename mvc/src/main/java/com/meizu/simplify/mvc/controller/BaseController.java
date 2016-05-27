@@ -70,7 +70,7 @@ public class BaseController<T extends Model> {
 	 */
 	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl)  {
 		try {
-			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass(),0);
+			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());
 			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass);
 			if (checkPermission(request, response, model)) {
 				execute(request, response, model,requestUrl);
