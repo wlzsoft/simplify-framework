@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.util.JsonResolver;
-import com.meizu.simplify.utils.JsonUtil;
 
 
 /**

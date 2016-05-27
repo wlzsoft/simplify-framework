@@ -2,7 +2,6 @@ package com.meizu.simplify.mvc.exception;
 
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
