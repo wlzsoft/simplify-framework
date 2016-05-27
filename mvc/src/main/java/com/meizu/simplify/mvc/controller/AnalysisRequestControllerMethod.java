@@ -86,18 +86,30 @@ public class AnalysisRequestControllerMethod {
 		webCacheInfo.setIsCache(true);
 		return webCacheInfo;
 	}
-
 	/**
 	 * 
 	 * 方法用途: 设置参数值<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param t
+	 * @param model
 	 * @param methodFullName
 	 * @return
 	 */
-	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, T t,String methodFullName) {
+	public static <T extends Model> Object[] analysisRequestParam(HttpServletRequest request, T model,String methodFullName) {
+		return null;
+	}
+	/**
+	 * 
+	 * 方法用途: 设置参数值<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param methodFullName
+	 * @return
+	 */
+	public static <T extends Model> Object[] analysisRequestParamByAnnotation(HttpServletRequest request, T model,String methodFullName) {
 		AnnotationListInfo<AnnotationInfo<RequestParam>> annoListInfo = ControllerAnnotationResolver.requestParamMap.get(methodFullName);
 		if(annoListInfo == null) {
 			//TODO 后续如果需要兼容没有参数的情况下，就不会是严重错误，而是更好的用户体验
@@ -125,8 +137,8 @@ public class AnalysisRequestControllerMethod {
 			if (!StringUtil.isEmpty(paramValue)) {//表单参数获取并设置,格式 http://url/?a=1&b=2，获取参数1和2
 				value = paramValue;
 			} else if (index>0) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
-				if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
-					value = t.getParams()[index];
+				if(model.getParams() != null && model.getParams().length > 0 && index < model.getParams().length) {
+					value = model.getParams()[index];
 				}
 			} else {
 				value = defaultValue;

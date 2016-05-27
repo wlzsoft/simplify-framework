@@ -97,9 +97,9 @@ public class BaseController<T extends Model> {
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param t
+	 * @param model
 	 */
-	public void destroy(HttpServletRequest request, HttpServletResponse response, T t){
+	public void destroy(HttpServletRequest request, HttpServletResponse response, T model){
 //			System.out.println("回收数据库连接到连接池中");
 	}
 	
@@ -109,12 +109,12 @@ public class BaseController<T extends Model> {
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param t
+	 * @param model
 	 * @return
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T t) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T model) throws ServletException, IOException {
 		return true;
 	}
 	
@@ -151,8 +151,8 @@ public class BaseController<T extends Model> {
 		if(webCache.getIsCache()) {
 			return;
 		}
-		
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
+//		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
+		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
 		Object obj = methodSelector.invoke(request,response,model,this,doCmd, parameValue);
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
