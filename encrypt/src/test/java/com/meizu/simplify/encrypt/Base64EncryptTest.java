@@ -2,16 +2,14 @@ package com.meizu.simplify.encrypt;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.StringWriter;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 import com.meizu.simplify.encrypt.base64.Base64StreamDecoder;
 import com.meizu.simplify.encrypt.base64.Base64StreamEncoder;
-import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 
 

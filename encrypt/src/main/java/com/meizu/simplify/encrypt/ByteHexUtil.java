@@ -46,12 +46,12 @@ public class ByteHexUtil {
 //			HEX_CHAR_LIST.add(new Character('E'));
 //			HEX_CHAR_LIST.add(new Character('F'));
 		}
-	private static byte hex2Byte(String source) {
+	/*private static byte hex2Byte(String source) {
 		int high = HEX_CHAR_LIST.indexOf(new Character(source.charAt(0))) << 4;
 		int low = HEX_CHAR_LIST.indexOf(new Character(source.charAt(1)));
 
 		return (byte) (high + low);
-	}
+	}*/
 		
 	
 	public static byte[] hex2Bytes(String source) {
@@ -84,11 +84,13 @@ public class ByteHexUtil {
 	}
 	
 	
-	/*
-	 * byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示，
-	 * 　因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)
+	/**
+	 * 方法用途: byteHEX()，用来把一个byte类型的数转换成十六进制的ASCII表示<br>
+	 * 操作步骤: 因为java中的byte的toString无法实现这一点，我们又没有C语言中的 sprintf(outbuf,"%02X",ib)<br>
+	 * @param sourceByte
+	 * @return
 	 */
-	private static String byteHEX(byte sourceByte) {
+	/*private static String byteHEX(byte sourceByte) {
 		// 用来将字节转换成 16 进制表示的字符
 		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B', 'C', 'D', 'E', 'F' };//可以抽取待外层循环，也就是bytes2Hex(byte[] bytes)方法的方法体的第一行，for语句之前，防止重复创建 
 //		char[] hexDigits={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -97,7 +99,7 @@ public class ByteHexUtil {
 		str[1] = hexDigits[sourceByte & 0X0F];
 		String s = new String(str);
 		return s;
-	}
+	}*/
 	
 	
 	/**
