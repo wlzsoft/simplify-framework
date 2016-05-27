@@ -123,9 +123,9 @@ public class AnalysisRequestControllerMethod {
 			defaultValue = "null".equals(defaultValue) ? null : defaultValue;
 			Object value = null;
 			
-			if (!StringUtil.isEmpty(request.getParameter(name))) {
+			if (!StringUtil.isEmpty(request.getParameter(name))) {//表单参数获取并设置,格式 http://url/?a=1&b=2，获取参数1和2
 				value = request.getParameter(name);
-			} else if (ObjectUtil.isInt(index)) {
+			} else if (ObjectUtil.isInt(index)) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
 				if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
 					value = t.getParams()[index];
 				}
