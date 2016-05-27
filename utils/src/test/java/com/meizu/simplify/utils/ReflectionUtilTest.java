@@ -91,7 +91,7 @@ public class ReflectionUtilTest  {
 		class SuperClassGenricType extends ParentCen<Integer,Boolean> {
 			public Type[] entityClass;
 		    public void getBaseRedisDao(){
-		        this.entityClass = ReflectionGenericUtil.getSuperClassGenricType(getClass());
+		        this.entityClass = ReflectionGenericUtil.getSuperClassGenricTypeArray(getClass());
 		    }
 		    public  int test() {
 		    	getBaseRedisDao();

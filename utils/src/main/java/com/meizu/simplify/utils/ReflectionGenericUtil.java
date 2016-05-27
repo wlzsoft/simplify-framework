@@ -25,30 +25,29 @@ public class ReflectionGenericUtil {
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(ReflectionGenericUtil.class);
 	
+//	----------------------------获取class的父类的泛型参数的类型-------------------------------
 	
 	/**
-     * 
-     * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
-     * 操作步骤: TODO <br>
-     * @param 需要解析的class类型
-     * @return 返回第一个位置的泛型的class
+     * 方法用途: 通过反射, 获得Class定义中声明的父类的第一个泛型参数的类型,如无法找到, 返回Object.class<br>
+     * 操作步骤: TODO 后续需要做单元测试支撑<br>
+     * @param clazz 需要获取实现父类的泛型参数的源类
+     * @return 返回第一个泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
      */
     public static <T> Class<T> getSuperClassGenricTypeForFirst(final Class<T> clazz) {
         return getSuperClassGenricType(clazz, 0);
     }
     
-    
     /**
-     * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
-     * 操作步骤: final Class<T> clazz 替换成了 final Class<?> clazz <br>
-     * @param 需要解析的class类型
-     * @param 指定实现父类的泛型的参数的位置
-     * @return 返回具体指定index值位置的泛型的class
+     * 方法用途: 通过反射, 获得Class定义中声明的父类声明的泛型参数的类型,如无法找到, 返回Object.class<br>
+     * 操作步骤: 如public UserDao extends Dao<User,Long>， 返回的是Class<User>或是Class<Long>,具体根据index参数来决定 <br>
+     * @param clazz 需要获取实现父类的泛型参数的需要解析的class源类型
+     * @param index 这个参数值从0开始，用于选择需要返回的实现类或接口的泛型参数的索引位置
+     * @return 返回指定索引(index值位置)的泛型参数的声明的class, 如果父类没有泛型参数，那么返回Object.class
      */
     @SuppressWarnings("unchecked")
 	public  static <T> Class<T> getSuperClassGenricType(final Class<?> clazz, final int index) {
 
-        Type[] params = getSuperClassGenricType(clazz);
+        Type[] params = getSuperClassGenricTypeArray(clazz);
 
         if (index >= params.length || index < 0) {
             LOGGER.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
@@ -63,7 +62,6 @@ public class ReflectionGenericUtil {
         return (Class<T>) params[index];
     }
 
-
 	/**
 	 * 
 	 * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
@@ -71,7 +69,7 @@ public class ReflectionGenericUtil {
 	 * @param clazz 需要解析的class类型
 	 * @return 返回泛型的class 列表
 	 */
-	public static <T> Type[] getSuperClassGenricType(final Class<T> clazz) {
+	public static <T> Type[] getSuperClassGenricTypeArray(final Class<T> clazz) {
 		Type genType = clazz.getGenericSuperclass();// 得到泛型父类
         if (genType.getTypeName().equals("java.lang.Object")) {
         	throw new UncheckedException(clazz.getSimpleName() + "的父类是Object"); 
@@ -85,5 +83,4 @@ public class ReflectionGenericUtil {
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 		return params;
 	}
-	
 }

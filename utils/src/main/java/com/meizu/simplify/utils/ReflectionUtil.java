@@ -397,32 +397,4 @@ public class ReflectionUtil {
 			getAllField(entityClass.getSuperclass(),fieldList);
 		}
 	}
-//	----------------------------获取class的父类的泛型参数的类型-------------------------------
-
-	/**
-     * 方法用途: 通过反射, 获得Class定义中声明的父类的第一个泛型参数的类型,如无法找到, 返回Object.class<br>
-     * 操作步骤: TODO 后续需要做单元测试支撑<br>
-     * @param clazz 需要获取实现父类的泛型参数的源类
-     * @author wanghaibin
-     * @return 返回第一个泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
-     */
-    public static Class<?> getSuperClassGenricType(final Class<?> clazz) {
-        return getSuperClassGenricType(clazz, 0);
-    }
-    
-    /**
-     * 方法用途: 通过反射, 获得Class定义中声明的父类声明的泛型参数的类型,如无法找到, 返回Object.class<br>
-     * 操作步骤: 如public UserDao extends Dao<User,Long>， 返回的是Class<User>或是Class<Long>,具体根据index参数来决定
-     *           TODO 后续需要做单元测试支撑<br>
-     * @param clazz 需要获取实现父类的泛型参数的源类
-     * @param index 这个参数值从0开始，用于选择需要返回的实现类或接口的泛型参数的索引
-     * @author wanghaibin
-     * @return 返回指定索引的泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
-     */
-    public  static  Class<?> getSuperClassGenricType(final Class<?> clazz, final int index) {
-        Type genType = clazz.getGenericSuperclass();// 得到泛型父类
-        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-        return (Class<?>) params[index];
-    }
-    
 }
