@@ -156,7 +156,12 @@ http://fishermen.iteye.com/blog/430286
 126.injectionTargetClassPaths属性的通用性，减少人工干预 ==>>已测试，已通过 2016/5/27 
 127.优化mvc模块，处理表单数据映射的问题
 128.枚举类型的处理TimeEnum和MeasureEnum的处理 ==>>已测试，已通过 2016/5/27 
-129.修复所有警告的代码 ==>>已测试，已通过 2016/5/27 
+129.修复所有警告的代码 ==>>已测试，已通过 2016/5/27
+130.优化mvc模块，处理rest参数映射问题，单个参数映射问题
+140.优化mvc模块，处理参数注入必须使用RequestParam的问题，可以不用指定注解
+131.优化mvc模块，处理必须带上HttpServletRequest request, HttpServletResponse response, TestModel model三个参数的问题，做到可选，并且目前没有这三个，会报不明确的错误
+132.优化mvc模块，处理没有继承BaseControll的时候，没有明确的错误提示，并且错误信息靠后，如果没有继承，机制抛异常(确定抛异常时机),
+133.优化mvc模块, 处理可以确保方法不会受到BaseControll知道的model泛型的全局影响 
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
