@@ -31,6 +31,7 @@ public class DynamicDataSourceAspect {
 		
 		// 根据具体情况，自动解析，通过DynamicDataSourceHolder.setDataSourceName() 指定不同数据源   
 		for (Object o : pjp.getArgs()) {
+			System.out.println(o);
 			//TODO
 		}
 		

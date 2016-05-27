@@ -42,7 +42,7 @@ public class BaseDTO implements Serializable {
 	private String orderBy;//格式 ："createTime,sort"
 	private String limit;
 	
-	private Page page;
+	private Page<?> page;
 	
 	public String getSql() {
 		return sql;
@@ -77,10 +77,10 @@ public class BaseDTO implements Serializable {
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
 	}
-	public Page getPage() {
+	public Page<?> getPage() {
 		return page;
 	}
-	public void setPage(Page page) {
+	public void setPage(Page<?> page) {
 		this.page = page;
 	}
 	public String getLimit() {
