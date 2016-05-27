@@ -45,29 +45,29 @@ public class AnalysisRequestControllerModel {
 						continue;
 					}
 					Class<?> type = parameterTypes[0];
-					String parName = method.getName().substring(3, method.getName().length());
-					String par = request.getParameter(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
+					String paramName = method.getName().substring(3, method.getName().length());
+					String paramValue = request.getParameter(Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1));
 
-					par = analysisModelScope(method, par);
+					paramValue = analysisModelScope(method, paramValue);
 					
-					par = analysisModelCharsFilter(method, par);
+					paramValue = analysisModelCharsFilter(method, paramValue);
 
 					// 是否滤过
 					if (method.isAnnotationPresent(ModelSkip.class)) {
 						continue;
 					}
 
-					if (par != null) {
+					if (paramValue != null) {
 						Method method2 = entityClass.getMethod(method.getName(), new Class[] { type });
 						// 将值进行格式化后注入
 						if (type.isArray()) {
-							String[] pars = request.getParameterValues(Character.toLowerCase(parName.charAt(0)) + parName.substring(1));
-							if (pars != null && pars.length == 1) {
-								pars = pars[0].split(",");
+							String[] paramValueArr = request.getParameterValues(Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1));
+							if (paramValueArr != null && paramValueArr.length == 1) {
+								paramValueArr = paramValueArr[0].split(",");
 							}
-							method2.invoke(model, new Object[] { DataUtil.convertType(type, pars) });
+							method2.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
 						} else {
-							method2.invoke(model, new Object[] { DataUtil.convertType(type, par) });
+							method2.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
 						}
 					}
 				}
@@ -98,30 +98,30 @@ public class AnalysisRequestControllerModel {
 	 * 方法用途: 解析表单属性值的非法字符过滤清除的设置<br>
 	 * 操作步骤: TODO<br>
 	 * @param method
-	 * @param par
+	 * @param paramValue
 	 * @return
 	 */
-	private static String analysisModelCharsFilter(Method method, String par) {
+	private static String analysisModelCharsFilter(Method method, String paramValue) {
 		ModelCharsFilter stringFilter = null;
 		if (method.isAnnotationPresent(ModelCharsFilter.class)) {
 			stringFilter = (ModelCharsFilter) method.getAnnotation(ModelCharsFilter.class);
 			if(stringFilter.filters() != null){
 				for(ModelCharsFilter.Filter filter : stringFilter.filters()){
 					if(ModelCharsFilter.Filter.Html == filter){
-						par = StringUtil.removeHtmlLabel(par);
+						paramValue = StringUtil.removeHtmlLabel(paramValue);
 					} else if(ModelCharsFilter.Filter.Script == filter){
-						par = StringUtil.removeScript(par);
+						paramValue = StringUtil.removeScript(paramValue);
 					} else if(ModelCharsFilter.Filter.Style == filter){
-						par = StringUtil.removeStyle(par);
+						paramValue = StringUtil.removeStyle(paramValue);
 					} else if(ModelCharsFilter.Filter.iframe == filter){
-						par = StringUtil.removeIframe(par);
+						paramValue = StringUtil.removeIframe(paramValue);
 					} else if(ModelCharsFilter.Filter.trim == filter){
-						par = StringUtil.removeHtmlSpace(par);
+						paramValue = StringUtil.removeHtmlSpace(paramValue);
 					}
 				}
 			}
 		}
-		return par;
+		return paramValue;
 	}
 
 	/**
@@ -129,10 +129,10 @@ public class AnalysisRequestControllerModel {
 	 * 方法用途: 解析表单属性作用域的设置<br>
 	 * 操作步骤: TODO<br>
 	 * @param method
-	 * @param par
+	 * @param paramValue
 	 * @return
 	 */
-	private static String analysisModelScope(Method method, String par) {
+	private static String analysisModelScope(Method method, String paramValue) {
 		ModelScope mset = null;
 		if (method.isAnnotationPresent(ModelScope.class)) {
 			mset = (ModelScope) method.getAnnotation(ModelScope.class);
@@ -146,9 +146,9 @@ public class AnalysisRequestControllerModel {
 				}
 			}
 			if(mset.charset() != null && mset.charset().length() > 0) {
-				par = StringUtil.coding(par, mset.charset());
+				paramValue = StringUtil.coding(paramValue, mset.charset());
 			}
 		}
-		return par;
+		return paramValue;
 	}
 }
