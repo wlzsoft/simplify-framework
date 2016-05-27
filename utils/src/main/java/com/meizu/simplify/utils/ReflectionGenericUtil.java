@@ -33,7 +33,7 @@ public class ReflectionGenericUtil {
      * @param clazz 需要获取实现父类的泛型参数的源类
      * @return 返回第一个泛型参数的声明, 如果父类没有泛型参数，那么返回Object.class
      */
-    public static <T> Class<T> getSuperClassGenricTypeForFirst(final Class<T> clazz) {
+    public static <T> Class<T> getSuperClassGenricTypeForFirst(final Class<?> clazz) {
         return getSuperClassGenricType(clazz, 0);
     }
     
