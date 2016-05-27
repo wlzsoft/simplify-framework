@@ -32,8 +32,8 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	
 	@Override
 	public final void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl)  {
-		String path = request.getContextPath();
-		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+		/*String path = request.getContextPath();
+		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";*/
 		request.setAttribute("url", request.getRequestURI());
 		super.process(request, response,requestUrl);
 	}
@@ -48,8 +48,8 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	@Override
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T model) throws ServletException, IOException {
 		
-		
-		if(true) {
+		boolean ischeck = true;
+		if(ischeck) {
 			return true;
 		}
 		
@@ -68,7 +68,7 @@ public class SystemController<T extends Model> extends BaseController<T> {
 			if(authjson.containsKey("domain") && !curDomain.equalsIgnoreCase(authjson.getString("domain"))) {
 				return false;
 			}
-			Object uname = "";
+//			Object uname = "";
 //			StringUtil.unescape(uname);
 		 } else {
 			response.sendError(403, "{result:-1}");

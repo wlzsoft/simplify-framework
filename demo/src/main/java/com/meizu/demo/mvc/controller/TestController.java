@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.entity.User;
@@ -46,7 +45,7 @@ import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
 public class TestController extends SystemController<TestModel> {
 
 //	@Resource //注释掉，目前打开会报错，因为无实现类
-	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要 
+//	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要 
 	
 	@Resource
 	private TestService testService;
@@ -121,6 +120,7 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = "/testredirect/")
 	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
+		System.out.println(test.getName());
 		return "redirect:/index.jsp";
 	}
 	
@@ -142,11 +142,19 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "velocity:login";
 	}
+	/**
+	 * 方法用途: 针对webserver模块的测试<br>
+	 * 操作步骤: 基于webserver时，把下面注释掉代码打开<br>
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMap(path = "/testvelocity2/")
 	public String doTestVelocity2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		String userName = request.getParameter("userName");
+		/*String userName = request.getParameter("userName");
 		HttpSession session = request.getSession();
-		/*if (userName != null && userName.equals("admin")) {//服务器内部跳转到首页
+		if (userName != null && userName.equals("admin")) {//服务器内部跳转到首页
 			request.setAttribute("userName", userName);
 			request.setRequestURI("/");//服务器内部跳转
 			session.setAttribute("admin", userName);
@@ -257,7 +265,6 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
 	public String doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer pid, @RequestParam(defaultValue = "0", index = 2) String id, @RequestParam(defaultValue = "0", index = 3) String ids) throws ServletException, IOException, InterruptedException {
  
-		
 		// 检查是否id为空
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
 		
@@ -265,14 +272,13 @@ public class TestController extends SystemController<TestModel> {
 		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorView(getMsg("VERIFY.FAILED"));
 
 //		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
-		String domain = null;//CookiesUtil.getDomain(request);
+//		String domain = CookiesUtil.getDomain(request);
 		// 判断当前访问站点来源
 //		String sDomain = request.getServerName();
 //		if(sDomain.indexOf("meizu.com") > 0)  {
 //		}
 		
-		
-		String isflag = request.getParameter("isflag");
+//		String isflag = request.getParameter("isflag");
 		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
 //		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
 		return result;
