@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -261,9 +260,14 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "beetl:ajaxjsonptest";
 	}
-	
+	@RequestMap(path = "/testFormParam")
+	public String testFormParam(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0",name="pid") Integer pid, @RequestParam(defaultValue = "0",name="id") String id, @RequestParam(defaultValue = "0",name="ids") String ids) {
+		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
+		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
+		return result;
+	}
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
-	public String doDemo(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer pid, @RequestParam(defaultValue = "0", index = 2) String id, @RequestParam(defaultValue = "0", index = 3) String ids) throws ServletException, IOException, InterruptedException {
+	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer pid, @RequestParam(defaultValue = "0", index = 2) String id, @RequestParam(defaultValue = "0", index = 3) String ids)  {
  
 		// 检查是否id为空
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");

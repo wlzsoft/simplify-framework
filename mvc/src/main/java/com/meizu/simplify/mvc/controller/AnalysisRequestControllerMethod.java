@@ -19,7 +19,6 @@ import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.util.AjaxUtils;
 import com.meizu.simplify.utils.DataUtil;
-import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.util.BrowserUtil;
@@ -125,7 +124,7 @@ public class AnalysisRequestControllerMethod {
 			
 			if (!StringUtil.isEmpty(request.getParameter(name))) {//表单参数获取并设置,格式 http://url/?a=1&b=2，获取参数1和2
 				value = request.getParameter(name);
-			} else if (ObjectUtil.isInt(index)) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
+			} else if (index>0) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
 				if(t.getParams() != null && t.getParams().length > 0 && index < t.getParams().length) {
 					value = t.getParams()[index];
 				}
@@ -133,7 +132,7 @@ public class AnalysisRequestControllerMethod {
 				value = defaultValue;
 			}
 			if (value == null) {
-				break;
+				continue;
 			}
 			// 将值进行格式化后注入
 			parameValue[i+3] = DataUtil.convertType(annoInfo.getReturnType(), value.toString());
