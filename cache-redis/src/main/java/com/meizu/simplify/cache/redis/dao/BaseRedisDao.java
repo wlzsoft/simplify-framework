@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.enums.TimeEnum;
-import com.meizu.simplify.cache.redis.exception.RedisException;
 
 /**
  * <p><b>Title:</b><i>缓存操作基类</i></p>

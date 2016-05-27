@@ -1,5 +1,6 @@
 package com.meizu.simplify.cache.redis;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
@@ -71,7 +72,7 @@ public class RedisTransactionTest {
 			}
 			p.sync();
 		} catch (Exception e) {
-			pool.returnResource(jedis);
+			jedis.close();
 		}
 	}
 
@@ -88,7 +89,7 @@ public class RedisTransactionTest {
 			p.exec();
 			p.sync();
 		} catch (Exception e) {
-			pool.returnResource(jedis);
+			jedis.close();
 		}
 	}
 
@@ -101,7 +102,7 @@ public class RedisTransactionTest {
 				jedis.expire(key, 5 * 60);
 			}
 		} catch (Exception e) {
-			pool.returnResource(jedis);
+			jedis.close();
 		}
 	}
 
@@ -116,9 +117,13 @@ public class RedisTransactionTest {
 			}
 			tx.exec();
 		} catch (Exception e) {
-			pool.returnResource(jedis);
+			jedis.close();
 		}
 	}
-
+	
+	@AfterClass
+	public void destory() {
+		pool.close();
+	}
 
 }

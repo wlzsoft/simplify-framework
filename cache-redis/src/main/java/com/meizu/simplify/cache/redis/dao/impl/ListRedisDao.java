@@ -76,7 +76,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	public boolean lpush(String[] keys,String[] values,int seconds){
 		for(int i=0,len=keys.length;i<len;i++){
 			String value = values[i];
-			Boolean ret = CacheExecute.execute(keys[i], (k,jedis) ->  {
+			CacheExecute.execute(keys[i], (k,jedis) ->  {
 					Long result = jedis.lpush(k, value);
 					if(seconds > 0){
 						jedis.expire(k, seconds);

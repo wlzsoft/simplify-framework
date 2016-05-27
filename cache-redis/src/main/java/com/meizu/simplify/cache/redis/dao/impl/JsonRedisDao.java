@@ -1,8 +1,5 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.cache.dao.IJsonCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
@@ -25,7 +22,6 @@ import com.meizu.simplify.utils.JsonUtil;
  *
  */
 public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
-	private static final Logger LOGGER = LoggerFactory.getLogger(JsonRedisDao.class);
 	
 	public JsonRedisDao(String modName) {
 		super(modName);

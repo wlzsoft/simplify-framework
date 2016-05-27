@@ -25,7 +25,7 @@ import com.meizu.simplify.utils.SerializeUtil;
  * @version Version 0.1
  *
  */
-public class SetRedisDao extends BaseRedisDao implements ISetCacheDao{
+public class SetRedisDao extends BaseRedisDao<String> implements ISetCacheDao{
 	private static final Logger LOGGER = LoggerFactory.getLogger(SetRedisDao.class);
     public SetRedisDao(String modName) {
 		super(modName);

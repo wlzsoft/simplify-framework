@@ -18,7 +18,7 @@ import com.meizu.simplify.cache.redis.dao.CacheExecute;
  * @version Version 0.1
  *
  */
-public class SearchRedisDao extends BaseRedisDao implements ISearchCacheDao{
+public class SearchRedisDao extends BaseRedisDao<String> implements ISearchCacheDao{
 
 	
 	public SearchRedisDao(String modName) {

@@ -1,7 +1,5 @@
 package com.meizu.simplify.cache.redis.dao;
 
-import com.meizu.simplify.cache.redis.dao.impl.StringRedisDao;
-
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -18,7 +16,7 @@ import com.meizu.simplify.cache.redis.dao.impl.StringRedisDao;
 
 public class StringRedisDaoTest {
 	public static void test() {
-			StringRedisDao client = new StringRedisDao("redis_ref_hosts");
+			//StringRedisDao client = new StringRedisDao("redis_ref_hosts");
 			// client.set("vip_send_mail_max_msgid", 20L);
 			// long max = (Long) client.get("vip_send_mail_max_msgid");
 			// System.out.println(max);

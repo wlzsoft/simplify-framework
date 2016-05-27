@@ -34,7 +34,7 @@ public class ListRedisDaoTest {
 	public void testListGet(){
 		String key = "producer_list1";
 		long begin = System.currentTimeMillis();
-		List list = client.lrange(key,0,100);
+		List<String> list = client.lrange(key,0,100);
 		client.lpop(key);
 		System.out.println(client.lpop(key));
 		System.out.println(list.size());

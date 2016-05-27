@@ -59,7 +59,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		return CacheExecute.execute(key, (k,jedis) ->  {
 				byte[] ret = jedis.get(SerializeUtil.serialize(k));
 				if (ret != null && ret.length > 0) {
-					return (V) SerializeUtil.unserialize(ret);
+					return SerializeUtil.unserialize(ret);
 				}
 				return null;
 		},modName);
@@ -77,7 +77,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		return CacheExecute.execute(key, (k,jedis) -> {
 				byte[] ret = jedis.get(SerializeUtil.serialize(k));
 				if (ret != null && ret.length > 0) {
-					V value = (V) SerializeUtil.unserialize(ret);
+					V value = SerializeUtil.unserialize(ret);
 					if (type != null && !type.isInstance(value)) {
 						throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + value);
 					}

@@ -7,9 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.utils.AssertUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -31,7 +28,6 @@ import redis.clients.jedis.Protocol;
  */
 public class RedisHostAndPortUtil {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(RedisHostAndPortUtil.class);
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
 	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);

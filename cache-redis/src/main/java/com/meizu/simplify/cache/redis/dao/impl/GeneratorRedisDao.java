@@ -1,8 +1,5 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.cache.dao.IGeneratorCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
@@ -23,8 +20,6 @@ import com.meizu.simplify.utils.SerializeUtil;
  */
 public class GeneratorRedisDao extends  BaseRedisDao<String> implements IGeneratorCacheDao<String> {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(StringRedisDao.class);
-
 	public GeneratorRedisDao() {
 		super("redis_index_hosts");
 	}

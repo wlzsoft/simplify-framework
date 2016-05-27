@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.cache.dao.IHashCacheDao;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
@@ -27,7 +24,6 @@ import com.meizu.simplify.utils.JsonUtil;
  *
  */
 public class HashRedisDao extends BaseRedisDao<String> implements IHashCacheDao {
-	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public HashRedisDao(String modName) {
 		super(modName);
 	}

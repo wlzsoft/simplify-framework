@@ -53,6 +53,7 @@ public class SearchRedisDaoTest {
 			
 			jedis.del(key);
 			jedis.close();
+			System.out.println("SearchRedisDaoTest.testBinarySearch消耗时间"+(System.currentTimeMillis()-begin));
 		}
 		
 		public static void testPushListCache(){
