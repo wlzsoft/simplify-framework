@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.InitBean;
-import com.meizu.simplify.utils.ReflectionUtil;
+import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
@@ -197,7 +197,7 @@ public class MongoBaseDao<T> {
 
 	@SuppressWarnings("unchecked")
 	private Class<T> getEntityClass() {
-		return (Class<T>) ReflectionUtil.getSuperClassGenricType(getClass());
+		return (Class<T>) ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());
 	}
 	/**
 	 * 方法用途: 构建单个实体<br>

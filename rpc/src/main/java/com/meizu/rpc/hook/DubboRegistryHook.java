@@ -1,17 +1,5 @@
 package com.meizu.rpc.hook;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.meizu.rpc.config.DubboRegistry;
-import com.meizu.simplify.ioc.BeanEntity;
-import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
-import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
-import com.meizu.simplify.utils.PropertieUtil;
-import com.meizu.simplify.utils.StringUtil;
 /**
  * <p>Rpc多个注册中心实例钩子</p>
  * <p>source folder:{@docRoot}</p>
@@ -27,7 +15,7 @@ import com.meizu.simplify.utils.StringUtil;
 //@BeanPrototypeHook(DubboRegistry.class)
 public class DubboRegistryHook /*implements IBeanPrototypeHook*/{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DubboRegistryHook.class);
+//	private static final Logger LOGGER = LoggerFactory.getLogger(DubboRegistryHook.class);
 
 	/*@Override
 	public List<BeanEntity<?>> hook(Class<?> clazz) {

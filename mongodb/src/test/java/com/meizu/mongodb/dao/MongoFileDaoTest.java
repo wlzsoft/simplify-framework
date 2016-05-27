@@ -1,20 +1,10 @@
 package com.meizu.mongodb.dao;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.meizu.mongodb.DataBase;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
-import com.mongodb.Block;
-import com.mongodb.client.gridfs.model.GridFSFile;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
