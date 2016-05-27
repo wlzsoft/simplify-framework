@@ -82,7 +82,7 @@ public class JsonUtilTest {
 		JSONReader reader = new JSONReader(new FileReader(path+"tmp/huge.json"));
 		  reader.startObject();
 		  while(reader.hasNext()) {
-		        String key = reader.readString();
+//		        String key = reader.readString();
 		        BigVo vo = reader.readObject(BigVo.class);
 		        vo.getAuc();
 		  }
