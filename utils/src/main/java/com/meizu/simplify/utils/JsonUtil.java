@@ -85,4 +85,16 @@ public class JsonUtil {
     		throw new BaseException("json解析异常，确定数据格式是否正确",ex);
     	}
     }
+    
+    /**
+	 * 方法用途: json字符串转相应class对象实例<br>
+	 * 操作步骤: TODO<br>
+	 * @param str
+	 * @param cls
+	 * @author geny
+	 * @return
+	 */
+    public static <T> T jsonToObject(String str, Class<T> cls){
+    	return JSON.parseObject(str, cls);
+    }
 }
