@@ -15,6 +15,7 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.invoke.IMethodSelector;
+import com.meizu.simplify.mvc.model.IModelSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.IPageTemplate;
@@ -54,6 +55,9 @@ public class BaseController<T extends Model> {
 	private IMethodSelector methodSelector;
 	
 	@Resource
+	private IModelSelector modelSelector;
+	
+	@Resource
 	private JsonResolver jsonResolver;	
 	/**
 	 * 
@@ -73,7 +77,9 @@ public class BaseController<T extends Model> {
 //			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
 			@SuppressWarnings("unchecked")
 			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(this.getClass().getName()+":"+cmd);
-			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass,cmd,urlparams);
+			T model = modelSelector.setRequestModel(request, entityClass, cmd, urlparams);
+			model = AnalysisRequestControllerModel.setBaseModel(entityClass, cmd, urlparams, model);
+//			modelSelector
 			if (checkPermission(request, response, model)) {
 				execute(request, response, model,requestUrl);
 			}
