@@ -11,9 +11,13 @@ public class MyConsumer implements MqConsumerListenner {
 	 * 操作步骤: queue消息队列名称、exchange交换机、routingKey消息路由key默认为entity的类名<br>
 	 * @param message
 	 */
-	@MqConsumerMethod(target = TestEntity.class)
+	@MqConsumerMethod(target = TestEntity.class,routingKey="t1")
 	public void test(String message) {
-		System.out.println("111111111" + message);
+		System.out.println("tt1" + message);
+	}
+	@MqConsumerMethod(target = TestEntity.class,routingKey="t2")
+	public void test5(String message) {
+		System.out.println("tt2" + message);
 	}
 
 	@MqConsumerMethod(queue="TestEntity",exchange="TestEntity",routingKey="TestEntity")

@@ -31,14 +31,23 @@ public class SendMessage {
 	public void test() {
 		try {
 			RabbitTemplate temp = BeanFactory.getBean(RabbitTemplate.class);
-			for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			for (int i = 0; i <3; i++) {
 				TestEntity entity = new TestEntity();
-				entity.setName("444dfdf中文"+i);
-				entity.setDddd("f44asdfd"+i);
-				entity.setUserName("44测试"+i);
-				temp.send(entity);
-				Thread.sleep(3000);
+				entity.setName("t1");
+				entity.setDddd("t1");
+				entity.setUserName("t1");
+				temp.send("t1",entity);
+//				Thread.sleep(3000);
 			}
+			for (int i = 0; i < 3; i++) {
+				TestEntity entity = new TestEntity();
+				entity.setName("tt2");
+				entity.setDddd("tt2");
+				entity.setUserName("tt2测试");
+				temp.send("t2",entity);
+//				Thread.sleep(3000);
+			}
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
