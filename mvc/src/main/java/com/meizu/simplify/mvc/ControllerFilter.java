@@ -74,11 +74,11 @@ public class ControllerFilter implements Filter {
 				Pattern pattern = Pattern.compile("^" + key);
 				Matcher matcher = pattern.matcher(requestUrl);
 				if (matcher.find()) {
-					String[] params = new String[matcher.groupCount() + 1];
+					String[] urlparams = new String[matcher.groupCount() + 1];
 					//如果有3个分组，那么执行后，会获取到4个分组，有一个总的分组，那么总的分组会做为第一个分组，也就是匹配到的总路径
-					for ( int i = 0; i <= matcher.groupCount(); params[i] = matcher.group(i++) );
+					for ( int i = 0; i <= matcher.groupCount(); urlparams[i] = matcher.group(i++) );
 					controllerAnnotationInfo = entrySet.getValue();
-					analysisAndProcess(request, response, requestUrl,controllerAnnotationInfo, params);
+					analysisAndProcess(request, response, requestUrl,controllerAnnotationInfo, urlparams);
 					return; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
 			}
@@ -100,16 +100,15 @@ public class ControllerFilter implements Filter {
 	 * @param response
 	 * @param requestUrl
 	 * @param key
-	 * @param params
+	 * @param urlparams
 	 */
 	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
-			String[] params) {
+			String[] urlparams) {
 		long time = System.currentTimeMillis();
 		Statistics.getReadMap().put(requestUrl, 0);
-		request.setAttribute("params", params);
-		String paramName = controllerAnnotationInfo.getMethod();
+		String requestMethodName = controllerAnnotationInfo.getMethod();
 		BaseController<?> bs = controllerAnnotationInfo.getObj();
-		bs.process(request, response,requestUrl,paramName);
+		bs.process(request, response,requestUrl,requestMethodName,urlparams);
 		long readtime = System.currentTimeMillis() - time;
 		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+request.getSession().getId());
 		// 记录统计信息

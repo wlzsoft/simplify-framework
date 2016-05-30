@@ -36,7 +36,7 @@ public class AnalysisRequestControllerModel {
 	 * @param modelClass
 	 * @return
 	 */
-	public static <T> T setRequestModel(HttpServletRequest request,Class<T>  modelClass,String cmd) {
+	public static <T> T setRequestModel(HttpServletRequest request,Class<T>  modelClass,String cmd,String[] urlparams) {
 		try {
 			T model = modelClass.newInstance();
 			Method[] modelMethodArr = modelClass.getMethods();
@@ -63,7 +63,7 @@ public class AnalysisRequestControllerModel {
 					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
 				} else if(!isBaseType(type)){
 //					System.out.println(type);
-					Object pojo = setRequestModel(request,type,cmd);
+					Object pojo = setRequestModel(request,type,cmd,urlparams);
 					method.invoke(model, new Object[] { DataUtil.convertType(type, pojo) });
 				} else {
 					String paramValue = request.getParameter(paramName);
@@ -85,11 +85,7 @@ public class AnalysisRequestControllerModel {
 			//url参数：针对rest风格url参数的设置
 			Method method = modelClass.getMethod("setParams", new Class[] { String[].class });
 			if(method != null) {
-				Object paramObj = request.getAttribute("params");
-				if(paramObj != null) {
-					String[] params = (String[])paramObj;
-					method.invoke(model, new Object[] { params });
-				}
+				method.invoke(model, new Object[] { urlparams });
 			}
 			//指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
 			method = modelClass.getMethod("setCmd", new Class[] { String.class });
