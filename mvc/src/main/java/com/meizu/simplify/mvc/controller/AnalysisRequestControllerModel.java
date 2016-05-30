@@ -1,10 +1,12 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.mvc.model.BaseModel;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelScope;
@@ -29,12 +31,12 @@ public class AnalysisRequestControllerModel {
 	/**
 	 * 
 	 * 方法用途: 获取表单数据<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 目前不限制只能注入Model类型的实体<br>
 	 * @param request
 	 * @param modelClass
 	 * @return
 	 */
-	public static <T extends Model> T setRequestModel(HttpServletRequest request,Class<T>  modelClass) {
+	public static <T> T setRequestModel(HttpServletRequest request,Class<T>  modelClass) {
 		try {
 			T model = modelClass.newInstance();
 			Method[] modelMethodArr = modelClass.getMethods();
@@ -53,12 +55,16 @@ public class AnalysisRequestControllerModel {
 				paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
 
 				// 将值进行格式化后注入
-				if (type.isArray()) {//TODO 针对set属性值为数组类型的处理，需要精细测试，并确认是否有必要，这种方式目前没有大批量用
+				if (type.isArray()) {//TODO 针对set属性值为数组类型的处理，需要精细测试，并确认是否有必要，是否目前只为 params 而使用，内嵌的一个属性,通过setAttribute设置，是否也可以从页面传递过来
 					String[] paramValueArr = request.getParameterValues(paramName);
 					if (paramValueArr != null && paramValueArr.length == 1) {
 						paramValueArr = paramValueArr[0].split(",");
 					}
 					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
+				} else if(!isBaseType(type)){
+//					System.out.println(type);
+					Object pojo = setRequestModel(request,type);
+					method.invoke(model, new Object[] { DataUtil.convertType(type, pojo) });
 				} else {
 					String paramValue = request.getParameter(paramName);
 					if (paramValue == null) {
@@ -73,20 +79,25 @@ public class AnalysisRequestControllerModel {
 					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
 				}
 			}
-			//针对rest风格url参数的设置
+			if(modelClass.getSuperclass() != BaseModel.class&&modelClass.getSuperclass() != Model.class) {
+				return model;
+			}
+			//url参数：针对rest风格url参数的设置
 			Method method = modelClass.getMethod("setParams", new Class[] { String[].class });
-			Object paramObj = request.getAttribute("params");
-			if(paramObj != null) {
-				String[] params = (String[])paramObj;
-				method.invoke(model, new Object[] { params });
-			} else {
-				method.invoke(model, new Object[] { null });
+			if(method != null) {
+				Object paramObj = request.getAttribute("params");
+				if(paramObj != null) {
+					String[] params = (String[])paramObj;
+					method.invoke(model, new Object[] { params });
+				}
 			}
 			//指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
-			String cmd = (String) request.getAttribute("cmd");
-			if (cmd != null) {
-				method = modelClass.getMethod("setCmd", new Class[] { String.class });
-				method.invoke(model, new Object[] { cmd });
+			method = modelClass.getMethod("setCmd", new Class[] { String.class });
+			if (method != null) {
+				String cmd = (String) request.getAttribute("cmd");
+				if(cmd != null) {
+					method.invoke(model, new Object[] { cmd });
+				}
 			}
 			return model;
 		} catch ( Exception e ) {
@@ -94,6 +105,24 @@ public class AnalysisRequestControllerModel {
 			throw new UncheckedException(e);
 		}
 	}
+	
+	/**
+	 * 方法用途: 判断是否基本数据类型，包含基本数据类型的包装类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param clz
+	 * @return
+	 */
+	public static boolean isBaseType(Class<?> clz) {
+		if(clz==String.class||clz==Date.class) {
+			return true;
+		}
+        try { 
+        	boolean isPrimitive = ((Class<?>) clz.getField("TYPE").get(null)).isPrimitive();
+        	return isPrimitive;
+        } catch (Exception e) {
+        	return false;
+        } 
+    } 
 
 	/**
 	 * 

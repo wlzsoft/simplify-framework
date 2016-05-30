@@ -98,7 +98,7 @@ public final class Startup {
 	 */
 	private static StartupTypeEnum startCallback(Class<?> beanClass,AnnoCallback call) {
         //安全退出机制:平滑停止
-        Runtime.getRuntime().addShutdownHook(new Thread() {  
+        Runtime.getRuntime().addShutdownHook(new Thread() {//TODO 有bug，这个时候在tomcat停止的时候，类被销毁了，这时候才调用stop方法，stop执行过程会报错
             public void run() {  
                Startup.stop();  
             }  

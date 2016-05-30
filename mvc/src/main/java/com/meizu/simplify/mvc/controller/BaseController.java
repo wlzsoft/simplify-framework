@@ -70,7 +70,7 @@ public class BaseController<T extends Model> {
 	 */
 	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl)  {
 		try {
-			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());
+			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
 			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass);
 			if (checkPermission(request, response, model)) {
 				execute(request, response, model,requestUrl);
