@@ -260,6 +260,18 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "beetl:ajaxjsonptest";
 	}
+	
+	/**
+	 * 方法用途: 不支持写法<br>
+	 * 操作步骤: Test参数，要使用TestModel代替，TestModel中包含Test属性即可<br>
+	 * @param request
+	 * @param response
+	 * @param test
+	 * @param pid
+	 * @param id
+	 * @param ids
+	 * @return
+	 */
 	@RequestMap(path = "/testFormEntityParam")
 	public String testFormEntityParam(HttpServletRequest request, HttpServletResponse response, Test test, @RequestParam(defaultValue = "0",name="pid") Integer pid, @RequestParam(defaultValue = "0",name="id") String id, @RequestParam(defaultValue = "0",name="ids") String ids) {
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");

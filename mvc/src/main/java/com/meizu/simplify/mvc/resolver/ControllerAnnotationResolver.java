@@ -70,6 +70,10 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	 */
 	public static Map<String, AnnotationListInfo<AnnotationInfo<RequestParam>>> requestParamMap = new ConcurrentHashMap<>();
 	/**
+	 * <包名.类名.方法名,Class元对象>
+	 */
+	public static Map<String, Class<?>> pojoParamMap = new ConcurrentHashMap<>();
+	/**
 	 * <包名.类名.方法名,注解对象>
 	 */
 	public static Map<String, AnnotationInfo<AjaxAccess>> ajaxAccessMap = new ConcurrentHashMap<>();
@@ -240,6 +244,7 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			annoList.setAnnoList(requestParamAnnoList);
 		}
 		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
+		pojoParamMap.put(beanClass.getName()+":"+method.getName(), parameterTypes[2]);
 		LOGGER.debug("RequestParam注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解");
 	}
 	@SuppressWarnings("unchecked")

@@ -16,6 +16,7 @@ import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.invoke.IMethodSelector;
 import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
@@ -70,7 +71,9 @@ public class BaseController<T extends Model> {
 	 */
 	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String cmd,String[] urlparams)  {
 		try {
-			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
+//			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
+			@SuppressWarnings("unchecked")
+			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(this.getClass().getName()+":"+cmd);
 			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass,cmd,urlparams);
 			if (checkPermission(request, response, model)) {
 				execute(request, response, model,requestUrl);
