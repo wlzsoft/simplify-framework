@@ -48,7 +48,8 @@ public class RabbitTemplate implements SendMessageTemplate {
 	@Override
 	public <T> void send(String routingKey, T t) {
 		this.queueName = t.getClass().getSimpleName();
-		this.routingKey = t.getClass().getSimpleName();
+		this.routingKey = routingKey;
+		this.exchange = routingKey;
 		send(queueName, exchange,routingKey, t);
 	}
 
