@@ -24,7 +24,6 @@ import com.meizu.simplify.mvc.view.MessageView;
 import com.meizu.simplify.mvc.view.RedirectView;
 import com.meizu.simplify.mvc.view.TemplateFactory;
 import com.meizu.simplify.util.JsonResolver;
-import com.meizu.simplify.utils.ReflectionGenericUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 

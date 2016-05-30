@@ -18,7 +18,7 @@ import com.meizu.simplify.utils.StringUtil;
 /**
  * 
  * <p><b>Title:</b><i> sql构造器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: TODO 反射待优化</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
