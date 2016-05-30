@@ -1,8 +1,7 @@
 package com.meizu.message.core;
 
-
 /**
- * <p><b>Title:</b><i>TODO</i></p>
+ * <p>消息队列异步处理消息接口</p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2016</p>
