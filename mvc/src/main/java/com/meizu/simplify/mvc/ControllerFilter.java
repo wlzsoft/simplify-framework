@@ -107,10 +107,9 @@ public class ControllerFilter implements Filter {
 		long time = System.currentTimeMillis();
 		Statistics.getReadMap().put(requestUrl, 0);
 		request.setAttribute("params", params);
-		String parName = controllerAnnotationInfo.getMethod();
-		request.setAttribute("cmd", parName);//请求指令，其实就是controller请求方法名
+		String paramName = controllerAnnotationInfo.getMethod();
 		BaseController<?> bs = controllerAnnotationInfo.getObj();
-		bs.process(request, response,requestUrl);
+		bs.process(request, response,requestUrl,paramName);
 		long readtime = System.currentTimeMillis() - time;
 		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+request.getSession().getId());
 		// 记录统计信息

@@ -31,11 +31,11 @@ import com.meizu.simplify.utils.StringUtil;
 public class SystemController<T extends Model> extends BaseController<T> {
 	
 	@Override
-	public final void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl)  {
+	public final void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl,String paramName)  {
 		/*String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";*/
 		request.setAttribute("url", request.getRequestURI());
-		super.process(request, response,requestUrl);
+		super.process(request, response,requestUrl,paramName);
 	}
 	
 	@Override

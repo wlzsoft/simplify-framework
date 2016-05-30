@@ -68,10 +68,10 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl)  {
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String cmd)  {
 		try {
 			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
-			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass);
+			T model = AnalysisRequestControllerModel.setRequestModel(request,entityClass,cmd);
 			if (checkPermission(request, response, model)) {
 				execute(request, response, model,requestUrl);
 			}
