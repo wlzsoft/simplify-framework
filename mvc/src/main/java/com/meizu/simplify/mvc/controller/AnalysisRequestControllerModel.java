@@ -53,18 +53,17 @@ public class AnalysisRequestControllerModel {
 				Class<?> type = parameterTypes[0];//pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
 				String paramName = methodName.substring(3, methodName.length());
 				paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
-
+				Object value = null;
 				// 将值进行格式化后注入
 				if (type.isArray()) {//TODO 针对set属性值为数组类型的处理，需要精细测试，并确认是否有必要，是否目前只为 params 而使用，内嵌的一个属性,通过setAttribute设置，是否也可以从页面传递过来
 					String[] paramValueArr = request.getParameterValues(paramName);
 					if (paramValueArr != null && paramValueArr.length == 1) {
 						paramValueArr = paramValueArr[0].split(",");
 					}
-					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValueArr) });
+					value = paramValueArr;
 				} else if(!isBaseType(type)){
 //					System.out.println(type);
-					Object pojo = setRequestModel(request,type,cmd,urlparams);
-					method.invoke(model, new Object[] { DataUtil.convertType(type, pojo) });
+					value = setRequestModel(request,type,cmd,urlparams);
 				} else {
 					String paramValue = request.getParameter(paramName);
 					if (paramValue == null) {
@@ -76,23 +75,21 @@ public class AnalysisRequestControllerModel {
 					if (method.isAnnotationPresent(ModelSkip.class)) {
 						continue;
 					}
-					method.invoke(model, new Object[] { DataUtil.convertType(type, paramValue) });
+					value = paramValue;
 				}
+				method.invoke(model, new Object[] { DataUtil.convertType(type, value) });
 			}
 			if(modelClass.getSuperclass() != BaseModel.class&&modelClass.getSuperclass() != Model.class) {
 				return model;
 			}
 			//url参数：针对rest风格url参数的设置
-			Method method = modelClass.getMethod("setParams", new Class[] { String[].class });
-			if(method != null) {
-				method.invoke(model, new Object[] { urlparams });
+			Model modelTemp = (Model) model;
+			if(urlparams != null) {
+				modelTemp.setParams(urlparams);
 			}
 			//指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
-			method = modelClass.getMethod("setCmd", new Class[] { String.class });
-			if (method != null) {
-				if(cmd != null) {
-					method.invoke(model, new Object[] { cmd });
-				}
+			if(cmd != null) {
+				modelTemp.setCmd(cmd);
 			}
 			return model;
 		} catch ( Exception e ) {
