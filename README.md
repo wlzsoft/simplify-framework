@@ -169,7 +169,8 @@ http://fishermen.iteye.com/blog/430286
 138.优化ioc模块：在Init注解对应的类中，或是其他初始化的的数据处理中，会出现许多map，具体后续要用到哪些map，还需要找到各自的Init注解标注的类，所以后续的改进是：要做到数据和功能操作分离，
                  要统一对map进行管理，一同一个简单的缓存容器,能够对容器做缓存的增删改。（数据和操作解耦）
 139.优化ioc模块： InitTypeEnum类会影响ioc的独立性，会导入一些特定的组件业务，要保证后续增加组件模块，不会去修改到这个类
-140.反射待优化(class文件)：SQLBuilder,JsonAfterFilter,AnalysisRequestControllerModel,
+140.反射待优化(class文件)：SQLBuilder,SearchByPojoDao的find方法优化
+141.反射待优化(class文件)：JsonAfterFilter,AnalysisRequestControllerModel(优化递归) 优化
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

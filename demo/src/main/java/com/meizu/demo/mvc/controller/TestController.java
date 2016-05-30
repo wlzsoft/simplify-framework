@@ -272,12 +272,12 @@ public class TestController extends SystemController<TestModel> {
 	 * @param ids
 	 * @return
 	 */
-	@RequestMap(path = "/testFormEntityParam")
+	/*@RequestMap(path = "/testFormEntityParam")
 	public String testFormEntityParam(HttpServletRequest request, HttpServletResponse response, Test test, @RequestParam(defaultValue = "0",name="pid") Integer pid, @RequestParam(defaultValue = "0",name="id") String id, @RequestParam(defaultValue = "0",name="ids") String ids) {
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
 		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
 		return result;
-	}
+	}*/
 	@RequestMap(path = "/testFormParam")
 	public String testFormParam(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0",name="pid") Integer pid, @RequestParam(defaultValue = "0",name="id") String id, @RequestParam(defaultValue = "0",name="ids") String ids) {
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");

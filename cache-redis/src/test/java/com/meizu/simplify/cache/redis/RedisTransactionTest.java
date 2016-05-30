@@ -122,7 +122,7 @@ public class RedisTransactionTest {
 	}
 	
 	@AfterClass
-	public void destory() {
+	public static void destory() {
 		pool.close();
 	}
 

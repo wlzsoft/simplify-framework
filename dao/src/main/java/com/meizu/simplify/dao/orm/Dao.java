@@ -246,14 +246,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		Integer key = SQLExecute.executeInsert(sql,new IDataCallback<Integer>(){
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... params) throws SQLException {
+				List<String> cList = sqlBuilder.getOtherIdColumns();
 				for(int j=0; j<tList.size();j++) {
 					T t = tList.get(j);
-					List<Object> values = sqlBuilder.obtainFieldValues(t, currentColumnFieldNames);
-					for (int i=1; i <= values.size();i++) {
-						Object obj = values.get(i-1);
-						prepareStatement.setObject(i+values.size()*j, obj);
+					for (int i=1; i <= cList.size(); i++) {
+						String columnName = cList.get(i-1);
+						Object value = selector.invoke(t, columnName);
+						prepareStatement.setObject(i+cList.size()*j, value);
 //						prepareStatement.setDate(i,new Date(System.currentTimeMillis()));//这里通用处理，无需单独处理日期
-						LOGGER.info("[参数索引:"+i+",值:"+obj+"]");
+						LOGGER.info("[参数索引:"+i+",值:"+value+"]");
 					}
 				}
 				return null;

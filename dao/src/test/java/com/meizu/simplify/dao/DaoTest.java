@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.Startup;
 
@@ -243,6 +244,11 @@ public class DaoTest {
 		for (com.meizu.simplify.dao.entity.Test test : list) {
 			System.out.println(test.getFid()+test.getName());
 		}
+	}
+	@Test
+	public void s10_findByPojoTest() {
+		com.meizu.simplify.dao.entity.Test test = BaseDao.getInsPojo().find(com.meizu.simplify.dao.entity.Test.class, "select fid,name from test_web").get(0);
+		System.out.println(test.getName());
 	}
 	
 	

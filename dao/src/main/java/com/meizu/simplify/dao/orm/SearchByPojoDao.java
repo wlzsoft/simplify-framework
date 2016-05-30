@@ -1,16 +1,16 @@
 package com.meizu.simplify.dao.orm;
 
 import java.sql.PreparedStatement;
-
 import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.utils.ReflectionUtil;
+import com.meizu.simplify.ioc.annotation.Resource;
 
 /**
  * <p><b>Title:</b><i>普通对象操作dao，主要用于查询普通对象结果集</i></p>
@@ -29,6 +29,8 @@ import com.meizu.simplify.utils.ReflectionUtil;
 @Bean
 public class SearchByPojoDao {
 	private static final Logger logger = LoggerFactory.getLogger(SearchByMapDao.class);
+	@Resource
+	private ISqlMethodSelector selector;
 	/**
 	 * 
 	 * 方法用途: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
@@ -49,8 +51,7 @@ public class SearchByPojoDao {
 			public T resultCall(String columnLabel, Object val,T t) {
 				try {
 					if(val != null) {
-						Class<?> valClazz = val.getClass();
-						ReflectionUtil.invokeSetterMethod(t, columnLabel, val,valClazz);
+						selector.invokeSet(t, columnLabel, val);
 					}
 				} catch(IllegalArgumentException ex) {
 					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());

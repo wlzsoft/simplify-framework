@@ -1,6 +1,5 @@
 package com.meizu.simplify.dao.orm;
 import java.lang.reflect.Field;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,46 +63,7 @@ public class SQLBuilder<T> {
     		return this.tableName+"_"+tableIndexLocal.get();
     	}
 	}
-   
      
-    /**
-     * 提供给生成新增SQL 使用
-     * 
-     * @param t
-     * @param currentColumnFieldNames
-     * @param columnsNames 
-     * @return
-     */
-    public List<Object> obtainFieldValues(T t,Map<String, String> currentColumnFieldNames) {
-        List<Object> values = new LinkedList<Object>();
-        for (String column : otherIdColumns) {
-            Field field = ReflectionUtil.getField(t,currentColumnFieldNames.get(column));
-            
-            Object value = null;
-            try {
-            	value = field.get(t);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            
-        	if(value != null) {
-//        			value = handleValue(value);//TODO
-    		} else {
-    			if(field.getType().equals(Date.class)) {
-//    				value = "null";
-    			} else if(field.getType().equals(Integer.class)){
-    				value = 0;
-    			} else {
-//    	            value = "''";
-    	        }
-    		}
-            values.add(value);
-        }
-        return values;
-    }
-    
     /**
      * 提供给生成count SQL 使用
      * 
@@ -189,27 +149,6 @@ public class SQLBuilder<T> {
         
 	}
     
-
-
-
-    /**
-     * 生成新增的SQL--非预处理方式，statement方式
-     * 
-     * @param t
-     * @param currentColumnFieldNames
-     * @return
-     */
-    public String create(T t, Map<String, String> currentColumnFieldNames) {
-        List<Object> values = obtainFieldValues(t, currentColumnFieldNames);
-        StringBuilder sqlBuild = new StringBuilder();
-        sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                .append(otherIdColumnsStr).append(")values(")
-                .append(StringUtil.join(values, ",")).append(")");
-        String sql = sqlBuild.toString();
-         
-        logger.info("生成的SQL为: " + sql);
-        return sql;
-    }
     
     /**
      * 生成新增的SQL--预处理方式，prestatement方式
