@@ -52,7 +52,6 @@ public class ModelSelector implements IModelSelector{
 					}
 					value = paramValueArr;
 				} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
-					// System.out.println(type);
 					value = setRequestModel(request, type, cmd, urlparams);
 				} else {
 					String paramValue = request.getParameter(paramName);
