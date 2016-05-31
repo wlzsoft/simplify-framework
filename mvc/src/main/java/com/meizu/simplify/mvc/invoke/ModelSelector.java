@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.model;
+package com.meizu.simplify.mvc.invoke;
 
 import java.lang.reflect.Method;
 
@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.controller.AnalysisRequestControllerModel;
+import com.meizu.simplify.mvc.model.ModelSkip;
 import com.meizu.simplify.utils.DataUtil;
 
 /**

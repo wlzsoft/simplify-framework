@@ -15,7 +15,7 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.invoke.IMethodSelector;
-import com.meizu.simplify.mvc.model.IModelSelector;
+import com.meizu.simplify.mvc.invoke.IModelSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.mvc.view.IPageTemplate;

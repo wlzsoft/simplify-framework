@@ -1,8 +1,12 @@
 package com.meizu.simplify.codegen;
-
+import java.lang.reflect.Method;
+import javax.servlet.http.HttpServletRequest;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.dao.invoke.IGenModelSelector;
+import com.meizu.simplify.mvc.model.IModelSelector;
+import com.meizu.simplify.mvc.controller.AnalysisRequestControllerModel;
+import com.meizu.simplify.mvc.model.ModelSkip;
 <%for(tag in tagList){%>
 import ${tag.clazz};
 <%}%>
@@ -31,29 +35,44 @@ public class GenModelSelector implements IModelSelector{
 			T model = modelClass.newInstance();
 			Method[] modelMethodArr = modelClass.getMethods();
 			for (int i = 0; i < modelMethodArr.length; i++) {
+				Method method = modelMethodArr[i];
+				String methodName = method.getName();
+				if (methodName.indexOf("set") < 0) {
+					continue;
+				}
+				Class<?>[] parameterTypes = method.getParameterTypes();
+				if (parameterTypes.length != 1) {
+					continue;
+				}
+				Class<?> type = parameterTypes[0];// pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
+				Object value = null;
+				// 将值进行格式化后注入
+				if (type.isArray()) {// 目前只为 params 而使用，内嵌的一个属性
+					continue;
+				} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
+					value = setRequestModel(request, type);
+				} else {
+					String paramName = methodName.substring(3, methodName.length());
+					paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
+					String paramValue = request.getParameter(paramName);
+					if (paramValue == null) {
+						continue;
+					}
+					paramValue = AnalysisRequestControllerModel.analysisModelScope(method, paramValue);
+					paramValue = AnalysisRequestControllerModel.analysisModelCharsFilter(method, paramValue);
+					// 是否滤过
+					if (method.isAnnotationPresent(ModelSkip.class)) {
+						continue;
+					}
+					value = paramValue;
+				}
+				invokeSet(model,methodName,value);
 			}
+			return model;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);
 		}
-	}
-	
-	public Object invoke(Object t, String columnName) {
-		Object result = null;
-		String clazzName = t.getClass().getSimpleName();
-		try {
-			switch(clazzName+":"+columnName) {
-			    <%for(methodTag in methodTagList){%>
-					<%if(methodTag.returnType != "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
-				case "${methodTag.clazz}:${methodTag.fieldName}":
-					result = ((${methodTag.clazz})t).${methodTag.value}();
-					break;
-    		    <%}}}}%>
-			}
-		} catch (Exception e) {
-			Message.error(e.getMessage());
-		}
-		return result;
 	}
 	
 	public void invokeSet(Object t, String columnName, Object val) {
@@ -61,11 +80,11 @@ public class GenModelSelector implements IModelSelector{
 		try {
 			switch(clazzName+":"+columnName) {
 			    <%for(methodTag in methodTagList){%>
-					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
-				case "${methodTag.clazz}:${methodTag.fieldName}":
+					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){if(methodTag.fieldName!="params"){if(methodTag.fieldName!="cmd"){%>
+				case "${methodTag.clazz}:${methodTag.value}":
 					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%>(${param.name})val<%}%>);
 					break;
-    		    <%}}}}%>
+    		    <%}}}}}}%>
 			}
 		} catch (Exception e) {
 			Message.error(e.getMessage());

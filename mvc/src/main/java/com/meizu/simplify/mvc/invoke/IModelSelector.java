@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.model;
+package com.meizu.simplify.mvc.invoke;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -287,6 +287,10 @@ public class TestController extends SystemController<TestModel> {
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
 	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer pid, @RequestParam(defaultValue = "0", index = 2) String id, @RequestParam(defaultValue = "0", index = 3) String ids)  {
  
+		Test test = model.getTest();
+		if(test!= null) {
+			System.out.println("测试类名称:"+test.getName());
+		}
 		// 检查是否id为空
 		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
 		
