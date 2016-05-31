@@ -1,18 +1,12 @@
 package com.meizu.simplify.mvc.controller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.model.BaseModel;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.model.ModelCharsFilter;
 import com.meizu.simplify.mvc.model.ModelScope;
-import com.meizu.simplify.mvc.model.ModelSkip;
-import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**

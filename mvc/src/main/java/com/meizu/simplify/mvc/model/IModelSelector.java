@@ -1,7 +1,5 @@
 package com.meizu.simplify.mvc.model;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
