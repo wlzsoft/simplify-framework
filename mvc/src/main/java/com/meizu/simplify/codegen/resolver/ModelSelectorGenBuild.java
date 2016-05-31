@@ -114,7 +114,7 @@ public class ModelSelectorGenBuild {
 	/**
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
-	 * @param args com.meizu.demo.mvc.model com.meizu.demo.mvc.entity 多个参数用空格隔开
+	 * @param args com.meizu.demo.mvc.model,com.meizu.demo.mvc.entity 多个参数用逗号隔开
 	 */
 	public static void main(String[] args) {
 		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());

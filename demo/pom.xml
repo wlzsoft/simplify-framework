@@ -311,6 +311,8 @@
 								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.ModelSelectorGenBuild"  args="com.meizu.demo.mvc.model,com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
+							</java>
 							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.SqlByDaoEntityGenBuild"  args="com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
 							</java>
 						</target>
