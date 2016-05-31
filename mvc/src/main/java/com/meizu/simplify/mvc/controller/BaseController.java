@@ -77,9 +77,8 @@ public class BaseController<T extends Model> {
 //			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
 			@SuppressWarnings("unchecked")
 			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(this.getClass().getName()+":"+cmd);
-			T model = modelSelector.setRequestModel(request, entityClass, cmd, urlparams);
+			T model = modelSelector.setRequestModel(request, entityClass);
 			model = AnalysisRequestControllerModel.setBaseModel(entityClass, cmd, urlparams, model);
-//			modelSelector
 			if (checkPermission(request, response, model)) {
 				execute(request, response, model,requestUrl);
 			}

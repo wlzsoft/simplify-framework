@@ -13,15 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.codegen.CodeGenUtil;
-import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 /**
- * <p><b>Title:</b><i>dao的entity转sql的代码生成处理</i></p>
+ * <p><b>Title:</b><i>mvc的model注入的代码生成处理</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -33,45 +33,45 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-public class SqlByDaoEntityGenBuild {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SqlByDaoEntityGenBuild.class);
-	public static void init(String entityClassPath,CodeGenUtil gen) {
+public class ModelSelectorGenBuild {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ModelSelectorGenBuild.class);
+	public static void init(String modelClassPath,CodeGenUtil gen) {
 		/**
 		 * <类名,类对应requestMap方法列表>
 		 */
 		Map<Class<?>,List<Method>> methodMap = new HashMap<>();
 		// 查找指定class路径
-		if (entityClassPath != null) {
-			String[] classPathArr = entityClassPath.split(",");
+		if (modelClassPath != null) {
+			String[] classPathArr = modelClassPath.split(",");
 			for (String cpath : classPathArr) {
-				List<Class<?>> entityClassList = ClassUtil.findClassesByAnnotationClass(Entity.class, cpath);
-				if (entityClassList == null || entityClassList.size()<=0) {
-					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Entity被注册，请检查config.properties文件system.entityClasspath的配置");
+				List<Class<?>> modelClassList = ClassUtil.findClassesByParentClass(Model.class, cpath);
+				if (modelClassList == null || modelClassList.size()<=0) {
+					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Model被注册，请检查config.properties文件system.modelClasspath的配置");
 				}
-				for (Class<?> entityClass : entityClassList) {
+				for (Class<?> modelClass : modelClassList) {
 					List<Method> methodArr = null;
 					try {
-//						methodArr = entityClass.getDeclaredMethods();
-						methodArr = ReflectionUtil.getAllMethod(entityClass);
+//						methodArr = modelClass.getDeclaredMethods();
+						methodArr = ReflectionUtil.getAllMethod(modelClass);
 					} catch(NoClassDefFoundError e) {
 						e.printStackTrace();
-						throw new BaseException("代码生成：bean["+entityClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+						throw new BaseException("代码生成：bean["+modelClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
 					}
 					if(methodArr.size()>0) {
-						methodMap.put(entityClass, methodArr);
+						methodMap.put(modelClass, methodArr);
 					}
 				}
 			}
 			Map<String,Object> parameters = new HashMap<>();
 			Set<Entry<Class<?>, List<Method>>> set = methodMap.entrySet();
-			List<Map<String,String>> entityTagList = new ArrayList<>();
-			List<Map<String,Object>> entityMethodTagList = new ArrayList<>();
+			List<Map<String,String>> modelTagList = new ArrayList<>();
+			List<Map<String,Object>> modelMethodTagList = new ArrayList<>();
 			for (Entry<Class<?>, List<Method>> entry : set) {
 				//类信息抽取
 				Map<String,String> map = new HashMap<>();
 				map.put("clazz", entry.getKey().getName());
 				map.put("value", entry.getKey().getSimpleName().toLowerCase());
-				entityTagList.add(map);
+				modelTagList.add(map);
 				//方法信息抽取
 				List<Method> methodInfoList = entry.getValue();
 				for (Method method : methodInfoList) {
@@ -88,15 +88,15 @@ public class SqlByDaoEntityGenBuild {
 					subMap.put("isFinal", isFinal);
 					subMap.put("params", parameterTypes);
 					//方法参数类型抽取
-					entityMethodTagList.add(subMap);
+					modelMethodTagList.add(subMap);
 				}
 			}
-			parameters.put("tagList", entityTagList);
-			parameters.put("methodTagList", entityMethodTagList);
-			String javaFileName = "GenSqlByDaoEntity.java";
+			parameters.put("tagList", modelTagList);
+			parameters.put("methodTagList", modelMethodTagList);
+			String javaFileName = "GenModelSelector.java";
 			String codegenPath = ClassUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
 			gen.gen(parameters, codegenPath,javaFileName);
-			LOGGER.info("Framework codegen [dao代码已生成==>>"+codegenPath+javaFileName+"]");
+			LOGGER.info("Framework codegen [model代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
 	}
 	public static void main(String[] args) {

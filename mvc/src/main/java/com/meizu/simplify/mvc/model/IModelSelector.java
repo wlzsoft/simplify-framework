@@ -25,9 +25,7 @@ public interface IModelSelector {
 	 * 操作步骤: 目前限制只能注入Model类型的实体<br>
 	 * @param request
 	 * @param modelClass
-	 * @param cmd
-	 * @param urlparams
 	 * @return
 	 */
-	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass, String cmd, String[] urlparams);
+	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass);
 }

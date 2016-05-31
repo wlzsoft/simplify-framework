@@ -1,0 +1,74 @@
+package com.meizu.simplify.codegen;
+
+import com.meizu.simplify.config.info.Message;
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.dao.invoke.IGenModelSelector;
+<%for(tag in tagList){%>
+import ${tag.clazz};
+<%}%>
+<% 
+ var date = date();
+%>
+/**
+ * <p><b>Title:</b><i>动态方法选择器</i></p>
+ * <p>Desc: 基于反射机制实现，性能校差,用于debug模式，方便开发阶段测试</p>
+ * <p>source folder:{@docRoot}</p>
+ * <p>Copyright:Copyright(c)2014</p>
+ * <p>Company:meizu</p>
+ * <p>Create Date:${date,dateFormat='yyyy年MM月dd日 HH:mm:ss'}</p>
+ * <p>Modified By:luchuangye-</p>
+ * <p>Modified Date:${date,dateFormat='yyyy年MM月dd日 HH:mm:ss'}</p>
+ * @author <a href="mailto:luchuangye@meizu.com">luchuangye</a>
+ * @version Version 0.1
+ *
+ */
+@Bean
+public class GenModelSelector implements IModelSelector{
+	
+	@Override
+	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass)  {
+		try {
+			T model = modelClass.newInstance();
+			Method[] modelMethodArr = modelClass.getMethods();
+			for (int i = 0; i < modelMethodArr.length; i++) {
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new UncheckedException(e);
+		}
+	}
+	
+	public Object invoke(Object t, String columnName) {
+		Object result = null;
+		String clazzName = t.getClass().getSimpleName();
+		try {
+			switch(clazzName+":"+columnName) {
+			    <%for(methodTag in methodTagList){%>
+					<%if(methodTag.returnType != "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
+				case "${methodTag.clazz}:${methodTag.fieldName}":
+					result = ((${methodTag.clazz})t).${methodTag.value}();
+					break;
+    		    <%}}}}%>
+			}
+		} catch (Exception e) {
+			Message.error(e.getMessage());
+		}
+		return result;
+	}
+	
+	public void invokeSet(Object t, String columnName, Object val) {
+		String clazzName = t.getClass().getSimpleName();
+		try {
+			switch(clazzName+":"+columnName) {
+			    <%for(methodTag in methodTagList){%>
+					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
+				case "${methodTag.clazz}:${methodTag.fieldName}":
+					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%>(${param.name})val<%}%>);
+					break;
+    		    <%}}}}%>
+			}
+		} catch (Exception e) {
+			Message.error(e.getMessage());
+		}
+	}
+}

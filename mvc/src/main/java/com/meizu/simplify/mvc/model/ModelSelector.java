@@ -26,7 +26,7 @@ import com.meizu.simplify.utils.DataUtil;
 public class ModelSelector implements IModelSelector{
 	
 	@Override
-	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass, String cmd, String[] urlparams)  {
+	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass)  {
 		try {
 			T model = modelClass.newInstance();
 			Method[] modelMethodArr = modelClass.getMethods();
@@ -41,19 +41,15 @@ public class ModelSelector implements IModelSelector{
 					continue;
 				}
 				Class<?> type = parameterTypes[0];// pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
-				String paramName = methodName.substring(3, methodName.length());
-				paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
 				Object value = null;
 				// 将值进行格式化后注入
-				if (type.isArray()) {// TODO 针对set属性值为数组类型的处理，需要精细测试，并确认是否有必要，是否目前只为 params 而使用，内嵌的一个属性,通过setAttribute设置，是否也可以从页面传递过来
-					String[] paramValueArr = request.getParameterValues(paramName);
-					if (paramValueArr != null && paramValueArr.length == 1) {
-						paramValueArr = paramValueArr[0].split(",");
-					}
-					value = paramValueArr;
+				if (type.isArray()) {// 目前只为 params 而使用，内嵌的一个属性
+					continue;
 				} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
-					value = setRequestModel(request, type, cmd, urlparams);
+					value = setRequestModel(request, type);
 				} else {
+					String paramName = methodName.substring(3, methodName.length());
+					paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
 					String paramValue = request.getParameter(paramName);
 					if (paramValue == null) {
 						continue;
