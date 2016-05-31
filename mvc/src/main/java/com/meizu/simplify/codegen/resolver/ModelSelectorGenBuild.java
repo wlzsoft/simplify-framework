@@ -48,7 +48,9 @@ public class ModelSelectorGenBuild {
 				List<Class<?>> modelClassList = ClassUtil.findClassesByParentClass(Model.class, cpath);
 				Class<Annotation> entityClass = null;
 				try {
-					entityClass = (Class<Annotation>) Class.forName("com.meizu.simplify.entity.annotations.Entity");
+					@SuppressWarnings({"unchecked" })
+					Class<Annotation> entityClassTemp = (Class<Annotation>) Class.forName("com.meizu.simplify.entity.annotations.Entity");
+					entityClass = entityClassTemp;
 				} catch (ClassNotFoundException e1) {
 					e1.printStackTrace();
 					throw new UncheckedException("Entity注解加载失败");

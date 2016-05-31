@@ -43,7 +43,7 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 		}
 		return result;
 	}
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void invokeSet(Object t, String columnName, Object val) {
 		String clazzName = t.getClass().getSimpleName();

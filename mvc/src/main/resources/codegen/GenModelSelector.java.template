@@ -1,7 +1,6 @@
 package com.meizu.simplify.codegen;
 import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.invoke.IModelSelector;
@@ -29,52 +28,57 @@ import ${tag.clazz};
 @Bean
 public class GenModelSelector implements IModelSelector{
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass)  {
-		try {
-			T model = modelClass.newInstance();
-			Method[] modelMethodArr = modelClass.getMethods();
-			for (int i = 0; i < modelMethodArr.length; i++) {
-				Method method = modelMethodArr[i];
-				String methodName = method.getName();
-				if (methodName.indexOf("set") < 0) {
-					continue;
-				}
-				Class<?>[] parameterTypes = method.getParameterTypes();
-				if (parameterTypes.length != 1) {
-					continue;
-				}
-				Class<?> type = parameterTypes[0];// pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
-				Object value = null;
-				// 将值进行格式化后注入
-				if (type.isArray()) {// 目前只为 params 而使用，内嵌的一个属性
-					continue;
-				} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
-					value = setRequestModel(request, type);
-				} else {
-					String paramName = methodName.substring(3, methodName.length());
-					paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
-					String paramValue = request.getParameter(paramName);
-					if (paramValue == null) {
-						continue;
-					}
-					paramValue = AnalysisRequestControllerModel.analysisModelScope(method, paramValue);
-					paramValue = AnalysisRequestControllerModel.analysisModelCharsFilter(method, paramValue);
-					// 是否滤过
-					if (method.isAnnotationPresent(ModelSkip.class)) {
-						continue;
-					}
-					value = paramValue;
-				}
-				invokeSet(model,methodName,value);
+		T model = null;
+		String clazzName = modelClass.getName();
+		switch(clazzName) {
+			<%for(tag in tagList){%>
+			case "${tag.clazz}" : {
+				model = (T) new ${tag.clazz}();
+				break;
 			}
-			return model;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new UncheckedException(e);
+			<%}%>
 		}
+		Method[] modelMethodArr = modelClass.getMethods();
+		for (int i = 0; i < modelMethodArr.length; i++) {
+			Method method = modelMethodArr[i];
+			String methodName = method.getName();
+			if (methodName.indexOf("set") < 0) {
+				continue;
+			}
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			if (parameterTypes.length != 1) {
+				continue;
+			}
+			Class<?> type = parameterTypes[0];// pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
+			Object value = null;
+			// 将值进行格式化后注入
+			if (type.isArray()) {// 目前只为 params 而使用，内嵌的一个属性
+				continue;
+			} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
+				value = setRequestModel(request, type);
+			} else {
+				String paramName = methodName.substring(3, methodName.length());
+				paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
+				String paramValue = request.getParameter(paramName);
+				if (paramValue == null) {
+					continue;
+				}
+				paramValue = AnalysisRequestControllerModel.analysisModelScope(method, paramValue);
+				paramValue = AnalysisRequestControllerModel.analysisModelCharsFilter(method, paramValue);
+				// 是否滤过
+				if (method.isAnnotationPresent(ModelSkip.class)) {
+					continue;
+				}
+				value = paramValue;
+			}
+			invokeSet(model,methodName,value);
+		}
+		return model;
 	}
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void invokeSet(Object t, String columnName, Object val) {
 		String clazzName = t.getClass().getSimpleName();
 		try {
