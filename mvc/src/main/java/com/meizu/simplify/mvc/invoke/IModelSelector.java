@@ -1,8 +1,13 @@
 package com.meizu.simplify.mvc.invoke;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
+import com.meizu.simplify.mvc.controller.AnalysisRequestControllerModel;
+import com.meizu.simplify.mvc.model.ModelSkip;
+import com.meizu.simplify.utils.DataUtil;
 
 /**
   * <p><b>Title:</b><i>controller表单对象选择器</i></p>
@@ -28,4 +33,37 @@ public interface IModelSelector {
 	 * @return
 	 */
 	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass);
+	default Object setModelPropertie(HttpServletRequest request, Method method, String methodName) {
+		if (methodName.indexOf("set") < 0) {
+			return null;
+		}
+		Class<?>[] parameterTypes = method.getParameterTypes();
+		if (parameterTypes.length != 1) {
+			return null;
+		}
+		Class<?> type = parameterTypes[0];// pojo类的的set方法只有一个参数，所以这里写死读取第一个参数
+		Object value = null;
+		// 将值进行格式化后注入
+		if (type.isArray()) {// 目前只为 params 而使用，内嵌的一个属性
+			return null;
+		} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
+			value = setRequestModel(request, type);
+		} else {
+			String paramName = methodName.substring(3, methodName.length());
+			paramName = Character.toLowerCase(paramName.charAt(0)) + paramName.substring(1);
+			String paramValue = request.getParameter(paramName);
+			if (paramValue == null) {
+				return null;
+			}
+			paramValue = AnalysisRequestControllerModel.analysisModelScope(method, paramValue);
+			paramValue = AnalysisRequestControllerModel.analysisModelCharsFilter(method, paramValue);
+			// 是否滤过
+			if (method.isAnnotationPresent(ModelSkip.class)) {
+				return null;
+			}
+			value = paramValue;
+		}
+		value = DataUtil.convertType(type, value);//是否需要删除,不保留这个逻辑 TODO
+		return value;
+	}
 }
