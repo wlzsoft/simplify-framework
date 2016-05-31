@@ -1,5 +1,6 @@
 package com.meizu.simplify.codegen.resolver;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class ModelSelectorGenBuild {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModelSelectorGenBuild.class);
 	public static void init(String modelClassPath,CodeGenUtil gen) {
 		/**
-		 * <类名,类对应requestMap方法列表>
+		 * <类名,类对应方法列表>
 		 */
 		Map<Class<?>,List<Method>> methodMap = new HashMap<>();
 		// 查找指定class路径
@@ -45,6 +46,15 @@ public class ModelSelectorGenBuild {
 			String[] classPathArr = modelClassPath.split(",");
 			for (String cpath : classPathArr) {
 				List<Class<?>> modelClassList = ClassUtil.findClassesByParentClass(Model.class, cpath);
+				Class<Annotation> entityClass = null;
+				try {
+					entityClass = (Class<Annotation>) Class.forName("com.meizu.simplify.entity.annotations.Entity");
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+					throw new UncheckedException("Entity注解加载失败");
+				}
+				List<Class<?>> entityClassList = ClassUtil.findClassesByAnnotationClass(entityClass, cpath);
+				modelClassList.addAll(entityClassList);
 				if (modelClassList == null || modelClassList.size()<=0) {
 					throw new UncheckedException("代码生成：没有扫描到配置的路径["+cpath+"]有任何Model被注册，请检查config.properties文件system.modelClasspath的配置");
 				}
@@ -99,6 +109,11 @@ public class ModelSelectorGenBuild {
 			LOGGER.info("Framework codegen [model代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
 	}
+	/**
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param args com.meizu.demo.mvc.model com.meizu.demo.mvc.entity 多个参数用空格隔开
+	 */
 	public static void main(String[] args) {
 		CodeGenUtil gen = new CodeGenUtil(new BeetlTemplate());
 		init(args[0], gen);
