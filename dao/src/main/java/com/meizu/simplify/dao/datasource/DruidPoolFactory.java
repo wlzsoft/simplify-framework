@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.dao.exception.DataAccessException;
+import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.utils.PropertieUtil;
 
 /**
@@ -124,6 +125,7 @@ public class DruidPoolFactory {
 			dataSource.init();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new StartupErrorException("sql数据库连接失败");
 		}
 		return dataSource;
 	}
