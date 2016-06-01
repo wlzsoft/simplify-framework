@@ -1,9 +1,12 @@
 package com.meizu.simplify.codegen;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.meizu.simplify.template.BeetlTemplate;
@@ -27,8 +30,18 @@ public class ControllerMethodCodeGenTest {
 	public void test() throws IOException {
 		ITemplate template = new BeetlTemplate();
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("a","b");
-		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "/codegen/",".html");
-		System.out.println(javafileinfo);
+		List<Map<String,String>> controllerTagList = new ArrayList<>();
+		Map<String,String> map = new HashMap<>();
+		map.put("clazz", "com.meizu.test.Test");
+		map.put("value", "test1");
+		controllerTagList.add(map);
+		Map<String,String> map2 = new HashMap<>();
+		map2.put("clazz", "com.meizu.test.Test");
+		map2.put("value", "test2");
+		controllerTagList.add(map2);
+		parameters.put("controllerTagList",controllerTagList);
+		String javafileinfo = template.render(parameters, "GenMethodSelector.java", "/codegen/",".template");
+//		System.out.println(javafileinfo);
+		Assert.assertNotEquals(javafileinfo, "");
 	}
 }

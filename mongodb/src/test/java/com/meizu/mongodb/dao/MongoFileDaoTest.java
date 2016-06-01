@@ -1,7 +1,7 @@
 package com.meizu.mongodb.dao;
 
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.meizu.simplify.ioc.Startup;
@@ -21,8 +21,8 @@ import com.meizu.simplify.ioc.Startup;
  */
 public class MongoFileDaoTest {
 
-	@Before  
-    public void setUp() throws Exception {  
+	@BeforeClass  
+    public static void setUp() {  
 		Startup.start();  
     } 
 	
