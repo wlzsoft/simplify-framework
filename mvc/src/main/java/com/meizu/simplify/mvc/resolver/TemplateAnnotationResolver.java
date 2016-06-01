@@ -15,6 +15,7 @@ import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.template.annotation.TemplateType;
+import com.meizu.simplify.util.CacheManager;
 import com.meizu.simplify.utils.CollectionUtil;
 
 /**
@@ -34,7 +35,9 @@ import com.meizu.simplify.utils.CollectionUtil;
 public class TemplateAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(TemplateAnnotationResolver.class);
 	public static Map<String, IPageTemplate> templateMap = new ConcurrentHashMap<>();
-	
+	public TemplateAnnotationResolver() {
+		CacheManager.addCache("templateMap", templateMap);
+	}
 	@Override	
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();

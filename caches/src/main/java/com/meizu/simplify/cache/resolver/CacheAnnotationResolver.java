@@ -20,6 +20,7 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.util.CacheManager;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -39,6 +40,9 @@ public class CacheAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(CacheAnnotationResolver.class);
 	
 	public static final Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = new ConcurrentHashMap<>();
+	public CacheAnnotationResolver() {
+		CacheManager.addCache("cacheAnnotationInfoMap",cacheAnnotationInfoMap);
+	}
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();

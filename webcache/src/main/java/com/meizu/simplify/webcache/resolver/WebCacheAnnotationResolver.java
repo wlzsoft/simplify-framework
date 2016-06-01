@@ -15,6 +15,7 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.util.CacheManager;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.exception.WebCacheException;
 
@@ -36,6 +37,9 @@ public class WebCacheAnnotationResolver implements IAnnotationResolver<Class<?>>
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebCacheAnnotationResolver.class);
 	
 	public static final Map<String,AnnotationInfo<WebCache>> webCacheAnnotationInfoMap = new ConcurrentHashMap<>();
+	public WebCacheAnnotationResolver() {
+		CacheManager.addCache("webCacheAnnotationInfoMap", webCacheAnnotationInfoMap);
+	}
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		BeanContainer container = BeanFactory.getBeanContainer();

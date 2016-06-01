@@ -32,6 +32,7 @@ import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.util.CacheManager;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -129,6 +130,12 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 					}
 				}
 			}
+			CacheManager.addCache("controllerMap",controllerMap);
+			CacheManager.addCache("controllerRegularExpressionsList",controllerRegularExpressionsList);
+			CacheManager.addCache("requestParamMap",requestParamMap);
+			CacheManager.addCache("pojoParamMap",pojoParamMap);
+			CacheManager.addCache("ajaxAccessMap",ajaxAccessMap);
+			CacheManager.addCache("webCacheMap",webCacheMap);
 			LOGGER.info("Framework 测试模式是否开启 -> " + config.getDebug());
 			LOGGER.info("Framework 页面缓存总数[url请求] -> " + config.getPageCacheCount());
 			LOGGER.info("Framework 字符编码格式 -> " + config.getCharset());
