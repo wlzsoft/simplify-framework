@@ -136,6 +136,7 @@ public final class Startup {
 		void invoke(IAnnotationResolver<Class<?>> ianno,Class<?> beanClass);
 	}
 
+	private static List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, Constants.packagePrefix);
 	/**
 	 * 方法用途: 应用程序退出的触发条件<br>
 	 * 操作步骤: 1.自动结束：应用没有存活线程或只有后台线程时
@@ -144,7 +145,6 @@ public final class Startup {
 		4.kill -9 强制退出<br>
 	 */
 	public static void stop() {
-		List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, Constants.packagePrefix);
 		for (Class<?> clazz : classList) {
 			IStopRelease isr = BeanFactory.getBean(clazz.getName());
 			isr.release();
