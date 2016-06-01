@@ -95,7 +95,7 @@
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
         <repository>
-            <id>nexus-release</id>
+            <id>nexus-releases</id>
             <name>User Porject Release</name>
             <url>http://10.2.67.20:8081/nexus/content/repositories/releases/</url>
         </repository>
