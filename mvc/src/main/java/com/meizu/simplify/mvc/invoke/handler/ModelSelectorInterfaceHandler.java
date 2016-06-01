@@ -35,6 +35,6 @@ public class ModelSelectorInterfaceHandler implements IInterfaceHandler{
 				return methodSelectorClazz;
 			}
 		}
-		throw new StartupErrorException("请检查IMethodSelector是否有非默认实现类");
+		throw new StartupErrorException("请检查IModelSelector是否有非默认实现类");
 	}
 }
