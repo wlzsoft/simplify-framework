@@ -60,7 +60,7 @@ public class JSONLayout extends Layout {
 	}
 
 	protected void writeBasic(Log4JEntity entity, LoggingEvent event) throws Exception {
-		entity.setClassName(event.categoryName);
+		entity.setClassName(event.getLoggerName());
 		entity.setLevel(event.getLevel().toString());
 		entity.setCreateTime(DateUtil.format(System.currentTimeMillis(),DateFormatEnum.YEAR_TO_MILLISECOND));
 		entity.setMessage(event.getMessage());
