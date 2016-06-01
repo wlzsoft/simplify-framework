@@ -34,7 +34,7 @@ import com.mongodb.client.model.Filters;
  */
 public class MongoFileDao<T>{
 	
-	public static  MongoDatabase db;
+	public MongoDatabase db;
 	
 	public MongoFileDao() {
 		
@@ -92,13 +92,17 @@ public class MongoFileDao<T>{
 	 * @return
 	 */
 	public byte[] downloadStreamByName(String name) {
-		GridFSBucket gridFSBucket = GridFSBuckets.create(db);
-		GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStreamByName(name);
-		int fileLength = (int) downloadStream.getGridFSFile().getLength();
-		byte[] bytesToWriteTo = new byte[fileLength];
-		downloadStream.read(bytesToWriteTo);
-		downloadStream.close();
-		return bytesToWriteTo;
+		try {
+			GridFSBucket gridFSBucket = GridFSBuckets.create(db);
+			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStreamByName(name);
+			int fileLength = (int) downloadStream.getGridFSFile().getLength();
+			byte[] bytesToWriteTo = new byte[fileLength];
+			downloadStream.read(bytesToWriteTo);
+			downloadStream.close();
+			return bytesToWriteTo;
+		} catch (Exception e) {
+			return new byte[0];
+		}
 	}
 	
 	/**

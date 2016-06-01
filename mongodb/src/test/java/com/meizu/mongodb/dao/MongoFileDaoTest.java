@@ -1,9 +1,14 @@
 package com.meizu.mongodb.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.meizu.mongodb.DataBase;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
 
 /**
@@ -29,29 +34,29 @@ public class MongoFileDaoTest {
 	
 	@Test
 	public void testSave() {
-//		DataBase dataBase = new DataBase();
-//		dataBase.setToken("fdfdfdfdf");
-//		dataBase.setContentType("text/plain");
-//		try {
-//			DefaultMongoDao systemLogDao = BeanFactory.getBean(DefaultMongoDao.class);
-//			InputStream streamToUploadFrom = new FileInputStream(new File("E:/daily.log"));
-//			String l=systemLogDao.save(streamToUploadFrom, "测试名称", dataBase);
-//			System.out.println(l.toString());
-//		} catch (FileNotFoundException e) {
-//			System.out.println(e);
-//		}
+		DataBase dataBase = new DataBase();
+		dataBase.setToken("33333333");
+		dataBase.setContentType("text/plain");
+		try {
+			DefautlMongoFileDao dao = BeanFactory.getBean(DefautlMongoFileDao.class);
+			InputStream streamToUploadFrom =new  FileInputStream(new File("E:/daily.log"));
+			String fileId=dao.save(streamToUploadFrom, "ss55555", dataBase);
+			System.out.println(fileId);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 	@Test
 	public void testDown() {
-//		DataBase dataBase = new DataBase();
-//		dataBase.setToken("fdfdfdfdf");
-//		try {
-//			DefaultMongoDao systemLogDao = BeanFactory.getBean(DefaultMongoDao.class);
-//			byte[] tt=systemLogDao.downloadStreamByName("测试名称");
-//			System.out.println(tt.length);
-//		} catch (Exception e) {
-//			System.out.println(e);
-//		}
+		DataBase dataBase = new DataBase();
+		dataBase.setToken("fdfdfdfdf");
+		try {
+			DefautlMongoFileDao dao = BeanFactory.getBean(DefautlMongoFileDao.class);
+			byte[] tt=dao.downloadStreamByName("ss55555");
+			System.out.println(tt.length);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 	@Test
 	public void findById() {
