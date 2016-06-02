@@ -50,6 +50,17 @@
    <listener-class>com.meizu.simplify.listener.StartUpListener</listener-class>
   </listener>
 
+  <!-- @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter") -->
+  <filter>
+  	<filter-name>ControllerFilter</filter-name>
+  	<filter-class>com.meizu.simplify.mvc.ControllerFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>ControllerFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
   <!-- ==================================================================== -->
   <!-- Context params to control Session Cookies                            -->
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
