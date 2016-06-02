@@ -22,7 +22,7 @@
 	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
 		</repository>
 		
-		<repository>
+		<!-- <repository>
             <id>oschina</id>
             <name>Oschina Releases</name>
             <url>http://maven.oschina.net/content/groups/public</url>
@@ -32,7 +32,7 @@
 			<id>simpleify</id> 
 			<name>simpleify beta</name>
 			<url>https://raw.github.com/simpleify/repository/master</url>
-		</repository>
+		</repository> -->
 		
 	</repositories>
 	
@@ -45,11 +45,11 @@
 	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
 		</pluginRepository>
 		
-		<pluginRepository>
+		<!-- <pluginRepository>
             <id>oschina</id>
             <name>Oschina Releases</name>
             <url>http://maven.oschina.net/content/groups/public</url>
-        </pluginRepository>
+        </pluginRepository> -->
 		
 	</pluginRepositories> 
   <dependencies>
