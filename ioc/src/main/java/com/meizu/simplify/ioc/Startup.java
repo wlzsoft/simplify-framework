@@ -100,7 +100,8 @@ public final class Startup {
         //安全退出机制:平滑停止
         Runtime.getRuntime().addShutdownHook(new Thread() {//TODO 有bug，这个时候在tomcat停止的时候，类被销毁了，这时候才调用stop方法，stop执行过程会报错
             public void run() {  
-               Startup.stop();  
+               List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, Constants.packagePrefix);
+               Startup.stop(classList);  
             }  
         }); 
 		Map<InitTypeEnum, Class<?>> mapResolve = getAnnotationResolverList();
@@ -123,7 +124,6 @@ public final class Startup {
 					System.err.println("系统终止服务，有致命异常 ==>>\r\n"+target.getMessage());
 					System.exit(-1);
 				}
-//				ex.printStackTrace();
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
@@ -136,7 +136,6 @@ public final class Startup {
 		void invoke(IAnnotationResolver<Class<?>> ianno,Class<?> beanClass);
 	}
 
-	private static List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, Constants.packagePrefix);
 	/**
 	 * 方法用途: 应用程序退出的触发条件<br>
 	 * 操作步骤: 1.自动结束：应用没有存活线程或只有后台线程时
@@ -144,7 +143,7 @@ public final class Startup {
 		3.kill 或 ctrl+C
 		4.kill -9 强制退出<br>
 	 */
-	public static void stop() {
+	public static void stop(List<Class<?>> classList) {
 		for (Class<?> clazz : classList) {
 			IStopRelease isr = BeanFactory.getBean(clazz.getName());
 			isr.release();
