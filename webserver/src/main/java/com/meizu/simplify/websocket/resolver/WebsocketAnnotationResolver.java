@@ -10,8 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.cache.exception.CacheException;
 import com.meizu.simplify.dto.AnnotationInfo;
+import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -52,7 +52,7 @@ public class WebsocketAnnotationResolver implements IAnnotationResolver<Class<?>
 				methodArr = beanClass.getDeclaredMethods();
 			} catch(NoClassDefFoundError e) {
 				e.printStackTrace();
-				throw new CacheException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());
+				throw new BaseException("bean["+beanClass.getName()+"] 无法找到bean中方法依赖的第三方class，确认是否缺少class文件==>"+e.getMessage());//TODO
 			}
 			
 			for (Method method : methodArr) {
