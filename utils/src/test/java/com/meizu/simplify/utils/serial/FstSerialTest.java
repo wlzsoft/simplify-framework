@@ -43,7 +43,6 @@ public class FstSerialTest {
 	public void testFstDataIntegrityCheck() throws IOException, ClassNotFoundException {
 		// 对字符串Hello World进行反序列化
 		String str = "Hello World !";
-		@SuppressWarnings("deprecation")
 		ISerialize<String> serial = new Hessian2Serialize<>();
 		byte[] barray = serial.serialize(str);
 		// 此处模拟数据失真，故意只截取序列化结果中的一部分数据

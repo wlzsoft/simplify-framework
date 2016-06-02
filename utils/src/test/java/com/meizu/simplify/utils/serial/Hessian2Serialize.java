@@ -22,7 +22,6 @@ import com.caucho.hessian.io.HessianOutput;
  * @version Version 0.1
  *
  */
-@Deprecated
 public class Hessian2Serialize<T> implements ISerialize<T>{
 	
 	

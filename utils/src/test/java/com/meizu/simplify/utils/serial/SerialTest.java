@@ -119,7 +119,6 @@ public class SerialTest {
 	    
 	    size = 0;
 	    long time4 = System.currentTimeMillis();
-	    @SuppressWarnings("deprecation")
 	    ISerialize<User> serial2 = new Hessian2Serialize<>();
 	    for (int i = 0; i < 10000; i++) {
 	      byte[] serialize = serial2.serialize(bean);
