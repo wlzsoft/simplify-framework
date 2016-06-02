@@ -26,7 +26,7 @@ public class RedisPoolUtil {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisPoolUtil.class);
 	private static final String REDIS_CONFIG_FILE = "redis-pool.properties";
-	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
+	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE,false);
 	private static RedisPoolProperties redisPoolProperties = null;
 	static {
 		Set<Entry<Object, Object>> set = propertieUtils.propertys();
