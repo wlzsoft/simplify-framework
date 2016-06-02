@@ -181,6 +181,7 @@ http://fishermen.iteye.com/blog/430286
 148.web防火墙实现
 149.proguard压缩、优化和混淆Java字节码文件的免费的工具，可用于android和java项目,用于优化方法内联，（可以不需要手动给set和get方法指定final，就可以达到内联优化,当接口只有一个实现类的时候，就取代它）
 150.nexus的bug，导致无法同时发布字节码包和源码包，配置nexus的release仓库config为redeploy
+151.所有maven插件都要指定版本号，否则版本更新时，回去下载最新版本，会出现莫名其妙的问题，并且多了一次网络传输过程
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
