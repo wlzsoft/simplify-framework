@@ -5,7 +5,7 @@ import com.meizu.simplify.ioc.Startup;
 
 /**
   * <p><b>Title:</b><i>使用webserver容器</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 这个类，可以不用，直接指定com.meizu.WebServer类来执行它的main方法就可以</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
