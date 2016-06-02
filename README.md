@@ -185,6 +185,7 @@ http://fishermen.iteye.com/blog/430286
 152.(jetty使用过程中存在的问题，由于m2e插件导致的)在eclipse工具中，由于m2e插件的bug，default里面没有对应的maven二进制包及源码包路径，如果需要使用jetty等插件debug的时候不可以跟踪到lib库的源码包，需要安装http://ifedorenko.github.io/m2e-extras/这个扩展插件,Inteijj idea是否存在这个问题
 153.由于javasist3.20.0-GA 不支持tomcat7,需要tomcat8以上才支持，所以使用weaving模块的时候，至少需要tomcat8的支持
 154.对tomcat8.jetty9.webserver做兼容性测试
+155.配置中心的集成
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
