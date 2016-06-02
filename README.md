@@ -174,6 +174,12 @@ http://fishermen.iteye.com/blog/430286
 141.反射待优化(class文件)：AnalysisRequestControllerModel(优化递归) 优化
 142.反射待优化(class文件)：JsonAfterFilter
 143.合并重构代码生成的代码，目前代码有些冗余
+144.cas和oauth2.0源码深入分析
+145.基于cas的gradle的配置改造
+146.替换成git托管
+147.基于docker的微服务
+148.web防火墙实现
+149.proguard压缩、优化和混淆Java字节码文件的免费的工具，可用于android和java项目,用于优化方法内联，（可以不需要手动给set和get方法指定final，就可以达到内联优化,当接口只有一个实现类的时候，就取代它）
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
