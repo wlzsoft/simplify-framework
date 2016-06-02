@@ -32,7 +32,7 @@ public class RedisPoolUtil {
 		Set<Entry<Object, Object>> set = propertieUtils.propertys();
 		redisPoolProperties = propertieUtils.toClass(RedisPoolProperties.class);
 		if (set.size() == 0) {
-			LOGGER.error("redis连接池信息：["+REDIS_CONFIG_FILE+"]配置文件为空 !");
+			LOGGER.error("redis连接池信息：["+REDIS_CONFIG_FILE+"]配置文件内容为空 !");
 		}
 		//TODO 可以通过通过ReloadableResource注解的方式来处理，需求自己处理转换-后续考虑是否统一处理
 		LOGGER.info("初始redis连接池默认配置信息:"+redisPoolProperties.toString());
