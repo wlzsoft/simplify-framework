@@ -102,9 +102,10 @@
     	<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.5.1</version>
 			<configuration>
-			<source>1.8</source>
-			<target>1.8</target>
+				<source>1.8</source>
+				<target>1.8</target>
 			</configuration>
 		</plugin>
     	<!-- 运行命令 mvn jetty:run 或    mvn -Djetty.port=9999 jetty:run -->
@@ -123,18 +124,18 @@
 				<!-- <jvmArgs>-javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
 				<contextXml>src/test/java/jetty-config.xml</contextXml>
 				<!--<war>${project.basedir}/${project.build.directory}/${project.artifactId}-${project.version}</war>-->
-				<!--<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>-->
+				<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
 				<webApp>
-					<!-- <defaultsDescriptor>src/test/java/webdefault.xml</defaultsDescriptor> -->
-                       <contextPath>/</contextPath>
+					<defaultsDescriptor>${project.basedir}/src/test/java/webdefault.xml</defaultsDescriptor>
+                    <contextPath>/</contextPath>
 					<!--<baseResource>${project.basedir}/src/main/webapp</baseResource>-->
-                   </webApp>
-                   <httpConnector>
-                   	<!-- 注意：这个端口的优先级最高，高于‘-Djetty.port’,如果这里指定了端口，那么‘-Djetty.port’指定的端口是无效的 -->
-                   	<!-- <port>8080</port> -->
-                   	<idleTimeout>60000</idleTimeout>
-                       <!-- <maxIdleTime>120000</maxIdleTime>  -->
-                   </httpConnector>
+                </webApp>
+                <httpConnector>
+                	<!-- 注意：这个端口的优先级最高，高于‘-Djetty.port’,如果这里指定了端口，那么‘-Djetty.port’指定的端口是无效的 -->
+                	<!-- <port>8080</port> -->
+                	<idleTimeout>60000</idleTimeout>
+                    <!-- <maxIdleTime>120000</maxIdleTime>  -->
+                </httpConnector>
 				<stopKey>stop_jetty_dev</stopKey>
 				<stopPort>9099</stopPort>
 				<!-- <scanIntervalSeconds>3</scanIntervalSeconds> -->
@@ -221,6 +222,7 @@
 	    <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-surefire-plugin</artifactId>
+	      <version>2.19.1</version>
 	      <configuration>
 	        <!-- <skip>true</skip> -->
 	        <forkMode>pertest</forkMode>
