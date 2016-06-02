@@ -61,7 +61,7 @@ public class WebServer {
 		}
 	}
 
-	private static void init() throws Exception {
+	public static void init() throws Exception {
 		Properties props = new Properties();
 		InputStream is = WebServer.class.getClassLoader().getResourceAsStream("web.properties");
 		props.load(is);
