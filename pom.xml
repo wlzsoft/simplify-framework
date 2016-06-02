@@ -212,7 +212,7 @@
 				<configuration>
 					<attach>true</attach>
 					<!-- <encoding>utf-8</encoding> --><!-- 未测试 -->
-					<argLine>-Dfile.encoding=UTF-8</argLine> 
+					<argLine>-Dfile.encoding=UTF-8</argLine><!-- 注意设置，否则生成的jar会是默认编码，也就是gbk，那么eclipse等ide识别就出现乱码,debug调试时就很麻烦了 --> 
 				</configuration>
 				<executions>
 					<execution>
