@@ -348,7 +348,7 @@
 		</plugin>
 		<!-- 代码混淆优化字节码操作工具ProGuard，是ProGuard官方很早以前推荐，现在官方不支持maven的插件，只支持基于maven的gradle
                        对项目中一个公共lib（有其特殊性）进行混淆，需有一个.pro的配置文件（存放在${basedir}/src/main/config/${project.artifactId}-maven.pro）-->
-					<plugin>
+		<!-- <plugin>
 				<groupId>com.idfconnect.devtools</groupId>
 				<artifactId>idfc-proguard-maven-plugin</artifactId>
 				<version>1.0.1</version>
@@ -380,7 +380,7 @@
                         <version>4.11</version>
                     </dependency>
                 </dependencies>
-			</plugin>			
+			</plugin>	 -->		
     </plugins>
   </build>
 </project>
