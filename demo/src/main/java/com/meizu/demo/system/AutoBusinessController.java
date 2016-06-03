@@ -9,6 +9,7 @@ import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.entity.IdEntity;
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
@@ -17,7 +18,8 @@ import com.meizu.simplify.mvc.model.Model;
 
 /**
  * <p><b>Title:</b><i>自动controller处理类</i></p>
- * <p>Desc: 和业务代码生成模块集成，可以减少大量工作量</p>
+ * <p>Desc: 和业务代码生成模块集成，可以减少大量工作量
+ *          可以定制一个Service层的接口，只需要编写</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -32,9 +34,12 @@ import com.meizu.simplify.mvc.model.Model;
 public class AutoBusinessController extends SystemController<TestModel> {
 
 	@RequestMap(path = {"/(.+)/get/(.+)$"})
-	public Object get(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
-		IdEntity<Serializable, Integer> entity = BaseDao.getIns(business).findById(data);
-		return entity;
+	public IdEntity<Serializable, Integer> get(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
+		IAutoBusinessService service = BeanFactory.getBean(business+"AutoBusinessService");
+		if(service==null) {
+			return BaseDao.getIns(business).findById(data);
+		}
+		return service.get(data);
 	}
 	
 	@RequestMap(path = {"/(.+)/save$"})

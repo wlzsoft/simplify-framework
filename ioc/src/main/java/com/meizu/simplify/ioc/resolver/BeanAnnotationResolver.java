@@ -20,6 +20,7 @@ import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.hook.IBeanHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>对象创建处理解析器</i></p>
@@ -149,6 +150,11 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 				if(beanObj == null) {
 					LOGGER.error("bean:类型为"+clazz.getName()+"的bean实例处理返回空，没有生成注入到容器中的bean对象");
 					return;
+				}
+				//lcy add 2016/6/3 增加Bean注解的value属性的处理
+				String beanAnnoVal = beanAnnotation.value();
+				if(StringUtil.isNotBlank(beanAnnoVal)) {
+					beanName = beanAnnoVal;
 				}
 				BeanFactory.addBean(beanName,beanObj);
 			}
