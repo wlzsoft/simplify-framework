@@ -19,7 +19,6 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
-import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.utils.StringUtil;
@@ -310,11 +309,4 @@ public class TestController extends SystemController<TestModel> {
 //		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
 		return result;
 	}
-	
-	@RequestMap(path = {"/(.+)/(.+)/(.+)$"})
-	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "", index = 2) String operation, @RequestParam(defaultValue = "0", index = 3) String data)  {
-		String result = "business:"+business+",operation:"+operation+",ids:"+data;
-		return result;
-	}
-	
 }
