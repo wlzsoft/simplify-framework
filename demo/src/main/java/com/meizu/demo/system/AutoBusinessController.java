@@ -1,6 +1,7 @@
 package com.meizu.demo.system;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,12 +35,33 @@ import com.meizu.simplify.mvc.model.Model;
 public class AutoBusinessController extends SystemController<TestModel> {
 
 	@RequestMap(path = {"/(.+)/get/(.+)$"})
-	public IdEntity<Serializable, Integer> get(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
+	public List<?> get(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
 		IAutoBusinessService service = BeanFactory.getBean(business+"AutoBusinessService");
 		if(service==null) {
-			return BaseDao.getIns(business).findById(data);
+			return BaseDao.getIns(business).findByIds(data.split(","));
 		}
-		return service.get(data);
+		return service.get(data.split(","));
+	}
+	
+	@RequestMap(path = {"/(.+)/del/(.+)$"})
+	public int del(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
+		IAutoBusinessService service = BeanFactory.getBean(business+"AutoBusinessService");
+		if(service==null) {
+			return BaseDao.getIns(business).remove(data.split(","));
+		}
+		return service.del(data.split(","));
+	}
+	
+	@RequestMap(path = {"/(.+)/update/(.+)$"})
+	public int update(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
+		IAutoBusinessService service = BeanFactory.getBean(business+"AutoBusinessService");
+		if(service==null) {
+			Test test = new Test();
+			test.setFid(1);
+			test.setName("lcy-auto");
+			return BaseDao.getIns(business).update(test);
+		}
+		return service.update(null,null);
 	}
 	
 	@RequestMap(path = {"/(.+)/save$"})

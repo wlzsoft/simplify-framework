@@ -1,6 +1,7 @@
 package com.meizu.demo.mvc.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.system.IAutoBusinessService;
@@ -25,10 +26,24 @@ import com.meizu.simplify.ioc.annotation.Bean;
 public class TestAutoBusinessService implements IAutoBusinessService{
 
 	@Override
-	public IdEntity<Serializable, Integer> get(Serializable id) {
-		 return BaseDao.getIns(Test.class).findById(id);
+	public List<?> get(Serializable[] id) {
+		List<?> testList = BaseDao.getIns(Test.class).findByIds(id);
+		 return testList;
 	}
-
+	
+	@Override
+	public int del(Serializable[] id) {
+		 return BaseDao.getIns(Test.class).remove(id);
+	}
+	
+	@Override
+	public <T> int update(T t, Class<T> clazz) {
+		Test test = new Test();
+		test.setFid(1);
+		test.setName("lcy-auto");
+		return BaseDao.getIns(Test.class).update(test);
+	}
+	
 	@Override
 	public <T> boolean save(T t, Class<T> clazz) {
 		Test test = new Test();
@@ -36,5 +51,7 @@ public class TestAutoBusinessService implements IAutoBusinessService{
 		boolean isSave = BaseDao.getIns(Test.class).save(test);
 		return isSave;
 	}
+
+	
 
 }
