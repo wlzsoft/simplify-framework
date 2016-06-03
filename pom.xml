@@ -78,6 +78,9 @@
     <module>rpc</module>
     <module>listener</module>
     <module>authfilter</module>
+    <module>simplify-server</module>
+    <module>simplify-base</module>
+    <module>simplify-client</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
