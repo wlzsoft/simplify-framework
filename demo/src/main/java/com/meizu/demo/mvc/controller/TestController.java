@@ -19,6 +19,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
+import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.utils.StringUtil;
@@ -267,35 +268,35 @@ public class TestController extends SystemController<TestModel> {
 	 * @param request
 	 * @param response
 	 * @param test
-	 * @param pid
-	 * @param id
-	 * @param ids
+	 * @param business
+	 * @param operation
+	 * @param data
 	 * @return
 	 */
 	/*@RequestMap(path = "/testFormEntityParam")
-	public String testFormEntityParam(HttpServletRequest request, HttpServletResponse response, Test test, @RequestParam(defaultValue = "0",name="pid") Integer pid, @RequestParam(defaultValue = "0",name="id") String id, @RequestParam(defaultValue = "0",name="ids") String ids) {
-		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
-		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
+	public String testFormEntityParam(HttpServletRequest request, HttpServletResponse response, Test test, @RequestParam(defaultValue = "0",name="business") Integer business, @RequestParam(defaultValue = "0",name="operation") String operation, @RequestParam(defaultValue = "0",name="data") String data) {
+		if (StringUtil.isEmpty(operation)) return StringUtil.format("{0}", "operation:null");
+		String result = "business:"+business+",operation:"+operation+",data:"+data;//json字符串
 		return result;
 	}*/
 	@RequestMap(path = "/testFormParam")
-	public String testFormParam(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0",name="pid") Integer pid, @RequestParam(defaultValue = "0",name="id") String id, @RequestParam(defaultValue = "0",name="ids") String ids) {
-		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
-		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
+	public String testFormParam(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0",name="business") Integer business, @RequestParam(defaultValue = "0",name="operation") String operation, @RequestParam(defaultValue = "0",name="data") String data) {
+		if (StringUtil.isEmpty(operation)) return StringUtil.format("{0}", "operation:null");
+		String result = "business:"+business+",operation:"+operation+",data:"+data;//json字符串
 		return result;
 	}
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
-	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer pid, @RequestParam(defaultValue = "0", index = 2) String id, @RequestParam(defaultValue = "0", index = 3) String ids)  {
+	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer business, @RequestParam(defaultValue = "0", index = 2) String operation, @RequestParam(defaultValue = "0", index = 3) String data)  {
  
 		Test test = model.getTest();
 		if(test!= null) {
 			System.out.println("测试类名称:"+test.getName());
 		}
-		// 检查是否id为空
-		if (StringUtil.isEmpty(id)) return StringUtil.format("{0}", "id:null");
+		// 检查是否operation为空
+		if (StringUtil.isEmpty(operation)) return StringUtil.format("{0}", "operation:null");
 		
 		// 存在脚本生成地址，无法使用加密 
-		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(pid), id)))) return new ErrorView(getMsg("VERIFY.FAILED"));
+		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(business), operation)))) return new ErrorView(getMsg("VERIFY.FAILED"));
 
 //		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
 //		String domain = CookiesUtil.getDomain(request);
@@ -305,8 +306,14 @@ public class TestController extends SystemController<TestModel> {
 //		}
 		
 //		String isflag = request.getParameter("isflag");
-		String result = "pid:"+pid+",id:"+id+",ids:"+ids;//json字符串
+		String result = "business:"+business+",operation:"+operation+",data:"+data;//json字符串
 //		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
+		return result;
+	}
+	
+	@RequestMap(path = {"/(.+)/(.+)/(.+)$"})
+	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "", index = 2) String operation, @RequestParam(defaultValue = "0", index = 3) String data)  {
+		String result = "business:"+business+",operation:"+operation+",ids:"+data;
 		return result;
 	}
 	
