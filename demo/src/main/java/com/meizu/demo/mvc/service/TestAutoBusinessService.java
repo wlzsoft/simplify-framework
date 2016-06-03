@@ -6,7 +6,6 @@ import java.util.List;
 import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.system.IAutoBusinessService;
 import com.meizu.simplify.dao.orm.BaseDao;
-import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
