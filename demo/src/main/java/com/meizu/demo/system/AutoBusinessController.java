@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.demo.mvc.entity.Test;
-import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -32,7 +31,7 @@ import com.meizu.simplify.mvc.model.Model;
  *
  */
 @Bean
-public class AutoBusinessController extends SystemController<TestModel> {
+public class AutoBusinessController extends SystemController<Model> {
 
 	@RequestMap(path = {"/(.+)/get/(.+)$"})
 	public List<?> get(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business, @RequestParam(defaultValue = "0", index = 2) String data)  {
