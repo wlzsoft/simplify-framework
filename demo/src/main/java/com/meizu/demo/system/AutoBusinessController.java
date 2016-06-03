@@ -43,11 +43,16 @@ public class AutoBusinessController extends SystemController<TestModel> {
 	}
 	
 	@RequestMap(path = {"/(.+)/save$"})
-	public boolean add(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business)  {
-		Test test = new Test();
-		test.setName("lcy-auto");
-		IdEntity<Serializable, Integer> entity = test;
-		boolean isSave = BaseDao.getIns(business).save(entity);
-		return isSave;
+	public boolean save(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam(defaultValue = "", index = 1) String business)  {
+		IAutoBusinessService service = BeanFactory.getBean(business+"AutoBusinessService");
+		if(service==null) {
+			Test test = new Test();
+			test.setName("lcy-auto");
+			IdEntity<Serializable, Integer> entity = test;
+			boolean isSave = BaseDao.getIns(business).save(entity);
+			return isSave;
+		}
+		return service.save(null,null);
+		
 	}
 }

@@ -29,4 +29,12 @@ public class TestAutoBusinessService implements IAutoBusinessService{
 		 return BaseDao.getIns(Test.class).findById(id);
 	}
 
+	@Override
+	public <T> boolean save(T t, Class<T> clazz) {
+		Test test = new Test();
+		test.setName("lcy-auto");
+		boolean isSave = BaseDao.getIns(Test.class).save(test);
+		return isSave;
+	}
+
 }
