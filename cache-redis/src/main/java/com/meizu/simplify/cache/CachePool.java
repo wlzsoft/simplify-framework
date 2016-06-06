@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.redis.RedisPool;
-import com.meizu.simplify.cache.redis.util.RedisHostAndPortUtil;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
@@ -41,7 +40,7 @@ public class CachePool {
 	@InitBean
 	public void init() {
 		if(debug) {
-			LOGGER.info(RedisHostAndPortUtil.redisInfo);
+			LOGGER.info(RedisPool.redisInfo);
 		}
 		if (cache) {
 			if (jvmcache) {

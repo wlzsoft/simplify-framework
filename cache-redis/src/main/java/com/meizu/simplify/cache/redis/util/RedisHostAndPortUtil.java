@@ -31,7 +31,7 @@ public class RedisHostAndPortUtil {
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
 	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
-	public static String redisInfo;
+	
 	static {
 		Set<Entry<Object, Object>> set = propertieUtils.propertys();
 		if (set.size() == 0) {
@@ -73,23 +73,6 @@ public class RedisHostAndPortUtil {
 			hostAndPortMap.put(key, hostList);
 
 		}
-
-		final StringBuilder strb = new StringBuilder("redis集群节点信息 被启用列表 : ");
-
-		for (String key : hostAndPortMap.keySet()) {
-			strb.append(" key : " + key);
-			strb.append("[");
-			List<HostAndPort> hostList = hostAndPortMap.get(key);
-			for (HostAndPort hnp : hostList) {
-				if(hnp.pwd != null && hnp.pwd.length() > 0){
-					strb.append(hnp.host).append(":").append(hnp.port).append(":").append(hnp.pwd+",");
-				}else{
-					strb.append(hnp.host).append(":").append(hnp.port).append(",");
-				}
-			}
-			strb.append("]");
-		}
-		redisInfo = strb.toString();
 	}
 	
 	public static Map<String, List<HostAndPort>> getRedisServers() {

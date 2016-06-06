@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -38,12 +37,11 @@ import redis.clients.util.Hashing;
  *
  */
 public class RedisPool {
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisPool.class);
-
 	private static Map<String, List<HostAndPort>> hostAndPortMap;
-
 	private static Map<String, ShardedJedisPool> redisPools = new ConcurrentHashMap<String, ShardedJedisPool>();
-
+	public static String redisInfo;
 	static {
 
 		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
@@ -97,24 +95,29 @@ public class RedisPool {
 		if (hostAndPortMap.isEmpty()) {
 			throw new RuntimeException(" redis config error !!! ");
 		}
-		Set<Entry<String, List<HostAndPort>>> hostAndPortSet = hostAndPortMap.entrySet();
-		for (Entry<String, List<HostAndPort>> entry : hostAndPortSet) {
-			String modName = entry.getKey();
+		
+		final StringBuilder strb = new StringBuilder("redis集群节点信息 被启用列表 : ");
+		for (Entry<String, List<HostAndPort>> entry : hostAndPortMap.entrySet()) {
+			String key = entry.getKey();
 			List<HostAndPort> hostList = entry.getValue();
 			List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
+			strb.append("\n切片集群组[").append(key).append("]==>>");
 			for (int i = 0; i < hostList.size(); i++) {
 				HostAndPort hnp = hostList.get(i);
-				LOGGER.debug("[redis - list],host:{},port:{}", new Object[] {hnp.host, hnp.port });
 				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
-				
+				strb.append("{节点地址").append(i+1).append(":[").append(hnp.host).append(":").append(hnp.port).append("],");
 				if(hnp.pwd != null && hnp.pwd.length() > 0){
+					strb.append("密码:").append(hnp.pwd);
 					jedisShardInfo.setPassword(hnp.pwd);
 				}
 				shards.add(jedisShardInfo);
+				strb.append("}");
 			}
 			ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH);
-			redisPools.put(modName, pool);
+			redisPools.put(key, pool);
+			
 		}
+		redisInfo = strb.toString();
 
 	}
 
