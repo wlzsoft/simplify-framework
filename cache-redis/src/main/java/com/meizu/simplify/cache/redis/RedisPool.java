@@ -104,7 +104,7 @@ public class RedisPool {
 			List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
 			for (int i = 0; i < hostList.size(); i++) {
 				HostAndPort hnp = hostList.get(i);
-				LOGGER.info("[redis - list],host:{},port:{}", new Object[] {hnp.host, hnp.port });
+				LOGGER.debug("[redis - list],host:{},port:{}", new Object[] {hnp.host, hnp.port });
 				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
 				
 				if(hnp.pwd != null && hnp.pwd.length() > 0){
