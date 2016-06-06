@@ -2,6 +2,7 @@ package com.meizu.mongodb.dao;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +36,17 @@ import com.mongodb.client.model.Filters;
 public class MongoFileDao<T>{
 	
 	public MongoDatabase db;
+	private String selfName;
 	
 	public MongoFileDao() {
-		
+		selfName = getEntityClass().getSimpleName();
 	}
 
+	@SuppressWarnings("unchecked")
+	protected Class<T> getEntityClass() {
+		return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	}
+	
 	/**
 	 * 方法用途: 插入文件<br>
 	 * 操作步骤: TODO<br>
@@ -48,7 +55,7 @@ public class MongoFileDao<T>{
 	 * @return String 主键Id
 	 */
 	public String save(InputStream io, String name, T t) {
-		GridFSBucket gridFSBucket = GridFSBuckets.create(db);
+		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
 		GridFSUploadOptions options = new GridFSUploadOptions().metadata(buildDocument(t));
 		ObjectId fileId = gridFSBucket.uploadFromStream(name, io, options);
 		return fileId.toString();
@@ -61,7 +68,7 @@ public class MongoFileDao<T>{
 	 * @return
 	 */
 	public GridFSFile findById(String objectId) {
-		GridFSBucket gridFSBucket = GridFSBuckets.create(db);
+		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
 		GridFSFile fileInfo = gridFSBucket.find(new BsonDocument("_id", new BsonObjectId(new ObjectId(objectId)))).first();
 		return fileInfo;
 	}
@@ -73,7 +80,7 @@ public class MongoFileDao<T>{
 	 * @return
 	 */
 	public List<GridFSFile> findByName(String fileName) {
-		GridFSBucket gridFSBucket = GridFSBuckets.create(db);
+		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
 		List<GridFSFile> fileList = new ArrayList<GridFSFile>();
 		gridFSBucket.find(Filters.eq("filename", fileName)).forEach(new Block<GridFSFile>() {
 			@Override
@@ -93,7 +100,7 @@ public class MongoFileDao<T>{
 	 */
 	public byte[] downloadStreamByName(String name) {
 		try {
-			GridFSBucket gridFSBucket = GridFSBuckets.create(db);
+			GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
 			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStreamByName(name);
 			int fileLength = (int) downloadStream.getGridFSFile().getLength();
 			byte[] bytesToWriteTo = new byte[fileLength];
@@ -112,7 +119,7 @@ public class MongoFileDao<T>{
 	 * @return
 	 */
 	public boolean delById(String objectId){
-		GridFSBucket gridFSBucket = GridFSBuckets.create(db);
+		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
 		gridFSBucket.delete(new ObjectId(objectId));
 		return true;
 	}
