@@ -19,6 +19,7 @@ import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanHook;
 import com.meizu.simplify.ioc.hook.IBeanHook;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.PropertieUtil;
@@ -43,7 +44,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 	
 	@Override
 	public BeanEntity<?> hook(Class<?> clazz){
-		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, Constants.packagePrefix);//扫描ClientBean注解bean
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, BeanAnnotationResolver.getClasspaths());//扫描ClientBean注解bean
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {
 				if(!clazz.getName().equals(entityClass.getName())){

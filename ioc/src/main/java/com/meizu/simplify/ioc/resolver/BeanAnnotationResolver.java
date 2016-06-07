@@ -20,6 +20,7 @@ import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.hook.IBeanHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
@@ -52,7 +53,8 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	}
 
 	public static <T extends Bean> void buildAnnotation(Class<T> clazzAnno) {
-		List<Class<?>> resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, Constants.packagePrefix);//提供构建bean的总数据源
+		String[] classpathArr = getClasspaths();
+		List<Class<?>> resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, classpathArr);//提供构建bean的总数据源
 		List<Class<?>> resolvePreCoreList = new ArrayList<>();//提供预先构建bean的数据源
 		List<Class<?>> resolveExtendList = new ArrayList<>();//提供扩展构建bean的数据源
 		for (Class<?> clazz : resolveList) {
@@ -65,6 +67,31 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 		buildAllBeanAction(clazzAnno, resolvePreCoreList);
 		buildAllBeanAction(clazzAnno, resolveExtendList);
+	}
+
+	/**
+	 * 方法用途: 获取bean的classpath<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static String[] getClasspaths() {
+		String[] classpathArr = new String[]{Constants.packagePrefix};
+		PropertieUtil propertieUtil = new PropertieUtil("properties/config.properties",false);
+		String classpaths = propertieUtil.getString("system.classpaths");
+		if(StringUtil.isNotBlank(classpaths)) {
+			boolean hasSystemPath = false;
+			for (String classpath : classpaths.split(",")) {
+				if(classpath.equals(classpathArr[0])) {
+					hasSystemPath = true; 
+					break;
+				}
+			}
+			if(!hasSystemPath&&!classpaths.contains(classpathArr[0])) {
+				classpaths = classpathArr[0]+","+classpaths;
+			}
+			classpathArr = classpaths.split(",");
+		}
+		return classpathArr;
 	}
 
 	/**
@@ -91,7 +118,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 		try {
 			T beanAnnotation = clazz.getAnnotation(clazzAnno);
 			if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
-				List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, Constants.packagePrefix);
+				List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, BeanAnnotationResolver.getClasspaths());
 				for (Class<?> hookClazz : hookList) {
 					BeanPrototypeHook hookBeanAnno = hookClazz.getAnnotation(BeanPrototypeHook.class);
 					Class<?> serviceClass = hookBeanAnno.value();
@@ -175,7 +202,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 * @param clazz
 	 */
 	private static Class<?> getSingleHook(Class<?> clazz) {
-		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, Constants.packagePrefix);
+		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, BeanAnnotationResolver.getClasspaths());
 		for (Class<?> hookClazz : hookList) {
 			BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
 			Class<?> annoClass = hookBeanAnno.value();

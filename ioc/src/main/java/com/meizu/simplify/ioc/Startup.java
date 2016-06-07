@@ -15,6 +15,7 @@ import com.meizu.simplify.exception.StartupException;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.enums.StartupTypeEnum;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
@@ -75,7 +76,7 @@ public final class Startup {
 	 * @return
 	 */
 	public static Map<InitTypeEnum, Class<?>> getAnnotationResolverList() {
-		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, Constants.packagePrefix);
+		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, BeanAnnotationResolver.getClasspaths());
 		Map<InitTypeEnum,Class<?>> mapResolve = new EnumMap<InitTypeEnum, Class<?>>(InitTypeEnum.class);
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
@@ -100,7 +101,7 @@ public final class Startup {
         //安全退出机制:平滑停止
         Runtime.getRuntime().addShutdownHook(new Thread() {//TODO 有bug，这个时候在tomcat停止的时候，类被销毁了，这时候才调用stop方法，stop执行过程会报错
             public void run() {  
-               List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, Constants.packagePrefix);
+               List<Class<?>> classList = ClassUtil.findClassesByInterfaces(IStopRelease.class, BeanAnnotationResolver.getClasspaths());
                Startup.stop(classList);  
             }  
         }); 

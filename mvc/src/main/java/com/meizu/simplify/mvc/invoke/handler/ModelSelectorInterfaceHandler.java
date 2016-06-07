@@ -7,6 +7,7 @@ import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.mvc.invoke.IModelSelector;
 import com.meizu.simplify.utils.ClassUtil;
 
@@ -29,7 +30,7 @@ public class ModelSelectorInterfaceHandler implements IInterfaceHandler{
 	
 	@Override
 	public Class<?> handle() {
-		List<Class<?>> methodSelectorList = ClassUtil.findClassesByInterfaces(IModelSelector.class, Constants.packagePrefix);
+		List<Class<?>> methodSelectorList = ClassUtil.findClassesByInterfaces(IModelSelector.class, BeanAnnotationResolver.getClasspaths());
 		for (Class<?> methodSelectorClazz : methodSelectorList) {
 			if(IModelSelector.class != methodSelectorClazz) {
 				return methodSelectorClazz;

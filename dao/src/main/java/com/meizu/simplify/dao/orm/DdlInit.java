@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.Constants;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Entity;
@@ -15,6 +14,7 @@ import com.meizu.simplify.entity.annotations.Transient;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
@@ -43,7 +43,7 @@ public class DdlInit implements IAnnotationResolver<Class<?>>{//TODO 后续可�
 		if(isInitDB) {
 			return;
 		}
-		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, Constants.packagePrefix);//扫描Entity注解的实体，获取实体列表
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, BeanAnnotationResolver.getClasspaths());//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {

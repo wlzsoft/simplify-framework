@@ -6,6 +6,7 @@ import java.util.List;
 import com.meizu.message.conn.MqConnection;
 import com.meizu.simplify.Constants;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.rabbitmq.client.Channel;
@@ -28,7 +29,7 @@ public class MessageListennerContainer {
 
 	public MessageListennerContainer() {
 		try {
-			List<Class<?>> allIpmlClass = ClassUtil.findClassesByParentClass(MqConsumerListenner.class, Constants.packagePrefix);
+			List<Class<?>> allIpmlClass = ClassUtil.findClassesByParentClass(MqConsumerListenner.class, BeanAnnotationResolver.getClasspaths());
 			if (CollectionUtil.isEmpty(allIpmlClass)) {
 				return;
 			}

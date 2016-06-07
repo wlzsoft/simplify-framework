@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebListener;
 import com.meizu.simplify.Constants;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 
 /**
@@ -36,7 +37,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 		Startup.start();
 		String servletContextPath = sce.getServletContext().getRealPath("");
 		System.out.println("web容器所在路径:"+servletContextPath);
-		List<Class<?>> listenerHandlerList= ClassUtil.findClassesByInterfaces(IListenerHandler.class, Constants.packagePrefix);
+		List<Class<?>> listenerHandlerList= ClassUtil.findClassesByInterfaces(IListenerHandler.class, BeanAnnotationResolver.getClasspaths());
 		if(listenerHandlerList != null && listenerHandlerList.size()>0) {
 			IListenerHandler handler = (IListenerHandler) BeanFactory.getBean(listenerHandlerList.get(0));
 			handler.handle(sce);

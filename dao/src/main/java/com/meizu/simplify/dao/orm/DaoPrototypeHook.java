@@ -28,6 +28,7 @@ import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.ioc.BeanEntity;
 import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
 import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
@@ -42,7 +43,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Seriali
 			Class<Dao<IdEntity<Serializable, Integer>, Serializable>> clazz) {
 		LOGGER.debug("开始初始化Dao实例....");
 		List<BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>>> list = new ArrayList<>();
-		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, Constants.packagePrefix);//扫描Entity注解的实体，获取实体列表
+		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, BeanAnnotationResolver.getClasspaths());//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {

@@ -92,7 +92,7 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    	}
 		    	Object iocBean = null;
 		    	if(iocType.isInterface()||Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
-		    		List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,Constants.packagePrefix);
+		    		List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,BeanAnnotationResolver.getClasspaths());
 		    		int clazzSize = clazzList.size();
 		    		if(clazzSize>1) {
 		    			DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
@@ -136,9 +136,9 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		if(defaultBeanClass != Object.class) {
 			return defaultBeanClass;
 		} 
-		List<Class<?>> handleInterfaceList = ClassUtil.findClassesByAnnotationClass(HandleInterface.class, Constants.packagePrefix);
+		List<Class<?>> handleInterfaceList = ClassUtil.findClassesByAnnotationClass(HandleInterface.class, BeanAnnotationResolver.getClasspaths());
 		if(handleInterfaceList.size() < 1) {
-			throw new UncheckedException("没有查找到相应的@HandleInterface注解标注的类，确保指定扫描包名正确["+Constants.packagePrefix+"]");
+			throw new UncheckedException("没有查找到相应的@HandleInterface注解标注的类，确保指定扫描包名正确["+BeanAnnotationResolver.getClasspaths()+"]");
 		}
 		for (Class<?> handleInterfaceClass : handleInterfaceList) {
 			Object obj = BeanFactory.getBean(handleInterfaceClass);
