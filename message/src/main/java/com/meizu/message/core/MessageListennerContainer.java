@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.meizu.message.conn.MqConnection;
-import com.meizu.simplify.Constants;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;

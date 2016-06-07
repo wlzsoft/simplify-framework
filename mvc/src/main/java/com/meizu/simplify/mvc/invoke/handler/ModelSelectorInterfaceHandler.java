@@ -2,7 +2,6 @@ package com.meizu.simplify.mvc.invoke.handler;
 
 import java.util.List;
 
-import com.meizu.simplify.Constants;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
