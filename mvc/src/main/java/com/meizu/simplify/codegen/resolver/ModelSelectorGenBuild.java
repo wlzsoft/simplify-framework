@@ -18,6 +18,7 @@ import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.template.BeetlTemplate;
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -106,7 +107,7 @@ public class ModelSelectorGenBuild {
 			parameters.put("tagList", modelTagList);
 			parameters.put("methodTagList", modelMethodTagList);
 			String javaFileName = "GenModelSelector.java";
-			String codegenPath = ClassUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
+			String codegenPath = ClassPathUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
 			gen.gen(parameters, codegenPath,javaFileName);
 			LOGGER.info("Framework codegen [model代码已生成==>>"+codegenPath+javaFileName+"]");
 		}

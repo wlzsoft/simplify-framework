@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.log.formatter.DefaultSimpleFormatter;
 public class DefaultLogManager{
@@ -46,7 +47,7 @@ public class DefaultLogManager{
 		logger.setLevel(Level.ALL);
 		FileHandler fileHandler=null;
 		try {
-			fileHandler = new FileHandler("target/jdklog.log",true);
+			fileHandler = new FileHandler(ClassPathUtil.getClassPath()+"jdklog.log",true);
 			fileHandler.setLevel(Level.ALL);
 			fileHandler.setFormatter(new DefaultSimpleFormatter());
 //				fileHandler.setOutputStream(System.out);

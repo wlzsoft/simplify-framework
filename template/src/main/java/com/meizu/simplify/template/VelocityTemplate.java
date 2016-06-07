@@ -15,7 +15,7 @@ import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.function.EncryptFunctionDirective;
-import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -48,7 +48,7 @@ public class VelocityTemplate  implements ITemplate{
 	}
 	@InitBean 
 	public void init() {
-		String classPath = ClassUtil.getClassPath();
+		String classPath = ClassPathUtil.getClassPath();
 		Velocity.setProperty(Velocity.INPUT_ENCODING, config.getCharset());
 		Velocity.setProperty(Velocity.OUTPUT_ENCODING, config.getCharset());
 

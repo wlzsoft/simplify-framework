@@ -16,6 +16,7 @@ import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.annotation.RequestMap;
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.ClassUtil;
 /**
  * <p><b>Title:</b><i>controll方法代码生成处理</i></p>
@@ -95,7 +96,7 @@ public class MethodSelectorGenBuild {
 			parameters.put("controllerTagList", controllerTagList);
 			parameters.put("controllerMethodTagList", controllerMethodTagList);
 			String javaFileName = "GenMethodSelector.java";
-			String codegenPath = ClassUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
+			String codegenPath = ClassPathUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
 			gen.gen(parameters, codegenPath,javaFileName);
 			LOGGER.info("Framework codegen [controll代码已生成==>>"+codegenPath+javaFileName+"]");
 		}

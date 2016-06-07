@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.BeanFactory;
-import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 
@@ -34,7 +34,7 @@ public class FileCache implements Cache {
 		Object[] values = CacheBase.urlPageCacheMap.get(staticName);
 		long time = values != null ? System.currentTimeMillis() - Long.valueOf(values[1].toString()) : -1;
 		if (time > 0 && time < webCache.timeToLiveSeconds() * 1000) {
-			File directory = new File(ClassUtil.getClassPath());
+			File directory = new File(ClassPathUtil.getClassPath());
 //			File directory = new File(config.getFileCachePath());
 			try {
 				FileReader fr = new FileReader(directory.getParent() + "/htmlCache/" + staticName);

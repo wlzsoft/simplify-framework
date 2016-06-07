@@ -1260,7 +1260,7 @@ public class FileUtil {
 
 	//------------------------------------
 	
-	private static final File POOL_FILE = ClassUtil.getUniqueFile(FileUtil.class, ".deletefiles");
+	private static final File POOL_FILE = ClassPathUtil.getUniqueFile(FileUtil.class, ".deletefiles");
 
 	private static ArrayList<File> deleteFilesPool;
 	static {

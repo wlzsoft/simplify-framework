@@ -17,6 +17,7 @@ import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.template.BeetlTemplate;
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
@@ -94,7 +95,7 @@ public class SqlByDaoEntityGenBuild {
 			parameters.put("tagList", entityTagList);
 			parameters.put("methodTagList", entityMethodTagList);
 			String javaFileName = "GenSqlByDaoEntity.java";
-			String codegenPath = ClassUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
+			String codegenPath = ClassPathUtil.getClassPath().replace("/classes", "")+"codegen/com/meizu/simplify/codegen/";
 			gen.gen(parameters, codegenPath,javaFileName);
 			LOGGER.info("Framework codegen [dao代码已生成==>>"+codegenPath+javaFileName+"]");
 		}
