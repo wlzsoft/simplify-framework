@@ -187,6 +187,7 @@ http://fishermen.iteye.com/blog/430286
 154.对tomcat8.jetty9.webserver做兼容性测试
 155.配置中心的集成
 156.测试不同方式的项目立项搭建：1.同属com.meizu，2.不属于com.meizu 3.引用不同子模块
+157.和压力测试人员衡量maxThreads，cceptCount 这个两个属性的值的设置,还有具体操作系统的限制，比如linux的openfile的限制
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
