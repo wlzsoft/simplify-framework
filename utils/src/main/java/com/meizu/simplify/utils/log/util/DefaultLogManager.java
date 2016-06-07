@@ -46,7 +46,7 @@ public class DefaultLogManager{
 		logger.setLevel(Level.ALL);
 		FileHandler fileHandler=null;
 		try {
-			fileHandler = new FileHandler("jdklog.log",true);
+			fileHandler = new FileHandler("target/jdklog.log",true);
 			fileHandler.setLevel(Level.ALL);
 			fileHandler.setFormatter(new DefaultSimpleFormatter());
 //				fileHandler.setOutputStream(System.out);
