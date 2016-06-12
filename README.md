@@ -194,4 +194,11 @@ http://fishermen.iteye.com/blog/430286
 3.druid日志配置：https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_LogFilter
 4.https://www.leangoo.com/board_list
 5.淘宝开源的系统监控工具 OrzDBA
+6.jdk1.8的jvm参数设置：
+  1.PermGen空间被移除了，取而代之的是Metaspace
+需要做的调整为-XX:PermSize=64m -XX:MaxPermSize=128m 变成 -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m 否则起不来
+  2.CompressedClassSpaceSize = 1073741824 (1024.0MB) 多出了这块，
+CompressedClassSpaceSize的调优只有当-XX:+UseCompressedClassPointers开启了才有效-XX:CompressedClassSpaceSize=1G
+由于这个大小在启动的时候就固定了的，因此最好设置得大点。没有使用到的话不要进行设置JVM后续可能会让这个区可以动态的增长。不需要是连续的区域，只要从基地址可达就行；可能会将更多的类元信息放回到元空间中；未来会基于PredictedLoadedClassCount的值来自动的设置该空间的大小
+根据
 
