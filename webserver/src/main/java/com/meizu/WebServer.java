@@ -26,8 +26,7 @@ public class WebServer {
 
 	public void start() {
 		System.out.println("开始启动服务器 !");
-		try (
-				
+		try (		
 			//1、创建http server //服务器连接
 			ServerSocket server = new ServerSocket(Integer.parseInt(config.get("port")))) {
 			this.server = server;
@@ -52,7 +51,7 @@ public class WebServer {
 					stop();
 				}
 			}
-			
+			System.out.println("服务器已经启动 !");	
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("发生异常 ， 服务器停止 ！");
