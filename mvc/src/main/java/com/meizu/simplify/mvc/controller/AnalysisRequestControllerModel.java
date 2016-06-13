@@ -27,7 +27,8 @@ public class AnalysisRequestControllerModel {
 
 	public static <T> T setBaseModel(Class<T> modelClass, String cmd, String[] urlparams, T model) {
 		Class<?> modelSuperClass = modelClass.getSuperclass();
-		if( modelClass!=Model.class&&modelSuperClass!= BaseModel.class&&modelSuperClass != Model.class) {
+		Class<?> modelSuperSuperClass = modelSuperClass.getSuperclass();
+		if( modelClass!=Model.class&&modelSuperClass!= BaseModel.class&&modelSuperClass != Model.class&&modelSuperSuperClass!= BaseModel.class&&modelSuperSuperClass != Model.class) {
 			return model;
 		}
 		//url参数：针对rest风格url参数的设置
