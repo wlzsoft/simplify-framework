@@ -39,14 +39,7 @@ public class DateUtilTest {
 		int resultDay = DateUtil.getDayOfWeek(date);
 		Assert.assertEquals(2, resultDay);
 	}
-	/**
-	 * 方法用途: 未测试<br>
-	 * 操作步骤: TODO<br>
-	 */
-	@Test
-	public void getWeekTime(){
-		System.out.println(DateUtil.format(DateUtil.getWeekTime(0)));
-	}
+	
 	/**
 	 * 方法用途: 已测试<br>
 	 * 操作步骤: TODO<br>
@@ -61,15 +54,27 @@ public class DateUtilTest {
 	 */
 	@Test
 	public void getFirstDayOfWeekStr(){
-		System.out.println(DateUtil.format(DateUtil.getFirstDayOfWeek("2016-06-12")));
+		Assert.assertEquals("2016-06-13 00:00:00",DateUtil.format(DateUtil.getFirstDayOfWeek("2016-06-16")));
 	}
 	/**
-	 * 方法用途: 未测试<br>
+	 * 方法用途: 已测试<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void getWeekTime(){
+		System.out.println(DateUtil.format(DateUtil.getDayOfWeek(0)));
+	}
+	@Test
+	public void addDay(){
+		Assert.assertEquals("2016-06-17 00:00:00",DateUtil.format(DateUtil.addDay(DateUtil.parse("2016-06-15"),2)));
+	}
+	/**
+	 * 方法用途: 已测试<br>
 	 * 操作步骤: TODO<br>
 	 */
 	@Test
 	public void getSimpleDateRangeOfWeek(){
-		String[] arr = DateUtil.getSimpleDateRangeOfWeek();
+		String[] arr = DateUtil.getDateRangeOfWeek();
 		for (String string : arr) {
 			System.out.println(string);
 		}

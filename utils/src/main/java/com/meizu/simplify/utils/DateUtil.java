@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import com.meizu.simplify.utils.enums.DateFormatEnum;
 
@@ -102,7 +101,7 @@ public class DateUtil {
      * @return
      */
     private static SimpleDateFormat getDateFormat(DateFormatEnum pattern) {
-        SimpleDateFormat sdf = simpleDateFormatMap.get(pattern);
+        SimpleDateFormat sdf = simpleDateFormatMap.get(pattern);//TODO SimpleDateFormat,java.util.Date 是线程不安全的 ,每次都用new的才安全，这里的用法可能会导致数据被其他线程篡改
         //TimeZone zone = new SimpleTimeZone(28800000, "Asia/Shanghai");//TimeZone.getTimeZone("GMT+8");
         //sdf.setTimeZone(zone);
         return sdf;
@@ -282,32 +281,40 @@ public class DateUtil {
         if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {//特殊处理星期天是第一天的情况！按中国人习惯把周1看成第一天，星期天看成最后一天
             calendar.add(Calendar.DAY_OF_WEEK, -1);//扣除一天
         }
+        calendar.set(Calendar.MILLISECOND,0);
+		calendar.set(Calendar.SECOND,0);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.HOUR_OF_DAY,0);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); 
         return calendar.getTime();
     }
 
 	/**
 	 * 方法用途: 获取某天所在周的第一天<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 注意：1.以下是jdk1.8的实现方式，LocalDate区别于Date，是线程安全的，并且LocalDate只包含日期，另外的LocalTime只包含时间，这里用不上
+	 *                2.后续日期的操作全部换成jdk1.8的实现方式
+	 * <br>
 	 * @param dateStr 格式yyyy-MM-dd
 	 * @return
 	 */
 	public static Date getFirstDayOfWeek(String dateStr) {
 		LocalDate localDate = LocalDate.parse(dateStr);
+//		TemporalField fieldISO = WeekFields.of(localDate.getDayOfWeek(), 1).dayOfWeek();
 		TemporalField fieldISO = WeekFields.of(Locale.CHINA).dayOfWeek();
-		localDate = localDate.minusDays(1).with(fieldISO, Calendar.MONDAY);
+		localDate = localDate.minusDays(1)//特殊处理星期天是第一天的情况！按中国人习惯把周1看成第一天，星期天看成最后一天,所以扣除一天
+				             .with(fieldISO, Calendar.MONDAY);
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
     
 	/**
 	 * 方法用途: 获取某周的周一对应的日期<br>
 	 * 操作步骤: TODO未测试<br>
-	 * @param flag 0 本周 1下周 n下n周
+	 * @param weekCount 0 本周 1下周 n下n周
 	 * @return 周一对应的日期
 	 */
-	public static Date getWeekTime(int flag){
+	public static Date getDayOfWeek(int weekCount){
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.WEEK_OF_YEAR, flag);
+		calendar.add(Calendar.WEEK_OF_YEAR, weekCount);
 		calendar.set(Calendar.MILLISECOND,0);
 		calendar.set(Calendar.SECOND,0);
 		calendar.set(Calendar.MINUTE,0);
@@ -317,24 +324,18 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 方法用途: 取得某一特定的日期<br>
-	 * 操作步骤: TODO未测试<br>
+	 * 方法用途: 在某天的基础上增加几天或减少几天<br>
+	 * 操作步骤: TODO<br>
 	 * @param sDate
 	 * @param iDay
 	 * @param sformat
 	 * @return
 	 */
-	public static String getSomeDate(String sDate, int iDay, String sformat) {
-		try {
-			SimpleDateFormat format = new SimpleDateFormat(sformat);
-			format.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-			Date date = format.parse(sDate);
-			long Time = (date.getTime() / 1000) + 60 * 60 * 24 * iDay;
-			date.setTime(Time * 1000);
-			return format.format(date);
-		} catch ( Exception ex ) {
-			return "";
-		}
+	public static Date addDay(Date date, int dayCount) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_YEAR, dayCount);
+		return calendar.getTime();
 	}
 
 	/**
@@ -342,16 +343,15 @@ public class DateUtil {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public static String[] getSimpleDateRangeOfWeek() {
+	public static String[] getDateRangeOfWeek() {
 		Date curDate = new Date();
-		String today = format(curDate);
-		int endWeekDay = getDayOfWeek(curDate);
-		// 以取出的第一个时间为准，向前推算第一个星期一的时间
-		String startDate = getSomeDate(today + " 00:00:00",	-(endWeekDay - 1), "yyyy-MM-dd");
-		String endDate = getSomeDate(startDate, 6, "yyyy-MM-dd").substring(0, 10) + " 24:00:00";
+		Date fisrtDate = getFirstDayOfWeek(curDate);
+		String fisrtDateStr = format(fisrtDate);
+		Date endDate = addDay(fisrtDate, 6);
+		String endDateStr = format(endDate);
 		String DateRang[] = new String[2];
-		DateRang[0] = startDate;
-		DateRang[1] = endDate;
+		DateRang[0] = fisrtDateStr;
+		DateRang[1] = endDateStr;
 		return DateRang;
 	}
 	
