@@ -79,4 +79,22 @@ public class DateUtilTest {
 			System.out.println(string);
 		}
 	}
+	
+	/**
+	 * 方法用途: 未测试<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void getFirstDayOfMonth(){
+		System.out.println(DateUtil.format(DateUtil.getFirstDayOfMonth()));
+	}
+	
+	/**
+	 * 方法用途: 未测试<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void getLastDayOfMonth(){
+		System.out.println(DateUtil.format(DateUtil.getLastDayOfMonth()));
+	}
 }

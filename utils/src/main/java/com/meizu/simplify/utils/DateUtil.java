@@ -393,11 +393,14 @@ public class DateUtil {
 		c.set(getYear(date), getMonth(date) - 1, 1);
 		return c.getTime();
 	}
+	
 	/**
-	 * 获取当月的最后一天
-	 *
+	 * 方法用途: 获取当前月的最后一天日期<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
 	 */
-	public static Date getLastDayDayOfMonth(Date date) {
+	public static Date getLastDayOfMonth(Date date) {
 		try {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
@@ -409,19 +412,21 @@ public class DateUtil {
 		}
 		return null;
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 获取当前月的最后一天日期<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public static Date getLastDayDayOfMonth() {
+	public static Date getLastDayOfMonth() {
 		Date date = new Date();
 		Calendar c = Calendar.getInstance();
 		c.set(getYear(date), getMonth(date), 1);
 		c.setTimeInMillis(c.getTimeInMillis() - (24 * 3600 * 1000));
 		return c.getTime();
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 返回年<br>
