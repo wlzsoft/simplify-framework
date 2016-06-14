@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
 @SuppressWarnings("deprecation")
-public class HttpSessionImpl implements HttpSession{
+public class HttpSessionImplWrapper implements HttpSession{
 
 	private String sessionId;// session的一个标识
 

@@ -141,7 +141,6 @@ public class BaseController<T extends Model> {
 	 * @throws IllegalAccessException 
 	 */
 	public void execute(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
-//		RequestAnalysisWrapper.java
 		if (model.getCmd() == null || model.getCmd().length() <= 0) {
 			return;
 		}

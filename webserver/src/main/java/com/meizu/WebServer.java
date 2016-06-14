@@ -12,7 +12,7 @@ import com.meizu.simplify.ioc.Startup;
 public class WebServer {
 	private volatile boolean isShutDowm = false;
 	public static Map<String, String> config = new HashMap<String, String>();
-	public static Map<String, HttpSessionImpl> sessions = new HashMap<String, HttpSessionImpl>();
+	public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
 	private ServerSocket server; 
 	public static void main(String[] args) {
 		try {

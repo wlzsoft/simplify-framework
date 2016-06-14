@@ -71,15 +71,15 @@ public class WebThread implements Runnable {
 				}
 
 				String sessionId = request.getCookiesMap().get("sessionId");
-				HttpSessionImpl session = null;
+				HttpSessionImplWrapper session = null;
 				if (sessionId == null || sessionId.length() < 32) {
-					session = new HttpSessionImpl();
+					session = new HttpSessionImplWrapper();
 					session.setSessionId(SessionIdFactory.getSessionId());
 					WebServer.sessions.put(session.getSessionId(), session);
 				} else {
 					session = WebServer.sessions.get(sessionId);
 					if (session == null) {
-						session = new HttpSessionImpl();
+						session = new HttpSessionImplWrapper();
 						session.setSessionId(SessionIdFactory.getSessionId());
 						WebServer.sessions.put(session.getSessionId(), session);
 					}

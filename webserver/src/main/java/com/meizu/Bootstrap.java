@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 
 import com.meizu.simplify.utils.StringUtil;
 
@@ -57,10 +60,17 @@ public class Bootstrap {
 			} else {
 				serverSocket.bind(inetSocketAddress);
 			}
+			/*char c = '中';//unicode 和 utf8的区别，在java中的影响
+			Charset cs = Charset.forName("GBK");
+			CharBuffer cb = CharBuffer.allocate(1);
+			cb.put(c);
+			cb.flip();
+			ByteBuffer bb = cs.encode (cb);
+			System.out.println(bb.array().length);*/
 			Socket socket = serverSocket.accept();
 			System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
 			InputStream inputStream = socket.getInputStream();
-			InputStreamReader isr = new InputStreamReader(inputStream);
+			InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
 			BufferedReader br = new BufferedReader(isr);
 			String content = null;
 			while((content = br.readLine())!=null) {

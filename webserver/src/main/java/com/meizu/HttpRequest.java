@@ -41,7 +41,7 @@ public class HttpRequest implements HttpServletRequest{
 	private final Map<String, Object> attributes = new HashMap<>();
 	private char[] body;
 
-	private HttpSessionImpl session;
+	private HttpSessionImplWrapper session;
 
 	// 解析请求头
 	public void parseRequestLine(String line) throws Exception {
@@ -142,7 +142,7 @@ public class HttpRequest implements HttpServletRequest{
 
 
 
-	public void setSession(HttpSessionImpl session) {
+	public void setSession(HttpSessionImplWrapper session) {
 		this.session = session;
 	}
 	
