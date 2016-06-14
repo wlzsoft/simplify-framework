@@ -1,5 +1,6 @@
 package com.meizu.simplify.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -8,6 +9,7 @@ import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Map;
 
@@ -354,5 +356,374 @@ public class DateUtil {
 		DateRang[1] = endDateStr;
 		return DateRang;
 	}
+//	=========================================月份相关日期操作============================================
 	
+	/**
+	 * 
+	 * 方法用途: 返回月<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static int getMonth(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return c.get(Calendar.MONTH) + 1;
+	}
+	
+	/**
+	 * 方法用途: 返回当前月<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static int getMonth() {
+		return getMonth(new Date());
+	}
+//	=======未处理======
+	
+	/**
+	 * 
+	 * 方法用途: 获取当前月的第一天日期<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static Date getFirstDayOfMonth() {
+		Date date = new Date();
+		Calendar c = Calendar.getInstance();
+		c.set(getYear(date), getMonth(date) - 1, 1);
+		return c.getTime();
+	}
+	/**
+	 * 获取当月的最后一天
+	 *
+	 */
+	public static Date getLastDayDayOfMonth(Date date) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			int value = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+			cal.set(Calendar.DAY_OF_MONTH, value);
+			return cal.getTime();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 
+	 * 方法用途: 获取当前月的最后一天日期<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static Date getLastDayDayOfMonth() {
+		Date date = new Date();
+		Calendar c = Calendar.getInstance();
+		c.set(getYear(date), getMonth(date), 1);
+		c.setTimeInMillis(c.getTimeInMillis() - (24 * 3600 * 1000));
+		return c.getTime();
+	}
+	/**
+	 * 
+	 * 方法用途: 返回年<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static int getYear(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return c.get(Calendar.YEAR);
+
+	}
+	/**
+	 * 
+	 * 方法用途: 获得本月的第一天的日期<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static String getCurrMonthFirstDay() {
+		Calendar cal = Calendar.getInstance();
+		String s = (getYear(cal)) + "-" + (getMonth(cal)) + "-01";
+		return s;
+	}
+	/**
+	 * 当前年份
+	 * @return
+	 */
+	public static int getYear(){
+		GregorianCalendar gc = new GregorianCalendar();
+		return gc.get(GregorianCalendar.YEAR);
+	}
+	/**
+	 * 
+	 * 方法用途: 获得本月的最后一天的日期 <br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static String getCurrMonthLastDay() {
+		Calendar cal = Calendar.getInstance();
+		String s = (getYear(cal)) + "-" + (getMonth(cal)) + "-" + getDays(cal);
+		return s;
+	}
+	/**
+	 * 
+	 * 方法用途: 获得给定日历的年<br>
+	 * 操作步骤: TODO<br>
+	 * @param cal
+	 * @return
+	 */
+	public static int getYear(Calendar cal) {
+		return cal.get(Calendar.YEAR);
+	}
+	/**
+	 * 
+	 * 方法用途: 获得给定日期当月的天数<br>
+	 * 操作步骤: TODO<br>
+	 * @param cal
+	 * @return
+	 */
+	public static int getDays(Calendar cal) {
+		return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获得给定日历的月<br>
+	 * 操作步骤: TODO<br>
+	 * @param cal
+	 * @return
+	 */
+	public static int getMonth(Calendar cal) {
+		return (cal.get(Calendar.MONTH) + 1);
+	}
+	/**
+	 * 创建一个"yyyyMM"日期的格式化对象
+	 * @return "yyyyMM"日期的格式化对象
+	 */
+	private static SimpleDateFormat newShortYMFormat() {
+		return new SimpleDateFormat("yyyyMM");
+	}
+	/**
+	 * 获得距离输入月份的diffMonth月的日期
+	 * @param month "yyyyMM"格式的日期
+	 * @param diffMonth 相差的月数
+	 * @return "yyyyMM"格式的日期
+	 * @throws ParseException
+	 */
+	public static String getShortYMDiffMonth(String month, int diffMonth) {
+		SimpleDateFormat sdf = newShortYMFormat();
+		try {
+			sdf.parse(month);
+		} catch (ParseException e) {
+			// Auto-generated catch block
+			e.printStackTrace();
+		}
+		Calendar c = sdf.getCalendar();
+		c.add(Calendar.MONTH, diffMonth);
+		return sdf.format(c.getTime());
+	}
+	
+	/**
+	 * 获取某月份的最后一天
+	 * @param shortYM 月份
+	 * @return 输入月份的最后一天
+	 * @throws Exception
+	 */
+	public static String getEndDayOfMonth(String shortYM) {
+		String month = "";
+		try {
+			month = getShortYMDiffMonth(shortYM, 1);
+		} catch (Exception e) {
+			// Auto-generated catch block
+			e.printStackTrace();
+		}
+		return getShortYMDDiffDay(month + "01", -1);
+	}
+	/**
+	 * 创建一个"yyyyMMdd"日期的格式化对象
+	 * @return "yyyyMMdd"日期的格式化对象
+	 */
+	private static SimpleDateFormat newShortYMDFormat() {
+		return new SimpleDateFormat("yyyyMMdd");
+	}
+	/**
+	 * 获得距离给定日期diffDay天的日期
+	 * @param shortYMD "yyyyMMdd"格式的日期
+	 * @param diffDay 相差的天数
+	 * @return "yyyyMMdd"格式的日期
+	 * @throws ParseException
+	 */
+	public static String getShortYMDDiffDay(String shortYMD, int diffDay) {
+		SimpleDateFormat sdf = newShortYMDFormat();
+		try {
+			sdf.parse(shortYMD);
+		} catch (ParseException e) {
+			// Auto-generated catch block
+			e.printStackTrace();
+		}
+		Calendar c = sdf.getCalendar();
+		c.add(Calendar.DATE, diffDay);
+		return sdf.format(c.getTime());
+	}
+	/**
+	 * 获取可距离某段时间内月份字符串的方法：getAvailableMonth() 使用说明： getAvailableMonth( -1,-5) 如果当前是200205的话，那么返回的月份就是200101到200204，包括当前月份 getAvailableMonth( 3,7)
+	 * 如果当前是200202的话，那么返回的月份就是200205到200209，包括当前月份 注意，开始月份永远是靠近当前月份的。
+	 * 
+	 * @param begin
+	 *            开始月份(距离当前月份)
+	 * @param end
+	 *            结束月份(距离当前月份)
+	 * @return string[] 月份数组，格式为200011
+	 */
+	public static String[] getAvailableMonth(int begin, int end) {
+		// 需取得月份的个数
+		int numberOfMonth = end - begin;
+		// 月份数的绝对值
+		int index = Math.abs(numberOfMonth) + 1;
+		// 返回的月份数组
+		String[] strMonth = new String[index];
+		// 回滚年数
+		int roll = (end > begin) ? (begin - 1) : (end - 1);
+		try {
+			for (int i = 1; i <= index; i++) {
+				// 依次回滚，计算当前回滚后的月份
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.MONTH, roll + i);
+				Date now = calendar.getTime();
+				// 月份格式YYYYMM
+				strMonth[i - 1] = getDateString(now, "yyyyMM");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return strMonth;
+	}
+	
+	/**
+	 * 获得格式为yyyy-MM-dd的格式化日期为字符串
+	 * 
+	 * @param date
+	 *            被格式化日期
+	 * @param formatPattern
+	 *            格式化格式
+	 * @return String 格式化后的日期字符串
+	 */
+	public static String getDateString(Date date) {
+		return getDateString(date, null);
+	}
+	private static SimpleDateFormat sdf = new SimpleDateFormat();
+	/**
+	 * 根据参数格式化日期为字符串，默认格式为yyyy-MM-dd
+	 * 
+	 * @param date
+	 *            被格式化日期
+	 * @param formatPattern
+	 *            格式化格式
+	 * @return String 格式化后的日期字符串
+	 */
+	public static String getDateString(Date date, String formatPattern) {
+		if (date == null) {
+			return "";
+		}
+		if ((formatPattern == null) || formatPattern.equals("")) {
+			formatPattern = "yyyy-MM-dd";
+		}
+		sdf.applyPattern(formatPattern);
+		return sdf.format(date);
+	}
+	
+	//返回一个月的第一天
+    public static Calendar getFirstDateOfMonth(int year, int month) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month - 1);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        return c;
+    }
+
+
+    //返回一个月的最后一天
+    public static Calendar getLastDateOfMonth(int year, int month) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month - 1);
+        int maxDate = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+        c.set(Calendar.DAY_OF_MONTH, maxDate);
+        return c;
+    }
+    
+    /**
+	 * 获得当前时间是这个月的几号
+	 * @return int
+	 */
+	public static int getDayOfMonth(long time){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(time);
+		return calendar.get(Calendar.DAY_OF_MONTH);
+	}
+	
+	
+	 
+	 /**
+		 * 根据年和月计算出所给的月份最后一天
+		 * @param year 年
+		 * @param month 月
+		 * @return
+		 */
+		public static int getEndday(int year,int month){
+			int endDay=0;
+			if(month<1||month>12||year<1753||year>9999)
+				return 0;
+			switch(month){
+				case 4:
+					endDay = 30;
+					break;
+				case 6:
+					endDay = 30;
+					break;
+				case 9:
+					endDay = 30;
+					break;
+				case 11:
+					endDay = 30;
+					break;
+				case 2:
+					if (year % 4 == 0)
+						endDay = 29;
+					else
+						endDay = 28;
+					break;
+				default:
+					endDay = 31;
+					break;
+			}
+			return endDay;
+		}
+		
+		
+		/**
+		 * 返回上个月1号和本月1号的格式化的日期对
+		 * 
+		 * @param formater
+		 *            日期格式："yyyy-M-d"或"yyyy-MM-dd"
+		 * @return
+		 */
+		public static String[] getDatesRangeOfLastMonth(String formater) {
+			String DateRang[] = new String[2];
+			SimpleDateFormat format = new SimpleDateFormat(formater);
+			Date myDate = new Date();
+			GregorianCalendar calendar = new GregorianCalendar();
+			calendar.setTime(myDate);
+			calendar.set(calendar.get(GregorianCalendar.YEAR), calendar
+					.get(GregorianCalendar.MONTH), 1);
+			Date cDate = calendar.getTime();
+			DateRang[1] = format.format(cDate);
+			calendar.add(GregorianCalendar.MONTH, -1);
+			cDate = calendar.getTime();
+			DateRang[0] = format.format(cDate);
+			return DateRang;
+		}
 }
