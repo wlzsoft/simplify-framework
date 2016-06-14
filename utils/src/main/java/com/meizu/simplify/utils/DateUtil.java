@@ -1,9 +1,16 @@
 package com.meizu.simplify.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.meizu.simplify.utils.enums.DateFormatEnum;
 
@@ -96,8 +103,8 @@ public class DateUtil {
      */
     private static SimpleDateFormat getDateFormat(DateFormatEnum pattern) {
         SimpleDateFormat sdf = simpleDateFormatMap.get(pattern);
-        // TimeZone zone = new SimpleTimeZone(28800000, "Asia/Shanghai");
-        // sdf.setTimeZone(zone);
+        //TimeZone zone = new SimpleTimeZone(28800000, "Asia/Shanghai");//TimeZone.getTimeZone("GMT+8");
+        //sdf.setTimeZone(zone);
         return sdf;
     }
 	
@@ -204,4 +211,148 @@ public class DateUtil {
 	public static String parseAndFormat(String dateStr, DateFormatEnum format, DateFormatEnum toFormat) {
 		return format(parse(dateStr, format), toFormat);
 	}
+//	=========================周，星期的日期处理==============================
+	
+    /**
+     * 方法用途: 获取当天是一周的第几天 周日为一周的第一天<br>
+     * 操作步骤: 注意：一般不会直接使用这个方法，而会使用getWeekByToday方法<br>
+     * @return 一周的第几天
+     */
+    public static int getDayOfWeekByToday(){
+        return getDayOfWeek(new Date());
+	}
+    
+    /**
+     * 方法用途: 获取当天是周几<br>
+     * 操作步骤: TODO<br>
+     * @return 周几  sunday,monday,tuesday,wednesday,thursday,friday,saturday
+     */
+    public static int getWeekByToday(){
+    	int daynum = getDayOfWeekByToday();
+    	if(daynum == 1) {
+    		return 7;
+    	} else {
+    		return getDayOfWeekByToday()-1;
+    	}
+    }
+
+    /**
+     * 方法用途: 获取某天是一周的第几天 周日为一周的第一天<br>
+     * 操作步骤: TODO<br>
+     * @param date 指定的日期：也即是 "某天"
+     * @return 一周的第几天
+     */
+    public static int getDayOfWeek(Date date){
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(date);
+//    	calendar.setTimeInMillis(time);
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+    
+	/**
+	 * 方法用途: 获取某天是一周的第几天 周日为一周的第一天<br>
+	 * 操作步骤: TODO<br>
+	 * @param dateStr 指定的日期字符串：也即是 "某天"
+	 * @return
+	 */
+	public static int getDayOfWeek(String dateStr) {
+		Date date = parse(dateStr);
+		return getDayOfWeek(date);
+	}
+
+    /**
+     * 方法用途: 获取某天是一周的第几天 周日为一周的第一天<br>
+     * 操作步骤: TODO<br>
+     * @param time 时间搓：某天的时间搓
+     * @return
+     */
+    public static int getDayOfWeek(long time){
+        return getDayOfWeek(new Date(time));
+    }
+    
+    /**
+     * 方法用途: 获取某天所在周的第一天<br>
+     * 操作步骤: TODO<br>
+     * @param date
+     * @return
+     */
+    public static Date getFirstDayOfWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {//特殊处理星期天是第一天的情况！按中国人习惯把周1看成第一天，星期天看成最后一天
+            calendar.add(Calendar.DAY_OF_WEEK, -1);//扣除一天
+        }
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); 
+        return calendar.getTime();
+    }
+
+	/**
+	 * 方法用途: 获取某天所在周的第一天<br>
+	 * 操作步骤: TODO<br>
+	 * @param dateStr 格式yyyy-MM-dd
+	 * @return
+	 */
+	public static Date getFirstDayOfWeek(String dateStr) {
+		LocalDate localDate = LocalDate.parse(dateStr);
+		TemporalField fieldISO = WeekFields.of(Locale.CHINA).dayOfWeek();
+		localDate = localDate.minusDays(1).with(fieldISO, Calendar.MONDAY);
+		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	}
+    
+	/**
+	 * 方法用途: 获取某周的周一对应的日期<br>
+	 * 操作步骤: TODO未测试<br>
+	 * @param flag 0 本周 1下周 n下n周
+	 * @return 周一对应的日期
+	 */
+	public static Date getWeekTime(int flag){
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.WEEK_OF_YEAR, flag);
+		calendar.set(Calendar.MILLISECOND,0);
+		calendar.set(Calendar.SECOND,0);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.HOUR_OF_DAY,0);
+		calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+		return calendar.getTime();
+	}
+	
+	/**
+	 * 方法用途: 取得某一特定的日期<br>
+	 * 操作步骤: TODO未测试<br>
+	 * @param sDate
+	 * @param iDay
+	 * @param sformat
+	 * @return
+	 */
+	public static String getSomeDate(String sDate, int iDay, String sformat) {
+		try {
+			SimpleDateFormat format = new SimpleDateFormat(sformat);
+			format.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+			Date date = format.parse(sDate);
+			long Time = (date.getTime() / 1000) + 60 * 60 * 24 * iDay;
+			date.setTime(Time * 1000);
+			return format.format(date);
+		} catch ( Exception ex ) {
+			return "";
+		}
+	}
+
+	/**
+	 * 方法用途: 返回本周的区间的格式化的日期对，格式为yyyy-MM-dd HH:mm:ss<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static String[] getSimpleDateRangeOfWeek() {
+		Date curDate = new Date();
+		String today = format(curDate);
+		int endWeekDay = getDayOfWeek(curDate);
+		// 以取出的第一个时间为准，向前推算第一个星期一的时间
+		String startDate = getSomeDate(today + " 00:00:00",	-(endWeekDay - 1), "yyyy-MM-dd");
+		String endDate = getSomeDate(startDate, 6, "yyyy-MM-dd").substring(0, 10) + " 24:00:00";
+		String DateRang[] = new String[2];
+		DateRang[0] = startDate;
+		DateRang[1] = endDate;
+		return DateRang;
+	}
+	
 }
