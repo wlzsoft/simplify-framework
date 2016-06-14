@@ -39,21 +39,21 @@ public class SystemController<T extends Model> extends BaseController<T> {
 	}
 	
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl)
+	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl)
 			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			ServletException {
-		super.execute(request, response, model,requestUrl);
+		super.execute(request, response,cmd, model,requestUrl);
 	}
 
 	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T model) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
 		
 		boolean ischeck = true;
 		if(ischeck) {
 			return true;
 		}
 		
-		if (!"login".equals(model.getCmd())) {
+		if (!"login".equals(cmd)) {
 			response.sendRedirect("/template/login.html");
 			return false;
 		}

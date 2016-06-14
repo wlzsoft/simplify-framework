@@ -20,8 +20,6 @@ public class Model {
 	 */
 	private String[] params = new String[] {}; 
 	
-	private String cmd = "view";
-	
 	/**
 	 * 是否为script方式加载  0：jsonp自加载格式
 	 *                     1：jsonp自加载格式，除了数据传输，还有js页面加载触发事件，可用于表单提交到iframe的无刷新表单提交
@@ -40,14 +38,6 @@ public class Model {
 		this.callback = callback;
 	}
 
-	public String getCmd() {
-		return cmd;
-	}
-	
-	public void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-	
 	public String[] getParams() {
 		return params;
 	}

@@ -78,9 +78,9 @@ public class BaseController<T extends Model> {
 			@SuppressWarnings("unchecked")
 			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(this.getClass().getName()+":"+cmd);
 			T model = modelSelector.setRequestModel(request, entityClass);
-			model = AnalysisRequestControllerModel.setBaseModel(entityClass, cmd, urlparams, model);
-			if (checkPermission(request, response, model)) {
-				execute(request, response, model,requestUrl);
+			model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
+			if (checkPermission(request, response,cmd, model)) {
+				execute(request, response,cmd, model,requestUrl);
 			}
 			destroy(request, response, model);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
@@ -111,43 +111,40 @@ public class BaseController<T extends Model> {
 	}
 	
 	/**
-	 * 
-	 * 方法用途: 安全权限过程检查<br>
+	 * 方法用途: 权限拦截检查,类似过滤器的使用<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
+	 * @param cmd 指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
 	 * @param model
 	 * @return
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response, T model) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
 		return true;
 	}
 	
 	/**
-	 * 
 	 * 方法用途: 执行逻辑<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
+	 * @param cmd
 	 * @param model
-	 * @param staticName 
-	 * @return
-	 * @throws ServletException
+	 * @param requestUrl
 	 * @throws IOException
-	 * @throws InvocationTargetException 
-	 * @throws IllegalArgumentException 
-	 * @throws IllegalAccessException 
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws ServletException
 	 */
-	public void execute(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
-		if (model.getCmd() == null || model.getCmd().length() <= 0) {
+	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+		if (cmd == null || cmd.length() <= 0) {
 			return;
 		}
-		String doCmd = model.getCmd();
-		
 		String className = this.getClass().getName();
-		String methodFullName = className+":"+doCmd;
+		String methodFullName = className+":"+cmd;
 		//页面静态化名字		
 		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".ce";
 
@@ -159,7 +156,7 @@ public class BaseController<T extends Model> {
 		}
 //		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
 		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
-		Object obj = methodSelector.invoke(request,response,model,this,doCmd, parameValue);
+		Object obj = methodSelector.invoke(request,response,model,this,cmd, parameValue);
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
 	}

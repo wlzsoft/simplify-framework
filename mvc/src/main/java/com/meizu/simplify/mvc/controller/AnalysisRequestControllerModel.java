@@ -25,7 +25,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class AnalysisRequestControllerModel {
 	
 
-	public static <T> T setBaseModel(Class<T> modelClass, String cmd, String[] urlparams, T model) {
+	public static <T> T setBaseModel(Class<T> modelClass, String[] urlparams, T model) {
 		Class<?> modelSuperClass = modelClass.getSuperclass();
 		Class<?> modelSuperSuperClass = modelSuperClass.getSuperclass();
 		if( modelClass!=Model.class&&modelSuperClass!= BaseModel.class&&modelSuperClass != Model.class&&modelSuperSuperClass!= BaseModel.class&&modelSuperSuperClass != Model.class) {
@@ -35,10 +35,6 @@ public class AnalysisRequestControllerModel {
 		Model modelTemp = (Model) model;
 		if(urlparams != null) {
 			modelTemp.setParams(urlparams);
-		}
-		//指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
-		if(cmd != null) {
-			modelTemp.setCmd(cmd);
 		}
 		return model;
 	}
