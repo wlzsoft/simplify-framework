@@ -455,7 +455,8 @@ public class DateUtil {
 		return s;
 	}
 	/**
-	 * 当前年份
+	 * 方法用途: 当前年份
+	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static int getYear(){
@@ -505,14 +506,16 @@ public class DateUtil {
 		return (cal.get(Calendar.MONTH) + 1);
 	}
 	/**
-	 * 创建一个"yyyyMM"日期的格式化对象
+	 * 方法用途: 创建一个"yyyyMM"日期的格式化对象
+	 * 操作步骤: TODO<br>
 	 * @return "yyyyMM"日期的格式化对象
 	 */
 	private static SimpleDateFormat newShortYMFormat() {
 		return new SimpleDateFormat("yyyyMM");
 	}
 	/**
-	 * 获得距离输入月份的diffMonth月的日期
+	 * 方法用途: 获得距离输入月份的diffMonth月的日期
+	 * 操作步骤: TODO<br>
 	 * @param month "yyyyMM"格式的日期
 	 * @param diffMonth 相差的月数
 	 * @return "yyyyMM"格式的日期
@@ -532,7 +535,8 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 获取某月份的最后一天
+	 * 方法用途: 获取某月份的最后一天
+	 * 操作步骤: TODO<br>
 	 * @param shortYM 月份
 	 * @return 输入月份的最后一天
 	 * @throws Exception
@@ -548,14 +552,16 @@ public class DateUtil {
 		return getShortYMDDiffDay(month + "01", -1);
 	}
 	/**
-	 * 创建一个"yyyyMMdd"日期的格式化对象
+	 * 方法用途: 创建一个"yyyyMMdd"日期的格式化对象
+	 * 操作步骤: TODO<br>
 	 * @return "yyyyMMdd"日期的格式化对象
 	 */
 	private static SimpleDateFormat newShortYMDFormat() {
 		return new SimpleDateFormat("yyyyMMdd");
 	}
 	/**
-	 * 获得距离给定日期diffDay天的日期
+	 * 方法用途: 获得距离给定日期diffDay天的日期
+	 * 操作步骤: TODO<br>
 	 * @param shortYMD "yyyyMMdd"格式的日期
 	 * @param diffDay 相差的天数
 	 * @return "yyyyMMdd"格式的日期
@@ -574,9 +580,9 @@ public class DateUtil {
 		return sdf.format(c.getTime());
 	}
 	/**
-	 * 获取可距离某段时间内月份字符串的方法：getAvailableMonth() 使用说明： getAvailableMonth( -1,-5) 如果当前是200205的话，那么返回的月份就是200101到200204，包括当前月份 getAvailableMonth( 3,7)
+	 * 方法用途: 获取可距离某段时间内月份字符串的方法：getAvailableMonth() 使用说明： getAvailableMonth( -1,-5) 如果当前是200205的话，那么返回的月份就是200101到200204，包括当前月份 getAvailableMonth( 3,7)
 	 * 如果当前是200202的话，那么返回的月份就是200205到200209，包括当前月份 注意，开始月份永远是靠近当前月份的。
-	 * 
+	 * 操作步骤: TODO<br>
 	 * @param begin
 	 *            开始月份(距离当前月份)
 	 * @param end
@@ -608,8 +614,8 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 获得格式为yyyy-MM-dd的格式化日期为字符串
-	 * 
+	 * 方法用途: 获得格式为yyyy-MM-dd的格式化日期为字符串
+	 * 操作步骤: TODO<br>
 	 * @param date
 	 *            被格式化日期
 	 * @param formatPattern
@@ -619,10 +625,12 @@ public class DateUtil {
 	public static String getDateString(Date date) {
 		return getDateString(date, null);
 	}
+	
 	private static SimpleDateFormat sdf = new SimpleDateFormat();
+	
 	/**
-	 * 根据参数格式化日期为字符串，默认格式为yyyy-MM-dd
-	 * 
+	 * 方法用途: 根据参数格式化日期为字符串，默认格式为yyyy-MM-dd<br>
+	 * 操作步骤: TODO<br>
 	 * @param date
 	 *            被格式化日期
 	 * @param formatPattern
@@ -640,7 +648,13 @@ public class DateUtil {
 		return sdf.format(date);
 	}
 	
-	//返回一个月的第一天
+    /**
+     * 方法用途: 返回一个月的第一天<br>
+     * 操作步骤: TODO<br>
+     * @param year
+     * @param month
+     * @return
+     */
     public static Calendar getFirstDateOfMonth(int year, int month) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
@@ -649,8 +663,13 @@ public class DateUtil {
         return c;
     }
 
-
-    //返回一个月的最后一天
+    /**
+     * 方法用途: 返回一个月的最后一天<br>
+     * 操作步骤: TODO<br>
+     * @param year
+     * @param month
+     * @return
+     */
     public static Calendar getLastDateOfMonth(int year, int month) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
@@ -660,9 +679,11 @@ public class DateUtil {
         return c;
     }
     
-    /**
-	 * 获得当前时间是这个月的几号
-	 * @return int
+	/**
+	 * 方法用途: 获得当前时间是这个月的几号<br>
+	 * 操作步骤: TODO<br>
+	 * @param time
+	 * @return
 	 */
 	public static int getDayOfMonth(long time){
 		Calendar calendar = Calendar.getInstance();
@@ -671,64 +692,63 @@ public class DateUtil {
 	}
 	
 	
-	 
-	 /**
-		 * 根据年和月计算出所给的月份最后一天
-		 * @param year 年
-		 * @param month 月
-		 * @return
-		 */
-		public static int getEndday(int year,int month){
-			int endDay=0;
-			if(month<1||month>12||year<1753||year>9999)
-				return 0;
-			switch(month){
-				case 4:
-					endDay = 30;
-					break;
-				case 6:
-					endDay = 30;
-					break;
-				case 9:
-					endDay = 30;
-					break;
-				case 11:
-					endDay = 30;
-					break;
-				case 2:
-					if (year % 4 == 0)
-						endDay = 29;
-					else
-						endDay = 28;
-					break;
-				default:
-					endDay = 31;
-					break;
-			}
-			return endDay;
+	/**
+	 * 方法用途: 根据年和月计算出所给的月份最后一天<br>
+	 * 操作步骤: TODO<br>
+	 * @param year 年
+	 * @param month 月
+	 * @return
+	 */
+	public static int getEndday(int year,int month){
+		int endDay=0;
+		if(month<1||month>12||year<1753||year>9999)
+			return 0;
+		switch(month){
+			case 4:
+				endDay = 30;
+				break;
+			case 6:
+				endDay = 30;
+				break;
+			case 9:
+				endDay = 30;
+				break;
+			case 11:
+				endDay = 30;
+				break;
+			case 2:
+				if (year % 4 == 0)
+					endDay = 29;
+				else
+					endDay = 28;
+				break;
+			default:
+				endDay = 31;
+				break;
 		}
-		
-		
-		/**
-		 * 返回上个月1号和本月1号的格式化的日期对
-		 * 
-		 * @param formater
-		 *            日期格式："yyyy-M-d"或"yyyy-MM-dd"
-		 * @return
-		 */
-		public static String[] getDatesRangeOfLastMonth(String formater) {
-			String DateRang[] = new String[2];
-			SimpleDateFormat format = new SimpleDateFormat(formater);
-			Date myDate = new Date();
-			GregorianCalendar calendar = new GregorianCalendar();
-			calendar.setTime(myDate);
-			calendar.set(calendar.get(GregorianCalendar.YEAR), calendar
-					.get(GregorianCalendar.MONTH), 1);
-			Date cDate = calendar.getTime();
-			DateRang[1] = format.format(cDate);
-			calendar.add(GregorianCalendar.MONTH, -1);
-			cDate = calendar.getTime();
-			DateRang[0] = format.format(cDate);
-			return DateRang;
-		}
+		return endDay;
+	}
+	
+	
+	/**
+	 * 方法用途: 返回上个月1号和本月1号的格式化的日期对<br>
+	 * 操作步骤: TODO<br>
+	 * @param formater 日期格式："yyyy-M-d"或"yyyy-MM-dd"
+	 * @return
+	 */
+	public static String[] getDatesRangeOfLastMonth(String formater) {
+		String DateRang[] = new String[2];
+		SimpleDateFormat format = new SimpleDateFormat(formater);
+		Date myDate = new Date();
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(myDate);
+		calendar.set(calendar.get(GregorianCalendar.YEAR), calendar
+				.get(GregorianCalendar.MONTH), 1);
+		Date cDate = calendar.getTime();
+		DateRang[1] = format.format(cDate);
+		calendar.add(GregorianCalendar.MONTH, -1);
+		cDate = calendar.getTime();
+		DateRang[0] = format.format(cDate);
+		return DateRang;
+	}
 }
