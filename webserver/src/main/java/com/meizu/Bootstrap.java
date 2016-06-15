@@ -65,18 +65,20 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			Socket socket = serverSocket.accept();
-			System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
-			InputStream inputStream = socket.getInputStream();
-			InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
-			BufferedReader br = new BufferedReader(isr);
-			String content = null;
-			while((content = br.readLine())!=null) {
-				System.out.println(content);
+			while(true) {
+				Socket socket = serverSocket.accept();
+				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
+				InputStream inputStream = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
+				BufferedReader br = new BufferedReader(isr);
+				String content = null;
+				while((content = br.readLine())!=null) {
+					System.out.println(content);
+				}
 			}
-			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			if(serverSocket != null) {
 				try {
@@ -86,6 +88,5 @@ public class Bootstrap {
 				}
 			}
 		}
-		return false;
 	}
 }
