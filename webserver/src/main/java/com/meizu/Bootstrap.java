@@ -25,14 +25,15 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 public class Bootstrap {
+	private static boolean isRunning = true;
 	public static void main(String[] args) {
 		boolean isStart = start();
-		if(!isStart) {
+		if(!isRunning&&isStart) {
+			System.out.println("服务器正常关闭");
+		} else {
 			System.out.println("服务启动失败,已停止服务");
 			System.exit(-1);
 		}
-		System.out.println("服务器已经启动成功");
-		
 	}
 	/**
 	 * 方法用途: 服务启动入口<br>
@@ -65,9 +66,10 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			while(true) {
+			while(isRunning) {
 				Socket socket = serverSocket.accept();
 				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
+				
 				InputStream inputStream = socket.getInputStream();
 				InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
 				BufferedReader br = new BufferedReader(isr);
@@ -88,5 +90,11 @@ public class Bootstrap {
 				}
 			}
 		}
+		return true;
+	}
+	
+	public static void stop() {
+		isRunning = false;
+		System.out.println("已通知系统停止运行");
 	}
 }

@@ -30,6 +30,7 @@ public class WebServer {
 			//1、创建http server //服务器连接
 			ServerSocket server = new ServerSocket(Integer.parseInt(config.get("port")))) {
 			this.server = server;
+			System.out.println("服务器已经启动 !");
 			//2、等待客户端连接，由于使用TCP协议，所以这里的客户端就是浏览器
 			while (!isShutDowm) {
 				
@@ -51,7 +52,6 @@ public class WebServer {
 					stop();
 				}
 			}
-			System.out.println("服务器已经启动 !");	
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("发生异常 ， 服务器停止 ！");
