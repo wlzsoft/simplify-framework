@@ -5,6 +5,8 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.meizu.simplify.utils.enums.DateFormatEnum;
+
 /**
   * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
@@ -21,8 +23,13 @@ import org.junit.Test;
 public class DateUtilTest {
 
 	@Test
-	public void format() {
+	public void formatAll() {
 		System.out.println(DateUtil.formatAll(new Date()));
+	}
+	
+	@Test
+	public void format() {
+		System.out.println(DateUtil.format(new Date(),DateFormatEnum.YEAR_TO_MONTH));
 	}
 	
 	@Test
@@ -66,6 +73,10 @@ public class DateUtilTest {
 	}
 	@Test
 	public void addDay(){
+		Assert.assertEquals("2016-06-17 00:00:00",DateUtil.format(DateUtil.addDay(DateUtil.parse("2016-06-15 00:00:00"),2)));
+	}
+	@Test
+	public void addDay2(){
 		Assert.assertEquals("2016-06-17 00:00:00",DateUtil.format(DateUtil.addDay(DateUtil.parse("2016-06-15"),2)));
 	}
 	/**

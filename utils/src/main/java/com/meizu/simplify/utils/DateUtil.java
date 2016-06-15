@@ -1,15 +1,17 @@
 package com.meizu.simplify.utils;
 
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.EnumMap;
 import java.util.Locale;
-import java.util.Map;
 
 import com.meizu.simplify.utils.enums.DateFormatEnum;
 
@@ -31,14 +33,14 @@ public class DateUtil {
 	/**
 	 * 按日期格式创建初始化SimpleDateFormat对象，避免每次格式化日期的时候都创建一次SimpleDateFormat
 	 */
-	private static final Map<DateFormatEnum,SimpleDateFormat> simpleDateFormatMap = new EnumMap<>(DateFormatEnum.class);
+	/*private static final Map<DateFormatEnum,SimpleDateFormat> simpleDateFormatMap = new EnumMap<>(DateFormatEnum.class);
 	static {
 		DateFormatEnum[] dfeArr = DateFormatEnum.values();
 		for (int i=0; i < dfeArr.length; i++) {
 			DateFormatEnum dateFormatEnum = dfeArr[i];
 			simpleDateFormatMap.put(dateFormatEnum, new SimpleDateFormat(dateFormatEnum.value()));
 		}
-	}
+	}*/
 	/**
 	 * 
 	 * 方法用途: 格式化日期-Date转为[yyyy-MM-dd HH:mm:ss]格式字符串<br>
@@ -71,12 +73,14 @@ public class DateUtil {
 		if (date == null) {
 			return null;
 		}
-		try {
-			return getDateFormat(pattern).format(date);
+		LocalDateTime localDateTime = getLocalDateTime(date);
+		String dateStr = localDateTime.format(DateTimeFormatter.ofPattern(pattern.value()));
+		/*try {
+			dateStr = getDateFormat(pattern).format(date);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return null;
+		}*/
+		return dateStr;
 	}
 	
 	/**
@@ -100,12 +104,39 @@ public class DateUtil {
      * @param type
      * @return
      */
-    private static SimpleDateFormat getDateFormat(DateFormatEnum pattern) {
+   /*private static SimpleDateFormat getDateFormat(DateFormatEnum pattern) {
         SimpleDateFormat sdf = simpleDateFormatMap.get(pattern);//TODO SimpleDateFormat,java.util.Date 是线程不安全的 ,每次都用new的才安全，这里的用法可能会导致数据被其他线程篡改
         //TimeZone zone = new SimpleTimeZone(28800000, "Asia/Shanghai");//TimeZone.getTimeZone("GMT+8");
         //sdf.setTimeZone(zone);
         return sdf;
+    }*/
+    
+    /**
+     * 方法用途: date转换为LocalDateTime<br>
+     * 操作步骤: TODO<br>
+     * @param date
+     * @return
+     */
+    private static LocalDateTime getLocalDateTime(Date date) {
+    	Instant instant = date.toInstant();
+		ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+		LocalDateTime localDateTime = zdt.toLocalDateTime();
+    	return localDateTime;
     }
+    
+    /**
+     * 方法用途: LocalDateTime转换为date<br>
+     * 操作步骤: TODO<br>
+     * @param localDateTime
+     * @return
+     */
+    private static Date getDate(LocalDateTime localDateTime) {
+		Date defaultValue;
+		ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+		Instant instant = zonedDateTime.toInstant();
+		defaultValue = Date.from(instant);
+		return defaultValue;
+	}
 	
     /**
      * 
@@ -141,22 +172,31 @@ public class DateUtil {
 	 * 
 	 * 方法用途: 时间字符串转时间，转失败返回默认<br>
 	 * 操作步骤: TODO<br>
-	 * @param dateString 时间字符串
+	 * @param dateStr 时间字符串
 	 * @param pattern yyyy-MM-dd HH:mm:ss 或是 yyyy-MM-dd | yyyy年MM月dd日 HH时mm分ss秒
 	 * @param defaultValue
 	 * @return
 	 */
-	public static Date parse(String dateString, DateFormatEnum pattern, Date defaultValue){
-		if(StringUtil.isEmpty(dateString)){
+	public static Date parse(String dateStr, DateFormatEnum pattern, Date defaultValue){
+		if(StringUtil.isEmpty(dateStr)){
 			return defaultValue;
 		}
-		try {
+		LocalDateTime localDateTime = null;
+		if(dateStr.length()==10||dateStr.length() == 7) {
+			LocalDate localDate = LocalDate.parse(dateStr,DateTimeFormatter.ofPattern(pattern.value()));
+			LocalTime localTime = LocalTime.of(0, 0, 0); 
+			localDateTime = localDate.atTime(localTime);
+		} else {
+			localDateTime = LocalDateTime.parse(dateStr,DateTimeFormatter.ofPattern(pattern.value()));
+		}
+		defaultValue = getDate(localDateTime);
+		/*try {
 			SimpleDateFormat sdf = getDateFormat(pattern);
 			Date date = sdf.parse(dateString);
 			return date;
 		} catch (Exception e) {
 			System.err.println("解析日期字符串错误:"+e.getMessage());
-		}
+		}*/
 		return defaultValue;
 		
 	}
@@ -181,18 +221,24 @@ public class DateUtil {
 	 */
 	public static Date parse(String dateStr) {
 		Date ret = null;
-		if (dateStr.length() == 10) {
-			ret = parse(dateStr, DateFormatEnum.YEAR_TO_DAY);
-		} else if (dateStr.length() == 16) {
-			ret = parse(dateStr, DateFormatEnum.YEAR_TO_MINUTE);
-		} else if (dateStr.length() == 19) {
-			ret = parse(dateStr, DateFormatEnum.YEAR_TO_SECOND);
-		} else if (dateStr.length() == 13) {
-			ret = parse(dateStr, DateFormatEnum.YEAR_TO_HOUR);
-		} else if (dateStr.length() == 7) {
-			ret = parse(dateStr, DateFormatEnum.YEAR_TO_MONTH);
-		} else {
-			ret = parse(dateStr, DateFormatEnum.DAY_TO_MILLISECOND);
+		switch (dateStr.length()) {
+			case 10:
+				ret = parse(dateStr, DateFormatEnum.YEAR_TO_DAY);
+				break;
+			case 16:
+				ret = parse(dateStr, DateFormatEnum.YEAR_TO_MINUTE);
+				break;
+			case 19:
+				ret = parse(dateStr, DateFormatEnum.YEAR_TO_SECOND);
+				break;
+			case 13:
+				ret = parse(dateStr, DateFormatEnum.YEAR_TO_HOUR);
+				break;
+			case 7:
+				ret = parse(dateStr, DateFormatEnum.YEAR_TO_MONTH);
+				break;
+			default:
+				ret = parse(dateStr, DateFormatEnum.DAY_TO_MILLISECOND);
 		}
 		return ret;
 	}
