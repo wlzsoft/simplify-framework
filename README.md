@@ -190,6 +190,31 @@ http://fishermen.iteye.com/blog/430286
 157.和压力测试人员衡量maxThreads，cceptCount 这个两个属性的值的设置,还有具体操作系统的限制，比如linux的openfile的限制
 158.优化权限拦截处理,减少model对请求的影响，model和请求分离
 159.日期处理全部替换成java.time的最新的jdk1.8的实现,实体(entity)中不需要time的地方直接用localDate，而不是date,因为现在部分地方有公用的SimpleDateFormat有线程安全问题,必须解决,务必先优化DateUtil类
+160.优化resin的access-log.log否则会出现死锁,优化参数：<session-max>4096</session-max>
+<session-timeout>30</session-timeout> 可以废弃掉，使用自己实现的session
+<enable-cookies>true</enable-cookies>
+<enable-url-rewriting>true</enable-url-rewriting> url重写，可不考虑
+<dependency-check-interval>2s</dependency-check-interval>  禁止热部署检测，优化性能
+thread-min，thread-max，thread-keepalive分别写为150，400，300 线程相关微调
+accept-buffer-size值设置的较大，10000以上,后续微调
+#resin3配置
+<jvm-arg>-Xmx2048m</jvm-arg>
+<jvm-arg>-Xms1024m</jvm-arg>
+<jvm-arg>-Xss1m</jvm-arg>
+<jvm-arg>-Xdebug</jvm-arg>
+<jvm-arg>-Dcom.sun.management.jmxremote</jvm-arg>
+#resin4配置
+<server-default>
+    <jvm-arg>-Xms1024m</jvm-arg>
+    <jvm-arg>-Xmx1024m</jvm-arg>
+    <jvm-arg>-Xmn256m</jvm-arg>
+    <jvm-arg>-XX:PermSize=128m</jvm-arg>
+	<jvm-arg>-XX:MaxPermSize=256m</jvm-arg>
+    <thread-max>1024</thread-max>
+    <socket-timeout>30s</socket-timeout>
+    <keepalive-max>512</keepalive-max>
+    <keepalive-timeout>60s</keepalive-timeout>
+</server-default>
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95
