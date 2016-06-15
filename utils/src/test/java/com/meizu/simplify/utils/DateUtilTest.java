@@ -81,7 +81,7 @@ public class DateUtilTest {
 	}
 	
 	/**
-	 * 方法用途: 未测试<br>
+	 * 方法用途: 已测试<br>
 	 * 操作步骤: TODO<br>
 	 */
 	@Test
@@ -90,11 +90,19 @@ public class DateUtilTest {
 	}
 	
 	/**
-	 * 方法用途: 未测试<br>
+	 * 方法用途: 已测试<br>
 	 * 操作步骤: TODO<br>
 	 */
 	@Test
 	public void getLastDayOfMonth(){
 		System.out.println(DateUtil.format(DateUtil.getLastDayOfMonth()));
+	}
+	@Test
+	public void getLastDayOfMonthByYearAndMonth(){
+		System.out.println(DateUtil.format(DateUtil.getLastDayOfMonth(2016,5)));
+	}
+	@Test
+	public void getFirstDayOfMonthByYearAndMonth(){
+		System.out.println(DateUtil.format(DateUtil.getFirstDayOfMonth(2016, 5)));
 	}
 }
