@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.DataUtil;
 /**
  * <p><b>Title:</b><i>基于map类型结果集的基础dao实现</i></p>
@@ -43,6 +44,9 @@ public class SearchByMapDao {
 				return DataUtil.parseInt(object);
 			}
 		},null);
+		if(CollectionUtil.isEmpty(list)) {
+			return 0;
+		}
 		return list.get(0);
 	}
 	

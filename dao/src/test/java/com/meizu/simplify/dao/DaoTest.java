@@ -222,7 +222,10 @@ public class DaoTest {
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(ids));
 	}
 	
-	
+	@Test
+	public void s8_countTest2() {
+		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","awsesdf"));
+	}
 	
 	@Test
 	public void s8_countTest() {
