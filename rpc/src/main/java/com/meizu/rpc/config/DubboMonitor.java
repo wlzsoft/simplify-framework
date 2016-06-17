@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.MonitorConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p>dubbo监控</p>
@@ -29,7 +30,11 @@ public class DubboMonitor  extends MonitorConfig{
 
 	@InitBean
 	public void init() {
-		setProtocol(dubboProperties.getProp().getString("dubbo.monitor.protocol"));
+		String monitorPro=dubboProperties.getProp().getString("dubbo.monitor.protocol");
+		if (StringUtil.isNotBlank(monitorPro)) {
+			setProtocol(monitorPro);
+		}
+		
 	}
 	
 	public DubboMonitor() {
