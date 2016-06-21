@@ -1,13 +1,11 @@
 package com.meizu;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.meizu.simplify.utils.StringUtil;
 
@@ -69,14 +67,7 @@ public class Bootstrap {
 			while(isRunning) {
 				Socket socket = serverSocket.accept();
 				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
-				
-				InputStream inputStream = socket.getInputStream();
-				InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
-				BufferedReader br = new BufferedReader(isr);
-				String content = null;
-				while((content = br.readLine())!=null) {
-					System.out.println(content);
-				}
+				TaskFactory.add(socket);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
