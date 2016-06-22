@@ -218,6 +218,7 @@ accept-buffer-size值设置的较大，10000以上,后续微调
 161.序列化的性能，yaml和json比较，还有解析速度，占用空间
 162.进程控制：（1）使用Runtime的exec()方法 
            （2）使用ProcessBuilder的start()方法，参考地址：http://www.jb51.net/article/74430.htm 
+163.优化避免新环境构建的时候，由于加载大量的jar，特别是一些maven的系统级jar包，导致构建一个新项目要花很多时间。即使使用nexus私服也会存在这样的问题   
 *相关信息：
 1.druid配置相关优化：https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
 2.druid统计配置：https://github.com/alibaba/druid/wiki/%E6%80%8E%E4%B9%88%E4%BF%9D%E5%AD%98Druid%E7%9A%84%E7%9B%91%E6%8E%A7%E8%AE%B0%E5%BD%95

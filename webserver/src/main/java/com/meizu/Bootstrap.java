@@ -37,7 +37,7 @@ public class Bootstrap {
 	 */
 	public static boolean start() {
 		System.out.println("开始启动服务器...");
-		int backlog = 5;
+		int backlog = 5;//连接等待队列
 		int port = 8060;
 		String host = "127.0.0.1";
 		ServerSocket serverSocket = null;
@@ -61,7 +61,17 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			TaskFactory.add(serverSocket);
+			for (int i=0; i<ThreadPool.getPoolSize(); i++) {
+				ThreadPool.add(new Thread(new MessageHandler(serverSocket)));
+			}
+			while(Bootstrap.isRunning) {
+				try {
+					Thread.sleep(200000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

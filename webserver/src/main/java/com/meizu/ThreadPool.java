@@ -18,6 +18,9 @@ import java.util.List;
  */
 public class ThreadPool {
 	private static int poolSize = 4;
+	public static int getPoolSize() {
+		return poolSize;
+	}
 	private static List<Thread> threadList = new ArrayList<>(poolSize);
 	public static void add(Thread thread) {
 		if(threadList.size()<20) {

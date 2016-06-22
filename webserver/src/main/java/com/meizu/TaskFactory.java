@@ -23,15 +23,5 @@ public class TaskFactory {
 	 * @param socket
 	 */
 	public static void add(ServerSocket serverSocket) {
-		Thread thread = ThreadPool.get();
-		if(thread.getState() == State.BLOCKED) {
-			
-		}
-		if(true) {
-			return;
-		}
-		if(!ThreadPool.isFull()) {
-			ThreadPool.add(new Thread(new MessageHandler(serverSocket)));
-		}
 	}
 }
