@@ -36,12 +36,6 @@
 		  	<artifactId>stress-tester</artifactId>
 		  	<version>1.0.1-SNAPSHOT</version>
 		  	<scope>test</scope>
-		  	<exclusions>
-		  		<exclusion>
-		  			<artifactId>commons-logging</artifactId>
-		  			<groupId>commons-logging</groupId>
-		  		</exclusion>
-		  	</exclusions>
-		  </dependency>
+		</dependency>
   </dependencies>
 </project>
