@@ -265,7 +265,7 @@
 					<forkMode>once</forkMode>
 					<parallel>methods</parallel>
 					<threadCount>4</threadCount>
-					<!-- <argLine>-Xmx1024m -XX:MetaSpaceSize=256m -XX:MaxMetaspaceSize=256m</argLine> -->
+					<!-- <argLine>-Xmx1024m -Xss8192k[线程栈大小，另外的说话，是线程创建占用的内存空间,8192k和linux线程栈大小一致] -XX:MetaSpaceSize=256m -XX:MaxMetaspaceSize=256m</argLine> -->
  					<argLine>-Dfile.encoding=UTF-8</argLine> 
  					<excludes>  
 	                  <exclude>**/TestAll.java</exclude>  
