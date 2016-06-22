@@ -32,12 +32,6 @@ public class ThreadPool {
 		return false;
 	}
 	public static Thread get() {
-		for (Thread thread : threadList) {
-			boolean isStop = !thread.isAlive();
-			if(isStop) {
-				return thread;
-			}
-		}
 		return null;
 	}
 }

@@ -209,7 +209,7 @@ accept-buffer-size值设置的较大，10000以上,后续微调
     <jvm-arg>-Xmx1024m</jvm-arg>
     <jvm-arg>-Xmn256m</jvm-arg>
     <jvm-arg>-XX:PermSize=128m</jvm-arg>
-	<jvm-arg>-XX:MaxPermSize=256m</jvm-arg>
+	<jvm-arg>-XX:MaxMetaspaceSize=256m</jvm-arg>
     <thread-max>1024</thread-max>
     <socket-timeout>30s</socket-timeout>
     <keepalive-max>512</keepalive-max>

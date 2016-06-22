@@ -3,7 +3,6 @@ package com.meizu;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 import com.meizu.simplify.utils.StringUtil;
 
@@ -21,7 +20,7 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 public class Bootstrap {
-	private static boolean isRunning = true;
+	public static boolean isRunning = true;
 	public static void main(String[] args) {
 		boolean isStart = start();
 		if(!isRunning&&isStart) {
@@ -62,11 +61,7 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			while(isRunning) {
-				Socket socket = serverSocket.accept();
-				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
-				TaskFactory.add(socket);
-			}
+			TaskFactory.add(serverSocket);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

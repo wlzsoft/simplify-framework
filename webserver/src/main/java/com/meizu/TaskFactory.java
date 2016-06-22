@@ -1,6 +1,7 @@
 package com.meizu;
 
-import java.net.Socket;
+import java.lang.Thread.State;
+import java.net.ServerSocket;
 
 /**
   * <p><b>Title:</b><i>任务工厂</i></p>
@@ -21,13 +22,16 @@ public class TaskFactory {
 	 * 操作步骤: TODO<br>
 	 * @param socket
 	 */
-	public static void add(Socket socket) {
+	public static void add(ServerSocket serverSocket) {
 		Thread thread = ThreadPool.get();
-		if(thread==null&&!ThreadPool.isFull()) {
-			ThreadPool.add(new Thread(new MessageHandler(socket)));
+		if(thread.getState() == State.BLOCKED) {
+			
 		}
-		if(thread!=null) {
-			thread.start();
+		if(true) {
+			return;
+		}
+		if(!ThreadPool.isFull()) {
+			ThreadPool.add(new Thread(new MessageHandler(serverSocket)));
 		}
 	}
 }
