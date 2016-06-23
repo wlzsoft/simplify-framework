@@ -61,8 +61,9 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
+			MessageHandler mh = new MessageHandler(serverSocket);
 			for (int i=0; i<ThreadPool.getPoolSize(); i++) {
-				ThreadPool.add(new Thread(new MessageHandler(serverSocket)));
+				ThreadPool.add(new Thread(mh,"连接"+(i+1)));
 			}
 			while(Bootstrap.isRunning) {
 				try {

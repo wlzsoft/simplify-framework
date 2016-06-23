@@ -32,8 +32,9 @@ public class MessageHandler implements Runnable{
 	public void run() {
 		while(Bootstrap.isRunning) {
 			try {
+				
 				Socket socket = serverSocket.accept();
-				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求");
+				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求,由线程"+Thread.currentThread().getName());
 				InputStream inputStream = socket.getInputStream();
 				InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
 				BufferedReader br = new BufferedReader(isr);

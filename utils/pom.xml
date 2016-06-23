@@ -62,19 +62,7 @@
 		  	<artifactId>stress-tester</artifactId>
 		  	<version>1.0.1-SNAPSHOT</version>
 		  	<scope>test</scope>
-		  	<exclusions>
-		  		<exclusion>
-		  			<artifactId>commons-logging</artifactId>
-		  			<groupId>commons-logging</groupId>
-		  		</exclusion>
-		  	</exclusions>
-		  </dependency>
-		<!-- 汉语拼音转化 -->
-		<!-- <dependency>
-		  <groupId>com.belerweb</groupId>
-		  <artifactId>pinyin4j</artifactId>
-		  <version>2.5.0</version>
-		</dependency> -->
+		</dependency>
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>
