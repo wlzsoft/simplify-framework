@@ -42,6 +42,12 @@ public class MessageHandler implements Runnable{
 				while(StringUtil.isNotBlank(content = br.readLine())) {
 					System.out.println(content);
 				}
+				HttpResponse response = new HttpResponse(socket);
+				response.setStatusCode("404");
+				response.setReason("Not Found");
+				String html = "<html><head></head><body>File Not Found !</body></html>";
+				response.setBody(html.toCharArray());
+				response.sendToClient();
 				isr.close();
 				br.close();
 				socket.close();

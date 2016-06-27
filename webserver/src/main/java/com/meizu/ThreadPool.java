@@ -17,7 +17,7 @@ import java.util.List;
  *
  */
 public class ThreadPool {
-	private static int poolSize = 4;
+	private static int poolSize = 8;
 	public static int getPoolSize() {
 		return poolSize;
 	}
