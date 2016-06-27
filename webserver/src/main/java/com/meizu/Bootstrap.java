@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 
+import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
@@ -22,6 +23,12 @@ import com.meizu.simplify.utils.StringUtil;
 public class Bootstrap {
 	public static boolean isRunning = true;
 	public static void main(String[] args) {
+		Startup.start();
+		try {
+			WebServer.init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		boolean isStart = start();
 		if(!isRunning&&isStart) {
 			System.out.println("服务器正常关闭");
@@ -61,10 +68,12 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			MessageHandler mh = new MessageHandler(serverSocket);
+			MessageHandler mh = new MessageHandler(serverSocket,1);
 			for (int i=0; i<ThreadPool.getPoolSize(); i++) {
 				ThreadPool.add(new Thread(mh,"连接"+(i+1)));
 			}
+			MessageHandler mh2 = new MessageHandler(serverSocket,1);
+			ThreadPool.add(new Thread(mh2,"连接b"));
 			while(Bootstrap.isRunning) {
 				try {
 					Thread.sleep(200000);
