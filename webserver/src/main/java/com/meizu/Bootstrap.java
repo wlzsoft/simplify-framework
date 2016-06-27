@@ -39,7 +39,7 @@ public class Bootstrap {
 		System.out.println("开始启动服务器...");
 		int backlog = 5;//连接等待队列
 		int port = 8060;
-		String host = "10.2.70.36";
+		String host = null;//"10.2.70.36";
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket();
