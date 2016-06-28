@@ -104,9 +104,6 @@ public class NewExceptionTest {
 
 	}
 
-	/**
-	 * 自定义java对象.
-	 */
 	public static class CustomObject extends HashMap<String,String> {
 
 		private static final long serialVersionUID = 567393976548105L;
@@ -151,11 +148,18 @@ public class NewExceptionTest {
 	}
 
 	/**
-	 * <pre>
-	 * 自定义改进的Exception对象 重写 fillInStackTrace方法
-	 * 1. 不填充stack
-	 * 2. 取消同步
-	 * </pre>
+	 * <p><b>Title:</b><i>自定义改进的Exception对象 重写 fillInStackTrace方法</i></p>
+	 * <p>Desc: 1. 不填充stack
+	 *          2. 取消同步</p>
+	 * <p>source folder:{@docRoot}</p>
+	 * <p>Copyright:Copyright(c)2014</p>
+	 * <p>Company:meizu</p>
+	 * <p>Create Date:2016年6月28日 上午10:26:48</p>
+	 * <p>Modified By:luchuangye-</p>
+	 * <p>Modified Date:2016年6月28日 上午10:26:48</p>
+	 * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
+	 * @version Version 0.1
+	 *
 	 */
 	public static class ExtCustomException extends Exception {
 

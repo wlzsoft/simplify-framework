@@ -117,12 +117,12 @@ public class MessageHandler implements Runnable{
 				while(StringUtil.isNotBlank(content = br.readLine())) {
 					System.out.println(content);
 				}
-					try {
-						Thread.sleep(time);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				try {
+					Thread.sleep(time);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				HttpResponse response = new HttpResponse(socket);
 				response.setStatusCode("404");
 				response.setReason("Not Found");
