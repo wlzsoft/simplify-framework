@@ -120,7 +120,7 @@ public class TestController extends SystemController<TestModel> {
 	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		System.out.println(test.getName());
-		return "redirect:/index.jsp";
+		return "redirect:/index";
 	}
 	
 	@RequestMap(path = "/testredirect2/")
@@ -234,21 +234,21 @@ public class TestController extends SystemController<TestModel> {
 	public String doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
 		request.setAttribute("testList", test);
-		return "jsp:/testList.jsp";
+		return "jsp:/testList";
 	}
 	
 	@RequestMap(path = "/testSelect2/")
 	public String adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
-		return "jsp:/testList.jsp";
+		return "jsp:/testList";
 	}
 	
 	@RequestMap(path = "/testSelect3/")
 	public String adoTestSelect3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Map<String,Object>> test = BaseDao.getInsMap().find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
-		return "jsp:/testList.jsp";
+		return "jsp:/testList";
 	}
 	@RequestMap(path = "/testSqlTemplate/")
 	public String testSqlTemplate(HttpServletRequest request, HttpServletResponse response, TestModel model)   {
