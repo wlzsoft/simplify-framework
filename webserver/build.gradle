@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.meizu'
+version = '1.0.1-SNAPSHOT'
+
+description = """web服务器"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'com.meizu', name: 'mvc', version:'1.0.1-SNAPSHOT'
+    compile group: 'com.meizu', name: 'encrypt', version:'1.0.1-SNAPSHOT'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.7'
+    compile group: 'ch.qos.logback', name: 'logback-core', version:'1.1.3'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    compile(group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+    }
+}

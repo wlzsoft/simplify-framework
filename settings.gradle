@@ -1,0 +1,46 @@
+rootProject.name = 'simplify-framework'
+include ':stress-tester'
+include ':utils'
+include ':entity'
+include ':weaving'
+include ':encrypt'
+include ':ioc'
+include ':aop'
+include ':dao'
+include ':caches'
+include ':webcache'
+include ':mvc'
+include ':template'
+include ':config'
+include ':cache-redis'
+include ':mongodb'
+include ':message'
+include ':rpc'
+include ':listener'
+include ':authfilter'
+include ':simplify-server'
+include ':simplify-base'
+include ':simplify-client'
+
+project(':stress-tester').projectDir = "$rootDir/stress-tester" as File
+project(':utils').projectDir = "$rootDir/utils" as File
+project(':entity').projectDir = "$rootDir/entity" as File
+project(':weaving').projectDir = "$rootDir/weaving" as File
+project(':encrypt').projectDir = "$rootDir/encrypt" as File
+project(':ioc').projectDir = "$rootDir/ioc" as File
+project(':aop').projectDir = "$rootDir/aop" as File
+project(':dao').projectDir = "$rootDir/dao" as File
+project(':caches').projectDir = "$rootDir/caches" as File
+project(':webcache').projectDir = "$rootDir/webcache" as File
+project(':mvc').projectDir = "$rootDir/mvc" as File
+project(':template').projectDir = "$rootDir/template" as File
+project(':config').projectDir = "$rootDir/config" as File
+project(':cache-redis').projectDir = "$rootDir/cache-redis" as File
+project(':mongodb').projectDir = "$rootDir/mongodb" as File
+project(':message').projectDir = "$rootDir/message" as File
+project(':rpc').projectDir = "$rootDir/rpc" as File
+project(':listener').projectDir = "$rootDir/listener" as File
+project(':authfilter').projectDir = "$rootDir/authfilter" as File
+project(':simplify-server').projectDir = "$rootDir/simplify-server" as File
+project(':simplify-base').projectDir = "$rootDir/simplify-base" as File
+project(':simplify-client').projectDir = "$rootDir/simplify-client" as File

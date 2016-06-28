@@ -1,0 +1,13 @@
+
+description = '工具集'
+dependencies {
+    compile group: 'com.alibaba', name: 'fastjson', version:'1.2.7'
+    compile group: 'org.objenesis', name: 'objenesis', version:'2.2'
+    compile group: 'org.javassist', name: 'javassist', version:'3.20.0-GA'
+    compile group: 'de.ruedigermoeller', name: 'fst', version:'2.43'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.7'
+    compile group: 'log4j', name: 'log4j', version:'1.2.17'
+    testCompile group: 'com.caucho', name: 'hessian', version:'4.0.38'
+    testCompile group: 'com.esotericsoftware', name: 'kryo-shaded', version:'3.0.3'
+  testCompile project(':stress-tester')
+}
