@@ -61,4 +61,20 @@ public class ObjectUtilTest {
 		Assert.assertTrue(ObjectUtil.isLong(str));
 	}
 	
+	/**
+	 * 方法用途: 参数值相关(引用传递和值传递)<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void isObject() {
+		char[] c = new char[]{'h','e','l','l','o'};
+		String s = "think";
+		modifyVar(s,c);
+		System.out.println(new String(c)+"|"+s);
+	}
+	public void modifyVar(String s,char[] c) {
+		s = "okString";
+		c[2] = 'm';
+	}
+	
 }
