@@ -1,6 +1,5 @@
 package com.meizu;
 
-import java.lang.Thread.State;
 import java.net.ServerSocket;
 
 /**

@@ -1,10 +1,10 @@
 package com.meizu.simplify.uitls;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.nio.channels.Channels;
-import java.io.IOException;
 
 /**
  * * Test copying between channels. 
@@ -57,7 +57,7 @@ public class ChannelCopy {
 	 *  No post-loop cleanup is needed because the buffer will be empty   
 	 *  when the loop is exited.  
 	 */ 
-	private static void channelCopy2 (ReadableByteChannel src, WritableByteChannel dest) throws IOException { 
+	public static void channelCopy2 (ReadableByteChannel src, WritableByteChannel dest) throws IOException { 
 		ByteBuffer buffer = ByteBuffer.allocateDirect (16 * 1024);
 		while (src.read (buffer) != -1) { 
 			// Prepare the buffer to be drained 

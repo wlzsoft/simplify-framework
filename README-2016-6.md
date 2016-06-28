@@ -3,3 +3,9 @@
    2.安装gradle工具，配置环境
    3.maven转gradle
    4.初步调试基于gradle的配置
+2.集成docker，使dubbo服务变成一个一个的docker容器，mycat服务，mysql服务，tomcat，resin等，集成版的jetty，和webserver等等。
+    *参考文档：http://dockone.io/article/442，http://blog.sina.com.cn/s/blog_72ef7bea0102vwhr.html
+              http://www.open-open.com/lib/view/open1439793616442.html
+              http://developer.51cto.com/art/201404/434879.htm
+              http://www.csdn.net/article/2015-07-21/2825266
+              file:///C:/gradle-2.14/docs/userguide/userguide_single.html
