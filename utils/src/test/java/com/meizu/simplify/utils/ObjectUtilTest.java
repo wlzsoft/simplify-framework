@@ -77,4 +77,34 @@ public class ObjectUtilTest {
 		c[2] = 'm';
 	}
 	
+	@Test
+	public void testObject() {
+		Test2 test = new TestImpl2();
+		test.inoke();
+	}
+	
+	
+}
+class Test2 {
+	static {
+		System.out.println("test2-static");
+	}
+	public Test2() {
+		System.out.println("test2-new");
+	}
+	public void inoke() {
+		System.out.println("test2-inoke");
+	}
+}
+class TestImpl2 extends Test2 {
+	static {
+		System.out.println("TestImpl2-static");
+	}
+	public TestImpl2() {
+//		super("a");//必须调用，如果是super(),无参，那么可以不调用
+		System.out.println("TestImpl2-new");
+	}
+	public void inoke() {
+		System.out.println("TestImpl2-inoke");
+	}
 }
