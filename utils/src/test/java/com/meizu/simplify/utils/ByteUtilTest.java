@@ -43,4 +43,14 @@ public class ByteUtilTest {
 		Integer ddd2 = Integer.parseInt("b6",16);
 		System.out.println(ddd2);
 	}
+	
+	/**
+	 * 方法用途: x是否是2的若干次幂<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void test3() {
+		int x = 32;
+		System.out.println((x&(x-1))==0);
+	}
 }
