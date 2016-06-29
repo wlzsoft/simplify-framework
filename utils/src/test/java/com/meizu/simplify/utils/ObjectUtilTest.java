@@ -92,6 +92,9 @@ class Test2 {
 	public Test2() {
 		System.out.println("test2-new");
 	}
+	{
+		System.out.println("test2-non");
+	}
 	public void inoke() {
 		System.out.println("test2-inoke");
 	}
@@ -99,6 +102,9 @@ class Test2 {
 class TestImpl2 extends Test2 {
 	static {
 		System.out.println("TestImpl2-static");
+	}
+	{
+		System.out.println("TestImpl2-non");
 	}
 	public TestImpl2() {
 //		super("a");//必须调用，如果是super(),无参，那么可以不调用

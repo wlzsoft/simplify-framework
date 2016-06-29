@@ -15,11 +15,14 @@ public class ChannelCopy {
 	 * command, but without any useful options.    
 	 * */ 
 	public static void main (String [] argv) throws IOException { 
+		System.out.println(Integer.highestOneBit(8));
+		System.out.println(Integer.lowestOneBit(8));
+		System.out.println(Character.toChars(65));
 		ReadableByteChannel source = Channels.newChannel (System.in); 
 		WritableByteChannel dest = Channels.newChannel (System.out); 
-		channelCopy1 (source, dest); 
+//		channelCopy1 (source, dest); 
 		// alternatively, call 
-//		channelCopy2 (source, dest); 
+		channelCopy2 (source, dest); 
 		source.close( ); 
 		dest.close( ); 
 	} 
@@ -32,7 +35,7 @@ public class ChannelCopy {
      *  requires a cleanup loop to make sure all the data gets sent.   
      */ 
 	private static void channelCopy1 (ReadableByteChannel src, WritableByteChannel dest) throws IOException  { 
-		ByteBuffer buffer = ByteBuffer.allocateDirect (16 * 1024); 
+		ByteBuffer buffer = ByteBuffer.allocateDirect (1 * 8); 
 		while (src.read (buffer) != -1) { 
 			// Prepare the buffer to be drained 
 			buffer.flip( ); 
@@ -58,7 +61,8 @@ public class ChannelCopy {
 	 *  when the loop is exited.  
 	 */ 
 	public static void channelCopy2 (ReadableByteChannel src, WritableByteChannel dest) throws IOException { 
-		ByteBuffer buffer = ByteBuffer.allocateDirect (16 * 1024);
+		ByteBuffer buffer = ByteBuffer.allocateDirect (1 * 8);
+//		ByteBuffer buffer = ByteBuffer.allocateDirect (16 * 1024);
 		while (src.read (buffer) != -1) { 
 			// Prepare the buffer to be drained 
 			buffer.flip( ); 
