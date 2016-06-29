@@ -1,6 +1,6 @@
 package com.meizu.simplify.mvc.dto;
 
-import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.controller.IBaseController;
 
 /**
  * <p><b>Title:</b><i>Servlet模型</i></p>
@@ -15,7 +15,7 @@ import com.meizu.simplify.mvc.controller.BaseController;
  * @version Version 0.1
  *
  */
-public class ControllerAnnotationInfo<T extends BaseController<?>> {
+public class ControllerAnnotationInfo<T extends IBaseController<?>> {
 	private T obj;
 	
 	private String method = "doView";

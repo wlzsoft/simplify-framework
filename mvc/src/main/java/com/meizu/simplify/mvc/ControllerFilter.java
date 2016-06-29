@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
 import com.meizu.simplify.utils.StringUtil;
@@ -79,7 +79,7 @@ public class ControllerFilter implements Filter {
 //		if (StringUtil.parseString(request.getQueryString(),"").length() > 0) {
 //			requestUrl += "?" + request.getQueryString();
 //	 	}
-		ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(requestUrl);
+		ControllerAnnotationInfo<IBaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(requestUrl);
 		if(controllerAnnotationInfo !=null) {
 			analysisAndProcess(request, response, requestUrl, controllerAnnotationInfo, null);
 			return false;// [标示]启用原生 filter的chain,三个地方同时打开注释
@@ -87,7 +87,7 @@ public class ControllerFilter implements Filter {
 			//注意：性能问题1：由于正则无法确定具体值的访问，所以也没法比较，为了减少循环次数，所以采用空间换时间的方式，分开两个url映射缓存的map，一个用于存储非正则表达式(采用ConcurrentHashMap)，另外一个用于存储正则表达式(采用遍历速度更快的ConcurrentSkipListMap结构)
 			//      性能问题2: 由于正则表达式解析性能很差，解决方案A.使用普通方式匹配参数路径。解决方案B.缓存正则表达式的编译过程，减少编译的成本。解决方案C.避免使用
 			//      解决方案D.结合实际使用，可以第一次匹配到的路径做缓存一段时间。在这个时间内，这个路径会在指定的map中命中
-			for ( Map.Entry<String,ControllerAnnotationInfo<BaseController<?>>> entrySet : ControllerAnnotationResolver.controllerRegularExpressionsList.entrySet()) {
+			for ( Map.Entry<String,ControllerAnnotationInfo<IBaseController<?>>> entrySet : ControllerAnnotationResolver.controllerRegularExpressionsList.entrySet()) {
 				String key = entrySet.getKey();
 				if(!key.contains("$")) {
 					continue;
@@ -117,12 +117,12 @@ public class ControllerFilter implements Filter {
 	 * @param key
 	 * @param urlparams
 	 */
-	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<BaseController<?>> controllerAnnotationInfo,
+	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<IBaseController<?>> controllerAnnotationInfo,
 			String[] urlparams) {
 		long time = System.currentTimeMillis();
 		Statistics.getReadMap().put(requestUrl, 0);
 		String requestMethodName = controllerAnnotationInfo.getMethod();
-		BaseController<?> bs = controllerAnnotationInfo.getObj();
+		IBaseController<?> bs = controllerAnnotationInfo.getObj();
 		bs.process(request, response,requestUrl,requestMethodName,urlparams);
 		long readtime = System.currentTimeMillis() - time;
 		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+request.getSession().getId());

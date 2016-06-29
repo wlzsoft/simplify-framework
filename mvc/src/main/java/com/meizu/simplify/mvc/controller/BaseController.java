@@ -43,7 +43,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  * @param <T>
  */
-public class BaseController<T extends Model> {
+public class BaseController<T extends Model> implements IBaseController<T> {
 	
 	@Resource
 	public IPageTemplate template;
@@ -249,5 +249,8 @@ public class BaseController<T extends Model> {
 		return "";
 	}
 
-	
+	@Override
+	public Object exec(HttpServletRequest request, HttpServletResponse response) {
+		return null;
+	}
 }

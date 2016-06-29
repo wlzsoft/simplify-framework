@@ -29,7 +29,7 @@ import com.meizu.simplify.mvc.AnnotationResolverCallback;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
-import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.util.CacheManager;
@@ -61,11 +61,11 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	/**
 	 * <requestMap地址,controller实例>
 	 */
-	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerMap = new ConcurrentHashMap<>();
+	public static Map<String, ControllerAnnotationInfo<IBaseController<?>>> controllerMap = new ConcurrentHashMap<>();
 	/**
 	 * <requestMap地址,controller实例>
 	 */
-	public static Map<String, ControllerAnnotationInfo<BaseController<?>>> controllerRegularExpressionsList = new ConcurrentSkipListMap<>();
+	public static Map<String, ControllerAnnotationInfo<IBaseController<?>>> controllerRegularExpressionsList = new ConcurrentSkipListMap<>();
 	/**
 	 * <包名.类名.方法名,注解对象>
 	 */
@@ -143,12 +143,13 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 	}
 	
-	
 	/**
-	 * 
 	 * 方法用途: 解析请求元数据信息<br>
 	 * 操作步骤: TODO<br>
-	 * @param beanClass
+	 * @param beanClass 具体controll实例对应的class
+	 * @param method
+	 * @param clazzAnno
+	 * @param cpath
 	 */
 	public <T extends Annotation>  void resolverRequestMap(Class<?> beanClass,Method method ,Class<T> clazzAnno,String cpath) {
 		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
@@ -167,41 +168,55 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 						if(preControlMap!=null && preControlMap.path().length>0) {
 							path = preControlMap.path()[0] + path;
 						}
-						List<String> endFixArr = new ArrayList<>();
-						endFixArr.add(".json");
-						endFixArr.add(".jsonp");
-						endFixArr.add(".html");
-						if(path.endsWith("$")) {//正则表达式的处理
-							if(path.endsWith("/$")) {
-								path = path.substring(0, path.length()-2)+"$";
-							}
-							boolean isExist = isContainsEndFix(path, endFixArr);
-							if(!isExist) {
-								for (String endFix : endFixArr) {
-									controllerRegularExpressionsList.put(path.substring(0,path.length()-1)+endFix+"$", new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
-								}
-							}
-							controllerRegularExpressionsList.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
-						} else {//非正则表达式处理
-							if(path.endsWith("/")) {
-								path = path.substring(0, path.length()-1);
-							}
-							boolean isExist = isContainsEndFix(path, endFixArr);
-							if(!isExist) {
-								for (String endFix : endFixArr) {
-									controllerMap.put(path+endFix, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
-								}
-							}
-							controllerMap.put(path, new ControllerAnnotationInfo<BaseController<?>>((BaseController<?>)obj, method.getName()));
-						}
-						LOGGER.info("成功添加请求映射 [" + cpath + "."+obj.getClass().getName()+":"+method.getName()+"] -> " + path);
+						path = addRequestInfo(method.getName(), cpath, obj, path);
 					}
 				}
 			}
 		}
 	}
 
-	private boolean isContainsEndFix(String path, List<String> endFixArr) {
+	/**
+	 * 方法用途: 映射绑定请求信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param requestMethodName 请求处理方法名称
+	 * @param cpath 配置文件中controller的classpath的路径
+	 * @param obj
+	 * @param path
+	 * @return
+	 */
+	public static String addRequestInfo(String requestMethodName, String cpath, Object obj, String path) {
+		List<String> endFixArr = new ArrayList<>();
+		endFixArr.add(".json");
+		endFixArr.add(".jsonp");
+		endFixArr.add(".html");
+		if(path.endsWith("$")) {//正则表达式的处理
+			if(path.endsWith("/$")) {
+				path = path.substring(0, path.length()-2)+"$";
+			}
+			boolean isExist = isContainsEndFix(path, endFixArr);
+			if(!isExist) {
+				for (String endFix : endFixArr) {
+					controllerRegularExpressionsList.put(path.substring(0,path.length()-1)+endFix+"$", new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+				}
+			}
+			controllerRegularExpressionsList.put(path, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+		} else {//非正则表达式处理
+			if(path.endsWith("/")) {
+				path = path.substring(0, path.length()-1);
+			}
+			boolean isExist = isContainsEndFix(path, endFixArr);
+			if(!isExist) {
+				for (String endFix : endFixArr) {
+					controllerMap.put(path+endFix, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+				}
+			}
+			controllerMap.put(path, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+		}
+		LOGGER.info("成功添加请求映射 [" + cpath + "."+obj.getClass().getName()+":"+requestMethodName+"] -> " + path);
+		return path;
+	}
+
+	private static boolean isContainsEndFix(String path, List<String> endFixArr) {
 		boolean isExist = false;
 		for (String endFix : endFixArr) {
 			if(path.contains(endFix)) {//多视图的解析
