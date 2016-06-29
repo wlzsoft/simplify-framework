@@ -9,3 +9,4 @@
               http://developer.51cto.com/art/201404/434879.htm
               http://www.csdn.net/article/2015-07-21/2825266
               file:///C:/gradle-2.14/docs/userguide/userguide_single.html
+3.分析tomcat无法解析jstl的问题，并编写文档，避免重复问题出现
