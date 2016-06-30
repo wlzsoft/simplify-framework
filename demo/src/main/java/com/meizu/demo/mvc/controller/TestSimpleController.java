@@ -6,7 +6,6 @@ import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.mvc.annotation.RequestMap;
 
 
 /**
@@ -23,16 +22,16 @@ import com.meizu.simplify.mvc.annotation.RequestMap;
  *
  */
 @Bean
-@RequestMap(path = "/test")
 public class TestSimpleController {
 	@Resource
 	private TestService testService;
 {
-	
     get("/test", (req, res) -> {
     	Test test = testService.doSomeThing2();
     	System.out.println("get testttttttttttttttttttttttttttttttt:"+test.getName());
         req.getParameter("test");
         return test;
     });
+    
+    get("/test/simple", (req,res)-> testService.doSomeThing2());
 }}
