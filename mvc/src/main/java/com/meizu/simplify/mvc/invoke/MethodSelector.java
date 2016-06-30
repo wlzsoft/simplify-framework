@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.utils.CollectionUtil;
 
@@ -28,7 +28,7 @@ import com.meizu.simplify.utils.CollectionUtil;
 public class MethodSelector implements IMethodSelector{
 	
 	@Override
-	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,IBaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
 		parameValue[0] = request;
 		parameValue[1] = response;
 		parameValue[2] = t;
