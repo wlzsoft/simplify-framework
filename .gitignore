@@ -4,8 +4,11 @@
 *.jar
 *.war
 *.ear
-
+# eclipse config #
 .classpath
 .project
-target*
 .setting*
+# maven config #
+target*
+# gradle config #
+build*

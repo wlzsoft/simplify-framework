@@ -82,7 +82,7 @@ public class EncryptTest {
 		String file1 = "/EncryptTest.txt";
 		InputStream in = this.getClass().getResourceAsStream(file1);
 		String file2 = "/EncryptTest.enc";
-		String file3 = "/EncryptTest.enc.zip";
+		String file3 = "/EncryptTest.enc.unpack";//加密后的文件
 		print("待加密文件：" + file1);
 		print("加密后文件：" + file2);
 		print("解密后文件：" + file3);
