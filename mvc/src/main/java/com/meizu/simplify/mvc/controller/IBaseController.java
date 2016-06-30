@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public interface IBaseController<T> {
+	
 	/**
 	 * 方法用途: 开始处理请求<br>
 	 * 操作步骤: TODO<br>
@@ -30,7 +31,7 @@ public interface IBaseController<T> {
 	 */
 	public Object exec(HttpServletRequest request,HttpServletResponse response);
 	
-	public default void process(final HttpServletRequest request, final HttpServletResponse response,String requestUrl,String requestMethodName,String[] urlparams) {
+	public default void process(HttpServletRequest request, HttpServletResponse response,String requestUrl,String requestMethodName,String[] urlparams) {
 		exec(request,response);
 	}
 	

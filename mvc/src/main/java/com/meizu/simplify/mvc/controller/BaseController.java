@@ -46,7 +46,7 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 public class BaseController<T extends Model> implements IBaseController<T> {
 	
 	@Resource
-	public IPageTemplate template;
+	private IPageTemplate template;
 	
 	@Resource
 	private PropertiesConfig config;
@@ -85,9 +85,9 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 			destroy(request, response, model);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
 			Throwable throwable = e.getTargetException();
-			MappingExceptionResolver.resolverException(request, response, requestUrl, this, throwable,config,jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
 		} catch (BaseException throwable) {//由于在反射优化模式下，不是抛InvocationTargetException异常，而会进入到BaseExceptin及其衍生异常,这里独立处理
-			MappingExceptionResolver.resolverException(request, response, requestUrl, this, throwable,config,jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
 		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);

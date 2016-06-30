@@ -14,8 +14,8 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.MessageException;
-import com.meizu.simplify.mvc.controller.BaseController;
 import com.meizu.simplify.mvc.model.Model;
+import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.util.JsonResolver;
@@ -57,11 +57,11 @@ public class MappingExceptionResolver {
 	 * @param request
 	 * @param response
 	 * @param requestUrl
-	 * @param bs
+	 * @param template
 	 * @param e
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
-			BaseController<?> bs, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
+			IPageTemplate template, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
 		String exceptionMessage = throwable.getMessage();
 		if(exceptionMessage == null) {
 			if(throwable.getClass() == NullPointerException.class) {
@@ -123,7 +123,7 @@ public class MappingExceptionResolver {
 				request.setAttribute("exception", throwable);
 				//没有在exceptionMappings里面找到对应的异常时 返回defaultErrorView指定的异常处理默认视图:500,404,403在这里其实jsp页面，比如500.jsp，400.jsp，exception.jsp
 //				setDefaultErrorView("500");//exception
-				bs.template.render(request, response, null, null, "500");
+				template.render(request, response, null, null, "500");
 			} catch (ServletException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

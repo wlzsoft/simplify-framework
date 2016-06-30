@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.junit.Test;
 
 import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 
 /**
@@ -27,7 +28,7 @@ public class BinarySearchTest {
 	@Test
 	public void testKey() {
 		Map<String, ControllerAnnotationInfo<?>> controllerMap = new ConcurrentHashMap<>();
-		controllerMap.put("astest", new ControllerAnnotationInfo<BaseController<?>>(new BaseController<>(), "testName"));
+		controllerMap.put("astest", new ControllerAnnotationInfo<IBaseController<?>>(new BaseController<>(), "testName"));
 		controllerMap.put("tesdfst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
 		controllerMap.put("twsdfest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
 		controllerMap.put("tesxdt", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
