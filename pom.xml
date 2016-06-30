@@ -215,6 +215,15 @@
 			<filtering>true</filtering>
 		</resource>
 	</resources>
+	<!-- <testResources>
+		<testResource>
+			<directory>src/test/java</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<filtering>true</filtering>
+		</testResource>
+	</testResources> -->
     
   </build>
   
