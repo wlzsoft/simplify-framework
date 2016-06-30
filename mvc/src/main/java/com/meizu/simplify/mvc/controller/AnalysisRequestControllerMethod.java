@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.mvc.annotation.AjaxAccess;
@@ -113,7 +112,8 @@ public class AnalysisRequestControllerMethod {
 		AnnotationListInfo<AnnotationInfo<RequestParam>> annoListInfo = ControllerAnnotationResolver.requestParamMap.get(methodFullName);
 		if(annoListInfo == null) {
 			//TODO 后续如果需要兼容没有参数的情况下，就不会是严重错误，而是更好的用户体验
-			Message.error("严重错误，无法获取["+methodFullName+"]的RequestParam注解信息");
+//			Message.error("严重错误，无法获取["+methodFullName+"]的RequestParam注解信息");
+			System.err.println("严重错误，无法获取["+methodFullName+"]的RequestParam注解信息");//提供lambada表达式的请求映射，修改为这个方式，后续考虑调整
 			return null;
 		}
 		int methodParamLength = annoListInfo.getCount();
@@ -137,7 +137,7 @@ public class AnalysisRequestControllerMethod {
 			if (!StringUtil.isEmpty(paramValue)) {//表单参数获取并设置,格式 http://url/?a=1&b=2，获取参数1和2
 				value = paramValue;
 			} else if (index>0) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
-				if(model.getParams() != null && model.getParams().length > 0 && index < model.getParams().length) {
+				if(model!=null && model.getParams() != null && model.getParams().length > 0 && index < model.getParams().length) {
 					value = model.getParams()[index];
 				}
 			} else {

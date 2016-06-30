@@ -31,11 +31,11 @@ public interface IMethodSelector {
 	 * @param response
 	 * @param t
 	 * @param obj
-	 * @param doCmd
+	 * @param cmd
 	 * @param parameValue
 	 * @return
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,IBaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,IBaseController<?> obj,String cmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException;
 }

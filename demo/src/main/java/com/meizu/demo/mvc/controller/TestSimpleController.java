@@ -2,9 +2,7 @@ package com.meizu.demo.mvc.controller;
 
 import static com.meizu.simplify.mvc.controller.Controller.get;
 
-import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
-import com.meizu.demo.system.SystemController;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.annotation.RequestMap;
@@ -25,13 +23,13 @@ import com.meizu.simplify.mvc.annotation.RequestMap;
  */
 @Bean
 @RequestMap(path = "/test")
-public class TestSimpleController extends SystemController<TestModel> {
+public class TestSimpleController {
 	@Resource
 	private TestService testService;
 {
 	
     get("/test", (req, res) -> {
-    	System.out.println("get testttttttttttttttttttttttttttttttt");
+    	System.out.println("get testttttttttttttttttttttttttttttttt:"+testService.doSomeThing2().getName());
         req.getParameter("test");
         return "simpleControll test";
     });

@@ -11,10 +11,10 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
-import com.meizu.simplify.mvc.invoke.IMethodSelector;
 import com.meizu.simplify.mvc.invoke.IModelSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
@@ -30,8 +30,8 @@ import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
- * <p><b>Title:</b><i>基础控制器</i></p>
- * <p>Desc: 特定系统中可扩展这个积累，加入系统特有的公有功能</p>
+ * <p><b>Title:</b><i>委托控制器</i></p>
+ * <p>Desc: IBaseController的委托实现，不在具体IBaseController实现类中处理具体逻辑,需要优化重构，后续和BaseController整合减少重复代码</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -43,7 +43,8 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  * @param <T>
  */
-public class BaseController<T extends Model> implements IBaseController<T> {
+@Bean
+public class DelegateController<T extends Model> implements IBaseController<T> {
 	
 	@Resource
 	private IPageTemplate template;
@@ -51,8 +52,8 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	@Resource
 	private PropertiesConfig config;
 	
-	@Resource
-	private IMethodSelector methodSelector;
+//	@Resource
+//	private IMethodSelector methodSelector;
 	
 	@Resource
 	private IModelSelector modelSelector;
@@ -72,8 +73,7 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	@Override
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String cmd,String[] urlparams)  {
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String cmd,String[] urlparams, IBaseController<?> iBaseController)  {
 		try {
 //			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
 			@SuppressWarnings("unchecked")
@@ -84,7 +84,7 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
 			}
 			if (checkPermission(request, response,cmd, model)) {
-				execute(request, response,cmd, model,requestUrl);
+				execute(request, response,cmd, model,requestUrl,iBaseController);
 			}
 			destroy(request, response, model);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
@@ -144,8 +144,7 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * @throws InvocationTargetException
 	 * @throws ServletException
 	 */
-	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
 		if (cmd == null || cmd.length() <= 0) {
 			return;
 		}
@@ -161,8 +160,9 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 			return;
 		}
 //		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
-		Object obj = methodSelector.invoke(request,response,model,this,cmd, parameValue);
+//		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
+//		Object obj = methodSelector.invoke(request,response,model,this,cmd, parameValue);// modify
+		Object obj = iBaseController.exec(request,response);
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
 	}
