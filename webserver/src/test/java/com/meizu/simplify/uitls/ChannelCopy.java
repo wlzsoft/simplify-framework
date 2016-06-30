@@ -34,7 +34,7 @@ public class ChannelCopy {
      *  may result in data copying, but minimizes system calls. It also   
      *  requires a cleanup loop to make sure all the data gets sent.   
      */ 
-	private static void channelCopy1 (ReadableByteChannel src, WritableByteChannel dest) throws IOException  { 
+	public static void channelCopy1 (ReadableByteChannel src, WritableByteChannel dest) throws IOException  { 
 		ByteBuffer buffer = ByteBuffer.allocateDirect (1 * 8); 
 		while (src.read (buffer) != -1) { 
 			// Prepare the buffer to be drained 
