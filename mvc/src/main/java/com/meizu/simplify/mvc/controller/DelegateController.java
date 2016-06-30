@@ -15,6 +15,7 @@ import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
+import com.meizu.simplify.mvc.invoke.IMethodSelector;
 import com.meizu.simplify.mvc.invoke.IModelSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
@@ -52,8 +53,8 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	@Resource
 	private PropertiesConfig config;
 	
-//	@Resource
-//	private IMethodSelector methodSelector;
+	@Resource
+	private IMethodSelector methodSelector;
 	
 	@Resource
 	private IModelSelector modelSelector;
@@ -67,24 +68,26 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * @param req
 	 * @param response
 	 * @param requestUrl 
+	 * @param requestMethodName 
+	 * @param urlparams 
 	 * @throws ServletException
 	 * @throws IOException
 	 * @throws InvocationTargetException 
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String cmd,String[] urlparams, IBaseController<?> iBaseController)  {
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String requestMethodName,String[] urlparams, IBaseController<T> iBaseController)  {
 		try {
 //			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
 			@SuppressWarnings("unchecked")
-			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(this.getClass().getName()+":"+cmd);
+			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(iBaseController.getClass().getName()+":"+requestMethodName);
 			T model = null;
 			if(entityClass != null) {
 				model = modelSelector.setRequestModel(request, entityClass);
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
 			}
-			if (checkPermission(request, response,cmd, model)) {
-				execute(request, response,cmd, model,requestUrl,iBaseController);
+			if (iBaseController.checkPermission(request, response,requestMethodName, model)) {
+				execute(request, response,requestMethodName, model,requestUrl,iBaseController);
 			}
 			destroy(request, response, model);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
@@ -115,27 +118,11 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	}
 	
 	/**
-	 * 方法用途: 权限拦截检查,类似过滤器的使用<br>
-	 * 操作步骤: TODO<br>
-	 * @param request
-	 * @param response
-	 * @param cmd 指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
-	 * @param model
-	 * @return
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
-		return true;
-	}
-	
-	/**
 	 * 方法用途: 执行逻辑<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param cmd
+	 * @param requestMethodName
 	 * @param model
 	 * @param requestUrl
 	 * @throws IOException
@@ -144,12 +131,12 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * @throws InvocationTargetException
 	 * @throws ServletException
 	 */
-	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
-		if (cmd == null || cmd.length() <= 0) {
+	public void execute(HttpServletRequest request, HttpServletResponse response,String requestMethodName, T model,String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+		if (requestMethodName == null || requestMethodName.length() <= 0) {
 			return;
 		}
-		String className = this.getClass().getName();
-		String methodFullName = className+":"+cmd;
+		String className = iBaseController.getClass().getName();
+		String methodFullName = className+":"+requestMethodName;
 		//页面静态化名字		
 		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".ce";
 
@@ -160,14 +147,17 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			return;
 		}
 //		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
-//		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
-//		Object obj = methodSelector.invoke(request,response,model,this,cmd, parameValue);// modify
-		Object obj = iBaseController.exec(request,response);
+		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
+		Object obj = null;
+		if(requestMethodName.equals("exec")) {
+			obj = iBaseController.exec(request,response);
+		} else {
+			obj = methodSelector.invoke(request,response,model,iBaseController,requestMethodName, parameValue);
+		}
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		
 	}
 	
-
 	/**
 	 * 
 	 * 方法用途: 转发到指定视图解析，并输出到浏览器<br>
@@ -254,7 +244,9 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 		}
 		return "";
 	}
-
+	/**
+	 * 永远不会被调用，无效的方法，由于实现接口的关系，没办法不实现一个空接口
+	 */
 	@Override
 	public Object exec(HttpServletRequest request, HttpServletResponse response) {
 		return null;

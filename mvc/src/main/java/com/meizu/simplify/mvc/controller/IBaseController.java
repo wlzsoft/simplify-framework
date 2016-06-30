@@ -1,13 +1,13 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.ioc.BeanFactory;
+import com.meizu.simplify.mvc.model.Model;
 
 /**
   * <p><b>Title:</b><i>请求处理器</i></p>
@@ -22,7 +22,7 @@ import com.meizu.simplify.ioc.BeanFactory;
  * @version Version 0.1
  *
  */
-public interface IBaseController<T> {
+public interface IBaseController<T extends Model> {
 	/**
 	 * 方法用途: 开始处理请求<br>
 	 * 操作步骤: TODO<br>
@@ -32,17 +32,12 @@ public interface IBaseController<T> {
 	 */
 	public Object exec(HttpServletRequest request,HttpServletResponse response);
 	
+	@SuppressWarnings("unchecked")
 	public default void process(HttpServletRequest request, HttpServletResponse response,String requestUrl,String requestMethodName,String[] urlparams) {
-		DelegateController<?> baseController = BeanFactory.getBean(DelegateController.class);
+		DelegateController<T> baseController = BeanFactory.getBean(DelegateController.class);//这种写法有性能消耗,待优化 TODO
 		baseController.process(request, response, requestUrl, requestMethodName, urlparams,this);
 	}
 	
-	public default void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl)
-			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			ServletException {
-		System.out.println("没有默认执行器的实现");
-	}
-
 	public default boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
 		return true;
 	}

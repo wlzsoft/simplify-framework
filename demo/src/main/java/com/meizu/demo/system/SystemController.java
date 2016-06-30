@@ -1,7 +1,6 @@
 package com.meizu.demo.system;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,13 +37,6 @@ public class SystemController<T extends Model> extends BaseController<T> {
 		super.process(request, response,requestUrl,requestMethodName,urlparams);
 	}
 	
-	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl)
-			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			ServletException {
-		super.execute(request, response,cmd, model,requestUrl);
-	}
-
 	@Override
 	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
 		

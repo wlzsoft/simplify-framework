@@ -2,6 +2,7 @@ package com.meizu.demo.mvc.controller;
 
 import static com.meizu.simplify.mvc.controller.Controller.get;
 
+import com.meizu.demo.mvc.entity.Test;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -29,8 +30,9 @@ public class TestSimpleController {
 {
 	
     get("/test", (req, res) -> {
-    	System.out.println("get testttttttttttttttttttttttttttttttt:"+testService.doSomeThing2().getName());
+    	Test test = testService.doSomeThing2();
+    	System.out.println("get testttttttttttttttttttttttttttttttt:"+test.getName());
         req.getParameter("test");
-        return "simpleControll test";
+        return test;
     });
 }}

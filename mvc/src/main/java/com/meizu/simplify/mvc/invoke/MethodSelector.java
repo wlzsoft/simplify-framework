@@ -28,18 +28,18 @@ import com.meizu.simplify.utils.CollectionUtil;
 public class MethodSelector implements IMethodSelector{
 	
 	@Override
-	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,IBaseController<?> obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,IBaseController<?> obj,String requestMethodName, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
 		parameValue[0] = request;
 		parameValue[1] = response;
 		parameValue[2] = t;
 		Class<?> clazz = obj.getClass();
 		Method[] methods = clazz.getMethods();
-		Method method = CollectionUtil.getItem(methods,doCmd, (m,w) -> doCmd.equals(m.getName()));
+		Method method = CollectionUtil.getItem(methods,requestMethodName, (m,w) -> requestMethodName.equals(m.getName()));
 		if (method == null) {
-			throw new IllegalArgumentException("无法找到指定类:["+clazz+"] 的方法 :[" + doCmd + "]"); 
+			throw new IllegalArgumentException("无法找到指定类:["+clazz+"] 的方法 :[" + requestMethodName + "]"); 
 		}
 		if (method.getParameterTypes().length < 3) { //考虑model问题，后续可以做更灵活调整
-			throw new IllegalArgumentException("类:["+clazz+"] 的方法 :[" + doCmd + "]的参数的长度不能小于3" ); 
+			throw new IllegalArgumentException("类:["+clazz+"] 的方法 :[" + requestMethodName + "]的参数的长度不能小于3" ); 
 		}
 		Object result = method.invoke(obj,parameValue);
 		return result;

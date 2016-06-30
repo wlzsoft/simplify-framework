@@ -7,26 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
-import com.meizu.simplify.exception.BaseException;
-import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.mvc.dto.WebCacheInfo;
-import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
-import com.meizu.simplify.mvc.invoke.IMethodSelector;
-import com.meizu.simplify.mvc.invoke.IModelSelector;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.view.IPageTemplate;
-import com.meizu.simplify.mvc.view.JsonView;
-import com.meizu.simplify.mvc.view.JsonpView;
-import com.meizu.simplify.mvc.view.MessageView;
-import com.meizu.simplify.mvc.view.RedirectView;
-import com.meizu.simplify.mvc.view.TemplateFactory;
-import com.meizu.simplify.util.JsonResolver;
-import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webcache.annotation.WebCache;
 
 
 /**
@@ -45,20 +27,10 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  */
 public class BaseController<T extends Model> implements IBaseController<T> {
 	
-	@Resource
-	private IPageTemplate template;
 	
 	@Resource
-	private PropertiesConfig config;
+	private DelegateController<T> delegateController;
 	
-	@Resource
-	private IMethodSelector methodSelector;
-	
-	@Resource
-	private IModelSelector modelSelector;
-	
-	@Resource
-	private JsonResolver jsonResolver;	
 	/**
 	 * 
 	 * 方法用途: 拦截处理所有请求<br>
@@ -66,6 +38,8 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * @param req
 	 * @param response
 	 * @param requestUrl 
+	 * @param requestMethodName 
+	 * @param urlparams 
 	 * @throws ServletException
 	 * @throws IOException
 	 * @throws InvocationTargetException 
@@ -73,190 +47,27 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * @throws IllegalAccessException 
 	 */
 	@Override
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String cmd,String[] urlparams)  {
-		try {
-//			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
-			@SuppressWarnings("unchecked")
-			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(this.getClass().getName()+":"+cmd);
-			T model = null;
-			if(entityClass != null) {
-				model = modelSelector.setRequestModel(request, entityClass);
-				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
-			}
-			if (checkPermission(request, response,cmd, model)) {
-				execute(request, response,cmd, model,requestUrl);
-			}
-			destroy(request, response, model);
-		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
-			Throwable throwable = e.getTargetException();
-			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
-		} catch (BaseException throwable) {//由于在反射优化模式下，不是抛InvocationTargetException异常，而会进入到BaseExceptin及其衍生异常,这里独立处理
-			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
-		} catch (IllegalAccessException | IllegalArgumentException e) {
-			e.printStackTrace();
-			throw new UncheckedException(e);
-		} catch (ServletException | IOException e) {
-			e.printStackTrace();
-			throw new UncheckedException(e);
-		}
-		
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String requestMethodName,String[] urlparams)  {
+		delegateController.process(request, response, requestUrl, requestMethodName, urlparams,this);
 	}
 
-	/**
-	 * 
-	 * 方法用途: controller 注销相关处理<br>
-	 * 操作步骤: TODO<br>
-	 * @param request
-	 * @param response
-	 * @param model
-	 */
-	public void destroy(HttpServletRequest request, HttpServletResponse response, T model){
-//			System.out.println("回收数据库连接到连接池中");
-	}
-	
 	/**
 	 * 方法用途: 权限拦截检查,类似过滤器的使用<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
-	 * @param cmd 指令：对调用的controller方法的名称的做了指令，用于区分并处理方法见的差异逻辑
+	 * @param requestMethodName 作用：对调用的controller方法的名称做标识，用于区分并处理方法间的差异逻辑,常用于权限控制和页面权限控制
 	 * @param model
 	 * @return
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String requestMethodName, T model) throws ServletException, IOException {
 		return true;
 	}
 	
-	/**
-	 * 方法用途: 执行逻辑<br>
-	 * 操作步骤: TODO<br>
-	 * @param request
-	 * @param response
-	 * @param cmd
-	 * @param model
-	 * @param requestUrl
-	 * @throws IOException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws ServletException
-	 */
-	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response,String cmd, T model,String requestUrl) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
-		if (cmd == null || cmd.length() <= 0) {
-			return;
-		}
-		String className = this.getClass().getName();
-		String methodFullName = className+":"+cmd;
-		//页面静态化名字		
-		String staticName = MD5Encrypt.sign(request.getServerName() + request.getRequestURI() + StringUtil.trim(request.getQueryString())) + ".ce";
-
-		AnalysisRequestControllerMethod.analysisAjaxAccess(request, response, methodFullName);
-		
-		WebCacheInfo webCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, methodFullName);
-		if(webCache.getIsCache()) {
-			return;
-		}
-//		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
-		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
-		Object obj = methodSelector.invoke(request,response,model,this,cmd, parameValue);
-		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
-		
-	}
-	
-
-	/**
-	 * 
-	 * 方法用途: 转发到指定视图解析，并输出到浏览器<br>
-	 * 操作步骤: TODO<br>
-	 * @param request
-	 * @param response
-	 * @param model
-	 * @param requestUrl
-	 * @param staticName
-	 * @param method
-	 * @param parameValue
-	 * @param webCache
-	 * @throws IllegalAccessException
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	private void dispatchView(HttpServletRequest request, HttpServletResponse response, T model, String requestUrl,
-			String staticName, Object obj, WebCache webCache)
-					throws IllegalAccessException, ServletException, IOException {
-		if(requestUrl.endsWith(".json")) {
-			JsonView.exe(request, response, obj,config,jsonResolver);
-		} else if(requestUrl.endsWith(".jsonp")) {
-			JsonpView.exe(request, response, obj,model,"meizu.com",config,jsonResolver);
-		} else {
-			request.setAttribute("formData", model);
-			String reactive = getDeviceInfo(request);
-			String resolution = request.getHeader("resolution");//800x600
-			if(resolution != null) {//判断分辨率
-				reactive+=resolution;
-			}
-			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
-				String uri = String.valueOf(obj);
-				String[] uriArr = uri.split(":");
-				String templateType = uriArr[0];
-				String templateUrl = "";
-				if(uriArr.length>1) {
-					templateUrl = uriArr[1];
-				}
-				templateUrl += reactive;
-				switch (templateType) {
-					case "uri":
-						template.render(request, response, webCache, staticName, templateUrl);
-						break;
-					case "redirect":
-						RedirectView.exe(request, response, webCache, staticName, templateUrl);
-						break;
-					default :
-						//messageView和ITemplate的综合处理不优雅，并且会导致一个大的文本对象用于匹配Template的key值 TODO
-						IPageTemplate temp = TemplateFactory.getTemplate(templateType);
-						if(temp != null) {
-							temp.render(request, response, webCache, staticName, templateUrl);
-						} else {
-							MessageView.exe(request, response, uri,config);
-						}
-				}
-			} else {
-				if(obj != null) {
-					request.setAttribute("result", obj);
-				}
-				requestUrl = requestUrl.replace(".html", "");
-				requestUrl += reactive;
-				template.render(request, response, webCache, staticName, requestUrl);
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * 方法用途: 判断设备类型<br>
-	 * 操作步骤: TODO<br>
-	 * @param request
-	 * @return
-	 */
-	private String getDeviceInfo(HttpServletRequest request) {
-		String device = request.getHeader("User-Agent");
-		if(device != null) {//判断设备
-			 if(device.contains("Pad")){
-				return "Pad";
-			} else if(device.contains("Mobile")) {
-				return "Mobile";
-			} else if(device.contains("ndroid")) {
-				return "Pad";
-			}
-		}
-		return "";
-	}
-
 	@Override
 	public Object exec(HttpServletRequest request, HttpServletResponse response) {
-		return null;
+		return delegateController.exec(request, response);
 	}
 }
