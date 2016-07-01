@@ -35,7 +35,7 @@ public class MongoFileDaoTest {
 	@Test
 	public void testSave() {
 		DataBase dataBase = new DataBase();
-		dataBase.setToken("33333333");
+		dataBase.setToken("FDFJDKFJDIFDNFDF22222");
 		dataBase.setContentType("text/plain");
 		try {
 			DefautlMongoFileDao dao = BeanFactory.getBean(DefautlMongoFileDao.class);
@@ -83,5 +83,16 @@ public class MongoFileDaoTest {
 //		} catch (Exception e) {
 //			System.out.println(e);
 //		}
+	}
+
+	@Test
+	public void downLoadByToke() {
+		try {
+			DefautlMongoFileDao dao = BeanFactory.getBean(DefautlMongoFileDao.class);
+			byte[] tt=dao.downloadStreamByToke("FDFJDKFJDIFDNFDF");
+			System.out.println(tt.length);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 }

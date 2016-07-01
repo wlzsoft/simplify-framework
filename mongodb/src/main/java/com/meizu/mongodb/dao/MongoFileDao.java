@@ -11,6 +11,7 @@ import org.bson.BsonObjectId;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
@@ -90,6 +91,33 @@ public class MongoFileDao<T>{
 		});
 		return fileList;
 	}
+	/**
+	 * 查询文档
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param toke 
+	 * @return
+	 */
+	public GridFSFile findByToke(String toke) {
+		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
+		GridFSFile fileInfo = gridFSBucket.find(Filters.and(Filters.eq("metadata.token", toke))).first();
+		return fileInfo;
+	}
+	/**
+	 * 查询文档
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param fileName 字段名
+	 * @param fileValue 字段对应值
+	 * @return
+	 */
+	public GridFSFile findBy(String fileName,String fileValue) {
+		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
+		GridFSFile fileInfo = gridFSBucket.find(Filters.and(Filters.eq(fileName, fileValue))).first();
+		return fileInfo;
+	}
 	
 	/**
 	 * 
@@ -102,6 +130,49 @@ public class MongoFileDao<T>{
 		try {
 			GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
 			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStreamByName(name);
+			int fileLength = (int) downloadStream.getGridFSFile().getLength();
+			byte[] bytesToWriteTo = new byte[fileLength];
+			downloadStream.read(bytesToWriteTo);
+			downloadStream.close();
+			return bytesToWriteTo;
+		} catch (Exception e) {
+			return new byte[0];
+		}
+	}
+	/**
+	 * 
+	 * 方法用途: 下载文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param toke文件名称
+	 * @return
+	 */
+	public byte[] downloadStreamByToke(String toke) {
+		try {
+			GridFSBucket gridFSBucket = GridFSBuckets.create(db, selfName);
+			GridFSFile fileInfo = gridFSBucket.find(Filters.and(Filters.eq("metadata.token", toke))).first();
+			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(fileInfo.getObjectId());
+			int fileLength = (int) downloadStream.getGridFSFile().getLength();
+			byte[] bytesToWriteTo = new byte[fileLength];
+			downloadStream.read(bytesToWriteTo);
+			downloadStream.close();
+			return bytesToWriteTo;
+		} catch (Exception e) {
+			return new byte[0];
+		}
+	}
+	/**
+	 *  下载文件
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param fileName 字段名
+	 * @param fileValue 字段对应值
+	 * @return
+	 */
+	public byte[] downloadStreamByToke(String fileName,String fileValue) {
+		try {
+			GridFSBucket gridFSBucket = GridFSBuckets.create(db, selfName);
+			GridFSFile fileInfo = gridFSBucket.find(Filters.and(Filters.eq(fileName, fileValue))).first();
+			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(fileInfo.getObjectId());
 			int fileLength = (int) downloadStream.getGridFSFile().getLength();
 			byte[] bytesToWriteTo = new byte[fileLength];
 			downloadStream.read(bytesToWriteTo);
