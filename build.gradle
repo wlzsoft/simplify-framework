@@ -3,10 +3,10 @@ allprojects  {
   apply plugin: 'maven'
 
   group = 'com.meizu'
-version = '1.0.1-SNAPSHOT'
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
+  version = '1.0.1-SNAPSHOT'
+  tasks.withType(JavaCompile) {
+	   options.encoding = 'UTF-8'
+  }
 }
 
 subprojects {

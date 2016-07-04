@@ -3,7 +3,9 @@ apply plugin: 'maven'
 
 group = 'com.meizu'
 version = '1.0.1-SNAPSHOT'
-
+tasks.withType(JavaCompile) {
+	   options.encoding = 'UTF-8'
+}
 description = """web服务器"""
 
 sourceCompatibility = 1.8
@@ -12,8 +14,10 @@ targetCompatibility = 1.8
 
 
 repositories {
-        
-     maven { url "http://repo.maven.apache.org/maven2" }
+    //jcenter()
+    mavenLocal()
+    maven { url "http://10.2.67.20:8081/nexus/content/groups/public" }
+    //maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
     compile group: 'com.meizu', name: 'mvc', version:'1.0.1-SNAPSHOT'
