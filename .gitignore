@@ -11,4 +11,7 @@
 # maven config #
 target*
 # gradle config #
-build*
+build
+# intellij idea #
+*.iml
+.idea/*

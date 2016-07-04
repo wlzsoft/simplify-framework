@@ -1,0 +1,19 @@
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+# eclipse config #
+.classpath
+.project
+.setting*
+# maven config #
+target*
+# gradle config #
+bin
+build
+# intellij idea #
+*.iml
+.idea/*
