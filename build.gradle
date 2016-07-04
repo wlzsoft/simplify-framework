@@ -1,12 +1,100 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
 allprojects  {
-  apply plugin: 'eclipse'
-  apply plugin: 'maven'
+  apply plugin: 'eclipse'//提供eclipse支持，init的时候会创建eclipse相关的配置信息，可以用于导入eclipse ide工具中
+  apply plugin: 'maven' //提供maven支持，可以兼容maven的配置
+  apply plugin: 'com.jfrog.bintray' //支持上传到jcenter上面，要提前注册帐号
 
   group = 'com.meizu'
   version = '1.0.1-SNAPSHOT'
   tasks.withType(JavaCompile) {
 	   options.encoding = 'UTF-8'
   }
+  
+  //可以上传到maven私服，避免流失maven用户，兼容性很好,由 apply plugin: 'maven' 来提供基础支持,会反向生成pom文件
+  uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "http://10.2.67.20:8081/nexus/content/repositories/snapshots/") {
+            authentication(userName: "admin", password: "admin123")
+            pom.groupId = "com.meizu"
+            pom.artifactId = "simplify-framework"
+        }
+    }
+  }
+    def siteUrl = 'https://github.com/zhengxiaopeng/BounceProgressBar' // 项目的主页
+	def gitUrl = 'https://github.com/zhengxiaopeng/BounceProgressBar.git' // Git仓库的url
+	group = "org.rocko.bpb" // Maven Group ID for the artifact，一般填你唯一的包名
+	install {
+	    repositories.mavenInstaller {
+	        // This generates POM.xml with proper parameters
+	        pom {
+	        project {
+	        packaging 'aar'
+	        // Add your description here
+	        name 'Android BounceProgressBar Widget' //项目描述
+	        url siteUrl
+	        // Set your license
+	        licenses {
+	            license {
+	            name 'The Apache Software License, Version 2.0'
+	            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+	            }
+	        }
+	        developers {
+	        developer {
+	        id 'zhengxiaopeng'    //填写的一些基本信息
+	        name 'Rocko'
+	        email 'zhengxiaopeng.china@gmail.com'
+	        }
+	        }
+	        scm {
+	        connection gitUrl
+	        developerConnection gitUrl
+	        url siteUrl
+	        }
+	        }
+	        }
+	    }
+	}
+	task sourcesJar(type: Jar) {
+	    from android.sourceSets.main.java.srcDirs
+	    classifier = 'sources'
+	}
+	task javadoc(type: Javadoc) {
+	    source = android.sourceSets.main.java.srcDirs
+	    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+	}
+	task javadocJar(type: Jar, dependsOn: javadoc) {
+	    classifier = 'javadoc'
+	    from javadoc.destinationDir
+	}
+	artifacts {
+	    archives javadocJar
+	    archives sourcesJar
+	}
+	Properties properties = new Properties()
+	properties.load(project.rootProject.file('local.properties').newDataInputStream())
+	bintray {
+	    user = properties.getProperty("bintray.user")
+	    key = properties.getProperty("bintray.apikey")
+	    configurations = ['archives']
+	    pkg {
+	        repo = "maven"    
+	        name = "BounceProgressBar"    //发布到JCenter上的项目名字
+	        websiteUrl = siteUrl
+	        vcsUrl = gitUrl
+	        licenses = ["Apache-2.0"]
+	        publish = true
+	    }
+	}
 }
 
 subprojects {
@@ -16,21 +104,33 @@ subprojects {
 
   
   repositories {
-    //jcenter()
-    mavenLocal()
+    //jcenter()//gradle 自己的仓库支持,比maven仓库的库更全，支持ivy的库
     
-    maven { url "http://10.2.67.20:8081/nexus/content/groups/public" }
+    //以下三个仓库的配置 不需要由 apply plugin: 'maven' 来提供基础支持
+    mavenLocal()
+    maven { url "http://10.2.67.20:8081/nexus/content/groups/public" } 
     maven { url "http://repo.maven.apache.org/maven2" }
   }
 
   
   dependencies {
-    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.7'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.7' // 兼容maven的写法,不需要 apply plugin: 'maven' 来提供基础支持
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12' //gradle特有的简化写法
+  }
+  
+  sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
   }
 
   

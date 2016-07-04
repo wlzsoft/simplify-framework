@@ -1,5 +1,7 @@
 package com.meizu.demo.mvc.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import com.meizu.simplify.mvc.annotation.AjaxAccess;
 import com.meizu.simplify.mvc.annotation.AjaxAccess.Methods;
 import com.meizu.simplify.mvc.annotation.RequestMap;
 import com.meizu.simplify.mvc.annotation.RequestParam;
+import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
@@ -308,5 +311,29 @@ public class TestController extends SystemController<TestModel> {
 		String result = "business:"+business+",operation:"+operation+",data:"+data;//json字符串
 //		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
 		return result;
+	}
+	
+	/**
+	 * 方法用途: 注意，这个例子的代码的文件下载，不能是大文件的下载，大文件下载不能一次性flush一个超大的byte数组，而是每次flush这个byte数组的一部分<br>
+	 * 操作步骤: TODO <br>
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMap(path = "/testDownloadFile.stream")
+	public byte[] testDownloadFile(HttpServletRequest request, HttpServletResponse response, TestModel model)    {
+		File file = new File(ClassPathUtil.getClassPath()+"test.jpg");
+		try {
+			//以下代码重点用于测试下载功能，不能做正式代码参考，因为没做兼容考虑，一旦文件相对，会导致流截断，因为空间只有1024*80
+			FileInputStream fis = new FileInputStream(file);
+			byte[] byteArr = new byte[1024*80];
+			fis.read(byteArr);
+			fis.close();
+			return byteArr;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

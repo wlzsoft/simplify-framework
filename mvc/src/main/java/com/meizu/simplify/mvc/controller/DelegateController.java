@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -181,6 +182,13 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			JsonView.exe(request, response, obj,config,jsonResolver);
 		} else if(requestUrl.endsWith(".jsonp")) {
 			JsonpView.exe(request, response, obj,model,"meizu.com",config,jsonResolver);
+		} else if(requestUrl.endsWith(".stream")) {
+			//1.支持通用http在浏览器中可以解析的文件流，
+			//2.支持自定义的文件流，通过http协议传输，浏览器无法解析，可用于服务端与服务端通讯，采用httpclient的方式，比如rest协议的客户端，虽然建议使用类dubbo的协议，但一些特殊情况，或是为了简单，而不会采用，比如android端。
+			ServletOutputStream os = response.getOutputStream();
+			os.write((byte[])obj);
+			os.flush();
+			os.close();
 		} else {
 			request.setAttribute("formData", model);
 			String reactive = getDeviceInfo(request);

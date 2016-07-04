@@ -12,7 +12,7 @@ targetCompatibility = 1.8
 
 
 repositories {
-        
+     mavenLocal()
      maven { url "http://10.2.67.20:8081/nexus/content/groups/public" }
      maven { url "http://repo.maven.apache.org/maven2" }
 }

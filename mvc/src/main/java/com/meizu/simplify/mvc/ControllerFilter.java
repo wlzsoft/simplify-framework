@@ -123,9 +123,10 @@ public class ControllerFilter implements Filter {
 		Statistics.getReadMap().put(requestUrl, 0);
 		String requestMethodName = controllerAnnotationInfo.getMethod();
 		IBaseController<?> bs = controllerAnnotationInfo.getObj();
+		String sessionId = request.getSession().getId();
 		bs.process(request, response,requestUrl,requestMethodName,urlparams);
 		long readtime = System.currentTimeMillis() - time;
-		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+request.getSession().getId());
+		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+sessionId);
 		// 记录统计信息
 		Statistics.incReadcount();
 		Statistics.setReadMaxTime(readtime, requestUrl);
