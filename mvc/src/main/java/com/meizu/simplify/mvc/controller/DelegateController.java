@@ -200,6 +200,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 					os.flush();
 				}
 				os.close();
+//				is.close(); //TODO 是否需要关闭输入流，待分析确定
 			} else {
 				throw new UncheckedException("不支持解析的stream的操作对象");
 			}
