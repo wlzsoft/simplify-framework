@@ -1,6 +1,7 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
@@ -185,10 +186,23 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 		} else if(requestUrl.endsWith(".stream")) {
 			//1.支持通用http在浏览器中可以解析的文件流，
 			//2.支持自定义的文件流，通过http协议传输，浏览器无法解析，可用于服务端与服务端通讯，采用httpclient的方式，比如rest协议的客户端，虽然建议使用类dubbo的协议，但一些特殊情况，或是为了简单，而不会采用，比如android端。
-			ServletOutputStream os = response.getOutputStream();
-			os.write((byte[])obj);
-			os.flush();
-			os.close();
+			if(obj instanceof byte[]) {//支持小文件等小数据流的操作，一次性write和flush到客户端
+				ServletOutputStream os = response.getOutputStream();
+				os.write((byte[])obj);
+				os.flush();
+				os.close();
+			} else if(obj instanceof InputStream) {//支持大文件下载，每次读取流中的一部分字节，然后写出并flush到客户端
+				ServletOutputStream os = response.getOutputStream();
+				InputStream is = (InputStream)obj;
+				byte[] b = new byte[config.getStreamChunkBuffer()];
+				while(is.read(b)!=-1) {
+					os.write(b);
+					os.flush();
+				}
+				os.close();
+			} else {
+				throw new UncheckedException("不支持解析的stream的操作对象");
+			}
 		} else {
 			request.setAttribute("formData", model);
 			String reactive = getDeviceInfo(request);

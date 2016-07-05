@@ -3,6 +3,7 @@ package com.meizu.demo.mvc.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -325,12 +326,33 @@ public class TestController extends SystemController<TestModel> {
 	public byte[] testDownloadFile(HttpServletRequest request, HttpServletResponse response, TestModel model)    {
 		File file = new File(ClassPathUtil.getClassPath()+"test.jpg");
 		try {
-			//以下代码重点用于测试下载功能，不能做正式代码参考，因为没做兼容考虑，一旦文件相对，会导致流截断，因为空间只有1024*80
+			//以下代码重点用于测试下载功能，不能做正式代码参考，因为没做兼容考虑，一旦文件较大，会导致流截断，因为空间只有1024*80
 			FileInputStream fis = new FileInputStream(file);
 			byte[] byteArr = new byte[1024*80];
 			fis.read(byteArr);
 			fis.close();
 			return byteArr;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 方法用途: 注意，这个例子的代码的文件下载，支持大文件下载，每次读取流中的一部分字节，然后写出并flush到客户端<br>
+	 * 操作步骤: TODO <br>
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMap(path = "/testDownloadFile.stream")
+	public InputStream testDownloadBigFile(HttpServletRequest request, HttpServletResponse response, TestModel model)    {
+		File file = new File(ClassPathUtil.getClassPath()+"test.jpg");
+		try {
+			//以下代码重点用于测试下载功能，不能做正式代码参考，因为没做兼容考虑
+			FileInputStream fis = new FileInputStream(file);
+			return fis;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

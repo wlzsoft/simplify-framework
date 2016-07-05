@@ -30,25 +30,45 @@ public class PropertiesConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesConfig.class);
 	private Boolean debug = true;
-	// 后续使用枚举类型 TODO
+	/**
+	 * 后续使用枚举类型 TODO
+	 */
 	private String charset = "UTF-8";
 	private String controllerClasspath = Constants.packagePrefix;
 	private String template = "meizu";
-	//页面缓存总数[url请求]
+
+	/**
+	 * 页面缓存总数[url请求]
+	 */
 	private Integer pageCacheCount = 100;
 	
-	// velocity自定义Directive
+	/**
+	 * velocity自定义Directive
+	 */
 	private String directives = "";//暂未启用
 	private Boolean unicodeTranscoding = true;//暂未启用
-	// lucence加载器
+	/**
+	 * lucence加载器
+	 */
 	private String directoryProvider = "";//暂未启用
-	// lucence配置 默认关闭
+	/**
+	 * lucence配置 默认关闭
+	 */
 	private Integer limitExecutionTime = 0;//暂未启用
-	// 页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
+	/**
+	 * 页面级别的乱码控制，主要是post和get请求可能会产生的乱码问题，目前暂未开放 TODO
+	 */
 	private String webcharSet = "ISO-8859-1";//暂未启用
 	
-	//页面文件缓存路径配置
+	/**
+	 *页面文件缓存路径配置
+	 */
 	private String fileCachePath = "D:/htmlCache/";
+	
+	/**
+	 * 数据块的缓冲区大小(默认值是4k大小)：用于文件下载，自一定流response的场景会使用到 
+	 */
+	private int streamChunkBuffer = 1024 * 4;
 
 	public Boolean getDebug() {
 		return debug;
@@ -122,6 +142,14 @@ public class PropertiesConfig {
 		this.fileCachePath = fileCachePath;
 	}
 	
+	public int getStreamChunkBuffer() {
+		return streamChunkBuffer;
+	}
+	
+	public void setStreamChunkBuffer(int streamChunkBuffer) {
+		this.streamChunkBuffer = streamChunkBuffer;
+	}
+
 	@DymaicProperties
 	private PropertieUtil propertieUtil;
 	
@@ -132,10 +160,9 @@ public class PropertiesConfig {
 		return propertieUtil;
 	}
 	
-	
-	
 	@Reload
 	public void setBasenames(String... basenames) {
 		LOGGER.info("加载配置信息文件成功。");
 	}
+	
 }

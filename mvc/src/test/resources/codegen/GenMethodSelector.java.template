@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.mvc.controller.BaseController;
+import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.controller.IMethodSelector;
 import com.meizu.simplify.mvc.model.Model;
 
@@ -36,7 +36,7 @@ public class GenMethodSelector implements IMethodSelector{
 	<%}%>
 	
 	@Override
-	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,BaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
+	public <T extends Model> Object invoke(HttpServletRequest request,HttpServletResponse response, T t,IBaseController<?>  obj,String doCmd, Object[] parameValue) throws IllegalAccessException, InvocationTargetException {
 		Object result = null;
 		String clazzName = obj.getClass().getSimpleName();
 		try {
