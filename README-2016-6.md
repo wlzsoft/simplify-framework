@@ -1,4 +1,4 @@
-# 框架待完善功能1
+# 框架待完善功能
 ###1.准备集成gradle
    1. 安装gradle的eclipse官方插件：https://github.com/eclipse/buildship/
    2. 这里是列表文本2.安装gradle工具，配置环境
