@@ -4,5 +4,13 @@ dependencies {
   compile project(':encrypt')
   compile project(':config')
   compile project(':aop')
+<<<<<<< HEAD
   compileOnly('javax.servlet:javax.servlet-api:3.1.0')
+=======
+  compileOnly(group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0') {
+       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+       Please review and delete this closure when resolved. */
+  }
+>>>>>>> branch 'master' of http://10.2.67.47:80/ros-team/simplify-framework.git
 }
