@@ -1,5 +1,5 @@
 
 description = '依赖注入组件'
 dependencies {
-  compile project(':utils')
+	compile project(':utils')
 }

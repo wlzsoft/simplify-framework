@@ -1,11 +1,11 @@
 
 description = '关系型数据库持久化共用组件'
 dependencies {
-  compile project(':ioc')
-  compile project(':config')
-  compile project(':aop')
-  compile project(':entity')
-  compile project(':template')
-    compile group: 'com.alibaba', name: 'druid', version:'1.0.16'
-    compile group: 'mysql', name: 'mysql-connector-java', version:'5.1.38'
+	compile project(':ioc')
+	compile project(':config')
+	compile project(':aop')
+	compile project(':entity')
+	compile project(':template')
+	compile 'com.alibaba:druid:1.0.16'
+	compile 'mysql:mysql-connector-java:5.1.38'
 }

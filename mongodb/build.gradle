@@ -1,9 +1,9 @@
 
 description = 'mongodb操作 模块'
 dependencies {
-  compile project(':ioc')
-  compile project(':config')
-  compile project(':aop')
-  compile project(':dao')
-    compile group: 'org.mongodb', name: 'mongo-java-driver', version:'3.2.2'
+	compile project(':ioc')
+	compile project(':config')
+	compile project(':aop')
+	compile project(':dao')
+	compile 'org.mongodb:mongo-java-driver:3.2.2'
 }

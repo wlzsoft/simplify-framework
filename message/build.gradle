@@ -1,8 +1,8 @@
 
 description = 'message 消息模块'
 dependencies {
-  compile project(':utils')
-  compile project(':entity')
-  compile project(':ioc')
-    compile group: 'com.rabbitmq', name: 'amqp-client', version:'3.6.2'
+	compile project(':utils')
+	compile project(':entity')
+	compile project(':ioc')
+    compile 'com.rabbitmq:amqp-client:3.6.2'
 }

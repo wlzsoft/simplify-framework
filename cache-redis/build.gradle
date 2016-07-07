@@ -1,8 +1,8 @@
 
 description = '基于cache模块的redis实现'
 dependencies {
-  compile project(':config')
-  compile project(':caches')
-    compile group: 'redis.clients', name: 'jedis', version:'2.6.3'
-  testCompile project(':stress-tester')
+	compile project(':config')
+	compile project(':caches')
+	compile 'redis.clients:jedis:2.6.3'
+	testCompile project(':stress-tester')
 }

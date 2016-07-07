@@ -1,6 +1,6 @@
 
 description = '缓存组件'
 dependencies {
-  compile project(':ioc')
-  compile project(':aop')
+	compile project(':ioc')
+	compile project(':aop')
 }
