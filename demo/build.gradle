@@ -17,7 +17,6 @@ repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-<<<<<<< HEAD
     compile 'com.meizu:mvc:1.0.1-SNAPSHOT'
     compile 'com.meizu:cache-redis:1.0.1-SNAPSHOT'
     compile 'com.meizu:webcache:1.0.1-SNAPSHOT'
@@ -27,15 +26,4 @@ dependencies {
     compile 'com.meizu:webserver:1.0.1-SNAPSHOT'
     testCompile 'junit:junit:4.12'
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
-=======
-    compile group: 'com.meizu', name: 'mvc', version:'1.0.1-SNAPSHOT'
-    compile group: 'com.meizu', name: 'cache-redis', version:'1.0.1-SNAPSHOT'
-    compile group: 'com.meizu', name: 'webcache', version:'1.0.1-SNAPSHOT'
-    compile group: 'com.meizu', name: 'aop', version:'1.0.1-SNAPSHOT'
-    compile group: 'com.meizu', name: 'dao', version:'1.0.1-SNAPSHOT'
-    compile group: 'com.meizu', name: 'listener', version:'1.0.1-SNAPSHOT'
-    compile group: 'com.meizu', name: 'webserver', version:'1.0.1-SNAPSHOT'
-    testCompile group: 'junit', name: 'junit', version:'4.12'
-    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
->>>>>>> branch 'master' of http://10.2.67.47:80/ros-team/simplify-framework.git
 }
