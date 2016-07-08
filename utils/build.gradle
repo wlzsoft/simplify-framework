@@ -7,3 +7,5 @@ dependencies {
 	testCompile 'com.caucho:hessian:4.0.38' , 'com.esotericsoftware:kryo-shaded:3.0.3'
 	testCompile project(':stress-tester')
 }
+//$rootDir：在子项目的脚本文件中可以通过该属性访问到根项目路径
+//$rootProject：在子项目中，可以通过该属性获取父项目的Project对

@@ -91,11 +91,18 @@ allprojects  {
 }
 
 subprojects {
-  apply plugin: 'java'
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
+	apply plugin: 'java'
+	//apply plugin: 'checkstyle'//帮助JAVA开发人员遵守某些编码规范的工具。它能够自动化代码规范检查过程，从而使得开发人员从这项重要却枯燥的任务中解脱出来
+	apply plugin: 'findbugs'//静态分析工具，它检查类或者 JAR 文件，将字节码与一组缺陷模式进行对比以发现可能的问题
+	apply plugin: 'jdepend'//在开发Java项目时经常会遇到关于包混乱的问题， JDepend工具可以帮助你在开发过程中随时跟踪每个包的依赖性（引用/被引用）,，从而设计高维护性的架构，不论是在打包发布还是版本升级都会更加轻松
+	apply plugin: 'pmd'//和checkstyle类似，是否考虑放弃一个
 
-  
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+  /*checkstyle{
+	  configFile = file('config/checkstyle/checkstyle-main.xml')
+  }*/
   repositories {
     //以下三个仓库(maven开头的)的配置 不需要由 apply plugin: 'maven' 来提供基础支持
     mavenLocal()
@@ -141,5 +148,8 @@ subprojects {
 	    archives sourcesJar
 	}
    */
-  
+	//https://docs.gradle.org/2.4/userguide/userguide.html  gradle官方文档
+	//https://docs.gradle.org/2.4/dsl/  gradle domain specil lang 领域特定语言 api文档
+	//https://plugins.gradle.org   gradle 的 第三方插件的仓库，所以第三方插件如果愿意，可以托管到这个官方仓库
+	//https://bintray.com/bintray/jcenter  基于ivy和maven的gradle官方指定仓库，不包含插件
 }

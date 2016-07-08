@@ -14,6 +14,13 @@ targetCompatibility = 1.8
 tasks.withType(JavaCompile) {
 	 options.encoding = 'UTF-8'
 }
+//为了统一项目中Gradle的版本，可以在构建脚本中通过定义一个wrapper的Task，并在该Task中指定Gradle的版本以及存放Gradle的位置
+//目前这个配置无效，因为gradlewrapper已经在项目中了，并且提交到git上面，加上这个配置后，可以把gradlewrapper的4个文件从git上面移除了
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+    archiveBase = 'PROJECT'
+    archivePath = 'gradle/dists'
+}
 repositories {
      mavenLocal()
      maven { url "http://10.2.67.20:8081/nexus/content/groups/public" }
