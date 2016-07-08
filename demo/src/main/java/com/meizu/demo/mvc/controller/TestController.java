@@ -91,6 +91,15 @@ public class TestController extends SystemController<TestModel> {
 		return testList;
 	}
 	
+	@RequestMap(path = "/testjson.json")
+	public Test doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		Test test = testService.doSomeThing2();
+//		List<Test> testList = new ArrayList<>();
+//		testList.add(test);
+		System.out.println("jetty:test3");
+		return test;
+	}
+	
 	@RequestMap(path = "/testbeetl/")
 	public String doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		
@@ -202,13 +211,6 @@ public class TestController extends SystemController<TestModel> {
 		request.setAttribute("userName", test.getName());
 		return "{id:1,name:'"+test.getName()+"'}";
 	}	
-	@RequestMap(path = "/testjson.json")
-	public Test doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
-//		List<Test> testList = new ArrayList<>();
-//		testList.add(test);
-		return test;
-	}
 	
 	@RequestMap(path = "/testmessage/")
 	public String doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {

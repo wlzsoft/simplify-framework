@@ -12,7 +12,7 @@
 target*
 # gradle config #
 build
+.gradle
 # intellij idea #
 *.iml
 .idea/*
-/.gradle/

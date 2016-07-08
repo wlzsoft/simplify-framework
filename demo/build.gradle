@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+//https://plugins.gradle.org 官方插件仓库地址：包含第三方开发和发布的插件
+apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin' //代替官方的apply plugin: 'jetty'
+apply plugin: 'war'
 
 group = 'com.meizu'
 version = '1.0.1-SNAPSHOT'
@@ -8,9 +11,9 @@ description = """demo Maven Webapp"""
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-
-
+tasks.withType(JavaCompile) {
+	 options.encoding = 'UTF-8'
+}
 repositories {
      mavenLocal()
      maven { url "http://10.2.67.20:8081/nexus/content/groups/public" }
@@ -27,4 +30,10 @@ dependencies {
     testCompile 'junit:junit:4.12@jar'
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
     //compile gradleApi() //when you are developing custom Gradle tasks or plugins.
+}
+
+gretty {
+  port = 8080
+  contextPath = '/'
+  //serverConfigFile = "$project.projectDir/src/test/java/jetty-config.xml"
 }
