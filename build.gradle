@@ -14,7 +14,7 @@ allprojects  {
 	apply plugin: 'com.jfrog.bintray' //支持上传到jcenter上面，要提前注册帐号
 
 	group = 'com.meizu'
-	version = '1.0.1-SNAPSHOT'
+	version = '$simplify-framework-version'
 	tasks.withType(JavaCompile) {
 	   options.encoding = 'UTF-8'
 	}

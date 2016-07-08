@@ -96,7 +96,7 @@ public class TestController extends SystemController<TestModel> {
 		Test test = testService.doSomeThing2();
 //		List<Test> testList = new ArrayList<>();
 //		testList.add(test);
-		System.out.println("jetty:test3");
+		test.setName("test8");
 		return test;
 	}
 	
@@ -268,15 +268,8 @@ public class TestController extends SystemController<TestModel> {
 	}
 	
 	/**
-	 * 方法用途: 不支持写法<br>
-	 * 操作步骤: Test参数，要使用TestModel代替，TestModel中包含Test属性即可<br>
-	 * @param request
-	 * @param response
-	 * @param test
-	 * @param business
-	 * @param operation
-	 * @param data
-	 * @return
+	 *  不支持下列方法的写法
+	 *  Test参数，要使用TestModel代替，TestModel中包含Test属性即可
 	 */
 	/*@RequestMap(path = "/testFormEntityParam")
 	public String testFormEntityParam(HttpServletRequest request, HttpServletResponse response, Test test, @RequestParam(defaultValue = "0",name="business") Integer business, @RequestParam(defaultValue = "0",name="operation") String operation, @RequestParam(defaultValue = "0",name="data") String data) {
