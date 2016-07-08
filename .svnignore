@@ -1,8 +1,6 @@
-
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 # eclipse config #
@@ -12,8 +10,8 @@
 # maven config #
 target*
 # gradle config #
-bin
 build
+.gradle
 # intellij idea #
 *.iml
 .idea/*
