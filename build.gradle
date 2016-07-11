@@ -100,6 +100,8 @@ subprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
+	
+
   /*checkstyle{
 	  configFile = file('config/checkstyle/checkstyle-main.xml')
   }*/
@@ -110,7 +112,6 @@ subprojects {
     maven { url "http://10.2.67.20:8081/nexus/content/groups/public" } 
     maven { url "http://repo.maven.apache.org/maven2" }
   }
-
   
   dependencies {
     compile 'org.slf4j:slf4j-api:1.7.7', 'ch.qos.logback:logback-classic:1.1.3'
@@ -119,35 +120,6 @@ subprojects {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12' 
   }
-  /*
-  sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-        resources {
-            srcDir 'src/main/resources'
-        }
-    }
-  }
-  
-  task sourcesJar(type: Jar) {
-	    from project.sourceSets.main.java.srcDirs
-	    classifier = 'sources'
-	}
-	task javadoc(type: Javadoc) {
-	    source = project.sourceSets.main.java.srcDirs
-	    classpath += project.files(project.getBootClasspath().join(File.pathSeparator))
-	}
-	task javadocJar(type: Jar, dependsOn: javadoc) {
-	    classifier = 'javadoc'
-	    from javadoc.destinationDir
-	}
-	artifacts {
-	    archives javadocJar
-	    archives sourcesJar
-	}
-   */
 	//https://docs.gradle.org/2.4/userguide/userguide.html  gradle官方文档
 	//https://docs.gradle.org/2.4/dsl/  gradle domain specil lang 领域特定语言 api文档
 	//https://plugins.gradle.org   gradle 的 第三方插件的仓库，所以第三方插件如果愿意，可以托管到这个官方仓库
