@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,11 +28,13 @@ public class HttpResponse implements HttpServletResponse{
 	private char[] body;
 
 	private final PrintWriter bw;
+	private SocketChannel sc;
 	private String charset;
 	private String contentType;
 	
 	public HttpResponse(Socket socket) throws IOException {
 		bw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+		sc = socket.getChannel();
 	}
 
 	public String getVersion() {
@@ -72,7 +76,6 @@ public class HttpResponse implements HttpServletResponse{
 	public void setBody(char[] body) {
 		this.body = body;
 	}
-	
 	public void sendToClient() throws IOException {
 		if(body != null ) {
 			bw.write(getVersion() + " " + getStatusCode() + " "
@@ -93,6 +96,35 @@ public class HttpResponse implements HttpServletResponse{
 		}
 		bw.flush();
 		bw.close();
+	}
+	public void sendToClientByNio() throws IOException {
+		if(body != null ) {
+			ByteBuffer[] srcs = new ByteBuffer[4];
+			ByteBuffer responseByte = ByteBuffer.wrap((
+					getVersion() + " " + getStatusCode() + " " + getReason() + "\r\n"
+					+"Date: " + new Date() + "\r\n"
+					+"Server: meizu-server-0.1\r\n"
+					+"Accept-Ranges: bytes\r\n"
+					+"Content-Length: " + getBody().length + "\r\n"
+					+"Content-Type: text/html\r\n"
+					).getBytes());
+			String responseHeadText="";
+			Set<Entry<String,String>> entryHead = responseHeader.entrySet();
+			for (Entry<String, String> entry : entryHead) {
+				responseHeadText += entry.getKey()+": "+entry.getValue()+"\r\n";
+			}
+			ByteBuffer responseHeadByte = ByteBuffer.wrap(responseHeadText.getBytes());
+			ByteBuffer cookieByte = ByteBuffer.wrap(("Set-Cookie: "
+					+ getResponseHeader().get("Set-Cookie") + "\r\n").getBytes());
+			
+			ByteBuffer responseBodyByte = ByteBuffer.wrap(new String(getBody()).getBytes());
+			srcs[0] = responseByte;
+			srcs[1] = responseHeadByte;
+			srcs[2] = cookieByte;
+			srcs[3] = responseBodyByte;
+			sc.write(srcs);
+		}
+		sc.close();
 	}
 	
 	@Override
