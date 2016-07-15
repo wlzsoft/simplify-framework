@@ -39,8 +39,10 @@ public @interface RequestMap {
 	/**
 	 * 
 	 * 方法用途: 请求映射地址设置<br>
-	 * 操作步骤: 可以是一个或多个地址<br>
+	 * 操作步骤: 可以是一个或多个地址
+	 *           如果default为空字符串，那么就会在解析时通过类名和方法名来约定构建path地址。
+	 *           构建规制是：[/类名/方法名] 其中类名的第一个字母小写，并且不包含Controller后缀<br>
 	 * @return
 	 */
-	String[] path();
+	String[] path() default "";
 }

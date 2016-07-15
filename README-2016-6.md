@@ -23,3 +23,4 @@
 ###10.为stream视图提供新的处理流的方式，可以定制buffer的大小，处理大文件，可以分块传输
 ###11.junit5 基于java8，目前开发到里程碑1.0版本，可以考虑testng，spock
 ###12.可以提供以方法和类名为准，只需要指定@RequestMap就可以，不需要指定@RequestMap(path="xxxx")的映射方式，减少用户的重复编码
+###13.提供RequestMap的默认设置，path值可以不设置，那么path最终的值以所在的类和方法的名称为准

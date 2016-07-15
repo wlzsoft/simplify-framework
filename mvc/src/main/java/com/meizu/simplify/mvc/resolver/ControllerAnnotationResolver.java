@@ -35,6 +35,7 @@ import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
 import com.meizu.simplify.util.CacheManager;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.CacheBase;
 
@@ -163,16 +164,40 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 //				T requestMap = method.getDeclaredAnnotation(clazzAnno);
 				T requestMap = method.getAnnotation(clazzAnno);
 				for (String path : ((RequestMap)requestMap).path()) {
-					if (path != null && path.length() > 0) {
-						RequestMap preControlMap = beanClass.getAnnotation(RequestMap.class);
-						if(preControlMap!=null && preControlMap.path().length>0) {
-							path = preControlMap.path()[0] + path;
-						}
-						path = addRequestInfo(method.getName(), cpath, obj, path);
+					if (StringUtil.isBlank(path)) {//没有设置RequestMap的path属性，那么以方法名为准
+						path = "/"+method.getName();
 					}
+					path = getPrePath(beanClass, path);
+					path = addRequestInfo(method.getName(), cpath, obj, path);
 				}
 			}
 		}
+	}
+
+	/**
+	 * 方法用途: 获取类的RequestMap信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanClass
+	 * @param path
+	 * @return
+	 */
+	private String getPrePath(Class<?> beanClass, String path) {
+		RequestMap preControlMap = beanClass.getAnnotation(RequestMap.class);
+		if(preControlMap == null) {
+			return path;
+		}
+		String[] prePathArr = preControlMap.path();
+		if(prePathArr.length<=0) {
+			return path;
+		}
+		String prePath = prePathArr[0];
+		if(StringUtil.isBlank(prePath)) {
+			String controllerBeanName = beanClass.getSimpleName();
+			controllerBeanName = StringUtil.lowerCaseByFirst(controllerBeanName).replace("Controller", "");
+			prePath = "/"+controllerBeanName;
+		}
+		path = prePath + path;
+		return path;
 	}
 
 	/**

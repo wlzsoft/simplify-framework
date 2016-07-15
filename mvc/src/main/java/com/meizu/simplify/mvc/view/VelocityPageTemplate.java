@@ -40,7 +40,7 @@ public class VelocityPageTemplate  implements IPageTemplate{
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-		String prefixUri = "/template/velocity/";
+		String prefixUri = "/template/velocity";
 		setContentType(request, response,config);
 		
 		// 将request中的对象赋给模版
