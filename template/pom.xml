@@ -37,6 +37,13 @@
 	    <artifactId>ioc</artifactId>
 	    <version>1.0.1-SNAPSHOT</version>
 	  </dependency>
+	   <!--beetl模版引擎使用了antlr做词法和语法及语法树分析，其他模版引擎都没有用到-->
+	   <dependency>
+		   <groupId>org.antlr</groupId>
+		   <artifactId>antlr4-runtime</artifactId>
+		   <scope>compile</scope>
+		   <version>4.5.3</version>
+	   </dependency>
 		  <!-- 经典模板引擎一 -->
 		  <dependency>
 			<groupId>org.apache.velocity</groupId>
