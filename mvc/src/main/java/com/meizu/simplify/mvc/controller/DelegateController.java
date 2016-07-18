@@ -67,7 +67,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * 
 	 * 方法用途: 拦截处理所有请求<br>
 	 * 操作步骤: TODO<br>
-	 * @param req
+	 * @param request
 	 * @param response
 	 * @param requestUrl 
 	 * @param requestMethodName 
@@ -169,8 +169,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * @param model
 	 * @param requestUrl
 	 * @param staticName
-	 * @param method
-	 * @param parameValue
+	 * @param obj
 	 * @param webCache
 	 * @throws IllegalAccessException
 	 * @throws ServletException
