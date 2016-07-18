@@ -58,7 +58,7 @@ public class MappingExceptionResolver {
 	 * @param response
 	 * @param requestUrl
 	 * @param template
-	 * @param e
+	 * @param throwable
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
 			IPageTemplate template, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
@@ -123,7 +123,7 @@ public class MappingExceptionResolver {
 				request.setAttribute("exception", throwable);
 				//没有在exceptionMappings里面找到对应的异常时 返回defaultErrorView指定的异常处理默认视图:500,404,403在这里其实jsp页面，比如500.jsp，400.jsp，exception.jsp
 //				setDefaultErrorView("500");//exception
-				template.render(request, response, null, null, "500");
+				template.render(request, response, null, null, "/500");
 			} catch (ServletException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
