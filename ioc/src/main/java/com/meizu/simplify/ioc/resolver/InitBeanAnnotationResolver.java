@@ -47,12 +47,15 @@ public final class InitBeanAnnotationResolver implements IAnnotationResolver<Cla
 		Class<?> beanClass = beanObj.getClass();
 		List<Method> initMethodList = ClassUtil.findMethodByAnnotation(InitBean.class,beanClass);
 		for (Method method : initMethodList) {
+			String message = "bean["+beanClass.getName()+"]的初始化方法["+method.getName()+"]";
 			try {
 				method.invoke(beanObj);
-				LOGGER.info("已调用bean["+beanClass.getName()+"]的初始化方法:"+method.getName());
+				LOGGER.info("已调用"+message);
 				break;
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
+			} catch (IllegalAccessException  | InvocationTargetException e) {
+				LOGGER.error(message + "异常.",e);
+			} catch (IllegalArgumentException e) {
+				LOGGER.error(message + "异常 ==>> "+method.getName()+"方法必须是无参的,方法签名是:\n@InitBean\npublic void "+method.getName()+"(){\n//init code\n}",e);
 			}
 		}
 	}
