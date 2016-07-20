@@ -35,7 +35,7 @@ public class DataUtil {
 	 * 
 	 * 方法用途: 将参数解析为int类型，为空时返回0<br>
 	 * 操作步骤: TODO<br>
-	 * @param param
+	 * @param value
 	 * @return
 	 */
 	public static Integer parseInt(Object value) {
@@ -55,12 +55,41 @@ public class DataUtil {
 			return defaultValue;
 		} 
         try {
-        	return new Integer(value.toString());
+        	return Integer.parseInt(value.toString());
         } catch (NumberFormatException e) {
             return defaultValue;
         }
 	}
 
+	/**
+	 *
+	 * 方法用途: 将参数解析为long类型，为空时返回0<br>
+	 * 操作步骤: TODO<br>
+	 * @param value
+	 * @return
+	 */
+	public static Long parseLong(Object value) {
+		return parseLong(value, 0);
+	}
+
+	/**
+	 *
+	 * 方法用途: 将参数解析为long类型，为空时返回defaultValue<br>
+	 * 操作步骤: TODO<br>
+	 * @param value
+	 * @param defaultValue
+	 * @return
+	 */
+	public static long parseLong(Object value, long defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return new Long(value.toString());
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
 
 	/**
 	 * 

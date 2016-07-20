@@ -195,12 +195,15 @@ public class PropertieUtil {
 			if(value == null) {
 				continue;
 			}
-			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
+			Class<?> valueClass = field.getType();
+			if(valueClass == Boolean.class||valueClass == boolean.class) {
 				value = DataUtil.parseBoolean(value);
-			} else if(field.getType() == Integer.class || field.getType() == int.class){
+			} else if(valueClass == Integer.class || valueClass == int.class){
 				value = DataUtil.parseInt(value);
+			} else if(valueClass == Long.class || valueClass == long.class){
+				value = DataUtil.parseLong(value);
 			}
-			ReflectionUtil.invokeSetterMethod(obj, field.getName(), value);
+			ReflectionUtil.invokeSetterMethod(obj, field.getName(), value,valueClass);
 		}
 		return (T) obj;
 	}
