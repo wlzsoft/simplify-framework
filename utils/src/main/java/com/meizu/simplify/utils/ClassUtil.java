@@ -105,9 +105,10 @@ public class ClassUtil {
 		for (String className : findClassNames(packageNames)) {
 			try {
 				classes.add(Class.forName(className));
+			} catch (ExceptionInInitializerError e) {
+				LOGGER.error("加载[" + className + "]类时发生异常:由于加载类过程中，类中的静态变量和静态块有做new的操作，在执行相关构造函数时报错，具体错误信息如下：", e);
 			} catch (Throwable e) {
 				LOGGER.warn("加载[" + className + "]类时发生异常。", e);
-				e.printStackTrace();
 //				System.err.println("加载[" + className + "]类时发生异常。"+e.getMessage());
 			}
 		}

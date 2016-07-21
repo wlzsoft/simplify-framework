@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.meizu.simplify.utils.entity.User;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -146,6 +147,14 @@ public class ReflectionUtilTest  {
 			System.out.println(field.getName());
 		}
 		
+	}
+
+	@Test
+	public void getTypeToken() {
+		Type userListType = ReflectionGenericUtil.getSuperClassGenricType(new ReflectionGenericUtil.TypeToken<List<User>>() {
+		});
+		Assert.assertEquals("java.util.List<com.meizu.simplify.utils.entity.User>",userListType.getTypeName());
+
 	}
 
 }

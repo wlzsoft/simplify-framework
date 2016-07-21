@@ -2,6 +2,7 @@ package com.meizu.simplify.utils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +71,7 @@ public class ReflectionGenericUtil {
 	 * @return 返回泛型的class 列表
 	 */
 	public static <T> Type[] getSuperClassGenricTypeArray(final Class<T> clazz) {
-		Type genType = clazz.getGenericSuperclass();// 得到泛型父类
+		Type genType = clazz.getGenericSuperclass();// 得到泛型父类的对象[指定是Class<T>的父类Type的对象genType]
         if (genType.getTypeName().equals("java.lang.Object")) {
         	throw new UncheckedException(clazz.getSimpleName() + "的父类是Object"); 
         }
@@ -80,7 +81,46 @@ public class ReflectionGenericUtil {
             throw new UncheckedException(clazz.getSimpleName() + "没有指定实现父类的泛型参数"); 
         }
         // 返回表示此类型实际类型参数的Type对象的数组,数组里放的都是对应类型的Class, 如public class ExpireRedisDao<K,V> extends BaseRedisDao<Integer,Serializable>就返回Integer和Serializable类型
-        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        ParameterizedType parameterized = (ParameterizedType)genType;
+        Type[] params = parameterized.getActualTypeArguments();
 		return params;
 	}
+    /**
+     *
+     * 方法用途: 通过反射, 获得Class定义中声明的父类的泛型参数的类型<br>
+     * 操作步骤: 注意：该方法不能在运行时多次使用，只用于启动或初始化时<br>
+     * @param typeToken 需要解析的TypeToken类型
+     * @return 返回泛型的Type 列表
+     */
+    public static <T> Type getSuperClassGenricType(TypeToken<T> typeToken) {
+        return typeToken.getType();
+    }
+    /**
+     * <p><b>Title:</b><i>反射泛型类型标记类</i></p>
+     * <p>Desc: 用于承载泛型Type的对象的信息</p>
+     * <p>source folder:{@docRoot}</p>
+     * <p>Copyright:Copyright(c)2014</p>
+     * <p>Company:meizu</p>
+     * <p>Create Date:2016年1月27日 下午4:38:59</p>
+     * <p>Modified By:luchuangye-</p>
+     * <p>Modified Date:2016年1月27日 下午4:38:59</p>
+     * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
+     * @version Version 0.1
+     *
+     */
+    public static class TypeToken<T> {
+        Type type;
+
+        /**
+         * 构造函数必须是受保护(protected)，new的时候必须是空的内部实现类，才能获取到泛型值
+         */
+        protected TypeToken() {
+            this.type = getSuperClassGenricTypeArray(this.getClass())[0];
+        }
+        private Type getType() {
+            return type;
+        }
+    }
 }
+
+
