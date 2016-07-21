@@ -3,6 +3,7 @@ package com.meizu.simplify.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.meizu.simplify.exception.BaseException;
@@ -47,11 +48,24 @@ public class JsonUtil {
 	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
 	 * 操作步骤: TODO <br>
 	 * @param obj
+	 * @param afterFilter
 	 * @return
 	 */
 	public static String objectToString(Object obj,SerializeFilter afterFilter){
     	return JSON.toJSONString(obj,afterFilter);
     }
+
+	/**
+	 *
+	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
+	 * 操作步骤: TODO <br>
+	 * @param obj
+	 * @param serializeConfig
+	 * @return
+	 */
+	public static String objectToString(Object obj,SerializeConfig serializeConfig){
+		return JSON.toJSONString(obj,serializeConfig);
+	}
     
 	/**
 	 * 方法用途: json字符串转pojo对象<br>
