@@ -1,19 +1,29 @@
 package com.meizu.demo.mvc.model;
 
 import com.meizu.demo.mvc.entity.Test;
-import com.meizu.simplify.mvc.model.BaseModel;
-import com.meizu.simplify.mvc.model.ModelCharsFilter;
+import com.meizu.simplify.mvc.model.*;
 import com.meizu.simplify.mvc.model.ModelCharsFilter.Filter;
-import com.meizu.simplify.mvc.model.ModelScope;
-import com.meizu.simplify.mvc.model.ModelSkip;
+
+import static com.meizu.simplify.mvc.model.ValidTypeEnum.*;
 
 public class TestModel extends BaseModel {
-	
+
+
+	private String productName;
 	private String name;
 	private Integer age;
 	private String desc;
 	private Test test;
-	
+
+	public String getProductName() {
+		return productName;
+	}
+//	@Valid({NotNull, Number})
+	@Valid(value = {NotNull, Number},defaultMessages = {"不能为空引用"})
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
 	public String getName() {
 		return name;
 	}
