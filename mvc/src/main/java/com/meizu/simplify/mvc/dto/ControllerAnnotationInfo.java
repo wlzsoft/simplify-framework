@@ -20,6 +20,8 @@ public class ControllerAnnotationInfo<T extends IBaseController<?>> {
 	
 	private String method = "doView";
 
+	private boolean isStatic= false;
+
 	public T getObj() {
 		return obj;
 	}
@@ -28,9 +30,14 @@ public class ControllerAnnotationInfo<T extends IBaseController<?>> {
 		return method;
 	}
 
-	public ControllerAnnotationInfo(T obj, String method){
+	public boolean getIsStatic() {
+		return isStatic;
+	}
+
+	public ControllerAnnotationInfo(T obj, String method,boolean isStatic){
 		this.obj = obj;
 		this.method = method;
+		this.isStatic = isStatic;
 	}
 
 }

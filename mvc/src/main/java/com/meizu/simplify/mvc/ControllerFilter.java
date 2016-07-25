@@ -122,9 +122,10 @@ public class ControllerFilter implements Filter {
 		long time = System.currentTimeMillis();
 		Statistics.getReadMap().put(requestUrl, 0);
 		String requestMethodName = controllerAnnotationInfo.getMethod();
+		boolean isStatic = controllerAnnotationInfo.getIsStatic();
 		IBaseController<?> bs = controllerAnnotationInfo.getObj();
 		String sessionId = request.getSession().getId();
-		bs.process(request, response,requestUrl,requestMethodName,urlparams);
+		bs.process(request, response,requestUrl,requestMethodName,isStatic,urlparams);
 		long readtime = System.currentTimeMillis() - time;
 		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+sessionId);
 		// 记录统计信息

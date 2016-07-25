@@ -35,7 +35,7 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * 
 	 * 方法用途: 拦截处理所有请求<br>
 	 * 操作步骤: TODO<br>
-	 * @param req
+	 * @param request
 	 * @param response
 	 * @param requestUrl 
 	 * @param requestMethodName 
@@ -47,8 +47,8 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * @throws IllegalAccessException 
 	 */
 	@Override
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String requestMethodName,String[] urlparams)  {
-		delegateController.process(request, response, requestUrl, requestMethodName, urlparams,this);
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String requestMethodName,boolean isStatic,String[] urlparams)  {
+		delegateController.process(request, response, requestUrl, requestMethodName,isStatic, urlparams,this);
 	}
 
 	/**

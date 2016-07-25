@@ -163,12 +163,14 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			if (method.isAnnotationPresent(RequestMap.class)) {
 //				T requestMap = method.getDeclaredAnnotation(clazzAnno);
 				T requestMap = method.getAnnotation(clazzAnno);
-				for (String path : ((RequestMap)requestMap).path()) {
+				RequestMap rm = ((RequestMap) requestMap);
+				boolean isStatic = rm.isStatic();
+				for (String path : rm.path()) {
 					if (StringUtil.isBlank(path)) {//没有设置RequestMap的path属性，那么以方法名为准
 						path = "/"+method.getName();
 					}
 					path = getPrePath(beanClass, path);
-					path = addRequestInfo(method.getName(), cpath, obj, path);
+					path = addRequestInfo(method.getName(),isStatic, cpath, obj, path);
 				}
 			}
 		}
@@ -204,12 +206,13 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	 * 方法用途: 映射绑定请求信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param requestMethodName 请求处理方法名称
+	 * @param isStatic 是否是静态的页面渲染
 	 * @param cpath 配置文件中controller的classpath的路径
 	 * @param obj
 	 * @param path
 	 * @return
 	 */
-	public static String addRequestInfo(String requestMethodName, String cpath, Object obj, String path) {
+	public static String addRequestInfo(String requestMethodName,boolean isStatic, String cpath, Object obj, String path) {
 		List<String> endFixArr = new ArrayList<>();
 		endFixArr.add(".json");
 		endFixArr.add(".jsonp");
@@ -221,10 +224,10 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			boolean isExist = isContainsEndFix(path, endFixArr);
 			if(!isExist) {
 				for (String endFix : endFixArr) {
-					controllerRegularExpressionsList.put(path.substring(0,path.length()-1)+endFix+"$", new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+					controllerRegularExpressionsList.put(path.substring(0,path.length()-1)+endFix+"$", new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName,isStatic));
 				}
 			}
-			controllerRegularExpressionsList.put(path, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+			controllerRegularExpressionsList.put(path, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName,isStatic));
 		} else {//非正则表达式处理
 			if(path.endsWith("/")) {
 				path = path.substring(0, path.length()-1);
@@ -232,10 +235,10 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 			boolean isExist = isContainsEndFix(path, endFixArr);
 			if(!isExist) {
 				for (String endFix : endFixArr) {
-					controllerMap.put(path+endFix, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+					controllerMap.put(path+endFix, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName,isStatic));
 				}
 			}
-			controllerMap.put(path, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName));
+			controllerMap.put(path, new ControllerAnnotationInfo<IBaseController<?>>((IBaseController<?>)obj, requestMethodName,isStatic));
 		}
 		LOGGER.info("成功添加请求映射 [" + cpath + "."+obj.getClass().getName()+":"+requestMethodName+"] -> " + path);
 		return path;

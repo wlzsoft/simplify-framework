@@ -78,7 +78,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String requestMethodName,String[] urlparams, IBaseController<T> iBaseController)  {
+	public void process(HttpServletRequest request, HttpServletResponse response, String requestUrl,String requestMethodName,boolean isStatic,String[] urlparams, IBaseController<T> iBaseController)  {
 		try {
 //			Class<T> entityClass = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(getClass());//TODO 不要限定class级别的Model范围,可以下放到方法级别
 			@SuppressWarnings("unchecked")
@@ -89,7 +89,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
 			}
 			if (iBaseController.checkPermission(request, response,requestMethodName, model)) {
-				execute(request, response,requestMethodName, model,requestUrl,iBaseController);
+				execute(request, response,requestMethodName,isStatic, model,requestUrl,iBaseController);
 			}
 			destroy(request, response, model);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
@@ -133,7 +133,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * @throws InvocationTargetException
 	 * @throws ServletException
 	 */
-	public void execute(HttpServletRequest request, HttpServletResponse response,String requestMethodName, T model,String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+	public void execute(HttpServletRequest request, HttpServletResponse response,String requestMethodName,boolean isStatic, T model,String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
 		if (requestMethodName == null || requestMethodName.length() <= 0) {
 			return;
 		}
@@ -151,10 +151,14 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 //		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
 		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
 		Object obj = null;
-		if(requestMethodName.equals("exec")) {
-			obj = iBaseController.exec(request,response);
+		if(isStatic) {
+			obj = requestMethodName;
 		} else {
-			obj = methodSelector.invoke(request,response,model,iBaseController,requestMethodName, parameValue);
+			if(requestMethodName.equals("exec")) {
+				obj = iBaseController.exec(request,response);
+			} else {
+				obj = methodSelector.invoke(request,response,model,iBaseController,requestMethodName, parameValue);
+			}
 		}
 		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
 		

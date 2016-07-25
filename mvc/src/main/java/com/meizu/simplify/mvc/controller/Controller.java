@@ -25,6 +25,6 @@ public class Controller {
 	 */
 	public static <T> void get(String requestMapUrl,IBaseController<?> handler){
 		//设置映射关系，目的是开启请求地址映射
-		ControllerAnnotationResolver.addRequestInfo("exec", "com.meizu", handler, requestMapUrl);
+		ControllerAnnotationResolver.addRequestInfo("exec",false, "com.meizu", handler, requestMapUrl);
 	}
 }

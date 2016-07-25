@@ -33,9 +33,9 @@ public interface IBaseController<T extends Model> {
 	public Object exec(HttpServletRequest request,HttpServletResponse response);
 	
 	@SuppressWarnings("unchecked")
-	public default void process(HttpServletRequest request, HttpServletResponse response,String requestUrl,String requestMethodName,String[] urlparams) {
+	public default void process(HttpServletRequest request, HttpServletResponse response,String requestUrl,String requestMethodName,boolean isStatic,String[] urlparams) {
 		DelegateController<T> baseController = BeanFactory.getBean(DelegateController.class);//这种写法有性能消耗,待优化 TODO
-		baseController.process(request, response, requestUrl, requestMethodName, urlparams,this);
+		baseController.process(request, response, requestUrl, requestMethodName,isStatic, urlparams,this);
 	}
 	
 	public default boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {

@@ -24,3 +24,4 @@
 ###11.junit5 基于java8，目前开发到里程碑1.0版本，可以考虑testng，spock
 ###12.可以提供以方法和类名为准，只需要指定@RequestMap就可以，不需要指定@RequestMap(path="xxxx")的映射方式，减少用户的重复编码
 ###13.提供RequestMap的默认设置，path值可以不设置，那么path最终的值以所在的类和方法的名称为准
+###14.RequestMap增加isStatic属性，用来处理静态请求，加速请求

@@ -28,16 +28,16 @@ public class BinarySearchTest {
 	@Test
 	public void testKey() {
 		Map<String, ControllerAnnotationInfo<?>> controllerMap = new ConcurrentHashMap<>();
-		controllerMap.put("astest", new ControllerAnnotationInfo<IBaseController<?>>(new BaseController<>(), "testName"));
-		controllerMap.put("tesdfst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("twsdfest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("tesxdt", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("tsxcest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("tsesest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("tesdst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("tsdcest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("texxcst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
-		controllerMap.put("texxst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName"));
+		controllerMap.put("astest", new ControllerAnnotationInfo<IBaseController<?>>(new BaseController<>(), "testName",false));
+		controllerMap.put("tesdfst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("twsdfest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("tesxdt", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("tsxcest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("tsesest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("tesdst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("tsdcest", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("texxcst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
+		controllerMap.put("texxst", new ControllerAnnotationInfo<>(new BaseController<>(), "testName",false));
 		Set<String> sets = controllerMap.keySet();
 		String[] setarr = new String[sets.size()];
 		sets.toArray(setarr);

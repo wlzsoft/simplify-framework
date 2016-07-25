@@ -45,4 +45,15 @@ public @interface RequestMap {
 	 * @return
 	 */
 	String[] path() default "";
+
+	/**
+	 *
+	 * 方法用途: 静态化设置<br>
+	 * 操作步骤: 1.如果为true，说明开启静态化，那么模版文件的相对动态内容不会被解析，不会执行controller
+	 *           2.可以配合WebCache注解一起使用，加速访问，减少io
+	 *           3.通过类似nginx的前端反向代理做缓存，减少web服务请求
+	 *           4.再通过cdn加速(回源读取加速)<br>
+	 * @return
+	 */
+	boolean isStatic() default false;
 }
