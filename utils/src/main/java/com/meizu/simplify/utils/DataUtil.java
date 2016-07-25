@@ -92,6 +92,36 @@ public class DataUtil {
 	}
 
 	/**
+	 *
+	 * 方法用途: 将参数解析为double类型，为空时返回0<br>
+	 * 操作步骤: TODO<br>
+	 * @param value
+	 * @return
+	 */
+	public static Double parseDouble(Object value) {
+		return parseDouble(value, 0);
+	}
+
+	/**
+	 *
+	 * 方法用途: 将参数解析为double类型，为空时返回defaultValue<br>
+	 * 操作步骤: TODO<br>
+	 * @param value
+	 * @param defaultValue
+	 * @return
+	 */
+	public static double parseDouble(Object value, long defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return new Double(value.toString());
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+
+	/**
 	 * 
 	 * 方法用途: 未知类型转换成具体类型<br>
 	 * 操作步骤: TODO:暂未完全实现<br>
@@ -101,9 +131,13 @@ public class DataUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Serializable> T convertType(Class<?> classType, Object value) {
-		if(classType == Integer.class) {
+		if(classType == Integer.class || classType == int.class) {
 			return (T) parseInt(value);
-		}else if(classType == Boolean.class) {//fixd whb 2016/4/3
+		}else if(classType == Long.class || classType == long.class) {
+			return (T) parseLong(value);
+		}else if(classType == Double.class || classType == double.class) {
+			return (T) parseDouble(value);
+		}else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3
 			return (T) parseBoolean(value);
 		}
 		return (T)value;

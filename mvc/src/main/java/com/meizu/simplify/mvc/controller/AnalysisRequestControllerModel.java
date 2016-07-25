@@ -50,8 +50,13 @@ public class AnalysisRequestControllerModel {
 			return true;
 		}
         try { 
-        	boolean isPrimitive = ((Class<?>) clz.getField("TYPE").get(null)).isPrimitive();
-        	return isPrimitive;
+
+			boolean isPrimitive = clz.isPrimitive();//判断是否基本类型 int long double等
+			if(isPrimitive) {
+				return true;
+			}
+			boolean isWrapperPrimitive = ((Class<?>) clz.getField("TYPE").get(null)).isPrimitive();//判断是否基本类型包装类型 Integer ,Long, Double
+        	return isWrapperPrimitive;
         } catch (Exception e) {
         	return false;
         } 
