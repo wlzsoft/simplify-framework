@@ -672,7 +672,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param pageSize 每页数据个数
 	 * @param sort 排序字段名
 	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
-	 * @param param 查询参数
+	 * @param params 查询参数
 	 * @return 查询结果分页数据
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,T params) {
