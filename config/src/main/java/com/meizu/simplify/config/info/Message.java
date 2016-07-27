@@ -120,7 +120,7 @@ public class Message {
 	/**
 	 *
 	 * 方法用途: 错误提示信息<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 调用这个方法后，必须return<br>
 	 * @param ex 异常对象
 	 * @param code 信息编码
 	 * @param values  信息变量，可以有多个
@@ -132,7 +132,7 @@ public class Message {
 	/**
 	 *
 	 * 方法用途: 正常提示信息<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 调用这个方法后，必须return<br>
 	 * @param message 错误信息
 	 */
 	public static void infoT(String message) {
@@ -141,7 +141,7 @@ public class Message {
 	/**
 	 *
 	 * 方法用途: 警告信息<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 调用这个方法后，必须return<br>
 	 * @param message 错误信息
 	 */
 	public static void warnT(String message) {
@@ -150,7 +150,7 @@ public class Message {
 	/**
 	 *
 	 * 方法用途: 警告信息<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 调用这个方法后，必须return<br>
 	 * @param message 错误信息
 	 */
 	public static void errorT(String message) {
