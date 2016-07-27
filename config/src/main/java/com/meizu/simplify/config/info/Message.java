@@ -40,8 +40,6 @@ public class Message {
 		return message;
 	}
 
-	///ThreadLocal处理方式
-
 	/**
 	 *
 	 * 方法用途: 正常提示信息<br>
@@ -73,46 +71,6 @@ public class Message {
 		error(get(code, values));
 	}
 
-	/**
-	 *
-	 * 方法用途: 错误提示信息<br>
-	 * 操作步骤: TODO<br>
-	 * @param ex 异常对象
-	 * @param code 信息编码
-	 * @param values  信息变量，可以有多个
-	 */
-	public static void error(Throwable ex, String code, Object... values) {
-		MessageException messageException = new MessageException(500,get(code, values),ex);
-		MessageThreadLocal.threadLocal.set(messageException);
-	}
-	/**
-	 *
-	 * 方法用途: 正常提示信息<br>
-	 * 操作步骤: TODO<br>
-	 * @param message 错误信息
-	 */
-	public static void info(String message) {
-		MessageThreadLocal.info(message);
-	}
-	/**
-	 *
-	 * 方法用途: 警告信息<br>
-	 * 操作步骤: TODO<br>
-	 * @param message 错误信息
-	 */
-	public static void warn(String message) {
-		MessageThreadLocal.warn(message);
-	}
-	/**
-	 *
-	 * 方法用途: 警告信息<br>
-	 * 操作步骤: TODO<br>
-	 * @param message 错误信息
-	 */
-	public static void error(String message) {
-		MessageThreadLocal.error(message);
-	}
-
 	///异常处理方式
 
 	/**
@@ -123,7 +81,7 @@ public class Message {
 	 * @param code 信息编码
 	 * @param values  信息变量，可以有多个 
 	 */
-	public static void errorE(Throwable ex, String code, Object... values) {
+	public static void error(Throwable ex, String code, Object... values) {
 		MessageException messageException = new MessageException(500,get(code, values),ex);
 		throw messageException;
 	}
@@ -133,7 +91,7 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public static void infoE(String message) {
+	public static void info(String message) {
 		MessageException messageException = new MessageException(208,message);
 		throw messageException;
 	}
@@ -143,7 +101,7 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public static void warnE(String message) {
+	public static void warn(String message) {
 		MessageException messageException = new MessageException(300,message);
 		throw messageException;
 	}
@@ -153,8 +111,49 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public static void errorE(String message) {
+	public static void error(String message) {
 		MessageException messageException = new MessageException(500,message);
 		throw messageException;
+	}
+
+	///ThreadLocal处理方式
+	/**
+	 *
+	 * 方法用途: 错误提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param ex 异常对象
+	 * @param code 信息编码
+	 * @param values  信息变量，可以有多个
+	 */
+	public static void errorT(Throwable ex, String code, Object... values) {
+		MessageException messageException = new MessageException(500,get(code, values),ex);
+		MessageThreadLocal.threadLocal.set(messageException);
+	}
+	/**
+	 *
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void infoT(String message) {
+		MessageThreadLocal.info(message);
+	}
+	/**
+	 *
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void warnT(String message) {
+		MessageThreadLocal.warn(message);
+	}
+	/**
+	 *
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void errorT(String message) {
+		MessageThreadLocal.error(message);
 	}
 }
