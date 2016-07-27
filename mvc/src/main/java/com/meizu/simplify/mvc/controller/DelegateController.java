@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.config.info.MessageThreadLocal;
+import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 import com.meizu.simplify.exception.BaseException;
+import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -28,8 +31,10 @@ import com.meizu.simplify.mvc.view.MessageView;
 import com.meizu.simplify.mvc.view.RedirectView;
 import com.meizu.simplify.mvc.view.TemplateFactory;
 import com.meizu.simplify.util.JsonResolver;
+import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
+import com.meizu.simplify.webcache.util.BrowserUtil;
 
 
 /**
@@ -88,11 +93,12 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 				model = modelSelector.setRequestModel(request, entityClass);
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
 			}
+			Throwable throwable = null;
 			if (iBaseController.checkPermission(request, response,requestMethodName, model)) {
-				execute(request, response,requestMethodName,isStatic, model,requestUrl,iBaseController);
+				throwable = execute(request, response,requestMethodName,isStatic, model,requestUrl,iBaseController);
 			}
-			destroy(request, response, model);
-		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关 TODO
+			end(request, response, model,requestUrl,throwable);
+		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关
 			Throwable throwable = e.getTargetException();
 			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
 		} catch (BaseException throwable) {//由于在反射优化模式下，不是抛InvocationTargetException异常，而会进入到BaseExceptin及其衍生异常,这里独立处理
@@ -109,14 +115,18 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 
 	/**
 	 * 
-	 * 方法用途: controller 注销相关处理<br>
+	 * 方法用途: 处理请求的收尾工作<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
 	 * @param response
 	 * @param model
 	 */
-	public void destroy(HttpServletRequest request, HttpServletResponse response, T model){
-//			System.out.println("回收数据库连接到连接池中");
+	public void end(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl,Throwable throwable){
+//		System.out.println("回收数据库连接到连接池中");
+		if(throwable!= null) {
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable, config, jsonResolver);
+			MessageThreadLocal.threadLocal.remove();
+		}
 	}
 	
 	/**
@@ -133,9 +143,9 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	 * @throws InvocationTargetException
 	 * @throws ServletException
 	 */
-	public void execute(HttpServletRequest request, HttpServletResponse response,String requestMethodName,boolean isStatic, T model,String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
+	public Throwable execute(HttpServletRequest request, HttpServletResponse response, String requestMethodName, boolean isStatic, T model, String requestUrl, IBaseController<?> iBaseController) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ServletException  {
 		if (requestMethodName == null || requestMethodName.length() <= 0) {
-			return;
+			return null;
 		}
 		String className = iBaseController.getClass().getName();
 		String methodFullName = className+":"+requestMethodName;
@@ -146,7 +156,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 		
 		WebCacheInfo webCache = AnalysisRequestControllerMethod.analysisWebCache(response, staticName, methodFullName);
 		if(webCache.getIsCache()) {
-			return;
+			return null;
 		}
 //		AnalysisRequestControllerMethod.analysisRequestParam(request, model, methodFullName);
 		Object[] parameValue = AnalysisRequestControllerMethod.analysisRequestParamByAnnotation(request, model, methodFullName);
@@ -160,8 +170,11 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 				obj = methodSelector.invoke(request,response,model,iBaseController,requestMethodName, parameValue);
 			}
 		}
-		dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
-		
+		Throwable throwable = MessageThreadLocal.threadLocal.get();
+		if(throwable==null) {
+			dispatchView(request, response, model, requestUrl, staticName, obj, webCache.getWebcache());
+		}
+		return throwable;
 	}
 	
 	/**

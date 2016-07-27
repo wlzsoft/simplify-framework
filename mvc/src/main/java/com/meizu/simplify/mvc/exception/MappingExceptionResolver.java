@@ -125,7 +125,6 @@ public class MappingExceptionResolver {
 //				setDefaultErrorView("500");//exception
 				template.render(request, response, null, null, "/500");
 			} catch (ServletException | IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

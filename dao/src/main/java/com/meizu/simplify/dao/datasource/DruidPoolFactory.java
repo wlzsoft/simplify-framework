@@ -48,7 +48,7 @@ public class DruidPoolFactory {
 	}
 
 	// 线程共享变量,用于事务管理
-	public static ThreadLocal<Connection> container = new ThreadLocal<Connection>();
+	public static ThreadLocal<Connection> container = new ThreadLocal<>();
 	
 	private static final DruidPoolFactory factory = new DruidPoolFactory();
 	

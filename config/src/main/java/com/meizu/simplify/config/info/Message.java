@@ -6,7 +6,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p><b>Title:</b><i>信息提示</i></p>
- * <p>Desc: 通过异常机制实现信息提示,支持i18n国际化
+ * <p>Desc: 支持两种方式(对比两种方式的性能开销)：A.通过ThreadLocal来实现.B.通过异常机制实现信息提示,支持i18n国际化,如下：
  *          注意：1.异常机制[因为使用了sync同步，并且需要填充构建线程堆栈信息]，所以性能低下，大并发下表现更明显，如果是高并发业务，需要慎重考虑使用
  *                2.异常机制可以使的代码的简洁性和通用性得到提升，所以又不应该在业务处理时完全抛弃掉
  *                3.可以考虑使用代码生成来替换掉异常构建，类似controller的methodinvokegen
@@ -39,36 +39,81 @@ public class Message {
 		message = StringUtil.format(message, values);
 		return message;
 	}
+
+	///ThreadLocal处理方式
+
 	/**
-	 * 
+	 *
 	 * 方法用途: 正常提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
-	 * @param values  信息变量，可以有多个 
+	 * @param values  信息变量，可以有多个
 	 */
 	public static void info(String code, Object... values) {
 		info(get(code, values));
 	}
 	/**
-	 * 
+	 *
 	 * 方法用途: 警告信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
-	 * @param values  信息变量，可以有多个 
+	 * @param values  信息变量，可以有多个
 	 */
 	public static void warn(String code, Object... values) {
 		warn(get(code, values));
 	}
 	/**
-	 * 
+	 *
 	 * 方法用途: 错误提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param code 信息编码
-	 * @param values  信息变量，可以有多个 
+	 * @param values  信息变量，可以有多个
 	 */
 	public static void error(String code, Object... values) {
 		error(get(code, values));
 	}
+
+	/**
+	 *
+	 * 方法用途: 错误提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param ex 异常对象
+	 * @param code 信息编码
+	 * @param values  信息变量，可以有多个
+	 */
+	public static void error(Throwable ex, String code, Object... values) {
+		MessageException messageException = new MessageException(500,get(code, values),ex);
+		MessageThreadLocal.threadLocal.set(messageException);
+	}
+	/**
+	 *
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void info(String message) {
+		MessageThreadLocal.info(message);
+	}
+	/**
+	 *
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void warn(String message) {
+		MessageThreadLocal.warn(message);
+	}
+	/**
+	 *
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message 错误信息
+	 */
+	public static void error(String message) {
+		MessageThreadLocal.error(message);
+	}
+
+	///异常处理方式
 
 	/**
 	 * 
@@ -78,7 +123,7 @@ public class Message {
 	 * @param code 信息编码
 	 * @param values  信息变量，可以有多个 
 	 */
-	public static void error(Throwable ex, String code, Object... values) {
+	public static void errorE(Throwable ex, String code, Object... values) {
 		MessageException messageException = new MessageException(500,get(code, values),ex);
 		throw messageException;
 	}
@@ -88,7 +133,7 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public static void info(String message) {
+	public static void infoE(String message) {
 		MessageException messageException = new MessageException(208,message);
 		throw messageException;
 	}
@@ -98,7 +143,7 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public static void warn(String message) {
+	public static void warnE(String message) {
 		MessageException messageException = new MessageException(300,message);
 		throw messageException;
 	}
@@ -108,7 +153,7 @@ public class Message {
 	 * 操作步骤: TODO<br>
 	 * @param message 错误信息
 	 */
-	public static void error(String message) {
+	public static void errorE(String message) {
 		MessageException messageException = new MessageException(500,message);
 		throw messageException;
 	}
