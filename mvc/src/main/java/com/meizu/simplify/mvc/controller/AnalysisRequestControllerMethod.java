@@ -47,7 +47,6 @@ public class AnalysisRequestControllerMethod {
 	 * @param response
 	 * @param staticName
 	 * @param methodFullName
-	 * @param webCache
 	 * @return 如果返回空，那么是有缓存，否则无缓存
 	 * @throws IOException
 	 */
@@ -90,7 +89,6 @@ public class AnalysisRequestControllerMethod {
 	 * 方法用途: 设置参数值<br>
 	 * 操作步骤: TODO<br>
 	 * @param request
-	 * @param response
 	 * @param model
 	 * @param methodFullName
 	 * @return
@@ -135,6 +133,7 @@ public class AnalysisRequestControllerMethod {
 			String paramValue = request.getParameter(name);
 			if (!StringUtil.isEmpty(paramValue)) {//表单参数获取并设置,格式 http://url/?a=1&b=2，获取参数1和2
 				value = paramValue;
+				request.setAttribute(name,value);//提供表单注解获取功能 检测到会和formData冲突，不建议formData.xxx这种写法
 			} else if (index>0) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
 				if(model!=null && model.getParams() != null && model.getParams().length > 0 && index < model.getParams().length) {
 					value = model.getParams()[index];
@@ -146,7 +145,7 @@ public class AnalysisRequestControllerMethod {
 				continue;
 			}
 			// 将值进行格式化后注入
-			parameValue[i+3] = DataUtil.convertType(annoInfo.getReturnType(), value.toString());
+			parameValue[i+3] = DataUtil.convertType(annoInfo.getReturnType(), value.toString(),false);
 		}
 		return parameValue;
 	}

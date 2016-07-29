@@ -50,7 +50,7 @@ public class DataUtil {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static int parseInt(Object value, int defaultValue) {
+	public static Integer parseInt(Object value, Integer defaultValue) {
 		if (value == null) {
 			return defaultValue;
 		} 
@@ -69,7 +69,7 @@ public class DataUtil {
 	 * @return
 	 */
 	public static Long parseLong(Object value) {
-		return parseLong(value, 0);
+		return parseLong(value, 0L);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class DataUtil {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static long parseLong(Object value, long defaultValue) {
+	public static Long parseLong(Object value, Long defaultValue) {
 		if (value == null) {
 			return defaultValue;
 		}
@@ -99,7 +99,7 @@ public class DataUtil {
 	 * @return
 	 */
 	public static Double parseDouble(Object value) {
-		return parseDouble(value, 0);
+		return parseDouble(value, 0.0);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class DataUtil {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static double parseDouble(Object value, long defaultValue) {
+	public static Double parseDouble(Object value, Double defaultValue) {
 		if (value == null) {
 			return defaultValue;
 		}
@@ -127,17 +127,36 @@ public class DataUtil {
 	 * 操作步骤: TODO:暂未完全实现<br>
 	 * @param classType
 	 * @param value
+	 * @param isNull wrapper包装基本类型是否默认值以null处理
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Serializable> T convertType(Class<?> classType, Object value) {
-		if(classType == Integer.class || classType == int.class) {
+	public static <T extends Serializable> T convertType(Class<?> classType, Object value,boolean isNull) {
+		if(classType == Integer.class ) {
+			if(isNull) {
+				return (T) parseInt(value,null);
+			} else {
+				return (T) parseInt(value);
+			}
+		} else 	if(classType == int.class) {
 			return (T) parseInt(value);
-		}else if(classType == Long.class || classType == long.class) {
+		} else if(classType == Long.class) {
+			if(isNull) {
+				return (T) parseLong(value,null);
+			} else {
+				return (T) parseLong(value);
+			}
+		} else if(classType == long.class) {
 			return (T) parseLong(value);
-		}else if(classType == Double.class || classType == double.class) {
+		} else if(classType == Double.class) {
+			if(isNull) {
+				return (T) parseDouble(value,null);
+			} else {
+				return (T) parseDouble(value);
+			}
+		} else if(classType == double.class) {
 			return (T) parseDouble(value);
-		}else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3
+		} else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3
 			return (T) parseBoolean(value);
 		}
 		return (T)value;

@@ -18,7 +18,7 @@ import org.junit.Test;
 public class DataUtilTest {
 	@Test
 	public void convertType() {
-		Integer o = DataUtil.convertType(Integer.class, "2");
+		Integer o = DataUtil.convertType(Integer.class, "2",false);
 		System.out.println(o);
 	}
 }

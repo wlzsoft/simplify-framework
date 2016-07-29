@@ -63,7 +63,7 @@ public interface IModelSelector {
 			}
 			value = paramValue;
 		}
-		value = DataUtil.convertType(type, value);//是否需要删除,不保留这个逻辑 TODO
+		value = DataUtil.convertType(type, value,true);//是否需要删除,不保留这个逻辑 TODO
 		return value;
 	}
 }

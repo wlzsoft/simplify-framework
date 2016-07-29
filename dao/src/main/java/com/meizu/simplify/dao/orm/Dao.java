@@ -243,22 +243,23 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	
 	private Integer preSave(String sql,List<T> tList) {
-		Integer key = SQLExecute.executeInsert(sql,new IDataCallback<Integer>(){
+		Integer key = SQLExecute.executeInsert(sql, new IDataCallback<Integer>() {
 			@Override
-			public Integer paramCall(PreparedStatement prepareStatement,Object... params) throws SQLException {
+			public Integer paramCall(PreparedStatement prepareStatement, Object... params) throws SQLException {
 				List<String> cList = sqlBuilder.getOtherIdColumns();
-				for(int j=0; j<tList.size();j++) {
+				for (int j = 0; j < tList.size(); j++) {
 					T t = tList.get(j);
-					for (int i=1; i <= cList.size(); i++) {
-						String columnName = cList.get(i-1);
+					for (int i = 1; i <= cList.size(); i++) {
+						String columnName = cList.get(i - 1);
 						Object value = selector.invoke(t, columnName);
-						prepareStatement.setObject(i+cList.size()*j, value);
+						prepareStatement.setObject(i + cList.size() * j, value);
 //						prepareStatement.setDate(i,new Date(System.currentTimeMillis()));//这里通用处理，无需单独处理日期
-						LOGGER.info("[参数索引:"+i+",值:"+value+"]");
+						LOGGER.info("[参数索引:" + i + ",值:" + value + "]");
 					}
 				}
 				return null;
-			}});
+			}
+		});
 		return key;
 	}
 	
@@ -496,7 +497,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findUnique(String name, Object value) {
-		return findOne(sqlBuilder.findByProperties(name, "?"),value);
+		return findOne(sqlBuilder.findByProperties(name, "?"), value);
 	}
 	
 	/*
@@ -510,7 +511,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 
 	@Override
 	public T findById(PK id) {
-		return findOne(sqlBuilder.findById(),id);
+		return findOne(sqlBuilder.findById(), id);
 	}
 	
 	@Override
@@ -676,8 +677,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @return 查询结果分页数据
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,T params) {
-	
-		Page<T> page = new Page<T>(currentPage,pageSize,count(params),true);
+		if(pageSize == null || pageSize == 0) {//bug修复，避免忘传pageSize导致的错误
+			pageSize = 20;
+		}
+		Page<T> page = new Page<T>(currentPage,pageSize,count(params), true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
 		page.setResults(list);
 		return page;
@@ -699,7 +702,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Deprecated
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(sql.replace("select * from", "select count(1) from"),params),true);
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(sql.replace("select * from", "select count(1) from"), params), true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
 		page.setResults(list);
 		return page;

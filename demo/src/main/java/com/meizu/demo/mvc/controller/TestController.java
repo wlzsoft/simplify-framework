@@ -86,7 +86,7 @@ public class TestController extends SystemController<TestModel> {
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2();
 		List<Test> testList = new ArrayList<>();
-		System.out.println(model.getDesc()+","+model.getName());
+		System.out.println(model.getDesc() + "," + model.getName());
 		testList.add(test);
 		return testList;
 	}
@@ -239,7 +239,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testSelect/")
 	public String doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?","lcy");
+		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?", "lcy");
 		request.setAttribute("testList", test);
 		return "jsp:/testList";
 	}
@@ -279,7 +279,7 @@ public class TestController extends SystemController<TestModel> {
 		return result;
 	}*/
 	@RequestMap(path = "/testFormParam")
-	public String testFormParam(HttpServletRequest request, HttpServletResponse response, TestModel model, @RequestParam(defaultValue = "0",name="business") Integer business, @RequestParam(defaultValue = "0",name="operation") String operation, @RequestParam(defaultValue = "0",name="data") String data) {
+	public String testFormParam(HttpServletRequest request, HttpServletResponse response,/*会注入到页面中，页面处理方式*/ TestModel model, /*会注入到页面中，页面中获取方式${business}*/@RequestParam(name="business") Integer business, @RequestParam(defaultValue = "0",name="operation") String operation, @RequestParam(defaultValue = "0",name="data") String data) {
 		if (StringUtil.isEmpty(operation)) return StringUtil.format("{0}", "operation:null");
 		String result = "business:"+business+",operation:"+operation+",data:"+data;//json字符串
 		return result;
