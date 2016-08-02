@@ -17,7 +17,7 @@ import com.meizu.simplify.exception.MessageException;
  *
  */
 public class MessageThreadLocal {
-    public static final ThreadLocal<MessageException> threadLocal = new ThreadLocal();
+    public static final ThreadLocal<MessageException> threadLocal = new ThreadLocal<>();
 
     public static void info(String message) {
         MessageException messageException = new MessageException(208,message);

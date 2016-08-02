@@ -344,6 +344,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	/**
+	 * 方法用途: 更新<br>
+	 * 操作步骤: TODO<br>
+	 * @param t
+	 * @param whereColumn	以这个字段为条件来更新数据
+	 * @return
+	 */
+	public Integer update(T t,String whereColumn) {
+		return update(t,true,whereColumn);
+	}
+	
+	/**
 	 * 
 	 * 方法用途: 更新<br>
 	 * 操作步骤: TODO<br>
@@ -352,13 +363,26 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @return
 	 */
 	public Integer update(T t,Boolean isAllField) {
+		return update(t,isAllField,"fid");
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 更新<br>
+	 * 操作步骤: TODO<br>
+	 * @param t
+	 * @param isAllField 是否全字段更新
+	 * @param whereColumn	以这个字段为条件来更新数据
+	 * @return
+	 */
+	public Integer update(T t,Boolean isAllField,String whereColumn) {
 //		buildInfo.buildId(t);
 		
 		//TODO 待实现， 可以抽取成公用字段过来模块，针对单个方法的，比如通过currentColumnFieldNames来过滤掉不需要执行的字段
 		if(t == null) {
 			return null;
 		}
-		String sql = sqlBuilder.update(t, currentColumnFieldNames,isAllField);
+		String sql = sqlBuilder.update(t, currentColumnFieldNames,whereColumn,isAllField);
 		logger.info(sql);
 		return SQLExecute.executeUpdate(sql,new IDataCallback<Integer>() {
 			@Override
@@ -368,12 +392,15 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				for (int i=0; i < cList.size(); i++) {
 					String columnName = cList.get(i);
 					Object value = selector.invoke(t, columnName);
-					if(((isAllField == null || isAllField)||value != null)&&columnName!="fid") {
+					if(((isAllField == null || isAllField)||value != null)&&columnName!=whereColumn) {
 						prepareStatement.setObject(count+1,value);
+						LOGGER.info("[值参数索引:" + (count+1) + ",值:" + value + "]");
 						count++;
 					}
 				}
-				prepareStatement.setObject(count+1,t.getFid());
+				Object value = selector.invoke(t, whereColumn);
+				prepareStatement.setObject(count+1,value);
+				LOGGER.info("[条件参数索引:" + (count+1) + ",值:" + t.getFid() + "]");
 				return null;
 			}
 			

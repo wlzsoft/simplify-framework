@@ -32,7 +32,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class SQLBuilder<T> {
      
     protected static final Logger logger = LoggerFactory.getLogger(SQLBuilder.class);
-    private List<String> columns;
+//    private List<String> columns;//暂时用不上,预留
     private Map<String,String> columnsMeta;//用于create语句使用
     private List<String> otherIdColumns;
 	private String tableName;
@@ -43,7 +43,7 @@ public class SQLBuilder<T> {
     public SQLBuilder(List<String> otherIdColumns,List<String> columns, String tableName, String pkName,Map<String,String> columnsMeta) {
         super();
         this.columnsMeta = columnsMeta;
-        this.columns = columns;
+//        this.columns = columns;
         this.otherIdColumns = otherIdColumns;
         this.tableName = tableName;
         this.pkName = pkName;
@@ -295,13 +295,13 @@ public class SQLBuilder<T> {
      * @param currentColumnFieldNames
      * @return
      */
-    public String update(T t, Map<String, String> currentColumnFieldNames,Boolean... isAllField) {
+    public String update(T t, Map<String, String> currentColumnFieldNames,String whereColumn,Boolean... isAllField) {
     	
     	String values = "";
         for (int i=0; i < otherIdColumns.size();i++) {
         	String column = otherIdColumns.get(i);
             Object value = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(column));
-            if((isAllField == null||isAllField.length == 0 || isAllField[0] || value != null)&&column!="fid") {
+            if((isAllField == null||isAllField.length == 0 || isAllField[0] || value != null)&&column!=whereColumn) {
 //              values += ","+column + "=" + handleValue(value);
             	values += ","+column + "=?";
         	}
@@ -319,7 +319,7 @@ public class SQLBuilder<T> {
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("UPDATE ").append(tableName).append(" SET ")
                 .append(values).append(" WHERE ")
-                .append(pkName).append(" = ").append("?");
+                .append(whereColumn).append(" = ").append("?");
          
         String sql = sqlBuild.toString();
          

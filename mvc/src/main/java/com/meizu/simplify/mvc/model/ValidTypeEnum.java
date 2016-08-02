@@ -30,4 +30,9 @@ public enum ValidTypeEnum {
     ValidTypeEnum(String message) {
         this.message = message;
     }
+    
+    @Override
+    public String toString() {
+    	return message;
+    }
 }
