@@ -31,7 +31,7 @@ import com.meizu.simplify.utils.StringUtil;
  */
 public class SQLBuilder<T> {
      
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected static final Logger logger = LoggerFactory.getLogger(SQLBuilder.class);
     private List<String> columns;
     private Map<String,String> columnsMeta;//用于create语句使用
     private List<String> otherIdColumns;
@@ -488,25 +488,35 @@ public class SQLBuilder<T> {
 	}
 	public String createTable() {
 		StringBuilder sqlBuild = new StringBuilder();
-		for(String colName : columns) {
+		createColum(sqlBuild, pkName);//设置主键
+		sqlBuild.append(" NOT NULL AUTO_INCREMENT");//自动递增
+		sqlBuild.append(",");
+		for(String colName : otherIdColumns) {
+			createColum(sqlBuild, colName);
 			sqlBuild.append(",");
-			sqlBuild.append(colName);
-			sqlBuild.append(" ");
-			String type = columnsMeta.get(colName);
-			if("java.lang.String".equals(type)) {
-				type = "varchar(100)";
-			} else if("java.lang.Integer".equals(type)||"int".equals(type)){
-				type = "int";
-			} else if("java.lang.Boolean".equals(type)||"boolean".equals(type)){
-				type = "tinyint";
-			} else if("java.util.Date".equals(type)){
-				type = "datetime";
-			} else {
-				type = "varchar(100)";
-			}
-			sqlBuild.append(type);
 		}
-        return sqlBuild.toString().substring(1);
+		sqlBuild.append("PRIMARY KEY ("+pkName+")");//设置主键
+        return sqlBuild.toString();
+	}
+	
+	private void createColum(StringBuilder sqlBuild, String colName) {
+		sqlBuild.append(colName);
+		sqlBuild.append(" ");
+		String type = columnsMeta.get(colName);
+		if(colName.equals("updateTime")) {
+			type = "timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP";//更新时间有数据库来产生，无需手动设置
+		} else if("java.lang.String".equals(type)) {
+			type = "varchar(100)";
+		} else if("java.lang.Integer".equals(type)||"int".equals(type)){
+			type = "int";
+		} else if("java.lang.Boolean".equals(type)||"boolean".equals(type)){
+			type = "bit";
+		} else if("java.util.Date".equals(type)){
+			type = "datetime";
+		} else {
+			type = "varchar(100)";
+		}
+		sqlBuild.append(type);
 	}
 
 	

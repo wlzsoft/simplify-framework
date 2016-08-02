@@ -779,7 +779,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//------------------------------------DDL语句的实现--------------------------------------
 	public int createTable(Class<T> t) {
 		String sql = sqlBuilder.createTable();
-		return SQLExecute.executeUpdate("create table if not exists "+t.getAnnotation(Table.class).name()+" ("+sql+") ;");
+		return SQLExecute.executeUpdate("create table if not exists "+t.getAnnotation(Table.class).name()+" ("+sql+") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 	}
 	//--------------------------------未处理和实现的功能-----------------------------------------------------------
 	
