@@ -546,6 +546,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return find(sqlBuilder.findByIds(idArr.length),(Object[])idArr);
 	}
 	@Override
+	public List<T> findByIds(String ids) {
+		@SuppressWarnings("unchecked")
+		PK[] idArr = (PK[]) ids.split(",");
+		return find(sqlBuilder.findByIds(idArr.length),(Object[])idArr);
+	}
+	@Override
 	public List<T> findByMutil(String name, String values) {
 		String[] valueArr = values.split(",");
 		return find(sqlBuilder.findByMutil(name,valueArr.length),(Object[])valueArr);

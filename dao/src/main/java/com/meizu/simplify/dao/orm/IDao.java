@@ -188,6 +188,13 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 */
 	List<T> findByIds(PK[] idArr);
 	/**
+	 * 方法用途: 通过ids[例：1,2,3]查找对于的实体对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param ids 逗号隔开的id
+	 * @return
+	 */
+	List<T> findByIds(String ids);
+	/**
 	 * 
 	 * 方法用途: 通过属性值获取对象列表<br>
 	 * 操作步骤: TODO<br>
@@ -370,6 +377,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 //	Integer count(Page<T> page);
 
 	public void flushStatements();
+	
 	
   
 	
