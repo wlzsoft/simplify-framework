@@ -40,7 +40,7 @@ public class DdlInit implements IAnnotationResolver<Class<?>>{//TODO 后续可�
 	private boolean isInitDB;
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		if(isInitDB) {
+		if(!isInitDB) {
 			return;
 		}
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, BeanAnnotationResolver.getClasspaths());//扫描Entity注解的实体，获取实体列表
