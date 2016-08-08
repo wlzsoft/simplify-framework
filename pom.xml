@@ -113,10 +113,16 @@
 	  	<!-- 仓库地址，从上往下进行查找。 -->
 	
 		<!-- 如有私服,打开私服地址-->
+		<!-- always(实时更新) daily（每天更新） interval:xxx（隔xxx分钟更新一次）  never（从不更新） 默认为daily -->
 		<!-- <repository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
 	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  		<snapshots>
+	  			<enabled>true</enabled>
+	  			<checksumPolicy>warn</checksumPolicy>
+	  			<updatePolicy>always</updatePolicy>
+	  		</snapshots>
 		</repository> -->
 		
 		<!-- <repository>
