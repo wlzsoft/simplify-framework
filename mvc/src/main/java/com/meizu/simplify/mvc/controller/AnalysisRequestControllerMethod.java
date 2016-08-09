@@ -16,7 +16,7 @@ import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.dto.WebCacheInfo;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.util.AjaxUtils;
+import com.meizu.simplify.mvc.util.AjaxUtil;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
@@ -162,7 +162,7 @@ public class AnalysisRequestControllerMethod {
 		/*注意：大部分的ajax请求都可以在服务端使用这个头信息判断，但是由于这个头信息不是标准规范，不一定所有浏览器和js库都会支持这个头信息，或是不使用这个名字的头标记
 		 * 所以框架中，要强制要求，所有使用ajax的请求，都必须有X-Requested-With头标记，如果没有，需要强制加上
 		*/
-		if(!AjaxUtils.isAjaxRequest(request)) {
+		if(!AjaxUtil.isAjaxRequest(request)) {
 			return;
 		}
 		AnnotationInfo<AjaxAccess> ajaxAccessAnno = ControllerAnnotationResolver.ajaxAccessMap.get(methodFullName);
