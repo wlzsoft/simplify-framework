@@ -129,4 +129,18 @@ public class StringUtilTest {
 		Assert.assertNull(joinStr);
 	}
 	
+	/**
+	 * 方法用途: 测试split的新特性，可以指定个匹配次数，也就是limit的值<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void testSplit() {
+		String line = "a:b:c:d";
+		String[] strs = line.split(":", 2);
+		for (String string : strs) {
+			System.out.print(string+"|");
+		}
+		Assert.assertEquals(strs[1],"b:c:d");
+	}
+	
 }

@@ -113,10 +113,16 @@
 	  	<!-- 仓库地址，从上往下进行查找。 -->
 	
 		<!-- 如有私服,打开私服地址-->
+		<!-- always(实时更新) daily（每天更新） interval:xxx（隔xxx分钟更新一次）  never（从不更新） 默认为daily -->
 		<!-- <repository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
 	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  		<snapshots>
+	  			<enabled>true</enabled>
+	  			<checksumPolicy>warn</checksumPolicy>
+	  			<updatePolicy>always</updatePolicy>
+	  		</snapshots>
 		</repository> -->
 		
 		<!-- <repository>
@@ -194,6 +200,30 @@
 				<source>1.8</source>
 				<target>1.8</target>
 			</configuration>
+		</plugin>
+		<!-- mvn source:jar -->
+		<!-- 使用持续构建工具，在linux平台下打包，可以解决这个问题，前提是linux系统的内部编码要设置成utf-8，目前打包虽然不乱码，但是打包后的整个jar文件是gbk的，eclipse等工具会解析整个文件为gbk编码，其实jar包内部存的是utf8编码的文件 -->
+		<plugin>
+			<artifactId>maven-source-plugin</artifactId>
+			<version>2.4</version>
+			<configuration>
+				<attach>true</attach>
+				<!-- <encoding>utf-8</encoding> --><!-- 未测试 -->
+				<argLine>-Dfile.encoding=UTF-8</argLine> 
+			</configuration>
+			<executions>
+				<execution>
+					<!-- 编译阶段打包源文件 -->
+					<id>attach-sources</id>
+					<!-- <phase>package</phase> -->
+					<!-- <phase>verify</phase> -->
+					<phase>compile</phase>
+					<goals>
+						<goal>jar</goal>
+						<!-- <goal>jar-no-fork</goal> -->
+					</goals>
+				</execution>
+			</executions>
 		</plugin>
     </plugins>
     <resources>

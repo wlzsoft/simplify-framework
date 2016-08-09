@@ -1,8 +1,6 @@
 package com.meizu.simplify.dao.invoke;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
+import com.meizu.simplify.dao.orm.MapperTypeUtil;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.ReflectionUtil;
 
@@ -29,21 +27,8 @@ public class SqlMethodSelector implements ISqlMethodSelector{
 
 	@Override
 	public void invokeSet(Object t, String columnName,Object val) {
-		Class<?> valClazz = mapperOrmType(val);
+		Class<?> valClazz = MapperTypeUtil.mapperOrmType(val);
 		ReflectionUtil.invokeSetterMethod(t, columnName, val,valClazz);
 	}
-	/**
-	 * 
-	 * 方法用途: 匹配数据库字段类型和实体属性类型，并转换成实体类型<br>
-	 * 操作步骤: TODO<br>
-	 * @param val
-	 * @return
-	 */
-	private Class<?> mapperOrmType(Object val) {
-		Class<?> valClazz = val.getClass();
-		if(valClazz == Timestamp.class) {
-			valClazz = Date.class;
-		}
-		return valClazz;
-	}
+	
 }

@@ -43,14 +43,18 @@ public class HttpRequest implements HttpServletRequest{
 
 	private HttpSessionImplWrapper session;
 
-	// 解析请求头
-	public void parseRequestLine(String line) throws Exception {
+	// 解析请求行
+	public void parseRequestLine(String line)  {
 		String[] strs = line.split(" ");
 		if (strs.length != 3) {
-			throw new Exception("invalide request line !");
+			throw new RuntimeException("无效的请求行");
 		}
 		method = strs[0].trim();
 		requestURI = strs[1].trim();
+		version = strs[2].trim();
+		//throw new RuntimeException("无效的请求行，必须包含请求方法，请求地址和请求的协议");
+
+		//额外的，如果是url中带有参数，需要做处理，一般是由get携带，当然的method也可以携带参数在url中
 		String[] requestUrlArr = requestURI.split("\\?");
 		if(requestUrlArr.length>1) {
 			requestURI = requestUrlArr[0];
@@ -62,7 +66,6 @@ public class HttpRequest implements HttpServletRequest{
 		}
 		
 		
-		version = strs[2].trim();
 	}
 
 	/**
@@ -72,7 +75,7 @@ public class HttpRequest implements HttpServletRequest{
 	 * @param line
 	 */
 	public void parseRequestHeader(String line) {
-		String[] strs = line.split(":", 2);// 只用一次冒号
+		String[] strs = line.split(":", 2);// 只匹配一次冒号，从左到右
 		if (strs.length == 2) {
 			if (strs[0].trim().equals("Cookie")) {
 				String[] cookies = strs[1].split(";");
