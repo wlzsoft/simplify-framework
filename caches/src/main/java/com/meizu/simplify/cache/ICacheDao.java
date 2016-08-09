@@ -2,6 +2,7 @@ package com.meizu.simplify.cache;
 
 
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
+import com.meizu.simplify.cache.enums.TimeEnum;
 
 
 /**
@@ -103,6 +104,34 @@ public interface ICacheDao<K,V> {
 	 */
     public boolean isMutex(K key, CacheExpireTimeEnum export);
     
-	
+    /**
+	 * 
+	 * 方法用途: 指定key设置过期时间<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param export
+	 * @param seconds
+	 * @return
+	 */
+	public long expire(String key, CacheExpireTimeEnum export, TimeEnum seconds);
+	/**
+	 * 
+	 * 方法用途: 指定key设置过期时间<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param export
+	 * @param seconds
+	 * @return
+	 */
+	public long expire(byte[] key, CacheExpireTimeEnum export, TimeEnum seconds);
+	/**
+	 * 
+	 * 方法用途: 获取指定key的剩余过期时间<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param seconds
+	 * @return
+	 */
+	public long getExpire(K key, TimeEnum seconds);
 
 }
