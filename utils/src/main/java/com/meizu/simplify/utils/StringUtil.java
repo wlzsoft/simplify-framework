@@ -553,4 +553,26 @@ public class StringUtil {
 		}
 		return sb.toString().substring(1);
 	}
+	
+	/**
+	 * 方法用途: 用于代替string类的split(rex,2)方法<br>
+	 * 操作步骤: 1.由于string原生的split使用正则表达式，所以这里为了提高性能，所以抛弃原来的split
+	 *           2.这里的spit，没有了正则表达式匹配的灵活性
+	 *           3.仅仅局限于limit为2的情况
+	 *           4.和原始的split做对比性能测试，结果[这个方法在并发小的时候，性能最优， 在并发最后一个人任务比原生split性能差，但是高并发整体情况下，还是这个方法最优。]<br>
+	 * @param sourceString  源字符串
+	 * @param targetChar    split的目标字符或字符串
+	 * @return
+	 */
+	public static String[] split(String sourceString,String targetChar) {
+//		@param limit         目标字符的匹配次数，从左到右边
+		Integer limit = 2;
+		String[] splitArr = new String[limit];
+		int targetIndexOf = sourceString.indexOf(targetChar);
+		if(targetIndexOf > -1) {
+			splitArr[0] = sourceString.substring(0,targetIndexOf);
+			splitArr[1] = sourceString.substring(targetIndexOf+targetChar.length());
+		}
+		return splitArr;
+	}
 }

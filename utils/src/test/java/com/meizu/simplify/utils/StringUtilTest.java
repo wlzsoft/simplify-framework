@@ -143,4 +143,16 @@ public class StringUtilTest {
 		Assert.assertEquals(strs[1],"b:c:d");
 	}
 	
+	/**
+	 * 方法用途: 压测非原生的split方法的性能<br>
+	 * 操作步骤: 随着时间推移，这个方法所消耗的时间呈现指数级成长<br>
+	 */
+	@Test
+	public void testSplitForCustom() {
+		String sourceString = "a:b:c:d";
+		String[] splitArr = StringUtil.split(sourceString, ":");
+		for (String string : splitArr) {
+			System.out.print(string+"|");
+		}
+	}
 }
