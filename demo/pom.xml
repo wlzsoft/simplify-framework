@@ -322,9 +322,6 @@
 							</java>
 							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.SqlByDaoEntityGenBuild"  args="com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
 							</java>
-						</target>
-						<target>
-							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
 							<!-- <mkdir dir="${project.build.directory}/classes" /> -->
 							<javac nowarn="false" destdir="${project.build.directory}/classes"  includeantruntime="true">
 								<classpath path="${mvn-classpath}" />
