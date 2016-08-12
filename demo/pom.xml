@@ -323,15 +323,6 @@
 							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.SqlByDaoEntityGenBuild"  args="com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
 							</java>
 						</target>
-					</configuration>
-				</execution>
-				<execution>
-					<id>package</id>
-					<phase>package</phase>
-					<goals>
-						<goal>run</goal>
-					</goals>
-					<configuration>
 						<target>
 							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
 							<!-- <mkdir dir="${project.build.directory}/classes" /> -->
