@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletRequest;
  * @version Version 0.1
  *
  */
-public class AjaxUtils {
+public class AjaxUtil {
 	
 	private static final String X_REQUESTED_WITH = "X-Requested-With";
 	
-	private AjaxUtils() {}
+	private AjaxUtil() {}
 	
 	public static boolean isAjaxRequest(HttpServletRequest request) {
 		String requestedWith = request.getHeader(X_REQUESTED_WITH);

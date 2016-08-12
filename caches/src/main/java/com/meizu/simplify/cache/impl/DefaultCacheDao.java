@@ -2,6 +2,7 @@ package com.meizu.simplify.cache.impl;
 
 import com.meizu.simplify.cache.ICacheDao;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
+import com.meizu.simplify.cache.enums.TimeEnum;
 import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
@@ -80,6 +81,24 @@ public class DefaultCacheDao<K,V> implements ICacheDao<K,V> {
 	public boolean isMutex(K key, CacheExpireTimeEnum export) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public long expire(String key, CacheExpireTimeEnum export, TimeEnum seconds) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public long expire(byte[] key, CacheExpireTimeEnum export, TimeEnum seconds) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public long getExpire(K key, TimeEnum seconds) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 
