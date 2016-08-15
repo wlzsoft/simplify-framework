@@ -59,7 +59,7 @@ public class BaseDao  {
 	 * @return
 	 */
 	public static <T extends IdEntity<Serializable,Integer>>  Dao<T, Serializable> getIns (Class<T> entityClass) {
-		String className = entityClass.getSimpleName();
+		String className = entityClass.getName();//bugfix: 修复没有包名情况的冲突问题[getSimpleName改成getName] lcy 2016/8/15
 		return getIns(className);
 	}
 	
@@ -71,9 +71,10 @@ public class BaseDao  {
 	 * @return
 	 */
 	public static <T extends IdEntity<Serializable,Integer>>  Dao<T, Serializable> getIns (String className) {
-		char[] chars = className.toCharArray();
+		/*char[] chars = className.toCharArray();
 		chars[0] = Character.toLowerCase(chars[0]);
-		String daoClassName = new String(chars) + "BaseDao";
+		String daoClassName = new String(chars) + "BaseDao";*///bugfix: 修复没有包名情况的冲突问题[无需设置第一个字母为小写] lcy 2016/8/15 
+		String daoClassName = className+"BaseDao";
 		Dao<T, Serializable> dao = BeanFactory.getBean(daoClassName);
 		if(dao == null) {
 			throw new UncheckedException("无法获取到"+className+"实体对应的dao["+daoClassName+"]，请检查下实体是否有标注注解：@Entity和@Table(name='demo')");
