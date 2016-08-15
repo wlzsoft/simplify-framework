@@ -44,7 +44,7 @@ public  class BeanFactoryTest {
 	
 	@Test
 	public void getBeanByPrototypeForText() {
-		Dao<com.meizu.simplify.dao.entity.Test,Integer> obj = BeanFactory.getBean("testBaseDao");
+		Dao<com.meizu.simplify.dao.entity.Test,Integer> obj = BeanFactory.getBean("com.meizu.simplify.dao.entity.TestBaseDao");
 		LOGGER.debug(obj.findById(1).getName()+"|"+obj.toString());
 	}
 }
