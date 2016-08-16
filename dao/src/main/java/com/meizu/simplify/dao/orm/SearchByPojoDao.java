@@ -62,6 +62,8 @@ public class SearchByPojoDao {
 		return tList;
 	}
 	
+
+	
 	/**
 	 * 
 	 * 方法用途: 普通pojo的分页查询<br>
