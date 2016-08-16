@@ -62,7 +62,24 @@ public class SearchByPojoDao {
 		return tList;
 	}
 	
-
+	
+	/**
+	 * 
+	 * 方法用途: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
+	public <T> T findOne(Class<T> entityClass,String sql,Object... params) {
+		List<T> list = find(entityClass,sql,params);
+		if(list.size()>0){
+			return list.get(0);
+		}else{
+			return null ;
+		}
+	}
 	
 	/**
 	 * 
