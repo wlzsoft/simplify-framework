@@ -383,7 +383,22 @@ public class DateUtil {
 		calendar.add(Calendar.DAY_OF_YEAR, dayCount);
 		return calendar.getTime();
 	}
-
+	/**
+	 * 方法用途: 在某天的基础上增加几天或减少几小时<br>
+	 * 操作步骤: TODO<br>
+	 * @param sDate
+	 * @param iDay
+	 * @param sformat
+	 * @return
+	 * @author wanghb 20160810
+	 */
+	public static Date addOrSubHour(Date date, int hourCount) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR_OF_DAY, hourCount);
+		return calendar.getTime();
+	}
+	
 	/**
 	 * 方法用途: 返回本周的区间的格式化的日期对，格式为yyyy-MM-dd HH:mm:ss<br>
 	 * 操作步骤: TODO<br>
@@ -391,6 +406,25 @@ public class DateUtil {
 	 */
 	public static String[] getDateRangeOfWeek() {
 		Date curDate = new Date();
+		Date fisrtDate = getFirstDayOfWeek(curDate);
+		String fisrtDateStr = format(fisrtDate);
+		Date endDate = addDay(fisrtDate, 6);
+		String endDateStr = format(endDate);
+		String DateRang[] = new String[2];
+		DateRang[0] = fisrtDateStr;
+		DateRang[1] = endDateStr;
+		return DateRang;
+	}
+	/**
+	 * 方法用途: 获取下周开始日期与结束日期<br>
+	 * 操作步骤: TODO<br>
+	 * @param dt1 
+	 * @param dt2 
+	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
+	 * @author wanghb 20160810
+	 */
+	public static String[] getNextDateRangeOfWeek() {
+		Date curDate = getDayOfWeek(1);
 		Date fisrtDate = getFirstDayOfWeek(curDate);
 		String fisrtDateStr = format(fisrtDate);
 		Date endDate = addDay(fisrtDate, 6);
@@ -520,4 +554,62 @@ public class DateUtil {
 		}
 		return endDay;
 	}
+	/**
+	 * 方法用途: 比较时间大小<br>
+	 * 操作步骤: TODO<br>
+	 * @param dt1 
+	 * @param dt2 
+	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
+	 * @author wanghb 20160810
+	 */
+	public static int compareDate(Date dt1,Date dt2){
+        if (dt1.getTime() > dt2.getTime()) {
+            return 1;
+        } else if (dt1.getTime() < dt2.getTime()) {
+            return -1;
+        } else {//相等
+            return 0;
+        }
+	}
+	/**
+	 * 方法用途: 计算两日期相差天数<br>
+	 * 操作步骤: TODO<br>
+	 * @param beginDate
+	 * @param endDate
+	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
+	 * @author wanghb 20160810
+	 */
+	public static int getDaysSpace(Date beginDate,Date endDate) {
+		 Long checkday=0L; 
+		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*24*60*60);
+		 return checkday.intValue();
+	}
+	/**
+	 * 方法用途:获取年份<br>
+	 * 操作步骤: TODO<br>
+	 * @param 
+	 * @author wanghb 20160810
+	 */
+	public static int getYear(Date date){
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return c.get(Calendar.YEAR);
+	}
+	/**
+	 * 方法用途:获取月份<br>
+	 * 操作步骤: TODO<br>
+	 * @param 
+	 * @author wanghb 20160810
+	 */
+	public static int getMonth(Date date){
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return c.get(Calendar.MONTH);
+	}
+	public static void main(String[] args) {
+//		Date date=addOrSubHour(new Date(),7);
+		String [] nextWeek=getNextDateRangeOfWeek();
+		System.out.println(nextWeek[0]+";"+nextWeek[1]);
+	}
+	
 }

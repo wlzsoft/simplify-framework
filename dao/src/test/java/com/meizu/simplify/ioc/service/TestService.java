@@ -33,7 +33,7 @@ public class TestService implements ITestService{
 	@Resource
 	private IDemoService demoService;
 	
-	@Resource(name="testBaseDao")
+	@Resource(name="com.meizu.simplify.dao.entity.TestBaseDao")//bugfix: 修复没有包名情况的冲突问题[注入testBaseDao改成全路径com.meizu.simplify.dao.entity.TestBaseDao] lcy 2016/8/15
 	private Dao<Test,Integer> dao;
 
 	@Override

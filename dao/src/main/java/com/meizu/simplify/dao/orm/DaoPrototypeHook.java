@@ -1,7 +1,7 @@
 package com.meizu.simplify.dao.orm;
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>dao多例工厂钩子函数</i></p>
+ * <p>Desc: 用于生成dao实例，以entity类型为唯一实例，进行初始化</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -47,10 +47,12 @@ public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Seriali
 		if (CollectionUtil.isNotEmpty(entityClasses)) {
 			for (Class<?> entityClass : entityClasses) {
 
-				String beanName = entityClass.getSimpleName();
+				/*String beanName = entityClass.getSimpleName();
 				char[] chars = beanName.toCharArray();
 				chars[0] = Character.toLowerCase(chars[0]);
-				beanName = new String(chars) + "BaseDao";
+				beanName = new String(chars) + "BaseDao";*///bugfix: 修复没有包名情况的冲突问题[getSimpleName改成getName,无需设置第一个字母为小写] lcy 2016/8/15
+				String beanName = entityClass.getName();
+				beanName = beanName + "BaseDao";
 				BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>> beanEntity = new BeanEntity<>();
 				beanEntity.setName(beanName);
 				Dao<IdEntity<Serializable, Integer>, Serializable> dao = buildDaoObject(clazz, entityClass);
