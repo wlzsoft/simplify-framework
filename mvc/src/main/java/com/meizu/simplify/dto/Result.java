@@ -31,7 +31,7 @@ public class Result implements IResult{
 	/**
 	 * 失败消息
 	 */
-	private String message;
+	private Object message;
 	
 	/**
 	 * 时间撮
@@ -41,7 +41,7 @@ public class Result implements IResult{
 	public Result() {
 		
 	}
-	public Result(String message) {
+	public Result(Object message) {
 		this.message = message;
 	}
 
@@ -70,11 +70,11 @@ public class Result implements IResult{
 		return dateline;
 	}
 	
-	public String getMessage() {
+	public Object getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(Object message) {
 		this.message = message;
 	}
 

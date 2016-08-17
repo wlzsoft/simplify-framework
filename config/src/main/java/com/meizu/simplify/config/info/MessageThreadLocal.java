@@ -44,4 +44,14 @@ public class MessageThreadLocal {
         MessageException messageException = new MessageException(500,message);
         threadLocal.set(messageException);
     }
+    
+    /**
+    *
+    * 方法用途: 警告信息<br>
+    * 操作步骤: 暂未实现 TODO<br>
+    * @param message 错误信息
+    */
+   /*public static void error(Object message) {
+	   
+   }*/
 }

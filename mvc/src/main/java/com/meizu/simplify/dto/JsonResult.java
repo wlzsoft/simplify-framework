@@ -37,7 +37,7 @@ public class JsonResult extends Result {
 	 * @param message
 	 * @return
 	 */
-	public static Result error(String message) {
+	public static Result error(Object message) {
 		Result result = new Result(message);
 		result.setStatusCode(HttpStatus.MULTIPLE_CHOICES.toString()+"");
 		return result;
@@ -68,7 +68,7 @@ public class JsonResult extends Result {
 	 * @param message
 	 * @return
 	 */
-	public static Result success(String message) {
+	public static Result success(Object message) {
 		Result result = new Result(message);
 		result.setStatusCode(HttpStatus.OK.value()+"");
 		return result;
