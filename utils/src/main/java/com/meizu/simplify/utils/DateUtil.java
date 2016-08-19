@@ -293,7 +293,21 @@ public class DateUtil {
 //    	calendar.setTimeInMillis(time);
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
-    
+    /**
+     * 方法用途: 获取某天是一周的第几天 周一为一周的第一天<br>
+     * 操作步骤: TODO<br>
+     * @param date 指定的日期：也即是 "某天"
+     * @return 一周的第几天
+     */
+    public static int getDayOfChinaWeek(Date date){
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(date);
+    	int i=calendar.get(Calendar.DAY_OF_WEEK)-1;
+    	if(i==0){
+    		return 7;
+    	}
+        return i;
+    }
 	/**
 	 * 方法用途: 获取某天是一周的第几天 周日为一周的第一天<br>
 	 * 操作步骤: TODO<br>
@@ -398,7 +412,21 @@ public class DateUtil {
 		calendar.add(Calendar.HOUR_OF_DAY, hourCount);
 		return calendar.getTime();
 	}
-	
+	/**
+	 * 方法用途: 在某天的基础上增加几天或减少几月<br>
+	 * 操作步骤: TODO<br>
+	 * @param sDate
+	 * @param iDay
+	 * @param sformat
+	 * @return
+	 * @author wanghb 20160810
+	 */
+	public static Date addOrSubMonth(Date date, int monthCount) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, monthCount);// 月份减1  
+		return calendar.getTime();
+	}
 	/**
 	 * 方法用途: 返回本周的区间的格式化的日期对，格式为yyyy-MM-dd HH:mm:ss<br>
 	 * 操作步骤: TODO<br>
@@ -607,9 +635,6 @@ public class DateUtil {
 		return c.get(Calendar.MONTH);
 	}
 	public static void main(String[] args) {
-//		Date date=addOrSubHour(new Date(),7);
-		String [] nextWeek=getNextDateRangeOfWeek();
-		System.out.println(nextWeek[0]+";"+nextWeek[1]);
 	}
 	
 }
