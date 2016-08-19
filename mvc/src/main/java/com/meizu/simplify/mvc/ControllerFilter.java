@@ -70,6 +70,10 @@ public class ControllerFilter implements Filter {
 	 */
 	private boolean filter(HttpServletRequest request, HttpServletResponse response) {
 		String requestUrl = request.getRequestURI().substring(request.getContextPath().length());
+		int sessionIdIndex=requestUrl.indexOf(";jsessionid");
+		if(sessionIdIndex>0){
+			requestUrl=requestUrl.substring(0,requestUrl.indexOf(";jsessionid"));
+		}
 		if(requestUrl.endsWith("/")) {//修复url最后地址为"/"符号的情况
 			requestUrl = requestUrl.substring(0, requestUrl.length()-1);
 		}

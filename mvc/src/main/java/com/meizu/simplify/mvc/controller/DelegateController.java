@@ -225,7 +225,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			}
 			if(obj != null && obj instanceof String) {//尽量避免instanceof操作，后续这里要优化
 				String uri = String.valueOf(obj);
-				String[] uriArr = uri.split(":");
+				String[] uriArr = uri.split(":",2);//多个http date：20160811
 				String templateType = uriArr[0];
 				String templateUrl = "";
 				if(uriArr.length>1) {
