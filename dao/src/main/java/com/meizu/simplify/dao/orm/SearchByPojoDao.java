@@ -11,6 +11,7 @@ import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.utils.CollectionUtil;
 
 /**
  * <p><b>Title:</b><i>普通对象操作dao，主要用于查询普通对象结果集</i></p>
@@ -28,20 +29,20 @@ import com.meizu.simplify.ioc.annotation.Resource;
  */
 @Bean
 public class SearchByPojoDao {
-	private static final Logger logger = LoggerFactory.getLogger(SearchByMapDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SearchByMapDao.class);
 	@Resource
 	private ISqlMethodSelector selector;
 	/**
 	 * 
-	 * 方法用途: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: 查询结果集-普通pojo(针对非数据库映射表实体)<br>
+	 * 操作步骤: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
 	 * @param entityClass
 	 * @param sql
 	 * @param params
 	 * @return
 	 */
 	public <T> List<T> find(Class<T> entityClass,String sql,Object... params) {
-		logger.info(sql);
+		LOGGER.info(sql);
 		List<T> tList = SQLExecute.executeQuery(sql, new IDataCallback<T>() {
 			@Override
 			public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
@@ -65,8 +66,8 @@ public class SearchByPojoDao {
 	
 	/**
 	 * 
-	 * 方法用途: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: 查询单条记录-普通pojo(针对非数据库映射表实体)<br>
+	 * 操作步骤: 可参考<code>Dao.find(String sql,Object... params)</code>，是它的克隆版，针对非数据库映射表实体<br>
 	 * @param entityClass
 	 * @param sql
 	 * @param params
@@ -74,16 +75,18 @@ public class SearchByPojoDao {
 	 */
 	public <T> T findOne(Class<T> entityClass,String sql,Object... params) {
 		List<T> list = find(entityClass,sql,params);
-		if(list.size()>0){
-			return list.get(0);
-		}else{
-			return null ;
+		if(CollectionUtil.isEmpty(list)){
+			return null;
 		}
+		if(list.size()>1) {
+			LOGGER.warn("findOne方法返回记录数超过一条，有脏数据！默认取第一条记录");
+		}
+		return list.get(0);
 	}
 	
 	/**
 	 * 
-	 * 方法用途: 普通pojo的分页查询<br>
+	 * 方法用途: 分页查询-普通pojo(针对非数据库映射表实体)<br>
 	 * 操作步骤: TODO<br>
 	 * @param entityClass
 	 * @param currentPage

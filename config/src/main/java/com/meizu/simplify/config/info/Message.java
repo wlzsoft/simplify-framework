@@ -119,8 +119,8 @@ public class Message {
 	/**
 	 * 方法用途: 警告信息<br>
 	 * 操作步骤: TODO<br>
-	 * @param statusCode
-	 * @param message
+	 * @param statusCode 自定义的状态码-http协议的状态码
+	 * @param message 错误信息
 	 */
 	public static void error(Integer statusCode,String message) {
 		MessageException messageException = new MessageException(statusCode,message);

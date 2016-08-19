@@ -456,7 +456,10 @@ public class SQLBuilder<T> {
     public  String count(String where) {
     	StringBuilder sqlBuild = new StringBuilder();
     	sqlBuild.append("select count(1) from ").append(getTableName());
-        return sqlBuild.toString() +" where "+where;
+    	if(StringUtil.isNotBlank(where)) {
+    		sqlBuild.append(" where ").append(where);
+    	}
+        return sqlBuild.toString();
     }
     
     /**
