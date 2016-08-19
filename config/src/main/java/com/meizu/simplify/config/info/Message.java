@@ -115,6 +115,17 @@ public class Message {
 		MessageException messageException = new MessageException(500,message);
 		throw messageException;
 	}
+	
+	/**
+	 * 方法用途: 警告信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param statusCode
+	 * @param message
+	 */
+	public static void error(Integer statusCode,String message) {
+		MessageException messageException = new MessageException(statusCode,message);
+		throw messageException;
+	}
 
 	///ThreadLocal处理方式
 	/**
