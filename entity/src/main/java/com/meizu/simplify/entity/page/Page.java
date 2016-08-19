@@ -118,7 +118,7 @@ public class Page<T> implements IPage<T> {
 			next = this.currentPage + 1;
 		}
 		
-		hasNextPage = this.getCurrentPage() < this.getTotalPageCount() - 1;
+		hasNextPage = this.getCurrentPage() < this.getTotalPageCount();
 		hasPrevPage = this.getCurrentPage() > 1;
 		results = new ArrayList<T>();
 
