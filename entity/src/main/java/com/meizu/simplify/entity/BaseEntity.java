@@ -80,27 +80,12 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 		this.updateTime = updateTime;
 	}
 	
-
-	/**
-	 * 
-	 * 方法用途: 获取删除标记<br>
-	 * 操作步骤: TODO<br>
-	 * @return
-	 * @author whb
-	 */
-	public Integer getDeleteflag() {
-		if(null!=this.deleteflag ){
-			if(this.deleteflag){
-				return 1;
-			}else{
-				return 0;
-			}
-		}
-		return null;
-	}
-
 	public void setDeleteflag(Boolean deleteflag) {
 		this.deleteflag = deleteflag;
+	}
+
+	public Boolean getDeleteflag() {
+		return deleteflag;
 	}
 
 	public String getRemark() {
