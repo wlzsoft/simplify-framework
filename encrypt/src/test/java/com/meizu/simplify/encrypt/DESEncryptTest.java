@@ -31,7 +31,7 @@ public class DESEncryptTest {
 //		String source = "�ز�";
 		String re =DESEncrypt.encrypt(source, "sdferese");
 		System.out.println(re);
-		System.out.println(DESEncrypt.decrypt(re,  "sdferese"));
+		System.out.println(DESEncrypt.decrypt(re,  "sdferese","UTF-8"));
 	}
 	
 	public static void DES(String[] args) {
