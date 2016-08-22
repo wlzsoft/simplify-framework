@@ -143,16 +143,7 @@ public class DESEncrypt {
 	}
 	
 	
-	public static String decrypt(String str, String key) {
-		try {
-			if (str == null || str.length() < 1) return "";
-			String result = new String(new DESEncrypt().decode(str.getBytes(),key.getBytes()));
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
+	
 	
 	/**
 	 * 
@@ -165,7 +156,8 @@ public class DESEncrypt {
 	 */
 	public static String decrypt(String str, String key,String charset) {
 		try {
-			String result = decrypt(str, key);
+			if (str == null || str.length() < 1) return "";
+			String result = new String(new DESEncrypt().decode(str.getBytes(),key.getBytes()),charset);
 			if(!(null == charset || charset.length() < 1)){
 				result = URLDecoder.decode(result, charset);
 			}
