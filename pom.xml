@@ -20,14 +20,14 @@
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
-		<url>http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</url>
-		<connection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</connection>
-		<developerConnection>scm:svn:http://10.2.67.20/svn/rosTeam/team-framework/simplify-framework</developerConnection>
+		<url>http://10.2.67.47/ros-team/simplify-framework</url>
+		<connection>scm:git:http://10.2.67.47/ros-team/simplify-framework</connection>
+		<developerConnection>scm:git:http://10.2.67.47/ros-team/simplify-framework</developerConnection>
 	</scm>
 	<!-- 持续集成 -->
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://10.2.67.31:8082/</url>
+		<url>http://10.2.67.40:8082/</url>
 	</ciManagement>
   	<mailingLists>
     	<mailingList>
