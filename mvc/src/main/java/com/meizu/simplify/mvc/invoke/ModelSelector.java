@@ -41,6 +41,9 @@ public class ModelSelector implements IModelSelector{
 			if(value == null) {
 				continue;
 			}
+			if("".equals(value)) {// TODO 要考虑下这么做的后果[会导致字符串类型的空字符串注入，永远是null]
+				continue;
+			}
 			try {
 				method.invoke(model, new Object[] { value });
 			} catch (IllegalArgumentException e) {
