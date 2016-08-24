@@ -13,6 +13,6 @@ package com.meizu.simplify;
  *
  */
 public class Constants {
-	public static final String version = "v1.0.1-SNAPSHOT";
+	public static final String version = "v1.1.3.0";
 	public static final String packagePrefix = "com.meizu";
 }

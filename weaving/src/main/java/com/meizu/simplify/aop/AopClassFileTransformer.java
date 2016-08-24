@@ -24,7 +24,7 @@ import javassist.NotFoundException;
 
 /**
  * <p><b>Title:</b><i>字节码编辑植入处理类</i></p>
- * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/aop/target/weaving-1.0.1-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
+ * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/aop/target/weaving-1.1.3.0.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
