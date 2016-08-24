@@ -435,9 +435,9 @@ public class DateUtil {
 	public static String[] getDateRangeOfWeek() {
 		Date curDate = new Date();
 		Date fisrtDate = getFirstDayOfWeek(curDate);
-		String fisrtDateStr = format(fisrtDate);
+		String fisrtDateStr = format(fisrtDate,DateFormatEnum.YEAR_TO_DAY);
 		Date endDate = addDay(fisrtDate, 6);
-		String endDateStr = format(endDate);
+		String endDateStr = format(endDate,DateFormatEnum.YEAR_TO_DAY);
 		String DateRang[] = new String[2];
 		DateRang[0] = fisrtDateStr;
 		DateRang[1] = endDateStr;
@@ -454,9 +454,9 @@ public class DateUtil {
 	public static String[] getNextDateRangeOfWeek() {
 		Date curDate = getDayOfWeek(1);
 		Date fisrtDate = getFirstDayOfWeek(curDate);
-		String fisrtDateStr = format(fisrtDate);
+		String fisrtDateStr = format(fisrtDate,DateFormatEnum.YEAR_TO_DAY);
 		Date endDate = addDay(fisrtDate, 6);
-		String endDateStr = format(endDate);
+		String endDateStr = format(endDate,DateFormatEnum.YEAR_TO_DAY);
 		String DateRang[] = new String[2];
 		DateRang[0] = fisrtDateStr;
 		DateRang[1] = endDateStr;

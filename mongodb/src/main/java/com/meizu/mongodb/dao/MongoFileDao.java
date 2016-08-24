@@ -1,5 +1,6 @@
 package com.meizu.mongodb.dao;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -56,7 +57,7 @@ public class MongoFileDao<T>{
 	 */
 	public String save(InputStream io, String name, T t) {
 		GridFSBucket gridFSBucket = GridFSBuckets.create(db,selfName);
-		GridFSUploadOptions options = new GridFSUploadOptions().metadata(buildDocument(t));
+		GridFSUploadOptions options = new GridFSUploadOptions().chunkSizeBytes(1024).metadata(buildDocument(t));
 		ObjectId fileId = gridFSBucket.uploadFromStream(name, io, options);
 		return fileId.toString();
 	}
@@ -149,12 +150,19 @@ public class MongoFileDao<T>{
 		try {
 			GridFSBucket gridFSBucket = GridFSBuckets.create(db, selfName);
 			GridFSFile fileInfo = gridFSBucket.find(Filters.and(Filters.eq("metadata.token", toke))).first();
-			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(fileInfo.getObjectId());
-			int fileLength = (int) downloadStream.getGridFSFile().getLength();
-			byte[] bytesToWriteTo = new byte[fileLength];
-			downloadStream.read(bytesToWriteTo);
-			downloadStream.close();
-			return bytesToWriteTo;
+			//方案1：
+//			GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(fileInfo.getObjectId());
+//			int fileLength = (int) downloadStream.getGridFSFile().getLength();
+//			int fileLength = downloadStream.getGridFSFile().getChunkSize();
+//			byte[] bytesToWriteTo = new byte[fileLength];
+//			downloadStream.read(bytesToWriteTo);
+//			downloadStream.close();
+			//方案2
+			ByteArrayOutputStream baos=new ByteArrayOutputStream();
+			gridFSBucket.downloadToStream(fileInfo.getObjectId(), baos);
+			byte[] b=baos.toByteArray();
+			baos.close();
+			return b;
 		} catch (Exception e) {
 			return new byte[0];
 		}
