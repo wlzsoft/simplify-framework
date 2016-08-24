@@ -43,8 +43,11 @@ public class ModelSelector implements IModelSelector{
 			}
 			try {
 				method.invoke(model, new Object[] { value });
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
+				throw new UncheckedException("测试模式>>表单注入:参数无效[set方法->{"+modelClass.getName()+":"+methodName+"}的参数类型是{"+method.getParameterTypes()[0].getName()+"}]。但是注入的值是["+value+"],并且值类型是["+value.getClass()+"]");
+			} catch (IllegalAccessException | InvocationTargetException e) {
+//				e.printStackTrace();
 				throw new UncheckedException(e);
 			}
 		}
