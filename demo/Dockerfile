@@ -1,3 +1,3 @@
-FROM tomcat:8
-ADD target/demo.war /usr/local/tomcat/webapps/
+FROM tomcat:8.5
+COPY target/demo /usr/local/tomcat/webapps/ROOT/
 CMD ["catalina.sh", "run"]
