@@ -1,3 +1,6 @@
+//description = "Apereo Central Authentication Service $version"
+//defaultTasks "clean", "build"
+//apply from: rootProject.file("gradle/dependencies.gradle")
 buildscript {
     repositories {
         jcenter()
@@ -123,4 +126,35 @@ subprojects {
 	//https://docs.gradle.org/2.14/dsl/  gradle domain specil lang 领域特定语言 api文档
 	//https://plugins.gradle.org   gradle 的 第三方插件的仓库，所以第三方插件如果愿意，可以托管到这个官方仓库
 	//https://bintray.com/bintray/jcenter  基于ivy和maven的gradle官方指定仓库，不包含插件
+	/*
+	jar {
+        manifest {
+            attributes("Implementation-Title": project.name,
+                       "Implementation-Vendor": project.group,
+                       "Created-By": project.group,
+                       "Implementation-Version": project.version)
+        }
+    }
+
+    checkstyle {
+        configFile new File(rootDir, "checkstyle-rules.xml")
+        configProperties = ["checkstyle.suppressions.file": new File(rootDir, "checkstyle-suppressions.xml")]
+        ignoreFailures false
+        showViolations true
+        toolVersion "${checkstyleVersion}"
+    }
+
+    findbugs {
+        toolVersion = "${findbugsVersion}"
+        sourceSets = [sourceSets.main]
+        ignoreFailures = false
+        reportsDir = file("$project.buildDir/findbugsReports")
+        effort = "max"
+        reportLevel = "high"
+        visitors = ["FindSqlInjection", "SwitchFallthrough"]
+        omitVisitors = ["FindNonShortCircuit"]
+        includeFilter = file("$rootProject.projectDir/findbugs-rules.xml")
+    }
+	*/
 }
+
