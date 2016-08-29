@@ -17,7 +17,12 @@ package com.meizu.simplify.cache.enums;
 public enum CacheExpireTimeEnum {
 	
 	/**
-	 * 缓存时效 5分钟钟
+	 * 缓存时效60秒
+	 */
+	CACHE_EXP_SENDCOND_60(60),
+	
+	/**
+	 * 缓存时效 5分钟
 	 */
 	CACHE_EXP_SENDCONDs(60*5),
 	
