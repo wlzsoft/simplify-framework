@@ -59,3 +59,4 @@
 16. 查看之前的readme文件，去掉controller层
 17. 只编写service就可以，controll只作为路由和参数解析作用，可以通用处理
 18. 减少class的重复扫描，加速启动
+19. 增强缓存模块的api
