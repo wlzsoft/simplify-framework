@@ -422,7 +422,8 @@ public class StringUtil {
 	/**
 	 * 
 	 * 方法用途: 格式化字符串<br>
-	 * 操作步骤: 在str指定占位符 ，以args数组的值填充占位符的值，从左到右<br>
+	 * 操作步骤: 1.在str指定占位符 ，以args数组的值填充占位符的值，从左到右
+	 *           2.正则表达式 性能不好，使用时权衡 TODO<br>
 	 * @param str 格式  "this is {0} ,good {1}" 或是 "this is {0} ,good {1}"
 	 * @param args 替换用数组数据
 	 * @return
