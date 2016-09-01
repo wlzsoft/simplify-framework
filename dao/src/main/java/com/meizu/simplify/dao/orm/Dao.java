@@ -752,7 +752,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @return 分页数据实体
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
-		String countSql = sql.substring(sql.indexOf("from"));
+		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
 		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
 		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count("select count(1) "+countSql,params),true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
