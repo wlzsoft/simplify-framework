@@ -74,7 +74,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 		try{
 			ClientBean beanAnnotation = entityClass.getAnnotation(ClientBean.class);
 			PropertieUtil propertieUtil=new PropertieUtil("properties/dubbo.properties");
-//			String group=propertieUtil.getString("dubbo.registry.group");
+			String group=propertieUtil.getString("dubbo.registry.group");
 			String key =  entityClass.getName() + ":" + beanAnnotation.version();
 			ReferenceConfig<?> reference =referenceConfigs.get(key);
 			if (reference == null) {
@@ -83,7 +83,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 				// 连接注册中心配置
 				RegistryConfig registry = new RegistryConfig();
 				registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
-//				registry.setGroup(group);
+				registry.setGroup(group);
 //				registry.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
 				// 引用远程服务
 				reference = new ReferenceConfig<>();
