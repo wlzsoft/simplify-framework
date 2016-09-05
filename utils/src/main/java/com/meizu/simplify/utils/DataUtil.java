@@ -1,6 +1,10 @@
 package com.meizu.simplify.utils;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 /**
  * <p><b>Title:</b><i>参数解析工具。</i></p>
@@ -158,6 +162,20 @@ public class DataUtil {
 			return (T) parseDouble(value);
 		} else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3
 			return (T) parseBoolean(value);
+		} else if(classType == Date.class) {
+			return (T) DateUtil.parse(String.valueOf(value));
+		} else if(classType == LocalDate.class) {
+			if(StringUtil.isNotBlank(String.valueOf(value))) {
+				return (T) LocalDate.parse(String.valueOf(value));
+			}
+		} else if(classType == LocalTime.class) {
+			if(StringUtil.isNotBlank(String.valueOf(value))) {
+				return (T) LocalTime.parse(String.valueOf(value));
+			}
+		} else if(classType == LocalDateTime.class) {
+			if(StringUtil.isNotBlank(String.valueOf(value))) {
+				return (T) LocalDateTime.parse(String.valueOf(value));
+			}
 		}
 		return (T)value;
 	}
