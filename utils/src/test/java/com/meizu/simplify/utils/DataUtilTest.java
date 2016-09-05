@@ -1,5 +1,10 @@
 package com.meizu.simplify.utils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+
 import org.junit.Test;
 
 /**
@@ -20,5 +25,13 @@ public class DataUtilTest {
 	public void convertType() {
 		Integer o = DataUtil.convertType(Integer.class, "2",false);
 		System.out.println(o);
+		Date date = DataUtil.convertType(Date.class, "2014-05-14", false);
+		System.out.println(date);
+		LocalDate localDate = DataUtil.convertType(LocalDate.class, "2014-05-14", false);
+		System.out.println(localDate);
+		LocalDateTime LocalDateTime = DataUtil.convertType(LocalDateTime.class, "2007-12-03T10:15:30", false);
+		System.out.println(LocalDateTime);
+		LocalTime LocalTime = DataUtil.convertType(LocalTime.class, "21:09:08", false);
+		System.out.println(LocalTime);
 	}
 }

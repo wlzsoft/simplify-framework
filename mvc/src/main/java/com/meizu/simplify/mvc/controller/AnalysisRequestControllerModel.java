@@ -1,6 +1,9 @@
 package com.meizu.simplify.mvc.controller;
 
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 import com.meizu.simplify.mvc.model.BaseModel;
@@ -46,7 +49,7 @@ public class AnalysisRequestControllerModel {
 	 * @return
 	 */
 	public static boolean isBaseType(Class<?> clz) {
-		if(clz==String.class||clz==Date.class) {
+		if(clz==String.class||clz==Date.class || clz==LocalDate.class || clz==LocalTime.class || clz==LocalDateTime.class) {
 			return true;
 		}
         try { 
