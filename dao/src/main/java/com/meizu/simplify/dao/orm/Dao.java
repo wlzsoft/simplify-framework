@@ -606,7 +606,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
 		}
 		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
-		return find(sqlBuilder.findBy(dto.getWhereName())+" order by "+sort+" "+(isDesc?"desc":"asc"),dto.getWhereValues());
+		String orderby = "";
+		if(StringUtil.isNotBlank(sort)) {
+			orderby = " order by "+sort+" "+(isDesc?"desc":"asc");
+		}
+		return find(sqlBuilder.findBy(dto.getWhereName())+orderby,dto.getWhereValues());
 	}
 	
 	

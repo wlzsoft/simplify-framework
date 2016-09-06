@@ -89,6 +89,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 				reference = new ReferenceConfig<>();
 				reference.setApplication(application);
 				reference.setRegistry(registry);
+				registry.setFile(propertieUtil.getString("dubbo.registry.file"));
 				reference.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
 //				reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
 				reference.setInterface(entityClass);
