@@ -31,6 +31,7 @@ public class DubboRegistry extends RegistryConfig{
 	public void init() {
 		address = dubboProperties.getProp().getString("dubbo.registry.address");
 		this.setAddress(address);
+		this.setFile(dubboProperties.getProp().getString("dubbo.registry.file"));
 //		this.setGroup(dubboProperties.getProp().getString("dubbo.registry.group"));
 	}
 

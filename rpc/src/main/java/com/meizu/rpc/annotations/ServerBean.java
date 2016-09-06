@@ -27,7 +27,7 @@ public @interface ServerBean {
 	
 	int timeout() default 5000;//远程服务调用超时时间(毫秒)
 	
-	int connections() default 500;//对每个提供者的最大连接数
+	int connections() default 100;//对每个提供者的最大连接数
 	
 	//TODO 配置文件获取
 //	LoadbalanceEnum loadbalance() default LoadbalanceEnum.RANDOM;//负载均衡策略

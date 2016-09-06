@@ -31,7 +31,7 @@ public class DubboProtocol  extends ProtocolConfig{
 	public void init() {
 		this.setName(dubboProperties.getProp().getString("dubbo.protocol.name"));
 		this.setPort(dubboProperties.getProp().getInteger("dubbo.protocol.port"));
-		this.setThreads(dubboProperties.getProp().getInteger("dubbo.protocol.threads"));
+//		this.setThreads(dubboProperties.getProp().getInteger("dubbo.protocol.threads"));
 		this.setSerialization(dubboProperties.getProp().getString("dubbo.protocol.serialization"));
 	}
 	
