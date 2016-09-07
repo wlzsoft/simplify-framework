@@ -196,13 +196,7 @@ public class PropertieUtil {
 				continue;
 			}
 			Class<?> valueClass = field.getType();
-			if(valueClass == Boolean.class||valueClass == boolean.class) {
-				value = DataUtil.parseBoolean(value);
-			} else if(valueClass == Integer.class || valueClass == int.class){
-				value = DataUtil.parseInt(value);
-			} else if(valueClass == Long.class || valueClass == long.class){
-				value = DataUtil.parseLong(value);
-			}
+			value = DataUtil.convertType(valueClass, value, false);
 			ReflectionUtil.invokeSetterMethod(obj, field.getName(), value,valueClass);
 		}
 		return (T) obj;

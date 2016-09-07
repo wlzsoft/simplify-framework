@@ -94,7 +94,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		    			message+="==>>注入的配置文件"+configPath+"中的["+configName+"]配置项";
 		    			PropertieUtil propertiesUtil = entry.getValue();
 		    			Object value = propertiesUtil.get(configName);
-		    			if(value == null) {
+		    			if(value == null) {//如果properties文件中，无对应属性，那么读取properties的关联实体，获取默认值，关联实体的属性在配置文件中格式都是[xxxx.xxx],有带前缀的
 		    				Object propertiesBeanObj = propertieBeanMap.get(configPath);
 		    				Class<?> propertiesBeanClass = propertiesBeanObj.getClass();
 		    				ReloadableResource reloadableResource = propertiesBeanClass.getAnnotation(ReloadableResource.class);
@@ -108,12 +108,9 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		    				if(value == null) {
 		    					continue;
 		    				}
+		    			} else {//配置文件中格式都是[xxx],不带前缀的，那么需要做类型转换，避免出错。
+		    				value = DataUtil.convertType(field.getType(), value, false);
 		    			}
-		    			if(field.getType() == Boolean.class||field.getType() == boolean.class) {
-		   					value = DataUtil.parseBoolean(value);
-		   				} else if(field.getType() == Integer.class || field.getType() == int.class){
-		   					value = DataUtil.parseInt(value);
-		   				}
 		    			try {
 		    				field.setAccessible(true);
 		    				field.set(beanObj, value);
