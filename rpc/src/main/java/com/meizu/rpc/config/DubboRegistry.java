@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.RegistryConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.utils.StringUtil;
 
 /**
  * <p>dubbo连接注册中心配置</p>
@@ -31,7 +32,10 @@ public class DubboRegistry extends RegistryConfig{
 	public void init() {
 		address = dubboProperties.getProp().getString("dubbo.registry.address");
 		this.setAddress(address);
-		this.setFile(dubboProperties.getProp().getString("dubbo.registry.file"));
+		String filePath=dubboProperties.getProp().getString("dubbo.registry.file");
+		if(StringUtil.isNotBlank(filePath)){
+			this.setFile(System.getProperty("user.home")+filePath);
+		}
 //		this.setGroup(dubboProperties.getProp().getString("dubbo.registry.group"));
 	}
 
