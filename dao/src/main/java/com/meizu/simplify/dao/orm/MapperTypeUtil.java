@@ -26,12 +26,11 @@ public class MapperTypeUtil{
 	 * @param val
 	 * @return
 	 */
-	public static Class<?> mapperOrmType(Object val) {
+	public static Class<?> mapperOrmType(Object val,boolean useNewDate) {
 		Class<?> valClazz = val.getClass();
 		if(valClazz == Timestamp.class) {
 			valClazz = Date.class;
 		} else if(valClazz == java.sql.Date.class) {
-//			valClazz = Date.class;
 			valClazz = LocalDate.class; //目前mysql的jdbc驱动不支持
 		}
 		return valClazz;
