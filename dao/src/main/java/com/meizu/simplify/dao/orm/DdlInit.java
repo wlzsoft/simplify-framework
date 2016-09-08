@@ -50,7 +50,7 @@ public class DdlInit implements IAnnotationResolver<Class<?>>{//TODO 后续可�
 				Table table = entityClass.getAnnotation(Table.class);
 				Transient ts = entityClass.getAnnotation(Transient.class);
 				@SuppressWarnings("unchecked")
-				int isresult = BaseDao.getIns(entityClass.getSimpleName()).createTable((Class<IdEntity<Serializable, Integer>>) entityClass);
+				int isresult = BaseDao.getIns(entityClass.getName()).createTable((Class<IdEntity<Serializable, Integer>>) entityClass);
 				if(isresult>0) {
 					LOGGER.info("已创建数据库表[{}],忽略属性[{}]", table.name(),ts.value());
 				} else {
