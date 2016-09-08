@@ -1,6 +1,7 @@
 package com.meizu.simplify.dao.orm;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -30,7 +31,8 @@ public class MapperTypeUtil{
 		if(valClazz == Timestamp.class) {
 			valClazz = Date.class;
 		} else if(valClazz == java.sql.Date.class) {
-			valClazz = Date.class;
+//			valClazz = Date.class;
+			valClazz = LocalDate.class; //目前mysql的jdbc驱动不支持
 		}
 		return valClazz;
 	}

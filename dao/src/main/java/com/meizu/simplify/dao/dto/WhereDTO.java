@@ -23,7 +23,7 @@ import com.meizu.simplify.utils.StringUtil;
  */
 public class WhereDTO implements Serializable {
 	private static final long serialVersionUID = -8339141624984065226L;
-	private static final Map<String,String> opertorMap = new HashMap<>();
+	public static final Map<String,String> opertorMap = new HashMap<>();//修改private为public by lcy 2016/9/6
 	static {
 		opertorMap.put("=", "true");
 		opertorMap.put(">=", "true");

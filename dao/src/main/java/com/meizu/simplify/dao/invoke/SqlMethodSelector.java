@@ -1,5 +1,7 @@
 package com.meizu.simplify.dao.invoke;
 
+import java.time.LocalDate;
+
 import com.meizu.simplify.dao.orm.MapperTypeUtil;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.ReflectionUtil;
@@ -28,6 +30,9 @@ public class SqlMethodSelector implements ISqlMethodSelector{
 	@Override
 	public void invokeSet(Object t, String columnName,Object val) {
 		Class<?> valClazz = MapperTypeUtil.mapperOrmType(val);
+	    if(val.getClass() == java.sql.Date.class) {
+	    	val = LocalDate.parse(val.toString());
+	    }
 		ReflectionUtil.invokeSetterMethod(t, columnName, val,valClazz);
 	}
 	
