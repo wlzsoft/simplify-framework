@@ -83,16 +83,16 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 				// 连接注册中心配置
 				RegistryConfig registry = new RegistryConfig();
 				registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
+				String filePath=propertieUtil.getString("dubbo.registry.file");
+				if(StringUtil.isNotBlank(filePath)){
+					registry.setFile(System.getProperty("user.home")+filePath);
+				}
 //				registry.setGroup(group);
 //				registry.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
 				// 引用远程服务
 				reference = new ReferenceConfig<>();
 				reference.setApplication(application);
 				reference.setRegistry(registry);
-				String filePath=propertieUtil.getString("dubbo.registry.file");
-				if(StringUtil.isNotBlank(filePath)){
-					registry.setFile(System.getProperty("user.home")+filePath);
-				}
 				reference.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
 //				reference.setRegistries(this.buildRegistryAdress(propertieUtil));//多注册中心
 				reference.setInterface(entityClass);
