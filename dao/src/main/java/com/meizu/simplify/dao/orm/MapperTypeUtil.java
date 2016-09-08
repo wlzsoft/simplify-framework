@@ -31,7 +31,11 @@ public class MapperTypeUtil{
 		if(valClazz == Timestamp.class) {
 			valClazz = Date.class;
 		} else if(valClazz == java.sql.Date.class) {
-			valClazz = LocalDate.class; //目前mysql的jdbc驱动不支持
+			if(useNewDate) {
+				valClazz = LocalDate.class; //目前mysql的jdbc驱动不支持
+			} else {
+				valClazz = Date.class; 
+			}
 		}
 		return valClazz;
 	}
