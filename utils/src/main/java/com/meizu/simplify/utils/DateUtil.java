@@ -604,7 +604,6 @@ public class DateUtil {
 	 * 操作步骤: TODO<br>
 	 * @param beginDate
 	 * @param endDate
-	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
 	 * @author wanghb 20160810
 	 */
 	public static int getDaysSpace(Date beginDate,Date endDate) {
@@ -617,13 +616,24 @@ public class DateUtil {
 	 * 操作步骤: TODO<br>
 	 * @param beginDate
 	 * @param endDate
-	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
 	 * @author wanghb 20160810
 	 */
-	public static Double getHoursSpace(Date beginDate,Date endDate) {
-		 Double checkday=0.00; 
-		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*60*60.00);
-		 return checkday;
+	public static Integer getHoursSpace(Date beginDate,Date endDate) {
+		 Long checkday=0L; 
+		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*60*60);
+		 return checkday.intValue();
+	}
+	/**
+	 * 方法用途: 计算两日期相差分钟<br>
+	 * 操作步骤: TODO<br>
+	 * @param beginDate
+	 * @param endDate
+	 * @author wanghb 20160810
+	 */
+	public static Integer getMinuteSpace(Date beginDate,Date endDate) {
+		 Long checkday=0L; 
+		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*60);
+		 return checkday.intValue();
 	}
 	/**
 	 * 方法用途:获取年份<br>
@@ -673,9 +683,9 @@ public class DateUtil {
 	}
 	
 	public static void main(String[] args) {
-		Date startDate=DateUtil.parse("2016-09-07 11:00:00");
-		Date endDate=DateUtil.parse("2016-09-07 18:30:00");
-		System.out.println(getHoursSpace(startDate, endDate));
+		Date startDate=DateUtil.parse("2016-09-08 11:35:08");
+		Date endDate=DateUtil.parse("2016-09-08 12:40:00");
+		System.out.println(getMinuteSpace(startDate,endDate));
 	}
 	
 }

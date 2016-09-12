@@ -29,28 +29,28 @@ public class SendMessage {
 	
 	@Test
 	public void test() {
-		try {
-			RabbitTemplate temp = BeanFactory.getBean(RabbitTemplate.class);
-			for (int i = 0; i <3; i++) {
-				TestEntity entity = new TestEntity();
-				entity.setName("t1");
-				entity.setDddd("t1");
-				entity.setUserName("t1");
-				temp.send("t1",entity);
-//				Thread.sleep(3000);
-			}
-			for (int i = 0; i < 3; i++) {
-				TestEntity entity = new TestEntity();
-				entity.setName("tt2");
-				entity.setDddd("tt2");
-				entity.setUserName("tt2测试");
-				temp.send("t2",entity);
-//				Thread.sleep(3000);
-			}
-			
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+//		try {
+//			RabbitTemplate temp = BeanFactory.getBean(RabbitTemplate.class);
+//			for (int i = 0; i <3; i++) {
+//				TestEntity entity = new TestEntity();
+//				entity.setName("t1");
+//				entity.setDddd("t1");
+//				entity.setUserName("t1");
+//				temp.send("t1",entity);
+////				Thread.sleep(3000);
+//			}
+//			for (int i = 0; i < 3; i++) {
+//				TestEntity entity = new TestEntity();
+//				entity.setName("tt2");
+//				entity.setDddd("tt2");
+//				entity.setUserName("tt2测试");
+//				temp.send("t2",entity);
+////				Thread.sleep(3000);
+//			}
+//			
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
 	}
 
 }
