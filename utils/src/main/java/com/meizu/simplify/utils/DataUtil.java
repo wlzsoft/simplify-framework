@@ -1,6 +1,10 @@
 package com.meizu.simplify.utils;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 /**
  * <p><b>Title:</b><i>参数解析工具。</i></p>
@@ -124,7 +128,7 @@ public class DataUtil {
 	/**
 	 * 
 	 * 方法用途: 未知类型转换成具体类型<br>
-	 * 操作步骤: TODO:暂未完全实现<br>
+	 * 操作步骤: 注意：次方法一般用在框架级，插件机，通用性的功能处理上，如果在有确切类型的情况下，不要使用这个方法，而是调用具体的parseXxx方法<br>
 	 * @param classType
 	 * @param value
 	 * @param isNull wrapper包装基本类型是否默认值以null处理
@@ -158,6 +162,20 @@ public class DataUtil {
 			return (T) parseDouble(value);
 		} else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3
 			return (T) parseBoolean(value);
+		} else if(classType == Date.class) {
+			return (T) DateUtil.parse(String.valueOf(value));
+		} else if(classType == LocalDate.class) {
+			if(StringUtil.isNotBlank(String.valueOf(value))) {
+				return (T) LocalDate.parse(String.valueOf(value));
+			}
+		} else if(classType == LocalTime.class) {
+			if(StringUtil.isNotBlank(String.valueOf(value))) {
+				return (T) LocalTime.parse(String.valueOf(value));
+			}
+		} else if(classType == LocalDateTime.class) {
+			if(StringUtil.isNotBlank(String.valueOf(value))) {
+				return (T) LocalDateTime.parse(String.valueOf(value));
+			}
 		}
 		return (T)value;
 	}

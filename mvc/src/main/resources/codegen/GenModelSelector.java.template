@@ -44,7 +44,7 @@ public class GenModelSelector implements IModelSelector{
 			Method method = modelMethodArr[i];
 			String methodName = method.getName();
 			Object value = setModelPropertie(request, method, methodName);
-			if(value == null) {
+			if(value == null||value.toString().trim().equals("")) {
 				continue;
 			}
 			invokeSet(model,methodName,value);
@@ -59,7 +59,7 @@ public class GenModelSelector implements IModelSelector{
 			    <%for(methodTag in methodTagList){%>
 					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){if(methodTag.fieldName!="params"){if(methodTag.fieldName!="cmd"){%>
 				case "${methodTag.clazz}:${methodTag.value}":
-					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%>(${param.name})val<%}%>);
+					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%><%if(param.name == "java.time.LocalDate"){%>java.time.LocalDate.parse(val.toString())<%}else{%>(${param.name})val<%}}%>);
 					break;
     		    <%}}}}}}%>
 			}

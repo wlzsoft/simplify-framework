@@ -45,10 +45,6 @@ public class Result implements IResult{
 		this.message = message;
 	}
 
-	
-	
-
-
 	public String getStatusCode() {
 		return statusCode;
 	}
@@ -65,7 +61,6 @@ public class Result implements IResult{
 		this.success = success;
 	}
 
-
 	public long getDateline() {
 		return dateline;
 	}
@@ -77,5 +72,10 @@ public class Result implements IResult{
 	public void setMessage(Object message) {
 		this.message = message;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Result [success=" + success + ", statusCode=" + statusCode + ", message=" + message + ", dateline="
+				+ dateline + "]";
+	}
 }

@@ -52,7 +52,7 @@ public class GenSqlByDaoEntity implements ISqlMethodSelector{
 			    <%for(methodTag in methodTagList){%>
 					<%if(methodTag.returnType == "void"){if(!methodTag.isStatic){if(!methodTag.isFinal){%>
 				case "${methodTag.clazz}:${methodTag.fieldName}":
-					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%>(${param.name})val<%}%>);
+					((${methodTag.clazz})t).${methodTag.value}(<%for(param in methodTag.params){%><%if(param.name == "java.time.LocalDate"){%>java.time.LocalDate.parse(val.toString())<%}else{%>(${param.name})val<%}}%>);
 					break;
     		    <%}}}}%>
 			}

@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
 import com.alibaba.fastjson.JSONWriter;
 
@@ -88,5 +90,21 @@ public class JsonUtilTest {
 		  }
 		  reader.endObject();
 		  reader.close();
+	}
+	
+	@Test
+	public void testArray() {
+		JSONObject jo = new JSONObject();
+		JSONArray ja = new JSONArray();
+		ja.add("2016-10-01 10:00:00");
+		ja.add("2016-10-01 12:00:00");
+		jo.put("1", ja);
+		JSONArray ja2 = new JSONArray();
+		ja2.add("2016-10-01 14:00:00");
+		ja2.add("2016-10-01 15:00:00");
+		jo.put("2-3", ja2);
+		System.out.println(jo.toJSONString());
+		JSONObject o = JsonUtil.stringToJSONObject(jo.toJSONString());
+		System.out.println(o);
 	}
 }

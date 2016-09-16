@@ -107,7 +107,7 @@ public class RedisPool {
 				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
 				strb.append("{节点地址").append(i+1).append(":[").append(hnp.host).append(":").append(hnp.port).append("],");
 				if(hnp.pwd != null && hnp.pwd.length() > 0){
-					strb.append("密码:").append(hnp.pwd);
+					strb.append("密码:").append("******");
 					jedisShardInfo.setPassword(hnp.pwd);
 				}
 				shards.add(jedisShardInfo);

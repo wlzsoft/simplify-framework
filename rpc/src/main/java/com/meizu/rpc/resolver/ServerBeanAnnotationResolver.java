@@ -77,6 +77,7 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
 				service.setProtocol(protocol);
 				service.setInterface(interfaces);
 				service.setTimeout(beanAnnotation.timeout());
+				service.setRetries(0);
 //				String loadbalance=beanAnnotation.loadbalance().getValue();
 				service.setLoadbalance(loadbalanceConfig);
 				service.setRef(bean);

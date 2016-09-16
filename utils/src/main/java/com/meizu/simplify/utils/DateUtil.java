@@ -587,7 +587,7 @@ public class DateUtil {
 	 * 操作步骤: TODO<br>
 	 * @param dt1 
 	 * @param dt2 
-	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
+	 * @return -1:dt1 在dt2前;1:dt1在dt2后;0:相等
 	 * @author wanghb 20160810
 	 */
 	public static int compareDate(Date dt1,Date dt2){
@@ -604,12 +604,35 @@ public class DateUtil {
 	 * 操作步骤: TODO<br>
 	 * @param beginDate
 	 * @param endDate
-	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
 	 * @author wanghb 20160810
 	 */
 	public static int getDaysSpace(Date beginDate,Date endDate) {
 		 Long checkday=0L; 
 		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*24*60*60);
+		 return checkday.intValue();
+	}
+	/**
+	 * 方法用途: 计算两日期相差小时<br>
+	 * 操作步骤: TODO<br>
+	 * @param beginDate
+	 * @param endDate
+	 * @author wanghb 20160810
+	 */
+	public static Integer getHoursSpace(Date beginDate,Date endDate) {
+		 Long checkday=0L; 
+		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*60*60);
+		 return checkday.intValue();
+	}
+	/**
+	 * 方法用途: 计算两日期相差分钟<br>
+	 * 操作步骤: TODO<br>
+	 * @param beginDate
+	 * @param endDate
+	 * @author wanghb 20160810
+	 */
+	public static Integer getMinuteSpace(Date beginDate,Date endDate) {
+		 Long checkday=0L; 
+		 checkday = (endDate.getTime()-beginDate.getTime())/(1000*60);
 		 return checkday.intValue();
 	}
 	/**
@@ -634,7 +657,35 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.MONTH);
 	}
+	/**
+	 * 方法用途: 获取上月第一天<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static Date getFirstPreMonth() {
+		Calendar cal = Calendar.getInstance();// 获取当前日期
+		cal.add(Calendar.MONTH, -1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+		return cal.getTime();
+	}
+	/**
+	 * 方法用途: 获取上月最后一天<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static Date getLastPreMonth() {
+		Calendar cale = Calendar.getInstance();
+		cale.add(Calendar.MONTH, -1);
+		cale.set(Calendar.DAY_OF_MONTH, cale.getActualMaximum(Calendar.DAY_OF_MONTH));  
+		return cale.getTime();
+	}
+	
 	public static void main(String[] args) {
+		Date startDate=DateUtil.parse("2016-09-08 11:35:08");
+		Date endDate=DateUtil.parse("2016-09-08 12:40:00");
+		System.out.println(getMinuteSpace(startDate,endDate));
 	}
 	
 }
