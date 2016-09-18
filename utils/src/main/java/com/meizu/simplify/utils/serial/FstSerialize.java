@@ -17,7 +17,7 @@ import org.nustaq.serialization.FSTConfiguration;
  * @version Version 0.1
  *
  */
-public class FstSerialize<T> implements ISerialize<T>{
+public class FstSerialize implements ISerialize{
 
 	public FstSerialize() {
 	}
@@ -27,14 +27,14 @@ public class FstSerialize<T> implements ISerialize<T>{
 			.createStructConfiguration();
 
 	@Override
-	public  byte[] serialize(T obj) {
+	public  byte[] serialize(Object obj) {
 		return configuration.asByteArray(obj);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  T unserialize(byte[] sec) {
-		return (T) configuration.asObject(sec);
+	public <D> D unserialize(byte[] sec) {
+		return (D) configuration.asObject(sec);
 	}
 
 }

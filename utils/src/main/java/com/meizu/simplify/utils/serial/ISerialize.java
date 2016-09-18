@@ -16,7 +16,7 @@ package com.meizu.simplify.utils.serial;
  * @version Version 0.1
  *
  */
-public interface ISerialize<T extends Object> {
+public interface ISerialize {
 
 	/**
 	 * 
@@ -25,7 +25,7 @@ public interface ISerialize<T extends Object> {
 	 * @param obj
 	 * @return
 	 */
-	byte[] serialize(T obj);
+	byte[] serialize(Object obj);
 
 	/**
 	 * 
@@ -34,5 +34,5 @@ public interface ISerialize<T extends Object> {
 	 * @param sec
 	 * @return
 	 */
-	T unserialize(byte[] sec);
+	<D> D unserialize(byte[] sec);
 }

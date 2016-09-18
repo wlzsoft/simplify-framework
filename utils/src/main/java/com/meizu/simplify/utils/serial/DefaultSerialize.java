@@ -21,7 +21,7 @@ import com.meizu.simplify.exception.UncheckedException;
  * @version Version 0.1
  *
  */
-public class DefaultSerialize<T> implements ISerialize<T>{
+public class DefaultSerialize implements ISerialize{
 
 	public DefaultSerialize() {
 	}
@@ -35,7 +35,7 @@ public class DefaultSerialize<T> implements ISerialize<T>{
 	 * @return
 	 */
 	@Override
-	public  byte[] serialize(T obj) {
+	public  byte[] serialize(Object obj) {
 
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
@@ -79,7 +79,7 @@ public class DefaultSerialize<T> implements ISerialize<T>{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public  T unserialize(byte[] bytes) {
+	public <D>  D unserialize(byte[] bytes) {
 		ByteArrayInputStream bis = null;
 		ObjectInputStream ois = null;
 		Object ret = null;
@@ -88,7 +88,7 @@ public class DefaultSerialize<T> implements ISerialize<T>{
 			bis = new ByteArrayInputStream(bytes);
 			ois = new ObjectInputStream(bis);
 			ret = ois.readObject();
-			return (T) ret;
+			return (D) ret;
 		} catch (IOException e) {
 			throw new UncheckedException(e);
 		} catch (ClassNotFoundException ex) {

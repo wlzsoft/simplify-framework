@@ -24,7 +24,7 @@ public class KryoSerialTest {
 		usr.setAddr("sfsdfsfff");
 		usr.setPhone("131321324234324");
 		
-		ISerialize<User> serial = new FstSerialize<>();
+		ISerialize serial = new FstSerialize();
 		byte barray[] = serial.serialize(usr);
 		User object = serial.unserialize(barray);
 		System.out.println(object.getName());

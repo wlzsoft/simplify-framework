@@ -29,7 +29,7 @@ public class Hessian2SerialTest {
 		StressTestUtils.testAndPrint(1000, 10000, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
-				ISerialize<User> serial = new Hessian2Serialize<>();
+				ISerialize serial = new Hessian2Serialize();
 				byte[] barray = serial.serialize(usr);
 				User object = serial.unserialize(barray);
 				System.out.println(object.getName());

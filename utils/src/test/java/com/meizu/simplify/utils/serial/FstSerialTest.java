@@ -31,7 +31,7 @@ public class FstSerialTest {
 		StressTestUtils.testAndPrint(1000, 10000, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
-				ISerialize<User> serial = new FstSerialize<>();
+				ISerialize serial = new FstSerialize();
 				byte[] barray = serial.serialize(usr);
 				User object = serial.unserialize(barray);
 				System.out.println(object.getName());
@@ -43,7 +43,7 @@ public class FstSerialTest {
 	public void testFstDataIntegrityCheck() throws IOException, ClassNotFoundException {
 		// 对字符串Hello World进行反序列化
 		String str = "Hello World !";
-		ISerialize<String> serial = new Hessian2Serialize<>();
+		ISerialize serial = new Hessian2Serialize();
 		byte[] barray = serial.serialize(str);
 		// 此处模拟数据失真，故意只截取序列化结果中的一部分数据
 		byte[] copy = new byte[barray.length - 5];

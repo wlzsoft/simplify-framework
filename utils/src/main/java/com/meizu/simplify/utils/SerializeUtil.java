@@ -18,7 +18,7 @@ import com.meizu.simplify.utils.serial.ISerialize;
  */
 public class SerializeUtil {
 
-	private static ISerialize<Object> serial = new FstSerialize<Object>();
+	private static ISerialize serial = new FstSerialize();
 	/**
 	 * 
 	 * 方法用途: 序列化<br>
