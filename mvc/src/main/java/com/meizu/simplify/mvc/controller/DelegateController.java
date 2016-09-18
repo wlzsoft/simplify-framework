@@ -105,6 +105,8 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);
+		} catch(Exception ex) {
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, ex,config,jsonResolver);
 		}
 		
 	}

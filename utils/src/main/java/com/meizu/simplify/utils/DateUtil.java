@@ -269,8 +269,9 @@ public class DateUtil {
     
     /**
      * 方法用途: 获取当天是周几<br>
-     * 操作步骤: TODO<br>
+     * 操作步骤: <br>
      * @return 周几  sunday,monday,tuesday,wednesday,thursday,friday,saturday
+     * @author wanghaibin 更改周日返回0改为7
      */
     public static int getWeekByToday(){
     	int daynum = getDayOfWeekByToday();
@@ -384,6 +385,28 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 方法用途: 获取某周的周一对应的日期<br>
+	 * 操作步骤: TODO未测试<br>
+	 * @param weekCount 0 本周 1下周 n下n周
+	 * @return 周一对应的日期
+	 * @author wanghb 20160918
+	 */
+	public static Date getDayOfChinaWeek(int weekCount){
+		int i=getWeekByToday();
+		if(i==7){
+			weekCount-=1;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.WEEK_OF_YEAR, weekCount);
+		calendar.set(Calendar.MILLISECOND,0);
+		calendar.set(Calendar.SECOND,0);
+		calendar.set(Calendar.MINUTE,0);
+		calendar.set(Calendar.HOUR_OF_DAY,0);
+		calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+		return calendar.getTime();
+	}
+	
+	/**
 	 * 方法用途: 在某天的基础上增加几天或减少几天<br>
 	 * 操作步骤: TODO<br>
 	 * @param sDate
@@ -452,7 +475,7 @@ public class DateUtil {
 	 * @author wanghb 20160810
 	 */
 	public static String[] getNextDateRangeOfWeek() {
-		Date curDate = getDayOfWeek(1);
+		Date curDate = getDayOfChinaWeek(1);
 		Date fisrtDate = getFirstDayOfWeek(curDate);
 		String fisrtDateStr = format(fisrtDate,DateFormatEnum.YEAR_TO_DAY);
 		Date endDate = addDay(fisrtDate, 6);
@@ -683,9 +706,9 @@ public class DateUtil {
 	}
 	
 	public static void main(String[] args) {
-		Date startDate=DateUtil.parse("2016-09-08 11:35:08");
-		Date endDate=DateUtil.parse("2016-09-08 12:40:00");
-		System.out.println(getMinuteSpace(startDate,endDate));
+		Date startDate=startDate = DateUtil.getDayOfChinaWeek(1);
+		Date endDate=DateUtil.addDay(startDate, 6);
+		System.out.println(DateUtil.format(startDate, DateFormatEnum.YEAR_TO_MINUTE)+","+DateUtil.format(endDate, DateFormatEnum.YEAR_TO_MINUTE));
 	}
 	
 }

@@ -85,6 +85,7 @@ public class MappingExceptionResolver {
 //	                     指定默认的返回码，默认是200
 //		    setDefaultStatusCode("500");
 			response.setStatus(500);
+			LOGGER.error("error:"+exceptionMessage);
 		}
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 		if(requestUrl.endsWith(".json")) {
