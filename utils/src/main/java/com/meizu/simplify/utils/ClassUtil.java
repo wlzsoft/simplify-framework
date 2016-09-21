@@ -153,6 +153,9 @@ public class ClassUtil {
 		
 		String packageNamesStr = CollectionUtil.listToStringBySplit(packageNames, "", "",",");
 		if(isCache) {//缓存集合
+			if(classNameListMap == null) {
+				classNameListMap = new ConcurrentHashMap<>();
+			}
 			if(CollectionUtil.isNotEmpty(classNameListMap)) {
 				 List<String> list = classNameListMap.get(packageNamesStr);
 				 if(CollectionUtil.isNotEmpty(list)) {
