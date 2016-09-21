@@ -2,6 +2,7 @@ package com.meizu.simplify.codegen;
 import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import com.meizu.simplify.config.info.Message;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.mvc.invoke.IModelSelector;
 <%for(tag in tagList){%>
@@ -38,6 +39,14 @@ public class GenModelSelector implements IModelSelector{
 				break;
 			}
 			<%}%>
+			default : {
+				try {
+					model = modelClass.newInstance();
+				} catch (InstantiationException | IllegalAccessException e) {
+					e.printStackTrace();
+					throw new UncheckedException(e);
+				}
+			}
 		}
 		Method[] modelMethodArr = modelClass.getMethods();
 		for (int i = 0; i < modelMethodArr.length; i++) {

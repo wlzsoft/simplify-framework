@@ -309,18 +309,32 @@ public class CollectionUtil {
 	 * @param splitStr 指定分隔的字符
 	 * @return
 	 */
-	public static String listToStringBySplit(List<String> types, String appendLeft, String appendRight,
+	public static String listToStringBySplit(String[] types, String appendLeft, String appendRight,
 			String splitStr) {
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < types.size(); i++) {
-			if (i > 0 && i < types.size()) {
+		for (int i = 0; i < types.length; i++) {
+			if (i > 0 && i < types.length) {
 				sb.append(splitStr);
 			}
-			sb.append(appendLeft + types.get(i) + appendRight);
+			sb.append(appendLeft + types[i] + appendRight);
 		}
 		return sb.toString();
 	}
 
+	/**
+	 * 方法用途: 字符串集合转字符串<br>
+	 * 操作步骤: 为给定字符串集合的值的两遍添加上指定字符，并转化成字符串，以指定字符分隔<br>
+	 * @param types
+	 * @param appendLeft 在每个值的左边加上字符,例如单引号' 例如双引号" 例如百分号%
+	 * @param appendRight 在每个值的右边加上字符,例如单引号' 例如双引号" 例如百分号%
+	 * @param splitStr 指定分隔的字符
+	 * @return
+	 */
+	public static String listToStringBySplit(List<String> types, String appendLeft, String appendRight,String splitStr) {
+		String[] typeArr = new String[types.size()];
+		return listToStringBySplit(typeArr, appendLeft, appendRight, splitStr);
+	}
+	
 	/**
 	 * 方法用途: 字符串集合转字符串<br>
 	 * 操作步骤: 为给定字符串集合的值的两遍添加上指定字符，并转化成字符串，以逗号分隔<br>

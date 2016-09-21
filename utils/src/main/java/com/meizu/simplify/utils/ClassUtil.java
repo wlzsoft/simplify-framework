@@ -9,6 +9,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -129,15 +131,15 @@ public class ClassUtil {
 	/**
 	 * 缓存classNames的集合
 	 */
-	private static List<String> classNameList;
+	private static Map<String,List<String>> classNameListMap = new ConcurrentHashMap<>();
 	
 	/**
 	 * 方法用途: 清楚类名集合的缓存记录，并设置类名集合的引用为空<br>
 	 * 操作步骤: TODO<br>
 	 */
 	public static void clearClassNameList() {
-		classNameList.clear();
-		classNameList = null;
+		classNameListMap.clear();
+		classNameListMap = null;
 	}
 	/**
 	 * 
@@ -149,14 +151,18 @@ public class ClassUtil {
 	 */
 	private static List<String> findClassNames(boolean isCache,String... packageNames) {
 		
+		String packageNamesStr = CollectionUtil.listToStringBySplit(packageNames, "", "",",");
 		if(isCache) {//缓存集合
-			if(CollectionUtil.isNotEmpty(classNameList)) {
-				return classNameList;
+			if(CollectionUtil.isNotEmpty(classNameListMap)) {
+				 List<String> list = classNameListMap.get(packageNamesStr);
+				 if(CollectionUtil.isNotEmpty(list)) {
+					 return list;
+				 }
 			}
 		}
 		List<String> classNames = new ArrayList<>();
-		try {
-			for (String packageName : packageNames) {
+		for (String packageName : packageNames) {
+			try {
 				String packagePath = packageName.replace(".", SpecialCharacterEnum.BACKSLASH.toString());
 				Enumeration<URL> packageUrls = Thread.currentThread()
 						.getContextClassLoader().getResources(packagePath);
@@ -170,14 +176,15 @@ public class ClassUtil {
 								packageName));
 					}
 				}
+			} catch (Exception e) {
+				LOGGER.error("获取指定包下类名集合时发生异常。"+e.getMessage());
+//					throw new UncheckedException("获取指定包下类名集合时发生异常。", e);
 			}
-		} catch (Exception e) {
-			throw new UncheckedException("获取指定包下类名集合时发生异常。", e);
+		}
+		if(isCache) {//缓存集合
+			classNameListMap.put(packageNamesStr, classNames);
 		}
 		
-		if(isCache) {//缓存集合
-			classNameList = classNames;
-		}
 		return classNames;
 	}
 
