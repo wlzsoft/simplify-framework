@@ -1,10 +1,5 @@
 package com.meizu.simplify.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -13,11 +8,10 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
-import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.Startup;
 
 /**
-  * <p><b>Title:</b><i>针对entity实体对应的dao的测试</i></p>
+  * <p><b>Title:</b><i>针对无entity的dao的测试</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -30,7 +24,7 @@ import com.meizu.simplify.ioc.Startup;
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class DaoTest {
+public class DaoSimpleTest {
 
 	private static Integer key;
 	@BeforeClass
@@ -40,22 +34,17 @@ public class DaoTest {
 	
 	@Before
 	public void s1_insertTest() {
-		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setName("卢创业");
-		t.setCreateId(1);
-		t.setUpdateId(1);
-		t.setCreateTime(new Date());
-		t.setUpdateTime(new Date());
-		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
-		System.out.println("saveGenId:"+t.getFid());
-		key = t.getFid();
+		Integer id = BaseDao.getTable("test_web").transiented("delFlag","deleteflag").save("");
+		System.out.println("saveGenId:"+id);
+		key = id;
+		System.out.println(key);
 	}
 	
 	@Test
 	public void getIdNameTest() {
-		Assert.assertEquals("fid", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getIdName());
+//		Assert.assertEquals("fid", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getIdName());
 	}
-	
+	/*
 	@Test
 	public void getIdValTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
@@ -246,12 +235,6 @@ public class DaoTest {
 		for (com.meizu.simplify.dao.entity.Test test : list) {
 			System.out.println(test.getFid()+test.getName());
 		}
-	}
-	@Test
-	public void s10_findByPojoTest() {
-		com.meizu.simplify.dao.entity.Test test = BaseDao.getInsPojo().find(com.meizu.simplify.dao.entity.Test.class, "select fid,name from test_web").get(0);
-		System.out.println(test.getName());
-	}
-	
+	}*/
 	
 }

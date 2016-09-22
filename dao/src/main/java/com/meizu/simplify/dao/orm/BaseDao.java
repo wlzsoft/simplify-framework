@@ -83,4 +83,18 @@ public class BaseDao  {
 		return dao;
 	}
 
+	/**
+	 * 方法用途: 直接通过表名对数据库进行操作，无需实体<br>
+	 * 操作步骤: TODO<br>
+	 * @param tableName 表名
+	 * @return
+	 */
+	public static ExecByTableNameDao getTable(String tableName) {
+		ExecByTableNameDao dao = BeanFactory.getBean(ExecByTableNameDao.class);
+		if(dao == null) {
+			throw new UncheckedException("无法获取到"+"ExecByTableNameDao"+"实体对应的dao[tableNameDao]");
+		}
+		return dao;
+	}
+
 }
