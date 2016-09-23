@@ -1,6 +1,7 @@
 package com.meizu.simplify.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class DaoComplexTest {
 	}
 	@Test
 	public void s2_findByWhereTest() {
-//		List<com.meizu.simplify.dao.entity.Test> testlist = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).where("name","lcy").list();
+//		List<com.meizu.simplify.dao.entity.Test> testlist = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).where("name","lcy").findAll();
 //		System.out.println(testlist);
 	}
 	@Test

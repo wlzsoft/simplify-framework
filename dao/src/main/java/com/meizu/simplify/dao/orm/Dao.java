@@ -622,9 +622,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param value
 	 * @return
 	 */
-	public Query<T> where(String name, Object value) {
+	public Dao<T,PK> where(String name, Object value) {
 //		createQuery(sql, params);
-		return null;
+		return this;
 	}
 	
 	
