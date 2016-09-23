@@ -74,12 +74,16 @@ public class SearchByMapDao {
 		return SQLExecute.executeUpdate(sql, params);
 	}
 
-	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
+	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,boolean isReturnLastPage,Object... params) {
 		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
 		countSql = countSql.toLowerCase().replaceAll("order\\s*by.*(desc|asc)", "");
-		Page<Map<String,Object>> page = new Page<>(currentPage, pageSize, count("select count(1) "+countSql,params),true);
+		Page<Map<String,Object>> page = new Page<>(currentPage, pageSize, count("select count(1) "+countSql,params),isReturnLastPage);
 		List<Map<String,Object>> mapList = find(sql,params);
 		page.setResults(mapList);
 		return page;
+	}
+	
+	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
+		return findPage(currentPage, pageSize, sql, true, params);
 	}
 }

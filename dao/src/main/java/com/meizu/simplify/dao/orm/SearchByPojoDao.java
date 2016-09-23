@@ -92,15 +92,16 @@ public class SearchByPojoDao {
 	 * @param currentPage
 	 * @param pageSize
 	 * @param sql
+	 * @param isReturnLastPage 
 	 * @param params
 	 * @author Geny
 	 * @return
 	 */
-	public <T> Page<T> findPage(Class<T> entityClass, Integer currentPage, Integer pageSize, String sql, Object... params) {
+	public <T> Page<T> findPage(Class<T> entityClass, Integer currentPage, Integer pageSize, String sql,boolean isReturnLastPage, Object... params) {
 		String countSql = sql.substring(sql.indexOf("from"));
 		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
 		Page<T> page = new Page<T>(currentPage, pageSize,
-				BaseDao.getInsMap().count("select count(1) " + countSql, params), true);
+				BaseDao.getInsMap().count("select count(1) " + countSql, params), isReturnLastPage);
 
 		if (pageSize != null) {
 			sql += " limit " + page.getCurrentRecord() + "," + pageSize;
@@ -109,5 +110,21 @@ public class SearchByPojoDao {
 		List<T> tList = find(entityClass, sql, params);
 		page.setResults(tList);
 		return page;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 分页查询-普通pojo(针对非数据库映射表实体)<br>
+	 * 操作步骤: TODO<br>
+	 * @param entityClass
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sql
+	 * @param params
+	 * @author Geny
+	 * @return
+	 */
+	public <T> Page<T> findPage(Class<T> entityClass, Integer currentPage, Integer pageSize, String sql, Object... params) {
+		return findPage(entityClass, currentPage, pageSize, sql, true, params);
 	}
 }

@@ -700,8 +700,42 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param params
 	 * @return
 	 */
+	public Page<T> findPage(int currentPage,int pageSize,boolean isReturnLastPage,T params) {
+		Page<T> page = findPage(currentPage,pageSize,null,null, isReturnLastPage,params);
+		return page;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 分页-不知排序<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param params
+	 * @return
+	 */
 	public Page<T> findPage(int currentPage,int pageSize,T params) {
-		Page<T> page = findPage(currentPage,pageSize,null,null, params);
+		return findPage(currentPage, pageSize, true, params);
+	}
+	
+	/**
+	 * 方法用途: 分页查询-支持排序<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage 当前页码
+	 * @param pageSize 每页数据个数
+	 * @param sort 排序字段名
+	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
+	 * @param params 查询参数
+	 * @param isReturnLastPage 是否返回最后一页
+	 * @return 查询结果分页数据
+	 */
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,boolean isReturnLastPage,T params) {
+		if(pageSize == null || pageSize == 0) {//bug修复，避免忘传pageSize导致的错误
+			pageSize = 20;
+		}
+		Page<T> page = new Page<T>(currentPage,pageSize,count(params), isReturnLastPage);
+		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
+		page.setResults(list);
 		return page;
 	}
 	
@@ -716,15 +750,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @return 查询结果分页数据
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,T params) {
-		if(pageSize == null || pageSize == 0) {//bug修复，避免忘传pageSize导致的错误
-			pageSize = 20;
-		}
-		Page<T> page = new Page<T>(currentPage,pageSize,count(params), true);
-		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
-		page.setResults(list);
-		return page;
+		return findPage(currentPage, pageSize, sort, isDesc, true, params);
 	}
-	
 	
 	/**
 	 * 
@@ -754,16 +781,30 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param currentPage
 	 * @param pageSize
 	 * @param sql
+	 * @param isReturnLastPage 是否返回第一页
+	 * @param params
+	 * @return 分页数据实体
+	 */
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sql,boolean isReturnLastPage,Object... params) {
+		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
+		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
+		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count("select count(1) "+countSql,params),isReturnLastPage);
+		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
+		page.setResults(list);
+		return page;
+	}
+	/**
+	 * 
+	 * 方法用途: 基于这个方法，再次封装，提供更简便的多表分页查询<br>
+	 * 操作步骤: sql通过 druid sqlparser 来解析<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sql
 	 * @param params
 	 * @return 分页数据实体
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
-		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
-		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count("select count(1) "+countSql,params),true);
-		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
-		page.setResults(list);
-		return page;
+		return findPage(currentPage, pageSize, sql, true, params);
 	}
 	
 	/**

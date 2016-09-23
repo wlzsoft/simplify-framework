@@ -69,7 +69,7 @@ public class DateUtilTest {
 	 */
 	@Test
 	public void getWeekTime(){
-		System.out.println(DateUtil.format(DateUtil.getDayOfWeek(0)));
+		System.out.println(DateUtil.format(DateUtil.getDayOfChinaWeek(0)));
 	}
 	@Test
 	public void addDay(){
