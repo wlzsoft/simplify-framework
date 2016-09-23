@@ -275,8 +275,9 @@ public class SQLBuilder<T> {
             	}
             }
         }
-        //logger.info("生成的SQL为: " + sql);
-        return sql+" where "+value;
+        sql = sql+" where "+value;
+        logger.info("生成的SQL为: " + sql);
+        return sql;
     }
      
      

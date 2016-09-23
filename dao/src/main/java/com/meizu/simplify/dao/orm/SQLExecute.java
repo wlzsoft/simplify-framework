@@ -179,11 +179,11 @@ public class SQLExecute {
 	 * @param callback
 	 * @return
 	 */
-	public static Integer executeInsert(String sql,IDataCallback<Integer> callback) {
+	public static Integer executeInsert(String sql,IDataCallback<Integer> callback,Object... params) {
 		PreparedStatement prepareStatement = null;
 		try {
 			prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-			callback.paramCall(prepareStatement);
+			callback.paramCall(prepareStatement,params);
 			Integer resultCount = prepareStatement.executeUpdate();
 			if(resultCount < 1) {
 				throw new BaseDaoException("执行sql异常:保存数据库失败");

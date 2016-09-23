@@ -182,7 +182,7 @@ public class DaoTest {
 	
 	@Test
 	public void s5_deleteTest() {
-		//中文编码问题，无法正常删除
+		//中文编码问题，无法正常删除-->已经解决：由于jdbc的连接的编码属性设置有问题，修改jdbc驱动连接的配置信息就可以了。
 		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("url", "geny测试"));
 	}
 	
