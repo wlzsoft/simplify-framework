@@ -533,7 +533,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 *考虑是否提供这个功能 TODO 
 	 */
 	@Override
-	public T findUnique(Query criteria) {
+	public T findUnique(Query<T> criteria) {
 //		return findUnique(name,value);
 		return criteria.uniqueResult();
 	}
@@ -615,6 +615,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return find(sqlBuilder.findBy(dto.getWhereName())+orderby,dto.getWhereValues());
 	}
 	
+	/**
+	 * 方法用途: where条件设置<br>
+	 * 操作步骤: TODO暂未实现<br>
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public Dao<T,PK> where(String name, Object value) {
+//		createQuery(sql, params);
+		return this;
+	}
+	
 	
 	//--------------------------------查询分页操作-----------------------------------------------------------
 	
@@ -632,7 +644,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public List<? extends IdEntity<Serializable,Integer>> query(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		Query query = createQuery(sql, dto.getWhereValues());
+		Query<T> query = createQuery(sql, dto.getWhereValues());
 		query.add(WhereDTO.eq("1", "1"));//
 		
 		List<? extends IdEntity<Serializable,Integer>> list = query.setSortName(sort).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
@@ -640,10 +652,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 	}
 	
-	private Query createQuery(String sql, Object... params) {
+	private Query<T> createQuery(String sql, Object... params) {
 		@SuppressWarnings("unchecked")
-		Dao<? extends IdEntity<Serializable,Integer>, Serializable> dao =  (Dao<? extends IdEntity<Serializable, Integer>, Serializable>) this;
-		Query query = new Query(dao,sql,params);
+		Dao<T, Serializable> dao =  (Dao<T, Serializable>) this;
+		Query<T> query = new Query<>(dao,sql,params);
 		return query;
 	}
 	
@@ -868,8 +880,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		// TODO Auto-generated method stub
 		
 	}
-
-
 	
 //	@Resource
 //	private BuildInfo<T> buildInfo;

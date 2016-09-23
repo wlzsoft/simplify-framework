@@ -41,7 +41,7 @@ public class StartUpListener implements ServletContextListener,ServletContextAtt
 			IListenerHandler handler = (IListenerHandler) BeanFactory.getBean(listenerHandlerList.get(0));
 			handler.handle(sce);
 		}
-		
+		ClassUtil.clearClassNameList();
 	}
 
 	@Override

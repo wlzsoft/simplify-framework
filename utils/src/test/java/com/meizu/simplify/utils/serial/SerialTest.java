@@ -48,13 +48,24 @@ public class SerialTest {
 		StressTestUtils.testAndPrint(1000, 10000, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
-				ISerialize<User> serial = new DefaultSerialize<>();
+				ISerialize serial = new DefaultSerialize();
 				byte barray[] = serial.serialize(usr);
 				User object = serial.unserialize(barray);
 				System.out.println(object);
 				return null;
 			}
 		});
+		
+	}
+	
+	@Test
+	public void testJDK() {
+		ISerialize serial = new DefaultSerialize();
+		byte barray[] = serial.serialize("A82F7B6F9308AE4BB165CD03579DD7E3");
+//		[-84, -19, 0, 5, 116, 0, 32, 65, 56, 50, 70, 55, 66, 54, 70, 57, 51, 48, 56, 65, 69, 52, 66, 66, 49, 54, 53, 67, 68, 48, 51, 53, 55, 57, 68, 68, 55, 69, 51]
+//		[-84, -19, 0, 5, 116, 0, 32, 65, 56, 50, 70, 55, 66, 54, 70, 57, 51, 48, 56, 65, 69, 52, 66, 66, 49, 54, 53, 67, 68, 48, 51, 53, 55, 57, 68, 68, 55, 69, 51]
+		String object = serial.unserialize(barray);
+		System.out.println(object);
 		
 	}
 	
@@ -84,7 +95,7 @@ public class SerialTest {
 	    System.out.println("序列化 ， 反序列化 对比测试：");
 	    long size = 0;
 	    long time1 = System.currentTimeMillis();
-	    ISerialize<User> serial = new DefaultSerialize<>();
+	    ISerialize serial = new DefaultSerialize();
 	    for (int i = 0; i < 10000; i++) {
 	      byte[] jdkserialize = serial.serialize(bean);
 	      size += jdkserialize.length;
@@ -95,7 +106,7 @@ public class SerialTest {
 
 	    size = 0;
 	    long time2 = System.currentTimeMillis();
-	    serial = new FstSerialize<>();
+	    serial = new FstSerialize();
 	    for (int i = 0; i < 10000; i++) {
 	      byte[] serialize = serial.serialize(bean);
 	      size += serialize.length;
@@ -107,7 +118,7 @@ public class SerialTest {
 	    
 	    size = 0;
 	    long time3 = System.currentTimeMillis();
-	    serial = new KryoSerialize<>();
+	    serial = new KryoSerialize();
 	    for (int i = 0; i < 10000; i++) {
 	      byte[] serialize = serial.serialize(bean);
 	      size += serialize.length;
@@ -119,7 +130,7 @@ public class SerialTest {
 	    
 	    size = 0;
 	    long time4 = System.currentTimeMillis();
-	    ISerialize<User> serial2 = new Hessian2Serialize<>();
+	    ISerialize serial2 = new Hessian2Serialize();
 	    for (int i = 0; i < 10000; i++) {
 	      byte[] serialize = serial2.serialize(bean);
 	      size += serialize.length;

@@ -1,11 +1,7 @@
 package com.meizu.simplify.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -13,11 +9,10 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.meizu.simplify.dao.orm.BaseDao;
-import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.Startup;
 
 /**
-  * <p><b>Title:</b><i>针对entity实体对应的dao的测试</i></p>
+  * <p><b>Title:</b><i>针对无entity的dao的测试</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -30,7 +25,7 @@ import com.meizu.simplify.ioc.Startup;
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class DaoTest {
+public class DaoSimpleTest {
 
 	private static Integer key;
 	@BeforeClass
@@ -40,44 +35,19 @@ public class DaoTest {
 	
 	@Before
 	public void s1_insertTest() {
-		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setName("卢创业");
-		t.setCreateId(1);
-		t.setUpdateId(1);
-		t.setCreateTime(new Date());
-		t.setUpdateTime(new Date());
-		System.out.println("save============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(t));
-		System.out.println("saveGenId:"+t.getFid());
-		key = t.getFid();
-	}
-	
-	@Test
-	public void getIdNameTest() {
-		Assert.assertEquals("fid", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getIdName());
-	}
-	
-	@Test
-	public void getIdValTest() {
-		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setFid(1);//必须设置id的值
-		t.setName("lcy");
-		t.setCreateId(1);
-		t.setUpdateId(1);
-		t.setCreateTime(new Date());
-		t.setUpdateTime(new Date());
-		@SuppressWarnings("deprecation")
-		Integer key = (Integer) BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getId(t);
+		Integer id = BaseDao.getTable().transiented("delFlag","deleteflag").save("test_web","name","lcy","createId",1,"updateId",1,"createTime",new Date(),"updateTime",new Date());
+		System.out.println("saveGenId:"+id);
+		key = id;
 		System.out.println(key);
-		Assert.assertTrue(key>0);
 	}
 	
-	
-	
-	@Test
+	/*@Test
 	public void s2_findUniqueTest() {
-		Assert.assertEquals("lcy", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findUnique("name","lcy").getName());
-	}
+		Assert.assertEquals("lcy", "lcy");
+		BaseDao.getTable().findUnique("name","lcy");//.getName();
+	}*/
 	
+	/*
 	@Test
 	public void s2_findByIdsTest() {
 		Integer[] ids = new Integer[]{1,2,3};
@@ -105,10 +75,10 @@ public class DaoTest {
 	public void s2_findAllTest() {
 		Assert.assertTrue(BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findAll().size()>0);
 	}
-	/*@Test
+	@Test
 	public void s2_findPageSqlTest() {
 		@SuppressWarnings("deprecation")
-		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from test_web where name=?",true,"lcy");
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from test_web where name=?","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
@@ -116,7 +86,7 @@ public class DaoTest {
 		@SuppressWarnings("deprecation")
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
-	}*/
+	}
 	@Test
 	public void s2_findPageMutilSql2Test() {
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc) as temp","lcy");
@@ -126,28 +96,6 @@ public class DaoTest {
 	public void s2_findPageMutilSql3Test() {
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
-	}
-	@Test
-	public void s2_findPageMutilSql4Test() {
-		Page<Map<String,Object>> page = BaseDao.getInsMap().findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
-		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
-	}
-	@Test
-	public void s2_findPageMutilSqlSubStringTest() {
- String sql = "select * from test_web where name=?";
-		sql = sql.substring(sql.indexOf("from"));
-		System.out.println("select count(1) "+sql);
-		sql = "select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp";
-		sql = sql.substring(sql.indexOf("from"));
-		System.out.println("select count(1) "+sql);
-		sql = "select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc) as temp";
-		sql = sql.substring(sql.indexOf("from"));
-		sql = sql.replaceAll("order\\s*by.*(desc|asc)", "");
-		System.out.println("select count(1) "+sql);
-		sql = "select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc";
-		sql = sql.substring(sql.indexOf("from"));
-		sql = sql.replaceAll("order\\s*by.*(desc|asc)", "");
-		System.out.println("select count(1) "+sql);
 	}
 	@Test
 	public void s2_findPageTest() {
@@ -167,41 +115,13 @@ public class DaoTest {
 	public void s2_findByTest() {
 		Assert.assertTrue(BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findBy("name","lcy").size()>0);
 	}
-	
+	*/
 	@Test
 	public void s3_deleteTest() {
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(key));
+		System.out.println("delete============================="+BaseDao.getTable().transiented("delFlag","deleteflag").remove("test_web","fid",key));
 	}
+	/*
 	
-	@Test
-	public void s4_deleteTest() {
-		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-		t.setFid(918);
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(t));
-	}
-	
-	@Test
-	public void s5_deleteTest() {
-		//中文编码问题，无法正常删除-->已经解决：由于jdbc的连接的编码属性设置有问题，修改jdbc驱动连接的配置信息就可以了。
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("url", "geny测试"));
-	}
-	
-	@Test
-	public void s6_insertTest() {
-		
-		List<com.meizu.simplify.dao.entity.Test> testList = new ArrayList<>();
-		for(int i=0; i<4; i++) {
-			com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
-			t.setName("lcy"+i);
-			t.setCreateId(1);
-			t.setUpdateId(1);
-			t.setCreateTime(new Date());
-			t.setUpdateTime(new Date());
-			testList.add(t);
-		}
-		BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).save(testList);
-		System.out.println("save==all=============================");
-	}
 	@Test
 	public void s6_updateTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
@@ -215,13 +135,13 @@ public class DaoTest {
 		t.setName("lcycc2");
 		t.setFid(1);
 		System.out.println("update2==============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).update(t,false));
-	}
+	}*/
 	@Test
 	public void s7_deleteTest() {
-		Integer[] ids = new Integer[] {901,902,903,904,905};
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove(ids));
+		Object[] ids = new Object[] {901,902,903,904,905,1828,1827};
+		System.out.println("delete============================="+BaseDao.getTable().transiented("delFlag","deleteflag").remove("test_web","fid",ids));
 	}
-	
+	/*
 	@Test
 	public void s8_countTest2() {
 		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","awsesdf"));
@@ -246,12 +166,6 @@ public class DaoTest {
 		for (com.meizu.simplify.dao.entity.Test test : list) {
 			System.out.println(test.getFid()+test.getName());
 		}
-	}
-	@Test
-	public void s10_findByPojoTest() {
-		com.meizu.simplify.dao.entity.Test test = BaseDao.getInsPojo().find(com.meizu.simplify.dao.entity.Test.class, "select fid,name from test_web").get(0);
-		System.out.println(test.getName());
-	}
-	
+	}*/
 	
 }

@@ -66,6 +66,20 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	}
 	
 	/**
+	 * 方法用途: 返回值 <br>
+	 * 操作步骤: <br>
+	 * @param key  保存键
+	 * @return 缓存保存的对象
+	 */
+	public byte[] getBytes(byte[] key) {
+
+		return CacheExecute.execute(key, (k,jedis) ->  {
+				byte[] ret = jedis.get(k);
+				return ret;
+		},modName);
+	}
+	
+	/**
 	 * 
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>

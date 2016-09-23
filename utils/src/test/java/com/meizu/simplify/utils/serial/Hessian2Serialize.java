@@ -22,7 +22,7 @@ import com.caucho.hessian.io.HessianOutput;
  * @version Version 0.1
  *
  */
-public class Hessian2Serialize<T> implements ISerialize<T>{
+public class Hessian2Serialize implements ISerialize{
 	
 	
 	@Override
@@ -42,7 +42,7 @@ public class Hessian2Serialize<T> implements ISerialize<T>{
 	
 	@SuppressWarnings("unchecked")
 	@Override	
-	public T unserialize(byte[] sec) {
+	public <D> D unserialize(byte[] sec) {
 		if(sec==null) {
 		 throw new NullPointerException();  
 		}
@@ -50,7 +50,7 @@ public class Hessian2Serialize<T> implements ISerialize<T>{
 	    HessianInput hi = new HessianInput(is);  
 	    try {
 			Object r = hi.readObject();
-			return (T) r;
+			return (D) r;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}  

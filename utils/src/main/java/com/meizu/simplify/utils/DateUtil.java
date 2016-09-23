@@ -647,6 +647,17 @@ public class DateUtil {
 		 return checkday.intValue();
 	}
 	/**
+	 * 方法用途: 计算两日期相差秒数<br>
+	 * 操作步骤: TODO<br>
+	 * @param beginDate
+	 * @param endDate
+	 */
+	public static Long getSecondSpace(Date beginDate,Date endDate) {
+		 Long checkday=0L; 
+		 checkday = (endDate.getTime()-beginDate.getTime())/(1000);
+		 return checkday;
+	}
+	/**
 	 * 方法用途: 计算两日期相差分钟<br>
 	 * 操作步骤: TODO<br>
 	 * @param beginDate

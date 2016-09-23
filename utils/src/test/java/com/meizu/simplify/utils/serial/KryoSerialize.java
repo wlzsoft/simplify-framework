@@ -18,14 +18,14 @@ import com.esotericsoftware.kryo.io.Output;
  * @version Version 0.1
  *
  */
-public class KryoSerialize<T> implements ISerialize<T>{
+public class KryoSerialize implements ISerialize{
 
 	public KryoSerialize() {
 	}
 	static Kryo kryo = new Kryo();
 
 	@Override
-	public  byte[] serialize(T obj) {
+	public  byte[] serialize(Object obj) {
 		Kryo kryo = new Kryo();
 		byte[] buffer = new byte[2048];
 		try (Output output = new Output(buffer);) {
@@ -40,9 +40,9 @@ public class KryoSerialize<T> implements ISerialize<T>{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public  T unserialize(byte[] src) {
+	public <D> D unserialize(byte[] src) {
 		try (Input input = new Input(src);) {
-			return (T) kryo.readClassAndObject(input);
+			return (D) kryo.readClassAndObject(input);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
