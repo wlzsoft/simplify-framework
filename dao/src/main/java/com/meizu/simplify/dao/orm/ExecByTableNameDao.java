@@ -1,7 +1,5 @@
 package com.meizu.simplify.dao.orm;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +143,7 @@ public class ExecByTableNameDao {
 	 * @param value 属性值
 	 * @return 返回指定唯一的业务实体，如果没有找到则返回null。
 	 */
-	public Query findUnique(String name, Object value) {
+	public Query<?> findUnique(String name, Object value) {
 		return null;
 	}
 	

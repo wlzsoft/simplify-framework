@@ -20,7 +20,7 @@ import com.meizu.simplify.entity.IdEntity;
  * @version Version 0.1
  *
  */
-public class Query {
+public class Query<T extends IdEntity<Serializable,Integer>> {
 
 	private String sql;
 	private Object[] params;
@@ -28,29 +28,29 @@ public class Query {
 	private String sortMethod;
 	private int currentRecord;
 	private int pageSize;
-	private Dao<? extends IdEntity<Serializable,Integer>, Serializable> dao;
-	public Query(Dao<? extends IdEntity<Serializable,Integer>, Serializable> dao,String sql, Object... params) {
+	private Dao<T, Serializable> dao;
+	public Query(Dao<T, Serializable> dao,String sql, Object... params) {
 		this.sql = sql;
 		this.params = params;
 		this.dao = dao;
 	}
 
-	public Query setCurrentRecord(int currentRecord) {
+	public Query<T> setCurrentRecord(int currentRecord) {
 		this.currentRecord = currentRecord;
 		return this;
 	}
 
-	public Query setPageSize(int pageSize) {
+	public Query<T> setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 		return this;
 	}
 	
-	public Query setSortName(String sortName) {
+	public Query<T> setSortName(String sortName) {
 		this.sortName = sortName;
 		return this;
 	}
 	
-	public Query setSortMethod(boolean isDesc) {
+	public Query<T> setSortMethod(boolean isDesc) {
 		if(isDesc) {
 			this.sortMethod = "desc";
 		} else {
@@ -59,12 +59,12 @@ public class Query {
 		return this;
 	}
 	
-	public <T extends IdEntity<Serializable,Integer>> List<? extends IdEntity<Serializable,Integer>> list() {
-		List<? extends IdEntity<Serializable,Integer>> list = dao.find(sql +" order by "+sortName +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,params);
+	public List<T> list() {
+		List<T> list = dao.find(sql +" order by "+sortName +" "+ sortMethod + " limit " +currentRecord+"," + pageSize,params);
 		return list;
 	}
 
-	public <T> T uniqueResult() {
+	public T uniqueResult() {
 		// TODO Auto-generated method stub
 		return null;
 	}

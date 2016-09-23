@@ -217,7 +217,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @param criteria 查询条件
 	 * @return  返回唯一业务实体，如果没有找到返回null。
 	 */
-	T findUnique(Query criteria);
+	T findUnique(Query<T> criteria);
 	
 	/**
 	 * 方法用途: 查询返回单个对象<br>
