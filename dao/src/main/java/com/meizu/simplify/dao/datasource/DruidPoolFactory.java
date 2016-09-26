@@ -132,7 +132,10 @@ public class DruidPoolFactory {
 	
 	
 	public static Connection getConnection()   {
-		Connection connection = null;
+		Connection connection = container.get();
+		if (connection != null) {
+			return connection;
+		}
 		try {
 			if (factory.dataSource != null)  {
 				connection = factory.dataSource.getConnection();
@@ -202,6 +205,7 @@ public class DruidPoolFactory {
 			Connection conn = container.get();
 			if (conn != null) {
 				conn.rollback();
+				LOGGER.info(Thread.currentThread().getName() + "事务已经回滚......");
 				container.remove();
 			}
 		} catch (Exception e) {

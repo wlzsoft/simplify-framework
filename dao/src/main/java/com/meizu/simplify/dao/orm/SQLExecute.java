@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.exception.UncheckedException;
@@ -27,6 +30,7 @@ import com.meizu.simplify.exception.UncheckedException;
  */
 public class SQLExecute {
 	
+	public static final Logger LOGGER = LoggerFactory.getLogger(SQLExecute.class);
 	/**
 	 * 
 	 * 方法用途: 执行delete，update 根据param的where条件来更新或是删除<br>
@@ -57,8 +61,9 @@ public class SQLExecute {
 	 */
 	public static Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
 		PreparedStatement prepareStatement = null;
+		Connection conn = DruidPoolFactory.getConnection();
 		try {
-			prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);
 			Integer rs = prepareStatement.executeUpdate();
 			return rs;
@@ -68,7 +73,15 @@ public class SQLExecute {
 			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,null);
-			DruidPoolFactory.close();
+			try {
+				if(conn.getAutoCommit()) {
+					DruidPoolFactory.close();
+				} else {
+					LOGGER.info("查询开启事务模式，无法关闭连接");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -81,8 +94,8 @@ public class SQLExecute {
 	 */
 	public static Integer executeUpdate(String sql) {
 		PreparedStatement prepareStatement = null;
+		Connection conn = DruidPoolFactory.getConnection();
 		try {
-			Connection conn = DruidPoolFactory.getConnection();
 			prepareStatement = conn.prepareStatement(sql);
 			Integer rs = prepareStatement.executeUpdate();
 			return rs;
@@ -92,7 +105,15 @@ public class SQLExecute {
 			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,null);
-			DruidPoolFactory.close();
+			try {
+				if(conn.getAutoCommit()) {
+					DruidPoolFactory.close();
+				} else {
+					LOGGER.info("查询开启事务模式，无法关闭连接");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -100,10 +121,11 @@ public class SQLExecute {
 	 * 方法用途: 释放资源<br>
 	 * 操作步骤: 注意：关闭PreparedStatement和ResultSet有性能消耗，没必要关闭，因为连接有连接池管理，但是另外两个确没有，并且跟着连接走，所以没必要关闭
 	 *           需要更进一步验证上面的理论,默认con关闭时会自动关闭ResultSet、Statement，连接池未必会<br>
+	 * @param conn
 	 * @param preparedStatement
 	 * @param rs
 	 */
-	public static void free(PreparedStatement preparedStatement,ResultSet rs){
+	public static void free(Connection conn,PreparedStatement preparedStatement,ResultSet rs){
 		try{
 			if(rs != null){
 				if(!rs.isClosed()) {
@@ -127,7 +149,15 @@ public class SQLExecute {
 				e.printStackTrace();
 				throw new BaseDaoException("preparedStatement关闭异常:"+e.getMessage());
 			}finally{
-				DruidPoolFactory.close();
+				try {
+					if(conn.getAutoCommit()) {
+						DruidPoolFactory.close();
+					} else {
+						LOGGER.info("查询开启事务模式，无法关闭连接");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 					
@@ -167,7 +197,15 @@ public class SQLExecute {
 			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		}finally{
 //			free(prepareStatement,rs);
-			DruidPoolFactory.close();
+			try {
+				if(conn.getAutoCommit()) {
+					DruidPoolFactory.close();
+				} else {
+					LOGGER.info("查询开启事务模式，无法关闭连接");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -181,8 +219,9 @@ public class SQLExecute {
 	 */
 	public static Integer executeInsert(String sql,IDataCallback<Integer> callback,Object... params) {
 		PreparedStatement prepareStatement = null;
+		Connection conn = DruidPoolFactory.getConnection();
 		try {
-			prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+			prepareStatement = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			callback.paramCall(prepareStatement,params);
 			Integer resultCount = prepareStatement.executeUpdate();
 			if(resultCount < 1) {
@@ -205,7 +244,15 @@ public class SQLExecute {
 			e.printStackTrace();
 		} finally {
 //			free(prepareStatement,null);
-			DruidPoolFactory.close();
+			try {
+				if(conn.getAutoCommit()) {
+					DruidPoolFactory.close();
+				} else {
+					LOGGER.info("查询开启事务模式，无法关闭连接");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		System.err.println("注意：sql执行正常，但是无法获取主键的自增id的值，请确认是否设置数据库中指定表的主键");
 		return null;
@@ -239,8 +286,9 @@ public class SQLExecute {
 		List<B> bList= new ArrayList<B>();
 		PreparedStatement prepareStatement = null;
 		ResultSet rs = null;
+		Connection conn = DruidPoolFactory.getConnection();
 		try {
-			prepareStatement = DruidPoolFactory.getConnection().prepareStatement(sql);
+			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);
 			rs = prepareStatement.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
@@ -258,7 +306,15 @@ public class SQLExecute {
 			throw new BaseDaoException("执行sql异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,rs);
-			DruidPoolFactory.close();
+			try {
+				if(conn.getAutoCommit()) {
+					DruidPoolFactory.close();
+				} else {
+					LOGGER.info("查询开启事务模式，无法关闭连接");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return bList;
 	}
