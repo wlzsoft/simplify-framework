@@ -186,6 +186,7 @@ public class DruidPoolFactory {
 			Connection conn = container.get();
 			if (null != conn) {
 				conn.commit();
+				conn.setAutoCommit(true);//开启事务自动提交，无需干预
 				LOGGER.info(Thread.currentThread().getName() + "事务已经提交......");
 			}
 		} catch (Exception e) {
