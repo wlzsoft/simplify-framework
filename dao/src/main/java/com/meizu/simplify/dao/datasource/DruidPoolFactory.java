@@ -182,11 +182,27 @@ public class DruidPoolFactory {
 	 * 操作步骤: TODO<br>
 	 */
 	public static void commit() {
+		commit(null);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 提交事务<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static void commit(Integer transactionISO) {
 		try {
 			Connection conn = container.get();
 			if (null != conn) {
 				conn.commit();
 				conn.setAutoCommit(true);//开启事务自动提交，无需干预
+				if(transactionISO!=null) {
+					try {
+						conn.setTransactionIsolation(transactionISO);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 				LOGGER.info(Thread.currentThread().getName() + "事务已经提交......");
 			}
 		} catch (Exception e) {
