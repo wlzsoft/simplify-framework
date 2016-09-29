@@ -211,17 +211,32 @@ public class DruidPoolFactory {
 			close();
 		}
 	}
-
 	/**
 	 * 
 	 * 方法用途: 回滚事务<br>
 	 * 操作步骤: TODO<br>
 	 */
 	public static void rollback() {
+		rollback(null);
+	}
+	/**
+	 * 
+	 * 方法用途: 回滚事务<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static void rollback(Integer transactionISO) {
 		try {
 			Connection conn = container.get();
 			if (conn != null) {
 				conn.rollback();
+				conn.setAutoCommit(true);//开启事务自动提交，无需干预
+				if(transactionISO!=null) {
+					try {
+						conn.setTransactionIsolation(transactionISO);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 				LOGGER.info(Thread.currentThread().getName() + "事务已经回滚......");
 				container.remove();
 			}
