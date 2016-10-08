@@ -122,6 +122,7 @@ public class StringUtil {
 		}
 		str = str.trim();
 		String upperChar = str.substring(0,1).toUpperCase();
+//		char upperChar = Character.toTitleCase(str.charAt(0));//另外一种写法，需要测试性能有多大的提升。
 		if(str.length()>1) {
 			str = upperChar+str.substring(1);
 		} else {

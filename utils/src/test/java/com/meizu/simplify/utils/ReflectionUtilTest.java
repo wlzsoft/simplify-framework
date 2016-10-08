@@ -156,5 +156,21 @@ public class ReflectionUtilTest  {
 		Assert.assertEquals("java.util.List<com.meizu.simplify.utils.entity.User>",userListType.getTypeName());
 
 	}
+	
+	@Test
+	public void invoke(){
+		User user = new User();
+		user.setName("lcy");
+		String name = (String) ReflectionUtil.invoke(user, "getName");
+		Assert.assertEquals(name, user.getName());
+		
+	}
+	
+	@Test
+	public void invokeByParam(){
+		User user = new User();
+		ReflectionUtil.invoke(user, "setName","aa");
+		Assert.assertEquals(user.getName(), "aa");
+	}
 
 }

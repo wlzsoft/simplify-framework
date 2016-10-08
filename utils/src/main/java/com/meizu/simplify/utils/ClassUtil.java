@@ -96,6 +96,21 @@ public class ClassUtil {
 	}
 
 	/**
+	 * 方法用途: 通过类名获取Class对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param className 类名
+	 * @return
+	 */
+	public static Class<?> getClass(String className) {
+		try {
+			return Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			LOGGER.warn("通过[" + className + "]获取对应的Class对象时发生异常。", e);
+		}
+		return null;
+	}
+	
+	/**
 	 * 
 	 * 方法用途: 查找指定包下的类集合<br>
 	 * 操作步骤: TODO<br>
@@ -106,7 +121,7 @@ public class ClassUtil {
 		List<Class<?>> classes = new ArrayList<>();
 		for (String className : findClassNames(packageNames)) {
 			try {
-				classes.add(Class.forName(className));
+				classes.add(getClass(className));
 			} catch (ExceptionInInitializerError e) {
 				LOGGER.error("加载[" + className + "]类时发生异常:由于加载类过程中，类中的静态变量和静态块有做new的操作，在执行相关构造函数时报错，具体错误信息如下：", e);
 			} catch (Throwable e) {

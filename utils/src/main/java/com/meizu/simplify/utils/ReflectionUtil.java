@@ -39,6 +39,41 @@ public class ReflectionUtil {
     private ReflectionUtil() {
     }
     
+	/**
+	 * 方法用途: 反射方法调用<br>
+	 * 操作步骤: TODO<br>
+	 * @param obj 调用对象
+	 * @param methodName 调用方法名
+	 * @param args 调用方法参数，零个到多个
+	 */
+	public static Object invoke(Object obj, String methodName, Object... args) {
+		Class<?>[] parameterTypes = null;
+		if (args != null) {
+			parameterTypes = new Class<?>[args.length];
+			for (int i = 0; i < args.length; i++) {
+				parameterTypes[i] = args[i].getClass();
+			}
+		}
+		Class<?> clazz = obj.getClass();
+		try {
+			Method method = clazz.getMethod(methodName, parameterTypes);
+			return method.invoke(obj, args);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			LOGGER.error("反射获取方法对象失败:类["+clazz.getName()+"]没有["+methodName+"]这个方法,请检查是否方法写错，或是方法参数类型写错"+e.getMessage());
+            throw new UncheckedException("反射获取方法对象失败:类["+clazz.getName()+"]没有["+methodName+"]这个方法,请检查是否方法写错，或是方法参数类型写错");
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			LOGGER.error("反射获取方法对象失败:类["+clazz.getName()+"]的方法["+methodName+"]由于java安全限制而无法调用"+e.getMessage());
+            throw new UncheckedException("反射获取方法对象失败:类["+clazz.getName()+"]的方法["+methodName+"]由于java安全限制而无法调用");
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+			LOGGER.error("反射调用方法失败:类["+clazz.getName()+"]的方法["+methodName+"]"+e.getMessage());
+            throw new UncheckedException("反射调用方法失败:类["+clazz.getName()+"]的方法["+methodName+"]");
+		}
+	}
+    
+    
     /**
      * 
      * 方法用途: 调用Get方法<br>
@@ -48,7 +83,10 @@ public class ReflectionUtil {
      * @return
      */
     public static Object invokeGetterMethod(Object obj, String propertyName) {
-        String getterMethodName = "get" + StringUtil.capitalize(propertyName);
+//    	TODO 这里不考虑boolean的is方法的处理
+//    	if (type.getName().equals("boolean")) {
+//      String getterMethodName = "is" + StringUtil.capitalize(propertyName);
+    	String getterMethodName = "get" + StringUtil.capitalize(propertyName);
         return invokeMethod(obj, getterMethodName);
     }
      
@@ -263,7 +301,15 @@ public class ReflectionUtil {
 			constructor.setAccessible(true);
 		}
 	}
-    
+    public static Object newInstance(String className) {
+		Class<?> clazz = ClassUtil.getClass(className);
+		try {
+			return clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
     /**
      * 
      * 方法用途: 反射创建对象<br>
@@ -273,7 +319,7 @@ public class ReflectionUtil {
      * @param args
      * @return
      */
-    public static <T> T instantiateClass(Constructor<T> constructor, Object... args)  {
+    public static <T> T newInstance(Constructor<T> constructor, Object... args)  {
 		try {
 			makeAccessible(constructor);
 			return constructor.newInstance(args);

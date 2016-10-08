@@ -77,7 +77,7 @@ public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Seriali
 		T dao = null;
 		try {
 			Constructor<T> constructor = clazz.getDeclaredConstructor(Class.class);
-			dao = ReflectionUtil.instantiateClass(constructor,entityClass);
+			dao = ReflectionUtil.newInstance(constructor,entityClass);
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 			throw new BaseDaoException("构建dao对象失败",e);
