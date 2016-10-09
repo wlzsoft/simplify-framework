@@ -33,7 +33,14 @@ public class BaseDaoException extends DataAccessException {
 	public BaseDaoException(int code) {
 		super(code);
 	}
-
+	/**
+	 * sql执行异常处理
+	 * @param message 错误异常信息
+	 * @param sql sql语句
+	 */
+	public BaseDaoException(String message,String sql) {
+		super("执行sql异常:["+sql+"]"+message);
+	}
 
 
 }

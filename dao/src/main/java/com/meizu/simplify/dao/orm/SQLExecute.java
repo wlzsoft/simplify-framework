@@ -194,7 +194,7 @@ public class SQLExecute {
 			prepareStatement.executeBatch();
 		}catch(Exception e){
 			e.printStackTrace();
-			throw new BaseDaoException("执行sql异常:"+e.getMessage());
+			throw new BaseDaoException(e.getMessage(),sqlArr[0]);
 		}finally{
 //			free(prepareStatement,rs);
 			try {
