@@ -28,6 +28,18 @@ public @interface Column {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	String value();
-
+	String value() default "";
+	/**
+	 * 方法用途: 标记数据库字段是否可为空<br>
+	 * 操作步骤: 默认true可以为空，false不可以为空<br>
+	 * @return
+	 */
+	boolean nullable() default true;
+	/**
+	 * 方法用途: 标记数据库字段长度<br>
+	 * 操作步骤: 默认255<br>
+	 * @return
+	 */
+	int length() default 255;
+	
 }

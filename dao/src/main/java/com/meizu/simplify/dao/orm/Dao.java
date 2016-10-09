@@ -168,7 +168,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			
 			String columnName = null;
 			Column tableColumn = field.getAnnotation(Column.class);
-//			如果没标示Column注解，那么默认使用全大写属性名，否知使用注解指定的值
+//			如果没标示Column注解或是Column.value的值是空的，那么默认使用全大写属性名，否知使用注解指定的值
 			if (null != tableColumn&&StringUtil.isNotBlank(tableColumn.value())) {
 				columnName = tableColumn.value();
 //				currentColumnFieldNames.put(field.getName(), field.getName());//fix bug:  需要考虑未转大写之前的属性名添加到元数据中
