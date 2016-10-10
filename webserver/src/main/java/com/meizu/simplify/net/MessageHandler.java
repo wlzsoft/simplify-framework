@@ -1,4 +1,4 @@
-package com.meizu;
+package com.meizu.simplify.net;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
 
+import com.meizu.HttpRequest;
+import com.meizu.HttpResponse;
+import com.meizu.HttpRoute;
+import com.meizu.HttpSessionImplWrapper;
+import com.meizu.WebServer;
+import com.meizu.WebSocket;
+import com.meizu.WebSocket.Handler;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.util.SessionIdFactory;
 

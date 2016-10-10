@@ -1,4 +1,4 @@
-package com.meizu;
+package com.meizu.simplify.net;
 
 import java.util.ArrayList;
 import java.util.List;

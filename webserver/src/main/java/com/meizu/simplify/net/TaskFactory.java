@@ -1,4 +1,4 @@
-package com.meizu;
+package com.meizu.simplify.net;
 
 import java.net.ServerSocket;
 
