@@ -62,7 +62,7 @@ public class HttpRoute {
 
 	public static boolean isResource(String url) {
 		if (url.endsWith(".html") || url.endsWith(".htm")
-				|| url.endsWith(".css") || url.endsWith(".js")) {
+				|| url.endsWith(".css") || url.endsWith(".js")|| url.endsWith(".png")|| url.endsWith(".gif")) {
 			return false;
 		} else {
 			return true;
