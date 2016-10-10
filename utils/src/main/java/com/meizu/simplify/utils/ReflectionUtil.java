@@ -210,9 +210,7 @@ public class ReflectionUtil {
                     throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
         		}
         		for(int i=0; i<paramLen; i++) {
-        			if(String.class == paramType[i]) {
-        				args[i] = String.valueOf(args[i]);
-        			}
+        			args[i] = MapperTypeUtil.convertOrmType(args[i], paramType[i], false);//没有考虑新旧日期处理问题 TODO
         		}
         	}
         	return method.invoke(obj, args);
