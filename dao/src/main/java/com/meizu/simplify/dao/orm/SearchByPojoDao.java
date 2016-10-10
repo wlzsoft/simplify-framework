@@ -52,7 +52,7 @@ public class SearchByPojoDao {
 			public T resultCall(String columnLabel, Object val,T t) {
 				try {
 					if(val != null) {
-						selector.invokeSet(t, columnLabel, val);
+						selector.invokeSet(t, columnLabel, val,true);
 					}
 				} catch(IllegalArgumentException ex) {
 					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());

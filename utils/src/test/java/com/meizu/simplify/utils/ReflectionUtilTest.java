@@ -43,6 +43,12 @@ public class ReflectionUtilTest  {
 		Assert.assertEquals("lcy",ReflectionUtil.invokeMethod(obj, "demoMessage"));
 	}
 	
+	@Test
+	public void invokeSetMethod() {
+		Object obj = new Test2();
+		ReflectionUtil.invokeSetterMethod(obj, "name", 1,true);
+		Assert.assertEquals("1",((Test2)obj).getName());
+	}
 	
 	@Test
 	public void getSuperClassGenricTypeForObject() {
@@ -123,7 +129,7 @@ public class ReflectionUtilTest  {
 		test.setId(1);
 		test.setName("lcy");
 		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("不能找到对象 [" + test + "] 的方法 [getSeri] 请检查方法名和方法调用参数是否指定正确");
+		expectedException.expectMessage("不能找到对象 [" + test + "] 的方法 [getSeri()] 请检查方法名和方法调用参数是否指定正确");
 		Map<String, Object> paramMap = ReflectionUtil.bean2Map(test,true);
 		Set<Entry<String, Object>> set = paramMap.entrySet();
 		for (Entry<String, Object> entry : set) {

@@ -31,6 +31,7 @@ public interface ISqlMethodSelector {
 	 * @param t
 	 * @param columnName
 	 * @param val
+	 * @param isSelfParamType  是否是方法自身参数的类型
 	 */
-	public  void invokeSet(Object t,String columnName,Object val);
+	public  void invokeSet(Object t,String columnName,Object val,boolean isSelfParamType);
 }

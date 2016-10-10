@@ -498,7 +498,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 				try {
 					if(val != null) {
-						selector.invokeSet(t, key, val);
+						selector.invokeSet(t, key, val,false);
 					}
 				} catch(IllegalArgumentException ex) {
 					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());

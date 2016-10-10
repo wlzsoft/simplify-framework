@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -38,5 +38,17 @@ public class MapperTypeUtil{
 			}
 		}
 		return valClazz;
+	}
+	public static Object convertOrmType(Object val,Class<?> valClass,boolean useNewDate) {
+		if(valClass == java.sql.Date.class) {
+	    	if(useNewDate) {
+				val = LocalDate.parse(val.toString());
+			} else {
+				val = DateUtil.parse(val.toString());
+			}
+	    } else if(valClass == String.class) {
+	    	val = String.valueOf(val);
+	    }
+		return val;
 	}
 }

@@ -89,18 +89,17 @@ public class ReflectionUtil {
     	String getterMethodName = "get" + StringUtil.capitalize(propertyName);
         return invokeMethod(obj, getterMethodName);
     }
-     
+    
     /**
      * 
      * 方法用途: 调用Set方法<br>
-     * 操作步骤: TODO<br>
+     * 操作步骤: 默认isSelfParamType为false <br>
      * @param obj
      * @param propertyName 属性名
      * @param value
      */
     public static void invokeSetterMethod(Object obj, String propertyName, Object value,Class<?> valueClazz) {
-    	String setterMethodName = "set" + StringUtil.capitalize(propertyName);
-        invokeMethod(obj, setterMethodName, new Class[]{valueClazz}, new Object[]{value});
+    	invokeSetterMethod(obj, propertyName, value, valueClazz, false);
     }
     
     /**
@@ -110,9 +109,36 @@ public class ReflectionUtil {
      * @param obj
      * @param propertyName 属性名
      * @param value
+     * @param isSelfParamType 是否是方法自身参数的类型
+     */
+    private static void invokeSetterMethod(Object obj, String propertyName, Object value,Class<?> valueClazz,final boolean isSelfParamType) {
+    	String setterMethodName = "set" + StringUtil.capitalize(propertyName);
+        invokeMethod(obj, setterMethodName, new Class[]{valueClazz}, new Object[]{value},isSelfParamType);
+    }
+    
+    /**
+     * 
+     * 方法用途: 调用Set方法<br>
+     * 操作步骤: 默认isSelfParamType为false<br>
+     * @param obj
+     * @param propertyName 属性名
+     * @param value
      */
     public static void invokeSetterMethod(Object obj, String propertyName, Object value) {
-    	invokeSetterMethod(obj,propertyName,value,value.getClass());
+    	invokeSetterMethod(obj,propertyName,value,value.getClass(),false);
+    }
+    
+    /**
+     * 
+     * 方法用途: 调用Set方法<br>
+     * 操作步骤: TODO<br>
+     * @param obj
+     * @param propertyName 属性名
+     * @param value
+     * @param isSelfParamType 是否是方法自身参数的类型
+     */
+    public static void invokeSetterMethod(final Object obj, final String propertyName, final Object value,final boolean isSelfParamType) {
+    	invokeSetterMethod(obj,propertyName,value,value.getClass(),isSelfParamType);
     }
     
     /**
@@ -130,30 +156,72 @@ public class ReflectionUtil {
     /**
      * 
      * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
-     * 操作步骤: TODO<br>
-     * @param obj
-     * @param methodName
-     * @param parameterTypes
-     * @param args
+     * 操作步骤: 默认isSelfParamType为false<br>
+     * @param obj 对象名
+     * @param methodName 方法名
+     * @param parameterTypes 参数类型
+     * @param args 参数值
      * @return
      */
     public static Object invokeMethod(final Object obj,final  String methodName,final  Class<?>[] parameterTypes,final Object[] args) {
-        Method method = obtainAccessibleMethod(obj, methodName, parameterTypes);
+    	return invokeMethod(obj, methodName, parameterTypes, args, false);
+    }
+    
+    /**
+     * 
+     * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
+     * 操作步骤: TODO<br>
+     * @param obj 对象名
+     * @param methodName 方法名
+     * @param parameterTypes 参数类型
+     * @param args 参数值
+     * @param isSelfParamType 是否是方法自身参数的类型
+     * @return
+     */
+    private static Object invokeMethod(final Object obj,final  String methodName,final  Class<?>[] parameterTypes,final Object[] args,final boolean isSelfParamType) {
+    	Method method = null;
+    	if(isSelfParamType) {
+    		method = getAccessibleMethodForSelfParamType(obj,methodName);
+    	} else {
+    		method = getAccessibleMethod(obj, methodName, parameterTypes);
+    	}
         if (method == null) {
         	String parameterTypeClsName = "";
-        	if(parameterTypes != null && parameterTypes.length > 0){
-        		parameterTypeClsName = "(" + parameterTypes[0].getName() + ")";
+        	if(parameterTypes != null){
+        		for (int i = 0; i < parameterTypes.length; i++) {
+        			parameterTypeClsName += ","+parameterTypes[0].getName();
+				}
+        	}
+        	if(parameterTypeClsName.length()>0) {
+        		parameterTypeClsName = "("+parameterTypeClsName.substring(1)+")";
+        	} else {
+        		parameterTypeClsName = "()";
         	}
         	throw new IllegalArgumentException("不能找到对象 [" + obj + "] 的方法 [" + methodName + parameterTypeClsName + "] 请检查方法名和方法调用参数是否指定正确");
         }
         try {
+        	if(isSelfParamType) {
+//        		Parameter[] p = method.getParameters();
+        		Class<?>[] paramType = method.getParameterTypes();
+        		int paramLen = paramType.length;
+        		int argsLen = args.length;
+        		if(paramLen!=argsLen) {
+        			LOGGER.error("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
+                    throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
+        		}
+        		for(int i=0; i<paramLen; i++) {
+        			if(String.class == paramType[i]) {
+        				args[i] = String.valueOf(args[i]);
+        			}
+        		}
+        	}
         	return method.invoke(obj, args);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            LOGGER.error("参数类型不匹配！");
-            throw new UncheckedException("参数类型不匹配！");//后续再补充提示信息，指明源数据类型和目录属性类型 TODO
+            LOGGER.error("方法["+obj.getClass().getName()+":"+methodName+"]的参数类型不匹配！"+e);
+            throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数类型不匹配！"+e);//后续再补充提示信息，指明源数据类型和目录属性类型 TODO
         } catch (InvocationTargetException e) {
             e.printStackTrace();
             LOGGER.error("反射方法调用异常"+method,e.getTargetException());
@@ -163,20 +231,52 @@ public class ReflectionUtil {
     }
 
     /**
-     * 
-     * 方法用途: TODO<br>
-     * 操作步骤: 
-     * 需要重构这个方法：TODO ，fieldName 和 parameterTypes有些冗余
-     * 循环向上转型，获取对象的DeclaredMethod,并强制设置为可访问 如向上转型到Object仍无法找到，返回null
-     * 
-     * 用于方法需要被多次调用的情况，先使用本函数先取得Method,然后调用Method.invoke(Object obj,Object...
-     * args)<br>
+     * 方法用途: 通过反射获取Method对象-方法参数类型：通过自身反射获取参数类型<br>
+     * 操作步骤: 循环向上转型，获取对象的DeclaredMethod,并强制设置为可访问 如向上转型到Object仍无法找到，返回null
+     * 用于方法需要被多次调用的情况，先使用本函数先取得Method,然后调用Method.invoke(Object obj,Object... args)
+     * <br>
+     * @param obj
+     * @param methodName
+     * @return
+     */
+    public static Method getAccessibleMethodForSelfParamType(final Object obj,  final String methodName) {
+    	AssertUtil.notNull(obj, "目标调用对象不能为空");
+        Class<?> superClass = obj.getClass();
+        while(superClass != Object.class) {
+            try {
+            	Method method = null;
+            	Method[] methodArr = superClass.getDeclaredMethods();
+            	for (Method methodTemp : methodArr) {
+					if(methodTemp.getName().equals(methodName)) {
+						methodTemp.setAccessible(true);
+						method = methodTemp;
+						break;
+					}
+				}
+            	if(method==null) {
+            		superClass = superClass.getSuperclass();
+                	continue;// Method不在当前类定义,继续向上转型
+            	}
+            	return method;
+            } catch (SecurityException e) {
+            	LOGGER.error("安全异常"+e.getMessage());
+            	throw new UncheckedException("安全异常"+e.getMessage());
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * 方法用途: 通过反射获取Method对象-方法参数类型：手动指定方法参数类型<br>
+     * 操作步骤: 循环向上转型，获取对象的DeclaredMethod,并强制设置为可访问 如向上转型到Object仍无法找到，返回null
+     * 用于方法需要被多次调用的情况，先使用本函数先取得Method,然后调用Method.invoke(Object obj,Object... args)
+     * <br>
      * @param obj
      * @param methodName
      * @param parameterTypes
      * @return
      */
-    public static Method obtainAccessibleMethod(final Object obj,  final String methodName, final Class<?>... parameterTypes) {
+    public static Method getAccessibleMethod(final Object obj,  final String methodName, final Class<?>... parameterTypes) {
     	AssertUtil.notNull(obj, "目标调用对象不能为空");
         Class<?> superClass = obj.getClass();
         while(superClass != Object.class) {
@@ -188,7 +288,8 @@ public class ReflectionUtil {
             	superClass = superClass.getSuperclass();
             	continue;// Method不在当前类定义,继续向上转型
             } catch (SecurityException e) {
-            	throw new UncheckedException("安全异常");
+            	LOGGER.error("安全异常"+e.getMessage());
+            	throw new UncheckedException("安全异常"+e.getMessage());
             }
         }
         return null;
