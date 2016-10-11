@@ -78,7 +78,14 @@ public enum DateFormatEnum {
 	
 //	第二种风格
 	
+	/**
+	 * 格式yyyyMMddHHmm
+	 */
 	YEAR_TO_MINUTE_N("yyyyMMddHHmm"),
+	/**
+	 * 格式yyyyMMddHHmmss
+	 */
+	YEAR_TO_SECOND_N("yyyyMMddHHmmss"),
 	/**
 	 * 全日期:默认格式yyyyMMddHHmmssSSSS :TODO 是否特定情况下，会有4个SSSS
 	 */
