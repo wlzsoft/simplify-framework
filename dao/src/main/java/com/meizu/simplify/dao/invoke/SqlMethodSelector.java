@@ -1,6 +1,7 @@
 package com.meizu.simplify.dao.invoke;
 
 import com.meizu.simplify.config.annotation.Config;
+import com.meizu.simplify.dao.orm.IEnum;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.MapperTypeUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
@@ -26,9 +27,33 @@ public class SqlMethodSelector implements ISqlMethodSelector{
 	
 	@Override
 	public  Object invoke(Object t,String columnName) {
-		return ReflectionUtil.invokeGetterMethod(t, columnName);
+		Object obj = ReflectionUtil.invokeGetterMethod(t, columnName);
+		if(obj == null) {
+			return null;
+		}
+		//实体特殊类型处理start-1.该处理有微小的性能消耗，需要压测分析对框架的影响有多大。2.对类型推导的源码生成的影响多大，需要评估，并且修改类型推导功能 TODO
+		//数组类型处理
+		if(obj.getClass().isArray()) {
+			Object[] objArr = ((Object[])obj);
+			String v = "";
+			for (Object object : objArr) {
+				v += ","+String.valueOf(object);
+			}
+			return v.substring(1);
+		}
+		//枚举类型处理
+		Class<?>[] interfacesArr = obj.getClass().getInterfaces();
+		if(interfacesArr != null && interfacesArr.length == 1 && interfacesArr[0] == IEnum.class) {
+			return ((IEnum)obj).getValue();
+		}
+		//实体特殊类型处理end
+		return obj;
 	}
 
+	/** 
+	 * 1.增加了isSelfParamType参数后  对类型推导的源码生成的影响多大，需要评估，并且修改类型推导功能 TODO
+	 * @see com.meizu.simplify.dao.invoke.ISqlMethodSelector#invokeSet(java.lang.Object, java.lang.String, java.lang.Object, boolean)
+	 */
 	@Override
 	public void invokeSet(Object t, String columnName,Object val,boolean isSelfParamType) {
 		Class<?> valClazz = MapperTypeUtil.mapperOrmType(val,useNewDate);

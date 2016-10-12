@@ -242,6 +242,7 @@ public class SQLExecute {
 //			DruidPoolFactory.rollback();
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new BaseDaoException("执行sql未知异常:"+e.getMessage());
 		} finally {
 //			free(prepareStatement,null);
 			try {

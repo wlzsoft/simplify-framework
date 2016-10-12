@@ -42,4 +42,11 @@ public @interface Column {
 	 */
 	int length() default 255;
 	
+	/**
+	 * 方法用途: 指定列的自定义类型<br>
+	 * 操作步骤: 默认是 Object <br>
+	 * @return
+	 */
+	Class<?> type() default Object.class;
+	
 }
