@@ -39,7 +39,10 @@ public class SqlMethodSelector implements ISqlMethodSelector{
 			for (Object object : objArr) {
 				v += ","+String.valueOf(object);
 			}
-			return v.substring(1);
+			if(v!=null&&!"".equals(v)) {
+				v = v.substring(1);
+			}
+			return v;
 		}
 		//枚举类型处理
 		Class<?>[] interfacesArr = obj.getClass().getInterfaces();
