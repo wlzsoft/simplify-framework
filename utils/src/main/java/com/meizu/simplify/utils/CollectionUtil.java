@@ -6,11 +6,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.meizu.simplify.utils.collection.IEqualCallBack;
@@ -151,6 +153,29 @@ public class CollectionUtil {
 		if (!source.isEmpty()) {
 			for (T o : source) {//TODO 是否使用迭代器，这里比较特殊，有可能是set，也可能是list，慎重考虑
 				target.add(o);
+			}
+		}
+	}
+	
+	/**
+	 * 方法用途: Map转成Properties<br>
+	 * 操作步骤: TODO<br>
+	 * @param props
+	 * @param map
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K, V> void mergePropertiesIntoMap(Properties props, Map<K, V> map) {
+		if (map == null) {
+			throw new IllegalArgumentException("Map不能是空的");
+		}
+		if (props != null) {
+			for (Enumeration<?> en = props.propertyNames(); en.hasMoreElements();) {
+				String key = (String) en.nextElement();
+				Object value = props.getProperty(key);
+				if (value == null) {
+					value = props.get(key);
+				}
+				map.put((K) key, (V) value);
 			}
 		}
 	}

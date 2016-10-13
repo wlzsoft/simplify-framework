@@ -31,6 +31,16 @@ public class SqlMethodSelector implements ISqlMethodSelector{
 		if(obj == null) {
 			return null;
 		}
+		return buildType(obj);
+	}
+
+	/**
+	 * 方法用途: 构建处理解析类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param obj
+	 * @return
+	 */
+	private Object buildType(Object obj) {
 		//实体特殊类型处理start-1.该处理有微小的性能消耗，需要压测分析对框架的影响有多大。2.对类型推导的源码生成的影响多大，需要评估，并且修改类型推导功能 TODO
 		//数组类型处理
 		if(obj.getClass().isArray()) {
