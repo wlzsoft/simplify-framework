@@ -8,7 +8,17 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
 
 /**
   * <p><b>Title:</b><i>数据签名</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 签名算法，又称呼摘要算法，哈希算法(hash算法) 
+      数字签名:
+          对某个数据块的签名,就是计算数据块的Hash值,然后使用私钥对hash值进行加密,结果就叫数字签名
+          Hash值就是数据块的数字指纹
+     签名验证:
+          数据接收者拿到原始数据块与数字签名后,接受者也会使用相同的Hash算法得到Hash值,然后使用公钥解密
+          得到原始的数据指纹,比较2个值,就可以判定数据块签名之后有没有被篡改
+      Hash算法常见的有:
+          MD5,SHA,哈希算法也类似摘要算法,是一个单向的散列函数,它解决在某一特定时间内,无法查找经Hash操作后生成特定
+          特定HASH值的原信息块
+          哈希算法输入一个长度不固定的信息块,返回一个固定长度的结果</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
