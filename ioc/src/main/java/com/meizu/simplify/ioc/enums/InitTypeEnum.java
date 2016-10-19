@@ -13,63 +13,66 @@ package com.meizu.simplify.ioc.enums;
  *
  */
 public enum InitTypeEnum {
-	
+	/**
+	 * 织入初始化
+	 */
+	WEAVING(10),
 	/**
 	 * bean初始化
 	 */
-	BEAN(1),
+	BEAN(20),
 	/**
 	 * 配置文件实体初始化
 	 */
-	RELOAD_RESOURCE(2),
+	RELOAD_RESOURCE(30),
 	/**
 	 * 依赖注入配置文件属性
 	 */
-	CONFIG(3),
+	CONFIG(40),
 	/**
 	 *依赖注入 
 	 */
-	IOC(4),
+	IOC(50),
 	/**
 	 * bean创建成功后，执行ioc操作后会调用这个init方法
 	 */
-	INIT_BEAN(5),
+	INIT_BEAN(60),
 	/**
 	 * 数据缓存初始化
 	 */
-	CACHE(6),
+	CACHE(70),
 	/**
 	 * controller 地址解析初始化
 	 */
-	CONTROL(7),
+	CONTROL(80),
 	/**
 	 * 模版引擎初始化
 	 */
-	TEMPLATE(8),
+	TEMPLATE(90),
 	/**
 	 * 事务解析初始化
 	 */
-	TRANS(9),
+	TRANS(100),
 	/**
 	 * 页面缓存初始化
 	 */
-	WEB_CACHE(10),
+	WEB_CACHE(110),
 	/**
 	 * websocket解析初始化
 	 */
-	WEB_SOCKET(11),
+	WEB_SOCKET(120),
 	/**
 	 * sql数据库表结构创建和修改解析初始化
 	 */
-	DB_INIT(12),
+	DB_INIT(130),
 	/**
 	 * 远程方法调用，远程bean创建初始化
 	 */
-	SERVER_BEAN(13),
+	SERVER_BEAN(140),
 	/**
 	 * 代码生成 
 	 */
-	METHOD_GEN(14);
+	METHOD_GEN(150);
 	
 	public final int value;
 	InitTypeEnum(int value) {

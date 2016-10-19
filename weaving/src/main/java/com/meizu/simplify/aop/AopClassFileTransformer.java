@@ -62,7 +62,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			this.isMatch = isMatch;
 		}
 	}
-	ClassPool pool = ClassPool.getDefault();
+	public ClassPool pool = ClassPool.getDefault();
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
     private String[] injectionTargetAnnotationArr = {Constants.packagePrefix+".simplify.cache.annotation.CacheDataSearch",
@@ -197,24 +197,35 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	 * 方法用途: 待嵌入的类<br>
 	 * 操作步骤: TODO<br>
 	 * @param className
-	 * @param classfileBuffer 
+	 * @param classfileBuffer Class的字节数组
 	 * @return
 	 */
 	private CtClass embed(String className, byte[] classfileBuffer) {
+		//2.获取CtClass之前，要确保调用pool.insertClassPath来设置需要获取类的classpath
+		InputStream inputStream = new ByteArrayInputStream(classfileBuffer); 
+		CtClass ctClass = null;
+		try {
+			ctClass = pool.makeClass(inputStream);
+		    //ctClass = pool.get(className);//使用javaagent的字节码进行编译，避免了NOTFound的异常，无需再扫描class文件，减少insertClassPath方法的调用
+		} catch (IOException | RuntimeException e) {
+			e.printStackTrace();
+		} 
+		if(ctClass == null) {
+			return null;
+		}
+		return embed(className, ctClass);
+	}
+
+	/**
+	 * 方法用途: 待嵌入的类<br>
+	 * 操作步骤: TODO<br>
+	 * @param className
+	 * @param ctClass Class的ctClass对象
+	 * @return
+	 */
+	public CtClass embed(String className, CtClass ctClass) {
 		try {
 			
-			//2.获取CtClass之前，要确保调用pool.insertClassPath来设置需要获取类的classpath
-			InputStream inputStream = new ByteArrayInputStream(classfileBuffer); 
-			CtClass ctClass = null;
-			try {
-				ctClass = pool.makeClass(inputStream);
-			    //ctClass = pool.get(className);//使用javaagent的字节码进行编译，避免了NOTFound的异常，无需再扫描class文件，减少insertClassPath方法的调用
-			} catch (IOException | RuntimeException e) {
-				e.printStackTrace();
-			} 
-			if(ctClass == null) {
-				return null;
-			}
 			//3.过滤掉不需要aop注入的实例对象
 			boolean isFilterBean = filterBean(ctClass);
 			if(!isFilterBean) {
