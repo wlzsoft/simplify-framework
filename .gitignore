@@ -15,4 +15,4 @@ build
 # intellij idea #
 *.iml
 .idea/*
-.externalToolBuilders/*
+*/.externalToolBuilders/*
