@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>1.2.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>template-plugins</artifactId>
+  <packaging>pom</packaging>
+  <name>模版引擎插件集成</name>
+  <description>具体模版引擎集成插件：实现模版引擎基础封装：1.用于html页面模版
+  									 2.用于xml模版
+  									 3.用于java代码模版
+  									 4.用于sql语句模版
+  </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
+  <dependencies>
+  	  <dependency>
+	    <groupId>com.meizu</groupId>
+	    <artifactId>template</artifactId>
+	    <version>1.2.0-SNAPSHOT</version>
+	  </dependency>
+   </dependencies>
+   <modules>
+   	<module>template-beetl</module>
+   </modules>
+</project>

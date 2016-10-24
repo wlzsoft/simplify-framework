@@ -1,6 +1,15 @@
 package com.meizu.simplify.cache;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.meizu.simplify.ioc.BeanEntity;
+import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
+import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
 /**
-  * <p><b>Title:</b><i>TODO</i></p>
+ * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -12,17 +21,6 @@ package com.meizu.simplify.cache;
  * @version Version 0.1
  *
  */
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.meizu.simplify.ioc.BeanEntity;
-import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
-import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
-
 @BeanPrototypeHook(CacheInterceptor.class)
 public class CacheInterceptorPrototypeHook implements IBeanPrototypeHook<CacheInterceptor> {
 

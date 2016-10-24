@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>template-plugins</artifactId>
+    <version>1.2.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>template-beetl</artifactId>
+  <name>现代模版引擎beetl集成插件</name>
+  <dependencies>
+  	  <dependency>
+	    <groupId>com.meizu</groupId>
+	    <artifactId>template-plugins</artifactId>
+	    <version>1.2.0-SNAPSHOT</version>
+	  </dependency>
+         <!-- 现代模板引擎三 -->
+         <dependency>
+	    <groupId>com.ibeetl</groupId>
+	    <artifactId>beetl</artifactId>
+	    <version>2.5.0</version>
+	  </dependency>
+   </dependencies>
+</project>

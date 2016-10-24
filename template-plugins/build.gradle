@@ -1,0 +1,5 @@
+
+description = '模版引擎插件集成'
+dependencies {
+	compile project(':template')
+}
