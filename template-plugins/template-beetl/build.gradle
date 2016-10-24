@@ -1,6 +1,5 @@
 
 description = '现代模版引擎beetl集成插件'
 dependencies {
-	compile project(':template-plugins')
     compile 'com.ibeetl:beetl:2.2.5'
 }

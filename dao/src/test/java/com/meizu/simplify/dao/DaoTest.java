@@ -42,6 +42,7 @@ public class DaoTest {
 	public void s1_insertTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("卢创业");
+		t.setUrl("卢创业test");
 		t.setCreateId(1);
 		t.setUpdateId(1);
 		t.setCreateTime(new Date());
@@ -114,22 +115,22 @@ public class DaoTest {
 	@Test
 	public void s2_findPageMutilSqlTest() {
 		@SuppressWarnings("deprecation")
-		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp","lcy");
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=?) as temp","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}*/
 	@Test
 	public void s2_findPageMutilSql2Test() {
-		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc) as temp","lcy");
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime desc) as temp","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSql3Test() {
-		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime asc","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSql4Test() {
-		Page<Map<String,Object>> page = BaseDao.getInsMap().findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
+		Page<Map<String,Object>> page = BaseDao.getInsMap().findPage(1,10,"select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime asc","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
@@ -137,14 +138,14 @@ public class DaoTest {
  String sql = "select * from test_web where name=?";
 		sql = sql.substring(sql.indexOf("from"));
 		System.out.println("select count(1) "+sql);
-		sql = "select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp";
+		sql = "select * from (select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=?) as temp";
 		sql = sql.substring(sql.indexOf("from"));
 		System.out.println("select count(1) "+sql);
-		sql = "select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc) as temp";
+		sql = "select * from (select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime asc) as temp";
 		sql = sql.substring(sql.indexOf("from"));
 		sql = sql.replaceAll("order\\s*by.*(desc|asc)", "");
 		System.out.println("select count(1) "+sql);
-		sql = "select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc";
+		sql = "select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime desc";
 		sql = sql.substring(sql.indexOf("from"));
 		sql = sql.replaceAll("order\\s*by.*(desc|asc)", "");
 		System.out.println("select count(1) "+sql);
@@ -183,7 +184,7 @@ public class DaoTest {
 	@Test
 	public void s5_deleteTest() {
 		//中文编码问题，无法正常删除-->已经解决：由于jdbc的连接的编码属性设置有问题，修改jdbc驱动连接的配置信息就可以了。
-		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("url", "geny测试"));
+		System.out.println("delete============================="+BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).remove("url", "卢创业test"));
 	}
 	
 	@Test

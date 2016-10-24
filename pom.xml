@@ -78,6 +78,8 @@
     <module>rpc</module>
     <module>listener</module>
     <module>authfilter</module>
+    <module>template-plugins</module>
+    <module>test</module>
     <module>simplify-server</module>
     <module>simplify-base</module>
     <module>simplify-client</module>

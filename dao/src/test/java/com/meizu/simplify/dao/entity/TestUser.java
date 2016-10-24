@@ -19,24 +19,16 @@ import com.meizu.simplify.entity.annotations.Transient;
  *
  */
 @Entity
-@Table(name="test_web")
+@Table(name="test_user")
 @Transient({"delFlag","deleteflag"})
-public class Test extends BaseEntity {
+public class TestUser extends BaseEntity {
 
-	private static final long serialVersionUID = 246628316050179125L;
+	private static final long serialVersionUID = 658015695524932500L;
 	private String name;
-	private String url;
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
 }

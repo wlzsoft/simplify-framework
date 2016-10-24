@@ -22,7 +22,8 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@DefaultBean//(BeetlTemplate.class)
+//@DefaultBean(BeetlTemplate.class)//这不需要指定实现类型，直接使用TemplateInterfaceHandler来返回类型
+@DefaultBean
 public interface ITemplate {
 	/**
 	 * 方法用途: 执行模版渲染，并获取模版渲染后的静态内容<br>
