@@ -59,12 +59,6 @@
 		     <artifactId>smarty4j</artifactId>
 		     <version>1.0.1</version>
 		  </dependency> -->
-		  <!-- 现代模板引擎二 -->
-		  <dependency>
-            <groupId>com.github.httl</groupId>
-            <artifactId>httl</artifactId>
-            <version>1.0.11</version>
-          </dependency>
 		  <!-- 经典模板引擎四 -->
 		  <dependency>
 		  	<groupId>org.freemarker</groupId>

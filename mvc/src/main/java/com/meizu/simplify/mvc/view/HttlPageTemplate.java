@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.HttlTemplate;
 import com.meizu.simplify.template.annotation.TemplateType;
+import com.meizu.simplify.template.httl.HttlTemplate;
 import com.meizu.simplify.webcache.annotation.WebCache;
 /**
  * <p><b>Title:</b><i>Httl 模板 页面处理返回方式</i></p>

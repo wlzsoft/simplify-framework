@@ -1,0 +1,5 @@
+
+description = '现代模版引擎httl集成插件'
+dependencies {
+    compile 'com.github.httl:httl:1.0.11'
+}
