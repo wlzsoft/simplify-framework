@@ -1,4 +1,4 @@
-package com.meizu.simplify.template;
+package com.meizu.simplify.template.beetl;
 
 import java.io.IOException;
 import java.util.Map;
@@ -11,8 +11,9 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.template.annotation.TemplateExtend;
-import com.meizu.simplify.template.function.BeetlFunctionDirectivePackage;
+import com.meizu.simplify.template.beetl.function.BeetlFunctionDirectivePackage;
 
 
 

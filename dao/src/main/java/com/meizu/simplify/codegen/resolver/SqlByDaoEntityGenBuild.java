@@ -16,7 +16,7 @@ import com.meizu.simplify.codegen.CodeGenUtil;
 import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.UncheckedException;
-import com.meizu.simplify.template.BeetlTemplate;
+import com.meizu.simplify.template.beetl.BeetlTemplate;
 import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ReflectionUtil;

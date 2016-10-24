@@ -1,4 +1,4 @@
-package com.meizu.simplify.template;
+package com.meizu.simplify.template.beetl;
 
 import java.io.BufferedReader;
 import java.io.File;

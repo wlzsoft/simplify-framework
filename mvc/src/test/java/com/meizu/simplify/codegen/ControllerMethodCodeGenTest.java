@@ -9,8 +9,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.meizu.simplify.template.BeetlTemplate;
 import com.meizu.simplify.template.ITemplate;
+import com.meizu.simplify.template.beetl.BeetlTemplate;
 
 /**
   * <p><b>Title:</b><i>controller的方法地址匹配映射代码生成类</i></p>

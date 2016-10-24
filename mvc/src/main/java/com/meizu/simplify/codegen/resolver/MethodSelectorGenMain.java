@@ -1,7 +1,7 @@
 package com.meizu.simplify.codegen.resolver;
 
 import com.meizu.simplify.codegen.CodeGenUtil;
-import com.meizu.simplify.template.BeetlTemplate;
+import com.meizu.simplify.template.beetl.BeetlTemplate;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

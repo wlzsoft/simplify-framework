@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.meizu.simplify.ioc.annotation.DefaultBean;
 import com.meizu.simplify.template.annotation.TemplateExtend;
+//import com.meizu.simplify.template.beetl.BeetlTemplate;
 import com.meizu.simplify.utils.StringUtil;
 
 
@@ -21,7 +22,7 @@ import com.meizu.simplify.utils.StringUtil;
  * @version Version 0.1
  *
  */
-@DefaultBean(BeetlTemplate.class)
+@DefaultBean//(BeetlTemplate.class)
 public interface ITemplate {
 	/**
 	 * 方法用途: 执行模版渲染，并获取模版渲染后的静态内容<br>

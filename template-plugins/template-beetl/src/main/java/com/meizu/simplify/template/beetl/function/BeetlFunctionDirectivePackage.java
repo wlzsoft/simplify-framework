@@ -1,4 +1,4 @@
-package com.meizu.simplify.template.function;
+package com.meizu.simplify.template.beetl.function;
 
 import com.meizu.simplify.encrypt.sign.md5.MD5Encrypt;
 

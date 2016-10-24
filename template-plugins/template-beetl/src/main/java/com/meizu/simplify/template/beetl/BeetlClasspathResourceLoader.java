@@ -1,4 +1,4 @@
-package com.meizu.simplify.template;
+package com.meizu.simplify.template.beetl;
 
 import org.beetl.core.Resource;
 import org.beetl.core.resource.ClasspathResourceLoader;
