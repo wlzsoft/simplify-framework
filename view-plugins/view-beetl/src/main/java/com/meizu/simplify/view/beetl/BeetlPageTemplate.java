@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view;
+package com.meizu.simplify.view.beetl;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -13,12 +13,14 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.annotation.TemplateType;
-import com.meizu.simplify.template.freemarker.FreemarkerTemplate;
+import com.meizu.simplify.template.beetl.BeetlTemplate;
+import com.meizu.simplify.view.IPageTemplate;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 
+
 /**
- * <p><b>Title:</b><i>Velocity 页面处理返回方式</i></p>
+ * <p><b>Title:</b><i>Beetl 模板 页面处理返回方式</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -31,27 +33,31 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType("freemarker")
-public class FreemarkerPageTemplate  implements IPageTemplate{
+@TemplateType("beetl")
+public class BeetlPageTemplate  implements IPageTemplate {
 	@Resource
 	private PropertiesConfig config;
 	@Resource
-	private FreemarkerTemplate freemarkerTemplate;
+	private BeetlTemplate beetlTemplate;
+	
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-		String prefixUri = "/template/freemarker/";
+		String prefixUri = "/template/beetl/";
 		setContentType(request, response,config);
+		
 		// 将request中的对象赋给模版
-		Map<String, Object> parameters = new HashMap<>();
+		Map<String,Object> parameter = new HashMap<String,Object>();
 		Enumeration<String> atts = request.getAttributeNames();
 		while ( atts.hasMoreElements() ) {
 			String name = atts.nextElement();
-			parameters.put(name, request.getAttribute(name));
+			parameter.put(name, request.getAttribute(name));
 		}
-		
-		String content = freemarkerTemplate.render(parameters, templateUrl, prefixUri,freemarkerTemplate.extend);
+		String content = beetlTemplate.render(parameter, templateUrl, prefixUri,beetlTemplate.extend);	
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
+		
 	}
-	
+
+
+
 }

@@ -13,10 +13,10 @@ import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
-import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.template.annotation.TemplateType;
 import com.meizu.simplify.util.CacheManager;
 import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.view.IPageTemplate;
 
 /**
   * <p><b>Title:</b><i>模版解析器配置解析</i></p>

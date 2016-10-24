@@ -1,2 +1,5 @@
 rootProject.name = 'template-plugins'
 include 'template-beetl'
+include 'template-freemarker'
+include 'template-httl'
+include 'template-velocity'

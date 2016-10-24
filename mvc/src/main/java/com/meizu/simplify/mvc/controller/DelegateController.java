@@ -22,14 +22,14 @@ import com.meizu.simplify.mvc.invoke.IMethodSelector;
 import com.meizu.simplify.mvc.invoke.IModelSelector;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
-import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
-import com.meizu.simplify.mvc.view.MessageView;
 import com.meizu.simplify.mvc.view.RedirectView;
 import com.meizu.simplify.mvc.view.TemplateFactory;
 import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.StringUtil;
+import com.meizu.simplify.view.IPageTemplate;
+import com.meizu.simplify.view.MessageView;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 

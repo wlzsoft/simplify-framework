@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view;
+package com.meizu.simplify.view;
 
 import java.io.IOException;
 

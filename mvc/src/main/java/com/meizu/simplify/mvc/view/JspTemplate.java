@@ -18,6 +18,7 @@ import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.template.annotation.TemplateExtend;
 import com.meizu.simplify.template.annotation.TemplateType;
+import com.meizu.simplify.view.IPageTemplate;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 

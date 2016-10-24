@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view;
+package com.meizu.simplify.view.freemarker;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -13,7 +13,8 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.annotation.TemplateType;
-import com.meizu.simplify.template.velocity.VelocityTemplate;
+import com.meizu.simplify.template.freemarker.FreemarkerTemplate;
+import com.meizu.simplify.view.IPageTemplate;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 
@@ -31,18 +32,17 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType("velocity")
-public class VelocityPageTemplate  implements IPageTemplate{
+@TemplateType("freemarker")
+public class FreemarkerPageTemplate  implements IPageTemplate{
 	@Resource
 	private PropertiesConfig config;
 	@Resource
-	private VelocityTemplate velocityTemplate;
+	private FreemarkerTemplate freemarkerTemplate;
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-		String prefixUri = "/template/velocity";
+		String prefixUri = "/template/freemarker/";
 		setContentType(request, response,config);
-		
 		// 将request中的对象赋给模版
 		Map<String, Object> parameters = new HashMap<>();
 		Enumeration<String> atts = request.getAttributeNames();
@@ -51,27 +51,8 @@ public class VelocityPageTemplate  implements IPageTemplate{
 			parameters.put(name, request.getAttribute(name));
 		}
 		
-		String content = velocityTemplate.render(parameters, templateUrl, prefixUri,velocityTemplate.extend);
+		String content = freemarkerTemplate.render(parameters, templateUrl, prefixUri,freemarkerTemplate.extend);
 		checkCacheAndWrite(request, response, webCache, staticName, content,config);
-		/*ServletOutputStream output = response.getOutputStream();
-		VelocityWriter vw = null;
-		try {
-			vw = (VelocityWriter) writerPool.get();
-			if (vw == null) {
-				vw = new StringWriter();  //new VelocityWriter(new OutputStreamWriter(output, config.getCharset()), 4 * 1024, true);
-			} else {
-				vw.recycle(new OutputStreamWriter(output, config.getCharset()));
-			}
-			template.merge(context, vw);
-		} finally {
-			if (vw != null) {
-				try {
-					vw.flush();
-				} catch ( IOException e ) {}
-				vw.recycle(null);
-				writerPool.put(vw);
-			}
-		}*/
 	}
 	
 }

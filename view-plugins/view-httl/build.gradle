@@ -1,0 +1,6 @@
+
+description = '现代模版引擎httl集成view插件'
+dependencies {
+	compile project(':template-httl')
+	compile project(':view-api')
+}

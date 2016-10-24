@@ -1,7 +1,7 @@
 package com.meizu.simplify.mvc.view;
 
 import com.meizu.simplify.mvc.resolver.TemplateAnnotationResolver;
-import com.meizu.simplify.mvc.view.IPageTemplate;
+import com.meizu.simplify.view.IPageTemplate;
 
 /**
   * <p><b>Title:</b><i>模版工厂</i></p>

@@ -1,0 +1,6 @@
+rootProject.name = 'view-plugins'
+include 'view-api'
+include 'view-beetl'
+include 'view-freemarker'
+include 'view-httl'
+include 'view-velocity'

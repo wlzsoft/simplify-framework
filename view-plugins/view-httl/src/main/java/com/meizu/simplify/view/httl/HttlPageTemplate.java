@@ -1,4 +1,4 @@
-package com.meizu.simplify.mvc.view;
+package com.meizu.simplify.view.httl;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -13,13 +13,11 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.template.annotation.TemplateType;
-import com.meizu.simplify.template.beetl.BeetlTemplate;
+import com.meizu.simplify.template.httl.HttlTemplate;
+import com.meizu.simplify.view.IPageTemplate;
 import com.meizu.simplify.webcache.annotation.WebCache;
-
-
-
 /**
- * <p><b>Title:</b><i>Beetl 模板 页面处理返回方式</i></p>
+ * <p><b>Title:</b><i>Httl 模板 页面处理返回方式</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -32,31 +30,30 @@ import com.meizu.simplify.webcache.annotation.WebCache;
  *
  */
 @Bean
-@TemplateType("beetl")
-public class BeetlPageTemplate  implements IPageTemplate {
+@TemplateType(value ="httl")
+public class HttlPageTemplate implements IPageTemplate {
 	@Resource
 	private PropertiesConfig config;
 	@Resource
-	private BeetlTemplate beetlTemplate;
-	
+	private HttlTemplate httlTemplate;
 
 	@Override
 	public void render(HttpServletRequest request, HttpServletResponse response, WebCache webCache, String staticName,String templateUrl) throws ServletException, IOException {
-		String prefixUri = "/template/beetl/";
-		setContentType(request, response,config);
+		String prefixUri = "/template/httl/";
+		setContentType(request, response, config);
 		
 		// 将request中的对象赋给模版
-		Map<String,Object> parameter = new HashMap<String,Object>();
+		Map<String, Object> parameters = new HashMap<>();
 		Enumeration<String> atts = request.getAttributeNames();
-		while ( atts.hasMoreElements() ) {
+		while (atts.hasMoreElements()) {
 			String name = atts.nextElement();
-			parameter.put(name, request.getAttribute(name));
+			parameters.put(name, request.getAttribute(name));
 		}
-		String content = beetlTemplate.render(parameter, templateUrl, prefixUri,beetlTemplate.extend);	
-		checkCacheAndWrite(request, response, webCache, staticName, content,config);
 		
-	}
+		String content = httlTemplate.render(parameters, templateUrl, prefixUri,httlTemplate.extend);
+		checkCacheAndWrite(request, response, webCache, staticName, content, config);
 
+	}
 
 
 }

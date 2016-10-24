@@ -26,5 +26,8 @@
    </dependencies>
    <modules>
    	<module>template-beetl</module>
+   	<module>template-freemarker</module>
+   	<module>template-httl</module>
+   	<module>template-velocity</module>
    </modules>
 </project>

@@ -1,0 +1,6 @@
+
+description = '现代模版引擎beetl集成view插件'
+dependencies {
+	compile project(':template-beetl')
+	compile project(':view-api')
+}

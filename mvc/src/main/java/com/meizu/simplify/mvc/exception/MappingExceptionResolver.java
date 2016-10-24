@@ -15,11 +15,11 @@ import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.mvc.model.Model;
-import com.meizu.simplify.mvc.view.IPageTemplate;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
 import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.DataUtil;
+import com.meizu.simplify.view.IPageTemplate;
 import com.meizu.simplify.webcache.util.BrowserUtil;
 
 /**
