@@ -8,6 +8,13 @@
   <artifactId>template-beetl</artifactId>
   <name>现代模版引擎beetl集成插件</name>
   <dependencies>
+  		<!--beetl模版引擎使用了antlr做词法和语法及语法树分析，其他模版引擎都没有用到-->
+	   <dependency>
+		   <groupId>org.antlr</groupId>
+		   <artifactId>antlr4-runtime</artifactId>
+		   <scope>compile</scope>
+		   <version>4.5.3</version>
+	   </dependency>
          <!-- 现代模板引擎三 -->
          <dependency>
 	    <groupId>com.ibeetl</groupId>

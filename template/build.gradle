@@ -5,6 +5,4 @@ dependencies {
 	compile project(':encrypt')
 	compile project(':config')
 	compile project(':ioc')
-    compile 'org.apache.velocity:velocity:1.7'
-    compile 'org.freemarker:freemarker:2.3.24-incubating'
 }

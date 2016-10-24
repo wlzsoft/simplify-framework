@@ -1,0 +1,5 @@
+
+description = '现代模版引擎freemarker集成插件'
+dependencies {
+    compile 'org.freemarker:freemarker:2.3.24-incubating'
+}

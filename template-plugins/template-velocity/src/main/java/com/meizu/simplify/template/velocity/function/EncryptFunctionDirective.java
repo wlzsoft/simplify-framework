@@ -1,4 +1,4 @@
-package com.meizu.simplify.template.function;
+package com.meizu.simplify.template.velocity.function;
 
 import java.io.IOException;
 import java.io.Writer;

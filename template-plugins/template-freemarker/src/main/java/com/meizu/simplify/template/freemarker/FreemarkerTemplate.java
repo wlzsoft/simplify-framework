@@ -1,4 +1,4 @@
-package com.meizu.simplify.template;
+package com.meizu.simplify.template.freemarker;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -8,6 +8,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.template.annotation.TemplateExtend;
 
 import freemarker.template.Configuration;

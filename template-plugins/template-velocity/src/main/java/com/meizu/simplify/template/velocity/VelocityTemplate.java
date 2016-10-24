@@ -1,4 +1,4 @@
-package com.meizu.simplify.template;
+package com.meizu.simplify.template.velocity;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,9 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.template.ITemplate;
 import com.meizu.simplify.template.annotation.TemplateExtend;
-import com.meizu.simplify.template.function.EncryptFunctionDirective;
+import com.meizu.simplify.template.velocity.function.EncryptFunctionDirective;
 import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.StringUtil;
 

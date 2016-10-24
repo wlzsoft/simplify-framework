@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.template.FreemarkerTemplate;
 import com.meizu.simplify.template.annotation.TemplateType;
+import com.meizu.simplify.template.freemarker.FreemarkerTemplate;
 import com.meizu.simplify.webcache.annotation.WebCache;
 
 
