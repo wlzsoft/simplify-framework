@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>1.2.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>net</artifactId>
+  <name>网络通讯框架</name>
+  <description>可作为datasource模块，webserver模块等等的基础模块</description>
+   <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>utils</artifactId>
+	    <version>1.2.0-SNAPSHOT</version>
+	  </dependency>
+  </dependencies>
+</project>

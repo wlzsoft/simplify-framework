@@ -1,0 +1,5 @@
+
+description = '网络通讯框架'
+dependencies {
+	compile project(':utils')
+}
