@@ -5,6 +5,7 @@ import java.sql.Connection;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.meizu.simplify.dao.datasource.ConnectionFactory;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.ioc.Startup;
 
@@ -24,13 +25,13 @@ public class DruidPoolFactoryTest {
 		// 开启事务1
 		DruidPoolFactory.startTransaction();
 		System.out.println("执行事务操作111111111111111....");
-		DruidPoolFactory.commit();
+		ConnectionFactory.commit();
 		
 		// 开启事务2
 		DruidPoolFactory.startTransaction();
 		System.out.println("执行事务操作222222222222....");
-		DruidPoolFactory.commit();
-		DruidPoolFactory.close();
+		ConnectionFactory.commit();
+		ConnectionFactory.close();
 		for (int i = 0; i < 2; i++) {
 			new Thread(new Runnable() {
 
@@ -40,9 +41,9 @@ public class DruidPoolFactoryTest {
 						DruidPoolFactory.startTransaction();
 						System.out.println(conn2);
 						System.out.println(Thread.currentThread().getName() + "执行事务操作。。。。。。。。。。。。。");
-						DruidPoolFactory.commit();
+						ConnectionFactory.commit();
 					}
-					DruidPoolFactory.close();
+					ConnectionFactory.close();
 				}
 			}).start();
 		}

@@ -11,6 +11,7 @@ import com.meizu.simplify.aop.Handler;
 import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dao.annotations.Transation;
+import com.meizu.simplify.dao.datasource.ConnectionFactory;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.resolver.TransationAnnotationResolver;
 import com.meizu.simplify.dto.AnnotationInfo;
@@ -65,8 +66,8 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		}
 		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
-			DruidPoolFactory.commit();
-			DruidPoolFactory.close();
+			ConnectionFactory.commit();
+			ConnectionFactory.close();
 			LOGGER.info("事务切面切入：["+methodFullName+"]方法之后切入");
 		}
 		return true;

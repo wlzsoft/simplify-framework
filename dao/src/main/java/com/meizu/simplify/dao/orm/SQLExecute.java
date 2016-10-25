@@ -11,6 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.dao.datasource.ConnectionFactory;
 import com.meizu.simplify.dao.datasource.DruidPoolFactory;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.exception.UncheckedException;
@@ -75,7 +76,7 @@ public class SQLExecute {
 //			free(prepareStatement,null);
 			try {
 				if(conn.getAutoCommit()) {
-					DruidPoolFactory.close();
+					ConnectionFactory.close();
 				} else {
 					LOGGER.info("查询开启事务模式，无法关闭连接");
 				}
@@ -107,7 +108,7 @@ public class SQLExecute {
 //			free(prepareStatement,null);
 			try {
 				if(conn.getAutoCommit()) {
-					DruidPoolFactory.close();
+					ConnectionFactory.close();
 				} else {
 					LOGGER.info("查询开启事务模式，无法关闭连接");
 				}
@@ -151,7 +152,7 @@ public class SQLExecute {
 			}finally{
 				try {
 					if(conn.getAutoCommit()) {
-						DruidPoolFactory.close();
+						ConnectionFactory.close();
 					} else {
 						LOGGER.info("查询开启事务模式，无法关闭连接");
 					}
@@ -199,7 +200,7 @@ public class SQLExecute {
 //			free(prepareStatement,rs);
 			try {
 				if(conn.getAutoCommit()) {
-					DruidPoolFactory.close();
+					ConnectionFactory.close();
 				} else {
 					LOGGER.info("查询开启事务模式，无法关闭连接");
 				}
@@ -247,7 +248,7 @@ public class SQLExecute {
 //			free(prepareStatement,null);
 			try {
 				if(conn.getAutoCommit()) {
-					DruidPoolFactory.close();
+					ConnectionFactory.close();
 				} else {
 					LOGGER.info("查询开启事务模式，无法关闭连接");
 				}
@@ -309,7 +310,7 @@ public class SQLExecute {
 //			free(prepareStatement,rs);
 			try {
 				if(conn.getAutoCommit()) {
-					DruidPoolFactory.close();
+					ConnectionFactory.close();
 				} else {
 					LOGGER.info("查询开启事务模式，无法关闭连接");
 				}

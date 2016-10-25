@@ -3,9 +3,6 @@ package com.meizu.simplify.dao.datasource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.dao.exception.DataAccessException;
@@ -31,8 +28,6 @@ import com.meizu.simplify.utils.PropertieUtil;
  */
 public class DruidPoolFactory {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(DruidPoolFactory.class);
-	
 	private String dataSourceStr = "";
 	
 	public String getDataSourceStr() {
@@ -47,19 +42,18 @@ public class DruidPoolFactory {
 		return factory.getDataSourceStr();
 	}
 
-	// 线程共享变量,用于事务管理
-	public static ThreadLocal<Connection> container = new ThreadLocal<>();
-	
 	private static final DruidPoolFactory factory = new DruidPoolFactory();
 	
+	private javax.sql.DataSource dataSource = null;
+	
 	private DruidPoolFactory(){
-		createDataSource();
+		this.dataSource = createDataSource();
 	}
 	
-	private DruidDataSource dataSource = null;
-	private DruidDataSource createDataSource() {
+	private javax.sql.DataSource createDataSource() {
+		DruidDataSource dataSource = null;
+		PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
 		try	{
-			PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
 			dataSource = new DruidDataSource();
 			//默认配置信息设置
 //			数据源驱动类driverClassName可不写，Druid默认会自动根据URL识别DriverClass
@@ -110,7 +104,6 @@ public class DruidPoolFactory {
 			//dataSource.setDefaultAutoCommit(false);
 			//读取配置文件信息
 			DruidDataSourceFactory.config(dataSource, result.getProps());
-			dataSourceStr = result.toString();
 		} catch (Exception e){
 			try	{
 				if (dataSource != null) {
@@ -127,29 +120,17 @@ public class DruidPoolFactory {
 			e.printStackTrace();
 			throw new StartupErrorException("sql数据库连接失败");
 		}
+		dataSourceStr = result.toString();
 		return dataSource;
 	}
 	
-	
+	/**
+	 * 
+	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
+	 * 操作步骤: TODO<br>
+	 */
 	public static Connection getConnection()   {
-		Connection connection = container.get();
-		if (connection != null) {
-			return connection;
-		}
-		try {
-			if (factory.dataSource != null)  {
-				connection = factory.dataSource.getConnection();
-			}
-			if(connection.isClosed()) {
-				LOGGER.info("连接已关闭");
-				throw new DataAccessException("连接已关闭");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataAccessException(e.getMessage());
-		}
-		LOGGER.debug("线程["+Thread.currentThread().getName() + "]连接已经开启......");
-		container.set(connection);
+		Connection connection = ConnectionFactory.getConnection(factory.dataSource);
 		return connection;
 	}
 	
@@ -159,117 +140,7 @@ public class DruidPoolFactory {
 	 * 操作步骤: TODO<br>
 	 */
 	public static void startTransaction() {
-		//获取当前线程的连接
-		Connection conn = container.get();
-		if (conn == null) {
-			conn = getConnection();
-			container.set(conn);
-			LOGGER.info(Thread.currentThread().getName() + "已从数据源中成功获取连接");
-		} else {
-			LOGGER.info(Thread.currentThread().getName() + "从缓存中获取连接");
-		}
-		try {
-			//手动提交事务
-			conn.setAutoCommit(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * 方法用途: 提交事务<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static void commit() {
-		commit(null);
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 提交事务<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static void commit(Integer transactionISO) {
-		try {
-			Connection conn = container.get();
-			if (null != conn) {
-				conn.commit();
-				conn.setAutoCommit(true);//开启事务自动提交，无需干预
-				if(transactionISO!=null) {
-					try {
-						conn.setTransactionIsolation(transactionISO);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-				LOGGER.info(Thread.currentThread().getName() + "事务已经提交......");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-	/**
-	 * 
-	 * 方法用途: 回滚事务<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static void rollback() {
-		rollback(null);
-	}
-	/**
-	 * 
-	 * 方法用途: 回滚事务<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static void rollback(Integer transactionISO) {
-		try {
-			Connection conn = container.get();
-			if (conn != null) {
-				conn.rollback();
-				conn.setAutoCommit(true);//开启事务自动提交，无需干预
-				if(transactionISO!=null) {
-					try {
-						conn.setTransactionIsolation(transactionISO);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-				LOGGER.info(Thread.currentThread().getName() + "事务已经回滚......");
-				container.remove();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
-	/**
-	 * 
-	 * 方法用途: 关闭连接-关闭会回收到连接池，是逻辑关闭而不是真正的物理关闭<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static void close() {
-		try {
-			Connection conn = container.get();
-			if (conn != null) {
-				if(!conn.isClosed()) {
-					conn.close();
-				}
-				LOGGER.debug(Thread.currentThread().getName() + "连接关闭");
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			try {
-				container.remove();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
+		ConnectionFactory.startTransaction(factory.dataSource);
 	}
 	
 	
@@ -280,7 +151,7 @@ public class DruidPoolFactory {
 	 */
 	public static void initPool() {
 		try {
-			factory.dataSource.init();
+			((DruidDataSource)factory.dataSource).init();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -292,7 +163,7 @@ public class DruidPoolFactory {
 	 * 操作步骤:  destroy-method="close"<br>
 	 */
 	public static void closePool() {
-		factory.dataSource.close();
+		((DruidDataSource)factory.dataSource).close();
 	}
 }
 
