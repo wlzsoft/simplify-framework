@@ -23,6 +23,9 @@ import com.meizu.simplify.mvc.model.Model;
  *
  */
 public interface IBaseController<T extends Model> {
+//	@Resource//注入静态变量代替BeanFactory.getBean
+//	public static DelegateController<?> baseController = null;
+	
 	/**
 	 * 方法用途: 开始处理请求<br>
 	 * 操作步骤: TODO<br>
@@ -34,8 +37,9 @@ public interface IBaseController<T extends Model> {
 	
 	@SuppressWarnings("unchecked")
 	public default void process(HttpServletRequest request, HttpServletResponse response,String requestUrl,String requestMethodName,boolean isStatic,String[] urlparams) {
-		DelegateController<T> baseController = BeanFactory.getBean(DelegateController.class);//这种写法有性能消耗,待优化 TODO
+		DelegateController<T> baseController = BeanFactory.getBean(DelegateController.class);//这种写法有性能消耗,待优化,com.meizu.simplify.mvc.controller.Controller.get会走这个逻辑 TODO
 		baseController.process(request, response, requestUrl, requestMethodName,isStatic, urlparams,this);
+		//((DelegateController<T>)baseController).process(request, response, requestUrl, requestMethodName,isStatic, urlparams,this);
 	}
 	
 	public default boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
