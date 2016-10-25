@@ -119,7 +119,14 @@ public class DaoTest {
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}*/
 	@Test
+	public void s2_findPageMutilSql5Test() {
+		//针对包含distinct关键字的测试
+		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select distinct test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createName desc) as temp","lcy");
+		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+	}
+	@Test
 	public void s2_findPageMutilSql2Test() {
+		//针对不包含distinct关键字的测试
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime desc) as temp","lcy");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
