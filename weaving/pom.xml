@@ -48,7 +48,7 @@
                     <manifest>
                         <!-- <addClasspath>true</addClasspath> -->
                         <!-- <classpathPrefix>lib/</classpathPrefix> -->
-                        <!-- <mainClass>com.meizu.simplify.aop.AopClassFileTransformer</mainClass> -->
+                        <!-- <mainClass>com.meizu.simplify.weaving.AopClassFileTransformer</mainClass> -->
 						<useUniqueVersions>false</useUniqueVersions>
 						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>

@@ -1,4 +1,4 @@
-package com.meizu.simplify.aop.resolver;
+package com.meizu.simplify.weaving.resolver;
 
 import java.util.List;
 
@@ -6,11 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.Constants;
-import com.meizu.simplify.aop.AopClassFileTransformer;
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.weaving.AopClassFileTransformer;
 
 import javassist.CtClass;
 
@@ -34,11 +35,11 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		AopClassFileTransformer aft = new AopClassFileTransformer();
-		List<Class<?>> classList = ClassUtil.findClasses(Constants.packagePrefix+".simplify.aop",Constants.packagePrefix+".simplify.utils");//扫描范围过大，后续可以考虑优化，减少Class的扫描
+		List<Class<?>> classList = ClassUtil.findClassesByAnnotationClass(Bean.class,Constants.packagePrefix);
 		for (Class<?> clazz : classList) {
 			String className = clazz.getName();
 			try {
-				CtClass ctClass = aft.pool.get(className);
+				CtClass ctClass = aft.pool.makeClass(className);
 				CtClass targetClassByteCode = aft.embed(className, ctClass);
 				LOGGER.info("test:"+targetClassByteCode);
 			} catch (Exception e) {

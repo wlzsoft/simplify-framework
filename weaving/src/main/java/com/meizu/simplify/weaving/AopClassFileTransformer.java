@@ -1,4 +1,4 @@
-package com.meizu.simplify.aop;
+package com.meizu.simplify.weaving;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import javassist.NotFoundException;
 
 /**
  * <p><b>Title:</b><i>字节码编辑植入处理类</i></p>
- * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/aop/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
+ * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -97,8 +97,8 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	if(injectionTargetAnnotation != null) {
     		injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
     	}
-    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
-    	//injectionTargetClassPaths = "E:/workspace-git/simplify-framework/aop/target/aop-1.2.0-SNAPSHOT.jar";
+//    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
+    	injectionTargetClassPaths = "E:/workspace-git/simplify-framework/aop/target/aop-1.2.0-SNAPSHOT.jar";
     	try {
     		//二.织入初始化
 			//0.对类进行精简
