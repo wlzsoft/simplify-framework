@@ -287,31 +287,74 @@ public class ClassUtil {
 	 * @param packageName 包名
 	 * @return 返回目录中指定包下的类名集合
 	 */
-	private static List<String> getClassNamesFromDir(File dir,
-			String packageName) {
-		List<String> classNames = new ArrayList<>();
+	private static List<String> getClassNamesFromDir(File dir,String packageName) {
+		String separator = System.getProperty("file.separator");
+		List<String> classNames =  getClassFromDir(dir,new ICallbackClass<String>() {
+			@Override
+			public String call(File file,Object... params) {
+				String className = file.getPath();
+				className = className.replace(separator, ".");
+				className = packageName	+ StringUtil.substringAfterLast(className,packageName);
+				className = className.replaceFirst(".class$", "");
+				return className;
+			}
+		});
+		
+		return classNames;
+	}
+	
+	/**
+	  * <p><b>Title:</b><i>类查找加载工具类</i></p>
+	 * <p>Desc: TODO</p>
+	 * <p>source folder:{@docRoot}</p>
+	 * <p>Copyright:Copyright(c)2014</p>
+	 * <p>Company:meizu</p>
+	 * <p>Create Date:2016年1月7日 下午2:15:40</p>
+	 * <p>Modified By:luchuangye-</p>
+	 * <p>Modified Date:2016年1月7日 下午2:15:40</p>
+	 * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
+	 * @version Version 0.1
+	 * @param <T>
+	 */
+	public interface ICallbackClass<T> {
+		
+		/**
+		 * 方法用途: 从目录中获取指定包下的类名集合<br>
+		 * 操作步骤: TODO<br>
+		 * @param file 返回最原始的file对象
+		 * @param params 0个或多个参数值
+		 * @return 最终转换的后对象
+		 */
+		public T call(File file,Object... params);
+	} 
+	
+	/**
+	 * 方法用途: 从目录中获取的类文件-可定制处理后的返回结果集<br>
+	 * 操作步骤: TODO<br>
+	 * @param dir
+	 * @param call 通过这个回调函数处理单个class文件并返回结果
+	 * @param params 处理时要传递的参数
+	 * @return 返回class文件处理后的结果集
+	 */
+	public  static <T> List<T> getClassFromDir(File dir,ICallbackClass<T> call,Object... params) {
+		List<T> classFiles = new ArrayList<>();
 		try {
 			File[] files = dir.listFiles();
-			String separator = System.getProperty("file.separator");
 			for (File file : files) {
 				if (file.isDirectory()) {
-					classNames.addAll(getClassNamesFromDir(file, packageName
-							+ "." + file.getName()));
+					classFiles.addAll(getClassFromDir(file,call,params));
 				} else if (file.getName().endsWith(".class")) {
-					String className = file.getPath();
-					className = className.replace(separator, ".");
-					className = packageName
-							+ StringUtil.substringAfterLast(className,
-									packageName);
-					className = className.replaceFirst(".class$", "");
-					classNames.add(className);
+					T t = call.call(file,params);
+					if(t != null) {
+						classFiles.add(t);
+					}
 				}
 			}
 		} catch (Exception e) {
-			LOGGER.warn("获取目录中的类名时发生异常。", e);
+			LOGGER.warn("获取目录中的类文件对象发生异常。", e);
 //			System.err.println("获取目录中的类名时发生异常。"+ e);
 		}
-		return classNames;
+		return classFiles;
 	}
 
 //	========================查找方法相关====================================
