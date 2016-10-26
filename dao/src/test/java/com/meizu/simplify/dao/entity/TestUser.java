@@ -2,6 +2,7 @@ package com.meizu.simplify.dao.entity;
 
 import com.meizu.simplify.entity.BaseEntity;
 import com.meizu.simplify.entity.annotations.Entity;
+import com.meizu.simplify.entity.annotations.Key;
 import com.meizu.simplify.entity.annotations.Table;
 import com.meizu.simplify.entity.annotations.Transient;
 
@@ -24,6 +25,14 @@ import com.meizu.simplify.entity.annotations.Transient;
 public class TestUser extends BaseEntity {
 
 	private static final long serialVersionUID = 658015695524932500L;
+	@Key(auto=false)
+	private Integer fid;
+	public Integer getFid() {
+		return fid;
+	}
+	public void setFid(Integer fid) {
+		this.fid = fid;
+	}
 	private String name;
 	public String getName() {
 		return name;

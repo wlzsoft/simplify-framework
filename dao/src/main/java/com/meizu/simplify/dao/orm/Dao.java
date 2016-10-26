@@ -330,7 +330,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			T t = list.get(i);
 			temp.add(t);
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),currentColumnFieldNames, isMycat),temp);
+				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),isAutoPk, isMycat),temp);
 				for (T t2 : temp) {
 					t2.setFid(maxkey++);//此处需要严格并发测试TODO
 				}
@@ -339,7 +339,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 		}
 		if(temp.size()>0) {
-			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(), currentColumnFieldNames, isMycat),temp);
+			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),isAutoPk, isMycat),temp);
 			for (T t2 : temp) {
 				t2.setFid(maxkey++);//此处需要严格并发测试TODO
 			}

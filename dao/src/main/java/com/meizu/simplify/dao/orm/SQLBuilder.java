@@ -162,17 +162,18 @@ public class SQLBuilder<T> {
      * @return
      */
     public String preCreate(boolean isAutoPk) {
-    	
+    	int size = 0;
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("INSERT INTO ").append(tableName).append("(");
         if(isAutoPk) {
         	sqlBuild.append(otherIdColumnsStr);
+        	size = otherIdColumns.size();
         } else {
         	sqlBuild.append(columnsStr);
+        	size = columns.size();
         }
         sqlBuild.append(") values(");
         String sql = sqlBuild.toString();
-        int size = otherIdColumns.size();
         String charValue="";
         for(int i=0; i < size;i++) {
         	charValue+=",?";
@@ -185,34 +186,43 @@ public class SQLBuilder<T> {
     /**
      * 生成批量新增的SQL
      * 
-     * @param size
-     * @param currentColumnFieldNames
+     * @param size 批量插入的批次-一次批量插入的记录数
+     * @param isAutoPk 是否启用自增主键
      * @param isMycat
      * @return
      */
-    public String createOfBatch(int size,Map<String, String> currentColumnFieldNames,boolean isMycat) {
+    public String createOfBatch(int size,boolean isAutoPk,boolean isMycat) {
+    	int length = 0;
         StringBuilder sqlBuild = new StringBuilder();
-         	if(isMycat) {
-         		sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/");
-         	}
-            sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                    .append(otherIdColumnsStr).append(") values ");
-            String values = "";
-            for(int i=0; i<otherIdColumns.size();i++) {
-            	values += ",?";
+     	if(isMycat) {
+     		sqlBuild.append("/*!mycat:catlet=demo.catlets.BatchInsertSequence*/");
+     	}
+        sqlBuild.append("INSERT INTO ").append(tableName).append("(");
+        if(isAutoPk) {
+        	sqlBuild.append(otherIdColumnsStr);
+        	length = otherIdColumns.size();
+        } else {
+        	sqlBuild.append(columnsStr);
+        	length = columns.size();
+        }
+        sqlBuild.append(") values ");
+        
+        String values = "";
+        for(int i=0; i<length;i++) {
+        	values += ",?";
+        }
+        values = values.substring(1);
+        for (int i=0; i < size; i++) {
+            if (i == 0) {
+                sqlBuild.append(" ( ");
+            } else {
+                sqlBuild.append(" ),( ");
             }
-            values = values.substring(1);
-            for (int i=0; i < size; i++) {
-                if (i == 0) {
-                    sqlBuild.append(" ( ");
-                } else {
-                    sqlBuild.append(" ),( ");
-                }
-                sqlBuild.append(values);
-                if(i == size-1) {
-                	sqlBuild.append(")");
-                }
+            sqlBuild.append(values);
+            if(i == size-1) {
+            	sqlBuild.append(")");
             }
+        }
          
         String sql = sqlBuild.toString();
          

@@ -12,6 +12,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import com.meizu.simplify.dao.entity.TestUser;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.Startup;
@@ -55,6 +56,21 @@ public class DaoTest {
 	@Test
 	public void getIdNameTest() {
 		Assert.assertEquals("fid", BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).getIdName());
+	}
+	
+	@Test
+	public void s1_insertUserTest() {
+		TestUser t = new TestUser();
+		t.setFid(3);
+		t.setName("卢创业");
+		t.setCreateId(1);
+		t.setUpdateId(1);
+		t.setCreateTime(new Date());
+		t.setUpdateTime(new Date());
+		System.out.println("save============================="+BaseDao.getIns(TestUser.class).save(t));
+		System.out.println("saveUserTestGenId:"+t.getFid());
+		BaseDao.getIns(TestUser.class).remove(3);
+		System.out.println("removeUserTestGenId:3");
 	}
 	
 	@Test
