@@ -1,0 +1,6 @@
+
+description = '织入组件桥接插件'
+dependencies {
+	compile project(':weaving')
+	compile project(':ioc')
+}

@@ -3,5 +3,4 @@ description = '织入组件'
 dependencies {
 	compile project(':utils')
 	compile 'org.javassist:javassist:3.20.0-GA'
-	compile project(':aop')
 }

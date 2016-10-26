@@ -40,7 +40,7 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			try {
 				CtClass ctClass = aft.pool.get(className);
 				CtClass targetClassByteCode = aft.embed(className, ctClass);
-				System.out.println(targetClassByteCode);
+				LOGGER.info("test:"+targetClassByteCode);
 			} catch (Exception e) {
 //			} catch (IllegalClassFormatException e) {
 				e.printStackTrace();
