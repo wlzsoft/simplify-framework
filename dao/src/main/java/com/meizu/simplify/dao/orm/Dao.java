@@ -59,6 +59,11 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 主键列名
 	 */
 	private String pkName;
+	
+	/**
+	 * 是否自增主键
+	 */
+	private boolean isAutoPk = false;
 
 	/**
 	 * columnName=FieldName
@@ -82,7 +87,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		this.entityClass = entityClass;
 		DaoInit(entityClass);
 	}
-
 	
 	/**
 	 * 
@@ -133,16 +137,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	/**
 	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
 	 * 操作步骤: TODO<br>
-	 * @param class1
+	 * @param clazz
 	 * @param trans 
 	 */
-	private void buildFieldInfo(Class<? super T> class1) {
-		Field[] fields = class1.getDeclaredFields();
+	private void buildFieldInfo(Class<? super T> clazz) {
+		Field[] fields = clazz.getDeclaredFields();
 		List<Transient> trans = new ArrayList<>();
 		buildClassTransientInfo(entityClass,trans);
 		getFieldInfo(fields,trans);
-		if(class1.getSuperclass() != Object.class && class1.getSuperclass() != null) {
-			buildFieldInfo(class1.getSuperclass());
+		if(clazz.getSuperclass() != Object.class && clazz.getSuperclass() != null) {
+			buildFieldInfo(clazz.getSuperclass());
 		}
 	}
 	
@@ -175,6 +179,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			} else {
 				columnName = field.getName();
 			}
+			//@a map集合中判断是否Entity的实现类中已经有字段，有就continue,不去找父级的字段 start
+			//父类同名的字段全部失效，以实现类为准
+			if(currentColumnFieldNames.get(columnName)!=null) {
+				continue;
+			}
+			//@a end
 			//create dll start
 			columnsMeta.put(columnName,field.getType().getName());
 			//create dll end
@@ -183,8 +193,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				// 取得ID的列名
 				pkName = columnName;
 				Key primaryKey = field.getAnnotation(Key.class);
-				if(primaryKey != null&&primaryKey.auto()) {
-					
+				if(primaryKey != null&&primaryKey.auto()) {//决定是否启用手动设置的值
+					isAutoPk = true;
 				}
 			}
 		}
@@ -217,7 +227,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return false;
 	}
 	
-	
 	/**
 	 * 方法用途: 获取实体类的主键值<br>
 	 * 操作步骤: 注意-不建议在运行时使用，由于使用了反射，性能低下<br>
@@ -240,13 +249,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	//--------------------------------保存操作-----------------------------------------------------------
 	
-	
-	
 	private Integer preSave(String sql,List<T> tList) {
 		Integer key = SQLExecute.executeInsert(sql, new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement, Object... params) throws SQLException {
-				List<String> cList = sqlBuilder.getOtherIdColumns();
+				List<String> cList = null;
+				if(isAutoPk) {
+					cList = sqlBuilder.getOtherIdColumns();
+				} else {
+					cList = sqlBuilder.getColumns();
+				}
 				for (int j = 0; j < tList.size(); j++) {
 					T t = tList.get(j);
 					for (int i = 1; i <= cList.size(); i++) {
@@ -266,7 +278,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public boolean save(T t) {
 //		buildInfo.buildId(t);//TODO 慎重考虑createId，等字段的值的自动设置
-		String sql = sqlBuilder.preCreate();
+		String sql = sqlBuilder.preCreate(isAutoPk);
 		List<T> tList = new ArrayList<>();
 		tList.add(t);
 		Integer key = preSave(sql,tList);
@@ -480,9 +492,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 //--------------------------------查询操作-----------------------------------------------------------
 	
 	
-	
-	
-	
 	public List<T> find(String sql,Object... params) {
 		logger.info(sql);
 		List<T> tList = SQLExecute.executeQuery(sql, new IDataCallback<T>() {
@@ -510,7 +519,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		},this.entityClass);
 		return tList;
 	}
-	
 	
 	public T findOne(String sql,Object... params) {
 		List<T> list = find(sql,params);
@@ -593,6 +601,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		return rs;
 	}
+	
 	/**
 	 * @param param where条件参数
 	 */
@@ -813,6 +822,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		page.setResults(list);
 		return page;
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 基于这个方法，再次封装，提供更简便的多表分页查询<br>

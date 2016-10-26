@@ -32,7 +32,7 @@ import com.meizu.simplify.utils.StringUtil;
 public class SQLBuilder<T> {
      
     protected static final Logger logger = LoggerFactory.getLogger(SQLBuilder.class);
-//    private List<String> columns;//暂时用不上,预留
+    private List<String> columns;
     private Map<String,String> columnsMeta;//用于create语句使用
     private List<String> otherIdColumns;
 	private String tableName;
@@ -43,19 +43,26 @@ public class SQLBuilder<T> {
     public SQLBuilder(List<String> otherIdColumns,List<String> columns, String tableName, String pkName,Map<String,String> columnsMeta) {
         super();
         this.columnsMeta = columnsMeta;
-//        this.columns = columns;
+        this.columns = columns;
         this.otherIdColumns = otherIdColumns;
         this.tableName = tableName;
         this.pkName = pkName;
         this.columnsStr = StringUtil.join(columns, ",");
         this.otherIdColumnsStr = StringUtil.join(otherIdColumns, ",");
     }
+    
+    public List<String> getColumns() {
+		return columns;
+	}
+    
     public List<String> getOtherIdColumns() {
 		return otherIdColumns;
 	}
+    
     public String getOtherIdColumnsStr() {
 		return otherIdColumnsStr;
 	}
+    
     public String getTableName() {
     	if(tableIndexLocal.get() == null) {
     		return this.tableName;
@@ -69,7 +76,6 @@ public class SQLBuilder<T> {
      * 
      * @param t
      * @param currentColumnFieldNames
-     * @param columnsNames 
      * @return
      */
     public SqlDTO whereValue(T t,Map<String, String> currentColumnFieldNames) {
@@ -129,8 +135,8 @@ public class SQLBuilder<T> {
      * 
      * 方法用途: TODO<br>
      * 操作步骤: TODO<br>
-     * @param whereList
      * @param type 枚举  delete  select
+     * @param whereList
      * @return
      */
     public String commonSqlByType(String type , WhereDTO... whereList) {
@@ -149,21 +155,22 @@ public class SQLBuilder<T> {
         
 	}
     
-    
     /**
      * 生成新增的SQL--预处理方式，prestatement方式
      * 
-     * @param t
-     * @param currentColumnFieldNames
-     * @param values 
-     * @param columns 
+     * @param isAutoPk 是否提供主键自增字段 
      * @return
      */
-    public String preCreate() {
+    public String preCreate(boolean isAutoPk) {
     	
         StringBuilder sqlBuild = new StringBuilder();
-        sqlBuild.append("INSERT INTO ").append(tableName).append("(")
-                .append(otherIdColumnsStr).append(") values(");
+        sqlBuild.append("INSERT INTO ").append(tableName).append("(");
+        if(isAutoPk) {
+        	sqlBuild.append(otherIdColumnsStr);
+        } else {
+        	sqlBuild.append(columnsStr);
+        }
+        sqlBuild.append(") values(");
         String sql = sqlBuild.toString();
         int size = otherIdColumns.size();
         String charValue="";
@@ -178,8 +185,9 @@ public class SQLBuilder<T> {
     /**
      * 生成批量新增的SQL
      * 
-     * @param list
+     * @param size
      * @param currentColumnFieldNames
+     * @param isMycat
      * @return
      */
     public String createOfBatch(int size,Map<String, String> currentColumnFieldNames,boolean isMycat) {
@@ -213,7 +221,6 @@ public class SQLBuilder<T> {
         return sql;
     }
     
-    
     /**
      * 
      * 方法用途: TODO<br>
@@ -228,8 +235,6 @@ public class SQLBuilder<T> {
         where.setValue("?");
         return commonSqlByType("delete",where);
 	}
-    
-    
     
     /**
      * 生成根据ID删除的SQL
@@ -251,7 +256,7 @@ public class SQLBuilder<T> {
     /**
      * 生成根据IDs批量删除的SQL
      * 
-     * @param ids
+     * @param idsLength
      * @return
      */
     public <PK> String removeOfBatch(int idsLength) {
@@ -280,7 +285,6 @@ public class SQLBuilder<T> {
         return sql;
     }
      
-     
     public String removeAll() {
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("DELETE FROM ").append(getTableName());
@@ -294,6 +298,8 @@ public class SQLBuilder<T> {
      * 
      * @param t
      * @param currentColumnFieldNames
+     * @param whereColumn
+     * @param isAllField
      * @return
      */
     public String update(T t, Map<String, String> currentColumnFieldNames,String whereColumn,Boolean... isAllField) {
@@ -329,12 +335,9 @@ public class SQLBuilder<T> {
         return sql;
     }
      
-   
-     
     /**
      * 生成根据ID查询的SQL 已测试
      * 
-     * @param id
      * @return
      */
     public <PK>  String findById() {
@@ -349,7 +352,8 @@ public class SQLBuilder<T> {
     /**
      * 生成根据属性查询的SQL 已测试
      * 
-     * @param id
+     * @param key
+     * @param value
      * @return
      */
     public <V>  String findByProperties(String key,V value) {
@@ -361,12 +365,11 @@ public class SQLBuilder<T> {
          
     }
     
-    
     /**
      * 
      * 方法用途: 生成根据ID查询的SQL<br>
      * 操作步骤: TODO<br>
-     * @param idArr
+     * @param size
      * @return
      */
     public <PK> String findByIds(int size) {
@@ -386,12 +389,13 @@ public class SQLBuilder<T> {
         return sql;
          
     }
+    
     /**
      * 
      * 方法用途: 生成多属性值查询的sql<br>
      * 操作步骤: TODO<br>
      * @param name
-     * @param values
+     * @param size
      * @return
      */
     public <PK> String findByMutil(String name, int size) {
@@ -404,6 +408,7 @@ public class SQLBuilder<T> {
     	
     	return findByMutil(name,idArr);
     }
+    
     /**
      * 
      * 方法用途: 生成多属性值查询的sql<br>
@@ -422,6 +427,7 @@ public class SQLBuilder<T> {
          
         return sql;
 	}
+    
     /**
      * 生成查询所有的SQL
      * 
@@ -490,6 +496,7 @@ public class SQLBuilder<T> {
 	public void setTableIndexLocal(ThreadLocal<Integer> tableIndexLocal) {
 		this.tableIndexLocal = tableIndexLocal;
 	}
+	
 	public String createTable() {
 		StringBuilder sqlBuild = new StringBuilder();
 		createColum(sqlBuild, pkName);//设置主键
@@ -522,6 +529,5 @@ public class SQLBuilder<T> {
 		}
 		sqlBuild.append(type);
 	}
-
 	
 }
