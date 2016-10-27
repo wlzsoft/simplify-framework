@@ -24,7 +24,7 @@ import javassist.NotFoundException;
 
 /**
  * <p><b>Title:</b><i>字节码编辑植入处理类</i></p>
- * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/aop/src/main/resources/aop.properties</p>
+ * <p>Desc: java命令启用的参数： -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/aop/src/main/resources/aop.properties</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -274,9 +274,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 
 	private void printAopEmbedMethodSuccessInfo(String className, CtClass ctClass, boolean isInvokeEmbedMethod) {
 		if(isInvokeEmbedMethod) {
-			System.out.println("AOP: 包含Bean注解的对象["+ctClass.getName()+"]已启用aop功能");
-			System.out.println("AOP：字节码操作工具启用精简["+className+"]对象字节码");
-			System.out.println("AOP：已对类["+className+"]的相关方法进行逻辑切入");
+			System.out.println("["+AopClassFileTransformer.class.getName()+"]AOP: 包含Bean注解的对象["+ctClass.getName()+"]已启用aop功能");
+			System.out.println("["+AopClassFileTransformer.class.getName()+"]AOP: 字节码操作工具启用精简["+className+"]对象字节码");
+			System.out.println("["+AopClassFileTransformer.class.getName()+"]AOP: 已对类["+className+"]的相关方法进行逻辑切入");
 		}
 	}
 
@@ -341,7 +341,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	private void embedMethod(ClassPool pool, String className, CtMethod ctmethod)
 			throws CannotCompileException, NotFoundException {
 		String methodFullName = className+":"+ctmethod.getName();
-    	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
+    	System.out.println("["+AopClassFileTransformer.class.getName()+"]AOP：对方法["+methodFullName+"]进行逻辑切入");
 		ctmethod.addLocalVariable("startTime", CtClass.longType);
 		ctmethod.addLocalVariable("endTime", CtClass.longType);
 		//ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型

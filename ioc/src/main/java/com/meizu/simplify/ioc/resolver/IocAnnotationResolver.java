@@ -113,9 +113,11 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    	}
 		    	try {
 		    		field.setAccessible(true);
-					field.set(beanObj, iocBean);
+					field.set(beanObj, iocBean);//注意，不同的ClassLoader实例所load的class，是属于不同的类型,这里会注入失败，异常。
 				} catch (IllegalArgumentException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
+					if(beanObj.getClass().getClassLoader() != iocBean.getClass().getClassLoader()) {//相同的ClassLoader才可以注入，避免java.lang.IllegalArgumentException: Can not set com.meizu.xxx(UnsafeFieldAccessorImpl)异常
+						LOGGER.error("注入失败：参数无效异常==>>不能设置"+beanObj.getClass().getName()+"对象的"+iocBean.getClass().getName()+":"+field.getName()+"属性的值，因为将要设置的值的ClassLoader:"+iocBean.getClass().getClassLoader()+"和目标对象的ClassLoader:"+beanObj.getClass().getClassLoader()+"不是同一个对象，要求必须是同一个ClassLoader类型并且是同一个对象，否则认为是不同的类型");
+					}
 					e.printStackTrace();
 				}
 		    	LOGGER.debug(message);

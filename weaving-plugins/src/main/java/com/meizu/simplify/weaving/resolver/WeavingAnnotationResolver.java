@@ -15,11 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.Constants;
+import com.meizu.simplify.classload.SimplifyClassLoaderExecuter;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ClassUtil.ICallbackClass;
+import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.enums.EncodingEnum;
 import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
 import com.meizu.simplify.weaving.AopClassFileTransformer;
@@ -46,28 +49,12 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		AopClassFileTransformer aft = new AopClassFileTransformer();
-		/*List<Class<?>> classList = ClassUtil.findClassesByAnnotationClass(Bean.class,Constants.packagePrefix);
-		for (Class<?> clazz : classList) {
-			String className = clazz.getName();
-			try {
-				CtClass ctClass = aft.pool.makeClass(className);
-				CtClass targetClassByteCode = aft.embed(className, ctClass);
-				LOGGER.info("test:"+targetClassByteCode);
-			} catch (Exception e) {
-//			} catch (IllegalClassFormatException e) {
-				e.printStackTrace();
-				LOGGER.error("无效的Class格式异常:待织入的类"+className+"字节码的格式错误");
-			}
-		}*/
-		
-		String packageName = Constants.packagePrefix;
+		String packageName = Constants.packagePrefix+".demo";
 		String packagePath = packageName.replace(".", SpecialCharacterEnum.BACKSLASH.toString());
 		Enumeration<URL> packageUrls = null;
 		try {
-			packageUrls = Thread.currentThread()
-					.getContextClassLoader().getResources(packagePath);
+			packageUrls = Thread.currentThread().getContextClassLoader().getResources(packagePath);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		while (packageUrls.hasMoreElements()) {
@@ -80,13 +67,12 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 				try {
 					dirPath = URLDecoder.decode(packageUrl.getFile(), EncodingEnum.UTF_8.toString());
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				List<byte[]> clazzList = ClassUtil.getClassFromDir(new File(dirPath),new ICallbackClass<byte[]>() {
+				List<Class<?>> clazzList = ClassUtil.getClassFromDir(new File(dirPath),new ICallbackClass<Class<?>>() {
 					@Override
-					public byte[] call(File file,Object... params) {
-						System.out.println("file_test:"+file.getName());
+					public Class<?> call(File file,Object... params) {
+//						System.out.println("classFileName:"+file.getName());
 						try {
 							InputStream fis = new FileInputStream(file);
 //							byte[] classCode = new byte[fis.available()];
@@ -97,22 +83,47 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 								CtClass ctClass = aft.pool.makeClass(fis);
 								className = ctClass.getName();
 								CtClass targetClassByteCode = aft.embed(className, ctClass);
-								LOGGER.info("test:"+targetClassByteCode);
-								LOGGER.info("test:"+ctClass);
-							} catch (Exception e) {
-//							} catch (IllegalClassFormatException e) {
+								if(targetClassByteCode!=null) {
+									System.out.println("classFileName-aop:"+file.getName());
+//									LOGGER.info("test:"+targetClassByteCode.toClass());
+									SimplifyClassLoaderExecuter mc = new SimplifyClassLoaderExecuter();
+									mc.setByteCodeClassLoader(WeavingAnnotationResolver.class.getClassLoader());
+									Class<?> clazz = mc.getByteCodeClassLoader().defineClass(targetClassByteCode.toBytecode());
+									return clazz;
+								}
+							} catch (IOException e) {
 								e.printStackTrace();
 								LOGGER.error("无效的Class格式异常:待织入的类"+className+"字节码的格式错误");
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
-//							return classCode;
 						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						return null;
 					}
 				});
-				System.out.println("test_weaving:"+clazzList);
+				System.out.println("weaving-list:"+clazzList);
+				String packageNamesStr = CollectionUtil.listToStringBySplit(BeanAnnotationResolver.getClasspaths(), "", "",",");
+				List<Class<?>> classAllList = ClassUtil.getClassList().get(packageNamesStr);
+				for (Class<?> weavingClazz : clazzList) {
+					/*CollectionUtil.contains(classAllList, weavingClazz.getName(), new IEqualCallBack<Class<?>, String>() {
+						@Override
+						public boolean equal(Class<?> o, String w) {
+							if(o.getName().equals(w)) {
+								return true;
+							}
+							return false;
+						}
+					});*/
+					for (Class<?> clazz : classAllList) {
+						if(weavingClazz.getName().equals(clazz.getName())) {
+							classAllList.remove(clazz);
+							classAllList.add(weavingClazz);
+							break;
+						}
+					}
+				}
 			}
 		}
 		

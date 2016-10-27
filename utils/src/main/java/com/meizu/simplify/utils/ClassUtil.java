@@ -111,6 +111,28 @@ public class ClassUtil {
 	}
 	
 	/**
+	 * 缓存Class对象的集合
+	 */
+	private static Map<String,List<Class<?>>> classListMap = new ConcurrentHashMap<>();
+	
+	/**
+	 * 方法用途: 清楚Class对象集合的缓存记录，并设置类对象集合的引用为空<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static void clearClassList() {
+		classListMap.clear();
+		classListMap = null;
+	}
+	
+	/**
+	 * 方法用途: 获取Class对象集合的缓存记录<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static Map<String,List<Class<?>>> getClassList() {
+		return classListMap;
+	}
+	
+	/**
 	 * 
 	 * 方法用途: 查找指定包下的类集合<br>
 	 * 操作步骤: TODO<br>
@@ -118,6 +140,30 @@ public class ClassUtil {
 	 * @return 返回指定包下的类集合
 	 */
 	public static List<Class<?>> findClasses(String... packageNames) {
+		return findClasses(true,packageNames);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 查找指定包下的类集合<br>
+	 * 操作步骤: TODO<br>
+	 * @param packageNames 包名
+	 * @param isCache 是否缓存
+	 * @return 返回指定包下的类集合
+	 */
+	public static List<Class<?>> findClasses(boolean isCache,String... packageNames) {
+		String packageNamesStr = CollectionUtil.listToStringBySplit(packageNames, "", "",",");
+		if(isCache) {//缓存集合
+			if(classListMap == null) {
+				classListMap = new ConcurrentHashMap<>();
+			}
+			if(CollectionUtil.isNotEmpty(classListMap)) {
+				 List<Class<?>> list = classListMap.get(packageNamesStr);
+				 if(CollectionUtil.isNotEmpty(list)) {
+					 return list;
+				 }
+			}
+		}
 		List<Class<?>> classes = new ArrayList<>();
 		for (String className : findClassNames(packageNames)) {
 			try {
@@ -128,6 +174,9 @@ public class ClassUtil {
 				LOGGER.warn("加载[" + className + "]类时发生异常。", e);
 //				System.err.println("加载[" + className + "]类时发生异常。"+e.getMessage());
 			}
+		}
+		if(isCache) {//缓存集合
+			classListMap.put(packageNamesStr, classes);
 		}
 		return classes;
 	}
@@ -145,17 +194,19 @@ public class ClassUtil {
 	
 	/**
 	 * 缓存classNames的集合
+	 * TODO 废弃，用classListMap代替
 	 */
 	private static Map<String,List<String>> classNameListMap = new ConcurrentHashMap<>();
 	
 	/**
 	 * 方法用途: 清楚类名集合的缓存记录，并设置类名集合的引用为空<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: TODO 废弃，用classListMap代替<br>
 	 */
 	public static void clearClassNameList() {
 		classNameListMap.clear();
 		classNameListMap = null;
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 查找指定包下的类名集合<br>
