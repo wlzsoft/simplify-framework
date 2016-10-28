@@ -121,7 +121,7 @@ public class CollectionUtil {
 	}
 	
 	/**
-	 * 方法用途: 集合对象数组中，是否包含满足条件的对象<br>
+	 * 方法用途: 判断集合对象数组中，是否包含满足条件的对象<br>
 	 * 操作步骤: TODO<br>
 	 * @param sourceList 待提取的数组对象
 	 * @param elementByFind 提取的条件
@@ -137,6 +137,28 @@ public class CollectionUtil {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * 方法用途: 对两个集合中的相同元素做覆盖<br>
+	 * 操作步骤: TODO<br>
+	 * @param targetList 待覆盖的集合
+	 * @param sourceList 带提取的集合
+	 * @param call 回调处理确认满足条件的可覆盖对象
+	 * @return 覆盖后的集合
+	 */
+	public static <T> List<T> replace(List<T> targetList,List<T> sourceList, IEqualCallBack<T,T> call) {
+		for (T source : sourceList) {
+			for (T target : targetList) {
+				boolean res = call.equal(target,source);
+				if(res) {
+					targetList.remove(target);
+					targetList.add(source);
+					break;
+				}
+			}
+		}
+		return targetList;
 	}
 	
 	/**

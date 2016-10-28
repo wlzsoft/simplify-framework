@@ -23,6 +23,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ClassUtil.ICallbackClass;
 import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.collection.IEqualCallBack;
 import com.meizu.simplify.utils.enums.EncodingEnum;
 import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
 import com.meizu.simplify.weaving.AopClassFileTransformer;
@@ -100,24 +101,15 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 				System.out.println("weaving-list:"+clazzList);
 				String packageNamesStr = CollectionUtil.listToStringBySplit(BeanAnnotationResolver.getClasspaths(), "", "",",");
 				List<Class<?>> classAllList = ClassUtil.getClassList().get(packageNamesStr);
-				for (Class<?> weavingClazz : clazzList) {
-					/*CollectionUtil.contains(classAllList, weavingClazz.getName(), new IEqualCallBack<Class<?>, String>() {
-						@Override
-						public boolean equal(Class<?> o, String w) {
-							if(o.getName().equals(w)) {
-								return true;
-							}
-							return false;
-						}
-					});*/
-					for (Class<?> clazz : classAllList) {
+				CollectionUtil.replace(classAllList, clazzList, new IEqualCallBack<Class<?>, Class<?>>() {
+					@Override
+					public boolean equal(Class<?> clazz, Class<?> weavingClazz) {
 						if(weavingClazz.getName().equals(clazz.getName())) {
-							classAllList.remove(clazz);
-							classAllList.add(weavingClazz);
-							break;
+							return true;
 						}
+						return false;
 					}
-				}
+				});
 			}
 		}
 		
