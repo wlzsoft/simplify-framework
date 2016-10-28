@@ -24,6 +24,7 @@ import com.meizu.simplify.utils.DateUtil;
 public class SimplifyClassLoaderExecuter {
 	
 	private static ByteCodeClassLoader byteCodeClassLoader = new ByteCodeClassLoader(Thread.currentThread().getContextClassLoader());
+//	private static ByteCodeClassLoader byteCodeClassLoader = new ByteCodeClassLoader(ClassLoader.getSystemClassLoader());
 	
 	/**
 	 * 方法用途: 设置修改类默认使用的parent classloader

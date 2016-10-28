@@ -19,6 +19,6 @@ public class TestService {
 	public void getName() {
 		TestUser testUser = new TestUser();
 		testUser.setName("lcy");
-		System.out.println("test10 "/* +testUser.getName() */);
+		System.out.println("test101 "/* +testUser.getName() */);
 	}
 }

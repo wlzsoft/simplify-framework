@@ -50,7 +50,7 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		AopClassFileTransformer aft = new AopClassFileTransformer();
-		String packageName = Constants.packagePrefix+".demo";
+		String packageName = Constants.packagePrefix;
 		String packagePath = packageName.replace(".", SpecialCharacterEnum.BACKSLASH.toString());
 		Enumeration<URL> packageUrls = null;
 		try {
@@ -83,7 +83,8 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 								CtClass targetClassByteCode = aft.embed(className, ctClass);
 								if(targetClassByteCode!=null/*&&className.equals("com.meizu.demo.mvc.service.TestService")*/) {
 									System.out.println("classFileName-aop:"+file.getName());
-									Class<?> clazz = SimplifyClassLoaderExecuter.getByteCodeClassLoader().defineClass(targetClassByteCode.toBytecode());
+//									Class<?> clazz = SimplifyClassLoaderExecuter.getByteCodeClassLoader().defineClass(targetClassByteCode.toBytecode());
+									Class<?> clazz = SimplifyClassLoaderExecuter.getByteCodeClassLoader().load(className,false,targetClassByteCode.toBytecode());
 									return clazz;
 								}
 							} catch (IOException e) {
@@ -98,18 +99,20 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 						return null;
 					}
 				});
-				System.out.println("weaving-list:"+clazzList);
-				String packageNamesStr = CollectionUtil.listToStringBySplit(BeanAnnotationResolver.getClasspaths(), "", "",",");
-				List<Class<?>> classAllList = ClassUtil.getClassList().get(packageNamesStr);
-				CollectionUtil.replace(classAllList, clazzList, new IEqualCallBack<Class<?>, Class<?>>() {
-					@Override
-					public boolean equal(Class<?> clazz, Class<?> weavingClazz) {
-						if(weavingClazz.getName().equals(clazz.getName())) {
-							return true;
+				if(CollectionUtil.isNotEmpty(clazzList)) {
+					System.out.println("weaving-list:"+clazzList);
+					String packageNamesStr = CollectionUtil.listToStringBySplit(BeanAnnotationResolver.getClasspaths(), "", "",",");
+					List<Class<?>> classAllList = ClassUtil.getClassList().get(packageNamesStr);
+					CollectionUtil.replace(classAllList, clazzList, new IEqualCallBack<Class<?>, Class<?>>() {
+						@Override
+						public boolean equal(Class<?> clazz, Class<?> weavingClazz) {
+							if(weavingClazz.getName().equals(clazz.getName())) {
+								return true;
+							}
+							return false;
 						}
-						return false;
-					}
-				});
+					});
+				}
 			}
 		}
 		

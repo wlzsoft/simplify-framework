@@ -97,8 +97,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	if(injectionTargetAnnotation != null) {
     		injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
     	}
-//    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
-    	injectionTargetClassPaths = "E:/workspace-git/simplify-framework/aop/target/aop-1.2.0-SNAPSHOT.jar";
+    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
     	try {
     		//二.织入初始化
 			//0.对类进行精简
@@ -249,7 +248,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			boolean isContainForFilterList = isContainForFilterList(className);//针对类级别的去重，如果需要使用注解识别，那么需要在配置文件中删掉配置的重复信息
 			if(isContainForFilterList) {//跳过filterList中存在的方法的数据处理
 				printAopEmbedMethodSuccessInfo(className, ctClass, isInvokeEmbedMethod);
-				return ctClass;//返回之前成功织入的方法
+				if(isInvokeEmbedMethod) {
+					return ctClass;//返回之前成功织入的方法
+				}
 			}
 			CtMethod[] methodArr = ctClass.getMethods();
 			for (CtMethod ctMethod : methodArr) {
@@ -261,7 +262,9 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 				isInvokeEmbedMethod = true;
 			}
 			printAopEmbedMethodSuccessInfo(className, ctClass, isInvokeEmbedMethod);
-		    return ctClass;
+			if(isInvokeEmbedMethod) {
+				return ctClass;
+			}
 		} catch (CannotCompileException e) {
 		    e.printStackTrace();
 		    System.out.println("framework:buildClazz");

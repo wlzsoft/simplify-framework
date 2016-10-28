@@ -15,10 +15,6 @@ package com.meizu.simplify.classload;
 */
 public class ByteCodeClassLoader extends ClassLoader {
     
-	public ByteCodeClassLoader() {
-		this(ClassLoader.getSystemClassLoader());
-	}
-	
 	public ByteCodeClassLoader(ClassLoader parent) {
 		super(parent);
 	}
@@ -44,5 +40,28 @@ public class ByteCodeClassLoader extends ClassLoader {
 	@Override
 	protected String findLibrary(String libname) {
 		return super.findLibrary(libname);
+	}
+	
+	public Class<?> load(String name) throws ClassNotFoundException {
+		return load(name, false,null);
+	}
+
+	public Class<?> load(String name, boolean resolve,byte[] byteCode) throws ClassNotFoundException {
+		if (null != super.findLoadedClass(name)) {
+			return reload(name, resolve,byteCode);
+		}
+		
+//		Class<?> clazz = findClass(name);
+		Class<?> clazz = this.defineClass(byteCode);//Class.forName("com.meizu.demo.mvc.service.TestService");
+		if (resolve) {
+			super.resolveClass(clazz);
+		}
+		return clazz;
+	}
+
+	public Class<?> reload(String name, boolean resolve,byte[] clazz) throws ClassNotFoundException {
+		ByteCodeClassLoader hscl = new ByteCodeClassLoader(super.getParent());
+		Class<?> classList = hscl.load(name, resolve,clazz);
+		return classList;
 	}
 }
