@@ -23,14 +23,14 @@ import com.meizu.simplify.utils.DateUtil;
 */
 public class SimplifyClassLoaderExecuter {
 	
-	private ByteCodeClassLoader byteCodeClassLoader;
+	private static ByteCodeClassLoader byteCodeClassLoader = new ByteCodeClassLoader(Thread.currentThread().getContextClassLoader());
 	
 	/**
-	 * 方法用途: 设置修改类默认使用的classloader
+	 * 方法用途: 设置修改类默认使用的parent classloader
 	 * 操作步骤: TODO<br>
 	 * @param classLoader 类加载器
 	 */
-	public void setByteCodeClassLoader(ClassLoader classLoader) {
+	public static void setParentClassLoader(ClassLoader classLoader) {
 		byteCodeClassLoader = new ByteCodeClassLoader(classLoader);
 	}
 	
@@ -39,9 +39,11 @@ public class SimplifyClassLoaderExecuter {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public ByteCodeClassLoader getByteCodeClassLoader() {
+	public static ByteCodeClassLoader getByteCodeClassLoader() {
 		return byteCodeClassLoader;
 	}
+	
+	
 	
 	Long lastModified = 0l;
 
@@ -60,7 +62,7 @@ public class SimplifyClassLoaderExecuter {
 		 * 原因是：之前的ClassLoader已经加载过类了，再次使用同一个ClassLoader同一个类在ClassLoader规范中是不允许
 		 * 只有重新抛弃之前的ClassLoader实例及已经加载过的类，然后重新new一个ClassLoader才可以正常重新加载类。这种过程，一般在启动时，或是插件安装时会发生。虽然性能不好，但是不主要业务的功能调用，所以没有问题.
 		 */
-		this.setByteCodeClassLoader(ByteCodeClassLoader.class.getClassLoader());//set方法中 new是必须，不能共享ClassLoader实例
+		setParentClassLoader(ClassLoader.getSystemClassLoader());//set方法中 new是必须，不能共享ClassLoader实例
 		return byteCodeClassLoader.defineClass(getBytes(classFileName));
 	}
 

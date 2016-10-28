@@ -16,18 +16,33 @@ package com.meizu.simplify.classload;
 public class ByteCodeClassLoader extends ClassLoader {
     
 	public ByteCodeClassLoader() {
-		this(ByteCodeClassLoader.class.getClassLoader());
+		this(ClassLoader.getSystemClassLoader());
 	}
 	
 	public ByteCodeClassLoader(ClassLoader parent) {
 		super(parent);
 	}
 	
-	public /*synchronized*/ Class<?> defineClass(String name, byte[] byteCode) throws ClassFormatError{
+	public Class<?> defineClass(String name, byte[] byteCode) throws ClassFormatError{
 		return super.defineClass(name, byteCode, 0, byteCode.length);
 	}
-	
     public Class<?> defineClass(byte[] byteCode) {
         return this.defineClass(null, byteCode);
     }
+
+    /**
+     * 只有 parent的classloader 是  ClassLoader.getSystemClassLoader() 的时候，才需要定制下面 方法,否则使用容器自己的ClassLoader，比如tomcat或是jetty的ClassLoader
+     */
+	@Override
+	protected Class<?> findClass(String name) throws ClassNotFoundException {
+		return super.findClass(name);
+	}
+
+	/**
+     * 只有 parent的classloader 是  ClassLoader.getSystemClassLoader() 的时候，才需要定制下面 方法,否则使用容器自己的ClassLoader，比如tomcat或是jetty的ClassLoader
+     */
+	@Override
+	protected String findLibrary(String libname) {
+		return super.findLibrary(libname);
+	}
 }

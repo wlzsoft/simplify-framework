@@ -75,20 +75,14 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>>{
 //						System.out.println("classFileName:"+file.getName());
 						try {
 							InputStream fis = new FileInputStream(file);
-//							byte[] classCode = new byte[fis.available()];
-//							fis.read(classCode);
-//							fis.close();
 							String className = "";
 							try {
 								CtClass ctClass = aft.pool.makeClass(fis);
 								className = ctClass.getName();
 								CtClass targetClassByteCode = aft.embed(className, ctClass);
-								if(targetClassByteCode!=null) {
+								if(targetClassByteCode!=null/*&&className.equals("com.meizu.demo.mvc.service.TestService")*/) {
 									System.out.println("classFileName-aop:"+file.getName());
-//									LOGGER.info("test:"+targetClassByteCode.toClass());
-									SimplifyClassLoaderExecuter mc = new SimplifyClassLoaderExecuter();
-									mc.setByteCodeClassLoader(WeavingAnnotationResolver.class.getClassLoader());
-									Class<?> clazz = mc.getByteCodeClassLoader().defineClass(targetClassByteCode.toBytecode());
+									Class<?> clazz = SimplifyClassLoaderExecuter.getByteCodeClassLoader().defineClass(targetClassByteCode.toBytecode());
 									return clazz;
 								}
 							} catch (IOException e) {
