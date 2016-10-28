@@ -97,8 +97,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
     	if(injectionTargetAnnotation != null) {
     		injectionTargetAnnotationArr = injectionTargetAnnotation.split(",");
     	}
-//    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
-    	injectionTargetClassPaths = "E:/workspace-git/simplify-framework/aop/target/aop-1.2.0-SNAPSHOT.jar";
+    	injectionTargetClassPaths = AopConfig.getUtil().getProperty("injectionTargetClassPaths");
     	try {
     		//二.织入初始化
 			//0.对类进行精简
