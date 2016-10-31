@@ -6,6 +6,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.meizu.simplify.cache.enums.CacheFormatEnum;
+
 /**
   * <p><b>Title:</b><i>数据缓存删除标识</i></p>
  * <p>Desc: 可删除指定缓存，也可以清空整个缓存</p>
@@ -44,5 +46,13 @@ public @interface CacheDataDel {
 	 * @return
 	 */
 	boolean allEntries() default false;
+	
+	/**
+	 * 
+	 * 方法用途: 缓存数据存储格式<br>
+	 * 操作步骤: 后续调整删除这个属性，删除可以通用处理，无需再设置数据存储类型 TODO<br>
+	 * @return
+	 */
+	CacheFormatEnum format() default CacheFormatEnum.BINARY;
 
 }

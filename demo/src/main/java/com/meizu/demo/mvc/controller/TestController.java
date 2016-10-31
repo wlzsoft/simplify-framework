@@ -221,7 +221,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testvoid/")
 	public String doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		testService.addTestObj(null);
+//		testService.addTest(null);
 		Test test = testService.doSomeThing2();
 		request.setAttribute("userName", test.getName());
 		return "jsp:/index";
@@ -229,7 +229,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/test/")
 	public String doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		testService.addTest(null);
+		testService.addTestObj(null);
 		Test test = testService.doSomeThing2();
 		if(test != null) {
 			request.setAttribute("userName", test.getName());

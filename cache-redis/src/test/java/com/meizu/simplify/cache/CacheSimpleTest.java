@@ -7,6 +7,8 @@ import org.junit.Test;
 import com.meizu.simplify.Constants;
 import com.meizu.simplify.cache.annotation.CacheDataAdd;
 import com.meizu.simplify.cache.entity.User;
+import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
+import com.meizu.simplify.cache.enums.CacheFormatEnum;
 import com.meizu.simplify.cache.resolver.CacheAnnotationResolver;
 import com.meizu.simplify.dto.AnnotationInfo;
 
@@ -40,6 +42,16 @@ public class CacheSimpleTest {
 				@Override
 				public String condition() {
 					return "";
+				}
+
+				@Override
+				public CacheFormatEnum format() {
+					return CacheFormatEnum.BINARY;
+				}
+
+				@Override
+				public CacheExpireTimeEnum expireTime() {
+					return CacheExpireTimeEnum.CACHE_EXP_FOREVER;
 				}
 			};
 			cai.setAnnotatoionType(cacheDataAdd);

@@ -32,7 +32,7 @@ public class TestService {
 	 * @param aa
 	 * @return
 	 */
-//	@CacheDataAdd(key="bbb")
+//	@CacheDataAdd(key="bbb")//不可以同时使用两个缓存相关的注解，否则会被覆盖掉,以最后一个为准
 	@CacheDataSearch(key="bbb")
     public Test doSomeThing2() {
 		System.out.println("debug:"+debug+"|unicodeTranscoding:"+unicodeTranscoding);

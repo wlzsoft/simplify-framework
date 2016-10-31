@@ -133,7 +133,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	@Override
 	public boolean set(K key, V value) throws UncheckedException {
 		return set(key, CacheExpireTimeEnum.CACHE_EXP_DAY, value);
-//		return set(key,value,-1);
 	}
 	
   
@@ -178,8 +177,6 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		
 	}
 	
-	
-	
 	/** 
 	 * 方法用途: 删除值
 	 * 操作步骤: <br>
@@ -188,8 +185,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean delete(K key) throws UncheckedException {
-		
-		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
+		Boolean result = CacheExecute.execute(key, (k,jedis) -> {
   				 Long res = jedis.del(SerializeUtil.serialize(k));
   		      	 if(res==0) {
   		      		 return true;
@@ -197,7 +193,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
   		      		 return false;
   		      	 }
   		},modName);
-		return ret;
+		return result;
 	}
 	
   @Override  

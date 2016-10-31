@@ -68,8 +68,9 @@ public class JsonUtil {
 	}
     
 	/**
-	 * 方法用途: json字符串转pojo对象<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: json字符串转对象<br>
+	 * 操作步骤: 1.如果json字符串中带有类型标识，那么会转换成pojo对象
+	 *           2.如果json字符串中不带有类型标识，那么会转换为内置的JSONArray和JSONObject等对象<br>
 	 * @param str
 	 * @return
 	 */

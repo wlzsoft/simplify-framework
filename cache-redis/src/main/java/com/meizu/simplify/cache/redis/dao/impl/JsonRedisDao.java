@@ -1,8 +1,10 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
 import com.meizu.simplify.cache.dao.IJsonCacheDao;
+import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
 import com.meizu.simplify.cache.redis.dao.CacheExecute;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.JsonUtil;
@@ -21,10 +23,13 @@ import com.meizu.simplify.utils.JsonUtil;
  * @version Version 0.1
  *
  */
-public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
+public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCacheDao<VV>{
 	
-	public JsonRedisDao(String modName) {
+	private Class<VV> valueClazz;
+
+	public JsonRedisDao(String modName,Class<VV> valueClazz) {
 		super(modName);
+		this.valueClazz = valueClazz;
 	}
 
 	/**
@@ -36,33 +41,86 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 * @param value
 	 * @return
 	 */
-	public Object getAndSet(String key, Object value) {
-		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String str = jedis.getSet(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				if(str != null && str.length() > 0){
-					return JsonUtil.jsonToObject(str);
+	@Override
+	public VV getAndSet(String key, VV value) {
+		return getAndSet(key,value,valueClazz);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: <p>将给定key的值设为value，并返回key的旧值。 </p>
+	 * <p>当key存在但不是字符串类型时，返回一个错误。 </p><br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param value
+	 * @param clazz
+	 * @return
+	 */
+	@Override
+	public <V> V getAndSet(String key, V value,Class<V> clazz) {
+		@SuppressWarnings("unchecked")
+		V result = CacheExecute.execute(key, (k,jedis) ->  {
+				String valueStr = jedis.getSet(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				if(valueStr != null && valueStr.length() > 0){
+					if(clazz != null) {
+						return JsonUtil.jsonToObject(valueStr,clazz);
+					} else {
+						return (V)JsonUtil.jsonToObject(valueStr);
+					}
 				}
 				return null;
 		}, modName);
-		return ret;
+		return result;
 	}
 
+	/**
+	 * 
+	 * 方法用途: 注意返回<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @return
+	 */
+	@Override
+	public VV get(String key) {
+		return get(key,valueClazz);
+	}
+	
 	/**
 	 * 
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
+	 * @param clazz
 	 * @return
 	 */
-	public Object get(String key) {
-		Object ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String str =  jedis.get(k);
-				if(str != null && str.length() > 0){
-					return JsonUtil.jsonToObject(str);
+	@Override
+	public <V> V get(String key,Class<V> clazz) {
+		@SuppressWarnings("unchecked")
+		V result =  CacheExecute.execute(key, (k,jedis) ->  {
+				String valueStr =  jedis.get(k);
+				if(valueStr != null && valueStr.length() > 0){
+					if(clazz != null) {
+						return JsonUtil.jsonToObject(valueStr,clazz);
+					} else {
+						return (V)JsonUtil.jsonToObject(valueStr);
+					}
 				}
 				return null;
 		}, modName);
-		return ret;
+		return result;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	@Override
+	public boolean set(String key, VV value) {
+		return set(key,CacheExpireTimeEnum.CACHE_EXP_FOREVER, value);
 	}
 
 	/**
@@ -74,18 +132,20 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
 	 * @param seconds
 	 * @return
 	 */
-	public boolean set(String key, Object value,int seconds) {
+	@Override
+	public boolean set(String key,CacheExpireTimeEnum expireTime, VV value) {
 		
-		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
+		Boolean isSuccess = CacheExecute.execute(key, (k,jedis) -> {
 				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				if(seconds > 0){
-					jedis.expire(k, seconds);
+				if(expireTime.timesanmp() > 0){
+					jedis.expire(k, expireTime.timesanmp());
 				}
 				return result.equalsIgnoreCase("OK");
 		}, modName);
-		return ret;
+		return isSuccess;
 	}
 	  
+	
     /**
      * 
      * 方法用途: <p>将key的值设为value，当且仅当key不存在。   </p>
@@ -96,12 +156,13 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      * @param value
      * @return
      */
-    public boolean setnx(String key, Object value) {
-    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+	@Override
+    public boolean setnx(String key, VV value) {
+    	Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
 				 long result = jedis.setnx(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 		         return result > 0;
 		}, modName);
-        return ret;
+        return isSuccess;
     }
 
     /**
@@ -114,12 +175,31 @@ public class JsonRedisDao extends BaseRedisDao<String> implements IJsonCacheDao{
      * @param value
      * @return
      */
-    public boolean setex(String key, int seconds, Object value) {
-    	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+	@Override
+    public boolean setex(String key, int seconds, VV value) {
+    	Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
 				String result = jedis.setex(k, seconds, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 	            return result.equalsIgnoreCase("OK");
 		}, modName);
-        return ret;
+        return isSuccess;
     }
-    
+	
+	/** 
+	 * 方法用途: 删除值
+	 * 操作步骤: 注意：这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO<br>
+	 * @param key 保存键
+	 * @return 删除成功为TRUE失败为FALSE
+	 */
+	@Override
+	public boolean delete(String key) throws UncheckedException {
+		Boolean result = CacheExecute.execute(key, (k,jedis) -> {
+  				 Long res = jedis.del(k);
+  		      	 if(res==0) {
+  		      		 return true;
+  		      	 } else {
+  		      		 return false;
+  		      	 }
+  		},modName);
+		return result;
+	}
 }

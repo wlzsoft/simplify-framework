@@ -6,6 +6,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
+import com.meizu.simplify.cache.enums.CacheFormatEnum;
+
 /**
   * <p><b>Title:</b><i>数据缓存添加标识</i></p>
  * <p>Desc: TODO</p>
@@ -46,4 +49,20 @@ public @interface CacheDataAdd {
 	 * @return
 	 */
 	String condition() default "";
+	
+	/**
+	 * 
+	 * 方法用途: 缓存数据存储格式<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	CacheFormatEnum format() default CacheFormatEnum.BINARY;
+	
+	/**
+	 * 
+	 * 方法用途: 缓存有效时间设置<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	CacheExpireTimeEnum expireTime() default CacheExpireTimeEnum.CACHE_EXP_FOREVER;
 }
