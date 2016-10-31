@@ -48,7 +48,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			DruidPoolFactory.startTransaction();
-			LOGGER.info("事务切面切入：["+methodFullName+"]方法之前 切入");
+			LOGGER.debug("事务切面切入：["+methodFullName+"]方法之前 切入");
 		}
 		
 		return true;
@@ -68,7 +68,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		if(anno.annotationType().equals(Transation.class)) {
 			ConnectionFactory.commit();
 			ConnectionFactory.close();
-			LOGGER.info("事务切面切入：["+methodFullName+"]方法之后切入");
+			LOGGER.debug("事务切面切入：["+methodFullName+"]方法之后切入");
 		}
 		return true;
 	}

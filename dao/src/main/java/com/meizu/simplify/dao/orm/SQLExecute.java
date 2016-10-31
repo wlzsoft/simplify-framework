@@ -78,7 +78,7 @@ public class SQLExecute {
 				if(conn.getAutoCommit()) {
 					ConnectionFactory.close();
 				} else {
-					LOGGER.info("查询开启事务模式，无法关闭连接");
+					LOGGER.debug("查询开启事务模式，无法关闭连接");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -110,7 +110,7 @@ public class SQLExecute {
 				if(conn.getAutoCommit()) {
 					ConnectionFactory.close();
 				} else {
-					LOGGER.info("查询开启事务模式，无法关闭连接");
+					LOGGER.debug("查询开启事务模式，无法关闭连接");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -154,7 +154,7 @@ public class SQLExecute {
 					if(conn.getAutoCommit()) {
 						ConnectionFactory.close();
 					} else {
-						LOGGER.info("查询开启事务模式，无法关闭连接");
+						LOGGER.debug("查询开启事务模式，无法关闭连接");
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -202,7 +202,7 @@ public class SQLExecute {
 				if(conn.getAutoCommit()) {
 					ConnectionFactory.close();
 				} else {
-					LOGGER.info("查询开启事务模式，无法关闭连接");
+					LOGGER.debug("查询开启事务模式，无法关闭连接");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -250,7 +250,7 @@ public class SQLExecute {
 				if(conn.getAutoCommit()) {
 					ConnectionFactory.close();
 				} else {
-					LOGGER.info("查询开启事务模式，无法关闭连接");
+					LOGGER.debug("查询开启事务模式，无法关闭连接");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -312,7 +312,7 @@ public class SQLExecute {
 				if(conn.getAutoCommit()) {
 					ConnectionFactory.close();
 				} else {
-					LOGGER.info("查询开启事务模式，无法关闭连接");
+					LOGGER.debug("查询开启事务模式，无法关闭连接");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

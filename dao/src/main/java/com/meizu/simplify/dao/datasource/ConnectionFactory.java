@@ -69,9 +69,9 @@ public class ConnectionFactory {
 		if (conn == null) {
 			conn = getConnection(dataSource);
 			container.set(conn);
-			LOGGER.info(Thread.currentThread().getName() + "已从数据源中成功获取连接");
+			LOGGER.debug(Thread.currentThread().getName() + "已从数据源中成功获取连接");
 		} else {
-			LOGGER.info(Thread.currentThread().getName() + "从缓存中获取连接");
+			LOGGER.debug(Thread.currentThread().getName() + "从缓存中获取连接");
 		}
 		try {
 			//手动提交事务
@@ -108,7 +108,7 @@ public class ConnectionFactory {
 						e.printStackTrace();
 					}
 				}
-				LOGGER.info(Thread.currentThread().getName() + "事务已经提交......");
+				LOGGER.debug(Thread.currentThread().getName() + "事务已经提交......");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

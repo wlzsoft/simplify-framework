@@ -1,5 +1,8 @@
 package com.meizu.simplify.aop;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * <p><b>Title:</b><i>抽象过滤链处理器</i></p>
  * <p>Desc: 责任链方式实现</p>
@@ -14,6 +17,9 @@ package com.meizu.simplify.aop;
  *
  */
 public abstract class Handler {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(Handler.class);
+	
 	abstract public boolean handle(Context context,Object... obj);
 	
 	/**
@@ -56,7 +62,7 @@ public abstract class Handler {
 		if (handler != null) {
 			handler.invoke(context,obj);
 		} else {
-			System.out.println("filter end [过滤器执行结束].");
+			LOGGER.debug("filter end [过滤器执行结束].");
 		}
 	}
 }

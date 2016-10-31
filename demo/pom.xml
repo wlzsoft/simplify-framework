@@ -83,11 +83,12 @@
 		<artifactId>listener</artifactId>
 		<version>1.2.0-SNAPSHOT</version>
 	</dependency>
-	<dependency>
+	<!-- 非javaagent模式启用aop功能 -->
+	<!-- <dependency>
 		<groupId>com.meizu</groupId>
-		<artifactId>weaving</artifactId>
+		<artifactId>weaving-plugins</artifactId>
 		<version>1.2.0-SNAPSHOT</version>
-	</dependency>
+	</dependency> -->
 	<dependency>
 		<groupId>com.meizu</groupId>
 		<artifactId>webserver</artifactId>
@@ -122,8 +123,8 @@
 		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
 		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
 		<!-- jvmargs:PermGen空间被移除了，取而代之的是Metaspace（JEP 122）。JVM选项-XX:PermSize与-XX:MaxPermSize分别被-XX:MetaSpaceSize与-XX:MaxMetaspaceSize所代替。 -->
-		<!-- -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties -->
-		<!-- -javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties的属性值可选-->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties的属性值可选-->
 		<plugin>
 
 		  <groupId>org.eclipse.jetty</groupId>
@@ -131,7 +132,7 @@
 		  <version>9.3.0.M2</version>
 			<configuration>
 				<!-- jvmArgs不起作用 -->
-				<!-- <jvmArgs>-javaagent:E:/workspace-new/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-new/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
+				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.0-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
 				<contextXml>src/test/java/jetty-config.xml</contextXml>
 				<!--<war>${project.basedir}/${project.build.directory}/${project.artifactId}-${project.version}</war>-->
 				<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
