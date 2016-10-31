@@ -64,6 +64,10 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
 		Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		AnnotationInfo<Annotation> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		if(cacheAnnoInfo == null) {
+			LOGGER.warn("缓存切面切入：["+methodFullName+"]方法之前 的缓存切入失败，该方法缓存失效，因为没有缓存相关注解标识");
+			return false;
+		}
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataSearch.class)) {
 			CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
@@ -88,6 +92,10 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 //		String key = methodFullName+"id";//需要想方法获取id的值TODO 废弃，不采用这种key的处理方式
 		Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		AnnotationInfo<Annotation> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
+		if(cacheAnnoInfo == null) {
+			LOGGER.warn("缓存切面切入：["+methodFullName+"]方法之后 的缓存切入失败，该方法缓存失效，因为没有缓存相关注解标识");
+			return false;
+		}
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(CacheDataAdd.class)) {
 			CacheDataAdd cacheDataAdd = (CacheDataAdd)anno;

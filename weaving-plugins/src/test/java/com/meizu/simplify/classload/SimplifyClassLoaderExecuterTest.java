@@ -8,15 +8,13 @@ import org.junit.Test;
 
 public class SimplifyClassLoaderExecuterTest {
 
-	@Test
-	public void testLoadClass()
+	public static void main(String[] args)
 			throws ClassNotFoundException, IOException, NoSuchMethodException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, InstantiationException, InterruptedException {
-		String path = "E:\\workspace-git\\simplify-framework\\weaving-plugins\\target\\test-classes\\";
+		String path = "E:\\workspace-git\\simplify-framework\\weaving-plugins\\target\\test-classes\\com\\meizu\\simplify\\classload\\TestService.class";
 		ByteCodeClassLoader mc = new ByteCodeClassLoader(Thread.currentThread().getContextClassLoader());
 		while (true) {
 			try {
-//				com\\meizu\\simplify\\classload\\TestService.class
 //				Class<?> c = mc.loadClass(path);
 				Class<?> c = mc.load("com.meizu.simplify.classload.TestService");
 				if(c != null) {
