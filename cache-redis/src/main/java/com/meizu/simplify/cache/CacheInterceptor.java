@@ -68,13 +68,13 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		AnnotationInfo<Annotation> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		if(cacheAnnoInfo == null) {
-			LOGGER.debug("失败:缓存切面切入：["+methodFullName+"]方法之前 的缓存切入失败，该方法缓存失效，因为没有缓存相关标识信息为空");
+			LOGGER.debug("提示:缓存切面切入：["+methodFullName+"]方法之前 的缓存切入失败，该方法缓存失效，因为没有缓存相关标识信息为空");
 			return false;
 		}
 		
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
 		if(!anno.annotationType().equals(CacheDataSearch.class)) {
-			LOGGER.debug("失败:缓存切面切入：["+methodFullName+"]方法之前 的缓存切入失败，该方法缓存失效，因为没有缓存相关注解标识,CacheDataSearch");
+			LOGGER.debug("提示:缓存切面切入：["+methodFullName+"]方法之前 的缓存切入失败，该方法缓存失效，因为没有缓存相关注解标识,CacheDataSearch");
 			return false;
 		}
 		Object obj = null;
@@ -85,12 +85,12 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 			obj = jsonData.get(cacheDataSearch.key(), cacheAnnoInfo.getReturnType());
 		}
 		if(obj == null) {
-			LOGGER.debug("失败:缓存切面方法前切入：CacheDataSearch标注的方法["+methodFullName+"]以key"+cacheDataSearch.key()+"读取缓存数据为空，数据暂未被缓存。");
+			LOGGER.debug("提示:缓存切面方法前切入：CacheDataSearch标注的方法["+methodFullName+"]以key:"+cacheDataSearch.key()+"读取缓存数据为空，数据暂未被缓存。");
 			return false;
 		}
 		context.getCallback().setResult(obj);
 //		System.out.println("search key:"+cacheDataSearch.key()+"]"+obj);
-		LOGGER.info("成功:缓存切面方法前切入CacheDataSearch标注的方法["+methodFullName+"]以查询key"+cacheDataSearch.key()+"的值为"+obj);
+		LOGGER.info("成功:缓存切面方法前切入CacheDataSearch标注的方法["+methodFullName+"]以查询key:"+cacheDataSearch.key()+"的值为"+obj);
 		return true;
 	}
 	
@@ -104,7 +104,7 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		Map<String,AnnotationInfo<Annotation>> cacheAnnotationInfoMap = CacheAnnotationResolver.cacheAnnotationInfoMap;
 		AnnotationInfo<Annotation> cacheAnnoInfo = cacheAnnotationInfoMap.get(methodFullName);
 		if(cacheAnnoInfo == null) {
-			LOGGER.debug("失败:缓存切面切入：["+methodFullName+"]方法之后 的缓存切入，该方法缓存失效，因为没有缓存相关注解标识");
+			LOGGER.debug("提示:缓存切面切入：["+methodFullName+"]方法之后 的缓存切入，该方法缓存失效，因为没有缓存相关注解标识");
 			return false;
 		}
 		Annotation anno = cacheAnnoInfo.getAnnotatoionType();
@@ -115,7 +115,6 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		} else if(anno.annotationType().equals(CacheDataSearch.class)) {
 			if(args!=null&&args.length>0) {
 				CacheDataSearch cacheDataSearch = (CacheDataSearch)anno;
-				
 				cacheDataAdd(methodFullName, cacheDataSearch.key(),cacheDataSearch.format(),cacheDataSearch.expireTime(), args);
 			}
 		} else if(anno.annotationType().equals(CacheDataDel.class)) {
@@ -126,10 +125,10 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 			} else {
 				isOk = jsonData.delete(cacheDataDel.key());
 			}
-			LOGGER.info("成功:缓存切面切入：["+methodFullName+"]方法之后切入,删除 key:"+cacheDataDel.key()+"]"+isOk);
+			LOGGER.info((isOk?"成功":"失败")+":缓存切面切入：["+methodFullName+"]方法之后切入,删除 key:"+cacheDataDel.key()+"]");
 //			System.out.println("del key:"+cacheDataDel.key()+"]"+obj);
 		} else {
-			LOGGER.debug("失败:缓存切面切入：["+methodFullName+"]方法之后 的缓存切入失败，该方法缓存失效，因为没有缓存相关注解标识,cacheDataAdd或CacheDataDel");
+			LOGGER.debug("提示:缓存切面切入：["+methodFullName+"]方法之后 的缓存切入失败，该方法缓存失效，因为没有缓存相关注解标识,cacheDataAdd或CacheDataDel");
 		}
 		return false;
 	}

@@ -54,16 +54,17 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		if(anno.annotationType().equals(Transation.class)) {
 			Transation transation = (Transation)anno;
 			Connection connection = DruidPoolFactory.getConnection();
-			Integer transactionISO = -1;
+			Integer oldTransactionISO = -1;
 			try {
-				transactionISO = connection.getTransactionIsolation();
+				oldTransactionISO = connection.getTransactionIsolation();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务开启之前的隔离级别为："+transactionISO);
-			if(!(transation.ISO() == ISOEnum.TRANSACTION_NONE)) {
+			LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务开启之前的隔离级别为："+oldTransactionISO);
+			//明确指定可用隔离级别，并且设置的隔离级别和当前的隔离级别不同，才会设置
+			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
 				//设置隔离级别start
-				if(transactionISO!=-1) {
+				if(oldTransactionISO!=-1) {
 					if(connection!=null) {
 						try {
 							connection.setTransactionIsolation(transation.ISO().getValue());
@@ -71,9 +72,9 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 							e.printStackTrace();
 						}
 					}
-					context.getCallback().setResult(transactionISO);
+					context.getCallback().setTemp(oldTransactionISO);
 				}
-				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务隔离级别设置为："+transactionISO);
+				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务隔离级别设置为："+transation.ISO().getValue());
 				//设置隔离级别end
 			}
 			ConnectionFactory.startTransaction(connection);
@@ -96,10 +97,10 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			Transation transation = (Transation)anno;
-			if(!(transation.ISO() == ISOEnum.TRANSACTION_NONE)) {
-				Integer transactionISO = context.getCallback().getResult();
-				ConnectionFactory.commit(transactionISO);
-				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置为："+transactionISO);
+			Integer oldTransactionISO = context.getCallback().getTemp();
+			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
+				ConnectionFactory.commit(oldTransactionISO);
+				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
 			} else {
 				ConnectionFactory.commit();
 			}

@@ -13,14 +13,40 @@ package com.meizu.simplify.aop;
  *
  */
 public class InterceptResult {
+	
 	private Object result;
+	
+	private Object temp;
 
 	@SuppressWarnings("unchecked")
 	public <T extends Object> T getResult() {
 		return (T) result;
 	}
 
+	/**
+	 * 
+	 * 方法用途: 设置拦截器的结果集<br>
+	 * 操作步骤: TODO<br>
+	 * @param result 用于设置返回的结果集，注意不是一个临时变量，不能随意存放数据。否则会有未知异常.
+	 * @return
+	 */
 	public void setResult(Object result) {
 		this.result = result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Object> T getTemp() {
+		return (T) temp;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 设置拦截器的临时变量<br>
+	 * 操作步骤: TODO<br>
+	 * @param temp 临时变量，可随意存放数据。但是要注意不要滥用，避免大对象.
+	 * @return
+	 */
+	public void setTemp(Object temp) {
+		this.temp = temp;
 	}
 }

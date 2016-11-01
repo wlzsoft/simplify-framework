@@ -9,6 +9,7 @@ import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.annotations.Transation;
+import com.meizu.simplify.dao.enums.ISOEnum;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -34,10 +35,10 @@ public class TestService {
 	 */
 //	@CacheDataAdd(key="bbb")//不可以同时使用两个缓存相关的注解，否则会被覆盖掉,以最后一个为准
 	@CacheDataSearch(key="bbb")
-    public Test doSomeThing2() {
+    public Test doSomeThing2(Test test) {
 		System.out.println("debug:"+debug+"|unicodeTranscoding:"+unicodeTranscoding);
 		System.out.println("cache.key.timeout:"+BeanFactory.getBean(PropertiesConfig.class).getProp().getInteger("cache.key.timeout"));
-        Test test = BaseDao.getIns(Test.class).findById(1);
+        test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
         	return null;
         }
@@ -51,7 +52,9 @@ public class TestService {
 	 * @param test 写入redis，是写入的这个参数
 	 * @return
 	 */
-	@CacheDataAdd(key="bbb")
+	@Transation(ISO=ISOEnum.TRANSACTION_READ_COMMITTED)
+//	@Transation
+//	@CacheDataAdd(key="bbb")
 	public Test addTest(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
@@ -69,7 +72,6 @@ public class TestService {
 	 * @param test 写入redis，是写入的这个参数
 	 * @return
 	 */
-	@Transation
 	@CacheDataAdd(key="bbb22")
 	public void addTestObj(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);

@@ -57,7 +57,7 @@ public class TestController extends SystemController<TestModel> {
 //	@AjaxAccess(allowOrigin = "http://ab.mezu.com")
 	@RequestMap(path = "/testrestajaxjson")
 	public List<Test> doRestAjaxJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		List<Test> testList = new ArrayList<>();
 		testList.add(test);
 		return testList;
@@ -65,7 +65,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/ajaxjsonptest")
 	public String ajaxjsonptest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		List<Test> testList = new ArrayList<>();
 		System.out.println(model.getDesc()+","+model.getName());
 		testList.add(test);
@@ -75,7 +75,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testvoidjson")
 	public void doVoidJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		List<Test> testList = new ArrayList<>();
 		System.out.println(model.getDesc()+","+model.getName());
 		testList.add(test);
@@ -84,7 +84,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testrestjson")
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		List<Test> testList = new ArrayList<>();
 		System.out.println(model.getDesc() + "," + model.getName());
 		testList.add(test);
@@ -93,7 +93,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testjson.json")
 	public Test doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 //		List<Test> testList = new ArrayList<>();
 //		testList.add(test);
 		test.setName("test8");
@@ -131,7 +131,7 @@ public class TestController extends SystemController<TestModel> {
 	}
 	@RequestMap(path = "/testredirect/")
 	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		System.out.println(test.getName());
 		return "redirect:/index";
 	}
@@ -178,7 +178,7 @@ public class TestController extends SystemController<TestModel> {
 	@WebCache(mode=CacheMode.Mem,enableBrowerCache=true,removeSpace=true,timeToLiveSeconds=36000)
 	@RequestMap(path = "/testvelocity/")
 	public String doTestVelocity(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		} else {
@@ -189,7 +189,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testfreemarker/")
 	public String doTestFreemarker(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		} else {
@@ -200,7 +200,7 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testwebsocket/")
 	public String doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		request.setAttribute("userName", test.getName());
 		return "velocity:websocket";
 	}
@@ -208,7 +208,7 @@ public class TestController extends SystemController<TestModel> {
 //	@WebSocket
 	@RequestMap(path = "/websocket/notice")
 	public String doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		request.setAttribute("userName", test.getName());
 		return "{id:1,name:'"+test.getName()+"'}";
 	}	
@@ -221,16 +221,16 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testvoid/")
 	public String doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-//		testService.addTest(null);
-		Test test = testService.doSomeThing2();
-		request.setAttribute("userName", test.getName());
+		testService.addTest(null);
+//		Test test = testService.doSomeThing2(null);
+//		request.setAttribute("userName", test.getName());
 		return "jsp:/index";
 	}
 	
 	@RequestMap(path = "/test/")
 	public String doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTestObj(null);
-		Test test = testService.doSomeThing2();
+		Test test = testService.doSomeThing2(null);
 		if(test != null) {
 			request.setAttribute("userName", test.getName());
 		}

@@ -27,11 +27,11 @@ public class TestSimpleController {
 	private TestService testService;
 {
     get("/test", (req, res) -> {
-    	Test test = testService.doSomeThing2();
+    	Test test = testService.doSomeThing2(null);
     	System.out.println("get testttttttttttttttttttttttttttttttt:"+test.getName());
         req.getParameter("test");
         return test;
     });
     
-    get("/test/simple", (req,res)-> testService.doSomeThing2());
+    get("/test/simple", (req,res)-> testService.doSomeThing2(null));
 }}
