@@ -144,12 +144,12 @@ public class DaoTest {
 	public void s2_findPageMutilSql2Test() {
 		//针对不包含distinct关键字的测试
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select * from (select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime desc) as temp","lcy");
-		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+		Assert.assertTrue(page.getTotalRecord()>= page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSql3Test() {
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"select test_web.*,test_user.name as createName from test_web inner join test_user on test_web.createId=test_user.fid where test_web.name=? order by createTime asc","lcy");
-		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+		Assert.assertTrue(page.getTotalRecord()>= page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSql4Test() {
@@ -178,14 +178,14 @@ public class DaoTest {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,t);
-		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+		Assert.assertTrue(page.getTotalRecord()>= page.getResults().size());
 	}
 	@Test
 	public void s2_findPageOderByTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setName("lcy");
 		Page<com.meizu.simplify.dao.entity.Test> page = BaseDao.getIns(com.meizu.simplify.dao.entity.Test.class).findPage(1,10,"createTime",true,t);
-		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
+		Assert.assertTrue(page.getTotalRecord()>= page.getResults().size());
 	}
 	@Test
 	public void s2_findByTest() {
