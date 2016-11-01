@@ -35,10 +35,15 @@ public class ConnectionFactory {
 	private ConnectionFactory(){
 	}
 	
-	
+	/**
+	 * 
+	 * 方法用途: 获取当前线程上的连接<br>
+	 * 操作步骤: TODO<br>
+	 */
 	public static Connection getConnection(javax.sql.DataSource dataSource)   {
 		Connection connection = container.get();
 		if (connection != null) {
+			LOGGER.debug(Thread.currentThread().getName() + "从缓存中获取连接");
 			return connection;
 		}
 		try {
@@ -53,8 +58,8 @@ public class ConnectionFactory {
 			e.printStackTrace();
 			throw new DataAccessException(e.getMessage());
 		}
-		LOGGER.debug("线程["+Thread.currentThread().getName() + "]连接已经开启......");
 		container.set(connection);
+		LOGGER.debug("线程["+Thread.currentThread().getName() + "]从数据源中成功获取连接,连接已经开启");
 		return connection;
 	}
 	
@@ -64,18 +69,19 @@ public class ConnectionFactory {
 	 * 操作步骤: TODO<br>
 	 */
 	public static void startTransaction(javax.sql.DataSource dataSource) {
-		//获取当前线程的连接
-		Connection conn = container.get();
-		if (conn == null) {
-			conn = getConnection(dataSource);
-			container.set(conn);
-			LOGGER.debug(Thread.currentThread().getName() + "已从数据源中成功获取连接");
-		} else {
-			LOGGER.debug(Thread.currentThread().getName() + "从缓存中获取连接");
-		}
+		Connection connection = getConnection(dataSource);
+		startTransaction(connection);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 开启事务<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static void startTransaction(Connection connection) {
 		try {
-			//手动提交事务
-			conn.setAutoCommit(false);
+			//开启手动提交事务
+			connection.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,13 +103,13 @@ public class ConnectionFactory {
 	 */
 	public static void commit(Integer transactionISO) {
 		try {
-			Connection conn = container.get();
-			if (null != conn) {
-				conn.commit();
-				conn.setAutoCommit(true);//开启事务自动提交，无需干预
+			Connection connection = container.get();
+			if (null != connection) {
+				connection.commit();
+				connection.setAutoCommit(true);//开启事务自动提交，无需干预
 				if(transactionISO!=null) {
 					try {
-						conn.setTransactionIsolation(transactionISO);
+						connection.setTransactionIsolation(transactionISO);
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -131,13 +137,13 @@ public class ConnectionFactory {
 	 */
 	public static void rollback(Integer transactionISO) {
 		try {
-			Connection conn = container.get();
-			if (conn != null) {
-				conn.rollback();
-				conn.setAutoCommit(true);//开启事务自动提交，无需干预
+			Connection connection = container.get();
+			if (connection != null) {
+				connection.rollback();
+				connection.setAutoCommit(true);//开启事务自动提交，无需干预
 				if(transactionISO!=null) {
 					try {
-						conn.setTransactionIsolation(transactionISO);
+						connection.setTransactionIsolation(transactionISO);
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}

@@ -6,6 +6,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.meizu.simplify.dao.enums.ISOEnum;
+
 /**
  * <p><b>Title:</b><i>开启事务注解</i></p>
  * <p>Desc: TODO</p>
@@ -22,4 +24,5 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Transation {
+	ISOEnum ISO() default ISOEnum.TRANSACTION_NONE;
 }
