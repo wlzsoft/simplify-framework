@@ -120,6 +120,32 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		return true;
 	}
 
+	/**
+     * 
+     * 方法用途: 事务回滚处理<br>
+     * 操作步骤: TODO 后续要调整这个方法的逻辑，和after 的事务提交的逻辑合并公用部分代码，并且独立出异常处理类，在方法级别处理<br>
+     * @param obj
+     */
+	public static boolean transationRollbackResolver(String methodFullName,Integer oldTransactionISO) {
+		Map<String,AnnotationInfo<Transation>> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;
+		AnnotationInfo<Transation> annoInfo = annotationInfoMap.get(methodFullName);
+		if(annoInfo == null) {
+			return false;
+		}
+		Annotation anno = annoInfo.getAnnotatoionType();
+		if(anno.annotationType().equals(Transation.class)) {
+			Transation transation = (Transation)anno;
+			if(transation.ISO() != ISOEnum.TRANSACTION_NONE&&transation.ISO().getValue() != oldTransactionISO) {
+				ConnectionFactory.rollback(oldTransactionISO);
+				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
+			} else {
+				ConnectionFactory.rollback();
+			}
+			ConnectionFactory.close();
+			LOGGER.debug("成功：事务切面切入：["+methodFullName+"]方法之后切入,事务已经回滚，并返回逻辑连接到连接池");
+		}
+		return true;
+	}
 	
 	
 }

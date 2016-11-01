@@ -62,6 +62,13 @@ public class MappingExceptionResolver {
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
 			IPageTemplate template, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
+		//事务回滚start TODO
+		/*for(StackTraceElement ste:throwable.getStackTrace()){
+			System.out.println("异常堆栈异常方法:"+ste.getMethodName());
+		}*/
+		/*String methodFullName = null;
+		TransationInterceptor.transationRollbackResolver(methodFullName , null);*/
+		//事务回滚end
 		String exceptionMessage = throwable.getMessage();
 		if(exceptionMessage == null) {
 			if(throwable.getClass() == NullPointerException.class) {
@@ -133,5 +140,4 @@ public class MappingExceptionResolver {
         BrowserUtil.disableBrowerCache(response);
 //		不同请求风格的异常处理end
 	}
-
 }

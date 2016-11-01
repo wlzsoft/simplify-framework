@@ -26,6 +26,12 @@
             <scope>provided</scope>
 		</dependency>
 		<!-- 以下这些jar后续要删除，不应该出现在mvc模块中，因为都是可选的，不是必须依赖的 -->
+		<!-- dao模块不该在这引入，紧紧为了在异常中使用事务回滚，后续会考虑剥离 TODO -->
+		  <dependency>
+		  	<groupId>com.meizu</groupId>
+		  	<artifactId>dao</artifactId>
+		  	<version>1.2.0-SNAPSHOT</version>
+		  </dependency>
 		  <dependency>
 		  	<groupId>com.meizu</groupId>
 		    <artifactId>view-beetl</artifactId>

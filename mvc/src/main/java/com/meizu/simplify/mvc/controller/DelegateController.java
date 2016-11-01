@@ -110,7 +110,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 		}
 		
 	}
-
+	
 	/**
 	 * 
 	 * 方法用途: 处理请求的收尾工作<br>
