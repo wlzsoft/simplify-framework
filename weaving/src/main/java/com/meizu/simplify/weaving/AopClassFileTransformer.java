@@ -354,7 +354,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
 		String returnTypeName = ctmethod.getReturnType().getName();
 		StringBuilder builder = new StringBuilder();
-		builder.append("try{");//异常try
 		builder.append("ir = new com.meizu.simplify.aop.InterceptResult();")
 			   .append("beforeObject = com.meizu.simplify.aop.IInterceptor.initBefore(\""+methodFullName+"\",ir,this,$args);");
 		if(!returnTypeName.equals("void")) {
@@ -370,12 +369,12 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
 		//异常捕获处理
 		builder = new StringBuilder();
-		builder.append("}catch(Exception e){");
-		builder.append(Constants.packagePrefix+".simplify.aop.IInterceptor.initException(\""+methodFullName+"\",ir,this,$args);");
-		builder.append("throw new com.meizu.simplify.exception.UncheckedException(e);}finally{");
-		builder.append(Constants.packagePrefix+".simplify.aop.IInterceptor.initFinally(\""+methodFullName+"\",ir,this,$args);");
-		builder.append("}");
-		ctmethod.insertAfter(builder.toString());
+		builder.append(Constants.packagePrefix+".simplify.aop.IInterceptor.initException(\""+methodFullName+"\",null,this,$args);");
+		builder.append("throw $e;");
+		CtClass ctClassException = ClassPool.getDefault().get("java.lang.Exception");  
+		ctmethod.addCatch(builder.toString(), ctClassException);
+		ctmethod.insertAfter(Constants.packagePrefix+".simplify.aop.IInterceptor.initFinally(\""+methodFullName+"\",null,this,$args);", true);
+		ctmethod.addLocalVariable("ir",pool.get(Constants.packagePrefix+".simplify.aop.InterceptResult"));
 	}
 
     /**

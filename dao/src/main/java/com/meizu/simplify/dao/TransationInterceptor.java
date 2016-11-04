@@ -125,7 +125,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			Transation transation = (Transation)anno;
-			if(transation.ISO() != ISOEnum.TRANSACTION_NONE&&transation.ISO().getValue() != oldTransactionISO) {
+			if(oldTransactionISO != null && transation.ISO() != ISOEnum.TRANSACTION_NONE&&transation.ISO().getValue() != oldTransactionISO) {
 				ConnectionFactory.rollback(oldTransactionISO);
 				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
 			} else {
@@ -139,7 +139,11 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 	
 	@Override
 	public boolean exception(Context context,Object... args) {
-		return transationRollbackResolver(context.getMethodFullName(),null);
+		Integer oldTransactionISO = null;
+		if(context.getCallback()!=null) {
+			oldTransactionISO = context.getCallback().getTemp();
+		}
+		return transationRollbackResolver(context.getMethodFullName(),oldTransactionISO);
 	}
 	
 	@Override
@@ -148,8 +152,10 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 			before(context,obj);
 		} else if(context.getType().equals(ContextTypeEnum.AFTER)) {
 			after(context,obj);
-		} else {
+		} else if(context.getType().equals(ContextTypeEnum.EXCEPTION)) {
 			exception(context, obj);
+		} else {
+			finallyer(context, obj);
 		}
 		return true;
 	}

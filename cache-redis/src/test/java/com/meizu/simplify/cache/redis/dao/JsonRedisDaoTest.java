@@ -50,7 +50,7 @@ public class JsonRedisDaoTest {
 	public void testGetSet() {
 		User user = new User();
 		user.setName("lcy2");
-		User userResult = dao.getAndSet("simplify_test2", user);
+		User userResult = dao.getAndSet("simplify_test2", user);//数据不存在的情况下，第一次调用这个方法，会返回null
 		Assert.assertEquals(userResult.getName(),"lcy2");
 	}
 }

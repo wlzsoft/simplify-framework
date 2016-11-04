@@ -54,6 +54,7 @@ public class TestService {
 	 */
 	@Transation(ISO=ISOEnum.TRANSACTION_READ_COMMITTED)
 //	@Transation
+//	@CacheDataSearch(key="bbbt")
 //	@CacheDataAdd(key="bbb")
 	public Test addTest(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);
@@ -61,6 +62,7 @@ public class TestService {
         	System.out.println("ִnull测试2:");
         } else {
         	System.out.println("ִtest2测试2:"+test.getName());
+        	throw new RuntimeException("事务异常测试");
         }
         return test;
     }

@@ -40,15 +40,14 @@ import com.meizu.simplify.webcache.util.BrowserUtil;
 public class MappingExceptionResolver {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MappingExceptionResolver.class);
 	public MappingExceptionResolver() {
-//		通用异常处理的处理映射，提前处理好，用于后面的通过系统级异常的匹配
+//	          定义在发生异常时状态码和视图页面名称的对应关系-第一步存在，以状态码指定页面处理显示
+//		addStatusCode("404",HttpStatus.NOT_FOUND.value());
+//		addStatusCode("502","error-runtime");
+//		addStatusCode("503","error-sql");
+//		通用异常处理的处理映射，提前处理好，用于后面的通过系统级异常的匹配-第二步，以异常类型来指定页面显示
 //		Properties prop = new Properties();
 //		prop.setProperty("java.sql.SQLException", "error-sql");
 //		prop.setProperty("java.lang.RuntimeException", "error-runtime");
-//		setExceptionMappings(prop);
-//	          定义在发生异常时视图跟返回码的对应关系
-//		addStatusCode(HttpStatus.NOT_FOUND.value(),"404");
-//		addStatusCode("error-runtime","502");
-//		addStatusCode("error-sql","503");
 	}
 	
 	/**
@@ -70,7 +69,11 @@ public class MappingExceptionResolver {
 			}
 		}
 		if(throwable instanceof MessageException) {
-			int statuscode = ((BaseException)throwable).getErrorCode();
+			BaseException baseException = ((BaseException)throwable);
+			if(baseException.getTargetException() != null) {
+				throwable = baseException.getTargetException();
+			}
+			int statuscode = baseException.getErrorCode();
 			response.setStatus(statuscode);
 //	                      设置日志输出级别，不定义则默认不输出警告等错误日志信息
 //			setWarnLogCategory(MappingExceptionResolver.class.getName());
@@ -127,7 +130,6 @@ public class MappingExceptionResolver {
 //				ErrorView.exe(response,500,throwable.getMessage());
 //				方法二：推荐
 //				定义异常处理页面用来获取异常信息的变量名，默认名为exception
-//				setExceptionAttribute("exception");
 				request.setAttribute("exception", throwable);
 				//没有在exceptionMappings里面找到对应的异常时 返回defaultErrorView指定的异常处理默认视图:500,404,403在这里其实jsp页面，比如500.jsp，400.jsp，exception.jsp
 //				setDefaultErrorView("500");//exception

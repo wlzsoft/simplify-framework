@@ -152,10 +152,14 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 	public boolean handle(Context context,Object... obj) {
 		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
 			before(context,obj);
-		} else {
+		} else if(context.getType().equals(ContextTypeEnum.AFTER)) {
 			if(context.getCallback().getResult() == null) {
 				after(context,obj);
 			}
+		} else if(context.getType().equals(ContextTypeEnum.EXCEPTION)) {
+			exception(context, obj);
+		} else {
+			finallyer(context, obj);
 		}
 		return true;
 	}
