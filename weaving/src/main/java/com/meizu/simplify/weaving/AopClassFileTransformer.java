@@ -374,7 +374,6 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		CtClass ctClassException = ClassPool.getDefault().get("java.lang.Exception");  
 		ctmethod.addCatch(builder.toString(), ctClassException);
 		ctmethod.insertAfter(Constants.packagePrefix+".simplify.aop.IInterceptor.initFinally(\""+methodFullName+"\",null,this,$args);", true);
-		ctmethod.addLocalVariable("ir",pool.get(Constants.packagePrefix+".simplify.aop.InterceptResult"));
 	}
 
     /**
