@@ -50,7 +50,7 @@ public class JsonRedisDaoTest {
 	public void testGetSet() {
 		User user = new User();
 		user.setName("lcy2");
-		User userResult = dao.getAndSet("simplify_test", user);
+		User userResult = dao.getAndSet("simplify_test2", user);
 		Assert.assertEquals(userResult.getName(),"lcy2");
 	}
 }

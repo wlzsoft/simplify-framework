@@ -59,21 +59,6 @@ public class DaoTest {
 	}
 	
 	@Test
-	public void s1_insertUserTest() {
-		TestUser t = new TestUser();
-		t.setFid(3);
-		t.setName("卢创业");
-		t.setCreateId(1);
-		t.setUpdateId(1);
-		t.setCreateTime(new Date());
-		t.setUpdateTime(new Date());
-		System.out.println("save============================="+BaseDao.getIns(TestUser.class).save(t));
-		System.out.println("saveUserTestGenId:"+t.getFid());
-		BaseDao.getIns(TestUser.class).remove(3);
-		System.out.println("removeUserTestGenId:3");
-	}
-	
-	@Test
 	public void getIdValTest() {
 		com.meizu.simplify.dao.entity.Test t = new com.meizu.simplify.dao.entity.Test();
 		t.setFid(1);//必须设置id的值
@@ -87,8 +72,6 @@ public class DaoTest {
 		System.out.println(key);
 		Assert.assertTrue(key>0);
 	}
-	
-	
 	
 	@Test
 	public void s2_findUniqueTest() {
@@ -277,5 +260,18 @@ public class DaoTest {
 		System.out.println(test.getName());
 	}
 	
-	
+	@Test
+	public void s11_insertUserTest() {
+		TestUser t = new TestUser();
+		t.setFid(3);
+		t.setName("卢创业");
+		t.setCreateId(1);
+		t.setUpdateId(1);
+		t.setCreateTime(new Date());
+		t.setUpdateTime(new Date());
+		System.out.println("save============================="+BaseDao.getIns(TestUser.class).save(t));
+		System.out.println("saveUserTestGenId:"+t.getFid());
+		BaseDao.getIns(TestUser.class).remove(3);
+		System.out.println("removeUserTestGenId:3");
+	}
 }
