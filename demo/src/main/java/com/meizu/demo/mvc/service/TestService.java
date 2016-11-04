@@ -9,7 +9,6 @@ import com.meizu.simplify.cache.annotation.CacheDataSearch;
 import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.annotations.Transation;
-import com.meizu.simplify.dao.enums.ISOEnum;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.ioc.BeanFactory;
@@ -52,18 +51,21 @@ public class TestService {
 	 * @param test 写入redis，是写入的这个参数
 	 * @return
 	 */
-	@Transation(ISO=ISOEnum.TRANSACTION_READ_COMMITTED)
-//	@Transation
+//	@Transation(ISO=ISOEnum.TRANSACTION_REPEATABLE_READ)
+	@Transation
 //	@CacheDataSearch(key="bbbt")
-//	@CacheDataAdd(key="bbb")
+	@CacheDataAdd(key="bbb")
 	public Test addTest(Test test) {
         test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
         	System.out.println("ִnull测试2:");
         } else {
         	System.out.println("ִtest2测试2:"+test.getName());
-        	throw new RuntimeException("事务异常测试");
+//        	throw new RuntimeException("事务异常测试");
         }
+        test = new Test();
+        test.setName("hahaha");
+        BaseDao.getIns(Test.class).save(test);
         return test;
     }
 	

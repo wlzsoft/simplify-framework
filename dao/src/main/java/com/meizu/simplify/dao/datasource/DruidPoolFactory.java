@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.dao.exception.DataAccessException;
-import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.utils.PropertieUtil;
 
 /**
@@ -118,7 +117,8 @@ public class DruidPoolFactory {
 			dataSource.init();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new StartupErrorException("sql数据库连接失败");
+			System.exit(-1);//暂时这样使用，后续要调整 TODO
+//			throw new StartupErrorException("sql数据库连接失败");
 		}
 		dataSourceStr = result.toString();
 		return dataSource;
