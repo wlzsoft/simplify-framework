@@ -47,4 +47,35 @@ public interface IInterceptor {
 	
 	boolean before(Context context,Object... args);
 	boolean after(Context context,Object... args);
+	
+	public static Object initException(String methodFullName,InterceptResult ir,Object o,Object... args ) {
+		/*for(StackTraceElement ste:throwable.getStackTrace()){
+			System.out.println("异常堆栈异常方法:"+ste.getMethodName());
+		}*/
+		Handler handle = BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor");
+		Context context = new Context(ir);
+		context.setMethodFullName(methodFullName);
+		context.setThis(o);
+		context.setType(ContextTypeEnum.EXCEPTION);
+		handle.invoke(context,args);
+		return -1;
+	}
+	
+	public static Object initFinally(String methodFullName,InterceptResult ir,Object o,Object... args ) {
+		Handler handle = BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor");
+		Context context = new Context(ir);
+		context.setMethodFullName(methodFullName);
+		context.setThis(o);
+		context.setType(ContextTypeEnum.FINALLY);
+		handle.invoke(context,args);
+		return -1;
+	}
+	
+	default boolean exception(Context context,Object... args) {
+		return false;
+	}
+	default boolean finallyer(Context context,Object... args) {
+		return false;
+	}
+	
 }

@@ -409,9 +409,8 @@ public class DateUtil {
 	/**
 	 * 方法用途: 在某天的基础上增加几天或减少几天<br>
 	 * 操作步骤: TODO<br>
-	 * @param sDate
-	 * @param iDay
-	 * @param sformat
+	 * @param date
+	 * @param dayCount
 	 * @return
 	 */
 	public static Date addDay(Date date, int dayCount) {
@@ -423,9 +422,8 @@ public class DateUtil {
 	/**
 	 * 方法用途: 在某天的基础上增加几天或减少几小时<br>
 	 * 操作步骤: TODO<br>
-	 * @param sDate
-	 * @param iDay
-	 * @param sformat
+	 * @param date
+	 * @param hourCount
 	 * @return
 	 * @author wanghb 20160810
 	 */
@@ -438,9 +436,8 @@ public class DateUtil {
 	/**
 	 * 方法用途: 在某天的基础上增加几天或减少几月<br>
 	 * 操作步骤: TODO<br>
-	 * @param sDate
-	 * @param iDay
-	 * @param sformat
+	 * @param date
+	 * @param monthCount
 	 * @return
 	 * @author wanghb 20160810
 	 */
@@ -715,11 +712,4 @@ public class DateUtil {
 		cale.set(Calendar.DAY_OF_MONTH, cale.getActualMaximum(Calendar.DAY_OF_MONTH));  
 		return cale.getTime();
 	}
-	
-	public static void main(String[] args) {
-		Date startDate=startDate = DateUtil.getDayOfChinaWeek(1);
-		Date endDate=DateUtil.addDay(startDate, 6);
-		System.out.println(DateUtil.format(startDate, DateFormatEnum.YEAR_TO_MINUTE)+","+DateUtil.format(endDate, DateFormatEnum.YEAR_TO_MINUTE));
-	}
-	
 }

@@ -14,7 +14,6 @@ import com.meizu.HttpRoute;
 import com.meizu.HttpSessionImplWrapper;
 import com.meizu.WebServer;
 import com.meizu.WebSocket;
-import com.meizu.WebSocket.Handler;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.util.SessionIdFactory;
 

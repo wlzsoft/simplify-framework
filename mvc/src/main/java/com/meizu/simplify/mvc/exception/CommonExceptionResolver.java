@@ -1,7 +1,6 @@
 package com.meizu.simplify.mvc.exception;
 
-
-
+import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
  * <p><b>Title:</b><i>自定义框架公用异常解析类</i></p>
@@ -16,8 +15,8 @@ package com.meizu.simplify.mvc.exception;
  * @version Version 0.1
  *
  */
-//@ControllerAdvice
-public class GlobalExceptionResolver {
+@Bean
+public class CommonExceptionResolver {
 
 //	@ExceptionHandler
 //	public Exception handleBusinessException(HttpServletRequest request,

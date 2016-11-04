@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.junit.Test;
-
 public class SimplifyClassLoaderExecuterTest {
 
 	public static void main(String[] args)
 			throws ClassNotFoundException, IOException, NoSuchMethodException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, InstantiationException, InterruptedException {
-		String path = "E:\\workspace-git\\simplify-framework\\weaving-plugins\\target\\test-classes\\com\\meizu\\simplify\\classload\\TestService.class";
+//		String path = "E:\\workspace-git\\simplify-framework\\weaving-plugins\\target\\test-classes\\com\\meizu\\simplify\\classload\\TestService.class";
 		ByteCodeClassLoader mc = new ByteCodeClassLoader(Thread.currentThread().getContextClassLoader());
 		while (true) {
 			try {

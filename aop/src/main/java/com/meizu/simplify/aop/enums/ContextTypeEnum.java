@@ -22,5 +22,15 @@ public enum ContextTypeEnum {
 	/**
 	 * 过滤之后
 	 */
-	AFTER;
+	AFTER,
+	
+	/**
+	 * 异常捕获处理
+	 */
+	EXCEPTION,
+	
+	/**
+	 * 无论是否有异常都做收尾处理
+	 */
+	FINALLY;
 }

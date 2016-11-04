@@ -14,6 +14,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.dto.JsonResult;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.MessageException;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.mvc.view.JsonView;
 import com.meizu.simplify.mvc.view.JsonpView;
@@ -62,13 +63,6 @@ public class MappingExceptionResolver {
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
 			IPageTemplate template, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
-		//事务回滚start TODO
-		/*for(StackTraceElement ste:throwable.getStackTrace()){
-			System.out.println("异常堆栈异常方法:"+ste.getMethodName());
-		}*/
-		/*String methodFullName = null;
-		TransationInterceptor.transationRollbackResolver(methodFullName , null);*/
-		//事务回滚end
 		String exceptionMessage = throwable.getMessage();
 		if(exceptionMessage == null) {
 			if(throwable.getClass() == NullPointerException.class) {
@@ -88,6 +82,12 @@ public class MappingExceptionResolver {
 				LOGGER.error("message:"+exceptionMessage);// TODO 分析出业务数据，展现更个性化的日志信息，可以配合  解析LogByMethod的信息
 			}
 		} else {
+			if(throwable instanceof UncheckedException) {
+				BaseException baseException = ((BaseException)throwable);
+				if(baseException.getTargetException() != null) {
+					throwable = baseException.getTargetException();
+				}
+			}
 			throwable.printStackTrace();
 //	                     指定默认的返回码，默认是200
 //		    setDefaultStatusCode("500");

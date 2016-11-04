@@ -110,16 +110,6 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		return true;
 	}
 
-	@Override
-	public boolean handle(Context context,Object... obj) {
-		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
-			before(context,obj);
-		} else {
-			after(context,obj);
-		}
-		return true;
-	}
-
 	/**
      * 
      * 方法用途: 事务回滚处理<br>
@@ -147,5 +137,20 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		return true;
 	}
 	
+	@Override
+	public boolean exception(Context context,Object... args) {
+		return transationRollbackResolver(context.getMethodFullName(),null);
+	}
 	
+	@Override
+	public boolean handle(Context context,Object... obj) {
+		if(context.getType().equals(ContextTypeEnum.BEFORE)) {
+			before(context,obj);
+		} else if(context.getType().equals(ContextTypeEnum.AFTER)) {
+			after(context,obj);
+		} else {
+			exception(context, obj);
+		}
+		return true;
+	}
 }
