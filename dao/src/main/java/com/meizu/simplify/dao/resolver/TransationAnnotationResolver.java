@@ -64,7 +64,9 @@ public class TransationAnnotationResolver implements IAnnotationResolver<Class<?
 	}
 	private <T extends Transation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno) {
 		T transation = method.getDeclaredAnnotation(clazzAnno);
-		LOGGER.debug("事务注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("事务注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		}
 		AnnotationInfo<Transation> cai = new AnnotationInfo<>();
 		cai.setAnnotatoionType(transation);
 		cai.setReturnType(method.getReturnType());

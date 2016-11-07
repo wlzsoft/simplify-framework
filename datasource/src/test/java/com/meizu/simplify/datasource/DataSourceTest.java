@@ -19,7 +19,7 @@ public class DataSourceTest {
 			if(isAutoCommit) {
 //				insert
 			} else {
-				//select
+//				select
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

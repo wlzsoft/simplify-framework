@@ -43,7 +43,9 @@ public class ConnectionFactory {
 	public static Connection getConnection(javax.sql.DataSource dataSource)   {
 		Connection connection = container.get();
 		if (connection != null) {
-			LOGGER.debug(Thread.currentThread().getName() + "从缓存中获取连接");
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug(Thread.currentThread().getName() + "从缓存中获取连接");
+			}
 			return connection;
 		}
 		try {
@@ -59,7 +61,9 @@ public class ConnectionFactory {
 			throw new DataAccessException(e.getMessage());
 		}
 		container.set(connection);
-		LOGGER.debug("线程["+Thread.currentThread().getName() + "]从数据源中成功获取连接,连接已经开启");
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("线程["+Thread.currentThread().getName() + "]从数据源中成功获取连接,连接已经开启");
+		}
 		return connection;
 	}
 	
@@ -114,7 +118,9 @@ public class ConnectionFactory {
 						e.printStackTrace();
 					}
 				}
-				LOGGER.debug(Thread.currentThread().getName() + "事务已经提交......");
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug(Thread.currentThread().getName() + "事务已经提交......");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,7 +176,9 @@ public class ConnectionFactory {
 				if(!conn.isClosed()) {
 					conn.close();
 				}
-				LOGGER.debug(Thread.currentThread().getName() + "连接关闭");
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug(Thread.currentThread().getName() + "连接关闭");
+				}
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage(), e);

@@ -40,7 +40,9 @@ public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Seriali
 	@Override
 	public List<BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>>> hook(
 			Class<Dao<IdEntity<Serializable, Integer>, Serializable>> clazz) {
-		LOGGER.debug("开始初始化Dao实例....");
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("开始初始化Dao实例....");
+		}
 		List<BeanEntity<Dao<IdEntity<Serializable, Integer>, Serializable>>> list = new ArrayList<>();
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(Entity.class, BeanAnnotationResolver.getClasspaths());//扫描Entity注解的实体，获取实体列表
 //		循环ORM对象列表

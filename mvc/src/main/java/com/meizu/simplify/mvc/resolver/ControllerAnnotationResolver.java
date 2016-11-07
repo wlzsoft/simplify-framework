@@ -153,7 +153,9 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 	 * @param cpath
 	 */
 	public <T extends Annotation>  void resolverRequestMap(Class<?> beanClass,Method method ,Class<T> clazzAnno,String cpath) {
-		LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("请求映射注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		}
 //		TypeVariable<?>[] tv = method.getTypeParameters();//泛型方法才会使用到
 		Object obj = BeanFactory.getBean(beanClass);//如果mvc需要脱离ioc框架，那么这个直接创建实例，而不是从容器获取实例
 		if(obj == null) {
@@ -295,7 +297,9 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 		requestParamMap.put(beanClass.getName()+":"+method.getName(), annoList);
 		pojoParamMap.put(beanClass.getName()+":"+method.getName(), parameterTypes[2]);
-		LOGGER.debug("RequestParam注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解");
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("RequestParam注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解");
+		}
 	}
 	@SuppressWarnings("unchecked")
 	private <T extends Annotation> void resolveAnno(Class<?> beanClass, Method method,Class<T> clazzAnno,AnnotationResolverCallback<T> callbak) {
@@ -311,6 +315,8 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 		annoInfo.setAnnotatoionType(anno);
 		annoInfo.setReturnType(method.getReturnType());
 		callbak.resolver((AnnotationInfo<T>)annoInfo);
-		LOGGER.debug("Controller相关注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Controller相关注解解析：方法["+beanClass.getName()+":"+method.getName()+"] 上的注解["+clazzAnno.getName()+"]");
+		}
 	}
 }

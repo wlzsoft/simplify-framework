@@ -60,7 +60,9 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务开启之前的隔离级别为："+oldTransactionISO);
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务开启之前的隔离级别为："+oldTransactionISO);
+			}
 			//明确指定可用隔离级别，并且设置的隔离级别和当前的隔离级别不同，才会设置
 			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
 				//设置隔离级别start
@@ -74,11 +76,15 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 					}
 					context.getCallback().setTemp(oldTransactionISO);
 				}
-				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务隔离级别设置为："+transation.ISO().getValue());
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务隔离级别设置为："+transation.ISO().getValue());
+				}
 				//设置隔离级别end
 			}
 			ConnectionFactory.startTransaction(connection);
-			LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务开启");
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之前 切入,事务开启");
+			}
 		}
 		
 		return true;
@@ -100,12 +106,16 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 			Integer oldTransactionISO = context.getCallback().getTemp();
 			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
 				ConnectionFactory.commit(oldTransactionISO);
-				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
+				}
 			} else {
 				ConnectionFactory.commit();
 			}
 			ConnectionFactory.close();
-			LOGGER.debug("成功：事务切面切入：["+methodFullName+"]方法之后切入,事务提交，并返回逻辑连接到连接池");
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("成功：事务切面切入：["+methodFullName+"]方法之后切入,事务提交，并返回逻辑连接到连接池");
+			}
 		}
 		return true;
 	}
@@ -127,12 +137,16 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 			Transation transation = (Transation)anno;
 			if(oldTransactionISO != null && transation.ISO() != ISOEnum.TRANSACTION_NONE&&transation.ISO().getValue() != oldTransactionISO) {
 				ConnectionFactory.rollback(oldTransactionISO);
-				LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug("成功:事务切面切入：["+methodFullName+"]方法之后 切入,事务隔离级别设置还原为："+oldTransactionISO);
+				}
 			} else {
 				ConnectionFactory.rollback();
 			}
 			ConnectionFactory.close();
-			LOGGER.debug("成功：事务切面切入：["+methodFullName+"]方法之后切入,事务已经回滚，并返回逻辑连接到连接池");
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("成功：事务切面切入：["+methodFullName+"]方法之后切入,事务已经回滚，并返回逻辑连接到连接池");
+			}
 		}
 		return true;
 	}
