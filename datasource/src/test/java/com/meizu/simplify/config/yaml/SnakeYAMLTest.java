@@ -1,24 +1,28 @@
 package com.meizu.simplify.config.yaml;
-import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
+
 public class SnakeYAMLTest {
 	
 	@Test
     public  void test1() {
         try {
-            Yaml yaml = new Yaml();
-            URL url = SnakeYAMLTest.class.getClassLoader().getResource("route.yaml");
-            if (url != null) {
-                Object obj = yaml.load(new FileInputStream(url.getFile()));
-                System.out.println(obj);
-            }
+//        	while(true) 
+        	{
+	            Yaml yaml = new Yaml();
+	            URL url = SnakeYAMLTest.class.getClassLoader().getResource("route.yaml");
+	            if (url != null) {
+	                Object obj = yaml.load(new FileInputStream(url.getFile()));
+	                System.out.println(obj);
+	            }
+//	            TimeUnit.SECONDS.sleep(5);
+        	}
         } catch (Exception e) {
             e.printStackTrace();
         }
