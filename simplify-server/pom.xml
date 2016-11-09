@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1-SNAPSHOT</version>
   </parent>
   <artifactId>simplify-server</artifactId>
   <packaging>pom</packaging>
@@ -13,33 +13,33 @@
   	<dependency>
   		<groupId>com.meizu</groupId>
   		<artifactId>simplify-base</artifactId>
-  		<version>1.2.0</version>
+  		<version>1.2.1-SNAPSHOT</version>
   		<type>pom</type>
   	</dependency>
   	<dependency>
   		<groupId>com.meizu</groupId>
   		<artifactId>cache-redis</artifactId>
-  		<version>1.2.0</version>
+  		<version>1.2.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>com.meizu</groupId>
   		<artifactId>caches</artifactId>
-  		<version>1.2.0</version>
+  		<version>1.2.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>com.meizu</groupId>
   		<artifactId>dao</artifactId>
-  		<version>1.2.0</version>
+  		<version>1.2.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>com.meizu</groupId>
   		<artifactId>entity</artifactId>
-  		<version>1.2.0</version>
+  		<version>1.2.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
   		<groupId>com.meizu</groupId>
   		<artifactId>rpc</artifactId>
-  		<version>1.2.0</version>
+  		<version>1.2.1-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>

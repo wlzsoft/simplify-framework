@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.meizu</groupId>
 		<artifactId>simplify-framework</artifactId>
-		<version>1.2.0</version>
+		<version>1.2.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>authfilter</artifactId>
 	<name>对请求安全认证拦截处理</name>
@@ -17,7 +17,7 @@
 		<dependency>
 		  	<groupId>com.meizu</groupId>
 		    <artifactId>mvc</artifactId>
-		    <version>1.2.0</version>
+		    <version>1.2.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
