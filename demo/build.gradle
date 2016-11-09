@@ -5,7 +5,7 @@ apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.p
 apply plugin: 'war'
 
 group = 'com.meizu'
-version = '1.2.0-SNAPSHOT'
+version = '1.2.0'
 
 description = """demo Maven Webapp"""
 
@@ -27,13 +27,13 @@ repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-    compile 'com.meizu:mvc:1.2.0-SNAPSHOT'
-    compile 'com.meizu:cache-redis:1.2.0-SNAPSHOT'
-    compile 'com.meizu:webcache:1.2.0-SNAPSHOT'
-    compile 'com.meizu:aop:1.2.0-SNAPSHOT'
-    compile 'com.meizu:dao:1.2.0-SNAPSHOT'
-    compile 'com.meizu:listener:1.2.0-SNAPSHOT'
-    compile 'com.meizu:webserver:1.2.0-SNAPSHOT'
+    compile 'com.meizu:mvc:1.2.0'
+    compile 'com.meizu:cache-redis:1.2.0'
+    compile 'com.meizu:webcache:1.2.0'
+    compile 'com.meizu:aop:1.2.0'
+    compile 'com.meizu:dao:1.2.0'
+    compile 'com.meizu:listener:1.2.0'
+    compile 'com.meizu:webserver:1.2.0'
     testCompile 'junit:junit:4.12@jar'
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
     //compile gradleApi() //when you are developing custom Gradle tasks or plugins.

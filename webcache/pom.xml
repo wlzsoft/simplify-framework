@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
   </parent>
   <artifactId>webcache</artifactId>
   <name>页面缓存组件</name>
@@ -16,23 +16,23 @@
    	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>encrypt</artifactId>
-	    <version>1.2.0-SNAPSHOT</version>
+	    <version>1.2.0</version>
 	  </dependency>
    	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>config</artifactId>
-	    <version>1.2.0-SNAPSHOT</version>
+	    <version>1.2.0</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>aop</artifactId>
-	    <version>1.2.0-SNAPSHOT</version>
+	    <version>1.2.0</version>
 	  </dependency>
 	  <!-- TODO 页面缓存不走redis缓存，也不要依赖具体缓存实现，后面这里需要改成<artifactId>caches</artifactId> -->
 	  <!-- <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>cache-redis</artifactId>
-	    <version>1.2.0-SNAPSHOT</version>
+	    <version>1.2.0</version>
 	  </dependency> -->
 	  <dependency>
 			<groupId>javax.servlet</groupId>
