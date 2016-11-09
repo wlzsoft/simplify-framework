@@ -1,0 +1,12 @@
+- !!com.meizu.simplify.datasource.User
+  age: 1
+  name: test1
+  testList:
+  - !!com.meizu.simplify.datasource.Test {name: test1, value: '1'}
+  - !!com.meizu.simplify.datasource.Test {name: test2, value: '2'}
+- !!com.meizu.simplify.datasource.User
+  age: 23
+  name: test2
+  testList:
+  - !!com.meizu.simplify.datasource.Test {name: test1, value: '3'}
+  - !!com.meizu.simplify.datasource.Test {name: test2, value: '4'}

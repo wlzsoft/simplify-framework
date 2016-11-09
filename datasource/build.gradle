@@ -2,4 +2,5 @@
 description = '数据库数据源处理模块'
 dependencies {
 	compile project(':utils')
+	compile("org.yaml:snakeyaml:1.15")
 }

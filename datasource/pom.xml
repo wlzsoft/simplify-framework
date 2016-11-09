@@ -26,16 +26,16 @@
 	  	<version>${parent.version}</version>
 	  	<scope>test</scope>
 	  </dependency>
-	  <dependency>
+	  <!-- <dependency>
 	    <groupId>com.esotericsoftware.yamlbeans</groupId>
 	    <artifactId>yamlbeans</artifactId>
 	    <version>1.09</version>
-	  </dependency>
-	  <!-- <dependency>
+	  </dependency> -->
+	  <dependency>
 	    <groupId>org.yaml</groupId>
 	    <artifactId>snakeyaml</artifactId>
 	    <version>1.17</version>
-	  </dependency> -->
+	  </dependency>
 	  
   </dependencies>
 </project>

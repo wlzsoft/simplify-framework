@@ -1,0 +1,6 @@
+#读写分离路由配置
+write-host:
+   - read-host:
+        name: salve1
+   - read-host:
+        name: salve2
