@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>${parent.version}</version>
+    <version>${simplify.version}</version>
   </parent>
   <artifactId>net</artifactId>
   <name>网络通讯框架</name>
