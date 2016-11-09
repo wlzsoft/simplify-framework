@@ -90,6 +90,7 @@
     <argLine>-Dfile.encoding=UTF-8</argLine>
     <templatePath>${basedir}</templatePath>
     <parentsite>parent</parentsite>
+    <simplify.version>${project.version}</simplify.version>
     <mongo-java-driver>3.1.0</mongo-java-driver>
     <slf4j-api.version>1.7.7</slf4j-api.version>
   </properties>

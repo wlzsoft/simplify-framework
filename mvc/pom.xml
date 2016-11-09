@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>${simplify.version}</version>
   </parent>
   <artifactId>mvc</artifactId>
   <name>mvc简易框架</name>
@@ -16,7 +16,7 @@
 	  <dependency>
 	  	<groupId>com.meizu</groupId>
 	    <artifactId>utils</artifactId>
-	    <version>1.2.1-SNAPSHOT</version>
+	    <version>${parent.version}</version>
 	  </dependency>
 	  <!-- 以下这个jar后续要删除，不应该出现在mvc模块中，开发阶段为了测试，所以加上 -->
 	    <dependency>
@@ -30,27 +30,27 @@
 		  <dependency>
 		  	<groupId>com.meizu</groupId>
 		  	<artifactId>dao</artifactId>
-		  	<version>1.2.1-SNAPSHOT</version>
+		  	<version>${parent.version}</version>
 		  </dependency>
 		  <dependency>
 		  	<groupId>com.meizu</groupId>
 		    <artifactId>view-beetl</artifactId>
-		    <version>1.2.1-SNAPSHOT</version>
+		    <version>${parent.version}</version>
 		  </dependency> 
 		  <dependency>
 		  	<groupId>com.meizu</groupId>
 		    <artifactId>view-velocity</artifactId>
-		    <version>1.2.1-SNAPSHOT</version>
+		    <version>${parent.version}</version>
 		  </dependency>
 		  <!-- <dependency>
 		  	<groupId>com.meizu</groupId>
 		    <artifactId>view-httl</artifactId>
-		    <version>1.2.1-SNAPSHOT</version>
+		    <version>${parent.version}</version>
 		  </dependency>
 		  <dependency>
 		  	<groupId>com.meizu</groupId>
 		    <artifactId>view-freemarker</artifactId>
-		    <version>1.2.1-SNAPSHOT</version>
+		    <version>${parent.version}</version>
 		  </dependency>-->
   </dependencies>
 </project>
