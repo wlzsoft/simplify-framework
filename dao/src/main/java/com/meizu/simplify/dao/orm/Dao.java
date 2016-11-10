@@ -19,6 +19,7 @@ import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
+import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Column;
@@ -521,11 +522,27 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	public T findOne(String sql,Object... params) {
+		return findOne(sql,true,params);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 查询唯一记录结果集<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @param isMutilLineExcpetion 是否抛出异常的形式：如果数据集中有多行记录
+	 * @param params
+	 * @return
+	 */
+	public T findOne(String sql,boolean isMutilLineExcpetion,Object... params) {
 		List<T> list = find(sql,params);
 		if(list != null && list.size()==1) {
 			return list.get(0);
 		} else if(list != null && list.size()>1) {
-			logger.warn("返回的数据集有多条记录，确认是否出现脏数据");
+			if(isMutilLineExcpetion) {
+				throw new BaseDaoException("返回的数据集有多条记录["+list.size()+"条]，确认是否出现脏数据");
+			}
+			logger.warn("返回的数据集有多条记录["+list.size()+"条]，确认是否出现脏数据");
 			return list.get(0);
 		} else {
 			return null;
