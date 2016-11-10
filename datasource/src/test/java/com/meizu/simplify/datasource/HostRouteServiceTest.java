@@ -12,7 +12,7 @@ import com.meizu.simplify.test.SimplifyJUnit4ClassRunner;
 
 @RunWith(SimplifyJUnit4ClassRunner.class)
 @Bean
-public class DataSourceTest {
+public class HostRouteServiceTest {
 	@Test
 	public void test() {
 		Connection conn = DruidPoolFactory.getConnection();
