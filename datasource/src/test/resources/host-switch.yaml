@@ -1,0 +1,9 @@
+!!com.meizu.simplify.datasource.config.pojo.HostSwitch
+masterHostList:
+- name: master1
+  password: '123456'
+  slaveHostList:
+  - {name: slave1, password: '', url: 'localhost:8087', userName: root}
+  url: localhost:3306
+  userName: root
+name: host1
