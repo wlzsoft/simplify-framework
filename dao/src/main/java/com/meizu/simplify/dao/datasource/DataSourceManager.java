@@ -1,5 +1,7 @@
 package com.meizu.simplify.dao.datasource;
 
+import java.sql.Connection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +25,33 @@ import com.meizu.simplify.ioc.annotation.InitBean;
  */
 @Bean
 public class DataSourceManager {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceManager.class);
+	
 	@Config("system.debug")
 	private Boolean debug;
 	@InitBean
 	public void init(){
 		if(debug) {
-			LOGGER.info("SQL数据源连接信息:"+DruidPoolFactory.getDataSourceInfo());
+			SingleDataSource.getDataSource().print();
 		}
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static Connection getConnection()   {
+		Connection connection = ConnectionFactory.getConnection(SingleDataSource.getDataSource().value());
+		return connection;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取当前线程上的连接并开启事务<br>
+	 * 操作步骤: TODO<br>
+	 */
+	public static void startTransaction() {
+		ConnectionFactory.startTransaction(SingleDataSource.getDataSource().value());
 	}
 }
 

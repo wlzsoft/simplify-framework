@@ -37,7 +37,7 @@ public class ConnectionFactory {
 	
 	/**
 	 * 
-	 * 方法用途: 获取当前线程上的连接<br>
+	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
 	 * 操作步骤: TODO<br>
 	 */
 	public static Connection getConnection(javax.sql.DataSource dataSource)   {

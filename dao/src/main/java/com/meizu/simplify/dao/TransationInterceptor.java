@@ -14,7 +14,7 @@ import com.meizu.simplify.aop.IInterceptor;
 import com.meizu.simplify.aop.enums.ContextTypeEnum;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.datasource.ConnectionFactory;
-import com.meizu.simplify.dao.datasource.DruidPoolFactory;
+import com.meizu.simplify.dao.datasource.DataSourceManager;
 import com.meizu.simplify.dao.enums.ISOEnum;
 import com.meizu.simplify.dao.resolver.TransationAnnotationResolver;
 import com.meizu.simplify.dto.AnnotationInfo;
@@ -53,7 +53,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			Transation transation = (Transation)anno;
-			Connection connection = DruidPoolFactory.getConnection();
+			Connection connection = DataSourceManager.getConnection();
 			Integer oldTransactionISO = -1;
 			try {
 				oldTransactionISO = connection.getTransactionIsolation();

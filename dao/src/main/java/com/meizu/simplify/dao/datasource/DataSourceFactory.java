@@ -1,6 +1,5 @@
 package com.meizu.simplify.dao.datasource;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.alibaba.druid.pool.DruidDataSource;
@@ -25,31 +24,9 @@ import com.meizu.simplify.utils.PropertieUtil;
  * @version Version 0.1
  *
  */
-public class DruidPoolFactory {
+public class DataSourceFactory {
 	
-	private String dataSourceStr = "";
-	
-	public String getDataSourceStr() {
-		return dataSourceStr;
-	}
-
-	public void setDataSourceStr(String dataSourceStr) {
-		this.dataSourceStr = dataSourceStr;
-	}
-	
-	public static String getDataSourceInfo()   {
-		return factory.getDataSourceStr();
-	}
-
-	private static final DruidPoolFactory factory = new DruidPoolFactory();
-	
-	private javax.sql.DataSource dataSource = null;
-	
-	private DruidPoolFactory(){
-		this.dataSource = createDataSource();
-	}
-	
-	private javax.sql.DataSource createDataSource() {
+	public static javax.sql.DataSource createDataSource() {
 		DruidDataSource dataSource = null;
 		PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
 		try	{
@@ -120,50 +97,7 @@ public class DruidPoolFactory {
 			System.exit(-1);//暂时这样使用，后续要调整 TODO
 //			throw new StartupErrorException("sql数据库连接失败");
 		}
-		dataSourceStr = result.toString();
 		return dataSource;
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static Connection getConnection()   {
-		Connection connection = ConnectionFactory.getConnection(factory.dataSource);
-		return connection;
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 获取当前线程上的连接并开启事务<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public static void startTransaction() {
-		ConnectionFactory.startTransaction(factory.dataSource);
-	}
-	
-	
-	/**
-	 * 
-	 * 方法用途: 初始化数据源<br>
-	 * 操作步骤:  init-method="init"<br>
-	 */
-	public static void initPool() {
-		try {
-			((DruidDataSource)factory.dataSource).init();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 关闭数据源<br>
-	 * 操作步骤:  destroy-method="close"<br>
-	 */
-	public static void closePool() {
-		((DruidDataSource)factory.dataSource).close();
 	}
 }
 

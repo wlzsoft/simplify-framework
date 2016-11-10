@@ -12,7 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.datasource.ConnectionFactory;
-import com.meizu.simplify.dao.datasource.DruidPoolFactory;
+import com.meizu.simplify.dao.datasource.DataSourceFactory;
+import com.meizu.simplify.dao.datasource.DataSourceManager;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.exception.UncheckedException;
 
@@ -62,7 +63,7 @@ public class SQLExecute {
 	 */
 	public static Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
 		PreparedStatement prepareStatement = null;
-		Connection conn = DruidPoolFactory.getConnection();
+		Connection conn = DataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);
@@ -97,7 +98,7 @@ public class SQLExecute {
 	 */
 	public static Integer executeUpdate(String sql) {
 		PreparedStatement prepareStatement = null;
-		Connection conn = DruidPoolFactory.getConnection();
+		Connection conn = DataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			Integer rs = prepareStatement.executeUpdate();
@@ -183,7 +184,7 @@ public class SQLExecute {
 		Connection conn = null;
 		PreparedStatement prepareStatement = null;
 		try{
-			conn = DruidPoolFactory.getConnection();
+			conn = DataSourceManager.getConnection();
 			if(sqlArr == null) {
 				throw new UncheckedException("sql语句为空");
 			}
@@ -228,7 +229,7 @@ public class SQLExecute {
 	 */
 	public static Integer executeInsert(String sql,IDataCallback<Integer> callback,Object... params) {
 		PreparedStatement prepareStatement = null;
-		Connection conn = DruidPoolFactory.getConnection();
+		Connection conn = DataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			callback.paramCall(prepareStatement,params);
@@ -298,7 +299,7 @@ public class SQLExecute {
 		List<B> bList= new ArrayList<B>();
 		PreparedStatement prepareStatement = null;
 		ResultSet rs = null;
-		Connection conn = DruidPoolFactory.getConnection();
+		Connection conn = DataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);
