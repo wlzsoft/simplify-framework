@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.datasource.ConnectionFactory;
-import com.meizu.simplify.dao.datasource.DataSourceFactory;
 import com.meizu.simplify.dao.datasource.DataSourceManager;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.exception.UncheckedException;

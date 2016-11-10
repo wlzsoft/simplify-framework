@@ -1,6 +1,7 @@
-package com.meizu.simplify.dao.datasource;
+package com.meizu.simplify.datasource;
 
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -8,10 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.dao.datasource.DataSourceFactory;
+import com.meizu.simplify.dao.datasource.IDataSource;
 
 /**
- * <p><b>Title:</b><i>单数据源实现</i></p>
+ * <p><b>Title:</b><i>多数据源实现</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -23,22 +25,24 @@ import com.meizu.simplify.utils.PropertieUtil;
  * @version Version 0.1
  *
  */
-public class SingleDataSource implements IDataSource{
+public class MutilDataSource implements IDataSource{
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SingleDataSource.class);
-	
-	private static final SingleDataSource singDataSource = new SingleDataSource();
+	private static final Logger LOGGER = LoggerFactory.getLogger(MutilDataSource.class);
 	
 	private DataSource dataSource = null;
 	
+	private String name;
 	
-	public static IDataSource getDataSource() {
-		return singDataSource;
+	public String getName() {
+		return name;
 	}
-	
-	private SingleDataSource(){
-		PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
-		this.dataSource = DataSourceFactory.createDataSource(result.getProps());
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public MutilDataSource(Properties properties){
+		this.dataSource = DataSourceFactory.createDataSource(properties);
 	}
 	
 	@Override

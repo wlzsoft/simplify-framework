@@ -1,11 +1,16 @@
 package com.meizu.simplify.dao.datasource;
 
 import java.sql.SQLException;
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.meizu.simplify.dao.exception.DataAccessException;
-import com.meizu.simplify.utils.PropertieUtil;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -25,10 +30,10 @@ import com.meizu.simplify.utils.PropertieUtil;
  *
  */
 public class DataSourceFactory {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceFactory.class);
 	
-	public static javax.sql.DataSource createDataSource() {
+	public static DataSource createDataSource(Properties config) {
 		DruidDataSource dataSource = null;
-		PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
 		try	{
 			dataSource = new DruidDataSource();
 			//默认配置信息设置
@@ -79,7 +84,7 @@ public class DataSourceFactory {
 			//这里配置提交方式，默认就是TRUE，可以不用配置 
 			//dataSource.setDefaultAutoCommit(false);
 			//读取配置文件信息
-			DruidDataSourceFactory.config(dataSource, result.getProps());
+			DruidDataSourceFactory.config(dataSource, config);
 		} catch (Exception e){
 			try	{
 				if (dataSource != null) {
@@ -96,6 +101,12 @@ public class DataSourceFactory {
 			e.printStackTrace();
 			System.exit(-1);//暂时这样使用，后续要调整 TODO
 //			throw new StartupErrorException("sql数据库连接失败");
+		}
+		if(LOGGER.isInfoEnabled()) {
+			config.setProperty("password", "***");
+			LOGGER.info("SQL数据源连接配置信息："+config.toString());
+		} else if(LOGGER.isDebugEnabled()){
+			LOGGER.debug("SQL数据源连接配置信息："+config.toString());
 		}
 		return dataSource;
 	}
