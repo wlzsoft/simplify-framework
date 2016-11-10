@@ -2,9 +2,6 @@ package com.meizu.simplify.dao.datasource;
 
 import java.sql.Connection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
@@ -52,6 +49,10 @@ public class DataSourceManager {
 	 */
 	public static void startTransaction() {
 		ConnectionFactory.startTransaction(SingleDataSource.getDataSource().value());
+	}
+	
+	public static void close() {
+		SingleDataSource.getDataSource().close();
 	}
 }
 

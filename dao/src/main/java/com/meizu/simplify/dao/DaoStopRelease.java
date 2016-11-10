@@ -1,6 +1,6 @@
 package com.meizu.simplify.dao;
 
-import com.meizu.simplify.dao.datasource.SingleDataSource;
+import com.meizu.simplify.dao.datasource.DataSourceManager;
 import com.meizu.simplify.ioc.IStopRelease;
 import com.meizu.simplify.ioc.annotation.Bean;
 
@@ -22,7 +22,7 @@ public class DaoStopRelease implements IStopRelease{
 
 	@Override
 	public void release() {
-		SingleDataSource.getDataSource().close();
+		DataSourceManager.close();
 	}
 
 }
