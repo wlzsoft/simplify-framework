@@ -33,14 +33,11 @@ public class MutilDataSource implements IDataSource{
 	
 	private String name;
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	/**
+	 * 数据源类型：{0:master数据源,1:slave数据源}
+	 */
+	private Integer type;
+	
 	public MutilDataSource(Properties properties){
 		this.dataSource = DataSourceFactory.createDataSource(properties);
 	}
@@ -79,6 +76,35 @@ public class MutilDataSource implements IDataSource{
 	@Override
 	public void close() {
 		((DruidDataSource)dataSource).close();
+	}
+	
+	//set和get方法
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 数据源类型<br>
+	 * 操作步骤: TODO<br>
+	 * @return {0:master数据源,1:slave数据源}
+	 */
+	public Integer getType() {
+		return type;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 数据源类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param type {0:master数据源,1:slave数据源}
+	 */
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

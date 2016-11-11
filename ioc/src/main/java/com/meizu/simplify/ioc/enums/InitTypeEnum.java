@@ -18,6 +18,10 @@ public enum InitTypeEnum {
 	 */
 	WEAVING(10),
 	/**
+	 * 数据源初始化
+	 */
+	DATASOURCE(15),
+	/**
 	 * bean初始化
 	 */
 	BEAN(20),

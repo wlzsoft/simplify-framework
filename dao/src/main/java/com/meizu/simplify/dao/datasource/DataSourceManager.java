@@ -28,8 +28,10 @@ public class DataSourceManager {
 	@InitBean
 	public void init(){
 		if(debug) {
-			SingleDataSource.getDataSource().print();
+			IDataSource dataSource = SingleDataSource.getDataSource();
+			dataSource.print();
 		}
+		
 	}
 	
 	/**
@@ -38,7 +40,8 @@ public class DataSourceManager {
 	 * 操作步骤: TODO<br>
 	 */
 	public static Connection getConnection()   {
-		Connection connection = ConnectionFactory.getConnection(SingleDataSource.getDataSource().value());
+		IDataSource dataSource = SingleDataSource.getDataSource();
+		Connection connection = ConnectionFactory.getConnection(dataSource.value());
 		return connection;
 	}
 	
@@ -48,11 +51,13 @@ public class DataSourceManager {
 	 * 操作步骤: TODO<br>
 	 */
 	public static void startTransaction() {
-		ConnectionFactory.startTransaction(SingleDataSource.getDataSource().value());
+		IDataSource dataSource = SingleDataSource.getDataSource();
+		ConnectionFactory.startTransaction(dataSource.value());
 	}
 	
 	public static void close() {
-		SingleDataSource.getDataSource().close();
+		IDataSource dataSource = SingleDataSource.getDataSource();
+		dataSource.close();
 	}
 }
 
