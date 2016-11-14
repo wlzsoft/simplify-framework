@@ -1,111 +1,46 @@
 package com.meizu.simplify.datasource;
 
-import java.sql.SQLException;
-import java.util.Properties;
-
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.alibaba.druid.pool.DruidDataSource;
-import com.meizu.simplify.dao.datasource.DataSourceFactory;
 import com.meizu.simplify.dao.datasource.IDataSource;
+import com.meizu.simplify.datasource.route.HostRouteService;
+import com.meizu.simplify.ioc.annotation.Bean;
 
 /**
- * <p><b>Title:</b><i>多数据源实现</i></p>
+  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
- * <p>Create Date:2016年1月29日 下午3:00:39</p>
+ * <p>Create Date:2016年11月14日 上午11:14:17</p>
  * <p>Modified By:luchuangye-</p>
- * <p>Modified Date:2016年1月29日 下午3:00:39</p>
- * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
+ * <p>Modified Date:2016年11月14日 上午11:14:17</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version Version 0.1
  *
  */
+@Bean
 public class MutilDataSource implements IDataSource{
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MutilDataSource.class);
-	
-	private DataSource dataSource = null;
-	
-	private String name;
-	
-	/**
-	 * 数据源类型：{0:master数据源,1:slave数据源}
-	 */
-	private Integer type;
-	
-	public MutilDataSource(Properties properties){
-		this.dataSource = DataSourceFactory.createDataSource(properties);
-	}
-	
+
 	@Override
 	public DataSource value() {
-		return dataSource;
+		return HostRouteService.switchHost().value();
 	}
-	
+
 	@Override
 	public String print() {
-		String info = ((DruidDataSource)dataSource).toString();
-		LOGGER.info("SQL数据库的激活的数据源信息:"+info);
-		return info;
+		return HostRouteService.switchHost().print();
 	}
-	
-	/**
-	 * 
-	 * 方法用途: 初始化数据源<br>
-	 * 操作步骤:  init-method="init"<br>
-	 */
+
 	@Override
 	public void init() {
-		try {
-			((DruidDataSource)dataSource).init();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		HostRouteService.switchHost().init();
+		
 	}
-	
-	/**
-	 * 
-	 * 方法用途: 关闭数据源<br>
-	 * 操作步骤:  destroy-method="close"<br>
-	 */
+
 	@Override
 	public void close() {
-		((DruidDataSource)dataSource).close();
-	}
-	
-	//set和get方法
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 数据源类型<br>
-	 * 操作步骤: TODO<br>
-	 * @return {0:master数据源,1:slave数据源}
-	 */
-	public Integer getType() {
-		return type;
-	}
-
-	/**
-	 * 
-	 * 方法用途: 数据源类型<br>
-	 * 操作步骤: TODO<br>
-	 * @param type {0:master数据源,1:slave数据源}
-	 */
-	public void setType(Integer type) {
-		this.type = type;
+		HostRouteService.switchHost().close();
 	}
 
 }
-

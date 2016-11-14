@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.meizu.simplify.datasource.route.DynamicDataSourceConnection;
+import com.meizu.simplify.datasource.route.DynamicDataSourceConnectionWrapper;
+import com.meizu.simplify.datasource.route.HostRouteService;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.test.SimplifyJUnit4ClassRunner;
 
@@ -14,12 +17,12 @@ import com.meizu.simplify.test.SimplifyJUnit4ClassRunner;
 public class HostRouteServiceTest {
 	@Test
 	public void testSwitchHost() {
-		new HostRouteService().switchHost();
+		HostRouteService.switchHost();
 	}
 	@Test
 	public void testHostRoute() {
-		Connection virtualConnection = new MutilDataSourceConnection();
-		Connection conn = new MutilDataSourceConnectionWrapper(virtualConnection);
+		Connection virtualConnection = new DynamicDataSourceConnection();
+		Connection conn = new DynamicDataSourceConnectionWrapper(virtualConnection);
 		try {
 			System.out.println(conn.isClosed());
 		} catch (SQLException e) {

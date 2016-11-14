@@ -5,6 +5,7 @@ import java.sql.Connection;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
+import com.meizu.simplify.ioc.annotation.Resource;
 
 
 /**
@@ -25,10 +26,13 @@ public class DataSourceManager {
 	
 	@Config("system.debug")
 	private Boolean debug;
+	
+	@Resource
+	private IDataSource dataSource;
+	
 	@InitBean
 	public void init(){
 		if(debug) {
-			IDataSource dataSource = SingleDataSource.getDataSource();
 			dataSource.print();
 		}
 		
@@ -39,8 +43,7 @@ public class DataSourceManager {
 	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
 	 * 操作步骤: TODO<br>
 	 */
-	public static Connection getConnection()   {
-		IDataSource dataSource = SingleDataSource.getDataSource();
+	public  Connection getConnection()   {
 		Connection connection = ConnectionFactory.getConnection(dataSource.value());
 		return connection;
 	}
@@ -50,13 +53,11 @@ public class DataSourceManager {
 	 * 方法用途: 获取当前线程上的连接并开启事务<br>
 	 * 操作步骤: TODO<br>
 	 */
-	public static void startTransaction() {
-		IDataSource dataSource = SingleDataSource.getDataSource();
+	public  void startTransaction() {
 		ConnectionFactory.startTransaction(dataSource.value());
 	}
 	
-	public static void close() {
-		IDataSource dataSource = SingleDataSource.getDataSource();
+	public  void close() {
 		dataSource.close();
 	}
 }

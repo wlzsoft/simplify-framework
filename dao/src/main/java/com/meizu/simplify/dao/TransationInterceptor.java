@@ -19,6 +19,7 @@ import com.meizu.simplify.dao.enums.ISOEnum;
 import com.meizu.simplify.dao.resolver.TransationAnnotationResolver;
 import com.meizu.simplify.dto.AnnotationInfo;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 
 /**
  * <p><b>Title:</b><i>事务处理拦截器</i></p>
@@ -39,6 +40,9 @@ import com.meizu.simplify.ioc.annotation.Bean;
 public class TransationInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransationInterceptor.class);
+
+	@Resource
+	private DataSourceManager dataSourceManager;
 	
 	@Override
 	public boolean before(Context context,Object... args) {
@@ -53,7 +57,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		Annotation anno = annoInfo.getAnnotatoionType();
 		if(anno.annotationType().equals(Transation.class)) {
 			Transation transation = (Transation)anno;
-			Connection connection = DataSourceManager.getConnection();
+			Connection connection = dataSourceManager.getConnection();
 			Integer oldTransactionISO = -1;
 			try {
 				oldTransactionISO = connection.getTransactionIsolation();

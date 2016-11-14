@@ -1,6 +1,7 @@
-package com.meizu.simplify.dao.datasource;
+package com.meizu.simplify.datasource.route;
 
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -8,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.utils.PropertieUtil;
+import com.meizu.simplify.dao.datasource.DataSourceFactory;
+import com.meizu.simplify.dao.datasource.IDataSource;
 
 /**
- * <p><b>Title:</b><i>单数据源实现</i></p>
+ * <p><b>Title:</b><i>多数据源实现</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -24,16 +25,21 @@ import com.meizu.simplify.utils.PropertieUtil;
  * @version Version 0.1
  *
  */
-@Bean
-public class SingleDataSource implements IDataSource{
+public class DynamicDataSource implements IDataSource{
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SingleDataSource.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DynamicDataSource.class);
 	
 	private DataSource dataSource = null;
 	
-	public SingleDataSource(){
-		PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
-		this.dataSource = DataSourceFactory.createDataSource(result.getProps());
+	private String name;
+	
+	/**
+	 * 数据源类型：{0:master数据源,1:slave数据源}
+	 */
+	private Integer type;
+	
+	public DynamicDataSource(Properties properties){
+		this.dataSource = DataSourceFactory.createDataSource(properties);
 	}
 	
 	@Override
@@ -70,6 +76,35 @@ public class SingleDataSource implements IDataSource{
 	@Override
 	public void close() {
 		((DruidDataSource)dataSource).close();
+	}
+	
+	//set和get方法
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 数据源类型<br>
+	 * 操作步骤: TODO<br>
+	 * @return {0:master数据源,1:slave数据源}
+	 */
+	public Integer getType() {
+		return type;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 数据源类型<br>
+	 * 操作步骤: TODO<br>
+	 * @param type {0:master数据源,1:slave数据源}
+	 */
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

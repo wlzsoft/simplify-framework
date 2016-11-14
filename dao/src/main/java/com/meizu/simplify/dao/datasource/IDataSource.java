@@ -2,6 +2,8 @@ package com.meizu.simplify.dao.datasource;
 
 import javax.sql.DataSource;
 
+import com.meizu.simplify.ioc.annotation.DefaultBean;
+
 /**
  * <p><b>Title:</b><i>数据源接口</i></p>
  * <p>Desc: TODO </p>
@@ -15,6 +17,7 @@ import javax.sql.DataSource;
  * @version Version 0.1
  *
  */
+@DefaultBean
 public interface IDataSource {
 	
 	/**

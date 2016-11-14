@@ -1,14 +1,10 @@
-package com.meizu.simplify.datasource;
+package com.meizu.simplify.datasource.route;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.datasource.ConnectionFactory;
-import com.meizu.simplify.dao.datasource.DataSourceManager;
 import com.meizu.simplify.datasource.config.HostRouteConfigResolver;
 
 /**
@@ -34,8 +30,8 @@ public class HostRouteService {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public MutilDataSource switchHost() {
-		MutilDataSource mutilDataSource = HostRouteConfigResolver.readDataSourceMap.get(new Random().nextInt(65536)%HostRouteConfigResolver.readDataSourceMap.size());
+	public static DynamicDataSource switchHost() {
+		DynamicDataSource mutilDataSource = HostRouteConfigResolver.readDataSourceMap.get(new Random().nextInt(65536)%HostRouteConfigResolver.readDataSourceMap.size());
 		LOGGER.info("所选只读数据源为："+mutilDataSource.getName());
 		return mutilDataSource;
 	}

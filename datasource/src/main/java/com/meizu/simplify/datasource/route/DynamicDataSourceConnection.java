@@ -1,4 +1,4 @@
-package com.meizu.simplify.datasource;
+package com.meizu.simplify.datasource.route;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -19,322 +19,346 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * <p><b>Title:</b><i>多数据源连接包装类</i></p>
- * <p>Desc: 使用装饰者模式增强Connection原有方法的功能</p>
+  * <p><b>Title:</b><i>TODO</i></p>
+ * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
- * <p>Create Date:2016年1月29日 下午3:00:39</p>
+ * <p>Create Date:2016年11月11日 下午4:40:22</p>
  * <p>Modified By:luchuangye-</p>
- * <p>Modified Date:2016年1月29日 下午3:00:39</p>
- * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
+ * <p>Modified Date:2016年11月11日 下午4:40:22</p>
+ * @author <a href="mailto:luchuangye@meizu.com" title="邮箱地址">luchuangye</a>
  * @version Version 0.1
  *
  */
-public class MutilDataSourceConnectionWrapper implements Connection{
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MutilDataSourceConnectionWrapper.class);
+public class DynamicDataSourceConnection implements Connection {
 
-	/**
-	 * 真实连接
-	 */
-	private Connection connection;
-	
-	/**
-	 * @param virtualConnection 虚拟连接
-	 */
-	public MutilDataSourceConnectionWrapper(Connection virtualConnection) {
-		try {
-			boolean isAutoCommit = virtualConnection.getAutoCommit();
-			if(isAutoCommit) {
-//			insert
-			} else {
-//			select
-			}
-			this.connection = new HostRouteService().switchHost().value().getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
-		return connection.unwrap(iface);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		return connection.isWrapperFor(iface);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public Statement createStatement() throws SQLException {
-		return connection.createStatement();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		return connection.prepareStatement(sql);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public CallableStatement prepareCall(String sql) throws SQLException {
-		return connection.prepareCall(sql);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public String nativeSQL(String sql) throws SQLException {
-		return connection.nativeSQL(sql);
+		// TODO Auto-generated method stub
+		return null;
 	}
-
+	
+	private boolean autoCommit;
 	@Override
 	public void setAutoCommit(boolean autoCommit) throws SQLException {
-		connection.setAutoCommit(autoCommit);
+		this.autoCommit = autoCommit;
 	}
 
 	@Override
 	public boolean getAutoCommit() throws SQLException {
-		return connection.getAutoCommit();
+		return autoCommit;
 	}
 
 	@Override
 	public void commit() throws SQLException {
-		connection.commit();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void rollback() throws SQLException {
-		connection.rollback();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void close() throws SQLException {
-		connection.close();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public boolean isClosed() throws SQLException {
-		return connection.isClosed();
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public DatabaseMetaData getMetaData() throws SQLException {
-		return connection.getMetaData();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void setReadOnly(boolean readOnly) throws SQLException {
-		connection.setReadOnly(readOnly);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public boolean isReadOnly() throws SQLException {
-		return connection.isReadOnly();
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public void setCatalog(String catalog) throws SQLException {
-		connection.setCatalog(catalog);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public String getCatalog() throws SQLException {
-		return connection.getCatalog();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void setTransactionIsolation(int level) throws SQLException {
-		connection.setTransactionIsolation(level);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public int getTransactionIsolation() throws SQLException {
-		return connection.getTransactionIsolation();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public SQLWarning getWarnings() throws SQLException {
-		return connection.getWarnings();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void clearWarnings() throws SQLException {
-		connection.clearWarnings();
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-		return connection.createStatement(resultSetType, resultSetConcurrency);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
 			throws SQLException {
-		return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-		return connection.prepareCall(sql, resultSetType, resultSetConcurrency);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Map<String, Class<?>> getTypeMap() throws SQLException {
-		return connection.getTypeMap();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void setTypeMap(Map<String, Class<?>> map) throws SQLException {
-		connection.setTypeMap(map);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void setHoldability(int holdability) throws SQLException {
-		connection.setHoldability(holdability);
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public int getHoldability() throws SQLException {
-		return connection.getHoldability();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public Savepoint setSavepoint() throws SQLException {
-		return connection.setSavepoint();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Savepoint setSavepoint(String name) throws SQLException {
-		return connection.setSavepoint(name);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void rollback(Savepoint savepoint) throws SQLException {
-		connection.rollback(savepoint);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void releaseSavepoint(Savepoint savepoint) throws SQLException {
-		connection.releaseSavepoint(savepoint);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
 			throws SQLException {
-		return connection.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
 			int resultSetHoldability) throws SQLException {
-		return connection.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
 			int resultSetHoldability) throws SQLException {
-		return connection.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
-		return connection.prepareStatement(sql, autoGeneratedKeys);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
-		return connection.prepareStatement(sql, columnIndexes);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
-		return connection.prepareStatement(sql, columnNames);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Clob createClob() throws SQLException {
-		return connection.createClob();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Blob createBlob() throws SQLException {
-		return connection.createBlob();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public NClob createNClob() throws SQLException {
-		return connection.createNClob();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public SQLXML createSQLXML() throws SQLException {
-		return connection.createSQLXML();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public boolean isValid(int timeout) throws SQLException {
-		return connection.isValid(timeout);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public void setClientInfo(String name, String value) throws SQLClientInfoException {
-		connection.setClientInfo(name, value);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void setClientInfo(Properties properties) throws SQLClientInfoException {
-		connection.setClientInfo(properties);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public String getClientInfo(String name) throws SQLException {
-		return connection.getClientInfo(name);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Properties getClientInfo() throws SQLException {
-		return connection.getClientInfo();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Array createArrayOf(String typeName, Object[] elements) throws SQLException {
-		return connection.createArrayOf(typeName, elements);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
-		return connection.createStruct(typeName, attributes);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void setSchema(String schema) throws SQLException {
-		connection.setSchema(schema);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public String getSchema() throws SQLException {
-		return connection.getSchema();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void abort(Executor executor) throws SQLException {
-		connection.abort(executor);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-		connection.setNetworkTimeout(executor, milliseconds);		
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public int getNetworkTimeout() throws SQLException {
-		return connection.getNetworkTimeout();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
-

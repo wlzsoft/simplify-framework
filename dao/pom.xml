@@ -55,6 +55,11 @@
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.38</version>
 	 </dependency>
-	 
+	 <dependency>
+		  <groupId>com.meizu</groupId>
+		  <artifactId>test</artifactId>
+		  <version>${parent.version}</version>
+		  <scope>test</scope>
+	  </dependency>
   </dependencies>
 </project>

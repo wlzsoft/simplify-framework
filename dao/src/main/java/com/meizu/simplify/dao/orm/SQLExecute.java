@@ -39,11 +39,11 @@ public class SQLExecute {
 	 * @param param
 	 * @return
 	 */
-	public static Integer executeUpdate(String sql,Object... params) {
+	public static Integer executeUpdate(DataSourceManager dataSourceManager,String sql,Object... params) {
 		if(params == null) {
 			return null;
 		}
-		return executeUpdate(sql,new IDataCallback<Integer>() {
+		return executeUpdate(dataSourceManager,sql,new IDataCallback<Integer>() {
 
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
@@ -60,9 +60,9 @@ public class SQLExecute {
 	 * @param callback
 	 * @return
 	 */
-	public static Integer executeUpdate(String sql,IDataCallback<Integer> callback) {
+	public static Integer executeUpdate(DataSourceManager dataSourceManager,String sql,IDataCallback<Integer> callback) {
 		PreparedStatement prepareStatement = null;
-		Connection conn = DataSourceManager.getConnection();
+		Connection conn = dataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);
@@ -95,9 +95,9 @@ public class SQLExecute {
 	 * @param sql
 	 * @return
 	 */
-	public static Integer executeUpdate(String sql) {
+	public static Integer executeUpdate(DataSourceManager dataSourceManager,String sql) {
 		PreparedStatement prepareStatement = null;
-		Connection conn = DataSourceManager.getConnection();
+		Connection conn = dataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			Integer rs = prepareStatement.executeUpdate();
@@ -179,11 +179,11 @@ public class SQLExecute {
      *  另外，批处理的数据不是越大越好，因为可能会内存溢出，同时网络传输的过程中也是会进行拆包传输的，由于网络环境这个包的大小是不一定的，有时候打包的效率不一定就会高，这个和数据库的类型，版本都有关系的，所以我们在实践的过程中需要检验的。
 	 *  <br>
 	 */
-	public static void executeBatch(IDataCallback<Integer> callback,String... sqlArr){
+	public static void executeBatch(DataSourceManager dataSourceManager,IDataCallback<Integer> callback,String... sqlArr){
 		Connection conn = null;
 		PreparedStatement prepareStatement = null;
 		try{
-			conn = DataSourceManager.getConnection();
+			conn = dataSourceManager.getConnection();
 			if(sqlArr == null) {
 				throw new UncheckedException("sql语句为空");
 			}
@@ -226,9 +226,9 @@ public class SQLExecute {
 	 * @param callback
 	 * @return
 	 */
-	public static Integer executeInsert(String sql,IDataCallback<Integer> callback,Object... params) {
+	public static Integer executeInsert(DataSourceManager dataSourceManager,String sql,IDataCallback<Integer> callback,Object... params) {
 		PreparedStatement prepareStatement = null;
-		Connection conn = DataSourceManager.getConnection();
+		Connection conn = dataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 			callback.paramCall(prepareStatement,params);
@@ -294,11 +294,11 @@ public class SQLExecute {
 	 * @param clazz 如果类型不支持，那么值为空，那么变量b直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
 	 * @return
 	 */
-	public static <B> List<B> executeQuery(String sql,IDataCallback<B> callback,Class<B> clazz) {
+	public static <B> List<B> executeQuery(DataSourceManager dataSourceManager,String sql,IDataCallback<B> callback,Class<B> clazz) {
 		List<B> bList= new ArrayList<B>();
 		PreparedStatement prepareStatement = null;
 		ResultSet rs = null;
-		Connection conn = DataSourceManager.getConnection();
+		Connection conn = dataSourceManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);

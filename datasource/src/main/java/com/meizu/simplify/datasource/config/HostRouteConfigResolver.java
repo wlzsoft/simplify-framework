@@ -3,7 +3,6 @@ package com.meizu.simplify.datasource.config;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,13 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
-import com.meizu.simplify.datasource.HostRouteService;
-import com.meizu.simplify.datasource.MutilDataSource;
-import com.meizu.simplify.datasource.MutilDataSourceConnection;
-import com.meizu.simplify.datasource.MutilDataSourceConnectionWrapper;
 import com.meizu.simplify.datasource.config.pojo.HostSwitch;
 import com.meizu.simplify.datasource.config.pojo.MasterHost;
 import com.meizu.simplify.datasource.config.pojo.SlaveHost;
+import com.meizu.simplify.datasource.route.DynamicDataSource;
+import com.meizu.simplify.datasource.route.HostRouteService;
 import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
@@ -41,8 +38,8 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 @Init(InitTypeEnum.DATASOURCE)
 public class HostRouteConfigResolver  implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(HostRouteService.class);
-	public static final ConcurrentMap<Integer, MutilDataSource> readDataSourceMap = new ConcurrentHashMap<>();
-	public static MutilDataSource writeDataSource = null;
+	public static final ConcurrentMap<Integer, DynamicDataSource> readDataSourceMap = new ConcurrentHashMap<>();
+	public static DynamicDataSource writeDataSource = null;
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		Yaml yaml = new Yaml();
@@ -70,7 +67,7 @@ public class HostRouteConfigResolver  implements IAnnotationResolver<Class<?>>{
 			properties.setProperty("url", masterHost.getUrl());
 			properties.setProperty("username", masterHost.getUserName());
 			properties.setProperty("password", masterHost.getPassword());
-			MutilDataSource mutilDataSource = new MutilDataSource(properties);
+			DynamicDataSource mutilDataSource = new DynamicDataSource(properties);
 			mutilDataSource.setName(masterHost.getName());
 			mutilDataSource.setType(0);
 			writeDataSource = mutilDataSource;
@@ -81,7 +78,7 @@ public class HostRouteConfigResolver  implements IAnnotationResolver<Class<?>>{
 				slaveProperties.setProperty("url", slaveHost.getUrl());
 				slaveProperties.setProperty("username", slaveHost.getUserName());
 				slaveProperties.setProperty("password", slaveHost.getPassword());
-				MutilDataSource slaveMutilDataSource = new MutilDataSource(slaveProperties);
+				DynamicDataSource slaveMutilDataSource = new DynamicDataSource(slaveProperties);
 				slaveMutilDataSource.setName(slaveHost.getName());
 				slaveMutilDataSource.setType(1);
 				readDataSourceMap.put(readDataSourceIndex++, slaveMutilDataSource);

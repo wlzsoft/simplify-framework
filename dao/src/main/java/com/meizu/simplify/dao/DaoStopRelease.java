@@ -3,6 +3,7 @@ package com.meizu.simplify.dao;
 import com.meizu.simplify.dao.datasource.DataSourceManager;
 import com.meizu.simplify.ioc.IStopRelease;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -20,9 +21,12 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean
 public class DaoStopRelease implements IStopRelease{
 
+	@Resource
+	private DataSourceManager dataSourceManager;
+	
 	@Override
 	public void release() {
-		DataSourceManager.close();
+		dataSourceManager.close();
 	}
 
 }
