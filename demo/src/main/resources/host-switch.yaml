@@ -1,0 +1,9 @@
+!!com.meizu.simplify.datasource.config.pojo.HostSwitch
+masterHostList:
+- name: master1
+  password: '123456'
+  slaveHostList:
+  - {name: slave1, password: '', url: 'jdbc:mysql://localhost:8087/db1?useUnicode=true&characterEncoding=UTF-8&useCompression=true&characterSetResults=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull', userName: root}
+  url: 'jdbc:mysql://localhost:3306/db1?useUnicode=true&characterEncoding=UTF-8&useCompression=true&characterSetResults=utf8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull'
+  userName: root
+name: host1
