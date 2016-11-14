@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu</groupId>
+    <groupId>com.meizu.simplify</groupId>
     <artifactId>view-plugins</artifactId>
     <version>${simplify.version}</version>
   </parent>
@@ -9,12 +9,12 @@
   <name>现代模版引擎velocity集成view插件</name>
   <dependencies>
   	<dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>template-velocity</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>view-api</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>

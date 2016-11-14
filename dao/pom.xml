@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu</groupId>
+    <groupId>com.meizu.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
     <version>${simplify.version}</version>
   </parent>
@@ -14,33 +14,33 @@
   </properties>
   <dependencies>
   	<dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>ioc</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>config</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>aop</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>entity</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
 	  <!-- 以下4个jar后续要考虑如何删除，不应该出现在dao模块中，开发阶段为了测试，所以加上 -->
 	  <dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>template</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
 	  <dependency>
-		  <groupId>com.meizu</groupId>
+		  <groupId>com.meizu.simplify</groupId>
 		  <artifactId>template-beetl</artifactId>
 		  <version>${parent.version}</version>
 	  </dependency>
@@ -56,7 +56,7 @@
 		<version>5.1.38</version>
 	 </dependency>
 	 <dependency>
-		  <groupId>com.meizu</groupId>
+		  <groupId>com.meizu.simplify</groupId>
 		  <artifactId>test</artifactId>
 		  <version>${parent.version}</version>
 		  <scope>test</scope>

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.meizu</groupId>
+  <groupId>com.meizu.simplify</groupId>
   <artifactId>demo</artifactId>
   <packaging>war</packaging>
   <version>1.2.1-SNAPSHOT</version>
@@ -54,48 +54,48 @@
 	</pluginRepositories> 
   <dependencies>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>mvc</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>cache-redis</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>webcache</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>aop</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>dao</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>datasource</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>listener</artifactId>
 		<version>${project.version}</version>
 	</dependency>
 	<!-- 非javaagent模式启用aop功能 -->
 	<!-- <dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>weaving-plugins</artifactId>
 		<version>${project.version}</version>
 	</dependency> -->
 	<dependency>
-		<groupId>com.meizu</groupId>
+		<groupId>com.meizu.simplify</groupId>
 		<artifactId>webserver</artifactId>
 		<version>${project.version}</version>
 	</dependency>
@@ -291,7 +291,7 @@
 	          <configuration>
 	            <artifactItems>
 	              <artifactItem>
-	                <groupId>com.meizu</groupId>
+	                <groupId>com.meizu.simplify</groupId>
 	                <artifactId>aop</artifactId>
 	                <version>${project.version}</version>
 	                <outputDirectory>${project.build.directory}</outputDirectory>
