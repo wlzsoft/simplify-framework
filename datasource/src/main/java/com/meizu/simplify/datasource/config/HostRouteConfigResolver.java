@@ -43,7 +43,7 @@ public class HostRouteConfigResolver  implements IAnnotationResolver<Class<?>>{
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		Yaml yaml = new Yaml();
-        URL url = HostRouteConfigResolverForYamlTest.class.getClassLoader().getResource("host-switch.yaml");
+        URL url = HostRouteConfigResolver.class.getClassLoader().getResource("host-switch.yaml");
         if (url == null) {
         	throw new StartupErrorException("无法加载host-switch.yaml文件，文件不存在");
         }

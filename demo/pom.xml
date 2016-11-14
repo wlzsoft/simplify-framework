@@ -80,6 +80,11 @@
 	</dependency>
 	<dependency>
 		<groupId>com.meizu</groupId>
+		<artifactId>datasource</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.meizu</groupId>
 		<artifactId>listener</artifactId>
 		<version>${project.version}</version>
 	</dependency>
