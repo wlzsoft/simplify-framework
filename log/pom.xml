@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>${simplify.version}</version>
+  </parent>
+  <artifactId>log</artifactId>
+  <name>日志模块</name>
+  <description>1.封装基于slf4j和common-log等日志框架的功能，提供统一入口</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
+   <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>ioc</artifactId>
+	    <version>${parent.version}</version>
+	  </dependency>
+	  <dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+	  </dependency>
+  </dependencies>
+</project>

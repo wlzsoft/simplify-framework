@@ -1,0 +1,5 @@
+
+description = '日志模块'
+dependencies {
+	compile project(':ioc')
+}
