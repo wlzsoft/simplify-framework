@@ -13,7 +13,7 @@ import com.meizu.simplify.dao.datasource.DataSourceFactory;
 import com.meizu.simplify.dao.datasource.IDataSource;
 
 /**
- * <p><b>Title:</b><i>多数据源实现</i></p>
+ * <p><b>Title:</b><i>动态数据源</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>

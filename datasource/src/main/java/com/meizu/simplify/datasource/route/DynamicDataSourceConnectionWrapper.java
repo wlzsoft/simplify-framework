@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p><b>Title:</b><i>多数据源连接包装类</i></p>
+ * <p><b>Title:</b><i>动态数据源连接包装类</i></p>
  * <p>Desc: 使用装饰者模式增强Connection原有方法的功能</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
