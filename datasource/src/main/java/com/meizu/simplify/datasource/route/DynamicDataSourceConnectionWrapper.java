@@ -47,17 +47,10 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	/**
 	 * @param virtualConnection 虚拟连接
 	 */
-	public DynamicDataSourceConnectionWrapper(Connection virtualConnection) {
+	public DynamicDataSourceConnectionWrapper() {
 		try {
-			boolean isAutoCommit = virtualConnection.getAutoCommit();
-			if(isAutoCommit) {
-//			insert
-			} else {
-//			select
-			}
-			this.connection = new HostRouteService().switchHost().value().getConnection();
+			this.connection = HostRouteService.switchHost().value().getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -79,6 +72,12 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 
 	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
+		boolean isAutoCommit = connection.getAutoCommit();
+		if(isAutoCommit) {
+//		insert
+		} else {
+//		select
+		}
 		return connection.prepareStatement(sql);
 	}
 
