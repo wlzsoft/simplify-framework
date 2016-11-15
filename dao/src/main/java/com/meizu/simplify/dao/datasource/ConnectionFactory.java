@@ -35,6 +35,7 @@ public class ConnectionFactory {
 	 * 
 	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
 	 * 操作步骤: TODO<br>
+	 * @param dataSource
 	 */
 	public static Connection getConnection(javax.sql.DataSource dataSource)   {
 		Connection connection = container.get();
@@ -65,8 +66,57 @@ public class ConnectionFactory {
 	
 	/**
 	 * 
+	 * 方法用途: 设置事务隔离级别<br>
+	 * 操作步骤: TODO<br>
+	 * @param dataSource
+	 * @param iso 事务隔离级别 可选择值为 java.sql.Connection.TRANSACTION_READ_UNCOMMITTED 等
+	 * @return
+	 */
+	public static int setTransactionISO(javax.sql.DataSource dataSource,int iso) {
+		return setTransactionISO(getConnection(dataSource), iso);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 设置事务隔离级别<br>
+	 * 操作步骤: TODO<br>
+	 * @param connection
+	 * @param iso 事务隔离级别 可选择值为 java.sql.Connection.TRANSACTION_READ_UNCOMMITTED 等
+	 * @return 返回设置之前的事务隔离级别，用于还原回设置之前的上一个事务隔离级别
+	 */
+	public static int setTransactionISO(Connection connection,int iso) {
+		Integer transactionISO = null;
+		if(connection!=null) {
+			try {
+				transactionISO = connection.getTransactionIsolation();
+				connection.setTransactionIsolation(iso);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return transactionISO;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取当前线程上的连接并开启事务，同时设置事务的隔离级别<br>
+	 * 操作步骤: TODO<br>
+	 * @param dataSource
+	 * @param iso
+	 * @return 返回设置之前的隔离级别
+	 */
+	public static int startTransaction(javax.sql.DataSource dataSource,int iso) {
+		Connection connection = getConnection(dataSource);
+		iso = setTransactionISO(connection, iso);
+		startTransaction(connection);
+		return iso;
+	}
+	
+	/**
+	 * 
 	 * 方法用途: 获取当前线程上的连接并开启事务<br>
 	 * 操作步骤: TODO<br>
+	 * @param dataSource
 	 */
 	public static void startTransaction(javax.sql.DataSource dataSource) {
 		Connection connection = getConnection(dataSource);
@@ -77,6 +127,7 @@ public class ConnectionFactory {
 	 * 
 	 * 方法用途: 开启事务<br>
 	 * 操作步骤: TODO<br>
+	 * @param connection
 	 */
 	public static void startTransaction(Connection connection) {
 		try {
@@ -100,6 +151,7 @@ public class ConnectionFactory {
 	 * 
 	 * 方法用途: 提交事务<br>
 	 * 操作步骤: TODO<br>
+	 * @param transactionISO
 	 */
 	public static void commit(Integer transactionISO) {
 		try {
@@ -136,6 +188,7 @@ public class ConnectionFactory {
 	 * 
 	 * 方法用途: 回滚事务<br>
 	 * 操作步骤: TODO<br>
+	 * @param transactionISO
 	 */
 	public static void rollback(Integer transactionISO) {
 		try {

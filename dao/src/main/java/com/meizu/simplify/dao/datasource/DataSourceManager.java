@@ -50,6 +50,28 @@ public class DataSourceManager {
 	
 	/**
 	 * 
+	 * 方法用途: 设置事务隔离级别<br>
+	 * 操作步骤: TODO<br>
+	 * @param iso
+	 * @return
+	 */
+	public int setTransactionISO(int iso) {
+		return ConnectionFactory.setTransactionISO(dataSource.value(), iso);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取当前线程上的连接并开启事务<br>
+	 * 操作步骤: TODO<br>
+	 * @param iso
+	 * @return 设置之前的隔离级别
+	 */
+	public  int startTransaction(int iso) {
+		return ConnectionFactory.startTransaction(dataSource.value(),iso);
+	}
+	
+	/**
+	 * 
 	 * 方法用途: 获取当前线程上的连接并开启事务<br>
 	 * 操作步骤: TODO<br>
 	 */

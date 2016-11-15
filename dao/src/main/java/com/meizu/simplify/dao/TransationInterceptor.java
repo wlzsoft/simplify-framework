@@ -71,13 +71,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
 				//设置隔离级别start
 				if(oldTransactionISO!=-1) {
-					if(connection!=null) {
-						try {
-							connection.setTransactionIsolation(transation.ISO().getValue());
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-					}
+					ConnectionFactory.setTransactionISO(connection, transation.ISO().getValue());
 					context.getCallback().setTemp(oldTransactionISO);
 				}
 				if(LOGGER.isDebugEnabled()) {
