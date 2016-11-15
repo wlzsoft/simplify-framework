@@ -2,6 +2,7 @@ package com.meizu.simplify.utils;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -427,6 +428,27 @@ public class ClassUtil {
 			}
 		}
 		return resultMethodList;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 查找指定class的属性中上标注有指定注解的属性<br>
+	 * 操作步骤: TODO<br>
+	 * @param annoClass
+	 * @param beanClass
+	 * @return
+	 * 注： 这个方法和 findMethodByAnnotation 的代码极其相似，是否合并，后续考虑 TODO
+	 */
+	public static <T extends Annotation> List<Field> findDeclaredFieldByAnnotation(Class<T> annoClass,Class<?> beanClass) {
+		Field[] fieldArr = beanClass.getDeclaredFields();
+		List<Field> resultFieldList = new ArrayList<>();
+		for (Field field : fieldArr) {
+			T ib = field.getAnnotation(annoClass);
+			if(ib != null) {
+				resultFieldList.add(field);
+			}
+		}
+		return resultFieldList;
 	}
 
 }
