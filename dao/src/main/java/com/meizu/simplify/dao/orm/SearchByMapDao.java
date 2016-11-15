@@ -9,7 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.datasource.DataSourceManager;
+import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -34,11 +34,11 @@ public class SearchByMapDao {
 	private static final Logger logger = LoggerFactory.getLogger(SearchByMapDao.class);
 	
 	@Resource
-	private DataSourceManager dataSourceManager;
+	private ConnectionManager connectionManager;
 	
 	public Integer count(String sql,Object... params) {
 		logger.info(sql);//后续不在这里处理sql日志 TODO
-		List<Integer> list = SQLExecute.executeQuery(dataSourceManager,sql, new IDataCallback<Integer>() {
+		List<Integer> list = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return IDataCallback.super.paramCall(prepareStatement,params);
@@ -57,7 +57,7 @@ public class SearchByMapDao {
 	
 	public List<Map<String,Object>> find(String sql,Object... params) {
 		logger.info(sql);
-		List<Map<String,Object>> tList = SQLExecute.executeQuery(dataSourceManager,sql, new IDataCallback<Map<String,Object>>() {
+		List<Map<String,Object>> tList = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<Map<String,Object>>() {
 			@Override
 			public Map<String,Object> paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return IDataCallback.super.paramCall(prepareStatement,params);
@@ -76,7 +76,7 @@ public class SearchByMapDao {
 	
 	public Integer executeUpdate(String sql,Object... params) {
 		logger.info(sql);
-		return SQLExecute.executeUpdate(dataSourceManager,sql, params);
+		return SQLExecute.executeUpdate(connectionManager,sql, params);
 	}
 
 	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,boolean isReturnLastPage,Object... params) {

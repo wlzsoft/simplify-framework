@@ -26,7 +26,7 @@ public class DaoStopRelease implements IStopRelease{
 	
 	@Override
 	public void release() {
-		dataSourceManager.close();
+		dataSourceManager.closeDataSource();
 	}
 
 }

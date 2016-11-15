@@ -1,7 +1,5 @@
 package com.meizu.simplify.dao.datasource;
 
-import java.sql.Connection;
-
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
@@ -38,48 +36,7 @@ public class DataSourceManager {
 		
 	}
 	
-	/**
-	 * 
-	 * 方法用途: 获取当前线程上的连接,如果不存在，创建连接，并从连接池返回<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public  Connection getConnection()   {
-		Connection connection = ConnectionFactory.getConnection(dataSource.value());
-		return connection;
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 设置事务隔离级别<br>
-	 * 操作步骤: TODO<br>
-	 * @param iso
-	 * @return
-	 */
-	public int setTransactionISO(int iso) {
-		return ConnectionFactory.setTransactionISO(dataSource.value(), iso);
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 获取当前线程上的连接并开启事务<br>
-	 * 操作步骤: TODO<br>
-	 * @param iso
-	 * @return 设置之前的隔离级别
-	 */
-	public  int startTransaction(int iso) {
-		return ConnectionFactory.startTransaction(dataSource.value(),iso);
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 获取当前线程上的连接并开启事务<br>
-	 * 操作步骤: TODO<br>
-	 */
-	public  void startTransaction() {
-		ConnectionFactory.startTransaction(dataSource.value());
-	}
-	
-	public  void close() {
+	public void closeDataSource() {
 		dataSource.close();
 	}
 }

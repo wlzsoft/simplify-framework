@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Query;
-import com.meizu.simplify.dao.datasource.DataSourceManager;
+import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.dao.exception.BaseDaoException;
@@ -83,7 +83,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private ISqlMethodSelector selector;
 	
 	@Resource
-	private DataSourceManager dataSourceManager;
+	private ConnectionManager connectionManager;
 	
 	/**
 	 * @param clazz  业务实体类
@@ -255,7 +255,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//--------------------------------保存操作-----------------------------------------------------------
 	
 	private Integer preSave(String sql,List<T> tList) {
-		Integer key = SQLExecute.executeInsert(dataSourceManager,sql, new IDataCallback<Integer>() {
+		Integer key = SQLExecute.executeInsert(connectionManager,sql, new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement, Object... params) throws SQLException {
 				List<String> cList = null;
@@ -401,7 +401,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		String sql = sqlBuilder.update(t, currentColumnFieldNames,whereColumn,isAllField);
 		logger.info(sql);
-		return SQLExecute.executeUpdate(dataSourceManager,sql,new IDataCallback<Integer>() {
+		return SQLExecute.executeUpdate(connectionManager,sql,new IDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				List<String> cList = sqlBuilder.getOtherIdColumns();
@@ -442,7 +442,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public Integer remove(PK id) {
-		return SQLExecute.executeUpdate(dataSourceManager,sqlBuilder.removeById(),id);
+		return SQLExecute.executeUpdate(connectionManager,sqlBuilder.removeById(),id);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -456,7 +456,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Override
 	public Integer remove(String name, Object value) {
-		Integer count = SQLExecute.executeUpdate(dataSourceManager,sqlBuilder.remove(name),value);
+		Integer count = SQLExecute.executeUpdate(connectionManager,sqlBuilder.remove(name),value);
 		return count;
 	}
 	
@@ -482,13 +482,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		for (int  i = 0; i < ids.size(); i++) {
 			temp.add(ids.get(i));
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				resultcount += SQLExecute.executeUpdate(dataSourceManager,sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+				resultcount += SQLExecute.executeUpdate(connectionManager,sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 				flushStatements();
 				temp = new ArrayList<PK>();
 			}
 		}
 		if(temp.size()>0) {
-			resultcount += SQLExecute.executeUpdate(dataSourceManager,sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
+			resultcount += SQLExecute.executeUpdate(connectionManager,sqlBuilder.removeOfBatch(temp.size()), temp.toArray());
 		}
 		return resultcount;
 	}
@@ -499,7 +499,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	public List<T> find(String sql,Object... params) {
 		logger.info(sql);
-		List<T> tList = SQLExecute.executeQuery(dataSourceManager,sql, new IDataCallback<T>() {
+		List<T> tList = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<T>() {
 			@Override
 			public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return IDataCallback.super.paramCall(prepareStatement,params);
@@ -910,7 +910,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//------------------------------------DDL语句的实现--------------------------------------
 	public int createTable(Class<T> t) {
 		String sql = sqlBuilder.createTable();
-		return SQLExecute.executeUpdate(dataSourceManager,"create table if not exists "+t.getAnnotation(Table.class).name()+" ("+sql+") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+		return SQLExecute.executeUpdate(connectionManager,"create table if not exists "+t.getAnnotation(Table.class).name()+" ("+sql+") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 	}
 	//--------------------------------未处理和实现的功能-----------------------------------------------------------
 	

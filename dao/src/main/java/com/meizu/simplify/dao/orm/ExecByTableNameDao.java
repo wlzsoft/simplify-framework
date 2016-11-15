@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Query;
-import com.meizu.simplify.dao.datasource.DataSourceManager;
+import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 /**
@@ -30,7 +30,7 @@ public class ExecByTableNameDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExecByTableNameDao.class);
 	
 	@Resource
-	private DataSourceManager dataSourceManager;
+	private ConnectionManager connectionManager;
 	
 	/**
 	 * 方法用途: 忽略的字段<br>
@@ -68,7 +68,7 @@ public class ExecByTableNameDao {
 			}
 		}
 		String sql = preCreate(tableName,sqlBuilder.toString(),columns.length/2);
-		Integer key = SQLExecute.executeInsert(dataSourceManager,sql, new IDataCallback<Integer>() {},params.toArray());
+		Integer key = SQLExecute.executeInsert(connectionManager,sql, new IDataCallback<Integer>() {},params.toArray());
 		return key;
 	}
 	
@@ -105,7 +105,7 @@ public class ExecByTableNameDao {
 	 * @return
 	 */
 	public Integer remove(String tableName,String columnName,Object... values) {
-		return SQLExecute.executeUpdate(dataSourceManager,removeOfBatch(tableName,columnName,values.length), values);
+		return SQLExecute.executeUpdate(connectionManager,removeOfBatch(tableName,columnName,values.length), values);
 	}
 	
 	/**

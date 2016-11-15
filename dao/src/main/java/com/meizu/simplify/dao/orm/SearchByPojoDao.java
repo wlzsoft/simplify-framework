@@ -7,7 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.datasource.DataSourceManager;
+import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -37,7 +37,7 @@ public class SearchByPojoDao {
 	private ISqlMethodSelector selector;
 	
 	@Resource
-	private DataSourceManager dataSourceManager;
+	private ConnectionManager connectionManager;
 	
 	/**
 	 * 
@@ -50,7 +50,7 @@ public class SearchByPojoDao {
 	 */
 	public <T> List<T> find(Class<T> entityClass,String sql,Object... params) {
 		LOGGER.info(sql);
-		List<T> tList = SQLExecute.executeQuery(dataSourceManager,sql, new IDataCallback<T>() {
+		List<T> tList = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<T>() {
 			@Override
 			public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return IDataCallback.super.paramCall(prepareStatement,params);
