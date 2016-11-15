@@ -13,6 +13,8 @@ import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.log.Logger;
 
 @Bean
 public class TestService {
@@ -20,6 +22,10 @@ public class TestService {
 	private Boolean debug;
 	@Config
 	private boolean unicodeTranscoding = false;
+	
+	@Resource//(name="com.meizu.demo.mvc.service.TestServiceLog")
+	private Logger logger;
+	
 	@CacheDataAdd(key="aaa")
     public Object doSomeThing() {
         System.out.println("2test2d测试");
@@ -56,6 +62,9 @@ public class TestService {
 //	@CacheDataSearch(key="bbbt")
 	@CacheDataAdd(key="bbb")
 	public Test addTest(Test test) {
+		if(logger != null) {
+			logger.info("测试日志输出2");
+		}
         test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
         	System.out.println("ִnull测试2:");

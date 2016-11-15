@@ -16,8 +16,10 @@ import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.DefaultBean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.annotation.IocHook;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
+import com.meizu.simplify.ioc.hook.IIocHook;
 import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.ObjectUtil;
 
@@ -66,6 +68,7 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 			beanClass = parentClass;
 		}
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 为指定Resource的注解指定属性注入对象<br>
@@ -83,29 +86,44 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    		resourceName = "";
 		    	}
 		    	
-		    	
 		    	Class<?> iocType = field.getType();
 		    	String message = "依赖注入属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
 		    	if(!resourceName.trim().equals("")) {
 		    		message+="==>>注入多例中的["+resourceName+"]实例";
 		    	}
 		    	Object iocBean = null;
-		    	if(iocType.isInterface()||Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
-		    		List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,BeanAnnotationResolver.getClasspaths());
-		    		int clazzSize = clazzList.size();
-		    		if(clazzSize>1) {
-		    			DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
-		    			if(defaultBean == null) {
-		    				throw new UncheckedException("接口："+iocType.getName()+"不允许有多个实现类，如果需要多个实现类并存，请使用@DefaultBean注解");
-		    			}
-		    			iocType = getDefaultBean(iocType,defaultBean);
-		    		} else if(clazzSize<1) {
-		    			LOGGER.debug("接口："+iocType.getName()+"无实现类，无法注入bean");
-		    			//throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
-		    		} else {
-		    			iocType = clazzList.get(0);
-		    		}
-		    	}
+		    	Class<?> hookClazz = getIocHook(iocType);
+	    		if(hookClazz!= null) {//定义钩子执行
+					try {
+						Object hookObj = hookClazz.newInstance();
+						resourceName  = ((IIocHook)hookObj).hook(beanClass);
+						if (null == resourceName) {
+							LOGGER.error(beanClass.getName()+"依赖注入类型["+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]返回空，注入失败");
+							continue;
+						}
+					} catch (InstantiationException | IllegalAccessException e) {
+						e.printStackTrace();
+						continue;
+					}
+	    		} else {//正常注入流程执行
+	    			if(iocType.isInterface()||Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
+	    				List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,BeanAnnotationResolver.getClasspaths());
+	    				int clazzSize = clazzList.size();
+	    				if(clazzSize>1) {
+	    					DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
+	    					if(defaultBean == null) {
+	    						throw new UncheckedException("接口："+iocType.getName()+"不允许有多个实现类，如果需要多个实现类并存，请使用@DefaultBean注解");
+	    					}
+	    					iocType = getDefaultBean(iocType,defaultBean);
+	    				} else if(clazzSize<1) {
+	    					LOGGER.debug("接口："+iocType.getName()+"无实现类，无法注入bean");
+	    					//throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
+	    				} else {
+	    					iocType = clazzList.get(0);
+	    				}
+	    				
+	    			}
+	    		}
 		    	if(!resourceName.trim().equals("")) {
 		    		iocBean = BeanFactory.getBean(resourceName);
 		    	} else {
@@ -124,6 +142,25 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    }
 		}
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 依赖注入处理hook<br>
+	 * 操作步骤: TODO 待处理 和 BeanAnnotationResolver.getSingleHook方法重复，可复用这个代码<br>
+	 * @param clazz
+	 */
+	private static Class<?> getIocHook(Class<?> clazz) {
+		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(IocHook.class, BeanAnnotationResolver.getClasspaths());
+		for (Class<?> hookClazz : hookList) {
+			IocHook hookIocAnno = hookClazz.getAnnotation(IocHook.class);
+			Class<?> hookIocClass = hookIocAnno.value();
+			if(hookIocClass.equals(clazz)) {
+				return hookClazz;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * 
 	 * 方法用途: 获取默认bean类型<br>
