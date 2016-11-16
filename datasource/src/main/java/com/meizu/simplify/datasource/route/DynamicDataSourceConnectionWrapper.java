@@ -141,7 +141,7 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 		} else {
 			dataSource = HostRouteConfigResolver.writeDataSource;
 		}
-		dataSource.print();
+//		dataSource.print();
 		//结束路由选择
 		//连接获取和设置相关条件
 		this.connection = dataSource.value().getConnection();

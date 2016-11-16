@@ -1,6 +1,26 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.dao.hook;
+
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.meizu.simplify.dao.exception.BaseDaoException;
+import com.meizu.simplify.dao.orm.Dao;
+import com.meizu.simplify.entity.IdEntity;
+import com.meizu.simplify.entity.annotations.Entity;
+import com.meizu.simplify.ioc.BeanEntity;
+import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
+import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
+import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.CollectionUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 /**
-  * <p><b>Title:</b><i>dao多例工厂钩子函数</i></p>
+ * <p><b>Title:</b><i>dao多例工厂钩子函数</i></p>
  * <p>Desc: 用于生成dao实例，以entity类型为唯一实例，进行初始化</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -12,26 +32,6 @@ package com.meizu.simplify.dao.orm;
  * @version Version 0.1
  *
  */
-
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.meizu.simplify.dao.exception.BaseDaoException;
-import com.meizu.simplify.entity.IdEntity;
-import com.meizu.simplify.entity.annotations.Entity;
-import com.meizu.simplify.ioc.BeanEntity;
-import com.meizu.simplify.ioc.annotation.BeanPrototypeHook;
-import com.meizu.simplify.ioc.hook.IBeanPrototypeHook;
-import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
-import com.meizu.simplify.utils.ClassUtil;
-import com.meizu.simplify.utils.CollectionUtil;
-import com.meizu.simplify.utils.ReflectionUtil;
-
 @BeanPrototypeHook(Dao.class)
 public class DaoPrototypeHook implements IBeanPrototypeHook<Dao<IdEntity<Serializable,Integer>, Serializable>> {
 

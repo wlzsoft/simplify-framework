@@ -10,6 +10,7 @@ import com.meizu.simplify.config.PropertiesConfig;
 import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.dao.annotations.Transation;
 import com.meizu.simplify.dao.orm.BaseDao;
+import com.meizu.simplify.dao.orm.Dao;
 import com.meizu.simplify.dao.template.SqlTemplateFactory;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -25,6 +26,9 @@ public class TestService {
 	
 	@Resource//(name="com.meizu.demo.mvc.service.TestServiceLog")
 	private Logger logger;
+	
+	@Resource
+	private Dao<Test,Integer> dao;
 	
 	@CacheDataAdd(key="aaa")
     public Object doSomeThing() {
@@ -65,6 +69,10 @@ public class TestService {
 		if(logger != null) {
 			logger.info("测试日志输出2");
 		}
+		test = dao.findById(1);
+		if(test != null) {
+	       	System.out.println("ִdao属性方式注入测试2:"+test.getName());
+        }
         test = BaseDao.getIns(Test.class).findById(1);
         if(test == null) {
         	System.out.println("ִnull测试2:");

@@ -96,7 +96,7 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	    		if(hookClazz!= null) {//定义钩子执行
 					try {
 						Object hookObj = hookClazz.newInstance();
-						resourceName  = ((IIocHook)hookObj).hook(beanClass);
+						resourceName  = ((IIocHook)hookObj).hook(beanClass,field);
 						if (null == resourceName) {
 							LOGGER.error(beanClass.getName()+"依赖注入类型["+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]返回空，注入失败");
 							continue;

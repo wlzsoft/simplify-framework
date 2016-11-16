@@ -1,10 +1,12 @@
 package com.meizu.simplify.log.hook;
 
+import java.lang.reflect.Field;
+
 import com.meizu.simplify.ioc.annotation.IocHook;
 import com.meizu.simplify.ioc.hook.IIocHook;
 import com.meizu.simplify.log.Logger;
 /**
- * <p>clientBean注解解析</p>
+ * <p>Logger类型属性依赖注入钩子处理类</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2016</p>
  * <p>Company:meizu</p>
@@ -19,7 +21,7 @@ import com.meizu.simplify.log.Logger;
 public class LogIocHook implements IIocHook{
 	
 	@Override
-	public String hook(Class<?> clazz){
+	public String hook(Class<?> clazz,Field field){
 		return clazz.getName()+"Log";
 	}
 }
