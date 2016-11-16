@@ -61,5 +61,10 @@ public class HostRouteServiceTest {
 				e.printStackTrace();
 			}
 		}
+		try {
+			
+		} catch(Throwable e) {
+			e.printStackTrace();
+		}
 	}
 }

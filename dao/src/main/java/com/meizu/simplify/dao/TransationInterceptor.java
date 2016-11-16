@@ -70,8 +70,8 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 			//明确指定可用隔离级别，并且设置的隔离级别和当前的隔离级别不同，才会设置
 			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
 				//设置隔离级别start
+				ConnectionFactory.setTransactionISO(connection, transation.ISO().getValue());
 				if(oldTransactionISO!=-1) {
-					ConnectionFactory.setTransactionISO(connection, transation.ISO().getValue());
 					context.getCallback().setTemp(oldTransactionISO);
 				}
 				if(LOGGER.isDebugEnabled()) {
@@ -102,6 +102,11 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		if(anno.annotationType().equals(Transation.class)) {
 			Transation transation = (Transation)anno;
 			Integer oldTransactionISO = context.getCallback().getTemp();
+			/*//针对多数据源和动态数据源的兼容处理，后续考虑如何兼容多数据源
+			if(oldTransactionISO == null) {
+				DynamicDataSourceConnectionWrapper connection = (DynamicDataSourceConnectionWrapper)connectionManager.getConnection();
+				oldTransactionISO = connection.getOldIso();
+			}*/
 			if(transation.ISO() != ISOEnum.TRANSACTION_NONE && transation.ISO().getValue() != oldTransactionISO) {
 				ConnectionFactory.commit(oldTransactionISO);
 				if(LOGGER.isDebugEnabled()) {
@@ -154,6 +159,11 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 		Integer oldTransactionISO = null;
 		if(context.getCallback()!=null) {
 			oldTransactionISO = context.getCallback().getTemp();
+			/*//针对多数据源和动态数据源的兼容处理，后续考虑如何兼容多数据源
+			if(oldTransactionISO == null) {
+				DynamicDataSourceConnectionWrapper connection = (DynamicDataSourceConnectionWrapper)connectionManager.getConnection();
+				oldTransactionISO = connection.getOldIso();
+			}*/
 		}
 		return transationRollbackResolver(context.getMethodFullName(),oldTransactionISO);
 	}

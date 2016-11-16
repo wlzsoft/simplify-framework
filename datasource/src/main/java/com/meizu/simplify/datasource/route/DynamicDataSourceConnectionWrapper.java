@@ -22,6 +22,8 @@ import java.util.concurrent.Executor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.dao.exception.BaseDaoException;
+
 /**
  * <p><b>Title:</b><i>动态数据源连接包装类</i></p>
  * <p>Desc: 使用装饰者模式增强Connection原有方法的功能</p>
@@ -38,7 +40,22 @@ import org.slf4j.LoggerFactory;
 public class DynamicDataSourceConnectionWrapper implements Connection{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DynamicDataSourceConnectionWrapper.class);
+	
+	/**
+	 * 是否自动提交事务
+	 */
 	private boolean isAutoCommit = true;
+	
+	/**
+	 * 当前隔离级别
+	 */
+	private int iso = -1;
+	
+	/**
+	 * 设置之前的隔离级别 
+	 */
+	private int oldIso = -1;
+	
 	/**
 	 * 真实连接
 	 */
@@ -51,10 +68,24 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 		
 	}
 	
+	/**
+	 * 方法用途: 获取连接上一次事务隔离级别的旧值<br>
+	 * 操作步骤: TODO 暂未使用，后续需要使用，用于还原上一次事务隔离级别的设置<br>
+	 * @return
+	 */
+	public int getOldIso() {
+		return oldIso;
+	}
+	
 	@Override
 	public void setAutoCommit(boolean autoCommit) throws SQLException {
 		this.isAutoCommit = autoCommit;
-		LOGGER.debug("设置是否自动提交事务");
+		LOGGER.debug("虚拟连接设置是否自动提交事务");
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需设置是否自动提交");
+			return;
+		}
+		connection.setAutoCommit(autoCommit);
 	}
 
 	@Override
@@ -64,11 +95,24 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	
 	@Override
 	public void setTransactionIsolation(int level) throws SQLException {
-		connection.setTransactionIsolation(level);
+		if(level<0) {
+			throw new BaseDaoException("事务隔离级别设置的值不能小于0");
+		}
+		this.iso = level;
+		LOGGER.debug("虚拟连接设置事务隔离级别");
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需设置事务隔离级别");
+			return;
+		}
+		connection.setTransactionIsolation(iso);
 	}
 
 	@Override
 	public int getTransactionIsolation() throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需获取的事务隔离级别，默认返回-1");
+			return -1;
+		}
 		return connection.getTransactionIsolation();
 	}
 	
@@ -91,6 +135,10 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 		}
 		this.connection = HostRouteService.switchHost().value().getConnection();
 		connection.setAutoCommit(this.isAutoCommit);
+		oldIso = connection.getTransactionIsolation();
+		if(iso>-1) {
+			connection.setTransactionIsolation(iso);
+		}
 		return connection.prepareStatement(sql);
 	}
 
@@ -116,16 +164,28 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 
 	@Override
 	public void rollback() throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需回滚");
+			return;
+		}
 		connection.rollback();
 	}
 
 	@Override
 	public void close() throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需关闭");
+			return;
+		}
 		connection.close();
 	}
 
 	@Override
 	public boolean isClosed() throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-非关闭状态");
+			return false;
+		}
 		return connection.isClosed();
 	}
 
@@ -212,6 +272,10 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 
 	@Override
 	public void rollback(Savepoint savepoint) throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-不回滚");
+			return;
+		}
 		connection.rollback(savepoint);		
 	}
 
