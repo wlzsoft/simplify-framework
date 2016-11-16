@@ -26,13 +26,15 @@ public class HostRouteServiceTest {
 	@Resource
 	private Logger logger;
 	
+	@Resource
+	private LogicDataSource dsp;
+	
 	@Test
 	public void testSwitchHost() {
 		logger.info(HostRouteService.switchHost().getName());
 	}
 	@Test
 	public void testHostRoute() {
-		LogicDataSource dsp = new LogicDataSource();
 		Connection conn = null;
 		try {
 			conn = dsp.getConnection();
