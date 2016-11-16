@@ -1,15 +1,21 @@
 package com.meizu.simplify.datasource;
 
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+
 import javax.sql.DataSource;
 
 import com.meizu.simplify.dao.datasource.IDataSource;
-import com.meizu.simplify.datasource.route.LogicDataSource;
+import com.meizu.simplify.datasource.route.DynamicDataSourceConnectionWrapper;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.log.Logger;
 
 /**
- * <p><b>Title:</b><i>多数据源实现</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>多数据源实现(逻辑数据源)</i></p>
+ * <p>Desc: 由动态数据源产生，屏蔽物理数据源的细节</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -21,30 +27,84 @@ import com.meizu.simplify.ioc.annotation.Resource;
  *
  */
 @Bean
-public class MutilDataSource implements IDataSource{
+public class MutilDataSource implements IDataSource,DataSource{
 
-	@Resource
-	private LogicDataSource dataSource;
-	
 	@Override
 	public DataSource value() {
-		return dataSource;
+		return this;
 	}
 
 	@Override
 	public String print() {
-//		return dataSource.print();
 		return null;
 	}
 
 	@Override
 	public void init() {
-//		dataSource.init();
 	}
 
 	@Override
 	public void close() {
-//		dataSource.close();
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+	
+	@Resource
+	private  Logger LOGGER;
+	
+	@Override
+	public PrintWriter getLogWriter() throws SQLException {
+		LOGGER.info("getLogWriter");
+		return null;
+	}
+
+	@Override
+	public void setLogWriter(PrintWriter out) throws SQLException {
+		LOGGER.info("setLogWriter");
+	}
+
+	@Override
+	public void setLoginTimeout(int seconds) throws SQLException {
+		LOGGER.info("setLoginTimeout");
+	}
+
+	@Override
+	public int getLoginTimeout() throws SQLException {
+		LOGGER.info("getLoginTimeout");
+		return -1;
+	}
+
+	@Override
+	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		LOGGER.info("getParentLogger");
+		return null;
+	}
+
+	@Override
+	public <T> T unwrap(Class<T> iface) throws SQLException {
+		LOGGER.info("unwrap");
+		return null;
+	}
+
+	@Override
+	public boolean isWrapperFor(Class<?> iface) throws SQLException {
+		LOGGER.info("isWrapperFor");
+		return false;
+	}
+
+	@Override
+	public Connection getConnection() throws SQLException {
+		DynamicDataSourceConnectionWrapper connection = new DynamicDataSourceConnectionWrapper();
+		return connection;
+	}
+
+	@Override
+	public Connection getConnection(String username, String password) throws SQLException {
+		DynamicDataSourceConnectionWrapper connection = new DynamicDataSourceConnectionWrapper();
+		return connection;
 	}
 
 }

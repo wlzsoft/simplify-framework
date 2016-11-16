@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import com.meizu.simplify.dao.orm.IDataCallback;
 import com.meizu.simplify.dao.orm.SQLExecute;
 import com.meizu.simplify.datasource.route.HostRouteService;
-import com.meizu.simplify.datasource.route.LogicDataSource;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.log.Logger;
@@ -27,7 +26,7 @@ public class HostRouteServiceTest {
 	private Logger logger;
 	
 	@Resource
-	private LogicDataSource dsp;
+	private MutilDataSource dsp;
 	
 	@Test
 	public void testSwitchHost() {

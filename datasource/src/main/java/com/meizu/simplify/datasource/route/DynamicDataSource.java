@@ -79,6 +79,7 @@ public class DynamicDataSource implements IDataSource{
 	}
 	
 	//set和get方法
+	@Override
 	public String getName() {
 		return name;
 	}

@@ -72,5 +72,10 @@ public class SingleDataSource implements IDataSource{
 		((DruidDataSource)dataSource).close();
 	}
 
+	@Override
+	public String getName() {
+		return "SingleDataSource";
+	}
+
 }
 

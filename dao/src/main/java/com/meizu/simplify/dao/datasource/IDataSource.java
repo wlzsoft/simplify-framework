@@ -49,5 +49,13 @@ public interface IDataSource {
 	 * 操作步骤:  destroy-method="close"<br>
 	 */
 	public void close();
+
+	/**
+	 * 
+	 * 方法用途: 获取数据源名称<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public String getName();
 }
 

@@ -5,6 +5,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.dao.datasource.IDataSource;
 import com.meizu.simplify.datasource.config.HostRouteConfigResolver;
 
 /**
@@ -30,9 +31,10 @@ public class HostRouteService {
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public static DynamicDataSource switchHost() {
-		DynamicDataSource mutilDataSource = HostRouteConfigResolver.readDataSourceMap.get(new Random().nextInt(65536)%HostRouteConfigResolver.readDataSourceMap.size());
+	public static IDataSource switchHost() {
+		IDataSource mutilDataSource = HostRouteConfigResolver.readDataSourceMap.get(new Random().nextInt(65536)%HostRouteConfigResolver.readDataSourceMap.size());
 		LOGGER.info("所选只读数据源为："+mutilDataSource.getName());
+		mutilDataSource.init();
 		return mutilDataSource;
 	}
 }
