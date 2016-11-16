@@ -272,7 +272,21 @@ public class SQLExecute {
 	
 	/**
 	 * 
-	 * 方法用途: TODO<br>
+	 * 方法用途: 执行查询<br>
+	 * 操作步骤: TODO<br>
+	 * @param connectionManager
+	 * @param sql
+	 * @param callback
+	 * @param clazz
+	 * @return
+	 */
+	public static <B> List<B> executeQuery(ConnectionManager connectionManager,String sql,IDataCallback<B> callback,Class<B> clazz) {
+		return executeQuery(connectionManager.getConnection(), sql, callback, clazz);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 执行查询<br>
 	 * 操作步骤: <pre>
 	System.out.println("请求sql的列名ColumnLabel:"+metaData.getColumnLabel(i));
 	System.out.println("java中列的类型ColumnClassName:"+metaData.getColumnClassName(i));
@@ -289,16 +303,16 @@ public class SQLExecute {
 	
 	System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
 	System.out.println("========================");</pre><br>
+	 * @param conn
 	 * @param sql
 	 * @param callback
 	 * @param clazz 如果类型不支持，那么值为空，那么变量b直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
 	 * @return
 	 */
-	public static <B> List<B> executeQuery(ConnectionManager connectionManager,String sql,IDataCallback<B> callback,Class<B> clazz) {
+	public static <B> List<B> executeQuery(Connection conn,String sql,IDataCallback<B> callback,Class<B> clazz) {
 		List<B> bList= new ArrayList<B>();
 		PreparedStatement prepareStatement = null;
 		ResultSet rs = null;
-		Connection conn = connectionManager.getConnection();
 		try {
 			prepareStatement = conn.prepareStatement(sql);
 			callback.paramCall(prepareStatement);

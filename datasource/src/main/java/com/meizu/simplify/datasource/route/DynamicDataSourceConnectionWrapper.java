@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class DynamicDataSourceConnectionWrapper implements Connection{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DynamicDataSourceConnectionWrapper.class);
-
+	private boolean isAutoCommit = true;
 	/**
 	 * 真实连接
 	 */
@@ -48,23 +48,35 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	 * @param virtualConnection 虚拟连接
 	 */
 	public DynamicDataSourceConnectionWrapper() {
-		try {
-			this.connection = HostRouteService.switchHost().value().getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	@Override
-	public <T> T unwrap(Class<T> iface) throws SQLException {
-		return connection.unwrap(iface);
+	public void setAutoCommit(boolean autoCommit) throws SQLException {
+		this.isAutoCommit = autoCommit;
+		LOGGER.debug("设置是否自动提交事务");
 	}
 
 	@Override
-	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		return connection.isWrapperFor(iface);
+	public boolean getAutoCommit() throws SQLException {
+		return connection.getAutoCommit();
+	}
+	
+	@Override
+	public void setTransactionIsolation(int level) throws SQLException {
+		connection.setTransactionIsolation(level);
 	}
 
+	@Override
+	public int getTransactionIsolation() throws SQLException {
+		return connection.getTransactionIsolation();
+	}
+	
+	@Override
+	public String nativeSQL(String sql) throws SQLException {
+		return connection.nativeSQL(sql);
+	}
+	
 	@Override
 	public Statement createStatement() throws SQLException {
 		return connection.createStatement();
@@ -72,12 +84,13 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 
 	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
-		boolean isAutoCommit = connection.getAutoCommit();
 		if(isAutoCommit) {
 //		insert
 		} else {
 //		select
 		}
+		this.connection = HostRouteService.switchHost().value().getConnection();
+		connection.setAutoCommit(this.isAutoCommit);
 		return connection.prepareStatement(sql);
 	}
 
@@ -87,18 +100,13 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	}
 
 	@Override
-	public String nativeSQL(String sql) throws SQLException {
-		return connection.nativeSQL(sql);
+	public <T> T unwrap(Class<T> iface) throws SQLException {
+		return connection.unwrap(iface);
 	}
 
 	@Override
-	public void setAutoCommit(boolean autoCommit) throws SQLException {
-		connection.setAutoCommit(autoCommit);
-	}
-
-	@Override
-	public boolean getAutoCommit() throws SQLException {
-		return connection.getAutoCommit();
+	public boolean isWrapperFor(Class<?> iface) throws SQLException {
+		return connection.isWrapperFor(iface);
 	}
 
 	@Override
@@ -144,16 +152,6 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	@Override
 	public String getCatalog() throws SQLException {
 		return connection.getCatalog();
-	}
-
-	@Override
-	public void setTransactionIsolation(int level) throws SQLException {
-		connection.setTransactionIsolation(level);
-	}
-
-	@Override
-	public int getTransactionIsolation() throws SQLException {
-		return connection.getTransactionIsolation();
 	}
 
 	@Override

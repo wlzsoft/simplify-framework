@@ -14,7 +14,7 @@ import com.meizu.simplify.dao.datasource.IDataSource;
 
 /**
  * <p><b>Title:</b><i>动态数据源</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 用于屏蔽具体数据源连接池的实现</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

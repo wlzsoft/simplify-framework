@@ -1,5 +1,6 @@
 package com.meizu.simplify.dao.datasource;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -107,6 +108,12 @@ public class DataSourceFactory {
 			LOGGER.info("SQL数据源连接配置信息："+config.toString());
 		} else if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("SQL数据源连接配置信息："+config.toString());
+		}
+		try {
+			Connection conn = dataSource.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return dataSource;
 	}

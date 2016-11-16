@@ -3,8 +3,9 @@ package com.meizu.simplify.datasource;
 import javax.sql.DataSource;
 
 import com.meizu.simplify.dao.datasource.IDataSource;
-import com.meizu.simplify.datasource.route.HostRouteService;
+import com.meizu.simplify.datasource.route.LogicDataSource;
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.InitBean;
 
 /**
  * <p><b>Title:</b><i>多数据源实现</i></p>
@@ -22,25 +23,32 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean
 public class MutilDataSource implements IDataSource{
 
+	private LogicDataSource dataSource;
+	
+	@InitBean
+	public void genSource() {
+		dataSource = new LogicDataSource();
+	}
+	
 	@Override
 	public DataSource value() {
-		return HostRouteService.switchHost().value();
+		return dataSource;
 	}
 
 	@Override
 	public String print() {
-		return HostRouteService.switchHost().print();
+//		return dataSource.print();
+		return null;
 	}
 
 	@Override
 	public void init() {
-		HostRouteService.switchHost().init();
-		
+//		dataSource.init();
 	}
 
 	@Override
 	public void close() {
-		HostRouteService.switchHost().close();
+//		dataSource.close();
 	}
 
 }
