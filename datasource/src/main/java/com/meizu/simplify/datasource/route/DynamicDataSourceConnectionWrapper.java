@@ -54,7 +54,7 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	private int iso = -1;
 	
 	/**
-	 * 设置之前的隔离级别 
+	 * 保存连接上一次事务隔离级别的旧值
 	 */
 	private int oldIso = -1;
 	
@@ -68,15 +68,6 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	 */
 	public DynamicDataSourceConnectionWrapper() {
 		
-	}
-	
-	/**
-	 * 方法用途: 获取连接上一次事务隔离级别的旧值<br>
-	 * 操作步骤: TODO 暂未使用，后续需要使用，用于还原上一次事务隔离级别的设置<br>
-	 * @return
-	 */
-	public int getOldIso() {
-		return oldIso;
 	}
 	
 	@Override
@@ -106,7 +97,10 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需设置事务隔离级别");
 			return;
 		}
-		connection.setTransactionIsolation(iso);
+		if(iso>-1) {
+			connection.setTransactionIsolation(iso);
+			iso = -1;
+		}
 	}
 
 	@Override
@@ -149,6 +143,7 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 		oldIso = connection.getTransactionIsolation();
 		if(iso>-1) {
 			connection.setTransactionIsolation(iso);
+			iso = -1;
 		}
 		return connection;
 	}
@@ -177,18 +172,29 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	}
 
 	@Override
-	public <T> T unwrap(Class<T> iface) throws SQLException {
-		return connection.unwrap(iface);
-	}
-
-	@Override
-	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		return connection.isWrapperFor(iface);
-	}
-
-	@Override
 	public void commit() throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-不提交");
+			return;
+		}
+		if(oldIso>-1) {
+			connection.setTransactionIsolation(oldIso);
+			oldIso = -1;
+		}
 		connection.commit();
+	}
+	
+	@Override
+	public void rollback(Savepoint savepoint) throws SQLException {
+		if(connection == null) {
+			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-不回滚");
+			return;
+		}
+		if(oldIso>-1) {
+			connection.setTransactionIsolation(oldIso);
+			oldIso = -1;
+		}
+		connection.rollback(savepoint);		
 	}
 
 	@Override
@@ -196,6 +202,10 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 		if(connection == null) {
 			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-无需回滚");
 			return;
+		}
+		if(oldIso>-1) {
+			connection.setTransactionIsolation(oldIso);
+			oldIso = -1;
 		}
 		connection.rollback();
 	}
@@ -218,6 +228,16 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 		return connection.isClosed();
 	}
 
+	@Override
+	public <T> T unwrap(Class<T> iface) throws SQLException {
+		return connection.unwrap(iface);
+	}
+
+	@Override
+	public boolean isWrapperFor(Class<?> iface) throws SQLException {
+		return connection.isWrapperFor(iface);
+	}
+	
 	@Override
 	public DatabaseMetaData getMetaData() throws SQLException {
 		return connection.getMetaData();
@@ -299,15 +319,6 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	@Override
 	public Savepoint setSavepoint(String name) throws SQLException {
 		return connection.setSavepoint(name);
-	}
-
-	@Override
-	public void rollback(Savepoint savepoint) throws SQLException {
-		if(connection == null) {
-			LOGGER.info("虚拟连接已被初始化，但暂未初始化真实连接(无实际查询操作)-不回滚");
-			return;
-		}
-		connection.rollback(savepoint);		
 	}
 
 	@Override
