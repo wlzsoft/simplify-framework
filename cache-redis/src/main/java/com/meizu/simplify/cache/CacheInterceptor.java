@@ -56,8 +56,9 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		return CACHE_AFTER_INTERCEPTOR;
 	}
 	
-	ICacheDao<String, Object> data = CacheProxyDao.getCache();
-	IJsonCacheDao<Object> jsonData = CacheProxyDao.getJsonCache();
+	private ICacheDao<String, Object> data = CacheProxyDao.getCache();
+	private IJsonCacheDao<Object> jsonData = CacheProxyDao.getJsonCache();
+	
 	@Override
 	public boolean before(Context context,Object... args) {
 		String methodFullName = context.getMethodFullName();

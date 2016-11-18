@@ -31,6 +31,17 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 		super(modName);
 		this.valueClazz = valueClazz;
 	}
+	
+	public JsonRedisDao(String modName) {
+		super(modName);
+	}
+	
+	/**
+	 * 写死默认固定值 TODO 暂不启用
+	 */
+	public JsonRedisDao() {
+		super("redis_ref_hosts");
+	}
 
 	/**
 	 * 

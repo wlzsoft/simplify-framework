@@ -19,7 +19,7 @@ import com.meizu.simplify.cache.redis.dao.impl.JsonRedisDao;
  */
 public class CacheProxyDao {
 	private static final ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
-	private static final IJsonCacheDao<Object> jsonRedisDao = new JsonRedisDao<>("redis_ref_hosts",null);
+	private static final IJsonCacheDao<Object> jsonRedisDao = new JsonRedisDao<>("redis_ref_hosts");
 	
 	public static ICacheDao<String, Object> getCache() {
 		return commonRedisDao;
