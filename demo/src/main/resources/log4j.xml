@@ -133,6 +133,9 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
         <layout class="org.apache.log4j.PatternLayout">
          <param name="ConversionPattern" value="[%d{MMdd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />    
         </layout>       
+        <param name="BufferedIO" value="true" />
+        <!-- 8K为一个写单元 -->
+        <param name="BufferSize" value="8192" />
     </appender>
 	
     
@@ -151,5 +154,5 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
 		<!-- <appender-ref ref="dailyRollingFile" /> -->
 		<!-- <appender-ref ref="async" /> -->
 	</root>
-
+	
 </log4j:configuration>
