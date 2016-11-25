@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.dao.orm.base;
 
 import com.meizu.simplify.utils.StringUtil;
 

@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
+import com.meizu.simplify.dao.orm.base.CommonSqlBuilder;
+import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;

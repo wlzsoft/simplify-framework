@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.dao.orm.base;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

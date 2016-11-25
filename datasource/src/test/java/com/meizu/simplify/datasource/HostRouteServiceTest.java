@@ -10,8 +10,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.meizu.simplify.dao.orm.IDataCallback;
-import com.meizu.simplify.dao.orm.SQLExecute;
+import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.datasource.route.HostRouteService;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
