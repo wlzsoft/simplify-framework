@@ -540,4 +540,6 @@ public class SQLBuilder<T> {
 		sqlBuild.append(type);
 	}
 	
+	
+	
 }

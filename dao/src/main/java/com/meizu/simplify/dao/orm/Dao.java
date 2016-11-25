@@ -604,45 +604,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	/**
-	 * 
-	 * 方法用途: 从给定字符串中将指定的非法字符串数组中各字符串过滤掉。<br>
-	 * 操作步骤: TODO<br>
-	 * @param str 待过滤的字符串
-	 * @param filterChars 指定的非法字符串数组
-	 * @return 过滤后的字符串
-	 */
-	private String filterIllegalChars(String str, String[] filterChars) {
-		String rs = str;
-		if (rs != null && filterChars != null) {
-			for (String fc : filterChars) {
-				if (fc != null && fc.length() > 0) {
-					str = str.replaceAll(fc, ""); 
-				}
-			}
-		}
-		return rs;
-	}
-	
-	/**
 	 * @param param where条件参数
 	 */
 	@Override
 	public List<T> findBy(T param, String sort, boolean isDesc) {
-		/** 
-		 * 不能用于SQL中的非法字符（主要用于排序字段名） 
-		 */
-		final String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-		// 排序条件
-		if (sort != null) {
-			// 排序字段不为空，过滤其中可能存在的非法字符
-			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
-		}
 		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
-		String orderby = "";
-		if(StringUtil.isNotBlank(sort)) {
-			orderby = " order by "+sort+" "+(isDesc?"desc":"asc");
-		}
-		return find(sqlBuilder.findBy(dto.getWhereName())+orderby,dto.getWhereValues());
+		String endSearchSql = CommonSqlBuilder.buildEndSearchSql(null, null, sort, isDesc).toString();
+		return find(sqlBuilder.findBy(dto.getWhereName())+endSearchSql,dto.getWhereValues());
 	}
 	
 	/**
@@ -712,27 +680,12 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
 		
-		StringBuilder type = new StringBuilder();
-		if(!StringUtil.isBlank(sort)) {
-			//不能用于SQL中的非法字符（主要用于排序字段名） 
-			String[] ILLEGAL_CHARS_FOR_SQL = {",", ";", " ", "\"", "%"};
-			// 排序字段不为空，过滤其中可能存在的非法字符
-			sort = filterIllegalChars(sort, ILLEGAL_CHARS_FOR_SQL);
-			
-			String sortMethod = "desc";
-			if(!isDesc) {
-				sortMethod = "asc";
-			}
-			type.append(" order by ").append(sort).append(" ").append(sortMethod);
-		}
-		if(pageSize != null) {
-			type.append(" limit ").append(currentRecord).append(",").append(pageSize);
-		}
+		StringBuilder type = CommonSqlBuilder.buildEndSearchSql(currentRecord, pageSize, sort, isDesc);
 		
 		List<T> list = find(sql +type,params);
 		return list;
 	}
-	
+
 	/**
 	 * 
 	 * 方法用途: 分页-不知排序<br>
@@ -810,7 +763,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 */
 	@Deprecated
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(sql.replace("select * from", "select count(1) from"), params), true);
+		Page<T> page = new Page<T>(currentPage,pageSize,CountDao.count(connectionManager,sql.replace("select * from", "select count(1) from"), params), true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
 		page.setResults(list);
 		return page;
@@ -828,17 +781,8 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @return 分页数据实体
 	 */
 	public Page<T> findPage(Integer currentPage,Integer pageSize,String sql,boolean isReturnLastPage,Object... params) {
-		String countSql = "";
-		String lowerCaseSql = sql.toLowerCase();
-		if(lowerCaseSql.indexOf("distinct")>-1) {
-			countSql = "select count(1) from ("+sql+") t";
-		} else {
-			countSql = sql.substring(lowerCaseSql.indexOf("from"));
-			countSql = "select count(1) "+countSql;
-		}
-		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
-		Integer count = BaseDao.getInsMap().count(countSql,params);
-		Page<T> page = new Page<T>(currentPage,pageSize,count,isReturnLastPage);
+		Integer count = CountDao.buildCountSql(connectionManager,sql, params);
+		Page<T> page = new Page<>(currentPage,pageSize,count,isReturnLastPage);
 		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
 		page.setResults(list);
 		return page;
@@ -872,7 +816,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	public Page<T> findPageForGroup(Integer currentPage,Integer pageSize,String sql,Object... params) {
 		String countSql = sql.substring(sql.indexOf("from"));
 		countSql = "select count(1) from (" + sql + ") t";
-		Page<T> page = new Page<T>(currentPage,pageSize,BaseDao.getInsMap().count(countSql,params),true);
+		Page<T> page = new Page<T>(currentPage,pageSize,CountDao.count(connectionManager,countSql,params),true);
 		List<T> list = find(page.getCurrentRecord(),pageSize,null,null,sql,params);
 		
 		page.setResults(list);
@@ -885,10 +829,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Override
 	public Integer count(T param) {
 		if(param == null) {//FIXED lcy 2016/5/27 风险提醒：这个分支会导致拖死数据库，但是又有这样的业务场景(考虑说服用户-企业用户)-如果是针对个人的系统，不建议使用,需要考虑更好的方案  TODO 整合块4
-			return BaseDao.getInsMap().count(sqlBuilder.count());
+			return CountDao.count(connectionManager,sqlBuilder.count());
 		}
 		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
-		return BaseDao.getInsMap().count(sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
+		return CountDao.count(connectionManager,sqlBuilder.count(dto.getWhereName()),dto.getWhereValues());
 	}
 	
 	/**

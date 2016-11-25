@@ -13,8 +13,6 @@ import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.utils.CollectionUtil;
-import com.meizu.simplify.utils.DataUtil;
 /**
  * <p><b>Title:</b><i>基于map类型结果集的基础dao实现</i></p>
  * <p>Desc: TODO</p>
@@ -35,25 +33,6 @@ public class SearchByMapDao {
 	
 	@Resource
 	private ConnectionManager connectionManager;
-	
-	public Integer count(String sql,Object... params) {
-		logger.info(sql);//后续不在这里处理sql日志 TODO
-		List<Integer> list = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<Integer>() {
-			@Override
-			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
-			}
-
-			@Override
-			public Integer resultCall(String columnLabel, Object object,Integer t) {
-				return DataUtil.parseInt(object);
-			}
-		},null);
-		if(CollectionUtil.isEmpty(list)) {
-			return 0;
-		}
-		return list.get(0);
-	}
 	
 	public List<Map<String,Object>> find(String sql,Object... params) {
 		logger.info(sql);
@@ -79,16 +58,58 @@ public class SearchByMapDao {
 		return SQLExecute.executeUpdate(connectionManager,sql, params);
 	}
 
+	/**
+	 * 
+	 * 方法用途: 分页查询结果集-结果集存储于Map结构中<br>
+	 * 操作步骤: 不支持排序<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sql
+	 * @param isReturnLastPage
+	 * @param params
+	 * @return
+	 */
 	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,boolean isReturnLastPage,Object... params) {
-		String countSql = sql.substring(sql.toLowerCase().indexOf("from"));
-		countSql = countSql.toLowerCase().replaceAll("order\\s*by.*(desc|asc)", "");
-		Page<Map<String,Object>> page = new Page<>(currentPage, pageSize, count("select count(1) "+countSql,params),isReturnLastPage);
-		List<Map<String,Object>> mapList = find(sql,params);
+		return findPage(currentPage, pageSize, null, null, sql, isReturnLastPage, params);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 分页查询结果集-结果集存储于Map结构中<br>
+	 * 操作步骤: 支持排序<br>
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param sql
+	 * @param isReturnLastPage
+	 * @param params
+	 * @return
+	 */
+	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,boolean isReturnLastPage,Object... params) {
+		Integer count = CountDao.buildCountSql(connectionManager,sql, params);
+		Page<Map<String,Object>> page = new Page<>(currentPage, pageSize, count,isReturnLastPage);
+		
+		String endSearchSql = CommonSqlBuilder.buildEndSearchSql(page.getCurrentRecord(), pageSize, sort, isDesc).toString();
+		
+		List<Map<String,Object>> mapList = find(sql+endSearchSql,params);
 		page.setResults(mapList);
 		return page;
 	}
 	
 	public  Page<Map<String, Object>> findPage(Integer currentPage,Integer pageSize,String sql,Object... params) {
 		return findPage(currentPage, pageSize, sql, true, params);
+	}
+
+	/**
+	 * 
+	 * 方法用途: 通用count语句执行<br>
+	 * 操作步骤: 注意：后续这个方法的位置会调整，这个方法不完全属于这个类<br>
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
+	public Integer count(String sql,Object... params) {
+		return CountDao.count(connectionManager, sql, params);
 	}
 }

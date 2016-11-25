@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao.orm;
+package com.meizu.simplify.dao.resolver;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.annotation.Config;
+import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Entity;
 import com.meizu.simplify.entity.annotations.Table;

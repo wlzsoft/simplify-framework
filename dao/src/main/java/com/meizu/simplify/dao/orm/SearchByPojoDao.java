@@ -70,7 +70,6 @@ public class SearchByPojoDao {
 		return tList;
 	}
 	
-	
 	/**
 	 * 
 	 * 方法用途: 查询单条记录-普通pojo(针对非数据库映射表实体)<br>
@@ -94,30 +93,46 @@ public class SearchByPojoDao {
 	/**
 	 * 
 	 * 方法用途: 分页查询-普通pojo(针对非数据库映射表实体)<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 不支持排序<br>
 	 * @param entityClass
 	 * @param currentPage
 	 * @param pageSize
 	 * @param sql
 	 * @param isReturnLastPage 
 	 * @param params
-	 * @author Geny
 	 * @return
 	 */
 	public <T> Page<T> findPage(Class<T> entityClass, Integer currentPage, Integer pageSize, String sql,boolean isReturnLastPage, Object... params) {
-		String countSql = sql.substring(sql.indexOf("from"));
-		countSql = countSql.replaceAll("order\\s*by.*(desc|asc)", "");
-		Page<T> page = new Page<T>(currentPage, pageSize,
-				BaseDao.getInsMap().count("select count(1) " + countSql, params), isReturnLastPage);
+		return findPage(entityClass, currentPage, pageSize, null, null, sql, isReturnLastPage, params);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 分页查询-普通pojo(针对非数据库映射表实体)<br>
+	 * 操作步骤: 支持排序<br>
+	 * @param entityClass
+	 * @param currentPage
+	 * @param pageSize
+	 * @param sort
+	 * @param isDesc
+	 * @param sql
+	 * @param isReturnLastPage 
+	 * @param params
+	 * @author Geny
+	 * @return
+	 */
+	public <T> Page<T> findPage(Class<T> entityClass, Integer currentPage, Integer pageSize,String sort, Boolean isDesc, String sql,boolean isReturnLastPage, Object... params) {
+		Integer count = CountDao.buildCountSql(connectionManager,sql, params);
+		Page<T> page = new Page<>(currentPage, pageSize,count, isReturnLastPage);
 
-		if (pageSize != null) {
-			sql += " limit " + page.getCurrentRecord() + "," + pageSize;
-		}
+		String endSearchSql = CommonSqlBuilder.buildEndSearchSql(page.getCurrentRecord(), pageSize, sort, isDesc).toString();
 
-		List<T> tList = find(entityClass, sql, params);
+		List<T> tList = find(entityClass, sql+endSearchSql, params);
 		page.setResults(tList);
 		return page;
 	}
+
+	
 	
 	/**
 	 * 
