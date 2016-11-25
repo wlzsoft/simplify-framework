@@ -1,0 +1,5 @@
+
+description = '配置解析模块'
+dependencies {
+	compile project(':ioc')
+}
