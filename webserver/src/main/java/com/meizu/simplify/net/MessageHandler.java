@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 import com.meizu.HttpRequest;
 import com.meizu.HttpResponse;
@@ -101,7 +102,7 @@ public class MessageHandler implements Runnable{
 				}
 				
 				try {
-					Thread.sleep(time);
+					TimeUnit.MILLISECONDS.sleep(time);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

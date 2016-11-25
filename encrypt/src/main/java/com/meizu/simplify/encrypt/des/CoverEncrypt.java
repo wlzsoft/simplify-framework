@@ -2,6 +2,7 @@ package com.meizu.simplify.encrypt.des;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 
@@ -31,7 +32,8 @@ public class CoverEncrypt {
 				while(true){
 					time = System.currentTimeMillis()^0x863FA34;
 					try {
-						Thread.sleep(24*3600);//wait one day
+						//等待一天
+						TimeUnit.DAYS.sleep(1);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

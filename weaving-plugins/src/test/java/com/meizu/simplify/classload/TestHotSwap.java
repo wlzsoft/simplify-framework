@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import com.meizu.simplify.classload.entity.TestEntity;
 import com.meizu.simplify.classload.entity.TestUser;
@@ -32,7 +33,7 @@ public class TestHotSwap {
 			
 			System.out.printf(" reloaded TestEntity.testUser classLoader is %s", testIns.getClass().getClassLoader());
 			c1.close();
-			Thread.sleep(5000);
+			TimeUnit.SECONDS.sleep(5);
 		}
 	}
 }

@@ -3,6 +3,7 @@ package com.meizu.simplify.net;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.util.concurrent.TimeUnit;
 
 import com.meizu.WebServer;
 import com.meizu.simplify.ioc.Startup;
@@ -77,9 +78,8 @@ public class Bootstrap {
 			ThreadPool.add(new Thread(mh2,"连接b"));
 			while(Bootstrap.isRunning) {
 				try {
-					Thread.sleep(200000);
+					TimeUnit.SECONDS.sleep(200);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

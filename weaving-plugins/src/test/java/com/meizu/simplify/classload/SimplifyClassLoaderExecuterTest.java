@@ -3,6 +3,7 @@ package com.meizu.simplify.classload;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 public class SimplifyClassLoaderExecuterTest {
 
@@ -24,8 +25,7 @@ public class SimplifyClassLoaderExecuterTest {
 			} catch(Error e) {
 				e.printStackTrace();
 			}
-			
-			Thread.sleep(5000);
+			TimeUnit.SECONDS.sleep(5);
 		}
 
 	}

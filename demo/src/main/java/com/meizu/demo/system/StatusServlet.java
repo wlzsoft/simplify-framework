@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncEvent;
@@ -83,7 +84,7 @@ public class StatusServlet extends HttpServlet {
 		}
 		public void run() {
 			try {
-				Thread.sleep(10000);
+				TimeUnit.SECONDS.sleep(10);
 				PrintWriter out = ctx.getResponse().getWriter();
 				out.println("统计数据收集完毕：" + new Date() + ".");
 				out.flush();

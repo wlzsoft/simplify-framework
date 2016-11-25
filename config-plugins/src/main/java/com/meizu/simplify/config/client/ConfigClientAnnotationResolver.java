@@ -20,7 +20,7 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  *
  */
 @Init(InitTypeEnum.CONFIG)
-public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class<?>>{
+public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class<?>> {
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
