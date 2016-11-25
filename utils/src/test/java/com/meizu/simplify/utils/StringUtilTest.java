@@ -150,7 +150,7 @@ public class StringUtilTest {
 	@Test
 	public void testSplitForCustom() {
 		String sourceString = "a:b:c:d";
-		String[] splitArr = StringUtil.split(sourceString, ":");
+		String[] splitArr = StringUtil.split(sourceString, ":",2);
 		for (String string : splitArr) {
 			System.out.print(string+"|");
 		}

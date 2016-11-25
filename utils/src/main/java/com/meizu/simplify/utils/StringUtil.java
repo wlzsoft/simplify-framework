@@ -566,8 +566,7 @@ public class StringUtil {
 	 * @param targetChar    split的目标字符或字符串
 	 * @return
 	 */
-	public static String[] split(String sourceString,String targetChar) {
-//		@param limit         目标字符的匹配次数，从左到右边
+	private static String[] splitByTwo(String sourceString,String targetChar) {
 		Integer limit = 2;
 		String[] splitArr = new String[limit];
 		int targetIndexOf = sourceString.indexOf(targetChar);
@@ -576,5 +575,42 @@ public class StringUtil {
 			splitArr[1] = sourceString.substring(targetIndexOf+targetChar.length());
 		}
 		return splitArr;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 原生split的封装<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceString
+	 * @param targetChar
+	 * @param limit         目标字符的匹配次数，从左到右边
+	 * @return
+	 */
+	public static String[] split(String sourceString,String targetChar,Integer limit) {
+		if(isBlank(sourceString)) {
+			return new String[0];
+		}
+		if(isBlank(targetChar)) {
+			throw new UncheckedException("targetChar:目标字符或表达式会空");
+		}
+		if(limit == null) {
+			return sourceString.split(targetChar);
+		} else if(limit == 2) {
+			return splitByTwo(sourceString, targetChar);
+		} else {
+			return sourceString.split(targetChar, limit);
+		}
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 原生split的封装<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceString
+	 * @param targetChar
+	 * @return
+	 */
+	public static String[] split(String sourceString,String targetChar) {
+		return split(sourceString, targetChar, null);
 	}
 }
