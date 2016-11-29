@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +61,39 @@ public class FileUtil {
 	 */
 	private FileUtil() {
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取文件输出流<br>
+	 * 操作步骤: 注意:不支持目录<br>
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static FileOutputStream getOutputStream(File file) throws IOException {
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                throw new IOException("文件 '" + file + "' 不能是一个目录");
+            }
+            if (file.canWrite() == false) {
+                throw new IOException("文件 '" + file + "' 不能写入，被锁住占用或是只读");
+            }
+        }
+        return new FileOutputStream(file);
+    }
+	
+	/**
+	 * 
+	 * 方法用途: 文件是否存在<br>
+	 * 操作步骤: TODO<br>
+	 * @param pathname
+	 * @return
+	 */
+	public static boolean isExists(String pathname) {
+		File file = new File(pathname);
+		return file.exists();
+	}
+	
 	/**
 	 * 方法用途: 创建目录，如果父目录不存在则建立父目录, 类似目录格式 "E:/dd/aa/bb"<br>
 	 * 操作步骤: TODO<br>
@@ -371,6 +405,20 @@ public class FileUtil {
 		}
 		return flag;
 	}
+	
+    /**
+     * 
+     * 方法用途: 复制一个地址的输入流给一个文件<br>
+     * 操作步骤: TODO<br>
+     * @param sourceURL
+     * @param targetFile
+     * @throws IOException
+     */
+    public static void copyFile(URL sourceURL, File targetFile) throws IOException {
+    	InputStream input = sourceURL.openStream();
+    	copy(input, getOutputStream(targetFile));
+    }
+	
 	/**
 	 * 
 	 * 方法用途: 复制文件<br>
@@ -440,9 +488,7 @@ public class FileUtil {
 	 * @param targetDestCoding
 	 * @return
 	 */
-	public static boolean copyDirectiory(String sourceDirPath,
-			String targetDirPath, String sourceDestCoding,
-			String targetDestCoding) {
+	public static boolean copyDirectory(String sourceDirPath,String targetDirPath, String sourceDestCoding,	String targetDestCoding) {
 		boolean flag = false;
 		try {
 			// 创建目标文件夹
@@ -469,7 +515,7 @@ public class FileUtil {
 							+ file[i].getName();
 					String targetDir = targetDirPath + File.separator
 							+ file[i].getName();
-					copyDirectiory(sourceDir, targetDir);
+					copyDirectory(sourceDir, targetDir);
 				}
 			}
 			flag = true;
@@ -480,50 +526,17 @@ public class FileUtil {
 	}
 
 	/**
-	 * 方法用途: This class copies an input files of a directory to another directory not include subdir<br>
-	 * 操作步骤: TODO<br>
-	 * @param sourceDir sourceDir the directory to copy from such as:/home/bqlr/images
-	 * @param targetDir targetDir the target directory
-	 * @throws Exception
-	 */
-	public static void copyDir(String sourceDir, String targetDir) throws Exception {
-		File dest = new File(targetDir);
-		File source = new File(sourceDir);
-
-		String[] files = source.list();
-		try {
-			createDirectory(targetDir);
-		} catch (Exception ex) {
-			throw new Exception("CopyDir:" + ex.getMessage());
-		}
-
-		for (int i = 0; i < files.length; i++) {
-			String sourcefile = source + File.separator + files[i];
-			String destfile = dest + File.separator + files[i];
-			File temp = new File(sourcefile);
-			if (temp.isFile()) {
-				try {
-					copyFile(sourcefile, destfile);
-				} catch (Exception ex) {
-					throw new Exception("CopyDir:" + ex.getMessage());
-				}
-			}
-		}
-	}
-	
-	/**
 	 * 方法用途: 复制文件夹<br>
 	 * 操作步骤: TODO<br>
 	 * @param sourceFilePath
 	 * @param targetFilePath
 	 * @return
 	 */
-	public static boolean copyDirectiory(String sourceFilePath,
-			String targetFilePath) {
+	public static boolean copyDirectory(String sourceFilePath,String targetFilePath) {
 		boolean flag = false;
 		try {
 			// 新建目标目录
-			(new File(sourceFilePath)).mkdirs();
+			createDirectory(targetFilePath);
 			// 获取源文件夹当前下的文件或目录
 			File[] file = (new File(sourceFilePath)).listFiles();
 			for (int i = 0; i < file.length; i++) {
@@ -542,7 +555,7 @@ public class FileUtil {
 					String dir1 = sourceFilePath + "/" + file[i].getName();
 					// 准备复制的目标文件夹
 					String dir2 = targetFilePath + "/" + file[i].getName();
-					copyDirectiory(dir1, dir2);
+					copyDirectory(dir1, dir2);
 				}
 			}
 		} catch (Exception e) {
@@ -558,7 +571,7 @@ public class FileUtil {
 	 * @param input 输入流
 	 * @param output 输出流
 	 */
-	public static void copyInToOut(InputStream input, OutputStream output) {
+	public static void copy(InputStream input, OutputStream output) {
 		byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
 		int n = 0;
 		try {
@@ -577,10 +590,10 @@ public class FileUtil {
 	 * @param targetFilePath
 	 * @return
 	 */
-	public static boolean cutDirectiory(String sourceFilePath,
+	public static boolean cutDirectory(String sourceFilePath,
 			String targetFilePath) {
 		boolean flag = false;
-		if (copyDirectiory(sourceFilePath, targetFilePath)) {
+		if (copyDirectory(sourceFilePath, targetFilePath)) {
 			flag = deleteDirectory(sourceFilePath);
 		}
 		return flag;
@@ -711,7 +724,6 @@ public class FileUtil {
 	 * 删除文件方法，如果删除不掉，将该文件加入删除池，下次进行调用时将尝试删除池中的文件
 	 * 
 	 * @param file
-	 *            file
 	 */
 	public static void deleteFile(File file) {
 		file.delete();// 尝试删除文件
@@ -1232,7 +1244,7 @@ public class FileUtil {
 	public static byte[] toByteArray(InputStream in) {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			copyInToOut(in, out);
+			copy(in, out);
 			byte[] bytes = out.toByteArray();
 			in.close();
 			out.close();
@@ -1709,4 +1721,5 @@ public class FileUtil {
 		String extName = fileName.substring(fileName.lastIndexOf('.') + 1);
 		return extName;
 	}
+
 }
