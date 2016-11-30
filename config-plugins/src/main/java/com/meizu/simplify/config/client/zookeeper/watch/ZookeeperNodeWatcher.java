@@ -53,7 +53,7 @@ public class ZookeeperNodeWatcher implements Watcher {
         // 结点更新时
         if (event.getType() == EventType.NodeDataChanged) {
             try {
-                LOGGER.info("============连接节点数据被更新 " + event.toString() + ": (" + watchPath + "," + keyName+ ")======================");
+                LOGGER.info("连接节点数据被更新 " + event.toString() + ": (" + watchPath + "," + keyName+ ")");
             } catch (Exception e) {
                 LOGGER.error("监听节点失败异常. " + watchPath, e);
             }
@@ -61,11 +61,11 @@ public class ZookeeperNodeWatcher implements Watcher {
 
         // 结点断开连接，这时不要进行处理
         if (event.getState() == KeeperState.Disconnected) {
-           LOGGER.warn("============连接节点已经断开: " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")======================");
+           LOGGER.warn("连接节点已经断开: " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")");
         }
         
         if (event.getState() == KeeperState.Expired) {//会话超时，需要重新激活
-            LOGGER.error("============会话超时：  " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")======================");
+            LOGGER.error("会话超时：  " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")");
             // 重新连接
             connectionManager.reconnect(watcher);
         }

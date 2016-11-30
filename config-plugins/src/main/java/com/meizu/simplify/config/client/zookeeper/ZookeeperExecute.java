@@ -80,9 +80,7 @@ public class ZookeeperExecute  {
             } catch (KeeperException.SessionExpiredException e) {
                 throw e;
             } catch (KeeperException e) {
-
                 LOGGER.warn("write方法执行：连接丢失重试第 " + retries + "次\t" + e.toString());
-
                 if (retries++ == ZookeeperConnectionManager.MAX_RETRIES) {
                     throw e;
                 }
@@ -186,7 +184,6 @@ public class ZookeeperExecute  {
         } catch (InterruptedException e) {
             LOGGER.error(e.toString());
         }
-
         return children;
     }
 
