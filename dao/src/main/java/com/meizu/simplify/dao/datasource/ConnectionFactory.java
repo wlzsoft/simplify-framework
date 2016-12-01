@@ -226,7 +226,7 @@ public class ConnectionFactory {
 					conn.close();
 				}
 				if(LOGGER.isDebugEnabled()) {
-					LOGGER.debug(Thread.currentThread().getName() + "连接关闭");
+					LOGGER.debug("线程"+Thread.currentThread().getName() +"对应的连接["+conn+ "]连接关闭返回连接池中");
 				}
 			}
 		} catch (SQLException e) {

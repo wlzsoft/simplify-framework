@@ -1,6 +1,8 @@
 package com.meizu.simplify.dao.datasource;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -8,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidPooledConnection;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.utils.PropertieUtil;
 
@@ -45,6 +48,19 @@ public class SingleDataSource implements IDataSource{
 	public String print() {
 		String info = ((DruidDataSource)dataSource).toString();
 		LOGGER.info("SQL数据库的激活的数据源信息:"+info);
+		if(LOGGER.isDebugEnabled()) {
+			String stackTraceStr = "";
+			Set<DruidPooledConnection>  activeConnections = ((DruidDataSource)dataSource).getActiveConnections();
+			for (DruidPooledConnection activeConnection : activeConnections) {
+				stackTraceStr+="\n"+activeConnection.getConnectionHolder().toString();
+			}
+			stackTraceStr += "\n==========";
+			List<String> activeConnectionStackTraceList = ((DruidDataSource)dataSource).getActiveConnectionStackTrace();
+			for (String activeConnectionStackTrace : activeConnectionStackTraceList) {
+				stackTraceStr += "\n"+activeConnectionStackTrace;
+			}
+			LOGGER.debug(stackTraceStr);
+		}
 		return info;
 	}
 	
