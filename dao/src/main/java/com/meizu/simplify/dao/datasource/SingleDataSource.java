@@ -47,8 +47,7 @@ public class SingleDataSource implements IDataSource{
 	@Override
 	public String print() {
 		String info = ((DruidDataSource)dataSource).toString();
-		LOGGER.info("SQL数据库的激活的数据源信息:"+info);
-		if(LOGGER.isDebugEnabled()) {
+		if(LOGGER.isInfoEnabled()) {
 			String stackTraceStr = "";
 			Set<DruidPooledConnection>  activeConnections = ((DruidDataSource)dataSource).getActiveConnections();
 			for (DruidPooledConnection activeConnection : activeConnections) {
@@ -59,7 +58,7 @@ public class SingleDataSource implements IDataSource{
 			for (String activeConnectionStackTrace : activeConnectionStackTraceList) {
 				stackTraceStr += "\n"+activeConnectionStackTrace;
 			}
-			LOGGER.debug(stackTraceStr);
+			LOGGER.info("SQL数据库的激活的数据源信息:"+info+"\nactiveConnections:"+stackTraceStr);
 		}
 		return info;
 	}
