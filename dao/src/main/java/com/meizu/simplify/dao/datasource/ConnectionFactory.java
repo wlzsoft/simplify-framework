@@ -204,7 +204,12 @@ public class ConnectionFactory {
 					}
 				}
 				LOGGER.info(Thread.currentThread().getName() + "事务已经回滚......");
-				container.remove();
+				/*
+				 * 这里导致连接泄漏，这里有导致连接在没有关闭的情况下，返回连接池中，而触发问题的点的条件是：
+				 * 第一种情况：.事务处理过程中发生异常时候，事务会回滚，这时候删除了线程变量，导致永远无法关闭连接，当事务回滚次数增多，所有连接消耗完了。所有请求都提示连接不够用情况。
+				 * 
+				*/
+//				container.remove();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
