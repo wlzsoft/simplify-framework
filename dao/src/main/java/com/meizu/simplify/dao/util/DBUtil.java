@@ -1,6 +1,5 @@
 package com.meizu.simplify.dao.util;
 
-import com.meizu.simplify.dao.IDBUtilDao;
 import com.meizu.simplify.ioc.annotation.Resource;
 
 

@@ -15,11 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.annotation.Config;
-import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
+import com.meizu.simplify.dao.enums.BatchOperator;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.dao.orm.base.CommonSqlBuilder;

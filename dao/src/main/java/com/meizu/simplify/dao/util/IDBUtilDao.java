@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao;
+package com.meizu.simplify.dao.util;
 
 /**
  * <p><b>Title:</b><i>数据库公用函数dao接口</i></p>

@@ -7,8 +7,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.dao.BatchOperator;
 import com.meizu.simplify.dao.dto.BaseDTO.LinkType;
+import com.meizu.simplify.dao.enums.BatchOperator;
 import com.meizu.simplify.dao.dto.SqlDTO;
 import com.meizu.simplify.dao.dto.WhereDTO;
 import com.meizu.simplify.utils.ReflectionUtil;

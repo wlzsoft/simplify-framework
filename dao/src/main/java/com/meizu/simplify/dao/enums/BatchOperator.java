@@ -1,4 +1,4 @@
-package com.meizu.simplify.dao;
+package com.meizu.simplify.dao.enums;
 /**
  * <p><b>Title:</b><i>TODO</i></p>
  * <p>Desc: TODO</p>
