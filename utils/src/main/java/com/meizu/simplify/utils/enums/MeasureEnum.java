@@ -13,49 +13,48 @@ package com.meizu.simplify.utils.enums;
  * @version Version 0.1
  *
  */
-public class Measure {
+public enum MeasureEnum {
+	
 	/** 
 	 *  K字节数  K = 1024 bytes 
 	 *  1024 = 2的10次方
 	 */
-	public static final Integer K = 1024;
+	K ,
+	
 	/** 
 	 *  M字节数  M = 1024 K bytes
 	 *  M = K * 1024
 	 *  注意：乘法计算的过程是在启动时计算的，没有频繁计算，否则需要使用位运算的位移来计算来提高性能
 	 */
-	public static final Integer M = K << 10;
-	/** 
-	 *  G字节数 
-	 *  G = M * 1024
-	 */
-	public static final Integer G = M << 10;
-	/** 
-	 *  T字节数
-	 *  T = G * 1024 
-	 */
-	public static final Integer T = G << 10;
-}
-enum MeasureEnum {
-	K ,
 	M {
 		@Override
 		public Integer getValue() {
 			return K.getValue() << 10;
 		}
 	},
+	
+	/** 
+	 *  G字节数 
+	 *  G = M * 1024
+	 */
 	G {
 		@Override
 		public Integer getValue() {
 			return M.getValue() << 10;
 		}
 	},
+	
+	/** 
+	 *  T字节数
+	 *  T = G * 1024 
+	 */
 	T {
 		@Override
 		public Integer getValue() {
 			return G.getValue() << 10;
 		}
 	};
+	
 	private  Integer value = 1024;
 	public Integer getValue(){
 		return value;

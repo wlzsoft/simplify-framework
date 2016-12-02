@@ -37,7 +37,7 @@ import javax.imageio.ImageIO;
 import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.utils.enums.DateFormatEnum;
 import com.meizu.simplify.utils.enums.EncodingEnum;
-import com.meizu.simplify.utils.enums.Measure;
+import com.meizu.simplify.utils.enums.MeasureEnum;
 import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
 /**
  * <p><b>Title:</b><i>文件操作工具类</i></p>
@@ -55,10 +55,8 @@ import com.meizu.simplify.utils.enums.SpecialCharacterEnum;
  *
  */
 public class FileUtil {
-	private static final int DEFAULT_BUFFER_SIZE = 4 * Measure.K;
-	/**
-	 * 构造方法，禁止实例化
-	 */
+	private static final int DEFAULT_BUFFER_SIZE = 4 * MeasureEnum.K.getValue();
+	
 	private FileUtil() {
 	}
 	
