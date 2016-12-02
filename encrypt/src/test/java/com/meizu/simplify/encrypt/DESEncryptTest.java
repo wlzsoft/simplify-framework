@@ -23,13 +23,19 @@ public class DESEncryptTest {
 	
 	public static void main(String[] args) {
 		try {
-			System.out.println(DESEncrypt.DESAndBase64Encrypt("tttt","sdferese", "utf-8"));
+			System.out.println(DESEncrypt.encryptAndBase64("tttt","sdferese", "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		byte[] b = DESEncrypt.encrypt("tttt".getBytes(),"sdferese".getBytes(),null);
 		System.out.println(new String(b));
+		try {
+			DESEncrypt.decryptAndBase64("fQNE5r5FnoI=", "sdferese", "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@Test
 	public void test() {
@@ -46,9 +52,9 @@ public class DESEncryptTest {
 	
 	public static void DES(String[] args) {
 		try {
-			String encryptString = DESEncrypt.DESAndBase64Encrypt("meizu&123456", "meizuall", "utf-8");
+			String encryptString = DESEncrypt.encryptAndBase64("meizu&123456", "meizuall", "utf-8");
 			System.out.println(encryptString+"||||||||||||||");
-			String decryptString = DESEncrypt.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
+			String decryptString = DESEncrypt.decryptAndBase64(encryptString, "meizuall", "utf-8");
 			System.out.println(decryptString+"////////////");
 			
 //			String token=encrypt("meizu&123456","meizuall");

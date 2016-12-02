@@ -99,7 +99,7 @@ public class DESEncrypt {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String DESAndBase64Encrypt(String encryptString,String encrptKey,String charset) throws UnsupportedEncodingException{
+	public static String encryptAndBase64(String encryptString,String encrptKey,String charset) throws UnsupportedEncodingException{
 		byte[] key = encrptKey.getBytes(charset);
         byte[] iv = encrptKey.getBytes(charset);
         byte[] data = encrypt(encryptString.getBytes(charset), key, iv);
@@ -117,7 +117,7 @@ public class DESEncrypt {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String DESAndBase64Decrypt(String encryptString,String encrptKey,String charset) throws UnsupportedEncodingException{
+	public static String decryptAndBase64(String encryptString,String encrptKey,String charset) throws UnsupportedEncodingException{
 		
 		//String aaa= java.net.URLDecoder.decode(java.net.URLEncoder.encode(encryptString,charset),charset);
         byte[] resultArr = Base64Encrypt.decodeToBytes(encryptString);
