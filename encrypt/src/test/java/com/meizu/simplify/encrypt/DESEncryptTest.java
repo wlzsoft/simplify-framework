@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.DES;
 import com.meizu.simplify.encrypt.des.DESEncrypt;
 
 /**
@@ -21,11 +20,22 @@ import com.meizu.simplify.encrypt.des.DESEncrypt;
  *
  */
 public class DESEncryptTest {
+	
+	public static void main(String[] args) {
+		try {
+			System.out.println(DESEncrypt.DESAndBase64Encrypt("tttt","sdferese", "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte[] b = DESEncrypt.encrypt("tttt".getBytes(),"sdferese".getBytes(),null);
+		System.out.println(new String(b));
+	}
 	@Test
 	public void test() {
-		byte[] b = new DESEncrypt().encode("�ز�".getBytes(),"sdferese".getBytes());
+		byte[] b = DESEncrypt.encrypt("�ز�".getBytes(),"sdferese".getBytes(),null);
 		System.out.println(new String(b));
-		System.out.println(new String(new DESEncrypt().decode(b,"sdferese".getBytes())));
+		System.out.println(new String(DESEncrypt.decrypt(b,"sdferese".getBytes(),null)));
 		
 		String source = "{\"text\":\"哈哈哈哈，也\"}";
 //		String source = "�ز�";
@@ -36,14 +46,14 @@ public class DESEncryptTest {
 	
 	public static void DES(String[] args) {
 		try {
-			String encryptString = DES.DESAndBase64Encrypt("meizu&123456", "meizuall", "utf-8");
+			String encryptString = DESEncrypt.DESAndBase64Encrypt("meizu&123456", "meizuall", "utf-8");
 			System.out.println(encryptString+"||||||||||||||");
-			String decryptString = DES.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
+			String decryptString = DESEncrypt.DESAndBase64Decrypt(encryptString, "meizuall", "utf-8");
 			System.out.println(decryptString+"////////////");
 			
 //			String token=encrypt("meizu&123456","meizuall");
-			String token64 = DES.encrypt64("meizu&123456","meizuall");
-			token64 = DES.encrypt64("meizu&123456","meizuall");
+			String token64 = DESEncrypt.encrypt64("meizu&123456","meizuall");
+			token64 = DESEncrypt.encrypt64("meizu&123456","meizuall");
 			System.out.println(token64);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
