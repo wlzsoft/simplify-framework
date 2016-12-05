@@ -323,6 +323,7 @@ public class TestController extends SystemController<TestModel> {
 	public byte[] testDownloadFile(HttpServletRequest request, HttpServletResponse response, TestModel model)    {
 		File file = new File(ClassPathUtil.getClassPath()+"test.jpg");
 		try {
+//			Message.error("download test");
 			//以下代码重点用于测试下载功能，不能做正式代码参考，因为没做兼容考虑，一旦文件较大，会导致流截断，因为空间只有1024*80
 			FileInputStream fis = new FileInputStream(file);
 			byte[] byteArr = new byte[1024*80];
