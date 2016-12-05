@@ -22,8 +22,9 @@ import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 
 /**
  * 
- * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>DES加密算法</i></p>
+ * <p>Desc: 1.加密模式：支持ECB(DES-ECB),CBC(DES-CBC),CTR(DES-CTR),OFB(DES-OFB),CFB(DES-CFB)等
+	 *      2.填充模式：PKCS5Padding,PKCS7Padding,ZeroPadding,ISO10126,ansix923,NoPadding(加密数据长度必须是8的倍数)，等等</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -39,12 +40,16 @@ public class DESEncrypt {
 	
 //	protected SecretKey secretKey;
 	
+	/**
+	 * 
+	 * 方法用途: 获取原始安全密钥<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @return
+	 */
 	private static SecretKey getSecretKey(byte[] key) {
 		try {
-			// 从原始密钥数据创建DESKeySpec对象
 			DESKeySpec keySpec = new DESKeySpec(key);
-			// 创建一个密匙工厂，然后用它把DESKeySpec转换成
-			// 一个SecretKey对象
 			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 //			secretKey = keyFactory.generateSecret(keySpec);
 //			return secretKey;
@@ -59,106 +64,131 @@ public class DESEncrypt {
 	    return null;
 	}
 	
-	
 	/**
 	 * 
-	 * 方法用途: 待验证，是否可用<br>
-	 * 操作步骤: TODO<br>
-	 * @param str
-	 * @param key
-	 * @return
-	 */
-	public static String encrypt64(String str, String key) {
-		try {
-			if (str == null || str.length() < 1) return "";
-			DESKeySpec keySpec = new DESKeySpec(key.getBytes("UTF-8"));
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-			SecretKey secretKey = keyFactory.generateSecret(keySpec);
-			Cipher c1 = Cipher.getInstance("DES");
-			c1.init(Cipher.ENCRYPT_MODE, secretKey);
-			byte[] cipherByte = c1.doFinal(str.getBytes());
-			//System.out.println(bytesToHexString(cipherByte)+"test1");
-			//String sssString = new String(cipherByte);
-			//System.out.println(sssString+"|sdfsdf");
-//			System.out.println(Base64Encoder.encode(cipherByte));
-			return new String(Base64Encrypt.encode(cipherByte));
-		} catch ( Exception e ) {
-			return "";
-		}
-	}
-	
-	
-	/**
-	 * 
-	 * 
-	 * 方法用途: DES加密Base64编码,key值作为IV向量值<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: DES加密并使用Base64编码<br>
+	 * 操作步骤: 如果使用向量，那么key值作为IV向量值<br>
 	 * @param encryptString 
-	 * @param encrptKey
+	 * @param encrptKey 必须是8个字节，如果是ascii编码，那么都是8个字符，如果是中文等其他字符，那么在charset是utf-8，是2到3个汉字("中文st"这个key才合法)，如果是gbk，那么是4汉字("中文测试"这个key才合法)
 	 * @param charset
+	 * @param useIV
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String encryptAndBase64(String encryptString,String encrptKey,String charset) throws UnsupportedEncodingException{
+	public static String encryptAndBase64(String encryptString,String encrptKey,String charset,boolean useIV) throws UnsupportedEncodingException{
 		byte[] key = encrptKey.getBytes(charset);
-        byte[] iv = encrptKey.getBytes(charset);
-        byte[] data = encrypt(encryptString.getBytes(charset), key, iv);
+		byte[] iv = null;
+		if(useIV) {
+			iv = encrptKey.getBytes(charset);
+		}
+		byte[] data = encrypt(encryptString.getBytes(charset), key, iv);
         return new String(Base64Encrypt.encode(data));
 		
 	}
+	
 	/**
 	 * 
-	 * 
-	 * 方法用途: DES解密Base64编码,key值作为IV向量值<br>
-	 * 操作步骤: TODO<br>
+	 * 方法用途: Base64解码并使用DES解密<br>
+	 * 操作步骤: 如果使用向量，那么key值作为IV向量值<br>
 	 * @param encryptString
 	 * @param encrptKey
 	 * @param charset
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String decryptAndBase64(String encryptString,String encrptKey,String charset) throws UnsupportedEncodingException{
-		
-		//String aaa= java.net.URLDecoder.decode(java.net.URLEncoder.encode(encryptString,charset),charset);
+	public static String base64AndDecrypt(String encryptString,String encrptKey,String charset,boolean useIV) throws UnsupportedEncodingException{
         byte[] resultArr = Base64Encrypt.decodeToBytes(encryptString);
 		byte[] key = encrptKey.getBytes(charset);
-        byte[] iv = encrptKey.getBytes(charset);
-//        byte[] data = CBCEncrypt(encryptString.getBytes(charset), key, iv);
+		byte[] iv = null;
+		if(useIV) {
+			iv = encrptKey.getBytes(charset);
+		}
         return new String(decrypt(resultArr, key, iv));
 		
 	}
-
+	
+	public static byte[] encrypt(String encryptString,String encrptKey,String charset,boolean useIV) {
+		try {
+			byte[] key = encrptKey.getBytes(charset);
+			byte[] iv = null;
+			if(useIV) {
+				iv = encrptKey.getBytes(charset);
+			}
+			byte[] data = encrypt(encryptString.getBytes(charset), key, iv);
+			return data;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static String decrypt(byte[] data, String encrptKey,String charset,boolean useIV) {
+		try {
+			byte[] key = encrptKey.getBytes(charset);
+			byte[] iv = null;
+			if(useIV) {
+				iv = encrptKey.getBytes(charset);
+			}
+			byte[] cipherByte = decrypt(data,key,iv);
+			return new String(cipherByte);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static String encryptToHex(String encryptString, String encrptKey,String charset,boolean useIV) {
+		byte[] cipherByte = encrypt(encryptString,encrptKey,charset,useIV);
+		return ByteHexUtil.bytes2Hex(cipherByte);
+	}
+	
+	public static String hexToDecrypt(String encryptString, String encrptKey,String charset,boolean useIV) {
+		byte[] data = ByteHexUtil.hex2Bytes(encryptString);
+		return decrypt(data, encrptKey, charset, useIV);
+	}
 	
 	/**
 	 * 
-	 * 方法用途: DES 加密<br>
+	 * 方法用途: URLEncoder编码并且DES加密<br>
 	 * 操作步骤: 注意：可解决中文乱码问题(加密算法，unicode转码，URIEncode转码，都可以解决乱码问题)<br>
 	 * @param str
 	 * @param key
 	 * @param charset
 	 * @return
 	 */
-	public static String encrypt(String str, String key,String charset) {
+	public static String urlEncodeAndEncrypt(String encryptString, String encrptKey,String charset,boolean useIV) {
 		try {
-			String result = encrypt(str, key);
 			if(!(null == charset || charset.length() < 1)){
-				result = URLEncoder.encode(result, charset);
+				encryptString = URLEncoder.encode(encryptString, charset);
 			}
+			String result = encryptToHex(encryptString, encrptKey,charset,useIV);
 			return result;
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException e) {
 			return "";
 		}
 	}
 	
-	public static String encrypt(String str, String key) {
+	/**
+	 * 
+	 * 方法用途: DES解密并URLEncoder解码<br>
+	 * 操作步骤: 注意：可解决中文乱码问题(加密算法，unicode转码，URIEncode转码，都可以解决乱码问题)<br>
+	 * @param str
+	 * @param key
+	 * @param charset
+	 * @return
+	 */
+	public static String decryptAndUrldecode(String str, String key,String charset,boolean useIV) {
 		try {
-			if (str == null || str.length() < 1) return "";
-			
-			byte[] cipherByte = DESEncrypt.encrypt(str.getBytes(),key.getBytes(),null);
-			cipherByte = ByteHexUtil.bytes2Hex(cipherByte).getBytes();
-			String result = new String(cipherByte);
+			if (str == null || str.length() < 1) {
+				return "";
+			}
+			String result = hexToDecrypt(str,key,charset,useIV);
+			if(!(null == charset || charset.length() < 1)){
+				result = URLDecoder.decode(result, charset);
+			}
 			return result;
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 			return "";
 		}
 	}
@@ -166,11 +196,10 @@ public class DESEncrypt {
 	/**
 	 * 
 	 * 方法用途: DES加密<br>
-	 * 操作步骤: 1.加密模式：支持ECB(DES-ECB),CBC(DES-CBC),CTR(DES-CTR),OFB(DES-OFB),CFB(DES-CFB)等
-	 *          2.填充模式：PKCS5Padding,PKCS7Padding,ZeroPadding,ISO10126,ansix923,NoPadding(设置这个选项表示不填充)等等<br>
+	 * 操作步骤: TODO <br>
 	 * @param input
 	 * @param key
-	 * @param iv 加密向量
+	 * @param iv 加密向量-向量是为了提高安全性，使加密的数据更难被破解(用于明文中的重复字符，在加密后，还是重复，这样就有规律可循)
 	 * @return
 	 */
 	public static byte[] encrypt(byte[] input,byte[] key, byte[] iv) {
@@ -179,25 +208,20 @@ public class DESEncrypt {
 //			secretKey = getSecretKey(key);
 //		}
 		try {
-			// Cipher对象实际完成加密操作
 			Cipher cipher;
-			if(iv != null) {
+			if(iv != null) {//CBC模式，必须有向量值，否则加密的数据不固定，导致加密的值无法解密(解密异常java.security.InvalidKeyException: Parameters missing)
 				cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-				// 若采用NoPadding模式，data长度必须是8的倍数
-				// cipher = Cipher.getInstance("DES/CBC/NoPadding");
 				IvParameterSpec param = new IvParameterSpec(iv);
-				// 用密匙初始化Cipher对象
-				try {
-					cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(key),param);
-				} catch (InvalidAlgorithmParameterException e) {
-					e.printStackTrace();
-				}
-			} else {
-				cipher = Cipher.getInstance("DES");
+				cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(key),param);
+			} else {//ECB模式不支持向量
+				cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 				cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(key));
 			}
 			byte[] cipherByte = cipher.doFinal(input);
 			return  cipherByte;
+		} catch (InvalidAlgorithmParameterException e) {
+			System.err.println("无效算法向量参数异常,使用向量的CBC模式会有这个异常");
+			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			System.err.println("DES算法，加密数据出错!");
 			e.printStackTrace();
@@ -227,25 +251,20 @@ public class DESEncrypt {
 //		}
 		try {	
 			Cipher cipher;
-			if(iv != null) {
-				// using DES in CBC mode
+			if(iv != null) {//CBC模式，必须有向量值，否则加密的数据不固定，导致加密的值无法解密(解密异常java.security.InvalidKeyException: Parameters missing)
 		        cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-		        // 若采用NoPadding模式，data长度必须是8的倍数
-		        // Cipher cipher = Cipher.getInstance("DES/CBC/NoPadding");
-		        // 用密匙初始化Cipher对象
 		        IvParameterSpec param = new IvParameterSpec(iv);
-		        try {
-					cipher.init(Cipher.DECRYPT_MODE, getSecretKey(key), param);
-				} catch (InvalidAlgorithmParameterException e) {
-					e.printStackTrace();
-				}
-			} else {
-				cipher = Cipher.getInstance("DES");
+				cipher.init(Cipher.DECRYPT_MODE, getSecretKey(key), param);
+			} else {//ECB模式不支持向量
+				cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 //				cipher.init(Cipher.DECRYPT_MODE,secretKey);
 				cipher.init(Cipher.DECRYPT_MODE,getSecretKey(key));
 			}
-			// 正式执行解密操作
+			// 执行解密操作
 			return cipher.doFinal(input);
+		} catch (InvalidAlgorithmParameterException e) {
+			System.err.println("无效算法向量参数异常,使用向量的CBC模式会有这个异常");
+			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			System.err.println("DES算法，解密出错。");
 			e.printStackTrace();
@@ -260,34 +279,5 @@ public class DESEncrypt {
 		}
 		return null;
 	}
-	
-	
-	
-	
-	/**
-	 * 
-	 * 方法用途: DES 加密<br>
-	 * 操作步骤: 注意：可解决中文乱码问题(加密算法，unicode转码，URIEncode转码，都可以解决乱码问题)<br>
-	 * @param str
-	 * @param key
-	 * @param charset
-	 * @return
-	 */
-	public static String decrypt(String str, String key,String charset) {
-		try {
-			if (str == null || str.length() < 1) {
-				return "";
-			}
-			String result = new String(DESEncrypt.decrypt(ByteHexUtil.hex2Bytes(str),key.getBytes(),null),charset);
-			if(!(null == charset || charset.length() < 1)){
-				result = URLDecoder.decode(result, charset);
-			}
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-	
 
 }

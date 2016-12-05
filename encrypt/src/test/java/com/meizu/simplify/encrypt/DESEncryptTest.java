@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
+import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 import com.meizu.simplify.encrypt.des.DESEncrypt;
 
 /**
@@ -21,49 +22,29 @@ import com.meizu.simplify.encrypt.des.DESEncrypt;
  */
 public class DESEncryptTest {
 	
-	public static void main(String[] args) {
+	@Test
+	public  void testEncryptAndBase64() {
 		try {
-			System.out.println(DESEncrypt.encryptAndBase64("tttt","sdferese", "utf-8"));
+			String encryptStr = DESEncrypt.encryptAndBase64("tttt","sdferese", "utf-8",true);
+			System.out.println(encryptStr);
+			byte[] b = DESEncrypt.encrypt("tttt".getBytes(),"sdferese".getBytes(),null);
+			System.out.println(new String(Base64Encrypt.encode(b)));
+			System.out.println(DESEncrypt.base64AndDecrypt(encryptStr, "sdferese", "utf-8",true));
+			String encryptStr2 = DESEncrypt.encryptAndBase64("tttt","中文测试", "gbk",true);
+			System.out.println(DESEncrypt.base64AndDecrypt(encryptStr2, "中文测试", "gbk",true));
+			String encryptStr3 = DESEncrypt.encryptAndBase64("tttt","中文st", "utf-8",true);
+			System.out.println(DESEncrypt.base64AndDecrypt(encryptStr3, "中文st", "utf-8",true));
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		byte[] b = DESEncrypt.encrypt("tttt".getBytes(),"sdferese".getBytes(),null);
-		System.out.println(new String(b));
-		try {
-			DESEncrypt.decryptAndBase64("fQNE5r5FnoI=", "sdferese", "utf-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	@Test
-	public void test() {
+	public void testEncrypt() {
 		byte[] b = DESEncrypt.encrypt("�ز�".getBytes(),"sdferese".getBytes(),null);
-		System.out.println(new String(b));
 		System.out.println(new String(DESEncrypt.decrypt(b,"sdferese".getBytes(),null)));
-		
 		String source = "{\"text\":\"哈哈哈哈，也\"}";
-//		String source = "�ز�";
-		String re =DESEncrypt.encrypt(source, "sdferese");
+		String re =DESEncrypt.encryptToHex(source, "sdferese","utf-8",false);
 		System.out.println(re);
-		System.out.println(DESEncrypt.decrypt(re,  "sdferese","UTF-8"));
-	}
-	
-	public static void DES(String[] args) {
-		try {
-			String encryptString = DESEncrypt.encryptAndBase64("meizu&123456", "meizuall", "utf-8");
-			System.out.println(encryptString+"||||||||||||||");
-			String decryptString = DESEncrypt.decryptAndBase64(encryptString, "meizuall", "utf-8");
-			System.out.println(decryptString+"////////////");
-			
-//			String token=encrypt("meizu&123456","meizuall");
-			String token64 = DESEncrypt.encrypt64("meizu&123456","meizuall");
-			token64 = DESEncrypt.encrypt64("meizu&123456","meizuall");
-			System.out.println(token64);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println(DESEncrypt.hexToDecrypt(re, "sdferese", "utf-8", false));
 	}
 }
