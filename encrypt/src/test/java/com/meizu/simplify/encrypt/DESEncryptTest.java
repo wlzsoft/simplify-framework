@@ -1,7 +1,5 @@
 package com.meizu.simplify.encrypt;
 
-import java.io.UnsupportedEncodingException;
-
 import org.junit.Test;
 
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
@@ -23,28 +21,46 @@ import com.meizu.simplify.encrypt.des.DESEncrypt;
 public class DESEncryptTest {
 	
 	@Test
-	public  void testEncryptAndBase64() {
-		try {
-			String encryptStr = DESEncrypt.encryptAndBase64("tttt","sdferese", "utf-8",true);
-			System.out.println(encryptStr);
-			byte[] b = DESEncrypt.encrypt("tttt".getBytes(),"sdferese".getBytes(),null);
-			System.out.println(new String(Base64Encrypt.encode(b)));
-			System.out.println(DESEncrypt.base64AndDecrypt(encryptStr, "sdferese", "utf-8",true));
-			String encryptStr2 = DESEncrypt.encryptAndBase64("tttt","中文测试", "gbk",true);
-			System.out.println(DESEncrypt.base64AndDecrypt(encryptStr2, "中文测试", "gbk",true));
-			String encryptStr3 = DESEncrypt.encryptAndBase64("tttt","中文st", "utf-8",true);
-			System.out.println(DESEncrypt.base64AndDecrypt(encryptStr3, "中文st", "utf-8",true));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+	public  void testEncryptAndBase64ECB() {
+		String encryptStr = DESEncrypt.encryptAndBase64ECB("tttt","sdferese", "utf-8");
+		System.out.println(encryptStr);
+		byte[] b = DESEncrypt.encryptECB("tttt".getBytes(),"sdferese".getBytes());
+		System.out.println(new String(Base64Encrypt.encode(b)));
+		System.out.println(DESEncrypt.base64AndDecryptECB(encryptStr, "sdferese", "utf-8"));
+		String encryptStr2 = DESEncrypt.encryptAndBase64ECB("tttt","中文测试", "gbk");
+		System.out.println(DESEncrypt.base64AndDecryptECB(encryptStr2, "中文测试", "gbk"));
+		String encryptStr3 = DESEncrypt.encryptAndBase64ECB("tttt","中文st", "utf-8");
+		System.out.println(DESEncrypt.base64AndDecryptECB(encryptStr3, "中文st", "utf-8"));
 	}
 	@Test
-	public void testEncrypt() {
-		byte[] b = DESEncrypt.encrypt("�ز�".getBytes(),"sdferese".getBytes(),null);
-		System.out.println(new String(DESEncrypt.decrypt(b,"sdferese".getBytes(),null)));
+	public void testEncryptECB() {
+		byte[] b = DESEncrypt.encryptECB("�ز�".getBytes(),"sdferese".getBytes());
+		System.out.println(new String(DESEncrypt.decryptECB(b,"sdferese".getBytes())));
 		String source = "{\"text\":\"哈哈哈哈，也\"}";
-		String re =DESEncrypt.encryptToHex(source, "sdferese","utf-8",false);
+		String re =DESEncrypt.encryptToHexECB(source, "sdferese","utf-8");
 		System.out.println(re);
-		System.out.println(DESEncrypt.hexToDecrypt(re, "sdferese", "utf-8", false));
+		System.out.println(DESEncrypt.hexToDecryptECB(re, "sdferese", "utf-8"));
+	}
+	
+	@Test
+	public  void testEncryptAndBase64CBC() {
+		String encryptStr = DESEncrypt.encryptAndBase64CBC("tttt","sdferese", "utf-8");
+		System.out.println(encryptStr);
+		byte[] b = DESEncrypt.encryptCBC("tttt".getBytes(),"sdferese".getBytes());
+		System.out.println(new String(Base64Encrypt.encode(b)));
+		System.out.println(DESEncrypt.base64AndDecryptCBC(encryptStr, "sdferese", "utf-8"));
+		String encryptStr2 = DESEncrypt.encryptAndBase64CBC("tttt","中文测试", "gbk");
+		System.out.println(DESEncrypt.base64AndDecryptCBC(encryptStr2, "中文测试", "gbk"));
+		String encryptStr3 = DESEncrypt.encryptAndBase64CBC("tttt","中文st", "utf-8");
+		System.out.println(DESEncrypt.base64AndDecryptCBC(encryptStr3, "中文st", "utf-8"));
+	}
+	@Test
+	public void testEncryptCBC() {
+		byte[] b = DESEncrypt.encryptCBC("�ز�".getBytes(),"sdferese".getBytes());
+		System.out.println(new String(DESEncrypt.decryptCBC(b,"sdferese".getBytes())));
+		String source = "{\"text\":\"哈哈哈哈，也\"}";
+		String re =DESEncrypt.encryptToHexCBC(source, "sdferese","utf-8");
+		System.out.println(re);
+		System.out.println(DESEncrypt.hexToDecryptCBC(re, "sdferese", "utf-8"));
 	}
 }

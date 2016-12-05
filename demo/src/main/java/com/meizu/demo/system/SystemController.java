@@ -50,7 +50,7 @@ public class SystemController<T extends Model> extends BaseController<T> {
 			return false;
 		}
 		String auth = "";//CookiesUtil.loadCookie("SYSTEM_LOGIN_FLAG", request);
-		JSONObject authjson = JSONObject.parseObject(DESEncrypt.hexToDecrypt(auth, "SYSTEM_AUTOLOGIN_KEY","UTF-8",false));
+		JSONObject authjson = JSONObject.parseObject(DESEncrypt.hexToDecryptECB(auth, "SYSTEM_AUTOLOGIN_KEY","UTF-8"));
 		if (authjson != null && ObjectUtil.isInt(authjson.get("uid"))) {
 			String[] domainArr = StringUtil.parseString(request.getServerName(),"").split("\\.");
 			String curDomain = "";

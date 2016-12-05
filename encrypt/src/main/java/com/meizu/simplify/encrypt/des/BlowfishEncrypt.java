@@ -11,7 +11,7 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
 
 /**
  * <p><b>Title:</b><i>BlowFish对称加密算法</i></p>
- * <p>Desc: 可用来加密64比特长度的字符串。32位处理器诞生后，Blowfish算法因其在加密速度上超越了DES而引起人们的关注。Blowfish算法具有加密速度快、紧凑、密钥长度可变、可免费使用等特点</p>
+ * <p>Desc: Blowfish使用16到448位(bit)不同长度的密钥对数据进行16次加密,目前还没有针对blowfish的破解。32位处理器诞生后，Blowfish算法因其在加密速度上超越了DES而引起人们的关注。Blowfish算法具有加密速度快、紧凑、密钥长度可变、可免费使用等特点</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
