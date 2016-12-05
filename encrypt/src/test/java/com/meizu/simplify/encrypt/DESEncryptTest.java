@@ -46,7 +46,7 @@ public class DESEncryptTest {
 	public  void testEncryptAndBase64CBC() {
 		String encryptStr = DESEncrypt.encryptAndBase64CBC("tttt","sdferese", "utf-8");
 		System.out.println(encryptStr);
-		byte[] b = DESEncrypt.encryptCBC("tttt".getBytes(),"sdferese".getBytes());
+		byte[] b = DESEncrypt.encryptCBC("tttt".getBytes(),"sdferese".getBytes(),"sdferese".getBytes());
 		System.out.println(new String(Base64Encrypt.encode(b)));
 		System.out.println(DESEncrypt.base64AndDecryptCBC(encryptStr, "sdferese", "utf-8"));
 		String encryptStr2 = DESEncrypt.encryptAndBase64CBC("tttt","中文测试", "gbk");
@@ -56,8 +56,8 @@ public class DESEncryptTest {
 	}
 	@Test
 	public void testEncryptCBC() {
-		byte[] b = DESEncrypt.encryptCBC("�ز�".getBytes(),"sdferese".getBytes());
-		System.out.println(new String(DESEncrypt.decryptCBC(b,"sdferese".getBytes())));
+		byte[] b = DESEncrypt.encryptCBC("�ز�".getBytes(),"sdferese".getBytes(),"sdferese".getBytes());
+		System.out.println(new String(DESEncrypt.decryptCBC(b,"sdferese".getBytes(),"sdferese".getBytes())));
 		String source = "{\"text\":\"哈哈哈哈，也\"}";
 		String re =DESEncrypt.encryptToHexCBC(source, "sdferese","utf-8");
 		System.out.println(re);

@@ -588,12 +588,12 @@ public class DESEncrypt {
 		return base64AndDecrypt(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
 	}
 
-	public static byte[] encryptCBC(byte[] data, byte[] key) {
-		return encrypt(data, key, key, "DES", "CBC", "PKCS5Padding");
+	public static byte[] encryptCBC(byte[] data, byte[] key,byte[] iv) {
+		return encrypt(data, key, iv, "DES", "CBC", "PKCS5Padding");
 	}
 	
-	public static byte[] decryptCBC(byte[] data, byte[] key) {
-		return decrypt(data, key, key, "DES", "CBC", "PKCS5Padding");
+	public static byte[] decryptCBC(byte[] data, byte[] key,byte[] iv) {
+		return decrypt(data, key, iv, "DES", "CBC", "PKCS5Padding");
 	}
 
 	public static String encryptToHexCBC(String data, String key, String charset) {
