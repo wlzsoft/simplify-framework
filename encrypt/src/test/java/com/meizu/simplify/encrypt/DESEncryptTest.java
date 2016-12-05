@@ -36,10 +36,10 @@ public class DESEncryptTest {
 	public void testEncryptECB() {
 		byte[] b = DESEncrypt.encryptECB("�ز�".getBytes(),"sdferese".getBytes());
 		System.out.println(new String(DESEncrypt.decryptECB(b,"sdferese".getBytes())));
-		String source = "{\"text\":\"哈哈哈哈，也\"}";
-		String re =DESEncrypt.encryptToHexECB(source, "sdferese","utf-8");
-		System.out.println(re);
-		System.out.println(DESEncrypt.hexToDecryptECB(re, "sdferese", "utf-8"));
+		String data = "{\"text\":\"哈哈哈哈，也\"}";
+		String result =DESEncrypt.encryptToHexECB(data, "sdferese","utf-8");
+		System.out.println(result);
+		System.out.println(DESEncrypt.hexToDecryptECB(result, "sdferese", "utf-8"));
 	}
 	
 	@Test
@@ -58,9 +58,9 @@ public class DESEncryptTest {
 	public void testEncryptCBC() {
 		byte[] b = DESEncrypt.encryptCBC("�ز�".getBytes(),"sdferese".getBytes(),"sdferese".getBytes());
 		System.out.println(new String(DESEncrypt.decryptCBC(b,"sdferese".getBytes(),"sdferese".getBytes())));
-		String source = "{\"text\":\"哈哈哈哈，也\"}";
-		String re =DESEncrypt.encryptToHexCBC(source, "sdferese","utf-8");
-		System.out.println(re);
-		System.out.println(DESEncrypt.hexToDecryptCBC(re, "sdferese", "utf-8"));
+		String data = "{\"text\":\"哈哈哈哈，也\"}";
+		String result =DESEncrypt.encryptToHexCBC(data, "sdferese","utf-8");
+		System.out.println(result);
+		System.out.println(DESEncrypt.hexToDecryptCBC(result, "sdferese", "utf-8"));
 	}
 }

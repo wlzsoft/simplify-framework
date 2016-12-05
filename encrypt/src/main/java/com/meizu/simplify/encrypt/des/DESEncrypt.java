@@ -302,7 +302,7 @@ public class DESEncrypt {
 		try {
 			Cipher cipher;
 			if(iv != null) {//CBC模式，必须有向量值，否则加密的数据不固定，导致加密的值无法解密(解密异常java.security.InvalidKeyException: Parameters missing)
-				cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+				cipher = Cipher.getInstance(algorithm+"/"+algorithmMode+"/"+algorithmPadding);
 				IvParameterSpec param = new IvParameterSpec(iv);
 				cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(key,algorithm),param);
 			} else {//ECB模式不支持向量
@@ -348,7 +348,7 @@ public class DESEncrypt {
 		try {	
 			Cipher cipher;
 			if(iv != null) {//CBC模式，必须有向量值，否则加密的数据不固定，导致加密的值无法解密(解密异常java.security.InvalidKeyException: Parameters missing)
-		        cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		        cipher = Cipher.getInstance(algorithm+"/"+algorithmMode+"/"+algorithmPadding);
 		        IvParameterSpec param = new IvParameterSpec(iv);
 				cipher.init(Cipher.DECRYPT_MODE, getSecretKey(key,algorithm), param);
 			} else {//ECB模式不支持向量
@@ -603,5 +603,4 @@ public class DESEncrypt {
 	public static String hexToDecryptCBC(String data, String key, String charset) {
 		return hexToDecrypt(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
 	}
-
 }
