@@ -25,7 +25,7 @@ public class RandEncryptTest {
 		String source = "哈哈哈哈，也";
 		String my = dec.encode(source);
 		System.out.println(my);
-		System.out.println(dec.decode(my));
+		System.out.println(dec.randDecode(my));
 		
 		
 	}

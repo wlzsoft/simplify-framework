@@ -23,7 +23,7 @@ public class CoverEncryptTest {
 	public void test() {
 		 CoverEncrypt encrypt = new CoverEncrypt();
 		 
-		 String str = new String(encrypt.encode("2212".getBytes()));
+		 String str = new String(encrypt.RandEncode("hahaiosueoruisdjfoseiurosufoisuefdf".getBytes()));
 		 System.out.println(str);
 		 System.out.println(encrypt.decode(str));
 	}

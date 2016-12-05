@@ -50,7 +50,7 @@ public class RandEncrypt {
 		return byResult;
 	}
 
-	private String randDecode(String strContent) {
+	public String randDecode(String strContent) {
 		int nConLen = strContent.length();
 		byte[] byKey = ByteHexUtil.hex2Bytes(strContent.substring(nConLen - 16, nConLen));
 		int nKeyLen = byKey.length;
@@ -62,23 +62,11 @@ public class RandEncrypt {
 		return new String(byteResult);
 	}
 
-	public String getRand() {
-		String strResult = new String(m_byteRand);
-		return strResult;
-	}
-
-
 	public String encode(String strContent) {
 		String strRandKey = new String(m_byteRand);
 		String strResult = ByteHexUtil.bytes2Hex(randEncode(strContent.getBytes()));
 		String strKey = ByteHexUtil.bytes2Hex(strRandKey.getBytes());
 		return (strResult + strKey);
 	}
-
-
-	public String decode(String strContent) {
-		return randDecode(strContent);
-	}
-	
 	
 }

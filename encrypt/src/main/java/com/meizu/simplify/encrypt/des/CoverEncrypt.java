@@ -61,22 +61,16 @@ public class CoverEncrypt {
 		}
 	}
 
-	public byte[] decode(byte[] input) {				
-		return decode(new String(input)).getBytes();
-	}
-
-	public byte[] encode(byte[] input) {
-		return ByteHexUtil.bytes2Hex(RandEncode(input)).getBytes();
-	}
-
 	private byte[] getRandBytes(){
 		Random rand = new Random(time);
-		byte []m_byteRand = new byte[8];
+		byte[] m_byteRand = new byte[8];
 		int n = 0;
 		while (n % 10 == 0) {
 			n = rand.nextInt();
 		}
-		n=n>0?n:-n;	    
+		if (n < 0) {
+			n = -n;
+		}    
 
 		byte[] bytesRand = String.valueOf(n).getBytes();
 
@@ -86,15 +80,7 @@ public class CoverEncrypt {
 		return m_byteRand;
 	}
 
-
-
-
-	/**
-	 *   bySrc[n]  =  
-	 * @param bySrc
-	 * @return
-	 */
-	private byte[] RandEncode(byte []bySrc) {
+	public byte[] RandEncode(byte []bySrc) {
 		byte[] m_byteRand = getRandBytes();				
 		byte[] result = new byte[bySrc.length+m_byteRand.length];
 		System.arraycopy(bySrc, 0, result, 0, bySrc.length);
@@ -105,7 +91,5 @@ public class CoverEncrypt {
 
 		return result;
 	}
-		 
-		 
 
 }
