@@ -131,6 +131,7 @@ public class RedisPool {
 		for(int i=0; i<10; i++) {
 //			RedisPool.getConnection("redis_ref_hosts");//请求后已经返回连接池中，这时候逻辑连接，应该为0，物理连接为10
 			ShardedJedis jedis = pool.getResource();
+//			jedis.close();
 			pool.returnResourceObject(jedis);
 		}
 		LOGGER.info("当前redis连接池状态：NumActive(当前激活数):"+pool.getNumActive()+"-NumIdle(当前空闲数):"+pool.getNumIdle()+"-NumWaiters(当前等待数):"+pool.getNumWaiters());

@@ -121,7 +121,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public void add(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
-		
+		set(key, export,value);
 	}
 	
 	/** 
@@ -150,7 +150,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
   				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
   	            if(export.timesanmp() > 0){
-  	            	CacheExecute.getJedis(modName).expire(SerializeUtil.serialize(k), export.timesanmp());
+  	            	jedis.expire(SerializeUtil.serialize(k), export.timesanmp());
   			    }
 			    return result.equalsIgnoreCase("OK");
   		},modName);

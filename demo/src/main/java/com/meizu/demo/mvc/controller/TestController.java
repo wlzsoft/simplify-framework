@@ -16,6 +16,10 @@ import com.meizu.demo.mvc.entity.User;
 import com.meizu.demo.mvc.model.TestModel;
 import com.meizu.demo.mvc.service.TestService;
 import com.meizu.demo.system.SystemController;
+import com.meizu.simplify.cache.CacheProxyDao;
+import com.meizu.simplify.cache.ICacheDao;
+import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
+import com.meizu.simplify.cache.redis.RedisPool;
 import com.meizu.simplify.config.info.Message;
 import com.meizu.simplify.dao.orm.BaseDao;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -28,6 +32,8 @@ import com.meizu.simplify.utils.ClassPathUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.annotation.WebCache.CacheMode;
+
+import redis.clients.jedis.ShardedJedisPool;
 
 
 /**
@@ -220,11 +226,18 @@ public class TestController extends SystemController<TestModel> {
 		return "{id:1,name:'"+test.getName()+"'}";
 	}
 	
+	ICacheDao<String, Object> cachedDao = CacheProxyDao.getCache();
+
+	private CacheExpireTimeEnum expire = CacheExpireTimeEnum.CACHE_EXP_HOUR;
+	
 	@RequestMap(path = "/testvoid/")
 	public String doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		testService.addTest(null);
+//		testService.addTest(null);
+		cachedDao.set("test22", expire, "ioisoeijfsdjfsd");//测试连接泄漏的问题，在expire起作用后，会出问题
 //		Test test = testService.doSomeThing2(null);
 //		request.setAttribute("userName", test.getName());
+		ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
+		System.out.println("当前redis连接池状态：NumActive(当前激活数):"+pool.getNumActive()+"-NumIdle(当前空闲数):"+pool.getNumIdle()+"-NumWaiters(当前等待数):"+pool.getNumWaiters());
 		return "jsp:/index";
 	}
 	
