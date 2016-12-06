@@ -132,7 +132,7 @@ public class RedisPool {
 //			RedisPool.getConnection("redis_ref_hosts");//请求后已经返回连接池中，这时候逻辑连接，应该为0，物理连接为10
 			pool.getResource();
 		}
-		LOGGER.info("当前redis连接池状态：NumActive:"+pool.getNumActive()+"NumIdle:"+pool.getNumIdle()+"NumWaiters:"+pool.getNumWaiters());
+		LOGGER.info("当前redis连接池状态：NumActive(当前激活数):"+pool.getNumActive()+"-NumIdle(当前空闲数):"+pool.getNumIdle()+"-NumWaiters(当前等待数):"+pool.getNumWaiters());
 	}
 	
 	private RedisPool() {
