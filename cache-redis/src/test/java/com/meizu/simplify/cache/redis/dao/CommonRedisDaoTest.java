@@ -3,12 +3,10 @@
 import org.junit.Test;
 
 import com.meizu.simplify.cache.ICacheDao;
-import com.meizu.simplify.cache.redis.RedisPool;
+import com.meizu.simplify.cache.redis.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.simplify.stresstester.StressTestUtils;
 import com.meizu.simplify.stresstester.core.StressTask;
-
-import redis.clients.jedis.ShardedJedis;
 public class CommonRedisDaoTest {
 	
 	ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
@@ -18,9 +16,11 @@ public class CommonRedisDaoTest {
 			@Override
 			public Object doTask() throws Exception {
 				long start = System.currentTimeMillis();
-				ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
-				jedis.set("age", "3");
-				System.out.println(jedis.get("age"));
+				CacheExecute.execute("age", (k,jedis)->{
+					jedis.set("age", "3");
+					System.out.println(jedis.get("age"));
+					return "3";
+				}, "redis_ref_hosts");
 				System.out.println((System.currentTimeMillis()-start)+"ms");
 				return null;
 			}

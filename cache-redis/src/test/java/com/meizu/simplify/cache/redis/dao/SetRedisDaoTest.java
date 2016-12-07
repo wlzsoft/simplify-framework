@@ -5,10 +5,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.meizu.simplify.cache.redis.RedisPool;
+import com.meizu.simplify.cache.redis.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.impl.HashRedisDao;
-
-import redis.clients.jedis.ShardedJedis;
 
 public class SetRedisDaoTest {
 	public static HashRedisDao client = new HashRedisDao("redis_ref_hosts");
@@ -25,15 +23,14 @@ public class SetRedisDaoTest {
 
 	@Test
 	public void originalCache() {
-		ShardedJedis jedis = RedisPool.getConnection("redis_ref_hosts");
 		String key = "aaa";
-		for (int i = 0; i < 10; i++) {
-			jedis.sadd(key, String.valueOf(i));
-		}
-		System.out.println(jedis.scard(key));
-		jedis.close();
-		System.out.println("ok");
-
+		CacheExecute.execute(key, (k,jedis)->{
+			for (int i = 0; i < 10; i++) {
+				jedis.sadd(key, String.valueOf(i));
+			}
+			System.out.println(jedis.scard(key));
+			return null;
+		},"redis_ref_hosts");
 	}
 
 }

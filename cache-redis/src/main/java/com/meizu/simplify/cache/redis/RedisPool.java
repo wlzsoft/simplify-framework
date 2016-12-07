@@ -155,11 +155,11 @@ public class RedisPool {
 	 * 
 	 * 方法用途: Connection reset by peer: socket write error 问题分析和定位解决
 	 *          1.并发量过大，连接数不够导致服务器主动关闭部分连接<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 警告==》(谨慎调用，会有连接泄漏问题)这个方法应该是私有的或是default无修饰符的 TODO<br>
 	 * @param modName
 	 * @return
 	 */
-	public static ShardedJedis getConnection(String modName) {
+	static ShardedJedis getConnection(String modName) {
 		ShardedJedisPool  pool = init(modName);
 		ShardedJedis jedis = null;
 		try {

@@ -1,8 +1,8 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
 import com.meizu.simplify.cache.dao.IGeneratorCacheDao;
+import com.meizu.simplify.cache.redis.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
-import com.meizu.simplify.cache.redis.dao.CacheExecute;
 import com.meizu.simplify.utils.SerializeUtil;
 
 /**

@@ -1,10 +1,10 @@
-package com.meizu.simplify.cache.redis.dao;
+package com.meizu.simplify.cache.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.cache.exception.CacheException;
-import com.meizu.simplify.cache.redis.RedisPool;
+import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.simplify.cache.redis.exception.RedisException;
 
@@ -30,23 +30,20 @@ import redis.clients.jedis.exceptions.JedisException;
 public class CacheExecute {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
 	
-	public static ShardedJedis getJedis(String modName) {
-		try {
-			return RedisPool.getConnection(modName);
-		} catch(RedisException ex) {
-			ex.printStackTrace();
-		}
-		return null;
-	}
 	
 	/**
-	 * 方法用途: 返回值 TODO 
-	 * 操作步骤: <br>
-	 * @param key 保存键
-	 * @return 缓存保存的对象
+	 * 方法用途: 返回值 <br>
+	 * 操作步骤: 用法 <code><br>
+	 * CacheExecute.execute(key, (k,jedis) -> {
+	 *<br>&nbsp;&nbsp;&nbsp;&nbsp;V value = null;	
+	 *<br>&nbsp;&nbsp;&nbsp;&nbsp;return value;
+	 *<br>},modName);</code>
+	 * <br>
+	 * @param key 缓存键
+	 * @return 缓存值
 	 */
 	public static <KK,VV> VV execute(KK key,ICacheExecuteCallbak<KK,VV> callback,String modName) {
-		ShardedJedis jedis = CacheExecute.getJedis(modName);
+		ShardedJedis jedis = RedisPool.getConnection(modName);
 		try {
 			return callback.call(key,jedis);
 //		} catch (TimeoutException e) {

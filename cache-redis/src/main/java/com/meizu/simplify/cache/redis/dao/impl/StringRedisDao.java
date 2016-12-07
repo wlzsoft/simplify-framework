@@ -1,8 +1,8 @@
 package com.meizu.simplify.cache.redis.dao.impl;
 
 import com.meizu.simplify.cache.dao.IStringCacheDao;
+import com.meizu.simplify.cache.redis.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
-import com.meizu.simplify.cache.redis.dao.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.ICacheExecuteCallbak;
 
 import redis.clients.jedis.ShardedJedis;
@@ -28,12 +28,12 @@ public class StringRedisDao extends BaseRedisDao<String> implements IStringCache
 
 	
 	public String getAndSet(String key, String value) {
-		String ret = CacheExecute.execute(key, (k,jedis) ->  CacheExecute.getJedis(modName).getSet(k, value), modName);
+		String ret = CacheExecute.execute(key, (k,jedis) ->  jedis.getSet(k, value), modName);
 		return ret;
 	}
 
 	public String get(String key) {
-		String ret = CacheExecute.execute(key, (k,jedis) ->  CacheExecute.getJedis(modName).get(k), modName);
+		String ret = CacheExecute.execute(key, (k,jedis) ->  jedis.get(k), modName);
 		return ret;
 	}
 
@@ -62,9 +62,9 @@ public class StringRedisDao extends BaseRedisDao<String> implements IStringCache
 
     public boolean setex(String key, int seconds, String value) {
     	Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String result = CacheExecute.getJedis(modName).setex(k,seconds, value);
+				String result = jedis.setex(k,seconds, value);
 				if(seconds > 0){
-					CacheExecute.getJedis(modName).expire(k, seconds);
+					jedis.expire(k, seconds);
 				}
 				return result.equalsIgnoreCase("OK");
 		}, modName);
