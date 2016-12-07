@@ -37,7 +37,7 @@ public class ConnectionFactory {
 	 * 操作步骤: TODO<br>
 	 * @param dataSource
 	 */
-	public static Connection getConnection(javax.sql.DataSource dataSource)   {
+	static Connection getConnection(javax.sql.DataSource dataSource)   {
 		Connection connection = container.get();
 		if (connection != null) {
 			if(LOGGER.isDebugEnabled()) {
@@ -72,7 +72,7 @@ public class ConnectionFactory {
 	 * @param iso 事务隔离级别 可选择值为 java.sql.Connection.TRANSACTION_READ_UNCOMMITTED 等
 	 * @return
 	 */
-	public static int setTransactionISO(javax.sql.DataSource dataSource,int iso) {
+	static int setTransactionISO(javax.sql.DataSource dataSource,int iso) {
 		return setTransactionISO(getConnection(dataSource), iso);
 	}
 	
