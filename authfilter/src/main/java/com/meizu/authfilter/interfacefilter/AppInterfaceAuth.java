@@ -52,6 +52,10 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 			return true;
 		}
 		
+		if(url.startsWith("/upgradeApp/uploadMapAppPackage.json")){
+			return true;
+		}
+		
 		String rosAuth = request.getHeader("ros-auth");
 		if(StringUtil.isEmpty(rosAuth)) {
 			response.setStatus(403);
