@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.utils.StringUtil;
 
-public class ZookeeperTreeInfoPrint  {
+public class ZookeeperNodeTreeInfoPrint  {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperTreeInfoPrint.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeTreeInfoPrint.class);
 
     public void tree(ZookeeperConnectionManager connectionManger,String path,StringBuffer sb) throws KeeperException, InterruptedException {
         try {
@@ -58,7 +58,7 @@ public class ZookeeperTreeInfoPrint  {
     	System.out.println( StringUtil.split("a/b/c/d"+"TODO", "/").length); 
     	System.out.println(StringUtil.substringAfterLast("a/b/c", "/"));
         ZookeeperConnectionManager connectionManger = new ZookeeperConnectionManager();
-        ZookeeperTreeInfoPrint printZookeeperTree = new ZookeeperTreeInfoPrint();
+        ZookeeperNodeTreeInfoPrint printZookeeperTree = new ZookeeperNodeTreeInfoPrint();
         connectionManger.connect(args[0],new ZookeeperConnectionWatcher());
         Thread.sleep(2000);
         System.out.println("==================");
