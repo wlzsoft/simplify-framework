@@ -2,8 +2,11 @@ package com.meizu.simplify.config.client;
 
 import java.util.List;
 
+import com.meizu.simplify.config.api.entity.ConfigEntity;
+import com.meizu.simplify.config.api.service.IConfigService;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 
@@ -24,8 +27,12 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 @Init(InitTypeEnum.CONFIG_CLIENT)
 public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class<?>> {
 	
+	@Resource
+	private IConfigService configService;
+	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		
+		ConfigEntity  config = configService.get("myconfig.properties");
+		System.out.println(config.getValue());
 	}
 }

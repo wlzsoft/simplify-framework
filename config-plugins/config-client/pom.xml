@@ -5,7 +5,7 @@
     <artifactId>config-plugins</artifactId>
     <version>${simplify.version}</version>
   </parent>
-  <artifactId>config-api</artifactId>
+  <artifactId>config-client</artifactId>
   <name>配置服务客户端</name>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
