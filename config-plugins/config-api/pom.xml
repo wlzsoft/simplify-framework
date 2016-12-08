@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu.simplify</groupId>
+    <artifactId>config-plugins</artifactId>
+    <version>${simplify.version}</version>
+  </parent>
+  <artifactId>config-api</artifactId>
+  <name>配置服务api</name>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
+   <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>config</artifactId>
+	    <version>${parent.version}</version>
+	  </dependency>
+  </dependencies>
+</project>

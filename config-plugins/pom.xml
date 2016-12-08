@@ -6,6 +6,7 @@
     <version>${simplify.version}</version>
   </parent>
   <artifactId>config-plugins</artifactId>
+  <packaging>pom</packaging>
   <name>配置解析插件</name>
   <description>实现配置文件的管理：配置服务，配置中心，分布式配置平台 的api
   </description>
@@ -14,11 +15,6 @@
   	 <parentsite></parentsite>
   </properties>
    <dependencies>
-	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
-	    <artifactId>config</artifactId>
-	    <version>${parent.version}</version>
-	  </dependency>
 	  <dependency>
          <groupId>org.apache.zookeeper</groupId>
          <artifactId>zookeeper</artifactId>
@@ -35,4 +31,7 @@
          </exclusions>
 	  </dependency>
   </dependencies>
+   <modules>
+   	<module>config-api</module>
+   </modules>
 </project>
