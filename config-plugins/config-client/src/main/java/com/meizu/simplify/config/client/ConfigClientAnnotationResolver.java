@@ -2,6 +2,7 @@ package com.meizu.simplify.config.client;
 
 import java.util.List;
 
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
@@ -19,7 +20,8 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
  * @version Version 0.1
  *
  */
-@Init(InitTypeEnum.CONFIG)
+@Bean
+@Init(InitTypeEnum.CONFIG_CLIENT)
 public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class<?>> {
 	
 	@Override

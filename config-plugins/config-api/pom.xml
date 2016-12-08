@@ -11,4 +11,11 @@
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
   </properties>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.meizu.simplify</groupId>
+  		<artifactId>rpc</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  </dependencies>
 </project>
