@@ -12,7 +12,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 public class ZookeeperNodeTreeInfoPrint  {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeTreeInfoPrint.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeTreeInfoPrintTest.class);
 
     public void tree(ZookeeperConnectionManager connectionManger,String path,StringBuffer sb) throws KeeperException, InterruptedException {
         try {
@@ -51,21 +51,5 @@ public class ZookeeperNodeTreeInfoPrint  {
         } catch (KeeperException.NoNodeException e) {
             LOGGER.info("节点 %s 不存在\n", path);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-    	args = new String[]{"127.0.0.1:2181"};
-    	System.out.println( StringUtil.split("a/b/c/d"+"TODO", "/").length); 
-    	System.out.println(StringUtil.substringAfterLast("a/b/c", "/"));
-        ZookeeperConnectionManager connectionManger = new ZookeeperConnectionManager();
-        ZookeeperNodeTreeInfoPrint printZookeeperTree = new ZookeeperNodeTreeInfoPrint();
-        connectionManger.connect(args[0],new ZookeeperConnectionWatcher());
-        Thread.sleep(2000);
-        System.out.println("==================");
-        StringBuffer sb = new StringBuffer();
-        printZookeeperTree.tree(connectionManger,"/",sb);
-        System.out.println(sb.toString());
-        System.out.println("==================");
-        connectionManger.close();
     }
 }

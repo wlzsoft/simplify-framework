@@ -1,7 +1,6 @@
 package com.meizu.simplify.config.client.zookeeper.watch;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -18,7 +17,7 @@ import com.meizu.simplify.config.client.zookeeper.ZookeeperExecute;
 
 public class ZookeeperNodeWatcher implements Watcher {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeWatcher.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeWatcherTest.class);
     ZookeeperExecute execute;
     ZookeeperConnectionManager connectionManager;
     private String watchPath = "";
@@ -71,15 +70,4 @@ public class ZookeeperNodeWatcher implements Watcher {
         }
     }
     
-    public static void main(String[] args) {
-		new ZookeeperNodeWatcher("/node10000000003", "key1").watch();
-		while(true) {
-			try {
-				TimeUnit.SECONDS.sleep(5);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
 }
