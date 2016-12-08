@@ -33,5 +33,6 @@
   </dependencies>
    <modules>
    	<module>config-api</module>
+   	<module>config-web</module>
    </modules>
 </project>
