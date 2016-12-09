@@ -26,6 +26,10 @@ public class DaoStopRelease implements IStopRelease{
 	
 	@Override
 	public void release() {
+		if(dataSourceManager == null) {
+			System.out.println("IStopRelease:无法释放数据源，因为针对这个类的依赖注入过程还未开始，可能数据源还未被初始化或是数据源已被初始化但未来得及注入，问题出现在InitTypeEnum.IOC的这个启动初始化这个阶段或之前的任何一个阶段导致的问题");
+			return;
+		}
 		dataSourceManager.closeDataSource();
 	}
 
