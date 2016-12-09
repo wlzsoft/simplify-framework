@@ -114,6 +114,18 @@
 		<artifactId>webserver</artifactId>
 		<version>${project.version}</version>
 	</dependency>
+	<!-- 日志开始-由于dubbo必须依赖log4j模块，否则报错，如果使用dubbo的情况下，那么需引入 -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.7.7</version>
+	</dependency>
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.17</version>
+	</dependency>
+	<!-- 日志结束-->
 	<dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>javax.servlet-api</artifactId>

@@ -147,7 +147,7 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
         <appender-ref ref="dailyRollingFile" />       
     </logger> -->
 	<root>
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="console.out" />
 		<appender-ref ref="console.err" />
 		<!-- <appender-ref ref="multicolorConsole" /> -->
