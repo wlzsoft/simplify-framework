@@ -34,13 +34,13 @@ public enum InitTypeEnum {
 	 */
 	CONFIG(40),
 	/**
-	 * 配置服务中心客户端初始化
-	 */
-	CONFIG_CLIENT(41),
-	/**
 	 *依赖注入 
 	 */
 	IOC(50),
+	/**
+	 * 配置服务中心客户端初始化
+	 */
+	CONFIG_CLIENT(51),
 	/**
 	 * bean创建成功后，执行ioc操作后会调用这个init方法
 	 */

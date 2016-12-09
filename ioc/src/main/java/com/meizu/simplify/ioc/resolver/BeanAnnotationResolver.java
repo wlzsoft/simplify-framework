@@ -114,7 +114,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 * @param clazz
 	 */
 	private static <T extends Bean> void buildBeanObjAction(Class<T> clazzAnno, Class<?> clazz) {
-		LOGGER.info("Bean 初始化:{}",clazz.getName());
+		LOGGER.info("Bean 开始初始化:{}",clazz.getName());
 		try {
 			T beanAnnotation = clazz.getAnnotation(clazzAnno);
 			if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
@@ -187,11 +187,21 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 			}
 			
 		} catch (InstantiationException e) {
-			e.printStackTrace();
-			LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>请检查是否构造函数执行过程出错");
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>请检查是否构造函数执行过程出错",e);
+			}
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>或是构造函数未提供，或设置为私有的");
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>或是构造函数未提供，或设置为私有的",e);
+			}
+		} catch(Error e) {
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>请检查出现的致命错误",e);
+			}
+		} catch(Throwable e) {
+			if(LOGGER.isDebugEnabled()) {
+				LOGGER.debug("bean:"+clazz.getName()+"初始化失败==>>请检查出现的未知异常",e);
+			}
 		}
 	}
 
