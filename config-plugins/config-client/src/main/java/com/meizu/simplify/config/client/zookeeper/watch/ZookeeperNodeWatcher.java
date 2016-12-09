@@ -17,7 +17,7 @@ import com.meizu.simplify.config.client.zookeeper.ZookeeperExecute;
 
 public class ZookeeperNodeWatcher implements Watcher {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeWatcherTest.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeWatcher.class);
     ZookeeperExecute execute;
     ZookeeperConnectionManager connectionManager;
     private String watchPath = "";

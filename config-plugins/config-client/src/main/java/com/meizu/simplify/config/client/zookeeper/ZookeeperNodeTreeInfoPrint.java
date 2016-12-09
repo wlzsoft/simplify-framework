@@ -12,7 +12,7 @@ import com.meizu.simplify.utils.StringUtil;
 
 public class ZookeeperNodeTreeInfoPrint  {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeTreeInfoPrintTest.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeTreeInfoPrint.class);
 
     public void tree(ZookeeperConnectionManager connectionManger,String path,StringBuffer sb) throws KeeperException, InterruptedException {
         try {
