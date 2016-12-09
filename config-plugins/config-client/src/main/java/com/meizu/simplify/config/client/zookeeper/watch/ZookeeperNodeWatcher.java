@@ -11,9 +11,9 @@ import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.meizu.simplify.config.client.zookeeper.ZookeeperConnectionManager;
-import com.meizu.simplify.config.client.zookeeper.ZookeeperConnectionWatcher;
-import com.meizu.simplify.config.client.zookeeper.ZookeeperExecute;	
+import com.meizu.simplify.zookeeper.ZookeeperConnectionManager;
+import com.meizu.simplify.zookeeper.ZookeeperConnectionWatcher;
+import com.meizu.simplify.zookeeper.ZookeeperExecute;	
 
 public class ZookeeperNodeWatcher implements Watcher {
 

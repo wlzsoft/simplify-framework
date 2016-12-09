@@ -1,5 +1,7 @@
 package com.meizu.simplify.config.api.entity;
 
+import java.io.Serializable;
+
 import com.meizu.simplify.config.api.eums.ConfigTypeEnum;
 
 /**
@@ -15,8 +17,9 @@ import com.meizu.simplify.config.api.eums.ConfigTypeEnum;
  * @version Version 0.1
  *
  */
-public class ConfigEntity {
+public class ConfigEntity implements Serializable{
 	
+	private static final long serialVersionUID = -7182027887620472022L;
 	/**
 	 * 唯一标识一个配置
 	 */

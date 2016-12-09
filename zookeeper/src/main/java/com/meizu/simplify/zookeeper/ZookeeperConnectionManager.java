@@ -1,4 +1,4 @@
-package com.meizu.simplify.config.client.zookeeper;
+package com.meizu.simplify.zookeeper;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;

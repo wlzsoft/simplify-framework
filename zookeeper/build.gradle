@@ -1,0 +1,5 @@
+
+description = 'zookeeper接口封装'
+dependencies {
+	compile project(':utils')
+}

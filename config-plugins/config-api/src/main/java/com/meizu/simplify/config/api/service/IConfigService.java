@@ -29,4 +29,13 @@ public interface IConfigService {
 	 * @return
 	 */
 	public ConfigEntity get(String name);
+	
+	/**
+	 * 
+	 * 方法用途: 保存单个配置文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param config
+	 * @return
+	 */
+	public Boolean save(ConfigEntity config);
 }

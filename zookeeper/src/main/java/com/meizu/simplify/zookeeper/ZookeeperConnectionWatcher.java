@@ -1,4 +1,4 @@
-package com.meizu.simplify.config.client.zookeeper;
+package com.meizu.simplify.zookeeper;
 
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;

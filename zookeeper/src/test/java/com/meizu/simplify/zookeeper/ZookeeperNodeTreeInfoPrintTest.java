@@ -1,6 +1,9 @@
-package com.meizu.simplify.config.client.zookeeper;
+package com.meizu.simplify.zookeeper;
 
 import com.meizu.simplify.utils.StringUtil;
+import com.meizu.simplify.zookeeper.ZookeeperConnectionManager;
+import com.meizu.simplify.zookeeper.ZookeeperConnectionWatcher;
+import com.meizu.simplify.zookeeper.ZookeeperNodeTreeInfoPrint;
 
 public class ZookeeperNodeTreeInfoPrintTest  {
 

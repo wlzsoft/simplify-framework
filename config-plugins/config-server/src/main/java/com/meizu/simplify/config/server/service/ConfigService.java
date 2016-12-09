@@ -38,4 +38,10 @@ public class ConfigService implements IConfigService{
 		config.setValue("a=b");
 		return config;
 	}
+
+	@Override
+	public Boolean save(ConfigEntity config) {
+		
+		return null;
+	}
 }

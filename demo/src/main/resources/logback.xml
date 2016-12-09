@@ -20,6 +20,6 @@
   
   <root level="info">
     <appender-ref ref="STDOUT" />
-    <appender-ref ref="RPC" />
+    <!-- <appender-ref ref="RPC" /> -->
   </root>
 </configuration>

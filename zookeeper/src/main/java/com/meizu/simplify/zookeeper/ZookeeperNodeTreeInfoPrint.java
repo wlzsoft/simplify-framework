@@ -1,4 +1,4 @@
-package com.meizu.simplify.config.client.zookeeper;
+package com.meizu.simplify.zookeeper;
 
 import java.nio.charset.Charset;
 import java.util.List;
