@@ -107,6 +107,8 @@ public class ClassUtil {
 			return Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			LOGGER.warn("通过[" + className + "]获取对应的Class对象时发生异常。", e);
+		} catch (java.lang.NoClassDefFoundError e) {
+			LOGGER.warn("通过[" + className + "]获取对应的Class对象时发生异常。可能导致的问题1：程序运行时引用了单元测试环境的类，而运行时环境的classpath非测试环境的classpath(编译时,test-Classes有类，classes中可以引用到，运行时不会扫描和加载test-Classes的类，所以导致异常)", e);
 		}
 		return null;
 	}
