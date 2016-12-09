@@ -33,9 +33,14 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
-		ConfigEntity  config = configService.get("myconfig.properties");
+		ConfigEntity entity = new ConfigEntity();
+		entity.setAppid("com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev");
+		entity.setName("redis-pool.properties");
+		entity.setValue("#maxWaitMillis=10000");
+		configService.save(entity);
+		ConfigEntity  config = configService.get("com.meizu.simplify","demo","1.2.1-SNAPSHOT","dev","redis-pool.properties");
 		System.out.println(config.getValue());
 		//开启配置监控通知
-//		new ZookeeperNodeWatcher("/node10000000003", "key1").watch();
+		new ZookeeperNodeWatcher("/simplify-config/com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev/redis-pool.properties", "test2").watch();
 	}
 }

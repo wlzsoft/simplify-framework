@@ -20,8 +20,13 @@ import com.meizu.simplify.config.api.eums.ConfigTypeEnum;
 public class ConfigEntity implements Serializable{
 	
 	private static final long serialVersionUID = -7182027887620472022L;
+	
 	/**
-	 * 唯一标识一个配置
+	 * 应用id，唯一标识一个应用
+	 */
+	private String appid;
+	/**
+	 * app内唯一标识一个配置
 	 */
 	private String name;
 	/**
@@ -32,6 +37,13 @@ public class ConfigEntity implements Serializable{
 	 * 具体配置值，配置属性值或是配置文件内容
 	 */
 	private String value;
+	
+	public String getAppid() {
+		return appid;
+	}
+	public void setAppid(String appid) {
+		this.appid = appid;
+	}
 	public String getName() {
 		return name;
 	}

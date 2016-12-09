@@ -23,6 +23,17 @@
 	    <version>${simplify.version}</version>
 	  </dependency>
 	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>zookeeper</artifactId>
+	    <version>${simplify.version}</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>test</artifactId>
+	    <version>${simplify.version}</version>
+	    <scope>test</scope>
+	  </dependency>
+	  <dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>1.7.7</version>

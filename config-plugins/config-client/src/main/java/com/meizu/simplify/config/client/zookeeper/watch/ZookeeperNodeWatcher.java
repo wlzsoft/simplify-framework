@@ -1,6 +1,7 @@
 package com.meizu.simplify.config.client.zookeeper.watch;
 
 import java.io.IOException;
+import java.net.SocketException;
 
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -11,6 +12,7 @@ import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.utils.ip.IpUtil;
 import com.meizu.simplify.zookeeper.ZookeeperConnectionManager;
 import com.meizu.simplify.zookeeper.ZookeeperConnectionWatcher;
 import com.meizu.simplify.zookeeper.ZookeeperExecute;	
@@ -18,8 +20,8 @@ import com.meizu.simplify.zookeeper.ZookeeperExecute;
 public class ZookeeperNodeWatcher implements Watcher {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(ZookeeperNodeWatcher.class);
-    ZookeeperExecute execute;
-    ZookeeperConnectionManager connectionManager;
+    private ZookeeperExecute execute;
+    private ZookeeperConnectionManager connectionManager;
     private String watchPath = "";
     private String keyName = "";
     ZookeeperConnectionWatcher watcher = new ZookeeperConnectionWatcher();
@@ -37,7 +39,13 @@ public class ZookeeperNodeWatcher implements Watcher {
     public void watch() {
         Stat stat = new Stat();
         try {
-            execute.getData(watchPath, this, stat);
+            String value = execute.getData(watchPath, this, stat);
+            try {
+				execute.createEphemeralNode(watchPath+"/"+IpUtil.getLocalIp()+":8080", value);
+			} catch (SocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         } catch (InterruptedException e) {
             LOGGER.info(e.toString());
         } catch (KeeperException e) {
@@ -49,18 +57,14 @@ public class ZookeeperNodeWatcher implements Watcher {
     @Override
     public void process(WatchedEvent event) {
 
-        // 结点更新时
+        // 结点数据被更新时
         if (event.getType() == EventType.NodeDataChanged) {
-            try {
-                LOGGER.info("连接节点数据被更新 " + event.toString() + ": (" + watchPath + "," + keyName+ ")");
-            } catch (Exception e) {
-                LOGGER.error("监听节点失败异常. " + watchPath, e);
-            }
+           LOGGER.info("监听连接节点数据被更新 " + event.toString() + ": (" + watchPath + "," + keyName+ ")");
         }
 
-        // 结点断开连接，这时不要进行处理
+        // zookeeper客户端断开连接，这时不要进行处理
         if (event.getState() == KeeperState.Disconnected) {
-           LOGGER.warn("连接节点已经断开: " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")");
+           LOGGER.warn("节点连接已经断开: " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")");
         }
         
         if (event.getState() == KeeperState.Expired) {//会话超时，需要重新激活

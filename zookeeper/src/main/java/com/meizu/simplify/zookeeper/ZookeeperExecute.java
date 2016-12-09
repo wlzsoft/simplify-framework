@@ -13,6 +13,8 @@ import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.utils.StringUtil;
+
 /**
  * <p><b>Title:</b><i>Zookeeper执行器</i></p>
  * <p>Desc: 执行zookeeper相关的命令</p>
@@ -59,6 +61,34 @@ public class ZookeeperExecute  {
     /**
      * 
      * 方法用途: 持久化写入节点数据，如果节点存在，那么更新节点数据<br>
+     * 操作步骤: 非递归创建，如果创建节点的父节点不存储，会报异常，提示节点不存在，无法创建<br>
+     * @param path
+     * @param value
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    public void writeRecursion(String path, String value) throws InterruptedException, KeeperException {
+    	String[] pathNodeArr = path.split("/");
+    	String pathNode = "";
+    	for (int i = 0; i < pathNodeArr.length; i++) {
+    		if(StringUtil.isBlank(pathNodeArr[i])) {
+    			continue;
+    		}
+			pathNode += "/"+pathNodeArr[i];
+			Stat stat = connectionManger.getZookeeper().exists(pathNode, false);
+			if(stat == null) {
+				if(i < pathNodeArr.length-1) {
+					write(pathNode,"");
+					continue;
+				}
+				write(pathNode,value);
+			}
+		}
+    }
+    
+    /**
+     * 
+     * 方法用途: 持久化写入节点数据，如果节点存在，那么更新节点数据<br>
      * 操作步骤: TODO<br>
      * @param path
      * @param value
@@ -97,12 +127,11 @@ public class ZookeeperExecute  {
      * 操作步骤: TODO<br>
      * @param path
      * @param value
-     * @param createMode
      * @return
      * @throws InterruptedException
      * @throws KeeperException
      */
-    public String createEphemeralNode(String path, String value, CreateMode createMode)
+    public String createEphemeralNode(String path, String value)
         throws InterruptedException, KeeperException {
 
         int retries = 0;
@@ -110,7 +139,7 @@ public class ZookeeperExecute  {
             try {
                 Stat stat = connectionManger.getZookeeper().exists(path, false);
                 if (stat == null) {
-                    return connectionManger.getZookeeper().create(path, value.getBytes(Charset.forName("UTF-8")), Ids.OPEN_ACL_UNSAFE, createMode);
+                    return connectionManger.getZookeeper().create(path, value.getBytes(Charset.forName("UTF-8")), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
                 } else {
                     if (value != null) {
                     	connectionManger.getZookeeper().setData(path, value.getBytes(Charset.forName("UTF-8")), stat.getVersion());
@@ -162,7 +191,7 @@ public class ZookeeperExecute  {
      * 方法用途: 获取某路径节点数据<br>
      * 操作步骤: TODO<br>
      * @param path
-     * @param watcher
+     * @param watcher 监听器
      * @param stat 统计信息对象
      * @return
      * @throws InterruptedException
@@ -172,6 +201,28 @@ public class ZookeeperExecute  {
 
         byte[] data = connectionManger.getZookeeper().getData(path, watcher, stat);
         return new String(data, Charset.forName("UTF-8"));
+    }
+    
+    /**
+     * 
+     * 方法用途: 获取某路径节点数据<br>
+     * 操作步骤: TODO<br>
+     * @param path
+     * @param isWatcher 是否开启监控
+     * @param stat 统计信息对象
+     * @return
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    public String getData(String path, boolean isWatcher, Stat stat) {
+
+		try {
+			 byte[] data = connectionManger.getZookeeper().getData(path, isWatcher, stat);
+			 return new String(data, Charset.forName("UTF-8"));
+		} catch (KeeperException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
 
     public List<String> getChildren() {

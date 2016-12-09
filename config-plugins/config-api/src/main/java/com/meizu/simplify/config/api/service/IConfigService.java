@@ -20,15 +20,33 @@ import com.meizu.simplify.ioc.annotation.Bean;
 @Bean
 @ClientBean
 public interface IConfigService {
-	
+
 	/**
 	 * 
 	 * 方法用途: 读取单个配置信息<br>
 	 * 操作步骤: 包含配置属性和配置文件<br>
-	 * @param name 用于唯一标识一个配置
+	 * @param groupId
+	 * @param artifactId
+	 * @param version
+	 * @param environment 
+	 * @param name 用于app内唯一标识一个配置
 	 * @return
 	 */
-	public ConfigEntity get(String name);
+	ConfigEntity get(String groupId, String artifactId, String version, String environment, String name);
+
+	/**
+	 * 
+	 * 方法用途: 读取单个配置信息<br>
+	 * 操作步骤: 包含配置属性和配置文件<br>
+	 * @param groupId
+	 * @param artifactId
+	 * @param version
+	 * @param environment 
+	 * @param folder 前缀目录
+	 * @param name 用于app内唯一标识一个配置
+	 * @return
+	 */
+	ConfigEntity get(String groupId, String artifactId, String version, String environment, String folder, String name);
 	
 	/**
 	 * 
