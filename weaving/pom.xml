@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>${simplify.version}</version>
+    <version>1.2.1-SNAPSHOT</version>
   </parent>
   <artifactId>weaving</artifactId>
   <name>织入组件</name>
@@ -58,6 +58,7 @@
 						<Project-name>${project.name}</Project-name>
 						<Project-version>${project.version}</Project-version>
 						<Build-Time>${current.timestamp}</Build-Time>
+						<!-- <Premain-Class>com.meizu.simplify.weaving.AopClassFileTransformer</Premain-Class> -->
 					</manifestEntries>
 				</archive>
 				<!-- <skip>true</skip> -->

@@ -202,6 +202,21 @@ public class PropertieUtil {
 		return (T) obj;
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 获取配置文件内容<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public String get() {
+		StringBuilder sb = new StringBuilder();
+		Set<Entry<Object, Object>> set = props.entrySet();
+		for (Entry<Object, Object> entry : set) {
+			sb.append(entry.getKey()).append("=").append(entry.getValue()).append("\n");
+		}
+		return sb.toString();
+	}
+	
 	@Override
 	public String toString() {
 		return "[" + props +"]";

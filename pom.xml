@@ -84,6 +84,7 @@
     <module>simplify-server</module>
     <module>simplify-base</module>
     <module>simplify-client</module>
+    <module>config-plugins</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

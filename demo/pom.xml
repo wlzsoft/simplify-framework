@@ -143,6 +143,56 @@
     <finalName>demo</finalName>
     <plugins>
     	<plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-war-plugin</artifactId>
+	        <version>2.6</version>
+	        <configuration>
+	        	<archive>
+	        		<manifestFile>src/main/resources/META-INF/MAINIFEST.MF</manifestFile>
+		            <manifest>
+		              <addClasspath>true</addClasspath>
+		            </manifest>
+					<addMavenDescriptor>false</addMavenDescriptor>
+				</archive>
+				<!-- <packagingIncludes>WEB-INF/lib/*SNAPSHOT.jar</packagingIncludes> -->
+				<!-- <warSourceIncludes>WEB-INF/lib/*SNAPSHOT.jar</warSourceIncludes> -->
+				<!--
+					装配过程中排除  不以.min.js -min.js结尾的js文件。
+					因为在 yuicompressor配置了不会处理min这些文件所以这些文件要拷贝到对应的目
+					录。开始弄的时候就是由于maven-war-plugin会把yuicompressor压缩后的文件覆盖掉，
+					所以要做这样的处理，yuicompressor没有压缩的js文件就会拷贝过去，压缩过的js则不会拷贝
+					yuicompressor会拷贝压缩后的文件过去
+				-->
+				<!-- <warName>${artifactId}</warName> -->
+				<!-- 打包时候不需要的配置 -->
+				<!-- <warSourceExcludes>
+					%regex[^.+(?:(?&lt;!(?:-|\.)min)\.js)],
+					%regex[^.+(?:(?&lt;!(?:-|\.)min)\.css)],
+					**/*.js,**/*.css
+				</warSourceExcludes> -->
+				<!-- 将压缩未处理的所有文件都包含进来,包括未处的 js,css, 以及图片,未网页文件等都包含进来 -->
+	             <!--  <warSourceIncludes>
+	              **/*min.js,
+	              images/**,
+	              META-INF/**,
+	              **/*.xml,
+	              **/*.jsp,
+	              **/*.gif,
+	              **/*.jpg,
+	              **/*.png
+	              </warSourceIncludes> -->
+	            <!-- 无法替换变量，默认为false,改为 <filtering>true</filtering>-->
+				<!-- <webResources>
+					<resource>
+						<directory>src/main/resources/properties/${package.environment}</directory>
+						<targetPath>WEB-INF/classes/properties</targetPath>
+						<filtering>true</filtering>
+					</resource>
+				</webResources> -->
+				<!-- <webXml>src/main/webapp/WEB-INF/web.xml</webXml> -->
+			</configuration>
+	    </plugin>
+    	<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
 			<version>3.5.1</version>
