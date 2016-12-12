@@ -39,8 +39,8 @@ import com.meizu.simplify.utils.StringUtil;
 @Init(InitTypeEnum.CONFIG)
 public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAnnotationResolver.class);
-	
-	private Map<String,PropertieUtil> propertiesMap = new ConcurrentHashMap<>(4);
+	//配置文件路径信息列表，包含配置文件内容
+	public static final Map<String,PropertieUtil> propertiesMap = new ConcurrentHashMap<>(4);
 	private Map<String,Object> propertieBeanMap = new ConcurrentHashMap<>(4);
 	@Override
 	public void resolve(List<Class<?>> resolveList) {

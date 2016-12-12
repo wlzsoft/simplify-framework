@@ -6,6 +6,7 @@ import org.apache.zookeeper.KeeperException;
 
 import com.meizu.rpc.annotations.ServerBean;
 import com.meizu.simplify.config.annotation.Config;
+import com.meizu.simplify.config.api.entity.ConfigAppEntity;
 import com.meizu.simplify.config.api.entity.ConfigEntity;
 import com.meizu.simplify.config.api.eums.ConfigTypeEnum;
 import com.meizu.simplify.config.api.service.IConfigService;
@@ -49,23 +50,19 @@ public class ConfigService implements IConfigService{
 	}
 	
 	@Override
-	public ConfigEntity get(String groupId,String artifactId,String version,String environment,String folder,String name) {
-		String appid = groupId+":"+artifactId+":"+version+"-"+environment;
-		String value = execute.getData(rootPath+appid+"/"+folder+name, false, null);
+	public ConfigEntity get(ConfigAppEntity app,String folder,String name) {
 		ConfigEntity config = new ConfigEntity();
-		config.setGroupId("com.meizu.simplify");
-		config.setArtifactId("demo");
-		config.setVersion("1.2.1-SNAPSHOT");
-		config.setEnvironment("dev");
+		config.setApp(app);
 		config.setName(folder+name);
 		config.setType(ConfigTypeEnum.File);
+		String value = execute.getData(rootPath+config.getAppid()+"/"+folder+name, false, null);
 		config.setValue(value);
 		return config;
 	}
 	
 	@Override
-	public ConfigEntity get(String groupId,String artifactId,String version,String environment,String name) {
-		return get(groupId, artifactId, version, environment, "", name);
+	public ConfigEntity get(ConfigAppEntity app,String name) {
+		return get(app, "", name);
 	}
 
 	@Override

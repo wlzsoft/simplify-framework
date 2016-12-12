@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu.simplify</groupId>
     <artifactId>config-plugins</artifactId>
-    <version>${simplify.version}</version>
+    <version>1.2.1-SNAPSHOT</version>
   </parent>
   <artifactId>config-web</artifactId>
   <packaging>war</packaging>

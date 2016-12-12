@@ -3,6 +3,7 @@ package com.meizu.simplify.config.server.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.meizu.simplify.config.api.entity.ConfigAppEntity;
 import com.meizu.simplify.config.api.entity.ConfigEntity;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -31,10 +32,12 @@ public class ConfigServiceTest {
 	@Test
 	public void testSave() {
 		ConfigEntity entity = new ConfigEntity();
-		entity.setGroupId("com.meizu.simplify");
-		entity.setArtifactId("demo");
-		entity.setVersion("1.2.1-SNAPSHOT");
-		entity.setEnvironment("dev");
+		ConfigAppEntity app = new ConfigAppEntity();
+		app.setGroupId("com.meizu.simplify");
+		app.setArtifactId("demo");
+		app.setVersion("1.2.1-SNAPSHOT");
+		app.setEnvironment("dev");
+		entity.setApp(app);
 		entity.setName("redis-pool.properties");
 		entity.setValue("#maxWaitMillis=10000");
 		configService.save(entity);
