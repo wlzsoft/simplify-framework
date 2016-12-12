@@ -16,6 +16,7 @@
   </properties>
    <modules>
    	<module>config-api</module>
-   	<module>config-web</module>
+   	
+   	<module>config-client</module>
    </modules>
 </project>

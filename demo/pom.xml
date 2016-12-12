@@ -148,11 +148,14 @@
 	        <version>2.6</version>
 	        <configuration>
 	        	<archive>
-	        		<manifestFile>src/main/resources/META-INF/MAINIFEST.MF</manifestFile>
+	        		<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 		            <manifest>
 		              <addClasspath>true</addClasspath>
 		            </manifest>
 					<addMavenDescriptor>false</addMavenDescriptor>
+					<!-- <manifestEntries>
+               			<Dependencies>org.javassist, org.apache.velocity</Dependencies>
+            		</manifestEntries> -->
 				</archive>
 				<!-- <packagingIncludes>WEB-INF/lib/*SNAPSHOT.jar</packagingIncludes> -->
 				<!-- <warSourceIncludes>WEB-INF/lib/*SNAPSHOT.jar</warSourceIncludes> -->
