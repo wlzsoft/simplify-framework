@@ -31,7 +31,10 @@ public class ConfigServiceTest {
 	@Test
 	public void testSave() {
 		ConfigEntity entity = new ConfigEntity();
-		entity.setAppid("com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev");
+		entity.setGroupId("com.meizu.simplify");
+		entity.setArtifactId("demo");
+		entity.setVersion("1.2.1-SNAPSHOT");
+		entity.setEnvironment("dev");
 		entity.setName("redis-pool.properties");
 		entity.setValue("#maxWaitMillis=10000");
 		configService.save(entity);

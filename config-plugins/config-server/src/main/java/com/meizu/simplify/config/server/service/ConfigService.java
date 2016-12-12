@@ -53,7 +53,10 @@ public class ConfigService implements IConfigService{
 		String appid = groupId+":"+artifactId+":"+version+"-"+environment;
 		String value = execute.getData(rootPath+appid+"/"+folder+name, false, null);
 		ConfigEntity config = new ConfigEntity();
-		config.setAppid(appid);
+		config.setGroupId("com.meizu.simplify");
+		config.setArtifactId("demo");
+		config.setVersion("1.2.1-SNAPSHOT");
+		config.setEnvironment("dev");
 		config.setName(folder+name);
 		config.setType(ConfigTypeEnum.File);
 		config.setValue(value);

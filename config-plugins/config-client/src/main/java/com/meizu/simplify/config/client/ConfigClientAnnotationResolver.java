@@ -2,6 +2,7 @@ package com.meizu.simplify.config.client;
 
 import java.util.List;
 
+import com.meizu.simplify.config.annotation.Config;
 import com.meizu.simplify.config.api.entity.ConfigEntity;
 import com.meizu.simplify.config.api.service.IConfigService;
 import com.meizu.simplify.config.client.zookeeper.watch.ZookeeperNodeWatcher;
@@ -28,19 +29,27 @@ import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
 @Init(InitTypeEnum.CONFIG_CLIENT)
 public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class<?>> {
 	
+	@Config("rootPath")
+	private String rootPath = "/simplify-config/";
+	
 	@Resource
 	private IConfigService configService;
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		ConfigEntity entity = new ConfigEntity();
-		entity.setAppid("com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev");
+		//appid start  appid格式：com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev
+		entity.setGroupId("com.meizu.simplify");
+		entity.setArtifactId("demo");
+		entity.setVersion("1.2.1-SNAPSHOT");
+		entity.setEnvironment("dev");
+		//appid end
 		entity.setName("redis-pool.properties");
 		entity.setValue("#maxWaitMillis=10000");
 		configService.save(entity);
-		ConfigEntity  config = configService.get("com.meizu.simplify","demo","1.2.1-SNAPSHOT","dev","redis-pool.properties");
-		System.out.println(config.getValue());
+//		ConfigEntity  config = configService.get("com.meizu.simplify","demo","1.2.1-SNAPSHOT","dev","redis-pool.properties");
+//		System.out.println(config.getValue());
 		//开启配置监控通知
-		new ZookeeperNodeWatcher("/simplify-config/com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev/redis-pool.properties", "test2").watch();
+		new ZookeeperNodeWatcher(rootPath+entity.getAppid()+"/"+entity.getName()).watch();
 	}
 }

@@ -23,9 +23,8 @@ public class ZookeeperNodeWatcher implements Watcher {
     private ZookeeperExecute execute;
     private ZookeeperConnectionManager connectionManager;
     private String watchPath = "";
-    private String keyName = "";
     ZookeeperConnectionWatcher watcher = new ZookeeperConnectionWatcher();
-    public ZookeeperNodeWatcher(String watchPath, String keyName) {
+    public ZookeeperNodeWatcher(String watchPath) {
         connectionManager = new ZookeeperConnectionManager();
         try {
 			connectionManager.connect("127.0.0.1:2181", watcher);
@@ -34,7 +33,6 @@ public class ZookeeperNodeWatcher implements Watcher {
 		}
         execute = new ZookeeperExecute(connectionManager);
         this.watchPath = watchPath;
-        this.keyName = keyName;
     }
     public void watch() {
         Stat stat = new Stat();
@@ -43,7 +41,6 @@ public class ZookeeperNodeWatcher implements Watcher {
             try {
 				execute.createEphemeralNode(watchPath+"/"+IpUtil.getLocalIp()+":8080", value);
 			} catch (SocketException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         } catch (InterruptedException e) {
@@ -51,7 +48,7 @@ public class ZookeeperNodeWatcher implements Watcher {
         } catch (KeeperException e) {
             LOGGER.error("监听节点失败 " + watchPath, e);
         }
-        LOGGER.debug("监听节点: 成功添加==>>(" + watchPath + "," + keyName + ","  + ")");
+        LOGGER.debug("监听节点: 成功添加==>>(" + watchPath +  ","  + ")");
     }
 
     @Override
@@ -59,16 +56,16 @@ public class ZookeeperNodeWatcher implements Watcher {
 
         // 结点数据被更新时
         if (event.getType() == EventType.NodeDataChanged) {
-           LOGGER.info("监听连接节点数据被更新 " + event.toString() + ": (" + watchPath + "," + keyName+ ")");
+           LOGGER.info("监听连接节点数据被更新 " + event.toString() + ": (" + watchPath +  "," +  ")");
         }
 
         // zookeeper客户端断开连接，这时不要进行处理
         if (event.getState() == KeeperState.Disconnected) {
-           LOGGER.warn("节点连接已经断开: " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")");
+           LOGGER.warn("节点连接已经断开: " + event.toString() + ": (" + watchPath +  ","  + ")");
         }
         
         if (event.getState() == KeeperState.Expired) {//会话超时，需要重新激活
-            LOGGER.error("会话超时：  " + event.toString() + ": (" + watchPath + "," + keyName + ","  + ")");
+            LOGGER.error("会话超时：  " + event.toString() + ": (" + watchPath  + ","  + ")");
             // 重新连接
             connectionManager.reconnect(watcher);
         }

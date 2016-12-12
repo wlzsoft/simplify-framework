@@ -51,7 +51,7 @@ public interface IConfigService {
 	/**
 	 * 
 	 * 方法用途: 保存单个配置文件<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: appid格式：[groupId:artifactId:version-environment]  com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev<br>
 	 * @param config
 	 * @return
 	 */
