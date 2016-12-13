@@ -56,6 +56,23 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 	
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
+		ConfigAppEntity app = loadConfigMeta();
+		//开始更新本地配置信息
+		Set<Entry<String, PropertieUtil>> propertiesSet = ConfigAnnotationResolver.propertiesMap.entrySet();
+		for (Entry<String, PropertieUtil> entry : propertiesSet) {
+			String configPath = entry.getKey();
+			PropertieUtil propertiesUtil = entry.getValue();
+			updateConfig(app, configPath,propertiesUtil);
+		}
+	}
+
+	/**
+	 * 
+	 * 方法用途: 加载配置文件元数据信息<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public ConfigAppEntity loadConfigMeta() {
 		InputStream inputStream= getClass().getClassLoader().getResourceAsStream("/META-INF/MANIFEST.MF"); 
 		ConfigAppEntity app = new ConfigAppEntity();
 		try {
@@ -83,48 +100,55 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 			e.printStackTrace();
 			throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件出错，请检查是否文件格式错误");
 		}
-		//开始更新本地配置信息
-		Set<Entry<String, PropertieUtil>> propertiesSet = ConfigAnnotationResolver.propertiesMap.entrySet();
-		for (Entry<String, PropertieUtil> entry : propertiesSet) {
-			String configPath = entry.getKey();
-			ConfigEntity entity = new ConfigEntity();
-			entity.setApp(app);
-			entity.setName(configPath);
-			PropertieUtil propertiesUtil = entry.getValue();
-			entity.setValue(propertiesUtil.get());
-			byte[] value = configService.getAndSave(entity);
-			if(value != null) {
-				try {
-					ByteArrayInputStream changeInputStream = new ByteArrayInputStream(value);
-//					1.更新配置文件，
-					String path = this.getClass().getClassLoader().getResource(configPath).getPath();
-					FileOutputStream writer = new FileOutputStream(path);
-					propertiesUtil.getProps().clear();
-					propertiesUtil.getProps().load(changeInputStream);
-					propertiesUtil.getProps().store(writer, "已从zookeeper更新");
-//					2更新配置实体和属性值
-					resolveList = new ArrayList<Class<?>>();
-					resolveList.add(ReloadResourceAnnotationResolver.class);
-					resolveList.add(ConfigAnnotationResolver.class);
-					Startup.resolve(null,new AnnoCallback() {
-							@Override
-							public void invoke(IAnnotationResolver<Class<?>> ir, Class<?> beanObj) {
-								ir.resolve(new ArrayList<>());
-							}
-					}, Startup.getAnnotationResolverList(resolveList));
-				} catch (IOException e) {
-					e.printStackTrace();
-					throw new UncheckedException("从zookeeper更新本地配置失败");
-				}
-			}
-			//开启配置监控通知
-			String valueStr = null;
+		return app;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 更新配置文件，更新配置依赖注入项，开启监控，向zookeeper发送连接状态<br>
+	 * 操作步骤: TODO<br>
+	 * @param app
+	 * @param configPath
+	 * @param propertiesUtil
+	 */
+	public void updateConfig(ConfigAppEntity app,String configPath,PropertieUtil propertiesUtil) {
+		
+		ConfigEntity entity = new ConfigEntity();
+		entity.setApp(app);
+		entity.setName(configPath);
+		entity.setValue(propertiesUtil.get());
+		byte[] value = configService.getAndSave(entity);
+		if(value != null) {
 			try {
-				valueStr = new String(value,"utf-8");
-			} catch (UnsupportedEncodingException e) {
+				ByteArrayInputStream changeInputStream = new ByteArrayInputStream(value);
+//					1.更新配置文件，
+				String path = this.getClass().getClassLoader().getResource(configPath).getPath();
+				FileOutputStream writer = new FileOutputStream(path);
+				propertiesUtil.getProps().clear();
+				propertiesUtil.getProps().load(changeInputStream);
+				propertiesUtil.getProps().store(writer, "已从zookeeper更新");
+//					2更新配置实体和属性值
+				List<Class<?>> resolveList = new ArrayList<Class<?>>();
+				resolveList.add(ReloadResourceAnnotationResolver.class);
+				resolveList.add(ConfigAnnotationResolver.class);
+				Startup.resolve(null,new AnnoCallback() {
+						@Override
+						public void invoke(IAnnotationResolver<Class<?>> ir, Class<?> beanObj) {
+							ir.resolve(new ArrayList<>());
+						}
+				}, Startup.getAnnotationResolverList(resolveList));
+			} catch (IOException e) {
 				e.printStackTrace();
+				throw new UncheckedException("从zookeeper更新本地配置失败");
 			}
-			new ZookeeperNodeWatcher(rootPath+entity.getAppid()+"/"+entity.getName()).watch(valueStr);
 		}
+		//开启配置监控通知
+		String valueStr = null;
+		try {
+			valueStr = new String(value,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		new ZookeeperNodeWatcher(rootPath+entity.getAppid()+"/"+entity.getName(),configPath).watch(valueStr);
 	}
 }
