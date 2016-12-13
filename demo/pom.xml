@@ -148,14 +148,25 @@
 	        <version>2.6</version>
 	        <configuration>
 	        	<archive>
-	        		<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-		            <manifest>
-		              <addClasspath>true</addClasspath>
-		            </manifest>
 					<addMavenDescriptor>false</addMavenDescriptor>
-					<!-- <manifestEntries>
-               			<Dependencies>org.javassist, org.apache.velocity</Dependencies>
-            		</manifestEntries> -->
+					<compress>true</compress>
+					<forced>true</forced>
+					<index>false</index>
+		            <manifest>
+		              <addClasspath>false</addClasspath>
+		              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+		              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+		              <addExtensions>false</addExtensions>
+		              <classpathMavenRepositoryLayout>false</classpathMavenRepositoryLayout>
+		              <classpathPrefix></classpathPrefix>
+		              <useUniqueVersions>true</useUniqueVersions>
+		            </manifest>
+					<manifestEntries>
+               			<!-- <Dependencies>org.javassist, org.apache.velocity</Dependencies> -->
+						<artifactId>${project.artifactId}</artifactId>
+            		</manifestEntries>
+	        		<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> -->
+	        		<!-- <pomPropertiesFile>META-INF/maven/${groupId}/${artifactId}/pom.properties</pomPropertiesFile> -->
 				</archive>
 				<!-- <packagingIncludes>WEB-INF/lib/*SNAPSHOT.jar</packagingIncludes> -->
 				<!-- <warSourceIncludes>WEB-INF/lib/*SNAPSHOT.jar</warSourceIncludes> -->
@@ -313,6 +324,24 @@
 				</execution>
 			</executions>
 		</plugin>
+		<!-- pom中读取配置文件的属性值 -->
+		<!-- <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/resources/META-INF/MANIFEST.MF</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> -->
 		<!-- 单元测试开始-集成javaangent-未测试 -->
 	    <!-- mvn surefire:test或者mvn test 运行单元测试 -->
 	    <plugin>

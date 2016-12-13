@@ -53,7 +53,7 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 		try {
 			Manifest manifest = new Manifest(inputStream);
 			Attributes attr = manifest.getMainAttributes();
-			String groupId = attr.getValue("groupId");
+			String groupId = attr.getValue("Implementation-Vendor-Id");
 			if(StringUtil.isBlank(groupId)) {
 				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的groupId属性值为空，请检查文件中是否有groupId属性值");
 			}
@@ -61,7 +61,7 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 			if(StringUtil.isBlank(groupId)) {
 				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的artifactId属性值为空，请检查文件中是否有artifactId属性值");
 			}
-			String version = attr.getValue("version");
+			String version = attr.getValue("Implementation-Version");
 			if(StringUtil.isBlank(groupId)) {
 				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的version属性值为空，请检查文件中是否有version属性值");
 			}
