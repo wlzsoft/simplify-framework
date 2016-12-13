@@ -47,8 +47,9 @@ public class ZookeeperNodeWatcher implements Watcher {
     public void watch(String nodeValue) {
         Stat stat = new Stat();
         try {
+        	String value = execute.getData(watchPath, this, stat);
         	if(nodeValue == null) {
-        		nodeValue = execute.getData(watchPath, this, stat);
+        		nodeValue = value;
         	}
             try {
 				execute.createEphemeralNode(watchPath+"/"+IpUtil.getLocalIp()+":8080", nodeValue);
