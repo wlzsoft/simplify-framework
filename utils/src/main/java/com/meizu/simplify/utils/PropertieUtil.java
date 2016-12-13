@@ -30,7 +30,7 @@ import com.meizu.simplify.exception.StartupErrorException;
 public class PropertieUtil {
 	
 	private Properties props = new Properties();
-	private InputStream jndiInput = null;
+	private InputStream inputStream = null;
 
 	/**
 	 * 构造方法：默认如果文件不存在，会抛致命异常，服务无法启动
@@ -46,15 +46,15 @@ public class PropertieUtil {
 	 */
 	public PropertieUtil(String fileName,boolean isError) {
 		try {
-			jndiInput = PropertieUtil.class.getClassLoader().getResourceAsStream(fileName);
-			if(jndiInput == null) {
+			inputStream = PropertieUtil.class.getClassLoader().getResourceAsStream(fileName);
+			if(inputStream == null) {
 				String message = "配置文件["+fileName+"]不存在";
 				System.err.println(message);
 				if(isError) {
 					throw new StartupErrorException(message);
 				}
 			} else {
-				props.load(jndiInput);
+				props.load(inputStream);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,8 +62,8 @@ public class PropertieUtil {
 	}
 	public PropertieUtil(File file) {
 			try {
-				jndiInput = new FileInputStream(file);
-				props.load(jndiInput);
+				inputStream = new FileInputStream(file);
+				props.load(inputStream);
 			} catch (FileNotFoundException e) {
 //				LOGGER.info("配置文件["+file.getName()+"]不存在");
 				System.err.println("配置文件["+file.getName()+"]不存在");
@@ -114,7 +114,7 @@ public class PropertieUtil {
 	
 	public void close() {
 		try {
-			jndiInput.close();
+			inputStream.close();
 		} catch (IOException e) {
 		}
 	}

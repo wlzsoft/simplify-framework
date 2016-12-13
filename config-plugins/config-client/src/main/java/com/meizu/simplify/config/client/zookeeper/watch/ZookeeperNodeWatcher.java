@@ -34,12 +34,14 @@ public class ZookeeperNodeWatcher implements Watcher {
         execute = new ZookeeperExecute(connectionManager);
         this.watchPath = watchPath;
     }
-    public void watch() {
+    public void watch(String nodeValue) {
         Stat stat = new Stat();
         try {
-            String value = execute.getData(watchPath, this, stat);
+        	if(nodeValue == null) {
+        		nodeValue = execute.getData(watchPath, this, stat);
+        	}
             try {
-				execute.createEphemeralNode(watchPath+"/"+IpUtil.getLocalIp()+":8080", value);
+				execute.createEphemeralNode(watchPath+"/"+IpUtil.getLocalIp()+":8080", nodeValue);
 			} catch (SocketException e) {
 				e.printStackTrace();
 			}
@@ -56,6 +58,7 @@ public class ZookeeperNodeWatcher implements Watcher {
 
         // 结点数据被更新时
         if (event.getType() == EventType.NodeDataChanged) {
+           
            LOGGER.info("监听连接节点数据被更新 " + event.toString() + ": (" + watchPath +  "," +  ")");
         }
 

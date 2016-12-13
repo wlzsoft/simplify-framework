@@ -76,6 +76,15 @@ public final class Startup {
 	 */
 	public static Map<InitTypeEnum, Class<?>> getAnnotationResolverList() {
 		List<Class<?>> resolveList = ClassUtil.findClassesByParentClass(IAnnotationResolver.class, BeanAnnotationResolver.getClasspaths());
+		return getAnnotationResolverList(resolveList);
+	}
+	
+	/**
+	 * 方法用途: 获取启用时注解解析处理器的处理器列表<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static Map<InitTypeEnum, Class<?>> getAnnotationResolverList(List<Class<?>> resolveList) {
 		Map<InitTypeEnum,Class<?>> mapResolve = new EnumMap<InitTypeEnum, Class<?>>(InitTypeEnum.class);
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
@@ -105,6 +114,19 @@ public final class Startup {
             }  
         }); 
 		Map<InitTypeEnum, Class<?>> mapResolve = getAnnotationResolverList();
+		resolve(beanClass, call, mapResolve);
+		return StartupTypeEnum.SUCCESS;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 加载解析Bean<br>
+	 * 操作步骤: TODO<br>
+	 * @param beanClass
+	 * @param call
+	 * @param mapResolve
+	 */
+	public static void resolve(Class<?> beanClass, AnnoCallback call, Map<InitTypeEnum, Class<?>> mapResolve) {
 		for (Class<?> clazz : mapResolve.values()) {
 			LOGGER.info("resolver invoke:{}",clazz.getName());
 			try {
@@ -116,7 +138,6 @@ public final class Startup {
 				IAnnotationResolver<Class<?>> ir = (IAnnotationResolver<Class<?>>)obj;
 				call.invoke(ir,beanClass);
 			} catch (InstantiationException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch(StartupException ex) {
 				Throwable target = ex.getTargetException();
@@ -129,10 +150,9 @@ public final class Startup {
 			}
 				
 		}
-		return StartupTypeEnum.SUCCESS;
 	}
 	
-	interface AnnoCallback  {
+	public interface AnnoCallback  {
 		void invoke(IAnnotationResolver<Class<?>> ianno,Class<?> beanClass);
 	}
 

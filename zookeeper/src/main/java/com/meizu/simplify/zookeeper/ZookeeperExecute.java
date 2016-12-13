@@ -89,6 +89,41 @@ public class ZookeeperExecute  {
     /**
      * 
      * 方法用途: 持久化写入节点数据，如果节点存在，那么更新节点数据<br>
+     * 操作步骤: 非递归创建，如果创建节点的父节点不存储，会报异常，提示节点不存在，无法创建<br>
+     * @param path
+     * @param value
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    public byte[] writeRecursionAndReturn(String path, String value) throws InterruptedException, KeeperException {
+    	String[] pathNodeArr = path.split("/");
+    	String pathNode = "";
+    	byte[] result = null;
+    	for (int i = 0; i < pathNodeArr.length; i++) {
+    		if(StringUtil.isBlank(pathNodeArr[i])) {
+    			continue;
+    		}
+			pathNode += "/"+pathNodeArr[i];
+			Stat stat = connectionManger.getZookeeper().exists(pathNode, false);
+			if(stat == null) {
+				if(i < pathNodeArr.length-1) {
+					write(pathNode,"");
+					continue;
+				}
+				write(pathNode,value);
+			} else {
+				if(i < pathNodeArr.length-1) {
+					continue;
+				}
+				result = getDataForByteArr(pathNode, false, stat);
+			}
+		}
+    	return result;
+    }
+    
+    /**
+     * 
+     * 方法用途: 持久化写入节点数据，如果节点存在，那么更新节点数据<br>
      * 操作步骤: TODO<br>
      * @param path
      * @param value
@@ -215,10 +250,25 @@ public class ZookeeperExecute  {
      * @throws KeeperException
      */
     public String getData(String path, boolean isWatcher, Stat stat) {
+		return new String(getDataForByteArr(path, isWatcher, stat), Charset.forName("UTF-8"));
+    }
+    
+    /**
+     * 
+     * 方法用途: 获取某路径节点数据<br>
+     * 操作步骤: TODO<br>
+     * @param path
+     * @param isWatcher 是否开启监控
+     * @param stat 统计信息对象
+     * @return
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    public byte[] getDataForByteArr(String path, boolean isWatcher, Stat stat) {
 
 		try {
 			 byte[] data = connectionManger.getZookeeper().getData(path, isWatcher, stat);
-			 return new String(data, Charset.forName("UTF-8"));
+			 return data;
 		} catch (KeeperException | InterruptedException e) {
 			e.printStackTrace();
 		}

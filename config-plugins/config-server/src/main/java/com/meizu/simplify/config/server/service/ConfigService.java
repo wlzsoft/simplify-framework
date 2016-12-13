@@ -10,6 +10,7 @@ import com.meizu.simplify.config.api.entity.ConfigAppEntity;
 import com.meizu.simplify.config.api.entity.ConfigEntity;
 import com.meizu.simplify.config.api.eums.ConfigTypeEnum;
 import com.meizu.simplify.config.api.service.IConfigService;
+import com.meizu.simplify.exception.UncheckedException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.InitBean;
 import com.meizu.simplify.zookeeper.ZookeeperConnectionManager;
@@ -74,5 +75,14 @@ public class ConfigService implements IConfigService{
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public byte[] getAndSave(ConfigEntity config) {
+		try {
+			return execute.writeRecursionAndReturn(rootPath+config.getAppid()+"/"+config.getName(), config.getValue());
+		} catch (InterruptedException | KeeperException e) {
+			throw new UncheckedException(e);
+		}
 	}
 }

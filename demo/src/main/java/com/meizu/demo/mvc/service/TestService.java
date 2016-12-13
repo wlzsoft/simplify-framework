@@ -21,6 +21,8 @@ import com.meizu.simplify.log.Logger;
 public class TestService {
 	@Config("system.debug")
 	private Boolean debug;
+	@Config("aa")
+	private String aa;
 	@Config
 	private boolean unicodeTranscoding = false;
 	

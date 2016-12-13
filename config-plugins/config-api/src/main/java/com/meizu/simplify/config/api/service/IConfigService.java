@@ -51,4 +51,13 @@ public interface IConfigService {
 	 * @return
 	 */
 	public Boolean save(ConfigEntity config);
+
+	/**
+	 * 
+	 * 方法用途: 保存单个配置文件,如果服务端配置信息存在，那么直接返回，否则返回null<br>
+	 * 操作步骤: TODO<br>
+	 * @param config
+	 * @return
+	 */
+	public byte[] getAndSave(ConfigEntity config);
 }
