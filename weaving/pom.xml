@@ -44,7 +44,6 @@
 			<artifactId>maven-jar-plugin</artifactId>
 			<configuration>
 				<archive>
-				    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     <manifest>
                         <!-- <addClasspath>true</addClasspath> -->
                         <!-- <classpathPrefix>lib/</classpathPrefix> -->
@@ -54,15 +53,17 @@
 						<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 					</manifest>
 					<manifestEntries>
+						<!-- <Dependencies>org.javassist, org.apache.velocity</Dependencies> -->
 						<Copyright>meizu 2015</Copyright>
-						<Project-name>${project.name}</Project-name>
-						<Project-version>${project.version}</Project-version>
-						<Build-Time>${current.timestamp}</Build-Time>
+						<!-- <name>${project.name}</name>
+						<version>${project.version}</version>
+						<Build-Time>${current.timestamp}</Build-Time> -->
 						<!-- <Premain-Class>com.meizu.simplify.weaving.AopClassFileTransformer</Premain-Class> -->
 					</manifestEntries>
+				    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 				</archive>
 				<!-- <skip>true</skip> -->
-				</configuration>
+			</configuration>
 		</plugin>
   		<plugin>  
             <groupId>org.apache.maven.plugins</groupId>  

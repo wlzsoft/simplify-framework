@@ -44,4 +44,100 @@
 		<version>1.2.17</version>
 	</dependency>
   </dependencies>
+  <build>
+  	<plugins>
+  		<!-- 是maven中针对打包任务而提供的标准插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
+					<finalName>${project.artifactId}</finalName>
+					<descriptors>
+						<descriptor>src/main/assembly/distribution.xml</descriptor>
+					</descriptors>
+					<!-- <appendAssemblyId>false</appendAssemblyId> -->
+			        <!-- <encoding>utf-8</encoding> -->
+			        <!-- <descriptorRefs>
+			            <descriptorRef>jar-with-dependencies</descriptorRef>
+			        </descriptorRefs> -->
+			        <archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<compress>true</compress>
+						<forced>true</forced>
+						<index>false</index>
+			            <manifest>
+			              <addClasspath>true</addClasspath>
+			              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+			              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+			              <addExtensions>false</addExtensions>
+			              <classpathMavenRepositoryLayout>false</classpathMavenRepositoryLayout>
+			              <classpathPrefix></classpathPrefix>
+			              <useUniqueVersions>true</useUniqueVersions>
+                          <mainClass>com.meizu.simplify.config.server.bootstrap.Server</mainClass>
+			            </manifest>
+						<manifestEntries>
+	               			<!-- <Dependencies>org.javassist, org.apache.velocity</Dependencies> -->
+							<artifactId>${project.artifactId}</artifactId>
+							<Copyright>meizu 2015</Copyright>
+							<!-- <name>${project.name}</name>
+							<version>${project.version}</version> 
+							<Build-Time>${current.timestamp}</Build-Time>-->
+	            		</manifestEntries>
+		        		<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> -->
+		        		<!-- <pomPropertiesFile>META-INF/maven/${groupId}/${artifactId}/pom.properties</pomPropertiesFile> -->
+					</archive>
+				</configuration>
+				<executions>
+					<!--执行器 mvn assembly:src-->
+					<!--执行器 mvn assembly:bin-->
+					<!-- 生成bin安装程序 -->
+		            <execution>
+			            <id>bin</id>
+			            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+			            <goals>
+			            	<!-- <goal>single</goal> --><!-- 只运行一次  --> 
+			              <goal>attached</goal>
+			            </goals>
+			            <configuration>
+			              <descriptors><!--描述文件路径-->  
+			               	 <descriptor>src/main/assemblies/bin.xml</descriptor>
+			              </descriptors>
+			              <!-- <archiverConfig>
+						        <encoding>utf-8</encoding>
+						    </archiverConfig> -->
+			              <tarLongFileMode>gnu</tarLongFileMode>
+			            </configuration>
+		          </execution>
+		          <execution>
+		            <id>src</id>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>attached</goal>
+		            </goals>
+		            <configuration>
+		              <descriptors>
+		                <descriptor>src/main/assemblies/src.xml</descriptor>
+		              </descriptors>
+		              <tarLongFileMode>gnu</tarLongFileMode>
+		            </configuration>
+		          </execution> 
+				</executions>
+			  	<dependencies>
+			          <dependency>
+			              <groupId>org.codehaus.plexus</groupId>
+			              <artifactId>plexus-archiver</artifactId>
+			              <version>2.4.4</version>
+			              <exclusions>
+			                  <exclusion>
+			                      <groupId>org.codehaus.plexus</groupId>
+			                      <artifactId>plexus-component-api</artifactId>
+			                  </exclusion>
+			              </exclusions>
+			          </dependency>
+			     </dependencies>
+			</plugin>
+  	</plugins>
+  </build>
 </project>
