@@ -80,7 +80,7 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 			Attributes attr = manifest.getMainAttributes();
 			String groupId = attr.getValue("Implementation-Vendor-Id");
 			if(StringUtil.isBlank(groupId)) {
-				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的groupId属性值为空，请检查文件中是否有groupId属性值");
+				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的Implementation-Vendor-Id属性值为空，请检查文件中是否有Implementation-Vendor-Id属性值");
 			}
 			String artifactId = attr.getValue("artifactId");
 			if(StringUtil.isBlank(artifactId)) {
@@ -88,7 +88,7 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 			}
 			String version = attr.getValue("Implementation-Version");
 			if(StringUtil.isBlank(version)) {
-				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的version属性值为空，请检查文件中是否有version属性值");
+				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的Implementation-Version属性值为空，请检查文件中是否有Implementation-Version属性值");
 			}
 			//appid start  appid格式：com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev
 			app.setGroupId(groupId);

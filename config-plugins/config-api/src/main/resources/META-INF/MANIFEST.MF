@@ -1,0 +1,1 @@
+com.meizu.simplify.config.api.service.IConfigService: Bean("configService"),ClientBean
