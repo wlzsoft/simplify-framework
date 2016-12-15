@@ -62,6 +62,10 @@
 			        <!-- <descriptorRefs>
 			            <descriptorRef>jar-with-dependencies</descriptorRef>
 			        </descriptorRefs> -->
+			        <!-- <appendAssemblyId>false</appendAssemblyId>  
+	                <descriptorRefs>  
+	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
+	                </descriptorRefs> --> 
 			        <archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
 						<compress>true</compress>
@@ -85,7 +89,7 @@
 							<version>${project.version}</version> 
 							<Build-Time>${current.timestamp}</Build-Time>-->
 	            		</manifestEntries>
-		        		<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> -->
+		        		<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 		        		<!-- <pomPropertiesFile>META-INF/maven/${groupId}/${artifactId}/pom.properties</pomPropertiesFile> -->
 					</archive>
 				</configuration>
