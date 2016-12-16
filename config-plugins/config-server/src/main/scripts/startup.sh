@@ -24,10 +24,16 @@ CLASSPATH=$APP_HOME/$PATH
 for i in $APP_HOME/lib/*.jar;do
 CLASSPATH="$i:$CLASSPATH"
 done
-
+#jpda参数说明：
+#-XDebug 启用调试
+#-Xrunjdwp 加载JDWP的JPDA参考执行实例。
+#transport  用于在调试程序和 VM 使用的进程之间通讯。
+#dt_socket 套接字传输。
+#server=y/n VM是否需要作为调试服务器执行。
+#address=2345调试服务器监听的端口号。
+#suspend=y/n 是否在调试客户端建立连接之后启动 VM ;suspend=y 挂起=只有调试端客户端连接上才会开始执行main方法，避免需要调试启动时代码一闪而过，无法调试到设置断点的代码
 export CLASSPATH
-
-
+DEBUG="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9600"
 #echo "java_home is $JAVA_HOME"
 #echo "APP_HOME is $APP_HOME \n"
 #echo "CLASSPATH is $CLASSPATH \n"
@@ -35,8 +41,7 @@ export CLASSPATH
 #echo "MAIN_CLASS_NAME is $MAIN_CLASS_NAME"
 #echo "process_Id is $process_Id \n"
 #echo "$PORT \n"
-#echo "$JAVA_HOME/bin/java $JVM_ARGS -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &"
-
+#echo "$JAVA_HOME/bin/java  $JVM_ARGS $DEBUG -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &"
 
 start(){
     printf 'ReportServer is starting...\n'

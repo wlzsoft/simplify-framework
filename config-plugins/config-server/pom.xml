@@ -55,8 +55,9 @@
 						<addMavenDescriptor>false</addMavenDescriptor>
 						<compress>true</compress>
 						<forced>true</forced>
-						<!-- 运行时包考虑添加index.list来描述整个分发包的内容 -->
-						<index>true</index>
+						<!-- 包中考虑添加index.list来描述整个分发包的内容 -->
+						<!-- 注意：开启这个选项，会在META-INF添加index.list文件，会导致classpath失效，程序无法正常运行，可运行的程序，依赖META-INF的MANIFEST.MF文件的程序，一定不要开启它 -->
+						<index>false</index>
 			            <manifest>
 			              <addClasspath>true</addClasspath>
 			              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
@@ -70,6 +71,8 @@
                           <mainClass>com.meizu.simplify.config.server.bootstrap.Server</mainClass>
 			            </manifest>
 						<manifestEntries>
+							<!-- 增加自定义的classpath -->
+							<Class-Path>../</Class-Path>
 	               			<!-- <Dependencies>org.javassist, org.apache.velocity</Dependencies> -->
 							<artifactId>${project.artifactId}</artifactId>
 							<Copyright>meizu 2015</Copyright>
@@ -80,6 +83,7 @@
 		        		<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 		        		<!-- <pomPropertiesFile>META-INF/maven/${groupId}/${artifactId}/pom.properties</pomPropertiesFile> -->
 					</archive>
+					<!-- 剥离掉配置信息，会导致加载不到外部配置信息 -->
 					<includes>
 						<include>**/com/**</include>
 					</includes>

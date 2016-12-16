@@ -74,7 +74,7 @@
     </appender>  -->
 	
 	<root>
-        <priority value ="INFO"/>       
+        <priority value ="DEBUG"/>       
         <appender-ref ref="console"/> 
         <appender-ref ref="filelog"/>       
         <appender-ref ref="filelog_daily"/> 
