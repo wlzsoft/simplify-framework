@@ -46,30 +46,16 @@
   </dependencies>
   <build>
   	<plugins>
-  		<!-- 是maven中针对打包任务而提供的标准插件 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
-					<finalName>${project.artifactId}</finalName>
-					<descriptors>
-						<descriptor>src/main/assembly/distribution.xml</descriptor>
-					</descriptors>
-					<!-- <appendAssemblyId>false</appendAssemblyId> -->
-			        <!-- <encoding>utf-8</encoding> -->
-			        <!-- <descriptorRefs>
-			            <descriptorRef>jar-with-dependencies</descriptorRef>
-			        </descriptorRefs> -->
-			        <!-- <appendAssemblyId>false</appendAssemblyId>  
-	                <descriptorRefs>  
-	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
-	                </descriptorRefs> --> 
-			        <archive>
+  		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<configuration>
+				<archive>
+						<!-- 运行时的jar包，不需要在META-INF中maven目录中有pom*文件 -->
 						<addMavenDescriptor>false</addMavenDescriptor>
 						<compress>true</compress>
 						<forced>true</forced>
+						<!-- 运行时包考虑添加index.list来描述整个分发包的内容 -->
 						<index>false</index>
 			            <manifest>
 			              <addClasspath>true</addClasspath>
@@ -77,7 +63,9 @@
 			              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 			              <addExtensions>false</addExtensions>
 			              <classpathMavenRepositoryLayout>false</classpathMavenRepositoryLayout>
-			              <classpathPrefix></classpathPrefix>
+			              <classpathPrefix>lib</classpathPrefix>
+			              <!-- <classpathLayoutType>custom</classpathLayoutType>
+			              <customClasspathLayout>path</customClasspathLayout> -->
 			              <useUniqueVersions>true</useUniqueVersions>
                           <mainClass>com.meizu.simplify.config.server.bootstrap.Server</mainClass>
 			            </manifest>
@@ -92,6 +80,33 @@
 		        		<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 		        		<!-- <pomPropertiesFile>META-INF/maven/${groupId}/${artifactId}/pom.properties</pomPropertiesFile> -->
 					</archive>
+				<!-- <skip>true</skip> -->
+			</configuration>
+		</plugin>
+  		<!-- 是maven中针对打包任务而提供的标准插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
+					<finalName>${project.artifactId}</finalName>
+					<descriptors>
+						<descriptor>src/main/assemblies/bin.xml</descriptor>
+					</descriptors>
+			        <!-- <encoding>utf-8</encoding> -->
+			        <!-- <appendAssemblyId>false</appendAssemblyId>  --> 
+			        <!-- <descriptorRefs>
+	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
+	                </descriptorRefs>  -->
+	                <archive>
+						<!-- 运行时的jar包，不需要在META-INF中maven目录中有pom*文件 -->
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<compress>true</compress>
+						<forced>true</forced>
+						<!-- 运行时包考虑添加index.list来描述整个分发包的内容 -->
+						<index>false</index>
+					</archive>
 				</configuration>
 				<executions>
 					<!--执行器 mvn assembly:src-->
@@ -105,28 +120,30 @@
 			              <goal>attached</goal>
 			            </goals>
 			            <configuration>
-			              <descriptors><!--描述文件路径-->  
-			               	 <descriptor>src/main/assemblies/bin.xml</descriptor>
-			              </descriptors>
 			              <!-- <archiverConfig>
 						        <encoding>utf-8</encoding>
 						    </archiverConfig> -->
 			              <tarLongFileMode>gnu</tarLongFileMode>
 			            </configuration>
-		          </execution>
-		          <execution>
-		            <id>src</id>
-		            <phase>package</phase>
-		            <goals>
-		              <goal>attached</goal>
-		            </goals>
-		            <configuration>
-		              <descriptors>
-		                <descriptor>src/main/assemblies/src.xml</descriptor>
-		              </descriptors>
-		              <tarLongFileMode>gnu</tarLongFileMode>
-		            </configuration>
-		          </execution> 
+		          	</execution>
+		          	<!-- 生成源码包 -->
+		          	<execution>
+			            <id>src</id>
+			            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+			            <goals>
+			            	<!-- <goal>single</goal> --><!-- 只运行一次  --> 
+			              <goal>attached</goal>
+			            </goals>
+			            <configuration>
+			              <descriptors><!--描述文件路径-->  
+		                	<descriptor>src/main/assemblies/src.xml</descriptor>
+		              	  </descriptors>
+			              <!-- <archiverConfig>
+						        <encoding>utf-8</encoding>
+						    </archiverConfig> -->
+			              <tarLongFileMode>gnu</tarLongFileMode>
+			            </configuration>
+		          	</execution>
 				</executions>
 			  	<dependencies>
 			          <dependency>
