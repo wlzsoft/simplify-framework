@@ -56,7 +56,7 @@
 						<compress>true</compress>
 						<forced>true</forced>
 						<!-- 运行时包考虑添加index.list来描述整个分发包的内容 -->
-						<index>false</index>
+						<index>true</index>
 			            <manifest>
 			              <addClasspath>true</addClasspath>
 			              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
@@ -80,6 +80,9 @@
 		        		<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 		        		<!-- <pomPropertiesFile>META-INF/maven/${groupId}/${artifactId}/pom.properties</pomPropertiesFile> -->
 					</archive>
+					<includes>
+						<include>**/com/**</include>
+					</includes>
 				<!-- <skip>true</skip> -->
 			</configuration>
 		</plugin>
@@ -99,14 +102,6 @@
 			        <!-- <descriptorRefs>
 	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
 	                </descriptorRefs>  -->
-	                <archive>
-						<!-- 运行时的jar包，不需要在META-INF中maven目录中有pom*文件 -->
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<compress>true</compress>
-						<forced>true</forced>
-						<!-- 运行时包考虑添加index.list来描述整个分发包的内容 -->
-						<index>false</index>
-					</archive>
 				</configuration>
 				<executions>
 					<!--执行器 mvn assembly:src-->

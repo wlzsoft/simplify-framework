@@ -8,46 +8,6 @@
 	    <format>tar.bz2</format> 
 	</formats>
 	
-	<moduleSets>
-    <moduleSet>
-      <includeSubModules/>
-      <sources>
-        <outputDirectoryMapping>src/${module.basedir.name}</outputDirectoryMapping>
-        <fileSets>
-          <fileSet>
-            <includes>
-              <!-- copy per-module sources into src/meizu-*/ -->
-              <include>src/**</include>
-              <include>pom.xml</include>
-              <include>LICENSE*</include>
-              <include>NOTICE*</include>
-            </includes>
-          </fileSet>
-        </fileSets>
-      </sources>
-      <binaries>
-        <!-- 复制项目jar包到dist目录 -->
-        <outputDirectory>dist</outputDirectory>
-        <includeDependencies>false</includeDependencies>
-        <unpack>false</unpack>
-        <dependencySets>
-          <dependencySet>
-            <!-- 复制项目依赖jar包到 lib目录 -->
-            <outputDirectory>lib</outputDirectory>
-            <useTransitiveDependencies>true</useTransitiveDependencies>
-            <unpack>false</unpack>
-            <useProjectArtifact>false</useProjectArtifact>
-            <excludes>
-              <!-- during build, the plugin warns that this exclusion is never
-                   triggered, but the truth is it works just fine and you can't
-                   do without it. -->
-              <exclude>com.meizu.simplify:*</exclude>
-            </excludes>
-          </dependencySet>
-        </dependencySets>
-      </binaries> 
-    </moduleSet>    
-  </moduleSets>
 	<!--  默认值是true，此时将创建一个名为artifactId-version的根文件夹，
 			所有outputDirectory标签指定的路径将变为相对于该文件夹的路径。
 			例如：outputDirectory的值为/test，则最终径为/artifactId-version/test
@@ -76,14 +36,16 @@
 	       <!-- <useDefaultExcludes>false</useDefaultExcludes> -->
 	      <!-- 打包路径 -->
 	      <!-- <directory>src/main/bin</directory> -->
-	      <directory>${project.basedir}/target/classes</directory>
+	      <!-- <directory>${project.basedir}/target/classes</directory> -->
+	      <directory>src/main/resources</directory>
 	      <!-- 打包后输出路径 -->
 	      <!-- <outputDirectory>/bin</outputDirectory> -->
 	      <outputDirectory>/</outputDirectory>
 	      <!-- 过滤 不包含的文件-->
 	      <!-- 由于开启useProjectArtifact选项，所以不需要拷贝class文件，只需拷贝配置和脚本文件 -->
 	      <excludes>
-	      	 <exclude>**/com/**</exclude>
+	      	 <!-- <exclude>**/com/**</exclude> -->
+	      	 <exclude>**/META-INF/**</exclude>
 	      </excludes>
 	    </fileSet>        
 	     
@@ -118,6 +80,7 @@
 			<scope>runtime</scope>
            <!--  <excludes>
               <exclude>ros-report*.jar</exclude>
+              <exclude>com.meizu.simplify:*</exclude>
             </excludes> -->
           </dependencySet>
 	       <!-- 包含provided类型的包，如果是tomcat等容器，是需要这些依赖的，容器自带  -->
