@@ -63,7 +63,7 @@
 			              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 			              <addExtensions>false</addExtensions>
 			              <classpathMavenRepositoryLayout>false</classpathMavenRepositoryLayout>
-			              <classpathPrefix>lib</classpathPrefix>
+			              <classpathPrefix></classpathPrefix>
 			              <!-- <classpathLayoutType>custom</classpathLayoutType>
 			              <customClasspathLayout>path</customClasspathLayout> -->
 			              <useUniqueVersions>true</useUniqueVersions>
