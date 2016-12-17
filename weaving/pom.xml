@@ -69,7 +69,9 @@
             <groupId>org.apache.maven.plugins</groupId>  
             <artifactId>maven-dependency-plugin</artifactId>  
              <version>2.10</version>
-            <executions>  
+            <executions>
+            	<!-- 以下异常是因为提前没有打包需要copy的artifactId，找不到要拷贝的artifactId,只要提前对需要拷贝的artifactId执行package，或是install，问题就解决了 -->  
+            	<!-- Artifact has not been packaged yet. When used on reactor artifact, copy should be executed after packaging: see MDEP-187 -->
                 <execution>  
                     <id>copy-dependencies</id>  
                     <phase>package</phase>  

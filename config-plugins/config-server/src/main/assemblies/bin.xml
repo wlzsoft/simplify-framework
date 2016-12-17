@@ -25,6 +25,14 @@
 			<include>NOTICE*</include>
 	      </includes>
 	    </fileSet>
+	    <!-- 创建日志目录，用于存放程序的日志输出文件 -->
+	    <fileSet>
+	    	<outputDirectory>/log</outputDirectory>
+	    	<excludes>
+				<exclude>**/*</exclude>
+		    </excludes>
+	    </fileSet>
+	    <!-- 输出启动脚步 -->
 	    <fileSet>
 			<directory>src/main/scripts</directory>
 			<outputDirectory>/bin</outputDirectory>
@@ -32,6 +40,7 @@
 				<include>**/*</include>
 			</includes>
 		</fileSet>
+		<!-- 输出配置文件 -->
 	    <fileSet>
 	       <!-- <useDefaultExcludes>false</useDefaultExcludes> -->
 	      <!-- 打包路径 -->
@@ -40,7 +49,7 @@
 	      <directory>src/main/resources</directory>
 	      <!-- 打包后输出路径 -->
 	      <!-- <outputDirectory>/bin</outputDirectory> -->
-	      <outputDirectory>/</outputDirectory>
+	      <outputDirectory>/conf</outputDirectory>
 	      <!-- 过滤 不包含的文件-->
 	      <!-- 由于开启useProjectArtifact选项，所以不需要拷贝class文件，只需拷贝配置和脚本文件 -->
 	      <excludes>
@@ -48,7 +57,7 @@
 	      	 <exclude>**/META-INF/**</exclude>
 	      </excludes>
 	    </fileSet>        
-	     
+	     <!-- 输出项目文档 -->
 	    <fileSet>
 	      <directory>target/docs</directory>
 	      <!-- <directory>target/site</directory> -->
@@ -59,7 +68,7 @@
 	        <include>xref*/**</include>
 	      </includes> -->
 	    </fileSet>
-	    
+	    <!-- 输出javadoc -->
 	    <fileSet>
 	      <directory>target/api</directory>
 	      <outputDirectory>/javadocs</outputDirectory>

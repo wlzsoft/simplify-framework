@@ -72,7 +72,7 @@
 			            </manifest>
 						<manifestEntries>
 							<!-- 增加自定义的classpath -->
-							<Class-Path>../</Class-Path>
+							<Class-Path>../conf/</Class-Path>
 	               			<!-- <Dependencies>org.javassist, org.apache.velocity</Dependencies> -->
 							<artifactId>${project.artifactId}</artifactId>
 							<Copyright>meizu 2015</Copyright>
