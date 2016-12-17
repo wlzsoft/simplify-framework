@@ -1,0 +1,11 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu.simplify</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>1.2.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>boot</artifactId>
+  <name>启动引导器</name>
+  <description>程序启动入口相关功能</description>
+</project>
