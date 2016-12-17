@@ -13,22 +13,22 @@
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>utils</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	  	<artifactId>dao</artifactId>
-	  	<version>${parent.version}</version>
+	  	<version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	  	<artifactId>log</artifactId>
-	  	<version>${parent.version}</version>
+	  	<version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	  	<artifactId>test</artifactId>
-	  	<version>${parent.version}</version>
+	  	<version>${project.parent.version}</version>
 	  	<scope>test</scope>
 	  </dependency>
 	  <!-- <dependency>

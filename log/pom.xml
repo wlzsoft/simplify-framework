@@ -16,7 +16,7 @@
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>ioc</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 		<groupId>junit</groupId>

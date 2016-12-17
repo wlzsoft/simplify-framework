@@ -13,33 +13,33 @@
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
   			<artifactId>simplify-base</artifactId>
-  			<version>${parent.version}</version>
+  			<version>${project.parent.version}</version>
   			<type>pom</type>
   		</dependency>
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
   			<artifactId>authfilter</artifactId>
-  			<version>${parent.version}</version>
+  			<version>${project.parent.version}</version>
   		</dependency>
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
   			<artifactId>listener</artifactId>
-  			<version>${parent.version}</version>
+  			<version>${project.parent.version}</version>
   		</dependency>
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
   			<artifactId>mvc</artifactId>
-  			<version>${parent.version}</version>
+  			<version>${project.parent.version}</version>
   		</dependency>
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
   			<artifactId>rpc</artifactId>
-  			<version>${parent.version}</version>
+  			<version>${project.parent.version}</version>
   		</dependency>
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
   			<artifactId>webcache</artifactId>
-  			<version>${parent.version}</version>
+  			<version>${project.parent.version}</version>
   		</dependency>
   </dependencies>
 </project>

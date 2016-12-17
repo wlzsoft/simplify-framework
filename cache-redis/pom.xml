@@ -21,7 +21,7 @@
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>caches</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 			<groupId>redis.clients</groupId>
@@ -34,7 +34,7 @@
 	    <dependency>
 		  	<groupId>com.meizu.simplify</groupId>
 		  	<artifactId>stress-tester</artifactId>
-		  	<version>${parent.version}</version>
+		  	<version>${project.parent.version}</version>
 		  	<scope>test</scope>
 		</dependency>
   </dependencies>

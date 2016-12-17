@@ -13,37 +13,37 @@
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>aop</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>config</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>encrypt</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>ioc</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>stress-tester</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>template</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>utils</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
   </dependencies>
 </project>
