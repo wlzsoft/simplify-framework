@@ -3,8 +3,6 @@ package com.meizu.message.remoting.server;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.meizu.message.core.RabbitTemplate;
-import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
 
 /**
