@@ -7,7 +7,56 @@
 		<format>tar.gz</format>
 	    <format>tar.bz2</format> 
 	</formats>
-	
+	<moduleSets>
+	    <moduleSet>
+	      <!-- <useAllReactorProjects>true</useAllReactorProjects> -->
+	      <includeSubModules>true</includeSubModules>
+	      <includes>
+               <include>com.meizu.simplify:boot</include>
+          </includes>
+	      <sources>
+	        <!-- <outputDirectoryMapping>src/${module.basedir.name}</outputDirectoryMapping> -->
+	        <fileSets>
+	          <fileSet>
+	          	<directory>src/main/scripts</directory>
+	            <includes>
+	            	<include>**/*</include>
+	              <!-- <include>src/**</include>
+	              <include>pom.xml</include>
+	              <include>LICENSE*</include>
+	              <include>NOTICE*</include> -->
+	            </includes>
+	          </fileSet>
+	        </fileSets>
+	      </sources>
+	      <!-- <binaries> -->
+	        <!-- 复制项目jar包到dist目录 -->
+	        <!-- <outputDirectory>dist</outputDirectory>
+	        <includeDependencies>false</includeDependencies>
+	        <unpack>false</unpack>
+            <attachmentClassifier>my-assembly</attachmentClassifier>
+	        <dependencySets>
+	          <dependencySet> -->
+	            <!-- 复制项目依赖jar包到 lib目录 -->
+	            <!-- <outputDirectory>lib</outputDirectory>
+	            <useTransitiveDependencies>true</useTransitiveDependencies>
+	            <unpack>false</unpack>
+	            <scope>compile</scope>
+	            <useProjectArtifact>false</useProjectArtifact>
+	            <excludes>
+	              <exclude>com.meizu.simplify:*</exclude>
+	            </excludes> -->
+	          <!-- </dependencySet>
+	        </dependencySets>
+	      </binaries> --> 
+	    </moduleSet>
+	    <!-- <moduleSet>
+            <includes>
+                <include>com.meizu.simplify:*</include>
+            </includes>
+            <binaries />
+        </moduleSet> -->
+	</moduleSets>
 	<!--  默认值是true，此时将创建一个名为artifactId-version的根文件夹，
 			所有outputDirectory标签指定的路径将变为相对于该文件夹的路径。
 			例如：outputDirectory的值为/test，则最终径为/artifactId-version/test

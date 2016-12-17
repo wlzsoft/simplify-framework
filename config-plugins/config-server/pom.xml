@@ -27,6 +27,12 @@
 	    <artifactId>zookeeper</artifactId>
 	    <version>${parent.version}</version>
 	  </dependency>
+	  <!-- 打包用 -->
+	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>boot</artifactId>
+	    <version>${parent.version}</version>
+	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>test</artifactId>
