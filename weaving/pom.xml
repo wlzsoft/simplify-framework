@@ -28,7 +28,7 @@
   	<dependency>
   		<groupId>com.meizu.simplify</groupId>
   		<artifactId>utils</artifactId>
-  		<version>${parent.version}</version>
+  		<version>${project.parent.version}</version>
   	</dependency>
   	<!-- 字节码操作工具 -->
 	<dependency>

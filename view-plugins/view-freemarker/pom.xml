@@ -11,12 +11,12 @@
   	<dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>template-freemarker</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>view-api</artifactId>
-	    <version>${parent.version}</version>
+	    <version>${project.parent.version}</version>
 	  </dependency>
   </dependencies>
 </project>
