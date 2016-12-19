@@ -15,10 +15,12 @@
 			如果includeBaseDirectory的值是false，则最终路径为/test  -->
 <!-- <includeBaseDirectory>false</includeBaseDirectory> -->
 	<includeBaseDirectory>true</includeBaseDirectory>
+	<!-- 只有在父级模块指定install，或是package指令的时候，moduleSets的配置才有意义，才有用，一般情况下不会使用到 -->
 	<moduleSets>
 	    <moduleSet>
 	      <useAllReactorProjects>true</useAllReactorProjects>
 	      <!-- <includeSubModules>true</includeSubModules> -->
+	      <!-- 只有在simplify-framework这个最父级的项目执行install,以下的includes才有用 -->
 	      <!-- <includes>
                <include>com.meizu.simplify:boot</include>
           </includes> -->
