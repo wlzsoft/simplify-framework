@@ -119,7 +119,7 @@
 							<version>${project.parent.version}</version>
 		                    <type>jar</type>
 		                   <overWrite>false</overWrite>
-		                   <outputDirectory>${project.build.directory}/alternateLocation</outputDirectory>
+		                   <outputDirectory>src/main</outputDirectory>
 		                   <!-- <destFileName>new.jar</destFileName> -->
 		                   <includes>scripts/**</includes>
 		                   <!-- <includes>**/*test.class,**/*.xml</includes> -->
