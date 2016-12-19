@@ -1,4 +1,4 @@
-package com.meizu.simplify.config.server.bootstrap;
+package com.meizu.simplify.bootstrap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

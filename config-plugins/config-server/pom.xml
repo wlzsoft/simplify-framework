@@ -75,7 +75,8 @@
 			              <!-- <classpathLayoutType>custom</classpathLayoutType>
 			              <customClasspathLayout>path</customClasspathLayout> -->
 			              <useUniqueVersions>true</useUniqueVersions>
-                          <mainClass>com.meizu.simplify.config.server.bootstrap.Server</mainClass>
+                          <!-- <mainClass>com.meizu.simplify.config.server.bootstrap.Server</mainClass> -->
+                          <mainClass>com.meizu.simplify.bootstrap.Server</mainClass>
 			            </manifest>
 						<manifestEntries>
 							<!-- 增加自定义的classpath -->
@@ -105,30 +106,33 @@
 				<configuration>
 					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
 					<finalName>${project.artifactId}</finalName>
-					<!-- <descriptors>
+					<descriptors>
 						<descriptor>src/main/assemblies/bin.xml</descriptor>
-					</descriptors> -->
+					</descriptors>
 			        <!-- <encoding>utf-8</encoding> -->
 			        <!-- <appendAssemblyId>false</appendAssemblyId>  --> 
 			        <!-- <descriptorRefs>
 	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
 	                </descriptorRefs>  -->
-	                <descriptorRefs>
+	                <!-- <descriptorRefs>
 	                    <descriptorRef>bin</descriptorRef>  
-	                </descriptorRefs> 
+	                </descriptorRefs>  -->
 				</configuration>
 				<executions>
-					<!--执行器 mvn assembly:src-->
-					<!--执行器 mvn assembly:bin-->
+					<!--执行器 mvn assembly:single-->
+					<!--执行器 mvn assembly:attached-->
 					<!-- 生成bin安装程序 -->
 		            <execution>
 			            <id>bin</id>
 			            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
 			            <goals>
-			            	<goal>single</goal><!-- 只运行一次  --> 
-			              <!-- <goal>attached</goal> -->
+			            	<!-- <goal>single</goal> --><!-- 只运行一次  --> 
+			              <goal>attached</goal>
 			            </goals>
 			            <configuration>
+			              <!-- <descriptorRefs>
+			                    <descriptorRef>bin</descriptorRef>  
+			              </descriptorRefs> -->
 			              <!-- <archiverConfig>
 						        <encoding>utf-8</encoding>
 						    </archiverConfig> -->
@@ -140,16 +144,16 @@
 			            <id>src</id>
 			            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
 			            <goals>
-			            	<goal>single</goal><!-- 只运行一次  --> 
-			              <!-- <goal>attached</goal> -->
+			            	<!-- <goal>single</goal> --><!-- 只运行一次  --> 
+			              <goal>attached</goal>
 			            </goals>
 			            <configuration>
-			              <!-- <descriptors>
+			              <descriptors>
 		                	<descriptor>src/main/assemblies/src.xml</descriptor>
-		              	  </descriptors> -->
-		              	  <descriptorRefs>
+		              	  </descriptors>
+		              	  <!-- <descriptorRefs>
 			                    <descriptorRef>src</descriptorRef>  
-			              </descriptorRefs> 
+			              </descriptorRefs>  -->
 			              <!-- <archiverConfig>
 						        <encoding>utf-8</encoding>
 						    </archiverConfig> -->

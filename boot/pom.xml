@@ -8,4 +8,11 @@
   <artifactId>boot</artifactId>
   <name>启动引导器</name>
   <description>程序启动入口相关功能</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.meizu.simplify</groupId>
+  		<artifactId>ioc</artifactId>
+  		<version>${project.parent.version}</version>
+  	</dependency>
+  </dependencies>
 </project>
