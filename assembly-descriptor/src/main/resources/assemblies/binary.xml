@@ -92,7 +92,8 @@
 	    </fileSet>
 	    <!-- 输出启动脚步 -->
 	    <fileSet>
-			<directory>src/main/scripts</directory>
+	    	<directory>${project.build.directory}/scripts</directory>
+			<!-- <directory>src/main/scripts</directory> -->
 			<!-- <outputDirectory>${assemble.directory}/bin</outputDirectory> -->
 			<outputDirectory>/bin</outputDirectory>
 			<includes>
