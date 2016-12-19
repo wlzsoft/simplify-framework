@@ -105,14 +105,17 @@
 				<configuration>
 					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
 					<finalName>${project.artifactId}</finalName>
-					<descriptors>
+					<!-- <descriptors>
 						<descriptor>src/main/assemblies/bin.xml</descriptor>
-					</descriptors>
+					</descriptors> -->
 			        <!-- <encoding>utf-8</encoding> -->
 			        <!-- <appendAssemblyId>false</appendAssemblyId>  --> 
 			        <!-- <descriptorRefs>
 	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
 	                </descriptorRefs>  -->
+	                <descriptorRefs>
+	                    <descriptorRef>bin</descriptorRef>  
+	                </descriptorRefs> 
 				</configuration>
 				<executions>
 					<!--执行器 mvn assembly:src-->
@@ -122,8 +125,8 @@
 			            <id>bin</id>
 			            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
 			            <goals>
-			            	<!-- <goal>single</goal> --><!-- 只运行一次  --> 
-			              <goal>attached</goal>
+			            	<goal>single</goal><!-- 只运行一次  --> 
+			              <!-- <goal>attached</goal> -->
 			            </goals>
 			            <configuration>
 			              <!-- <archiverConfig>
@@ -137,13 +140,16 @@
 			            <id>src</id>
 			            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
 			            <goals>
-			            	<!-- <goal>single</goal> --><!-- 只运行一次  --> 
-			              <goal>attached</goal>
+			            	<goal>single</goal><!-- 只运行一次  --> 
+			              <!-- <goal>attached</goal> -->
 			            </goals>
 			            <configuration>
-			              <descriptors><!--描述文件路径-->  
+			              <!-- <descriptors>
 		                	<descriptor>src/main/assemblies/src.xml</descriptor>
-		              	  </descriptors>
+		              	  </descriptors> -->
+		              	  <descriptorRefs>
+			                    <descriptorRef>src</descriptorRef>  
+			              </descriptorRefs> 
 			              <!-- <archiverConfig>
 						        <encoding>utf-8</encoding>
 						    </archiverConfig> -->
@@ -152,6 +158,11 @@
 		          	</execution>
 				</executions>
 			  	<dependencies>
+				  	<dependency>
+			            <groupId>com.meizu.simplify</groupId>
+			            <artifactId>assembly-descriptor</artifactId>
+			            <version>${project.parent.version}</version>
+			          </dependency>
 			          <dependency>
 			              <groupId>org.codehaus.plexus</groupId>
 			              <artifactId>plexus-archiver</artifactId>

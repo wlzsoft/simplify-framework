@@ -9,16 +9,18 @@
 	</formats>
 	<moduleSets>
 	    <moduleSet>
-	      <!-- <useAllReactorProjects>true</useAllReactorProjects> -->
-	      <includeSubModules>true</includeSubModules>
+	      <useAllReactorProjects>true</useAllReactorProjects>
+	      <!-- <includeSubModules>true</includeSubModules> -->
 	      <includes>
                <include>com.meizu.simplify:boot</include>
           </includes>
 	      <sources>
+	      	<includeModuleDirectory>false</includeModuleDirectory>
 	        <!-- <outputDirectoryMapping>src/${module.basedir.name}</outputDirectoryMapping> -->
 	        <fileSets>
 	          <fileSet>
-	          	<directory>src/main/scripts</directory>
+	          	<!-- <directory>src/main/scripts</directory> -->
+	          	<outputDirectory>sources/${module.artifactId}</outputDirectory>
 	            <includes>
 	            	<include>**/*</include>
 	              <!-- <include>src/**</include>
