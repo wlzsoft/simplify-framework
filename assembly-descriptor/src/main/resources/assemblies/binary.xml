@@ -87,10 +87,13 @@
 	    	<excludes>
 				<exclude>**/*</exclude>
 		    </excludes>
+		    <!-- 过滤掉svn，cvs等无效的配置信息 -->
+			<useDefaultExcludes>true</useDefaultExcludes>
 	    </fileSet>
 	    <!-- 输出启动脚步 -->
 	    <fileSet>
 			<directory>src/main/scripts</directory>
+			<!-- <outputDirectory>${assemble.directory}/bin</outputDirectory> -->
 			<outputDirectory>/bin</outputDirectory>
 			<includes>
 				<include>**/*</include>
