@@ -106,17 +106,17 @@
 				<configuration>
 					<!-- <outputFileNameMapping>@{artifactId}@. @{extension}@. @{version}@</outputFileNameMapping> -->
 					<finalName>${project.artifactId}</finalName>
-					<descriptors>
-						<descriptor>src/main/assemblies/bin.xml</descriptor>
-					</descriptors>
+					<!-- <descriptors>
+						<descriptor>src/main/assemblies/binary.xml</descriptor>
+					</descriptors> -->
 			        <!-- <encoding>utf-8</encoding> -->
 			        <!-- <appendAssemblyId>false</appendAssemblyId>  --> 
 			        <!-- <descriptorRefs>
 	                    <descriptorRef>jar-with-dependencies</descriptorRef>  
 	                </descriptorRefs>  -->
-	                <!-- <descriptorRefs>
-	                    <descriptorRef>bin</descriptorRef>  
-	                </descriptorRefs>  -->
+	                <descriptorRefs>
+	                    <descriptorRef>binary</descriptorRef>  
+	                </descriptorRefs> 
 				</configuration>
 				<executions>
 					<!--执行器 mvn assembly:single-->
@@ -130,9 +130,9 @@
 			              <goal>attached</goal>
 			            </goals>
 			            <configuration>
-			              <!-- <descriptorRefs>
-			                    <descriptorRef>bin</descriptorRef>  
-			              </descriptorRefs> -->
+			              <descriptorRefs>
+			                    <descriptorRef>binary</descriptorRef>  
+			              </descriptorRefs>
 			              <!-- <archiverConfig>
 						        <encoding>utf-8</encoding>
 						    </archiverConfig> -->
@@ -148,12 +148,12 @@
 			              <goal>attached</goal>
 			            </goals>
 			            <configuration>
-			              <descriptors>
-		                	<descriptor>src/main/assemblies/src.xml</descriptor>
-		              	  </descriptors>
-		              	  <!-- <descriptorRefs>
-			                    <descriptorRef>src</descriptorRef>  
-			              </descriptorRefs>  -->
+			              <!-- <descriptors>
+		                	<descriptor>src/main/assemblies/source.xml</descriptor>
+		              	  </descriptors> -->
+		              	  <descriptorRefs>
+			                    <descriptorRef>source</descriptorRef>  
+			              </descriptorRefs> 
 			              <!-- <archiverConfig>
 						        <encoding>utf-8</encoding>
 						    </archiverConfig> -->
