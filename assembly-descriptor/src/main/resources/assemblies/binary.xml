@@ -2,6 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
 	<id>bin</id>
+	<!-- maven-assembly-plugin插件有bug，不能使用<descriptorRef>bin</descriptorRef>有bug，无法正常打包，要改成其他名字，所以这个描述文件不能使用bin.xml命名 -->
     <!-- 打包的文件格式:tar.zip war zip -->
 	<formats>
 		<format>zip</format>

@@ -2,6 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
   <id>src</id>
+  <!-- 和binary.xml文件名一样，这里不使用src.xml，避免冲突出现bug -->
   <formats>
     <format>zip</format>
     <format>tar.gz</format>
