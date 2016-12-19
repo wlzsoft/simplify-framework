@@ -1,62 +1,95 @@
-#!/bin/sh
-#startup.sh最终和startup2.sh合并起来
+#!/bin/bash
+echo "----------server start---------------------"
 #dirname $0，取得当前执行的脚本文件的父目录
-#cd `dirname $0`，进入这个目录(切换当前工作目录)
-#pwd，显示当前工作目录(cd执行后的)
+#进入这个目录(切换当前工作目录)
+cd `dirname $0`
+#显示当前工作目录(cd执行后的)
+BIN_DIR=`pwd`
+JAVA_HOME="/usr/local/jdk1.8.0_25"
+
+
+
+cd ..
+echo "JAVA_HOME path: $JAVA_HOME"
+DEPLOY_DIR=`pwd`
+echo "current path：$DEPLOY_DIR"
+CONF_DIR=$DEPLOY_DIR/conf
+echo "conf path: $CONF_DIR"
+
+
+
 APP_HOME=$(cd `dirname $0`; pwd)/..
 #APP_HOME=${PWD}/..
-MAIN_CLASS_NAME="com.meizu.simplify.config.server.bootstrap.Server"
+MAIN_CLASS_NAME="com.meizu.simplify.bootstrap.Server"
 #PORT=`sed "s/.*=//g" $APP_HOME/properties/rmi.properties`
 PORT=$3
 HOSTNAME=$2
 #HOSTNAME=`sed "s/!.*=//g" $APP_HOME/properties/rmi.properties`
 
-JVM_ARGS="-DlogDir=$APP_HOME/logs"
+JAVA_MEM_OPTS="-DlogDir=$APP_HOME/logs"
 if [ -r app.vmoptions ];then
-JVM_ARGS="$JVM_ARGS `tr '\n' ' ' < app.vmoptions`"
+JAVA_MEM_OPTS="$JAVA_MEM_OPTS `tr '\n' ' ' < app.vmoptions`"
 fi
 
 process_Id=`/usr/sbin/lsof -i tcp:$PORT|awk '{print $2}'|sed '/PID/d'`
-
+#PIDS=`ps -ef| grep java | grep config-server |awk '{print $2}'`
 
 PATH="./"
-CLASSPATH=$APP_HOME/$PATH
-for i in $APP_HOME/lib/*.jar;do
-CLASSPATH="$i:$CLASSPATH"
-done
-#jpda参数说明：
-#-XDebug 启用调试
-#-Xrunjdwp 加载JDWP的JPDA参考执行实例。
-#transport  用于在调试程序和 VM 使用的进程之间通讯。
-#dt_socket 套接字传输。
-#server=y/n VM是否需要作为调试服务器执行。
-#address=2345调试服务器监听的端口号。
-#suspend=y/n 是否在调试客户端建立连接之后启动 VM ;suspend=y 挂起=只有调试端客户端连接上才会开始执行main方法，避免需要调试启动时代码一闪而过，无法调试到设置断点的代码
-export CLASSPATH
-DEBUG="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9600"
-#echo "java_home is $JAVA_HOME"
-#echo "APP_HOME is $APP_HOME \n"
-#echo "CLASSPATH is $CLASSPATH \n"
-#echo "JVM_ARGS is $JVM_ARGS "
-#echo "MAIN_CLASS_NAME is $MAIN_CLASS_NAME"
-#echo "process_Id is $process_Id \n"
-#echo "$PORT \n"
-#echo "$JAVA_HOME/bin/java  $JVM_ARGS $DEBUG -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &"
+#CLASSPATH=$APP_HOME/$PATH
+#for i in $APP_HOME/lib/*.jar;do
+#CLASSPATH="$i:$CLASSPATH"
+#done
+#export CLASSPATH
+echo "JAVA_HOME path: $JAVA_HOME"
 
 start(){
     printf 'ReportServer is starting...\n'
-    if [ $process_Id ];then
-       kill -9 $process_Id
-       sleep 1
-    fi 
 
-   echo "JVM_ARGS="$JVM_ARGS 
-   echo "CLASSPATH="$CLASSPATH
-   echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
-   echo "PORT="$PORT
-   echo "APP_HOME="$APP_HOME
-   echo $JAVA_HOME/bin/java $JVM_ARGS -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &
-   /usr/local/java/jdk1.8.0_25/bin/java $JVM_ARGS -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &
+	if [ -n "$process_Id" ]; then
+    	echo "ERROR: The already started! PID: $PIDS"
+    	exit 1
+	fi 
+
+	STDOUT_FILE=$DEPLOY_DIR/logs/stdout.log
+	LIB_DIR=$DEPLOY_DIR/lib
+	LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
+	
+	JAVA_OPTS=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -javaagent:$DEPLOY_DIR/aop/weaving.jar"
+	
+	JAVA_DEBUG_OPTS=""
+	if [ "$1" = "debug" ]; then
+		#jpda参数说明：
+		#-XDebug 启用调试
+		#-Xrunjdwp 加载JDWP的JPDA参考执行实例。
+		#transport  用于在调试程序和 VM 使用的进程之间通讯。
+		#dt_socket 套接字传输。
+		#server=y/n VM是否需要作为调试服务器执行。
+		#address=2345调试服务器监听的端口号。
+		#suspend=y/n 是否在调试客户端建立连接之后启动 VM ;suspend=y 挂起=只有调试端客户端连接上才会开始执行main方法，避免需要调试启动时代码一闪而过，无法调试到设置断点的代码
+	    JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000 "
+	fi
+	
+	BITS=`$JAVA_HOME/bin/java -version 2>&1 | grep -i 64-bit`
+	if [ -n "$BITS" ]; then
+	    JAVA_MEM_OPTS=" -server -Xmx2g -Xms2g -Xmn256m -XX:PermSize=128m -Xss256k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
+	else
+	    JAVA_MEM_OPTS=" -server -Xms1g -Xmx1g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
+	fi
+	
+    echo "JAVA_MEM_OPTS="$JAVA_MEM_OPTS 
+    #echo "CLASSPATH is $CLASSPATH \n"
+    echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
+    echo "PORT="$PORT
+    echo "APP_HOME is $APP_HOME \n"
+    echo "process_Id is $process_Id \n"
+    echo "$PORT \n"
+	
+	echo -e "Starting the $SERVER_NAME ...\c"
+	echo $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS      $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME $HOSTNAME $PORT &
+   nohup $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME $HOSTNAME $PORT > $STDOUT_FILE 2>&1 &
+	echo "service start OK!"
+	PIDS=`ps -ef| grep java | grep config-server |awk '{print $2}'`
+	echo "start PID: $PIDS"
 }
 
 restart(){
@@ -66,7 +99,7 @@ restart(){
        sleep 1
     fi 
 
-   $JAVA_HOME/bin/java $JVM_ARGS -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &
+   $JAVA_HOME/bin/java $JAVA_MEM_OPTS -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &
 }
 
 stop (){
