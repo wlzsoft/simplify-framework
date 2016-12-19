@@ -52,6 +52,31 @@
   </dependencies>
   <build>
   	<plugins>
+  		  <!--第一种启动方式： 不使用插件的的命令行方式启动服务  [mvn exec:java -Dexec.mainClass="com.meizu.simplify.bootstrap.Server"] -->
+  		  <!--第二种启动方式：使用以下 exec-maven-plugin插件，那么只需要输入mvc test就可以启动，插件版定了test生命周期 -->
+  		  <!--第三种启动方式：直接直接main类，通过eclipse支持的选项:run as java application,这种方式需要手动指定main类，boot项目打开的情况，不能通过项目赛选，只能通过eclipse在所有项目中选择启动的项目及对应的main类，比较繁琐  -->
+  		  <!--第四种启动方式：直接通过命令行执行java命令，或是通过定好的shell等批处理方式来启动，生产环境的分发包使用这个方式来处理  -->
+  		  <!--第五种启动方式：通过自定maven插件或是gradle插件来自定义启动命令：好处是使用方便，确定需要开发  -->
+		  <plugin>
+		   <groupId>org.codehaus.mojo</groupId>
+		   <artifactId>exec-maven-plugin</artifactId>
+		   <version>1.5.0</version>
+		   <executions>
+		    <execution>
+		     <phase>test</phase>
+		     <goals>
+		      <goal>java</goal>
+		     </goals>
+		     <configuration>
+		      <mainClass>com.meizu.simplify.bootstrap.Server</mainClass>
+		      <!-- <arguments>
+		       <argument>name</argument>
+		       <argument>path</argument>
+		      </arguments> -->
+		     </configuration>
+		    </execution>
+		   </executions>
+		  </plugin>
   		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-jar-plugin</artifactId>
