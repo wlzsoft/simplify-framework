@@ -2,12 +2,14 @@
 echo "----------server start---------------------"
 #dirname $0，取得当前执行的脚本文件的父目录
 #进入这个目录(切换当前工作目录)
+echo '当前执行命令,不包含参数'$0
+echo 'pwd'`pwd`
+echo 'ls'`ls`
 cd `dirname $0`
 #显示当前工作目录(cd执行后的)
 BIN_DIR=`pwd`
+echo 'BIN_DIR='$BIN_DIR
 JAVA_HOME="/usr/local/jdk1.8.0_25"
-
-
 
 cd ..
 echo "JAVA_HOME path: $JAVA_HOME"
@@ -16,52 +18,39 @@ echo "current path：$DEPLOY_DIR"
 CONF_DIR=$DEPLOY_DIR/conf
 echo "conf path: $CONF_DIR"
 
-
-
 APP_HOME=$(cd `dirname $0`; pwd)/..
-#APP_HOME=${PWD}/..
 MAIN_CLASS_NAME="com.meizu.simplify.bootstrap.Server"
-#PORT=`sed "s/.*=//g" $APP_HOME/properties/rmi.properties`
-PORT=$3
-HOSTNAME=$2
-#HOSTNAME=`sed "s/!.*=//g" $APP_HOME/properties/rmi.properties`
 
 JAVA_MEM_OPTS="-DlogDir=$APP_HOME/logs"
 if [ -r app.vmoptions ];then
 JAVA_MEM_OPTS="$JAVA_MEM_OPTS `tr '\n' ' ' < app.vmoptions`"
 fi
 
-process_Id=`/usr/sbin/lsof -i tcp:$PORT|awk '{print $2}'|sed '/PID/d'`
-#PIDS=`ps -ef| grep java | grep config-server |awk '{print $2}'`
+process_Id=`ps -ef| grep java | grep config-server |awk '{print $2}'`
+#库路径
+LIB_DIR=$DEPLOY_DIR/lib
+for i in $APP_HOME/lib/*.jar;do
+LIB_JARS="$i"
+done
+LIB_JARS="LIB_JARS':'$CLASSPATH
 
-PATH="./"
-#CLASSPATH=$APP_HOME/$PATH
-#for i in $APP_HOME/lib/*.jar;do
-#CLASSPATH="$i:$CLASSPATH"
-#done
-#export CLASSPATH
-
+echo 'DEPLOY_DIR='$DEPLOY_DIR
+echo 'LIB_DIR='$LIB_DIR
+echo 'LIB_JARS='$LIB_JARS	
 echo "JAVA_HOME path: $JAVA_HOME"
 echo "JAVA_MEM_OPTS="$JAVA_MEM_OPTS 
-#echo "CLASSPATH is $CLASSPATH \n"
 echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
-echo "PORT="$PORT
-echo "APP_HOME is $APP_HOME \n"
-echo "process_Id is $process_Id \n"
-echo "$PORT \n"
+echo "APP_HOME=$APP_HOME"
+echo "process_Id=$process_Id"
 
 start(){
-    printf 'ReportServer is starting...\n'
+    printf '$SERVER_NAME is starting...\n'
 
 	if [ -n "$process_Id" ]; then
     	echo "ERROR: The already started! PID: $PIDS"
     	exit 1
 	fi 
 
-	STDOUT_FILE=$DEPLOY_DIR/logs/stdout.log
-	LIB_DIR=$DEPLOY_DIR/lib
-	LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
-	
 	JAVA_OPTS=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -javaagent:$DEPLOY_DIR/aop/weaving.jar"
 	
 	JAVA_DEBUG_OPTS=""
@@ -84,12 +73,11 @@ start(){
 	    JAVA_MEM_OPTS=" -server -Xms1g -Xmx1g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
 	fi
 	
-	echo -e "Starting the $SERVER_NAME ...\c"
-	echo $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS      $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME $HOSTNAME $PORT &
-   nohup $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME $HOSTNAME $PORT > $STDOUT_FILE 2>&1 &
+echo $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME  &
+     $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME  &
 	echo "service start OK!"
 	PIDS=`ps -ef| grep java | grep config-server |awk '{print $2}'`
-	echo "start PID: $PIDS"
+	echo "start PID: $process_Id"
 }
 
 restart(){
@@ -99,7 +87,7 @@ restart(){
        sleep 1
     fi 
 
-   $JAVA_HOME/bin/java $JAVA_MEM_OPTS -classpath $CLASSPATH $MAIN_CLASS_NAME $HOSTNAME $PORT &
+   $JAVA_HOME/bin/java $JAVA_MEM_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME &
 }
 
 stop (){
