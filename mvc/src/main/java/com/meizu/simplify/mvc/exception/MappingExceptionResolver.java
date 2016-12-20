@@ -95,7 +95,9 @@ public class MappingExceptionResolver {
 //	                     指定默认的返回码，默认是200
 //		    setDefaultStatusCode("500");
 			response.setStatus(500);
-			LOGGER.error("error:"+exceptionMessage);
+			if(LOGGER.isErrorEnabled()) {
+				LOGGER.error("error:"+exceptionMessage+"["+getStackTraceInfo(throwable,1));
+			}
 		}
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 		if(requestUrl.endsWith(".json")) {
@@ -131,12 +133,6 @@ public class MappingExceptionResolver {
 //				方法二：推荐
 //				定义异常处理页面用来获取异常信息的变量名，默认名为exception
 				request.setAttribute("exception", throwable);
-				if(LOGGER.isInfoEnabled()) {
-					LOGGER.info(getStackTraceInfo(throwable,2));
-				}
-				if(LOGGER.isDebugEnabled()) {
-					LOGGER.debug(getStackTraceInfo(throwable,1));
-				}
 				//没有在exceptionMappings里面找到对应的异常时 返回defaultErrorView指定的异常处理默认视图:500,404,403在这里其实jsp页面，比如500.jsp，400.jsp，exception.jsp
 //				setDefaultErrorView("500");//exception
 				template.render(request, response, null, null, "/"+response.getStatus());
