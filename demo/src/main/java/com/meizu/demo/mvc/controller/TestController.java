@@ -232,6 +232,9 @@ public class TestController extends SystemController<TestModel> {
 	
 	@RequestMap(path = "/testvoid/")
 	public String doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+		/*if(true) {
+			throw new NullPointerException("null");
+		}*/
 		testService.addTest(null);
 		cachedDao.set("test22", expire, "ioisoeijfsdjfsd");//测试连接泄漏的问题，在expire起作用后，会出问题
 //		Test test = testService.doSomeThing2(null);

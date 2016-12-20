@@ -40,7 +40,15 @@ PATH="./"
 #CLASSPATH="$i:$CLASSPATH"
 #done
 #export CLASSPATH
+
 echo "JAVA_HOME path: $JAVA_HOME"
+echo "JAVA_MEM_OPTS="$JAVA_MEM_OPTS 
+#echo "CLASSPATH is $CLASSPATH \n"
+echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
+echo "PORT="$PORT
+echo "APP_HOME is $APP_HOME \n"
+echo "process_Id is $process_Id \n"
+echo "$PORT \n"
 
 start(){
     printf 'ReportServer is starting...\n'
@@ -75,14 +83,6 @@ start(){
 	else
 	    JAVA_MEM_OPTS=" -server -Xms1g -Xmx1g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
 	fi
-	
-    echo "JAVA_MEM_OPTS="$JAVA_MEM_OPTS 
-    #echo "CLASSPATH is $CLASSPATH \n"
-    echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
-    echo "PORT="$PORT
-    echo "APP_HOME is $APP_HOME \n"
-    echo "process_Id is $process_Id \n"
-    echo "$PORT \n"
 	
 	echo -e "Starting the $SERVER_NAME ...\c"
 	echo $JAVA_HOME/bin/java $JAVA_OPTS $JAVA_MEM_OPTS      $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME $HOSTNAME $PORT &

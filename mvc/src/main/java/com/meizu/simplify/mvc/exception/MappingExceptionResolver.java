@@ -131,6 +131,12 @@ public class MappingExceptionResolver {
 //				方法二：推荐
 //				定义异常处理页面用来获取异常信息的变量名，默认名为exception
 				request.setAttribute("exception", throwable);
+				if(LOGGER.isInfoEnabled()) {
+					LOGGER.info(getStackTraceInfo(throwable,2));
+				}
+				if(LOGGER.isDebugEnabled()) {
+					LOGGER.debug(getStackTraceInfo(throwable,1));
+				}
 				//没有在exceptionMappings里面找到对应的异常时 返回defaultErrorView指定的异常处理默认视图:500,404,403在这里其实jsp页面，比如500.jsp，400.jsp，exception.jsp
 //				setDefaultErrorView("500");//exception
 				template.render(request, response, null, null, "/"+response.getStatus());
@@ -141,5 +147,23 @@ public class MappingExceptionResolver {
 	    //非200状态的请求全禁用缓存。
         BrowserUtil.disableBrowerCache(response);
 //		不同请求风格的异常处理end
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取堆栈信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param throwable
+	 * @param length 打印的堆栈长度
+	 * @return
+	 */
+	public static String getStackTraceInfo(Throwable throwable,int length) {
+		StackTraceElement[] traceList = throwable.getStackTrace();
+		if(traceList != null && traceList.length>=length) {
+			StackTraceElement traceElement = traceList[0];
+			String firstTrace = traceElement.getClassName()+":"+traceElement.getMethodName()+":"+traceElement.getLineNumber()+"==>>"+traceElement.getFileName();
+			return firstTrace;
+		}
+		return null;
 	}
 }
