@@ -1,13 +1,15 @@
 #!/bin/bash
-echo "----------server start---------------------"
+echo "./service.sh stop  config-server 1.2.1-SNAPSHOT deamon debug 10.2.67.28"
+echo "./service.sh start config-server 1.2.1-SNAPSHOT no no 10.2.67.28"
+echo "./service.sh start config-server 1.2.1-SNAPSHOT"
 mode=$1
-debug=$2
-app_name=$3
+app_name=$2
+app_version=$3
 deamon=$4
-echo 'mode='$mode', debug='$debug', app_name='$app_name
+debug=$5
+echo 'mode='$mode', debug='$debug', app_name='$app_name'----------server start---------------------'
 echo 'pwd='`pwd`
 echo 'ls='`ls`
-JAVA_HOME="/usr/local/jdk1.8.0_25"
 echo "JAVA_HOME path: $JAVA_HOME"
 #dirname $0，取得当前执行的脚本文件的父目录
 #进入这个目录(切换当前工作目录)
@@ -54,14 +56,14 @@ echo 'LIB_JARS='$LIB_JARS
 MAIN_CLASS_NAME="com.meizu.simplify.bootstrap.Server"
 echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
 
-process_Id=`ps fx | grep java | grep $app_name |awk '{print $1}'` 
+process_Id=`ps fx | grep java | grep '$app_name' |awk '{print $1}'` 
 echo "process_Id=$process_Id"
 
 start(){
-    printf '$app_name is starting...\n'
+    printf $app_name' is starting...\n'
 
 	if [ -n "$process_Id" ]; then
-    	echo "ERROR: The already started! PID: $PIDS"
+    	echo "ERROR: The already started! PID: $process_Id"
     	exit 1
 	fi 
 
@@ -88,16 +90,16 @@ start(){
 	    JAVA_MEM_OPTS=" -server -Xms1g -Xmx1g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
 	fi
 	
-    #$JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME  &
-echo $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS &
-     #if [ "$deamon" = "deamon" ]; then
-     	 #STDOUT_FILE=$APP_HOME/logs/stdout.log
-		 #rm -f $STDOUT_FILE
+    #$JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS $JAVA_AGENT $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME &
+echo $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS $JAVA_AGENT $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME &
+     if [ "$deamon" = "deamon" ]; then
+     	 STDOUT_FILE=$APP_HOME/logs/stdout.log
+		 rm -f $STDOUT_FILE
 		 #以下ip在多网卡的情况下需要指定具体网卡的ip地址，否则可以不写。
-	     #nohup $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS > $STDOUT_FILE 2>&1 &
-     #else 
-	     $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS &
-     #end
+	     nohup $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS $JAVA_AGENT $JAVA_DEBUG_OPTS -jar $APP_HOME/lib/$app_name-$app_version.jar > $STDOUT_FILE 2>&1 &
+     else 
+	     $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS $JAVA_AGENT $JAVA_DEBUG_OPTS  -jar $APP_HOME/lib/$app_name-$app_version.jar &
+     end
      
 	echo "service start OK!"
 	process_Id=`ps fx | grep java | grep $app_name |awk '{print $1}'`
@@ -105,14 +107,14 @@ echo $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_D
 }
 
 restart(){
-   printf '$app_name is restart...\n'
+   printf $app_name' is restart...\n'
     stop    
     start
 }
 
 stop (){
-   printf '$app_name is stoping...\n'
-   if [ $process_Id ];then
+   printf $app_name' is stoping...\n'
+   if [ -n "$process_Id" ];then
      kill -9 $process_Id 
        sleep 1
    fi 
