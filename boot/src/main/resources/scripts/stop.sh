@@ -5,3 +5,4 @@ echo "success"
 else
 echo "error"
 fi
+#./service.sh stop

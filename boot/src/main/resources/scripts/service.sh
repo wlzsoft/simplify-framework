@@ -1,5 +1,10 @@
 #!/bin/bash
 echo "----------server start---------------------"
+mode=$1
+debug=$2
+app_name=$3
+deamon=$4
+echo 'mode='$mode', debug='$debug', app_name='$app_name
 echo 'pwd='`pwd`
 echo 'ls='`ls`
 JAVA_HOME="/usr/local/jdk1.8.0_25"
@@ -32,7 +37,7 @@ fi
 echo "JAVA_MEM_OPTS="$JAVA_MEM_OPTS 
 
 #javaAgent设置
-JAVA_AGENT=" -javaagent:$APP_HOME/aop/weaving.jar"
+#JAVA_AGENT=" -javaagent:$APP_HOME/aop/weaving.jar"
 
 #主程序CLASSPATH-类搜索路径
 echo 'GOBAL CLASSPATH is '$CLASSPATH
@@ -49,11 +54,11 @@ echo 'LIB_JARS='$LIB_JARS
 MAIN_CLASS_NAME="com.meizu.simplify.bootstrap.Server"
 echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
 
-process_Id=`ps fx | grep java | grep $3 |awk '{print $1}'` 
+process_Id=`ps fx | grep java | grep $app_name |awk '{print $1}'` 
 echo "process_Id=$process_Id"
 
 start(){
-    printf '$3 is starting...\n'
+    printf '$app_name is starting...\n'
 
 	if [ -n "$process_Id" ]; then
     	echo "ERROR: The already started! PID: $PIDS"
@@ -61,7 +66,7 @@ start(){
 	fi 
 
 	JAVA_DEBUG_OPTS=""
-	if [ "$2" = "debug" ]; then
+	if [ "$debug" = "debug" ]; then
 		#jpda参数说明：
 		#-XDebug 启用调试
 		#-Xrunjdwp 加载JDWP的JPDA参考执行实例。
@@ -85,7 +90,7 @@ start(){
 	
     #$JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME  &
 echo $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS &
-     #if [ "$2" = "deamon" ]; then
+     #if [ "$deamon" = "deamon" ]; then
      	 #STDOUT_FILE=$APP_HOME/logs/stdout.log
 		 #rm -f $STDOUT_FILE
 		 #以下ip在多网卡的情况下需要指定具体网卡的ip地址，否则可以不写。
@@ -95,32 +100,25 @@ echo $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_D
      #end
      
 	echo "service start OK!"
-	process_Id=`ps fx | grep java | grep $3 |awk '{print $1}'`
+	process_Id=`ps fx | grep java | grep $app_name |awk '{print $1}'`
 	echo "start PID: $process_Id"
 }
 
 restart(){
-   printf '$3 is restart...\n'
+   printf '$app_name is restart...\n'
     stop    
     start
 }
 
 stop (){
-   printf '$3 is stoping...\n'
-   if
-     ps fx|grep $3|grep -v grep |awk '{print $1}'|xargs kill -9
-   then
-     echo "success"
-   else
-     echo "error"
-   fi
-   #if [ $process_Id ];then
-   #  kill -9 $process_Id 
+   printf '$app_name is stoping...\n'
+   if [ $process_Id ];then
+     kill -9 $process_Id 
        sleep 1
-   #fi 
+   fi 
 }
 
-case "$1" in
+case "$mode" in
 	start)
 		start
 	;;

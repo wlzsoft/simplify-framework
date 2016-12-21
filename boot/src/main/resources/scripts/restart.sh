@@ -12,7 +12,7 @@ tar -zxvf  /usr/local/service/config-server/config-server.tar.gz -C /usr/local/s
 #unzip -u /usr/local/service/config-server/config-server.zip -d /usr/local/service/
 mkdir -vp /usr/local/service/config-server/log
 chmod 700  /usr/local/service/config-server/bin/*
-setsid bash /usr/local/service/config-server/bin/startup.sh start 10.2.67.31  1>/usr/local/service/config-server/log/log.out 2>/usr/local/service/config-server/log/logerr.out &
+setsid bash /usr/local/service/config-server/bin/start.sh start 10.2.67.31  1>/usr/local/service/config-server/log/log.out 2>/usr/local/service/config-server/log/logerr.out &
 echo '启动服务成功！'
 #第二步配合jenkins： 需要在jenkins执行脚本以出发实际执行shell脚本
 #ssh  10.2.67.41    'bash  /usr/local/service/config-server/bin/restart.sh
