@@ -49,11 +49,11 @@ echo 'LIB_JARS='$LIB_JARS
 MAIN_CLASS_NAME="com.meizu.simplify.bootstrap.Server"
 echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
 
-process_Id=`ps fx | grep java | grep config-server |awk '{print $1}'` 
+process_Id=`ps fx | grep java | grep $3 |awk '{print $1}'` 
 echo "process_Id=$process_Id"
 
 start(){
-    printf '$SERVER_NAME is starting...\n'
+    printf '$3 is starting...\n'
 
 	if [ -n "$process_Id" ]; then
     	echo "ERROR: The already started! PID: $PIDS"
@@ -61,7 +61,7 @@ start(){
 	fi 
 
 	JAVA_DEBUG_OPTS=""
-	if [ "$1" = "debug" ]; then
+	if [ "$2" = "debug" ]; then
 		#jpda参数说明：
 		#-XDebug 启用调试
 		#-Xrunjdwp 加载JDWP的JPDA参考执行实例。
@@ -85,22 +85,30 @@ start(){
 	
     #$JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS_NAME  &
 echo $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS &
-     $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS &
+     #if [ "$2" = "deamon" ]; then
+     	 #STDOUT_FILE=$APP_HOME/logs/stdout.log
+		 #rm -f $STDOUT_FILE
+		 #以下ip在多网卡的情况下需要指定具体网卡的ip地址，否则可以不写。
+	     #nohup $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS > $STDOUT_FILE 2>&1 &
+     #else 
+	     $JAVA_HOME/bin/java $JAVA_OPTS $D_Log_Dir $JAVA_MEM_OPTS JAVA_AGENT $JAVA_DEBUG_OPTS &
+     #end
+     
 	echo "service start OK!"
-	process_Id=`ps fx | grep java | grep config-server |awk '{print $1}'`
+	process_Id=`ps fx | grep java | grep $3 |awk '{print $1}'`
 	echo "start PID: $process_Id"
 }
 
 restart(){
-   printf '$SERVER_NAME is restart...\n'
+   printf '$3 is restart...\n'
     stop    
     start
 }
 
 stop (){
-   printf '$SERVER_NAME is stoping...\n'
+   printf '$3 is stoping...\n'
    if
-     ps fx|grep config-server|grep -v grep |awk '{print $1}'|xargs kill -9
+     ps fx|grep $3|grep -v grep |awk '{print $1}'|xargs kill -9
    then
      echo "success"
    else
