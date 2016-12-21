@@ -1,7 +1,7 @@
 @echo off
-title WebDataCapture
+title %app_name%
 SET PORT=9998
-SET MAIN_CLASS=com.meizu.report.Main
+SET MAIN_CLASS=com.meizu.simplify.bootstrap.Server
 
 SET APP_HOME=%~dp0
 SET LOG_DIR=%APP_HOME%logs
