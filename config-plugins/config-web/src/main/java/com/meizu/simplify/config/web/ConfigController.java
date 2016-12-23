@@ -33,8 +33,7 @@ public class ConfigController extends SystemController<Model> {
 	
 	@RequestMap(path = "/get/")
 	public String get(HttpServletRequest request, HttpServletResponse response, Model model)  {
-		configService.get(null, "");
-		return "jsp:/index";
+		return "velocity:/get";
 	}
 	
 }

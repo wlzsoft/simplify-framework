@@ -16,7 +16,7 @@
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
-	    <artifactId>mvc</artifactId>
+	    <artifactId>listener</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
@@ -25,5 +25,220 @@
 		<version>3.1.0</version>
 		<scope>provided</scope>
 	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.7.7</version>
+	</dependency>
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.17</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.h2database</groupId>
+	    <artifactId>h2</artifactId>
+	    <version>1.4.193</version>
+	</dependency>
   </dependencies>
+  <build>
+    <plugins>
+    	<plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-war-plugin</artifactId>
+	        <version>2.6</version>
+	        <configuration>
+	        	<archive>
+					<addMavenDescriptor>false</addMavenDescriptor>
+					<compress>true</compress>
+					<forced>true</forced>
+					<index>false</index>
+		            <manifest>
+		              <addClasspath>false</addClasspath>
+		              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+		              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+		              <addExtensions>false</addExtensions>
+		              <classpathMavenRepositoryLayout>false</classpathMavenRepositoryLayout>
+		              <classpathPrefix></classpathPrefix>
+		              <useUniqueVersions>true</useUniqueVersions>
+		            </manifest>
+					<manifestEntries>
+						<artifactId>${project.artifactId}</artifactId>
+            		</manifestEntries>
+				</archive>
+			</configuration>
+	    </plugin>
+    	<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.5.1</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+			</configuration>
+		</plugin>
+    	<!-- 运行命令 mvn jetty:run 或    mvn -Djetty.port=9999 jetty:run -->
+		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
+		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
+		<!-- jvmargs:PermGen空间被移除了，取而代之的是Metaspace（JEP 122）。JVM选项-XX:PermSize与-XX:MaxPermSize分别被-XX:MetaSpaceSize与-XX:MaxMetaspaceSize所代替。 -->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.1-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.1-SNAPSHOT.jar -Daop.properties的属性值可选-->
+		<plugin>
+
+		  <groupId>org.eclipse.jetty</groupId>
+		  <artifactId>jetty-maven-plugin</artifactId>
+		  <version>9.3.0.M2</version>
+			<configuration>
+				<!-- jvmArgs不起作用 -->
+				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.1-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
+				<contextXml>src/test/java/jetty-config.xml</contextXml>
+				<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
+				<webApp>
+					<defaultsDescriptor>${project.basedir}/src/test/java/webdefault.xml</defaultsDescriptor>
+                    <contextPath>/</contextPath>
+                </webApp>
+                <httpConnector>
+                	<!-- 注意：这个端口的优先级最高，高于‘-Djetty.port’,如果这里指定了端口，那么‘-Djetty.port’指定的端口是无效的 -->
+                	<idleTimeout>60000</idleTimeout>
+                </httpConnector>
+				<stopKey>stop_jetty_dev</stopKey>
+				<stopPort>9099</stopPort>
+				<daemon>true</daemon>
+				<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+                       <filename>${project.build.directory}/access.log</filename>
+                       <retainDays>90</retainDays>
+                       <append>false</append>
+                       <extended>false</extended>
+                       <logTimeZone>GMT+8:00</logTimeZone>
+                   </requestLog>
+			</configuration>
+			<!--executions 在install时会起作用执行  -->
+			<!-- 集成测试 -->
+			<!-- 集成测试是对功能的测试，对于大部分web模块来说需要启动web容器，进行集成测试   -->
+			<executions>
+				<execution>
+					<id>start-jetty</id>
+					<!--集成测试前启动jetty-->
+					<phase>pre-integration-test</phase>
+					<goals>
+						<goal>start</goal>
+					</goals>
+					<configuration>
+						<httpConnector>
+	                    	<port>8040</port>
+	                    	<idleTimeout>60000</idleTimeout>
+	                    </httpConnector>
+						<scanIntervalSeconds>0</scanIntervalSeconds>
+					</configuration>
+				</execution>
+				<execution>
+					<id>stop-jetty</id>
+					<!--集成测试结束停止jetty-->
+					<phase>post-integration-test</phase>
+					<goals>
+						<goal>stop</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+		<!-- 单元测试开始-集成javaangent-未测试 -->
+	    <!-- mvn surefire:test或者mvn test 运行单元测试 -->
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-surefire-plugin</artifactId>
+	      <version>2.19.1</version>
+	      <configuration>
+	        <!-- <skip>true</skip> -->
+	        <forkMode>pertest</forkMode>
+	        <argLine>-javaagent:${project.basedir}/target/weaving-1.2.1-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
+	        <workingDirectory>${project.basedir}/target</workingDirectory>
+	      </configuration>
+	      <!-- 测试代码进行单元测试和集成测试区分，一般有两种方式： 
+  				 一是使用maven profile，通过profile区分 
+   				二是根据生命周期，配置maven surefire 插件不同生命周期的includes或/exclueds属性 
+   				方式二的配置如下：在src/test/java中把单元测试代码放在unit包，集成测试代码放在integration包 -->
+   		   <executions>
+               <execution>
+                   <id>run-integration-test</id>
+                   <phase>integration-test</phase>
+                   <goals>
+                       <goal>test</goal>
+                   </goals>
+                   <configuration>
+                       <skip>false</skip>
+                       <includes>
+                           <include>**/integration/**/*.java</include>
+                       </includes>
+                   </configuration>
+               </execution>
+               <execution>
+                   <id>run-test</id>
+                   <phase>test</phase>
+                   <goals>
+                       <goal>test</goal>
+                   </goals>
+                   <configuration>
+                       <skip>false</skip>
+                       <includes>
+                           <include>**/unit/**/*.java</include>
+                       </includes>
+                   </configuration>
+               </execution>
+           </executions>
+	    </plugin>
+	    <!-- 单元测试结束 -->
+	    <plugin>
+	    	<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>1.8</version>
+			<dependencies>
+				<dependency>
+					<groupId>jdk</groupId>
+					<artifactId>tools</artifactId>
+					<version>1.8</version>
+					<scope>system</scope>
+					<systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+				</dependency>
+			</dependencies>
+			<executions>
+				<execution>
+					<id>prepare-package</id>
+					<phase>prepare-package</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+					<configuration>
+						<target>
+							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.MethodSelectorGenMain"  args="com.meizu.demo.mvc.controller" append="true" jvm="java"  newenvironment="true">
+								<!-- <classpath refid="${mvn-classpath}" /> -->
+								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
+							</java>
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.ModelSelectorGenBuild"  args="com.meizu.demo.mvc.model,com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
+							</java>
+							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.SqlByDaoEntityGenBuild"  args="com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
+							</java>
+							<!-- <mkdir dir="${project.build.directory}/classes" /> -->
+							<javac nowarn="false" destdir="${project.build.directory}/classes"  includeantruntime="true">
+								<classpath path="${mvn-classpath}" />
+								<!-- <src path="${project.build.sourceDirectory}" /> -->
+								<src path="${project.build.directory}/codegen" />
+								<include name="com/meizu/simplify/codegen/*.java" />
+							</javac>
+						</target>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+    </plugins>
+    <resources>
+		<resource>
+			<directory>src/main/resources</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+			<filtering>true</filtering>
+		</resource>
+	</resources>
+  </build>
 </project>
