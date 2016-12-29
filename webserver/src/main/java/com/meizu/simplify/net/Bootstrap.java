@@ -1,17 +1,18 @@
 package com.meizu.simplify.net;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import com.meizu.WebServer;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>引导启动</i></p>
- * <p>Desc: TODO后续代替WebServer</p>
+ * <p>Desc: 使用自己实现的连接池，该连接池受到java本身api的限制，性能提升不高，但已经远远优于BioBootstrap</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -23,14 +24,18 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 public class Bootstrap {
-	public static boolean isRunning = true;
+	public volatile static boolean isRunning = true;
 	public static void main(String[] args) {
 		Startup.start();
+		//配置加载开始
+		Properties props = new Properties();
+		InputStream is = Bootstrap.class.getClassLoader().getResourceAsStream("web.properties");
 		try {
-			WebServer.init();
-		} catch (Exception e) {
+			props.load(is);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//配置加载结束
 		boolean isStart = start();
 		if(!isRunning&&isStart) {
 			System.out.println("服务器正常关闭");
@@ -72,11 +77,11 @@ public class Bootstrap {
 			System.out.println(bb.array().length);*/
 			MessageHandler mh = new MessageHandler(serverSocket,1);
 			for (int i=0; i<ThreadPool.getPoolSize(); i++) {
-				ThreadPool.add(new Thread(mh,"连接"+(i+1)));
+				ThreadPool.add(mh,"连接"+(i+1));
 			}
 			MessageHandler mh2 = new MessageHandler(serverSocket,1);
-			ThreadPool.add(new Thread(mh2,"连接b"));
-			while(Bootstrap.isRunning) {
+			ThreadPool.add(mh2,"连接b");
+			while(isRunning) {
 				try {
 					TimeUnit.SECONDS.sleep(200);
 				} catch (InterruptedException e) {

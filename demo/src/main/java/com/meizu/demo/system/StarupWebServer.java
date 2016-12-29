@@ -1,11 +1,12 @@
 package com.meizu.demo.system;
 
-import com.meizu.WebServer;
+import com.meizu.BioBootstrap;
 import com.meizu.simplify.ioc.Startup;
 
 /**
   * <p><b>Title:</b><i>使用webserver容器</i></p>
- * <p>Desc: 这个类，可以不用，直接指定com.meizu.WebServer类来执行它的main方法就可以</p>
+ * <p>Desc: 1.这个类，可以不用，直接指定com.meizu.WebServer类来执行它的main方法就可以
+ *          2.测试这种方式，是否可以在IDEA工具中，达到热加载class的需求 TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -20,8 +21,7 @@ public class StarupWebServer {
 	public static void main(String[] args) {
 		try {
 			Startup.start();
-			WebServer.init();
-			new WebServer().start();
+			BioBootstrap.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

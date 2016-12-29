@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.meizu.WebSocket.Handler;
 import com.meizu.util.SessionIdFactory;
@@ -35,6 +37,7 @@ Servlet3.0的solution:
  *
  */
 public class WebThread implements Runnable {
+	public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
 	private Socket socket;
 	private final InputStream br;
 	public WebThread(Socket socket) throws Exception {
@@ -75,13 +78,13 @@ public class WebThread implements Runnable {
 				if (sessionId == null || sessionId.length() < 32) {
 					session = new HttpSessionImplWrapper();
 					session.setSessionId(SessionIdFactory.getSessionId());
-					WebServer.sessions.put(session.getSessionId(), session);
+					sessions.put(session.getSessionId(), session);
 				} else {
-					session = WebServer.sessions.get(sessionId);
+					session = sessions.get(sessionId);
 					if (session == null) {
 						session = new HttpSessionImplWrapper();
 						session.setSessionId(SessionIdFactory.getSessionId());
-						WebServer.sessions.put(session.getSessionId(), session);
+						sessions.put(session.getSessionId(), session);
 					}
 				}
 				request.setSession(session);

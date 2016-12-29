@@ -36,7 +36,7 @@ public class HttpRoute {
 			}
 		} else {
 			// 加载静态页面从web.properties里面获取
-			String contextpath = WebServer.config.get("path");
+			String contextpath = null;//WebServer.config.get("path");
 			if(contextpath == null) {
 				contextpath = HttpRoute.class.getClassLoader().getResource("webapp").getPath();
 			}

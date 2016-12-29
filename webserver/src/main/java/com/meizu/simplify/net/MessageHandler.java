@@ -7,13 +7,14 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.meizu.HttpRequest;
 import com.meizu.HttpResponse;
 import com.meizu.HttpRoute;
 import com.meizu.HttpSessionImplWrapper;
-import com.meizu.WebServer;
 import com.meizu.WebSocket;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.util.SessionIdFactory;
@@ -32,6 +33,7 @@ import com.meizu.util.SessionIdFactory;
  *
  */
 public class MessageHandler implements Runnable{
+	public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
 	private ServerSocket serverSocket;
 	private long time = 0;
 	public MessageHandler(ServerSocket serverSocket,long time) {
@@ -66,13 +68,13 @@ public class MessageHandler implements Runnable{
 				if(StringUtil.isBlank(sessionId)) {
 					session = new HttpSessionImplWrapper();
 					session.setSessionId(SessionIdFactory.getSessionId());
-					WebServer.sessions.put(session.getSessionId(), session);
+					sessions.put(session.getSessionId(), session);
 				} else {
-					session = WebServer.sessions.get(sessionId);
+					session = sessions.get(sessionId);
 					if(session == null) {
 						session = new HttpSessionImplWrapper();
 						session.setSessionId(SessionIdFactory.getSessionId());
-						WebServer.sessions.put(session.getSessionId(), session);
+						sessions.put(session.getSessionId(), session);
 					}
 				}
 				request.setSession(session);

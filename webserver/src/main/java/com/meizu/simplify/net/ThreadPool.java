@@ -22,7 +22,8 @@ public class ThreadPool {
 		return poolSize;
 	}
 	private static List<Thread> threadList = new ArrayList<>(poolSize);
-	public static void add(Thread thread) {
+	public static void add(Runnable runnable,String name) {
+		Thread thread = new Thread(runnable,name);
 		if(threadList.size()<20) {
 			threadList.add(thread);
 			thread.start();
