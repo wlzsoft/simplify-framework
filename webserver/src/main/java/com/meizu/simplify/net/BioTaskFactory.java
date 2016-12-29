@@ -8,7 +8,7 @@ import com.meizu.HttpResponse;
 
 /**
   * <p><b>Title:</b><i>任务工厂</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 未使用连接池</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

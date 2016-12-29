@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
   * <p><b>Title:</b><i>任务工厂</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 定长线程的任务工厂</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @version Version 0.1
  *
  */
-public class TaskFactory implements ITaskFactory{
+public class FixedThreadTaskFactory implements ITaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>

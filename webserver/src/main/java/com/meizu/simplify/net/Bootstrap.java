@@ -76,8 +76,8 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			ITaskFactory factory = new TaskFactory();
-//			ITaskFactory factory = new BioTaskFactory();
+//			ITaskFactory factory = new TaskFactory();
+			ITaskFactory factory = new BioTaskFactory();
 			factory.add(serverSocket);
 		} catch (IOException e) {
 			e.printStackTrace();
