@@ -2,12 +2,9 @@ package com.meizu.simplify.net;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.util.Properties;
 
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>引导启动</i></p>
@@ -55,42 +52,15 @@ public class Bootstrap {
 		int backlog = 5;//连接等待队列
 		int port = 8060;
 		String host = null;//"10.2.70.36";
-		ServerSocket serverSocket = null;
 		try {
-			serverSocket = new ServerSocket();
-			InetSocketAddress inetSocketAddress = null;
-			if(StringUtil.isBlank(host)) {
-				inetSocketAddress = new InetSocketAddress(port);
-			} else {
-				inetSocketAddress = new InetSocketAddress(host,port);
-			}
-			if(backlog>0) {
-				serverSocket.bind(inetSocketAddress,backlog);
-			} else {
-				serverSocket.bind(inetSocketAddress);
-			}
-			/*char c = '中';//unicode 和 utf8的区别，在java中的影响
-			Charset cs = Charset.forName("GBK");
-			CharBuffer cb = CharBuffer.allocate(1);
-			cb.put(c);
-			cb.flip();
-			ByteBuffer bb = cs.encode (cb);
-			System.out.println(bb.array().length);*/
-//			ITaskFactory factory = new TaskFactory();
-			ITaskFactory factory = new BioTaskFactory();
-			factory.add(serverSocket);
-		} catch (IOException e) {
+			ITaskFactory factory = new JDKCachedThreadPoolTaskFactory();
+//			ITaskFactory factory = new FixedThreadTaskFactory();
+//			ITaskFactory factory = new BioTaskFactory();
+			factory.add(host,port,backlog);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		} finally {
-			if(serverSocket != null) {
-				try {
-					serverSocket.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		} 
 		return true;
 	}
 	

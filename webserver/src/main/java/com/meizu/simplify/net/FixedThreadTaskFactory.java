@@ -1,6 +1,6 @@
 package com.meizu.simplify.net;
 
-import java.net.ServerSocket;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,24 +16,37 @@ import java.util.concurrent.TimeUnit;
  * @version Version 0.1
  *
  */
-public class FixedThreadTaskFactory implements ITaskFactory{
+public class FixedThreadTaskFactory extends AbstractBioTaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
 	 * @param socket
 	 */
-	public void add(ServerSocket serverSocket) {
-		MessageRunnable mh = new MessageRunnable(serverSocket);
-		for (int i=0; i<ThreadPool.getPoolSize(); i++) {
-			ThreadPool.add(mh,"连接"+(i+1));
-		}
-		MessageRunnable mh2 = new MessageRunnable(serverSocket);
-		ThreadPool.add(mh2,"连接b");
-		while(Bootstrap.isRunning) {
-			try {
-				TimeUnit.SECONDS.sleep(200);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public void add(String host,int port,int backlog)  throws IOException{
+		try {
+			super.add(host, port, backlog);
+			MessageRunnable mh = new MessageRunnable(serverSocket);
+			for (int i=0; i<ThreadPool.getPoolSize(); i++) {
+				ThreadPool.add(mh,"连接"+(i+1));
+			}
+			MessageRunnable mh2 = new MessageRunnable(serverSocket);
+			ThreadPool.add(mh2,"连接b");
+			while(Bootstrap.isRunning) {
+				try {
+					TimeUnit.SECONDS.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(serverSocket != null) {
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

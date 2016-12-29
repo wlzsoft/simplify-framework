@@ -1,6 +1,6 @@
 package com.meizu.simplify.net;
 
-import java.net.ServerSocket;
+import java.io.IOException;
 
 /**
   * <p><b>Title:</b><i>执行器接口</i></p>
@@ -21,5 +21,5 @@ public interface ITaskFactory {
 	 * 操作步骤: TODO<br>
 	 * @param socket
 	 */
-	public void add(ServerSocket serverSocket);
+	public void add(String host,int port,int backlog)  throws IOException;
 }

@@ -1,7 +1,6 @@
 package com.meizu.simplify.net;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
@@ -17,22 +16,32 @@ import java.net.Socket;
  * @version Version 0.1
  *
  */
-public class BioTaskFactory implements ITaskFactory{
+public class BioTaskFactory extends AbstractBioTaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
 	 * @param socket
 	 */
-	public void add(ServerSocket serverSocket) {
-		while (Bootstrap.isRunning) {
-			try {
+	public void add(String host,int port,int backlog) {
+		try {
+			super.add(host, port, backlog);
+			while (Bootstrap.isRunning) {
 				Socket socket = serverSocket.accept();
 				System.out.println("来自客户端[" + socket.getRemoteSocketAddress()
 						+ "] 的请求 ");
 				//对每一个客户端都启动一个线程处理
 				new Thread(new BioMessageRunnable(socket)).start();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(serverSocket != null) {
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package com.meizu.simplify.net;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -21,23 +20,34 @@ import java.util.concurrent.TimeUnit;
  * @version Version 0.1
  *
  */
-public class JDKCachedThreadPoolTaskFactory implements ITaskFactory{
+public class JDKCachedThreadPoolTaskFactory extends AbstractBioTaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
 	 * @param socket
 	 */
-	public void add(ServerSocket serverSocket) {
+	public void add(String host,int port,int backlog)  throws IOException{
 		try {
-			Socket socket = serverSocket.accept();
-			ExecutorService service = null;//Executors.newCachedThreadPool();
-			int maxPoolSize = 50;
-			int queueSize = 10_000;
-			service = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), maxPoolSize, 120L,	TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(queueSize));
-//			service.submit(new BioMessageRunnable(socket));
-			service.submit(new BioMessageCallable(socket));
+			super.add(host, port, backlog);
+			while (Bootstrap.isRunning) {
+				Socket socket = serverSocket.accept();
+				ExecutorService service = null;//Executors.newCachedThreadPool();
+				int maxPoolSize = 50;
+				int queueSize = 10_000;
+				service = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), maxPoolSize, 120L,	TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(queueSize));
+	//			service.submit(new BioMessageRunnable(socket));
+				service.submit(new BioMessageCallable(socket));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if(serverSocket != null) {
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
