@@ -1,9 +1,13 @@
 package com.meizu.simplify.net;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Set;
 
 /**
   * <p><b>Title:</b><i>抽象的NIO任务工厂</i></p>
@@ -30,6 +34,31 @@ public abstract class AbstractNioTaskFactory implements ITaskFactory{
 		Selector selector = Selector.open();
 //		打开通道
 		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+		serverSocketChannel.configureBlocking(false);
 		serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+		Set<SelectionKey> selectKeySet = selector.selectedKeys();
+		for (SelectionKey selectionKey : selectKeySet) {
+			if(selectionKey.isValid()) {
+				if(selectionKey.isAcceptable()) {
+					ServerSocketChannel acceptChannel = (ServerSocketChannel)selectionKey.channel();
+					SocketChannel socket = acceptChannel.accept();
+					socket.bind(new InetSocketAddress("127.0.0.1",8090));
+					socket.configureBlocking(false);
+					socket.register(selector, SelectionKey.OP_READ);
+				} else if(selectionKey.isReadable()) {
+					SocketChannel readableChannel = (SocketChannel)selectionKey.channel();
+					ByteBuffer byteBuffer = ByteBuffer.allocate(1024*10);
+					int readCount = readableChannel.read(byteBuffer);
+					if(readCount>0) {
+						byteBuffer.flip();
+						if(byteBuffer.hasRemaining()) {
+							byte[] byteArr = new byte[byteBuffer.remaining()];
+							String msg = new String(byteArr,"utf-8");
+							System.out.println(msg);
+						}
+					} 
+				}
+			}
+		}
 	}
 }
