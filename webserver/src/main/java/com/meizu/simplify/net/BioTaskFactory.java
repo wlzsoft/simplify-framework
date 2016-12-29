@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.meizu.HttpResponse;
-
 /**
   * <p><b>Title:</b><i>任务工厂</i></p>
  * <p>Desc: 未使用连接池</p>
@@ -28,24 +26,11 @@ public class BioTaskFactory implements ITaskFactory{
 	public void add(ServerSocket serverSocket) {
 		while (Bootstrap.isRunning) {
 			try {
-				Socket client = serverSocket.accept();
-				System.out.println("来自客户端[" + client.getRemoteSocketAddress()
+				Socket socket = serverSocket.accept();
+				System.out.println("来自客户端[" + socket.getRemoteSocketAddress()
 						+ "] 的请求 ");
 				//对每一个客户端都启动一个线程处理
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						HttpResponse response = null;
-						try {
-							response = MessageHandler.parseMessage(client, client.getInputStream());
-						} catch (Exception e) {
-							e.printStackTrace();
-							if(response != null) {
-								response.setStatusCode("500");
-							}
-						}
-					}
-				}).start();
+				new Thread(new BioMessageRunnable(socket)).start();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
