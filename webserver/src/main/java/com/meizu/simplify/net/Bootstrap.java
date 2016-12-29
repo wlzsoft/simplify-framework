@@ -5,14 +5,15 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.utils.StringUtil;
 
 /**
   * <p><b>Title:</b><i>引导启动</i></p>
- * <p>Desc: 使用自己实现的连接池，该连接池受到java本身api的限制，性能提升不高，但已经远远优于BioBootstrap</p>
+ * <p>Desc: 1.使用自己实现的连接池，该连接池受到java本身api的限制，性能提升不高，但已经远远优于BioBootstrap
+ *          2.目前这个线程池不不完整，只是固定大小的，不能伸缩
+ *          3.目前这个线程池和连接绑定了，实现上有问题</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -75,19 +76,9 @@ public class Bootstrap {
 			cb.flip();
 			ByteBuffer bb = cs.encode (cb);
 			System.out.println(bb.array().length);*/
-			MessageHandler mh = new MessageHandler(serverSocket,1);
-			for (int i=0; i<ThreadPool.getPoolSize(); i++) {
-				ThreadPool.add(mh,"连接"+(i+1));
-			}
-			MessageHandler mh2 = new MessageHandler(serverSocket,1);
-			ThreadPool.add(mh2,"连接b");
-			while(isRunning) {
-				try {
-					TimeUnit.SECONDS.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+			ITaskFactory factory = new TaskFactory();
+//			ITaskFactory factory = new BioTaskFactory();
+			factory.add(serverSocket);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

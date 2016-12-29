@@ -1,6 +1,7 @@
 package com.meizu.simplify.net;
 
 import java.net.ServerSocket;
+import java.util.concurrent.TimeUnit;
 
 /**
   * <p><b>Title:</b><i>任务工厂</i></p>
@@ -15,12 +16,25 @@ import java.net.ServerSocket;
  * @version Version 0.1
  *
  */
-public class TaskFactory {
+public class TaskFactory implements ITaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
 	 * @param socket
 	 */
-	public static void add(ServerSocket serverSocket) {
+	public void add(ServerSocket serverSocket) {
+		MessageRunnable mh = new MessageRunnable(serverSocket);
+		for (int i=0; i<ThreadPool.getPoolSize(); i++) {
+			ThreadPool.add(mh,"连接"+(i+1));
+		}
+		MessageRunnable mh2 = new MessageRunnable(serverSocket);
+		ThreadPool.add(mh2,"连接b");
+		while(Bootstrap.isRunning) {
+			try {
+				TimeUnit.SECONDS.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -1,14 +1,10 @@
-package com.meizu;
+package com.meizu.simplify.net;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.meizu.WebSocket.Handler;
-import com.meizu.util.SessionIdFactory;
+import com.meizu.HttpResponse;
 
 /**
  * <p><b>Title:</b><i>服务器线程,一个请求一个线程</i></p>
@@ -36,92 +32,34 @@ Servlet3.0的solution:
  * @version Version 0.1
  *
  */
-public class WebThread implements Runnable {
-	public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
-	private Socket socket;
-	private final InputStream br;
-	public WebThread(Socket socket) throws Exception {
-		
-		this.socket = socket;
-		br = socket.getInputStream();
-		
+public class MessageRunnable implements Runnable {
+	private ServerSocket serverSocket;
+	public MessageRunnable(ServerSocket serverSocket) {
+		this.serverSocket = serverSocket;
 	}
-	
 	
 	@Override
 	public void run() {
-		HttpRequest request = new HttpRequest();
-		HttpResponse response = null;
-		
-		try {
-			
-			response = new HttpResponse(this.socket);
-			// 开始解析HttpRequest
-			BufferedReader tr = new BufferedReader(new InputStreamReader(br));
-			String requestLine = tr.readLine();
-			if (requestLine != null) {
-				System.out.println(requestLine);
-				request.parseRequestLine(requestLine);
-				boolean flag = true;
-				while (flag) {
-					String read = tr.readLine();
-					if (read == null || read.trim().length() < 1) {// 当到请求正文的时为0和内容为空的时候退出
-						break;
-					} else {
-						System.out.println(read);
-						request.parseRequestHeader(read);
-					}
+		while(Bootstrap.isRunning) {
+			HttpResponse response = null;
+			try {
+				//接收请求
+				//线程中获取连接并通讯-开始
+				Socket socket = serverSocket.accept();
+				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求,由线程"+Thread.currentThread().getName());
+				InputStream inputStream = socket.getInputStream();
+				//线程中获取连接并通讯-结束
+				response = MessageHandler.parseMessage(socket, inputStream);
+				if(response == null) {
+					continue;
 				}
-
-				String sessionId = request.getCookiesMap().get("sessionId");
-				HttpSessionImplWrapper session = null;
-				if (sessionId == null || sessionId.length() < 32) {
-					session = new HttpSessionImplWrapper();
-					session.setSessionId(SessionIdFactory.getSessionId());
-					sessions.put(session.getSessionId(), session);
-				} else {
-					session = sessions.get(sessionId);
-					if (session == null) {
-						session = new HttpSessionImplWrapper();
-						session.setSessionId(SessionIdFactory.getSessionId());
-						sessions.put(session.getSessionId(), session);
-					}
+			} catch (Exception e) {
+				e.printStackTrace();
+				if(response != null) {
+					response.setStatusCode("500");
 				}
-				request.setSession(session);
-				// cookie的可以为set-cookie，是http协议规定的，请求头上面cookie设为sessionID
-				response.getResponseHeader().put("Set-Cookie",
-						"sessionId=" + session.getSessionId());
-
-				String contentLength = request.getRequestHeader().get(
-						"Content-Length");
-				System.out.println("ContentLength :" + contentLength);
-				if (contentLength != null) {
-					int length = Integer.parseInt(contentLength);
-					char[] buffer = new char[length];
-					tr.read(buffer);
-					System.out.println("datas : " + new String(buffer));
-					String postData = new String(buffer);
-					String[] parameters = postData.split("&");
-					for (String str : parameters) {
-						String[] datas = str.split("=");
-						request.getParameters().put(datas[0], datas[1]);
-					}
-					request.setBody(buffer);
-				}
-				String upgrade = request.getHeader("Upgrade");
-				if(upgrade!= null&&upgrade.equals("websocket")) {
-					new Handler(this.socket,br,request).exec();
-					return;
-				}
-				// 解析请求头完毕
-				HttpRoute.route(request, response);
-				response.sendToClient();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.setStatusCode("500");
 		}
-		
 	}
 
 }
