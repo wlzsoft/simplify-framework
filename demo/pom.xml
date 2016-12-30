@@ -88,16 +88,16 @@
 		<artifactId>log</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<dependency>
+	<!-- <dependency>
 		<groupId>com.meizu.simplify</groupId>
 		<artifactId>config-client</artifactId>
 		<version>${project.version}</version>
-	</dependency>
-	<dependency>
+	</dependency> -->
+	<!-- <dependency>
 		<groupId>com.meizu.simplify</groupId>
 		<artifactId>rpc</artifactId>
 		<version>${project.version}</version>
-	</dependency>
+	</dependency> -->
 	<dependency>
 		<groupId>com.meizu.simplify</groupId>
 		<artifactId>listener</artifactId>
