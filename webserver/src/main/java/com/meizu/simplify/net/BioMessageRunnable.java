@@ -27,7 +27,7 @@ public class BioMessageRunnable implements Runnable {
 	public void run() {
 		HttpResponse response = null;
 		try {
-			response = MessageHandler.parseMessage(socket, socket.getInputStream());
+			response = MessageHandler.parseMessage(socket,null, socket.getInputStream());
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(response != null) {

@@ -49,7 +49,7 @@ public class MessageRunnable implements Runnable {
 				System.out.println("来自客户端["+socket.getRemoteSocketAddress()+"]的请求,由线程"+Thread.currentThread().getName());
 				InputStream inputStream = socket.getInputStream();
 				//线程中获取连接并通讯-结束
-				response = MessageHandler.parseMessage(socket, inputStream);
+				response = MessageHandler.parseMessage(socket,null, inputStream);
 				if(response == null) {
 					continue;
 				}

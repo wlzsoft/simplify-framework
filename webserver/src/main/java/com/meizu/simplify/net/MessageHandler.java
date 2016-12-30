@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,12 +34,18 @@ import com.meizu.util.SessionIdFactory;
 public class MessageHandler {
 	public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
 	
-	public static HttpResponse parseMessage(Socket socket, InputStream inputStream) throws IOException {
-		
-		InputStreamReader isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
-		BufferedReader br = new BufferedReader(isr);
+	public static HttpResponse parseMessage(Socket socket,SocketChannel sc, InputStream inputStream) throws IOException {
+		InputStreamReader isr = null;
+		if(inputStream!=null) {
+			isr = new InputStreamReader(inputStream,Charset.forName("utf-8"));
+		}
+		BufferedReader br = null;
+		if(isr != null) {
+			br = new BufferedReader(isr);
+		}
 		//解析请求内容
-		//解析请求行--http1.1中，必须要有的请求line 格式是： [method] [url] [version] 例子： GET /trade/list/bill-list HTTP/1.1 
+		//解析请求行--http1.1中，必须要有的请求line 格式是： [method] [url] [version] 例子： GET /trade/list/bill-list HTTP/1.1
+//		sc.read(dst) //TODO nio读取一行
 		String requestLine = br.readLine();
 		if(requestLine == null) {//TODO 很奇怪，请求发起后正常，但是过一小会，会再次接收到请求，而且内容是空的，导致异常，这个先跳过[经过分析，只有chrome浏览器会有这个问题，估计是chrome后续会发送一些心跳信息过来]
 			return null;//需要仔细分析
@@ -79,7 +86,7 @@ public class MessageHandler {
 		
 		//请求源数据已经处理完毕
 		//向浏览器响应内容
-		HttpResponse response = new HttpResponse(socket);
+		HttpResponse response = new HttpResponse(socket,sc);
 		//session解析处理
 		String sessionId = request.getCookiesMap().get("sessionId");
 		HttpSessionImplWrapper session = null;
@@ -102,13 +109,24 @@ public class MessageHandler {
 		HttpRoute.route(request, response);
 		//真实的响应动作
 		response.sendToClient();
-		inputStream.close();
-		isr.close();
-		br.close();
-		socket.close();
+		if(inputStream != null) {
+			inputStream.close();
+		}
+		if(isr != null) {
+			isr.close();
+		}
+		if(br != null) {
+			br.close();
+		}
+		if(sc != null) {
+			sc.close();
+		}
+		if(socket != null) {
+			socket.close();
 //				socket.shutdownInput();
 //				socket.shutdownOutput();
-		System.out.println("============"+socket.isClosed()+"|"+socket);
+			System.out.println("============"+socket.isClosed()+"|"+socket);
+		}
 		return response;
 	}
 

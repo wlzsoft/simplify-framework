@@ -27,14 +27,17 @@ public class HttpResponse implements HttpServletResponse{
 
 	private char[] body;
 
-	private final PrintWriter bw;
+	private PrintWriter bw;
 	private SocketChannel sc;
 	private String charset;
 	private String contentType;
 	
-	public HttpResponse(Socket socket) throws IOException {
-		bw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-		sc = socket.getChannel();
+	public HttpResponse(Socket socket,SocketChannel sc) throws IOException {
+		if(socket != null) {
+			bw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+//			sc = socket.getChannel();
+		}
+		this.sc = sc;
 	}
 
 	public String getVersion() {
@@ -78,20 +81,7 @@ public class HttpResponse implements HttpServletResponse{
 	}
 	public void sendToClient() throws IOException {
 		if(body != null ) {
-			bw.write(getVersion() + " " + getStatusCode() + " "
-					+ getReason() + "\r\n");
-			bw.write("Date: " + new Date() + "\r\n");
-			bw.write("Server: meizu-server-0.1\r\n");
-			bw.write("Accept-Ranges: bytes\r\n");
-			bw.write("Content-Length: " + getBody().length + "\r\n");
-			bw.write("Content-Type: text/html\r\n");
-			Set<Entry<String,String>> entryHead = responseHeader.entrySet();
-			for (Entry<String, String> entry : entryHead) {
-				bw.write(entry.getKey()+": "+entry.getValue()+"\r\n");
-			}
-			bw.write("Set-Cookie: "
-					+ getResponseHeader().get("Set-Cookie") + "\r\n");
-			bw.write("\r\n");
+			bw = getWriter();
 			bw.write(getBody());
 		}
 		bw.flush();
@@ -100,24 +90,29 @@ public class HttpResponse implements HttpServletResponse{
 	public void sendToClientByNio() throws IOException {
 		if(body != null ) {
 			ByteBuffer[] srcs = new ByteBuffer[4];
-			ByteBuffer responseByte = ByteBuffer.wrap((
-					getVersion() + " " + getStatusCode() + " " + getReason() + "\r\n"
+			String msg = (getVersion() + " " + getStatusCode() + " " + getReason() + "\r\n"
 					+"Date: " + new Date() + "\r\n"
 					+"Server: meizu-server-0.1\r\n"
 					+"Accept-Ranges: bytes\r\n"
 					+"Content-Length: " + getBody().length + "\r\n"
-					+"Content-Type: text/html\r\n"
-					).getBytes());
+					+"Content-Type: text/html\r\n");
+			byte[] bytes = msg.getBytes();
+			ByteBuffer responseByte = ByteBuffer.wrap(bytes);
+			/*ByteBuffer responseByte = ByteBuffer.allocate(bytes.length);
+			responseByte.put(bytes);
+			responseByte.flip();*/
+			
 			String responseHeadText="";
 			Set<Entry<String,String>> entryHead = responseHeader.entrySet();
 			for (Entry<String, String> entry : entryHead) {
 				responseHeadText += entry.getKey()+": "+entry.getValue()+"\r\n";
 			}
 			ByteBuffer responseHeadByte = ByteBuffer.wrap(responseHeadText.getBytes());
-			ByteBuffer cookieByte = ByteBuffer.wrap(("Set-Cookie: "
-					+ getResponseHeader().get("Set-Cookie") + "\r\n").getBytes());
 			
-			ByteBuffer responseBodyByte = ByteBuffer.wrap(new String(getBody()).getBytes());
+			ByteBuffer cookieByte = ByteBuffer.wrap(("Set-Cookie: "	+ getResponseHeader().get("Set-Cookie") + "\r\n").getBytes());
+			
+			ByteBuffer responseBodyByte = ByteBuffer.wrap(("\r\n"+new String(body)).getBytes());
+			
 			srcs[0] = responseByte;
 			srcs[1] = responseHeadByte;
 			srcs[2] = cookieByte;
@@ -129,21 +124,22 @@ public class HttpResponse implements HttpServletResponse{
 	
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		bw.append(getVersion() + " " + getStatusCode() + " "
+		StringBuilder sb = new StringBuilder(); 
+		sb.append(getVersion() + " " + getStatusCode() + " "
 				+ getReason() + "\r\n");
-		bw.append("Date: " + new Date() + "\r\n");
-		bw.append("Server: meizu-server-0.1\r\n");
-		bw.append("Accept-Ranges: bytes\r\n");
-//		bw.append("Content-Length: " + "getBody().length" + "\r\n");//TODO 目前是http1.0状态，这个属性可有可无
-		bw.append("Content-Type: text/html\r\n");
+		sb.append("Date: " + new Date() + "\r\n");
+		sb.append("Server: meizu-server-0.1\r\n");
+		sb.append("Accept-Ranges: bytes\r\n");
+		sb.append("Content-Length: " + getBody().length + "\r\n");//TODO 目前是http1.0状态，这个属性可有可无
+		sb.append("Content-Type: text/html\r\n");
 		Set<Entry<String,String>> entryHead = responseHeader.entrySet();
 		for (Entry<String, String> entry : entryHead) {
-			bw.write(entry.getKey()+": "+entry.getValue()+"\r\n");
+			sb.append(entry.getKey()+": "+entry.getValue()+"\r\n");
 		}
-		bw.append("Set-Cookie: "
+		sb.append("Set-Cookie: "
 				+ getResponseHeader().get("Set-Cookie") + "\r\n");
-		bw.append("\r\n");
-		return bw;
+		sb.append("\r\n");
+		return bw.append(sb.toString());
 	}
 	
 	@Override

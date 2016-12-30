@@ -28,7 +28,7 @@ public class BioMessageCallable implements Callable<Integer> {
 	public Integer call() throws Exception {
 		HttpResponse response = null;
 		try {
-			response = MessageHandler.parseMessage(socket, socket.getInputStream());
+			response = MessageHandler.parseMessage(socket,null, socket.getInputStream());
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(response != null) {

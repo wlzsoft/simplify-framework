@@ -53,7 +53,8 @@ public class Bootstrap {
 		int port = 8060;
 		String host = null;//"10.2.70.36";
 		try {
-			ITaskFactory factory = new JDKCachedThreadPoolTaskFactory();
+			ITaskFactory factory = new NioTaskFactory();
+//			ITaskFactory factory = new JDKCachedThreadPoolTaskFactory();
 //			ITaskFactory factory = new FixedThreadTaskFactory();
 //			ITaskFactory factory = new BioTaskFactory();
 			factory.add(host,port,backlog);
