@@ -51,9 +51,11 @@ public class Bootstrap {
 		System.out.println("开始启动服务器...");
 		int backlog = 5;//连接等待队列
 		int port = 8060;
-		String host = null;//"10.2.70.36";
+//		String host = null;//"10.2.70.36";
+		String host = "127.0.0.1";//aio模式必须指定
 		try {
-			ITaskFactory factory = new NioTaskFactory();
+			ITaskFactory factory = new AioTaskFactory();
+//			ITaskFactory factory = new NioTaskFactory();
 //			ITaskFactory factory = new JDKCachedThreadPoolTaskFactory();
 //			ITaskFactory factory = new FixedThreadTaskFactory();
 //			ITaskFactory factory = new BioTaskFactory();
