@@ -54,7 +54,8 @@ public class Bootstrap {
 //		String host = null;//"10.2.70.36";
 		String host = "127.0.0.1";//aio模式必须指定
 		try {
-			ITaskFactory factory = new JettyTaskFactory();
+			ITaskFactory factory = new TomcatTaskFactory();
+//			ITaskFactory factory = new JettyTaskFactory();
 //			ITaskFactory factory = new NettyTaskFactory();
 //			ITaskFactory factory = new AioTaskFactory();
 //			ITaskFactory factory = new NioTaskFactory();
