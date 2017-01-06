@@ -17,8 +17,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
-  * <p><b>Title:</b><i>AIO任务工厂</i></p>
- * <p>Desc: 支持jdk1.7提供的第二版nio2.0新特性(异步非阻塞io，由linux底层的异步编程接口提供，性能到达极致</p>
+  * <p><b>Title:</b><i>netty任务工厂</i></p>
+ * <p>Desc: TODO </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

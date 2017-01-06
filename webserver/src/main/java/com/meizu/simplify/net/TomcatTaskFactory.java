@@ -15,7 +15,7 @@ import java.io.IOException;
  * @version Version 0.1
  *
  */
-public abstract class AbstractTomcatTaskFactory implements ITaskFactory{
+public abstract class TomcatTaskFactory implements ITaskFactory{
 	
 	/**
 	 * 方法用途: 添加一个任务<br>
