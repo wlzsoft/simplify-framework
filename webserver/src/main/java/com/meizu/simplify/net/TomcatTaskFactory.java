@@ -11,8 +11,8 @@ import org.apache.tomcat.util.descriptor.web.FilterMap;
 import com.meizu.simplify.mvc.ControllerFilter;
 
 /**
-  * <p><b>Title:</b><i>抽象的Tomcat任务工厂</i></p>
- * <p>Desc: TODO</p>
+  * <p><b>Title:</b><i>Tomcat任务工厂</i></p>
+ * <p>Desc: TODO启用失败，待修复</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -34,11 +34,12 @@ public class TomcatTaskFactory implements ITaskFactory{
 	public void add(String host,int port,int backlog) throws IOException{
 		Tomcat tomcat = new Tomcat();  
         tomcat.setPort(port);
-//      tomcat.setBaseDir("e:/tmp/tomcat");  
-        tomcat.getHost().setAutoDeploy(false); 
+//        tomcat.setBaseDir("e:/tmp/tomcat");  
+//        tomcat.getHost().setAutoDeploy(false); 
         //--------context-------
         StandardContext context = new StandardContext();  
         context.setPath("/");  
+//        Context context = tomcat.addContext("", "D:/");
 //        context.addLifecycleListener(new FixContextListener());  
         //-------filter--------
         FilterDef filterDef = new FilterDef();
@@ -52,7 +53,6 @@ public class TomcatTaskFactory implements ITaskFactory{
         //-------filter--------
         tomcat.getHost().addChild(context);
         //-------context--------
-        
         try {
 			tomcat.start();
 		} catch (LifecycleException e) {
