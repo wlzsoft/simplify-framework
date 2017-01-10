@@ -13,6 +13,10 @@
 	<description>1、interfaceFilter 是用来处理接口请求的安全认证拦截
                2、webFilter 用户处理web应用的请求安全人间拦截
   </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
 	<dependencies>
 		<dependency>
 		  	<groupId>com.meizu.simplify</groupId>

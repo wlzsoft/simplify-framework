@@ -8,6 +8,10 @@
   <artifactId>net</artifactId>
   <name>网络通讯框架</name>
   <description>可作为datasource模块，webserver模块等等的基础模块</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
    <dependencies>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>

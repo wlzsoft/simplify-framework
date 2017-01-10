@@ -11,8 +11,11 @@
 	<artifactId>listener</artifactId>
 	<name>启动监听器</name>
 	<description>只应用于web服务，并且是符合servlet3.0标准的容器
-               
   </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
 	<dependencies>
 		<dependency>
 		  	<groupId>com.meizu.simplify</groupId>

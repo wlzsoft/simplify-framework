@@ -10,6 +10,10 @@
   <artifactId>rpc</artifactId>
   <name>RPC远程服务调用 模块</name>
   <description>RPC远程服务调用 模块 </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>

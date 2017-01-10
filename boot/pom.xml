@@ -8,6 +8,10 @@
   <artifactId>boot</artifactId>
   <name>启动引导器</name>
   <description>程序启动入口相关功能</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>com.meizu.simplify</groupId>

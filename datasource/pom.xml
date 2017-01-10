@@ -9,6 +9,10 @@
   <name>数据库数据源处理模块</name>
   <description>包含 一主多从，水平切分，主备等分布式数据库扩展功能的实现
   </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
    <dependencies>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
