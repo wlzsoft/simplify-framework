@@ -44,16 +44,16 @@
 		<menu ref="modules" /> 
 		<!-- 项目信息报告 inherit表示子模块继承父模块-->
 		<!-- <menu ref="reports" />  -->
-		<menu name="框架信息" inherit="top">
+		<menu name="模块信息" inherit="top">
 			<!-- <item href="dashboard-report.html" name="控制面板" /> -->
-			<item href="index.html" name="框架概述" />
+			<item href="index.html" name="模块概述" />
 			<!-- <item href="usage.html" name="使用方法" />
 			<item href="faq.html" name="常见问题" />
 			<item href="download.html" name="下载" /> -->
 			<item href="dependencies.html" name="依赖库列表"/>      
 			<item href="dependency-convergence.html" name="依赖库使用情况"/>      
 			<item href="dependency-info.html" name="使用框架的配置方式"/>      
-			<item href="distribution-management.html" name="框架发布管理"/>      
+			<item href="distribution-management.html" name="模块发布管理"/>      
 			<item href="plugin-management.html" name="插件管理"/>      
             <item href="plugins.html" name="插件列表" />
 			<item href="team-list.html" name="团队"/>    
@@ -62,9 +62,9 @@
             <item href="source-repository.html" name="源代码库" />
             <!-- <item href="mail-lists.html" name="邮件订阅列表" /> -->
             <item href="integration.html" name="持续集成" />
-            <item href="modules.html" name="框架模块" />
-            <item href="project-info.html" name="框架基本信息" />
-            <item href="project-summary.html" name="框架概要" />
+            <!-- <item href="modules.html" name="框架模块" /> -->
+            <item href="project-info.html" name="模块基本信息" />
+            <item href="project-summary.html" name="模块概要" />
             <!-- <item href="project-reports.html" name="框架报表" /> -->
 		</menu>
 		<!-- <footer><![CDATA[All rights reserved.]]></footer> -->
