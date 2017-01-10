@@ -9,6 +9,10 @@
   <packaging>pom</packaging>
   <name>框架客户端依赖配置</name>
   <description>框架客户端依赖组件包</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
   		<dependency>
   			<groupId>com.meizu.simplify</groupId>
