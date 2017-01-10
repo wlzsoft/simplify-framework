@@ -751,9 +751,12 @@ public class FileUtil {
 			}
 		}
 	}
-	/**  
-	 * 删除单个文件  
-	 * @param   sPath    被删除文件的文件名  
+	
+	/**
+	 * 
+	 * 方法用途: 删除单个文件<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceFilePath 被删除文件的路径
 	 * @return 单个文件删除成功返回true，否则返回false  
 	 */
 	public static boolean deleteFile(String sourceFilePath) {
@@ -770,11 +773,11 @@ public class FileUtil {
 
 	/**  
 	 * 删除目录（文件夹）以及目录下的文件  
-	 * @param   sPath 被删除目录的文件路径  
+	 * @param   sourceFilePath 被删除目录的文件路径  
 	 * @return  目录删除成功返回true，否则返回false  
 	 */
 	public static boolean deleteDirectory(String sourceFilePath) {
-		//如果sPath不以文件分隔符结尾，自动添加文件分隔符   
+		//如果sourceFilePath不以文件分隔符结尾，自动添加文件分隔符   
 		if (!sourceFilePath.endsWith(File.separator)) {
 			sourceFilePath = sourceFilePath + File.separator;
 		}
@@ -996,10 +999,9 @@ public class FileUtil {
 	}
 
 	/**
-	 * read the content from a file;
 	 * 
-	 * @param output
-	 * @param content
+	 * @param input
+	 * @return
 	 * @throws Exception
 	 */
 	public static String readFile(String input) throws Exception {
@@ -1474,10 +1476,10 @@ public class FileUtil {
 
 	/**
 	 * 用zip格式压缩文件
-	 * @param zipFileName
-	 *            压缩后的文件名 包含路径 如："c:\\test.zip"
-	 * @param inputFile
+	 * @param sourceFilePath
 	 *            要压缩的文件 可以是文件或文件夹 如："c:\\test" 或 "c:\\test.doc"
+	 * @param targetFileName
+	 *            压缩后的文件名 包含路径 如："c:\\test.zip"
 	 * @throws Exception
 	 *             ant下的zip工具默认压缩编码为UTF-8编码，
 	 *             而winRAR软件压缩是用的windows默认的GBK或者GB2312编码
@@ -1652,8 +1654,8 @@ public class FileUtil {
 	/**
 	 * 文件续传
 	 * 
-	 * @param srcFile
-	 * @param destFile
+	 * @param srcFilePath
+	 * @param destFilePath
 	 * @return
 	 */
 	public static boolean runUnFinished(String srcFilePath, String destFilePath) {

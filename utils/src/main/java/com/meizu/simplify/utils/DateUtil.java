@@ -87,7 +87,7 @@ public class DateUtil {
 	 * 
 	 * 方法用途: 格式化日期-Date转为指定格式字符串<br>
 	 * 操作步骤: TODO<br>
-	 * @param date
+	 * @param timesamp
 	 * @param pattern
 	 * @return
 	 * @author wanghaibin 2016/4/7

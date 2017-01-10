@@ -7,6 +7,10 @@
   </parent>
   <artifactId>template-httl</artifactId>
   <name>现代模版引擎httl集成插件</name>
+  <properties>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
         <!-- 现代模板引擎二 -->
 		  <dependency>

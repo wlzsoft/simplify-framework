@@ -7,6 +7,10 @@
   </parent>
   <artifactId>view-velocity</artifactId>
   <name>现代模版引擎velocity集成view插件</name>
+  <properties>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
   	<dependency>
 	  	<groupId>com.meizu.simplify</groupId>

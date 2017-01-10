@@ -7,4 +7,8 @@
   </parent>
   <artifactId>view-api</artifactId>
   <name>视图view插件的接口api</name>
+  <properties>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
 </project>

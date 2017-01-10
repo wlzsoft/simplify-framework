@@ -8,7 +8,7 @@
   <artifactId>config-api</artifactId>
   <name>配置服务api</name>
   <properties>
-  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
   </properties>
   <dependencies>

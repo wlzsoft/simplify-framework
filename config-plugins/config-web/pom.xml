@@ -8,6 +8,10 @@
   <artifactId>config-web</artifactId>
   <packaging>war</packaging>
   <name>配置中心管理监控端</name>
+  <properties>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
   	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>

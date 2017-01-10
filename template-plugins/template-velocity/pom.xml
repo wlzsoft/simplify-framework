@@ -7,6 +7,10 @@
   </parent>
   <artifactId>template-velocity</artifactId>
   <name>现代模版引擎velocity集成插件</name>
+  <properties>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
   <dependencies>
         <!-- 经典模板引擎一 -->
 		  <dependency>
