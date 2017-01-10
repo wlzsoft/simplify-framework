@@ -65,7 +65,7 @@
             <item href="modules.html" name="框架模块" />
             <item href="project-info.html" name="框架基本信息" />
             <item href="project-summary.html" name="框架概要" />
-            <!-- <item href="project-reports.html" name="框架报表" /> -->
+            <item href="project-reports.html" name="框架报表" />
 		</menu>
 		<!-- <footer><![CDATA[All rights reserved.]]></footer> -->
 	</body>

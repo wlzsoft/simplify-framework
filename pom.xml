@@ -369,8 +369,8 @@
                 <configuration>  
                     <!-- 支持国际化 -->  
                     <locales>zh_CN</locales>
-                    <templateFile>${templatePath}/src/site/${parentsite}site.vm</templateFile>
-                    <!-- <inputDirectory>${templatePath}/src/site/resources</inputDirectory> -->
+                    <templateFile>${templatePath}/src/site/${parentsite}/site.vm</templateFile>
+                    <siteDirectory>${templatePath}/src/site/${parentsite}</siteDirectory>
                     <reportPlugins>
 						<plugin>
 							<!-- 源码查看生成 -->
