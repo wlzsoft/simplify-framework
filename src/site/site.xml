@@ -38,9 +38,9 @@
 		</links>  
 		<breadcrumbs>
 			<!-- 横条链接 -->
-			<item name="框架" href="index.html" />
+			<item name="框架" href="../index.html" />
 		</breadcrumbs>
-		<menu ref="parent" />   
+		<!-- <menu ref="parent" /> -->   
 		<menu ref="modules" /> 
 		<!-- 项目信息报告 inherit表示子模块继承父模块-->
 		<!-- <menu ref="reports" />  -->
