@@ -33,7 +33,7 @@ public class StartupException extends BaseException {
 	}
 
 	/**
-	 * @param cause  目标异常
+	 * @param target  目标异常
 	 */
 	public StartupException(Throwable target) {
 		super(target);
@@ -41,7 +41,7 @@ public class StartupException extends BaseException {
 
 	/**
 	 * @param message 异常信息
-	 * @param cause  目标异常
+	 * @param target  目标异常
 	 */
 	public StartupException(String message, Throwable target) {
 		super(message, target);
@@ -49,7 +49,7 @@ public class StartupException extends BaseException {
 	
 	/**
 	 * @param message 异常信息
-	 * @param cause  目标异常
+	 * @param target  目标异常
 	 */
 	public StartupException(String message, Throwable target,Class<?> clazz) {
 		super(message, target);

@@ -466,8 +466,6 @@ public class DateUtil {
 	/**
 	 * 方法用途: 获取下周开始日期与结束日期<br>
 	 * 操作步骤: TODO<br>
-	 * @param dt1 
-	 * @param dt2 
 	 * @return 1:dt1 在dt2前;-1:dt1在dt2后;0:相等
 	 * @author wanghb 20160810
 	 */
@@ -514,7 +512,6 @@ public class DateUtil {
     /**
 	 * 方法用途: 获取本月的最后一天日期<br>
 	 * 操作步骤: TODO<br>
-	 * @param date
 	 * @return
 	 */
 	public static Date getLastDayOfMonth() {
@@ -669,7 +666,7 @@ public class DateUtil {
 	/**
 	 * 方法用途:获取年份<br>
 	 * 操作步骤: TODO<br>
-	 * @param 
+	 * @param date
 	 * @author wanghb 20160810
 	 */
 	public static int getYear(Date date){
@@ -680,7 +677,7 @@ public class DateUtil {
 	/**
 	 * 方法用途:获取月份<br>
 	 * 操作步骤: TODO<br>
-	 * @param 
+	 * @param date
 	 * @author wanghb 20160810
 	 */
 	public static int getMonth(Date date){
@@ -691,7 +688,6 @@ public class DateUtil {
 	/**
 	 * 方法用途: 获取上月第一天<br>
 	 * 操作步骤: TODO<br>
-	 * @param date
 	 * @return
 	 */
 	public static Date getFirstPreMonth() {
@@ -703,7 +699,6 @@ public class DateUtil {
 	/**
 	 * 方法用途: 获取上月最后一天<br>
 	 * 操作步骤: TODO<br>
-	 * @param date
 	 * @return
 	 */
 	public static Date getLastPreMonth() {

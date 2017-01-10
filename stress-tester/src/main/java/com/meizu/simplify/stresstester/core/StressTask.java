@@ -19,7 +19,7 @@ public interface StressTask {
 	 * 
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
-	 * @return
+	 * @return 
 	 * @throws Exception
 	 */
 	public Object doTask() throws Exception;

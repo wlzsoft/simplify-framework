@@ -13,8 +13,6 @@ package com.meizu.simplify.dto;
  * <p>Modified Date:2014年12月22日 下午2:56:46</p>
  * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
- *
- * @param <T>
  */
 public class Result implements IResult{
 	
