@@ -88,7 +88,6 @@
     <module>datasource</module>
     <module>log</module>
     <module>zookeeper</module>
-    <module>webserver</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
