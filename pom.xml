@@ -15,8 +15,8 @@
 	</organization>
 	<!-- 问题跟踪 -->
 	<issueManagement>
-		<system>Jira</system>
-		<url>http://10.2.67.31:8083/jira/browse/ros</url>
+		<system>redmine</system>
+		<url>http://10.2.67.47:32768/projects/simplify-framework</url>
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
@@ -437,7 +437,7 @@
 											<report>modules</report>
 											<report>plugin-management</report>
 											<report>plugins</report>
-											<report>help</report>
+											<!-- <report>help</report> -->
 											<report>summary</report>         
 									   </reports>           
 								   </reportSet>         
