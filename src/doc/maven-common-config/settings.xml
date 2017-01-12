@@ -1,7 +1,11 @@
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+<!-- <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
- 	http://maven.apache.org/xsd/settings-1.0.0.xsd">
+ 	http://maven.apache.org/xsd/settings-1.0.0.xsd"> -->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0
+	settings-1.1.0.xsd">
  	<!-- 需要拷贝到.m2目录下 -->
 	<localRepository>c:/mavenRepo</localRepository> 
 	<!--      <interactiveMode /> 
@@ -28,7 +32,11 @@
 		    <passphrase>some_passphrase</passphrase>
 		    <filePermissions>664</filePermissions>
 		    <directoryPermissions>775</directoryPermissions>
-		    <configuration></configuration> -->
+		    <configuration>
+		    	<sshExecutable>plink</sshExecutable>
+	        	<scpExecutable>pscp</scpExecutable>
+	        	<sshArgs>other arguments you may need</sshArgs>
+	        </configuration> -->
 	    </server>
 	</servers>
 	<mirrors>

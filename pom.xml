@@ -201,6 +201,14 @@
   </dependencies>
   <build>
     <!-- <defaultGoal>pdf:pdf</defaultGoal> -->
+    <extensions>
+      <!-- Enabling the use of SSH -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh-external</artifactId>
+         <version>2.10</version>
+      </extension>
+    </extensions>
     <plugins>
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
