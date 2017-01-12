@@ -201,7 +201,6 @@
 		</dependency> -->
   </dependencies>
   <build>
-    <!-- <defaultGoal>pdf:pdf</defaultGoal> -->
     <extensions>
       <!-- Enabling the use of SSH -->
       <extension>
@@ -308,10 +307,15 @@
 					</systemProperties> -->
 				</configuration>
 			</plugin>
+			<!--命令行 pdf:pdf -->
+			<!--  -Dimplementation=itext pdf:pdf 这个方式需要加入itext的依赖jar库 -->
 			<plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
 			  <artifactId>maven-pdf-plugin</artifactId>
 	          <version>1.3</version>
+	          <!-- <configuration>
+		          <locales>zh_CN,en</locales>
+		      </configuration> -->
 			  <executions>
 			    <execution>
 			      <id>pdf</id>
@@ -321,12 +325,19 @@
 			      </goals>
 			      <configuration>
 			      	<aggregate>true</aggregate>
-			      	<locales>zh_CN</locales>
+			      	<locales>zh_CN,en</locales>
 			        <!-- <outputDirectory>${project.reporting.outputDirectory}</outputDirectory> -->
 			        <includeReports>true</includeReports>
 			      </configuration>
 			    </execution>
 			  </executions>
+			  <!-- <dependencies>
+			  	<dependency>
+				    <groupId>com.itextpdf</groupId>
+				    <artifactId>itextpdf</artifactId>
+				    <version>5.5.10</version>
+				</dependency>
+			  </dependencies> -->
 			</plugin>
 			<!-- 设置以下环境变量 -->
 		   <!-- JAVA_TOOL_OPTIONS   
