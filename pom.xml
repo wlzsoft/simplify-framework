@@ -371,6 +371,7 @@
 			<!-- maven的site文档生成，使用的是Doxia来处理和解析文档的 -->
 			<!-- clean site site:stage -DstagingDirectory=file://D:/site #可以指定生成的路径 -->
 			<!-- 生成过慢的解决方法  clean site site:stage -Ddependency.locations.enabled=false-->
+			<!-- jenkins 完整构建命令： mvn -DskipTests=true clean install deploy site site:stage -Ddependency.locations.enabled=false site:deploy -->
 			<plugin>  
                 <!-- 站点生成插件 -->  
                 <groupId>org.apache.maven.plugins</groupId>  
