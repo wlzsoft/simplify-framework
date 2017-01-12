@@ -7,6 +7,8 @@
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0
 	settings-1.1.0.xsd">
  	<!-- 需要拷贝到.m2目录下 -->
+ 	<!-- 多项目隔离仓库方式，避免冲突,尽量少用 -->
+ 	<!-- <localRepository>c:/mavenRepo/${env.GERRIT_BRANCH}-${env.GERRIT_TOPIC}</localRepository> -->
 	<localRepository>c:/mavenRepo</localRepository> 
 	<!--      <interactiveMode /> 
 	     <usePluginRegistry /> 
