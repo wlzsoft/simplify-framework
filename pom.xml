@@ -109,6 +109,7 @@
             <id>nexus-releases</id>
             <name>User Porject Release</name>
             <url>http://10.2.67.20:8081/nexus/content/repositories/releases/</url>
+            <!-- <url>scp://root@10.2.67.21/nexus/content/repositories/releases/</url> -->
         </repository>
 		<site>
 			<id>simplify-doc</id>

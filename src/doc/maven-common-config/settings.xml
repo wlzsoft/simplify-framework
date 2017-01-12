@@ -23,6 +23,15 @@
 			<id>nexus-releases</id>
 			<username>admin</username>
 			<password>admin123</password>
+			<!-- <privateKey>${user.home}/.ssh/id_dsa</privateKey>
+		    <passphrase>slei23llsljdlsdf</passphrase>
+		    <filePermissions>664</filePermissions>
+		    <directoryPermissions>775</directoryPermissions>
+		    <configuration>
+		    	<sshExecutable>plink</sshExecutable>
+	        	<scpExecutable>pscp</scpExecutable>
+	        	<sshArgs>other arguments you may need</sshArgs>
+	        </configuration> -->
 		</server>
 	    <server>
 	        <id>simplify-doc</id>
