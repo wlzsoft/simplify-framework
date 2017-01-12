@@ -115,7 +115,7 @@
 			<id>simplify-doc</id>
 			<name>simplify-doc</name>
 			<!-- <url>file://D:/site</url> -->
-			<url>scp://root@10.2.67.21/home/tempdata</url>
+			<url>scp://root@10.2.67.21/home/simplify-doc</url>
 		</site>
 	</distributionManagement>
 	<repositories>
