@@ -1,7 +1,7 @@
 package com.meizu.demo.system;
 
 import com.meizu.simplify.ioc.Startup;
-import com.meizu.simplify.net.Bootstrap;
+//import com.meizu.simplify.net.Bootstrap;
 
 /**
   * <p><b>Title:</b><i>使用webserver容器</i></p>
@@ -21,7 +21,7 @@ public class StarupWebServer {
 	public static void main(String[] args) {
 		try {
 			Startup.start();
-			Bootstrap.start();
+//			Bootstrap.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
