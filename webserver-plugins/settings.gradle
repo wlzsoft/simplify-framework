@@ -1,0 +1,6 @@
+rootProject.name = 'webserver-plugins'
+include 'webserver-api'
+include 'webserver-jetty'
+include 'webserver-native'
+include 'webserver-netty'
+include 'webserver-tomcat'

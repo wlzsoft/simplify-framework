@@ -1,0 +1,5 @@
+
+description = '实现框架插件的自动动态加载功能'
+dependencies {
+	compile project(':ioc')
+}

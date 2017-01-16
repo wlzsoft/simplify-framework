@@ -80,7 +80,11 @@ public enum InitTypeEnum {
 	/**
 	 * 代码生成 
 	 */
-	METHOD_GEN(150);
+	METHOD_GEN(150),
+	/**
+	 * 通用插件加载
+	 */
+	PLUGIN(200);
 	
 	public final int value;
 	InitTypeEnum(int value) {

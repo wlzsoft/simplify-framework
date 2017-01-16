@@ -88,6 +88,9 @@ public final class Startup {
 		Map<InitTypeEnum,Class<?>> mapResolve = new EnumMap<InitTypeEnum, Class<?>>(InitTypeEnum.class);
 		for (Class<?> clazz : resolveList) {
 			Init init = clazz.getAnnotation(Init.class);
+			if(init == null) {
+				throw new StartupErrorException("容器启动时,类:["+clazz.getName()+"]不存在Init注解，解析出错");
+			}
 			Class<?> clazzTemp = mapResolve.get(init.value());
 			if(clazzTemp != null) {
 				throw new StartupErrorException("容器启动时，有重复的bean解析操作:["+clazzTemp.getName()+"和"+clazz.getName()+"]冲突");

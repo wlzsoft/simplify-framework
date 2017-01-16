@@ -1,0 +1,5 @@
+
+description = 'webserver native插件'
+dependencies {
+	compile project(':webserver-api')
+}

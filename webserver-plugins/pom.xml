@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu.simplify</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>1.2.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>webserver-plugins</artifactId>
+  <packaging>pom</packaging>
+  <name>web服务器插件集成</name>
+  <description>
+  </description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.meizu.simplify</groupId>
+  		<artifactId>plugin-loader</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  </dependencies>
+   <modules>
+   	<module>webserver-api</module>
+   	<module>webserver-jetty</module>
+   	<module>webserver-native</module>
+   	<module>webserver-netty</module>
+   	<module>webserver-tomcat</module>
+   </modules>
+</project>

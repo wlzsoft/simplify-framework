@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.meizu.simplify</groupId>
+    <artifactId>webserver-plugins</artifactId>
+    <version>1.2.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>webserver-jetty</artifactId>
+  <name>webserver jetty插件</name>
+  <properties>
+  	 <templatePath>${project.parent.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
+   <dependencies>
+	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>webserver-api</artifactId>
+	    <version>${project.parent.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.eclipse.jetty.aggregate</groupId>
+		  <artifactId>jetty-all</artifactId>
+		  <version>9.3.9.v20160517</version>
+		  <classifier>uber</classifier>
+		</dependency>
+  </dependencies>
+</project>

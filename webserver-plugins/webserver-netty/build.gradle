@@ -1,0 +1,5 @@
+
+description = 'webserver netty插件'
+dependencies {
+	compile project(':webserver-api')
+}

@@ -1,0 +1,5 @@
+
+description = 'webserver tomcat插件'
+dependencies {
+	compile project(':webserver-api')
+}

@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
+import com.meizu.simplify.webserver.ITaskFactory;
+import com.meizu.simplify.webserver.ServerStatus;
+import com.meizu.simplify.webserver.TomcatTaskFactory;
 
 /**
   * <p><b>Title:</b><i>引导启动</i></p>
@@ -22,7 +26,7 @@ import com.meizu.simplify.ioc.Startup;
  *
  */
 public class Bootstrap {
-	public volatile static boolean isRunning = true;
+	
 	public static void main(String[] args) {
 		Startup.start();
 		//配置加载开始
@@ -35,7 +39,7 @@ public class Bootstrap {
 		}
 		//配置加载结束
 		boolean isStart = start();
-		if(!isRunning&&isStart) {
+		if(!ServerStatus.isRunning&&isStart) {
 			System.out.println("服务器正常关闭");
 		} else {
 			System.out.println("服务启动失败,已停止服务");
@@ -54,7 +58,8 @@ public class Bootstrap {
 //		String host = null;//"10.2.70.36";
 		String host = "127.0.0.1";//aio模式必须指定
 		try {
-			ITaskFactory factory = new TomcatTaskFactory();
+			ITaskFactory factory = BeanFactory.getBean(TomcatTaskFactory.class);
+//			ITaskFactory factory = new TomcatTaskFactory();
 //			ITaskFactory factory = new JettyTaskFactory();
 //			ITaskFactory factory = new NettyTaskFactory();
 //			ITaskFactory factory = new AioTaskFactory();
@@ -71,7 +76,7 @@ public class Bootstrap {
 	}
 	
 	public static void stop() {
-		isRunning = false;
+		ServerStatus.isRunning = false;
 		System.out.println("已通知系统停止运行");
 	}
 }

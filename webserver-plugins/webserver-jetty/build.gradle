@@ -1,0 +1,5 @@
+
+description = 'webserver jetty插件'
+dependencies {
+	compile project(':webserver-api')
+}
