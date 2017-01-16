@@ -18,11 +18,6 @@
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
-	    <artifactId>mvc</artifactId>
-	    <version>${project.version}</version>
-	  </dependency>
-	  <dependency>
 		  <groupId>org.apache.tomcat.embed</groupId>
 		  <artifactId>tomcat-embed-core</artifactId>
 		  <version>8.5.4</version>
