@@ -7,8 +7,8 @@ import java.util.Properties;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.webserver.ITaskFactory;
+import com.meizu.simplify.webserver.JettyTaskFactory;
 import com.meizu.simplify.webserver.ServerStatus;
-import com.meizu.simplify.webserver.TomcatTaskFactory;
 
 /**
   * <p><b>Title:</b><i>引导启动</i></p>
@@ -58,7 +58,7 @@ public class Bootstrap {
 //		String host = null;//"10.2.70.36";
 		String host = "127.0.0.1";//aio模式必须指定
 		try {
-			ITaskFactory factory = BeanFactory.getBean(TomcatTaskFactory.class);
+			ITaskFactory factory = BeanFactory.getBean(JettyTaskFactory.class);
 //			ITaskFactory factory = new TomcatTaskFactory();
 //			ITaskFactory factory = new JettyTaskFactory();
 //			ITaskFactory factory = new NettyTaskFactory();

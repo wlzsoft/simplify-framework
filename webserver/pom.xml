@@ -32,7 +32,7 @@
 	  </dependency>
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
-	    <artifactId>webserver-tomcat</artifactId>
+	    <artifactId>webserver-jetty</artifactId>
 	    <version>${project.version}</version>
 	  </dependency>
 	  <dependency>
