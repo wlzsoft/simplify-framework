@@ -21,7 +21,14 @@ import org.junit.Test;
  *
  */
 public class PropertieUtilTest {
+	
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: junit老版本没有@Category的时候，会使用TestNG来代替，现在可以直接用junit4来解决，但是junit4的@Category还有有些限制，必须在TestSuite中执行<br>
+	 */
 	@Test
+//	@Category(PropertieUtilTests.class)
 	public void test(){
 		PropertieUtil util = new PropertieUtil("redis.properties");
 		Set<String> set = util.stringPropertyNames();
