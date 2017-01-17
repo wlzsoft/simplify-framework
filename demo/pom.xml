@@ -146,6 +146,13 @@
 	<!-- logback日志end -->
 	<!-- 日志相关 end -->
 	<!-- 日志结束-->
+	<!-- 为了配合exec-maven-plugin -->
+	<dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<version>1.4.190</version>
+		<scope>runtime</scope>
+	</dependency>
 	<dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>javax.servlet-api</artifactId>
@@ -473,6 +480,45 @@
 					</configuration>
 				</execution>
 			</executions>
+		</plugin>
+		<!-- exec:java 只执行命令 或是 exec:exec可执行其他命令 -->
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>exec-maven-plugin</artifactId>
+			<version>1.5.0</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>java</goal>
+					</goals>
+				</execution>
+			</executions>
+			<configuration>
+				<!-- exec:java 二选一,只执行java命令-->
+				<!-- <mainClass>com.meizu.simplify.net.Bootstrap</mainClass> -->
+				<mainClass>org.h2.tools.Server</mainClass>
+				<arguments>
+					<argument>-web</argument>
+					<argument>-webPort</argument>
+					<argument>8090</argument>
+					<argument>-browser</argument>
+					<argument>-properties</argument>
+					<argument>.</argument>
+				</arguments>
+				<!-- exec:exec 二选一，可执行其他命令-->
+				<!-- 可以执行各种命令，不一定是java程序 -->
+				<!-- 自动生成classpath -->
+				<!-- <executableDependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>javax.servlet-api</artifactId>
+				</executableDependency>
+				<executable>java</executable>
+				<arguments>
+		            <argument>-classpath</argument>
+		            <classpath/> 
+		            <argument>com.meizu.simplify.net.Bootstrap</argument>  
+				</arguments> -->
+			</configuration>
 		</plugin>
 		<!-- 代码混淆优化字节码操作工具ProGuard，是ProGuard官方很早以前推荐，现在官方不支持maven的插件，只支持基于maven的gradle
                        对项目中一个公共lib（有其特殊性）进行混淆，需有一个.pro的配置文件（存放在${basedir}/src/main/config/${project.artifactId}-maven.pro）-->

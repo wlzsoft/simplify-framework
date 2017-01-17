@@ -1,12 +1,12 @@
 package com.meizu.demo.system;
 
-import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.net.Bootstrap;
 
 /**
   * <p><b>Title:</b><i>使用webserver容器</i></p>
  * <p>Desc: 1.这个类，可以不用，直接指定com.meizu.WebServer类来执行它的main方法就可以
- *          2.测试这种方式，是否可以在IDEA工具中，达到热加载class的需求 TODO</p>
+ *          2.测试这种方式，是否可以在IDEA工具中，达到热加载class的需求 TODO
+ *          3.这种方式，可以通过exec-maven-plugin插件的功能来代替</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -20,8 +20,7 @@ import com.meizu.simplify.net.Bootstrap;
 public class StarupWebServer {
 	public static void main(String[] args) {
 		try {
-			Startup.start();
-			Bootstrap.start();
+			Bootstrap.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

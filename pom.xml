@@ -521,7 +521,7 @@
                         <phase>validate</phase>
                         <configuration>
                             <rules>
-                            	<requireUpperBoundDeps>true</requireUpperBoundDeps>
+                            	<!-- <requireUpperBoundDeps>true</requireUpperBoundDeps> -->
                                 <requireMavenVersion>
                                     <message>
                                         <![CDATA[你使用的maven版本过老，版本号必须是${maven.version}或之上]]>
@@ -540,6 +540,7 @@
                                     <excludes>
                                         <!--格式：groupId[:artifactId][:version][:type][:scope][:classifier]--> 
                                         <exclude>org.testng:testng</exclude>
+                                        <exclude>commons-logging</exclude>
                                     </excludes>
                                     <message>不能使用 TestNG测试,必须使用 JUnit</message>
                                 </bannedDependencies>
@@ -556,6 +557,7 @@
                                     <regexMessage>"project.version 必须是 数字或-SNAPSHOT结尾"</regexMessage>
                                 </requireProperty>
                             </rules>
+                            <fail>true</fail>
                         </configuration>
                     </execution>
                 </executions>

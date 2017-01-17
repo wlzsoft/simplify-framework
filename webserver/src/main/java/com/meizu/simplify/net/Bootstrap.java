@@ -28,6 +28,10 @@ import com.meizu.simplify.webserver.ServerStatus;
 public class Bootstrap {
 	
 	public static void main(String[] args) {
+		run();
+	}
+	
+	public static void run() {
 		Startup.start();
 		//配置加载开始
 		Properties props = new Properties();
