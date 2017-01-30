@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
-import com.meizu.simplify.dto.JsonResult;
+import com.meizu.simplify.dto.ResultFactory;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.MessageException;
 import com.meizu.simplify.exception.UncheckedException;
@@ -102,7 +102,7 @@ public class MappingExceptionResolver {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 		if(requestUrl.endsWith(".json")) {
 			try {
-				JsonView.exe(request, response, JsonResult.error(exceptionMessage),config,jsonResolver);
+				JsonView.exe(request, response, ResultFactory.error(exceptionMessage),config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
@@ -122,7 +122,7 @@ public class MappingExceptionResolver {
 				};
 				model.setScript(DataUtil.parseInt(request.getParameter("script")));
 				model.setCallback(request.getParameter("callback"));
-				JsonpView.exe(request, response, JsonResult.error(exceptionMessage),model,"meizu.com",config,jsonResolver);
+				JsonpView.exe(request, response, ResultFactory.error(exceptionMessage),model,"meizu.com",config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}

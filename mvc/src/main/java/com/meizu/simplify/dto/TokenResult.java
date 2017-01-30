@@ -14,7 +14,7 @@ package com.meizu.simplify.dto;
  * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  */
-public class TokenResult extends Result{
+public class TokenResult extends ResultObject<String>{
 	
 	private String token;
 	private long start;

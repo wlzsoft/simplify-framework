@@ -2,7 +2,7 @@ package com.meizu.simplify.dto;
 
 /**
  * 
- * <p><b>Title:</b><i>json数据结果体</i></p>
+ * <p><b>Title:</b><i>结果信息构建工厂</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
@@ -14,10 +14,10 @@ package com.meizu.simplify.dto;
  * @version Version 0.1
  *
  */
-public class JsonResult extends Result {
+public class ResultFactory {
 	
 	public static Result forbidden() {
-		Result result = new Result("您没有执行该操作的权限，请与管理员联系。");
+		Result result = new ResultObject<String>("您没有执行该操作的权限，请与管理员联系。");
 		result.setStatusCode(HttpStatus.FORBIDDEN.toString()+"");
 		return result;
 	}
@@ -27,28 +27,18 @@ public class JsonResult extends Result {
 	 * @return
 	 */
 	public static Result fail() {
-		Result result = new Result("服务器暂时繁忙，请稍候重试或与管理员联系。");
+		Result result = new ResultObject<String>("服务器暂时繁忙，请稍候重试或与管理员联系。");
 		result.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString()+"");
 		return result;
 	}
-	/**
-	 * 方法用途: 自定义错误提示信息<br>
-	 * 操作步骤: TODO<br>
-	 * @param message
-	 * @return
-	 */
-	public static Result error(Object message) {
-		Result result = new Result(message);
-		result.setStatusCode(HttpStatus.MULTIPLE_CHOICES.toString()+"");
-		return result;
-	}
+	
 	/**
 	 * 方法用途: 超时提示<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static Result timeout() {
-		Result model = new Result("会话超时，请重新登录。");
+		Result model = new ResultObject<String>("会话超时，请重新登录。");
 		model.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
 		return model;
 	}
@@ -58,18 +48,31 @@ public class JsonResult extends Result {
 	 * @return
 	 */
 	public static Result login() {
-		Result model = new Result("请登录。");
+		Result model = new ResultObject<String>("请登录。");
 		model.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
 		return model;
 	}
+	
 	/**
-	 * 方法用途: 成功提示<br>
+	 * 方法用途: 自定义错误提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message
+	 * @return
+	 */
+	public static Result error(Object message) {
+		Result result = new ResultObject<Object>(message);
+		result.setStatusCode(HttpStatus.MULTIPLE_CHOICES.toString()+"");
+		return result;
+	}
+	
+	/**
+	 * 方法用途: 自定义成功提示<br>
 	 * 操作步骤: TODO<br>
 	 * @param message
 	 * @return
 	 */
 	public static Result success(Object message) {
-		Result result = new Result(message);
+		Result result = new ResultObject<Object>(message);
 		result.setStatusCode(HttpStatus.OK.value()+"");
 		return result;
 	}

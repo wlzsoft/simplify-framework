@@ -4,8 +4,8 @@ import com.meizu.simplify.config.info.Message;
 
 /**
  * 
- * <p><b>Title:</b><i>传输JSON对象</i></p>
- * <p>Desc: 传输JSON对象</p>
+ * <p><b>Title:</b><i>传递错误结果信息</i></p>
+ * <p>Desc: 传递错误结果信息</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -15,7 +15,7 @@ import com.meizu.simplify.config.info.Message;
  * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  */
-public class ErrorResult extends Result{
+public class ErrorResult extends ResultObject<String> {
 	
 	public ErrorResult(String message) {
 		super(message);

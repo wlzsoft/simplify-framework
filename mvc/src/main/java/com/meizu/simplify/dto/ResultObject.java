@@ -2,8 +2,8 @@ package com.meizu.simplify.dto;
 
 /**
  * 
- * <p><b>Title:</b><i>传输JSON对象</i></p>
- * <p>Desc: 传输JSON对象</p>
+ * <p><b>Title:</b><i>传递结果信息</i></p>
+ * <p>Desc: 包含复杂对象结果信息</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -20,13 +20,18 @@ public class ResultObject<T> extends Result {
 	/**
 	 * 结果对象
 	 */
-	private T result;
-
-	public T getResult() {
-		return result;
+	private T value;
+	
+	public ResultObject(T value) {
+		this.value = value;
 	}
 
-	public void setResult(T result) {
-		this.result = result;
+	public T getValue() {
+		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return "ResultObject "+super.toString()+" [value=" + value+ "]";
 	}
 }

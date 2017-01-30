@@ -3,8 +3,8 @@ package com.meizu.simplify.dto;
 
 /**
  * 
- * <p><b>Title:</b><i>传输JSON对象</i></p>
- * <p>Desc: 传输JSON对象</p>
+ * <p><b>Title:</b><i>传递结果基本信息</i></p>
+ * <p>Desc: 传递结果基本信息</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -14,7 +14,7 @@ package com.meizu.simplify.dto;
  * @author <a href="mailto:luchuangye@meizu.com" >lcy</a>
  * @version Version 0.1
  */
-public class Result implements IResult{
+public class Result {
 	
 	/**
 	 * 成功标志,注意： 最好success是一个object类型的，不仅仅可以是boolean的返回，有时可以定制，比如 “success” 这样的字符串才是表示成功返回。
@@ -27,20 +27,12 @@ public class Result implements IResult{
 	private String statusCode;
 	
 	/**
-	 * 失败消息
-	 */
-	private Object message;
-	
-	/**
 	 * 时间撮
 	 */
 	private long dateline = System.currentTimeMillis();
 	
 	public Result() {
 		
-	}
-	public Result(Object message) {
-		this.message = message;
 	}
 
 	public String getStatusCode() {
@@ -63,17 +55,9 @@ public class Result implements IResult{
 		return dateline;
 	}
 	
-	public Object getMessage() {
-		return message;
-	}
-
-	public void setMessage(Object message) {
-		this.message = message;
-	}
-	
 	@Override
 	public String toString() {
-		return "Result [success=" + success + ", statusCode=" + statusCode + ", message=" + message + ", dateline="
+		return "Result [success=" + success + ", statusCode=" + statusCode + ", dateline="
 				+ dateline + "]";
 	}
 }

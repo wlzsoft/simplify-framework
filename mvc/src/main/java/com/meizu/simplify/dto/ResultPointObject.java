@@ -17,6 +17,10 @@ package com.meizu.simplify.dto;
  */
 public class ResultPointObject<T> extends ResultObject<T> {
 	
+	public ResultPointObject(T value) {
+		super(value);
+	}
+
 	/**
 	 * 导向跳转地址
 	 */
