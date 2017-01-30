@@ -3,7 +3,7 @@ package com.meizu.simplify.dto;
 /**
  * 
  * <p><b>Title:</b><i>结果信息构建工厂</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 提供各种预制结果消息体</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -16,41 +16,64 @@ package com.meizu.simplify.dto;
  */
 public class ResultFactory {
 	
+	private static Result forbiddenResult = null;//可以设置有效期
+	/**
+	 * 方法用途: 未授权提示<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
 	public static Result forbidden() {
-		Result result = new ResultObject<String>("您没有执行该操作的权限，请与管理员联系。");
-		result.setStatusCode(HttpStatus.FORBIDDEN.toString()+"");
-		return result;
+		if(forbiddenResult != null) {
+			return forbiddenResult;
+		}
+		forbiddenResult = new ResultObject<String>("您没有执行该操作的权限，请与管理员联系。");
+		forbiddenResult.setStatusCode(HttpStatus.FORBIDDEN.toString()+"");
+		return forbiddenResult;
 	}
+	
+	private static Result failResult = null;//可以设置有效期
 	/**
 	 * 方法用途: 处理失败-未处理异常结果体<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static Result fail() {
-		Result result = new ResultObject<String>("服务器暂时繁忙，请稍候重试或与管理员联系。");
-		result.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString()+"");
-		return result;
+		if(failResult != null) {
+			return failResult;
+		}
+		failResult = new ResultObject<String>("服务器暂时繁忙，请稍候重试或与管理员联系。");
+		failResult.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString()+"");
+		return failResult;
 	}
 	
+	private static Result timeoutResult;//可以设置有效期
 	/**
 	 * 方法用途: 超时提示<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static Result timeout() {
-		Result model = new ResultObject<String>("会话超时，请重新登录。");
-		model.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
-		return model;
+		if(timeoutResult != null) {
+			return timeoutResult;
+		}
+		timeoutResult = new ResultObject<String>("会话超时，请重新登录。");
+		timeoutResult.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
+		return timeoutResult;
 	}
+	
+	private static Result loginResult = null;//可以设置有效期
 	/**
 	 * 方法用途: 登陆提示<br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
 	public static Result login() {
-		Result model = new ResultObject<String>("请登录。");
-		model.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
-		return model;
+		if(loginResult != null) {
+			return loginResult;
+		}
+		loginResult = new ResultObject<String>("请登录。");
+		loginResult.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
+		return loginResult;
 	}
 	
 	/**
@@ -59,7 +82,7 @@ public class ResultFactory {
 	 * @param message
 	 * @return
 	 */
-	public static Result error(Object message) {
+	public static Result error(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
 		Result result = new ResultObject<Object>(message);
 		result.setStatusCode(HttpStatus.MULTIPLE_CHOICES.toString()+"");
 		return result;
@@ -71,7 +94,7 @@ public class ResultFactory {
 	 * @param message
 	 * @return
 	 */
-	public static Result success(Object message) {
+	public static Result success(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
 		Result result = new ResultObject<Object>(message);
 		result.setStatusCode(HttpStatus.OK.value()+"");
 		return result;
