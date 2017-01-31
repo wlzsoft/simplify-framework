@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.meizu.simplify.utils.StringUtil;
-import com.meizu.simplify.webserver.util.SessionIdFactory;
+import com.meizu.simplify.utils.UUIDUtil;
 import com.meizu.simplify.webserver.websocket.WebSocket.Handler;
 
 /**
@@ -88,13 +88,13 @@ public class MessageHandler {
 		HttpSessionImplWrapper session = null;
 		if(StringUtil.isBlank(sessionId)) {
 			session = new HttpSessionImplWrapper();
-			session.setSessionId(SessionIdFactory.getSessionId());
+			session.setSessionId(UUIDUtil.getRandomUUID());
 			sessions.put(session.getSessionId(), session);
 		} else {
 			session = sessions.get(sessionId);
 			if(session == null) {
 				session = new HttpSessionImplWrapper();
-				session.setSessionId(SessionIdFactory.getSessionId());
+				session.setSessionId(UUIDUtil.getRandomUUID());
 				sessions.put(session.getSessionId(), session);
 			}
 		}
