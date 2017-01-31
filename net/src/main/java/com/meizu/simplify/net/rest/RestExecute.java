@@ -2,6 +2,8 @@ package com.meizu.simplify.net.rest;
 
 import java.net.URL;
 
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.net.rest.retry.IRetryStrategy;
 
 /**
@@ -17,13 +19,11 @@ import com.meizu.simplify.net.rest.retry.IRetryStrategy;
  * @version Version 0.1
  *
  */
+@Bean
 public class RestExecute {
 
+	@Resource
     private IRetryStrategy retryStrategy;
-
-    public RestExecute(IRetryStrategy retryStrategy) {
-        this.retryStrategy = retryStrategy;
-    }
 
     /**
      * 

@@ -1,0 +1,5 @@
+
+description = '通用实体'
+dependencies {
+	compile project(':utils')
+}

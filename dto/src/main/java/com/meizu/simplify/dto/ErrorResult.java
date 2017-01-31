@@ -1,7 +1,5 @@
 package com.meizu.simplify.dto;
 
-import com.meizu.simplify.config.info.Message;
-
 /**
  * 
  * <p><b>Title:</b><i>传递错误结果信息</i></p>
@@ -19,8 +17,9 @@ public class ErrorResult extends ResultObject<String> {
 	
 	public ErrorResult(String message) {
 		super(message);
-		Message.error("500", message);
+//		Message.error("500", message);
 		super.setSuccess(false);
+		super.setStatusCode("500");
 	}
 	
 }

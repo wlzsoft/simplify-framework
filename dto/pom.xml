@@ -5,9 +5,10 @@
     <artifactId>simplify-framework</artifactId>
     <version>1.2.1-SNAPSHOT</version>
   </parent>
-  <artifactId>net</artifactId>
-  <name>网络通讯框架</name>
-  <description>可作为datasource模块，webserver模块等等的基础模块</description>
+  <artifactId>dto</artifactId>
+  <name>通用dto</name>
+  <description>pojo类,dto类
+  </description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
@@ -16,11 +17,6 @@
 	  <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>utils</artifactId>
-	    <version>${project.parent.version}</version>
-	  </dependency>
-	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
-	    <artifactId>ioc</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
   </dependencies>

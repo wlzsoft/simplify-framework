@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.net.rest.RestCallBack;
 
 /**
@@ -20,6 +21,7 @@ import com.meizu.simplify.net.rest.RestCallBack;
  * @version Version 0.1
  *
  */
+@Bean
 public class RetryStrategyRoundRobin implements IRetryStrategy{
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(RetryStrategyRoundRobin.class);
