@@ -23,5 +23,16 @@
 	    <artifactId>ioc</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
+	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>dto</artifactId>
+	    <version>${project.parent.version}</version>
+	  </dependency>
+	  <dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>test</artifactId>
+	    <version>${project.parent.version}</version>
+	    <scope>test</scope>
+	  </dependency>
   </dependencies>
 </project>

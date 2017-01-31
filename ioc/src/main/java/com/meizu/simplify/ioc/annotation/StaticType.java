@@ -8,8 +8,9 @@ import java.lang.annotation.Target;
 import com.meizu.simplify.ioc.enums.BeanTypeEnum;
 
 /**
- * <p><b>Title:</b><i>实例创建标示</i></p>
- * <p>Desc: 注意：只要子类标注了Bean注解，那么所有父类都无需标注Bean注解，就会自动注入带有Resource注解的属性的值</p>
+ * <p><b>Title:</b><i>类级别标识</i></p>
+ * <p>Desc: 用于类中静态属性注入，区别于@Bean ，@StaticType也只能标注在Class上面，但是不会创建实例
+ *          标注了StaticType的子类，那么所有父类也是相当于标注了StaticType</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -22,7 +23,7 @@ import com.meizu.simplify.ioc.enums.BeanTypeEnum;
  */
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface Bean {
+public @interface StaticType {
 
 	/**
 	 * 

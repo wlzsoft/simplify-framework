@@ -18,6 +18,7 @@ import com.meizu.simplify.ioc.annotation.HandleInterface;
 import com.meizu.simplify.ioc.annotation.Init;
 import com.meizu.simplify.ioc.annotation.IocHook;
 import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.annotation.StaticType;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
 import com.meizu.simplify.ioc.hook.IIocHook;
 import com.meizu.simplify.utils.ClassUtil;
@@ -47,6 +48,10 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		for (String beanName : containerCollection) {
 			resolveBeanObj(beanName);
 		}
+		List<Class<?>> staticTypeList = ClassUtil.findClassesByAnnotationClass(StaticType.class, BeanAnnotationResolver.getClasspaths());
+		for (Class<?> staticType : staticTypeList) {
+			resolveInject(null,staticType);
+		}
 	}
 	/**
 	 * 方法用途: 解析执行bean实例，并进行依赖注入<br>
@@ -56,16 +61,22 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	@Override
 	public void resolveBeanObj(String beanName) {
 		Object beanObj = BeanFactory.getBean(beanName);
-		Class<?> beanClass = beanObj.getClass();
-		injectObjectForResourceAnno(beanObj, beanClass);
+		resolveInject(beanObj,beanObj.getClass());
+	}
+	
+	public void resolveInject(Object beanObj,Class<?> beanClass) {
+		
+		Class<?> tempBeanClass = beanClass;
+		Class<?> currentBeanClass = beanClass;
+		injectObjectForResourceAnno(beanObj,currentBeanClass, currentBeanClass);
 		
 		Class<?>  parentClass = null;
-		while((parentClass = beanClass.getSuperclass()) != null) {
+		while((parentClass = tempBeanClass.getSuperclass()) != null) {
 			if(parentClass == Class.class) {
 				break;
 			}
-			injectObjectForResourceAnno(beanObj, parentClass);
-			beanClass = parentClass;
+			injectObjectForResourceAnno(beanObj,currentBeanClass, parentClass);
+			tempBeanClass = parentClass;
 		}
 	}
 	
@@ -74,9 +85,10 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	 * 方法用途: 为指定Resource的注解指定属性注入对象<br>
 	 * 操作步骤: TODO<br>
 	 * @param beanObj
-	 * @param beanClass
+	 * @param currentBeanClass 
+	 * @param beanClass 这个属性在非父类的情况下和currentBeanClass等价
 	 */
-	private void injectObjectForResourceAnno(Object beanObj, Class<?> beanClass) {
+	private void injectObjectForResourceAnno(Object beanObj,Class<?> currentBeanClass, Class<?> beanClass) {
 		Field[] fieldArr = beanClass.getDeclaredFields();
 		for (Field field : fieldArr) {
 		    if (field.isAnnotationPresent(Resource.class)) {
@@ -131,10 +143,17 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		    	}
 		    	try {
 		    		field.setAccessible(true);
-					field.set(beanObj, iocBean);//注意，不同的ClassLoader实例所load的class，是属于不同的类型,这里会注入失败，异常。
+		    		//下面的beanObj 可以为null，前提是field是static的
+//		    		int modifyValue = field.getModifiers();
+//		    		if(Modifier.isStatic(modifyValue)||Modifier.isFinal(modifyValue)) {
+//		    			field.set(null, iocBean);
+//		    		} else {
+		    			field.set(beanObj, iocBean);//注意，不同的ClassLoader实例所load的class，是属于不同的类型,这里会注入失败，异常。
+//		    		}
 				} catch (IllegalArgumentException | IllegalAccessException e) {
-					if(beanObj.getClass().getClassLoader() != iocBean.getClass().getClassLoader()) {//相同的ClassLoader才可以注入，避免java.lang.IllegalArgumentException: Can not set com.meizu.xxx(UnsafeFieldAccessorImpl)异常
-						LOGGER.error("注入失败：参数无效异常==>>不能设置"+beanObj.getClass().getName()+"对象的"+iocBean.getClass().getName()+":"+field.getName()+"属性的值，因为将要设置的值的ClassLoader:"+iocBean.getClass().getClassLoader()+"和目标对象的ClassLoader:"+beanObj.getClass().getClassLoader()+"不是同一个对象，要求必须是同一个ClassLoader类型并且是同一个对象，否则认为是不同的类型");
+					//下面不能使用beanClass参数，需要通过beanObj.getClass()获取，因为beanClass有可能是bean的parent Class
+					if(currentBeanClass.getClassLoader() != iocBean.getClass().getClassLoader()) {//相同的ClassLoader才可以注入，避免java.lang.IllegalArgumentException: Can not set com.meizu.xxx(UnsafeFieldAccessorImpl)异常
+						LOGGER.error("注入失败：参数无效异常==>>不能设置"+currentBeanClass.getName()+"对象的"+iocBean.getClass().getName()+":"+field.getName()+"属性的值，因为将要设置的值的ClassLoader:"+iocBean.getClass().getClassLoader()+"和目标对象的ClassLoader:"+currentBeanClass.getClassLoader()+"不是同一个对象，要求必须是同一个ClassLoader类型并且是同一个对象，否则认为是不同的类型");
 					}
 					e.printStackTrace();
 				}

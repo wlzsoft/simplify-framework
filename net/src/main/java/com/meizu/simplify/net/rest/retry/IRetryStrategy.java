@@ -21,9 +21,9 @@ public interface IRetryStrategy {
      * 方法用途: TODO<br>
      * 操作步骤: TODO<br>
      * @param callback
-     * @param times
-     * @param secounds
+     * @param retryTimes
+     * @param retrySleepSeconds
      * @return
      */
-    public <T> T retry(RestCallBack<T> callback, int times, int secounds);
+    public <T> T retry(RestCallBack<T> callback, int retryTimes, int retrySleepSeconds);
 }

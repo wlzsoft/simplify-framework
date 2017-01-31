@@ -25,6 +25,10 @@ public class ResultObject<T> extends Result {
 	public ResultObject(T value) {
 		this.value = value;
 	}
+	
+	public ResultObject() {
+		
+	}
 
 	public T getValue() {
 		return value;

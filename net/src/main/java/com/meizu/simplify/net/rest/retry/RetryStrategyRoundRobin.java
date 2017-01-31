@@ -25,15 +25,14 @@ import com.meizu.simplify.net.rest.RestCallBack;
 public class RetryStrategyRoundRobin implements IRetryStrategy{
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(RetryStrategyRoundRobin.class);
-    
-    public <T> T retry(RestCallBack<T> callback, int times, int secounds)  {
-        for (int i = 0; i < times; i++) {
+    public <T> T retry(RestCallBack<T> callback, int retryTimes, int retrySleepSeconds)  {
+        for (int i = 0; i < retryTimes; i++) {
             try {
                 return callback.call();
             } catch (Exception e) {
                 LOGGER.warn("第 " + i + "次重试失败" + e.toString());
                 try {
-                    TimeUnit.SECONDS.sleep(secounds);
+                    TimeUnit.SECONDS.sleep(retrySleepSeconds);
                 } catch (InterruptedException e1) {
                 	e1.printStackTrace();
                 }

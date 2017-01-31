@@ -31,10 +31,6 @@ public class Result {
 	 */
 	private long dateline = System.currentTimeMillis();
 	
-	public Result() {
-		
-	}
-
 	public String getStatusCode() {
 		return statusCode;
 	}

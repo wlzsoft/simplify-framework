@@ -19,10 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.config.annotation.Config;
+import com.meizu.simplify.exception.MessageException;
+import com.meizu.simplify.ioc.annotation.Resource;
+import com.meizu.simplify.ioc.annotation.StaticType;
 import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.mvc.exception.MappingExceptionResolver;
 import com.meizu.simplify.mvc.resolver.ControllerAnnotationResolver;
+import com.meizu.simplify.util.JsonResolver;
 import com.meizu.simplify.utils.StringUtil;
+import com.meizu.simplify.view.IPageTemplate;
 
 
 
@@ -41,7 +49,23 @@ import com.meizu.simplify.utils.StringUtil;
  *
  */
 @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter")
+//@Bean
+@StaticType
 public class ControllerFilter implements Filter {
+	
+	@Config //后续开启,暂不可用，只能手工控制
+	private static boolean isChain = false;//TODO 通过这个开关来确定是否抛弃容器的404的逻辑，而自定义自己的逻辑，可以另外的定制多视图的404处理，默认未开启
+	/**
+	 * 静态注入pageTemplate,支持Bean注解和StaticType注解
+	 */
+	@Resource
+	private static IPageTemplate pageTemplate;
+	
+	@Resource
+	private static PropertiesConfig config;
+	
+	@Resource
+	private static JsonResolver jsonResolver;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerFilter.class);
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -107,6 +131,11 @@ public class ControllerFilter implements Filter {
 					return false; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
 			}
+		}
+
+		if(!isChain) {//自定义404处理，还有其他未处理的错误状态的处理
+			MappingExceptionResolver.resolverException(request, response, requestUrl, pageTemplate, new MessageException(404, "找不到资源"), config, jsonResolver);
+			return false;
 		}
 		return true;
 	}

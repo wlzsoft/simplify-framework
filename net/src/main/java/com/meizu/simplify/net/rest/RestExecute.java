@@ -30,9 +30,9 @@ public class RestExecute {
      * 方法用途: 请求获取数据<br>
      * 操作步骤: TODO<br>
      * @param clazz
-     * @param remoteUrl
-     * @param retryTimes
-     * @param retrySleepSeconds
+     * @param remoteUrl 请求地址
+     * @param retryTimes 重试次数
+     * @param retrySleepSeconds 等待时间多长时间后重试，单位是秒
      * @return
      */
     public <T> T get(Class<T> clazz, RestAddressInfo remoteUrl, int retryTimes, int retrySleepSeconds) {

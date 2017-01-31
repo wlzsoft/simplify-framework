@@ -14,6 +14,10 @@ public class RestAddressInfo {
 
 	private List<URL> urls = new ArrayList<URL>();
 
+    /**
+     * @param url 请求地址格式: /demo/test1.json
+     * @param hostList 添加的host格式为 "xx.xx.com"
+     */
     public RestAddressInfo(String url, List<String> hostList) {
         for (String host : hostList) {
             try {
