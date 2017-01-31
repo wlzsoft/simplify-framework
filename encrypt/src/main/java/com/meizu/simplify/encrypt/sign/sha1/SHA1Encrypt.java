@@ -4,7 +4,8 @@ import com.meizu.simplify.encrypt.sign.Sign;
 
 /**
  * <p><b>Title:</b><i>Md5加密工具类-依赖jdk的类的实现</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 不同于MD5，支持 公钥后处理回传
+ *          在1993年，安全散列算法（SHA）由美国国家标准和技术协会(NIST)提出，并作为联邦信息处理标准（FIPS PUB 180）公布；1995年又发布了一个修订版FIPS PUB 180-1，通常称之为SHA-1。SHA-1是基于MD4算法的，并且它的设计在很大程度上是模仿MD4的。现在已成为公认的最安全的散列算法之一，并被广泛使用</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

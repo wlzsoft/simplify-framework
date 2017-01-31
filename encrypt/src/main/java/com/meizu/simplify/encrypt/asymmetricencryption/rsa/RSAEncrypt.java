@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt.rsa;
+package com.meizu.simplify.encrypt.asymmetricencryption.rsa;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -13,7 +13,7 @@ import com.meizu.simplify.encrypt.base64.Base64Encrypt;
 
 /**
  * <p><b>Title:</b><i>RSA非对称加密</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 更安全的常见使用方式是：双方用rsa协商出一个密钥后通过aes/3des给数据加密，这样更安全，但是速度更慢了一些，多了一层加密，需要在设计上想办法去提供加密速度，比如缓存密钥加密结果等</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

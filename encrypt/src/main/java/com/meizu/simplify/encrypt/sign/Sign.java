@@ -18,7 +18,8 @@ import com.meizu.simplify.encrypt.ByteHexUtil;
       Hash算法常见的有:
           MD5,SHA,哈希算法也类似摘要算法,是一个单向的散列函数,它解决在某一特定时间内,无法查找经Hash操作后生成特定
           特定HASH值的原信息块
-          哈希算法输入一个长度不固定的信息块,返回一个固定长度的结果</p>
+          哈希算法输入一个长度不固定的信息块,返回一个固定长度的结果
+加密算法选型场景：可用于数据防篡改</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

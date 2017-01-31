@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.CoverEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.des.CoverEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

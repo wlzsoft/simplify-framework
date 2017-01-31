@@ -2,7 +2,7 @@ package com.meizu.simplify.encrypt;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.RandEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.des.RandEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

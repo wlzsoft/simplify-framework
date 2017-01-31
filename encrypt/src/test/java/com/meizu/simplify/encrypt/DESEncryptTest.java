@@ -3,7 +3,7 @@ package com.meizu.simplify.encrypt;
 import org.junit.Test;
 
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
-import com.meizu.simplify.encrypt.des.DESEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.des.DESEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>

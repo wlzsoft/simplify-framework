@@ -1,8 +1,10 @@
 package com.meizu.simplify.encrypt;
 
+import java.io.UnsupportedEncodingException;
+
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.des.BlowfishEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.blowfish.BlowfishEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -19,12 +21,11 @@ import com.meizu.simplify.encrypt.des.BlowfishEncrypt;
  */
 public class BlowfishEncryptTest {
 	@Test
-	public void test() {
-		BlowfishEncrypt dec = new BlowfishEncrypt();
+	public void test() throws UnsupportedEncodingException {
 		String source = "哈哈哈哈，也";
-		String my = dec.encode(source);
-		System.out.println(my);
-		System.out.println(dec.decode(my));
+		byte[] key = "owiueroweuroweir".getBytes("utf-8");
+		byte[] my = BlowfishEncrypt.encryptECB(source.getBytes("utf-8"), key);
+		System.out.println(new String(BlowfishEncrypt.decryptECB(my, key),"utf-8"));
 		
 		
 	}

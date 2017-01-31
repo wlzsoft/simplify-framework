@@ -1,4 +1,4 @@
-package com.meizu.simplify.encrypt.des;
+package com.meizu.simplify.encrypt.symmetriccryptography.des;
 
 import java.util.Date;
 import java.util.Random;
