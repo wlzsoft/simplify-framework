@@ -97,6 +97,7 @@ public class ResultFactory {
 	public static Result success(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
 		Result result = new ResultObject<Object>(message);
 		result.setStatusCode(HttpStatus.OK.value()+"");
+		result.setSuccess(true);
 		return result;
 	}
 }

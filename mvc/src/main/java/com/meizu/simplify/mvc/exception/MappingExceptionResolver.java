@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.config.PropertiesConfig;
+import com.meizu.simplify.dto.HttpStatus;
 import com.meizu.simplify.dto.ResultFactory;
 import com.meizu.simplify.exception.BaseException;
 import com.meizu.simplify.exception.MessageException;
@@ -79,7 +80,7 @@ public class MappingExceptionResolver {
 //			setWarnLogCategory(MappingExceptionResolver.class.getName());
 			if(statuscode==208) {
 				LOGGER.info("message:"+exceptionMessage);
-			} else if(statuscode == 300) {
+			} else if(statuscode == HttpStatus.MULTIPLE_CHOICES.value()) {
 				LOGGER.warn("message:"+exceptionMessage);
 			} else {
 				LOGGER.error("message:"+exceptionMessage);// TODO 分析出业务数据，展现更个性化的日志信息，可以配合  解析LogByMethod的信息
@@ -94,7 +95,7 @@ public class MappingExceptionResolver {
 			throwable.printStackTrace();
 //	                     指定默认的返回码，默认是200
 //		    setDefaultStatusCode("500");
-			response.setStatus(500);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			if(LOGGER.isErrorEnabled()) {
 				LOGGER.error("error:"+exceptionMessage+"["+getStackTraceInfo(throwable,1));
 			}
