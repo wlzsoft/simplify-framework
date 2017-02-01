@@ -4,7 +4,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
-import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricBaseEncrypt;
 
 /**
   * <p><b>Title:</b><i>AES加密算法(推荐使用的对称加密算法)</i></p>
@@ -43,7 +43,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64ECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, false, "AES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "AES", "ECB", algorithmPadding);
 	}
 
 	/**
@@ -57,15 +57,15 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "ECB", algorithmPadding);
 	}
 
 	public static String encryptToHexECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, false, "AES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, false, "AES", "ECB", algorithmPadding);
 	}
 
 	public static String hexToDecryptECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, false, "AES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, false, "AES", "ECB", algorithmPadding);
 	}
 	
 	//------------------------具体使用AES加密算法的CBC模式
@@ -81,7 +81,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64CBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, false, "AES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "AES", "CBC", algorithmPadding);
 	}
 
 	/**
@@ -95,15 +95,15 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "CBC", algorithmPadding);
 	}
 
 	public static String encryptToHexCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, false, "AES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, false, "AES", "CBC", algorithmPadding);
 	}
 
 	public static String hexToDecryptCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, false, "AES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, false, "AES", "CBC", algorithmPadding);
 	}
 	
 	//------------------------具体AES算法相关
@@ -121,7 +121,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecrypt(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptToHex(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String hexToDecrypt(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
 	}
 	
 	//-----------------------具体使用AES加密算法的ECB模式PKCS5Padding填充模式
@@ -217,7 +217,7 @@ public class AESEncrypt {
 	 * @return 返回加密后数据
 	 */
 	public static byte[] encryptECB(byte[] data, byte[] key) {
-		Cipher cipher = SymmetricEncrypt.getEncryptCipher(key, null, "AES", "ECB", "PKCS5Padding");
+		Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher(key, null, "AES", "ECB", "PKCS5Padding");
 		//缓存以上操作,主要缓存cipher
 		//开始加密
 		byte[] cipherByte;
@@ -232,7 +232,7 @@ public class AESEncrypt {
 	}
 	
 	public static byte[] decryptECB(byte[] data, byte[] key) {
-		return SymmetricEncrypt.decrypt(data, key, null, "AES", "ECB", "PKCS5Padding");
+		return SymmetricBaseEncrypt.decrypt(data, key, null, "AES", "ECB", "PKCS5Padding");
 	}
 	
 	/**
@@ -245,7 +245,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64CBC(String data, String key, String charset) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptCBC(String data, String key, String charset) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
 	}
 
 	/**
@@ -271,7 +271,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static byte[] encryptCBC(byte[] data, byte[] key,byte[] iv) {
-		Cipher cipher = SymmetricEncrypt.getEncryptCipher(key, iv, "AES", "CBC", "PKCS5Padding");
+		Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher(key, iv, "AES", "CBC", "PKCS5Padding");
 		//缓存以上操作,主要缓存cipher
 		//开始加密
 		byte[] cipherByte;
@@ -285,15 +285,15 @@ public class AESEncrypt {
 	}
 	
 	public static byte[] decryptCBC(byte[] data, byte[] key,byte[] iv) {
-		return SymmetricEncrypt.decrypt(data, key, iv, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.decrypt(data, key, iv, "AES", "CBC", "PKCS5Padding");
 	}
 
 	public static String encryptToHexCBC(String data, String key, String charset) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
 	}
 
 	public static String hexToDecryptCBC(String data, String key, String charset) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
 	}
 
 }

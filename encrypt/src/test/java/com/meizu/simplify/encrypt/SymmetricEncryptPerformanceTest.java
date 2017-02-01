@@ -16,7 +16,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricBaseEncrypt;
 
 /**
  * <p><b>Title:</b><i>DES,AES,BlowFish等对称加密算法的微基准测试(性能测试)</i></p>
@@ -62,7 +62,7 @@ public class SymmetricEncryptPerformanceTest {
             FileInputStream dataFIS = new FileInputStream(dataFileName);
             dataFIS.read(b);
 
-            Cipher cipher = SymmetricEncrypt.getEncryptCipher("sdferest".getBytes(), null, "DES", "ECB", "PKCS5Padding");
+            Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher("sdferest".getBytes(), null, "DES", "ECB", "PKCS5Padding");
             long t1 = System.currentTimeMillis();
     		//System.out.println(ByteHexUtil.bytes2Hex(cipher.doFinal(b)));
             cipher.doFinal(b);
@@ -84,7 +84,7 @@ public class SymmetricEncryptPerformanceTest {
             FileInputStream dataFIS = new FileInputStream(dataFileName);
             dataFIS.read(b);
 
-            Cipher cipher = SymmetricEncrypt.getEncryptCipher("sdferestsdferest".getBytes(), null, "AES", "ECB", "PKCS5Padding");
+            Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher("sdferestsdferest".getBytes(), null, "AES", "ECB", "PKCS5Padding");
             long t1 = System.currentTimeMillis();
     		cipher.doFinal(b);
             System.out.println(System.currentTimeMillis() - t1);
@@ -105,7 +105,7 @@ public class SymmetricEncryptPerformanceTest {
             FileInputStream dataFIS = new FileInputStream(dataFileName);
             dataFIS.read(b);
             
-            Cipher cipher = SymmetricEncrypt.getEncryptCipher("sdferestsdferest".getBytes(), null, "Blowfish", "ECB", "PKCS5Padding");
+            Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher("sdferestsdferest".getBytes(), null, "Blowfish", "ECB", "PKCS5Padding");
             long t1 = System.currentTimeMillis();
             cipher.doFinal(b);
             System.out.println(System.currentTimeMillis() - t1);

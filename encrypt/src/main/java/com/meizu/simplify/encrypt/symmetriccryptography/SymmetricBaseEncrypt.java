@@ -40,7 +40,7 @@ DES      对称Feistet密码(Feistet结构的分组密码算法)     64         
 * @version Version 0.1
 *
 */
-public class SymmetricEncrypt {
+public class SymmetricBaseEncrypt {
 	
 	/**
 	 * 

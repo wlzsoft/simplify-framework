@@ -4,7 +4,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
-import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricBaseEncrypt;
 
 /**
  * 
@@ -54,7 +54,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64ECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, false, "DES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "DES", "ECB", algorithmPadding);
 	}
 
 	/**
@@ -68,15 +68,15 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, false, "DES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "DES", "ECB", algorithmPadding);
 	}
 
 	public static String encryptToHexECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, false, "DES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, false, "DES", "ECB", algorithmPadding);
 	}
 
 	public static String hexToDecryptECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, false, "DES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, false, "DES", "ECB", algorithmPadding);
 	}
 	
 	//------------------------具体使用DES加密算法的CBC模式
@@ -92,7 +92,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64CBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, false, "DES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "DES", "CBC", algorithmPadding);
 	}
 
 	/**
@@ -106,15 +106,15 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, false, "DES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "DES", "CBC", algorithmPadding);
 	}
 
 	public static String encryptToHexCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, false, "DES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, false, "DES", "CBC", algorithmPadding);
 	}
 
 	public static String hexToDecryptCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, false, "DES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, false, "DES", "CBC", algorithmPadding);
 	}
 	
 	//------------------------具体DES算法相关
@@ -132,7 +132,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecrypt(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String encryptToHex(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String hexToDecrypt(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, iv, "DES", algorithmMode, algorithmPadding);
 	}
 	
 	//-----------------------具体使用DES加密算法的ECB模式PKCS5Padding填充模式
@@ -228,7 +228,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static byte[] encryptECB(byte[] data, byte[] key) {
-		Cipher cipher = SymmetricEncrypt.getEncryptCipher(key, null, "DES", "ECB", "PKCS5Padding");
+		Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher(key, null, "DES", "ECB", "PKCS5Padding");
 		//缓存以上操作,主要缓存cipher
 		//开始加密
 		byte[] cipherByte;
@@ -242,7 +242,7 @@ public class DESEncrypt {
 	}
 	
 	public static byte[] decryptECB(byte[] data, byte[] key) {
-		return SymmetricEncrypt.decrypt(data, key, null, "DES", "ECB", "PKCS5Padding");
+		return SymmetricBaseEncrypt.decrypt(data, key, null, "DES", "ECB", "PKCS5Padding");
 	}
 	
 	/**
@@ -255,7 +255,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64CBC(String data, String key, String charset) {
-		return SymmetricEncrypt.encryptAndBase64(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptCBC(String data, String key, String charset) {
-		return SymmetricEncrypt.base64AndDecrypt(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class DESEncrypt {
 	 * @return
 	 */
 	public static byte[] encryptCBC(byte[] data, byte[] key,byte[] iv) {
-		Cipher cipher = SymmetricEncrypt.getEncryptCipher(key, iv, "DES", "CBC", "PKCS5Padding");
+		Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher(key, iv, "DES", "CBC", "PKCS5Padding");
 		//缓存以上操作,主要缓存cipher
 		//开始加密
 		byte[] cipherByte;
@@ -295,14 +295,14 @@ public class DESEncrypt {
 	}
 	
 	public static byte[] decryptCBC(byte[] data, byte[] key,byte[] iv) {
-		return SymmetricEncrypt.decrypt(data, key, iv, "DES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.decrypt(data, key, iv, "DES", "CBC", "PKCS5Padding");
 	}
 
 	public static String encryptToHexCBC(String data, String key, String charset) {
-		return SymmetricEncrypt.encryptToHex(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.encryptToHex(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
 	}
 
 	public static String hexToDecryptCBC(String data, String key, String charset) {
-		return SymmetricEncrypt.hexToDecrypt(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, true, "DES", "CBC", "PKCS5Padding");
 	}
 }

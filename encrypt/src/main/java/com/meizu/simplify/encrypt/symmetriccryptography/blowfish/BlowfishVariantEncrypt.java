@@ -5,7 +5,7 @@ import java.util.Random;
 
 import javax.crypto.SecretKey;
 
-import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.SymmetricBaseEncrypt;
 
 /**
  * <p><b>Title:</b><i>随机加密算法</i></p>
@@ -45,16 +45,16 @@ public class BlowfishVariantEncrypt {
 			byteRand[i] = strRand.getBytes()[i];
 		}
 		strResult = new String(byteRand);
-		secretKey = SymmetricEncrypt.getSecretKey(null, "Blowfish");
+		secretKey = SymmetricBaseEncrypt.getSecretKey(null, "Blowfish");
 	}
 
 	public  String encryptECB(String data) {
-		String cipher = SymmetricEncrypt.encryptAndBase64(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
+		String cipher = SymmetricBaseEncrypt.encryptAndBase64(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
 		return cipher;
 	}
 	
 	public  String decryptECB(String data) {
-		String cipher = SymmetricEncrypt.base64AndDecrypt(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
+		String cipher = SymmetricBaseEncrypt.base64AndDecrypt(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
 		return cipher;
 	}
 	
@@ -62,12 +62,12 @@ public class BlowfishVariantEncrypt {
 	
 	
 	public  String encryptECBForSecretKey(String data) {
-		String cipher = SymmetricEncrypt.encryptAndBase64(data, secretKey, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
+		String cipher = SymmetricBaseEncrypt.encryptAndBase64(data, secretKey, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
 		return cipher;
 	}
 	
 	public  String decryptECBForSecretKey(String data) {
-		String cipher = SymmetricEncrypt.base64AndDecrypt(data, secretKey, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
+		String cipher = SymmetricBaseEncrypt.base64AndDecrypt(data, secretKey, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
 		return cipher;
 	}
 	
