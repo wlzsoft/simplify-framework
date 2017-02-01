@@ -1,6 +1,7 @@
 package com.meizu.simplify.net.rest;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -24,21 +25,35 @@ public class RestCallBack<T>  {
     	this.url = url;
     }
 
-    public T call() throws Exception {
-    	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-    	InputStream inputStream = null;
-    	if(conn.getResponseCode() == 200) {
-    		inputStream = conn.getInputStream();
-    	} else {
-    		inputStream = conn.getErrorStream();
-    	}
-    	
-    	BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+    public T call() throws Exception{
     	String content = "";
-    	String line = "";
-    	while((line = bufferedReader.readLine()) != null) {
-    		content += line;
-    	}
+    	HttpURLConnection conn = null;
+    	InputStream inputStream = null;
+		try {
+			conn = (HttpURLConnection)url.openConnection();
+	    	if(conn.getResponseCode() == 200) {
+	    		inputStream = conn.getInputStream();
+	    	} else {
+	    		inputStream = conn.getErrorStream();
+	    	}
+		
+	    	BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+	    	String line = "";
+	    	while((line = bufferedReader.readLine()) != null) {
+	    		content += line;
+	    	}
+		} finally {
+			if(inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			/*if(conn != null) {
+				conn.disconnect();
+			}*/
+		}
     	System.out.println(content);
     	T result = JSON.parseObject(content, clazz);
         return result;
