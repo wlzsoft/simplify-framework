@@ -34,7 +34,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String encryptAndBase64ECB(String data, String key, String charset,String algorithmPadding) {
-			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "Blowfish", "ECB", algorithmPadding);
+			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "Blowfish", "ECB", algorithmPadding,false);
 		}
 
 		/**
@@ -48,7 +48,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String base64AndDecryptECB(String data, String key, String charset,String algorithmPadding) {
-			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "Blowfish", "ECB", algorithmPadding);
+			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "Blowfish", "ECB", algorithmPadding,false);
 		}
 
 		public static String encryptToHexECB(String data, String key, String charset,String algorithmPadding) {
@@ -72,7 +72,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String encryptAndBase64CBC(String data, String key, String charset,String algorithmPadding) {
-			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "Blowfish", "CBC", algorithmPadding);
+			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "Blowfish", "CBC", algorithmPadding,false);
 		}
 
 		/**
@@ -86,7 +86,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String base64AndDecryptCBC(String data, String key, String charset,String algorithmPadding) {
-			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "Blowfish", "CBC", algorithmPadding);
+			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "Blowfish", "CBC", algorithmPadding,false);
 		}
 
 		public static String encryptToHexCBC(String data, String key, String charset,String algorithmPadding) {
@@ -112,7 +112,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String encryptAndBase64(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, iv, "Blowfish", algorithmMode, algorithmPadding);
+			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, iv, "Blowfish", algorithmMode, algorithmPadding,false);
 		}
 
 		/**
@@ -128,7 +128,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String base64AndDecrypt(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, iv, "Blowfish", algorithmMode, algorithmPadding);
+			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, iv, "Blowfish", algorithmMode, algorithmPadding,false);
 		}
 
 		/**
@@ -236,7 +236,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String encryptAndBase64CBC(String data, String key, String charset) {
-			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "Blowfish", "CBC", "PKCS5Padding");
+			return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "Blowfish", "CBC", "PKCS5Padding",false);
 		}
 
 		/**
@@ -249,7 +249,7 @@ public class BlowfishEncrypt {
 		 * @return
 		 */
 		public static String base64AndDecryptCBC(String data, String key, String charset) {
-			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "Blowfish", "CBC", "PKCS5Padding");
+			return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "Blowfish", "CBC", "PKCS5Padding",false);
 		}
 
 		/**

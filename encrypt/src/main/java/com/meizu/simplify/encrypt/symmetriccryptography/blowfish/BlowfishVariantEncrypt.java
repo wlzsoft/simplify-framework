@@ -49,12 +49,12 @@ public class BlowfishVariantEncrypt {
 	}
 
 	public  String encryptECB(String data) {
-		String cipher = SymmetricBaseEncrypt.encryptAndBase64(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
+		String cipher = SymmetricBaseEncrypt.encryptAndBase64(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding",false);
 		return cipher;
 	}
 	
 	public  String decryptECB(String data) {
-		String cipher = SymmetricBaseEncrypt.base64AndDecrypt(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding");
+		String cipher = SymmetricBaseEncrypt.base64AndDecrypt(data, strResult, "utf-8", false, "Blowfish", "ECB", "PKCS5Padding",false);
 		return cipher;
 	}
 	

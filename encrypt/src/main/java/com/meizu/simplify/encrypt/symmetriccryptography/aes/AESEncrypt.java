@@ -43,7 +43,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64ECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "AES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "AES", "ECB", algorithmPadding,false);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptECB(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "ECB", algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "ECB", algorithmPadding,false);
 	}
 
 	public static String encryptToHexECB(String data, String key, String charset,String algorithmPadding) {
@@ -81,7 +81,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64CBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "AES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, false, "AES", "CBC", algorithmPadding,false);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptCBC(String data, String key, String charset,String algorithmPadding) {
-		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "CBC", algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, false, "AES", "CBC", algorithmPadding,false);
 	}
 
 	public static String encryptToHexCBC(String data, String key, String charset,String algorithmPadding) {
@@ -121,7 +121,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, iv, "AES", algorithmMode, algorithmPadding,false);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecrypt(String data, String key, String charset,boolean iv,String algorithmMode,String algorithmPadding) {
-		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, iv, "AES", algorithmMode, algorithmPadding);
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, iv, "AES", algorithmMode, algorithmPadding,false);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String encryptAndBase64CBC(String data, String key, String charset) {
-		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "AES", "CBC", "PKCS5Padding",false);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class AESEncrypt {
 	 * @return
 	 */
 	public static String base64AndDecryptCBC(String data, String key, String charset) {
-		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding",false);
 	}
 
 	/**
@@ -294,6 +294,32 @@ public class AESEncrypt {
 
 	public static String hexToDecryptCBC(String data, String key, String charset) {
 		return SymmetricBaseEncrypt.hexToDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding");
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 加密并base64编码CBC模式，默认填充方式PKCS5Padding<br>
+	 * 操作步骤: TODO<br>
+	 * @param data 
+	 * @param key 长度16个字节，也就是128位。或者是192,256位
+	 * @param charset
+	 * @return 适合于浏览器url传输，避免浏览器转义
+	 */
+	public static String encryptAndBase64VariantCBC(String data, String key, String charset) {
+		return SymmetricBaseEncrypt.encryptAndBase64(data, key, charset, true, "AES", "CBC", "PKCS5Padding",true);
+	}
+
+	/**
+	 * 
+	 * 方法用途: base64解码并解密CBC模式，默认填充方式PKCS5Padding<br>
+	 * 操作步骤: TODO<br>
+	 * @param data 必须被base64编码过的数据，适合于浏览器url传输，避免浏览器转义
+	 * @param key 长度16个字节，也就是128位。或者是192,256位
+	 * @param charset
+	 * @return 
+	 */
+	public static String base64VariantAndDecryptCBC(String data, String key, String charset) {
+		return SymmetricBaseEncrypt.base64AndDecrypt(data, key, charset, true, "AES", "CBC", "PKCS5Padding",true);
 	}
 
 }

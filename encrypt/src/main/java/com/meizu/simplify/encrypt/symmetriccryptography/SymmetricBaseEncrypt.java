@@ -18,6 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.meizu.simplify.encrypt.ByteHexUtil;
 import com.meizu.simplify.encrypt.base64.Base64Encrypt;
+import com.meizu.simplify.encrypt.base64.Base64VariantEncrypt;
 /**
  * <p><b>Title:</b><i>对称加密算法</i></p>
 * <p>Desc: 对称加密算法相关工具类
@@ -104,7 +105,7 @@ public class SymmetricBaseEncrypt {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String encryptAndBase64(String data,String key,String charset,boolean useIV,String algorithm,String algorithmMode,String algorithmPadding) {
+	public static String encryptAndBase64(String data,String key,String charset,boolean useIV,String algorithm,String algorithmMode,String algorithmPadding,boolean isVariant) {
 		try {
 			byte[] byteKey = key.getBytes(charset);
 			byte[] iv = null;
@@ -112,7 +113,11 @@ public class SymmetricBaseEncrypt {
 				iv = key.getBytes(charset);
 			}
 			byte[] byteData = encrypt(data.getBytes(charset), byteKey, iv,algorithm,algorithmMode,algorithmPadding);
-	        return new String(Base64Encrypt.encode(byteData));
+			if(isVariant) {
+				return new String(Base64VariantEncrypt.encode64String(byteData));
+			} else {
+				return new String(Base64Encrypt.encode(byteData));
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -162,15 +167,20 @@ public class SymmetricBaseEncrypt {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static String base64AndDecrypt(String data,String key,String charset,boolean useIV,String algorithm,String algorithmMode,String algorithmPadding) {
-       try {
-			byte[] resultArr = Base64Encrypt.decodeToBytes(data);
+	public static String base64AndDecrypt(String data, String key, String charset, boolean useIV, String algorithm, String algorithmMode, String algorithmPadding, boolean isVariant) {
+		try {
+			byte[] resultArr;
+			if (isVariant) {
+				resultArr = Base64VariantEncrypt.decode64(data);
+			} else {
+				resultArr = Base64Encrypt.decodeToBytes(data);
+			}
 			byte[] byteKey = key.getBytes(charset);
 			byte[] iv = null;
-			if(useIV) {
+			if (useIV) {
 				iv = key.getBytes(charset);
 			}
-	        return new String(decrypt(resultArr, byteKey, iv,algorithm,algorithmMode,algorithmPadding));
+			return new String(decrypt(resultArr, byteKey, iv, algorithm, algorithmMode, algorithmPadding));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

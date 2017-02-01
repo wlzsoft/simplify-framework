@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 
 /**
  * <p><b>Title:</b><i>base64编码算法，自定义变种，更好了编码表和base64解码表</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 主要使用于浏览器的url传值，避免浏览器转义</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
