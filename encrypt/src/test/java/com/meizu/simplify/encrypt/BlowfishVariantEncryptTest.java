@@ -21,18 +21,18 @@ public class BlowfishVariantEncryptTest {
 	@Test
 	public void ECB() {
 		BlowfishVariantEncrypt dec = new BlowfishVariantEncrypt();
-		String source = "哈哈哈哈，也";
-		String my = dec.encryptECB(source);
-		System.out.println(my);
-		System.out.println(dec.decryptECB(my));
+		String data = "哈哈哈哈，也";
+		String encryptStr = dec.encryptECB(data);
+		System.out.println(encryptStr);
+		System.out.println(dec.decryptECB(encryptStr));
 	}
 	
 	@Test
 	public void ECBForSecretKey() {
 		BlowfishVariantEncrypt dec = new BlowfishVariantEncrypt();
-		String source = "哈哈哈哈，也";
-		String my = dec.encryptECBForSecretKey(source);
-		System.out.println(my);
-		System.out.println(dec.decryptECBForSecretKey(my));
+		String data = "哈哈哈哈，也";
+		String encryptStr = dec.encryptECBForSecretKey(data);
+		System.out.println(encryptStr);
+		System.out.println(dec.decryptECBForSecretKey(encryptStr));
 	}
 }

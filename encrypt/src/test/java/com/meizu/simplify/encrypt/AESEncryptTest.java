@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
-import com.meizu.simplify.encrypt.symmetriccryptography.blowfish.BlowfishEncrypt;
+import com.meizu.simplify.encrypt.symmetriccryptography.aes.AESEncrypt;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -19,14 +19,21 @@ import com.meizu.simplify.encrypt.symmetriccryptography.blowfish.BlowfishEncrypt
  * @version Version 0.1
  *
  */
-public class BlowfishEncryptTest {
+public class AESEncryptTest {
 	@Test
-	public void test() throws UnsupportedEncodingException {
+	public void testECB() throws UnsupportedEncodingException {
 		String data = "哈哈哈哈，也";
 		byte[] key = "owiueroweuroweir".getBytes("utf-8");
-		byte[] encryptStr = BlowfishEncrypt.encryptECB(data.getBytes("utf-8"), key);
-		System.out.println(new String(BlowfishEncrypt.decryptECB(encryptStr, key),"utf-8"));
+		byte[] encryptStr = AESEncrypt.encryptECB(data.getBytes("utf-8"), key);
+		System.out.println(new String(AESEncrypt.decryptECB(encryptStr, key),"utf-8"));
 		
+	}
+	@Test
+	public void testBase64AndECB() throws UnsupportedEncodingException {
+		String data = "哈哈哈哈，也";
+		String key = "owiueroweuroweir";
+		String encryptStr = AESEncrypt.encryptAndBase64CBC(data, key,"utf-8");
+		System.out.println(AESEncrypt.base64AndDecryptCBC(encryptStr, key,"utf-8"));
 		
 	}
 }

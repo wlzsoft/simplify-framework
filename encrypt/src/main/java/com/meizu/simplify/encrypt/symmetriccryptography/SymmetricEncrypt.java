@@ -457,7 +457,7 @@ public class SymmetricEncrypt {
 	 * 
 	 * 方法用途: 解密<br>
 	 * 操作步骤: TODO<br>
-	 * @param data
+	 * @param data 如果是aes，待解密的密文必须是16的倍数
 	 * @param key des长度8个字节，也就是64位; aes长度16个字节
 	 * @param iv 加密向量
 	 * @param algorithm 算法名称
@@ -469,7 +469,10 @@ public class SymmetricEncrypt {
 		Cipher cipher = getDecryptCipher(key,iv,algorithm,algorithmMode,algorithmPadding);
 		try {
 			return cipher.doFinal(data);
-		} catch (IllegalBlockSizeException | BadPaddingException e) {
+		} catch (IllegalBlockSizeException e) {
+			System.err.println("若是aes解密，密文长度必须是16的倍数");
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
 			e.printStackTrace();
 		}
 		return null;

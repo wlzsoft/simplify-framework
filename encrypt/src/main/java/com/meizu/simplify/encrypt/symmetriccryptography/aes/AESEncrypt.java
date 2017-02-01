@@ -252,7 +252,7 @@ public class AESEncrypt {
 	 * 
 	 * 方法用途: base64解码并解密CBC模式，默认填充方式PKCS5Padding<br>
 	 * 操作步骤: TODO<br>
-	 * @param data
+	 * @param data 必须被base64编码过的数据
 	 * @param key 长度16个字节，也就是128位。或者是192,256位
 	 * @param charset
 	 * @return
