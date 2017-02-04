@@ -16,7 +16,7 @@ package com.meizu.simplify.utils.enums;
  */
 public enum DateFormatEnum {
 	
-//	第一种风格
+//	第一种风格：默认以空格Limiter.DATE_TIME_LIMITER分隔日期和时间，不带时区信息
 	
 	YEAR("yyyy"),
 	/**
@@ -90,6 +90,12 @@ public enum DateFormatEnum {
 	 * 全日期:默认格式yyyyMMddHHmmssSSSS :TODO 是否特定情况下，会有4个SSSS
 	 */
 	YEAR_TO_MILLISECOND_N("yyyyMMddHHmmssSSSS");
+	
+	
+	// 以T分隔日期和时间，并带时区信息，符合ISO8601规范，TODO 暂未启用
+	/*PATTERN_ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZZ"),
+	PATTERN_ISO_ON_SECOND("yyyy-MM-dd'T'HH:mm:ssZZ"),
+	PATTERN_ISO_ON_DATE("yyyy-MM-dd")*/;
 	
 	
 	private String formatStr;
