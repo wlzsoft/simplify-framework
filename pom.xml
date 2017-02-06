@@ -87,6 +87,7 @@
     <module>config-plugins</module>
     <module>datasource</module>
     <module>log</module>
+    <module>dto</module>
     <module>zookeeper</module>
   </modules>
   <properties>
