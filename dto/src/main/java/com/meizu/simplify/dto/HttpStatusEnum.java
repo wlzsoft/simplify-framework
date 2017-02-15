@@ -12,7 +12,7 @@ package com.meizu.simplify.dto;
  * @version Version 0.1
  *
  */
-public enum HttpStatus {
+public enum HttpStatusEnum {
 	
 	/**
 	 * 200:正常响应成功，返回内容
@@ -44,7 +44,11 @@ public enum HttpStatus {
 	 */
 	TemporaryRedirect(307),
 	/**
-	 * 403：未授权
+	 * 400: 请求前端报错，还未正式处理业务：比如参数无效
+	 */
+	INVALID(400),
+	/**
+	 * 403：未授权：没有权限访问
 	 */
 	FORBIDDEN(403), 
 	/**
@@ -54,10 +58,14 @@ public enum HttpStatus {
 	/**
 	 * 500：服务器内部错误
 	 */
-	INTERNAL_SERVER_ERROR(500);
+	INTERNAL_SERVER_ERROR(500),
+	/** 
+	 * 服务器超时  mapper http code 503
+	 */
+	TIME_OUT(503);
 
 	private int statusCode;
-	HttpStatus(int statusCode) {
+	HttpStatusEnum(int statusCode) {
 		this.statusCode = statusCode;
 	}
 	public int value() {

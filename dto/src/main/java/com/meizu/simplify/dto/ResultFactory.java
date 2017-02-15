@@ -27,7 +27,7 @@ public class ResultFactory {
 			return forbiddenResult;
 		}
 		forbiddenResult = new ResultObject<String>("您没有执行该操作的权限，请与管理员联系。");
-		forbiddenResult.setStatusCode(HttpStatus.FORBIDDEN.toString()+"");
+		forbiddenResult.setStatusCode(HttpStatusEnum.FORBIDDEN.toString()+"");
 		return forbiddenResult;
 	}
 	
@@ -42,7 +42,7 @@ public class ResultFactory {
 			return failResult;
 		}
 		failResult = new ResultObject<String>("服务器暂时繁忙，请稍候重试或与管理员联系。");
-		failResult.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.toString()+"");
+		failResult.setStatusCode(HttpStatusEnum.INTERNAL_SERVER_ERROR.toString()+"");
 		return failResult;
 	}
 	
@@ -57,7 +57,7 @@ public class ResultFactory {
 			return timeoutResult;
 		}
 		timeoutResult = new ResultObject<String>("会话超时，请重新登录。");
-		timeoutResult.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
+		timeoutResult.setStatusCode(HttpStatusEnum.MOVED_PERMANENTLY.toString()+"");
 		return timeoutResult;
 	}
 	
@@ -72,7 +72,7 @@ public class ResultFactory {
 			return loginResult;
 		}
 		loginResult = new ResultObject<String>("请登录。");
-		loginResult.setStatusCode(HttpStatus.MOVED_PERMANENTLY.toString()+"");
+		loginResult.setStatusCode(HttpStatusEnum.MOVED_PERMANENTLY.toString()+"");
 		return loginResult;
 	}
 	
@@ -84,7 +84,7 @@ public class ResultFactory {
 	 */
 	public static Result error(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
 		Result result = new ResultObject<Object>(message);
-		result.setStatusCode(HttpStatus.MULTIPLE_CHOICES.toString()+"");
+		result.setStatusCode(HttpStatusEnum.MULTIPLE_CHOICES.toString()+"");
 		return result;
 	}
 	
@@ -96,7 +96,7 @@ public class ResultFactory {
 	 */
 	public static Result success(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
 		Result result = new ResultObject<Object>(message);
-		result.setStatusCode(HttpStatus.OK.value()+"");
+		result.setStatusCode(HttpStatusEnum.OK.value()+"");
 		result.setSuccess(true);
 		return result;
 	}
