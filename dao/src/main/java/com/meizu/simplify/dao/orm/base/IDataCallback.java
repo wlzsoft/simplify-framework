@@ -1,15 +1,11 @@
 package com.meizu.simplify.dao.orm.base;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
   * <p><b>Title:</b><i>回调接口</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 上级数据回调接口，和具体的数据实现无关，可以是关系型数据库或是其他非关系信息数据等等的处理</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -43,37 +39,16 @@ public interface IDataCallback<T> {
 	/**
 	 * 
 	 * 方法用途: 回调方法<br>
-	 * 操作步骤: 获取数据之前，where条件参数回调<br>
-	 * @param prepareStatement
-	 * @param params
-	 * @return
-	 */
-	default T paramCall(PreparedStatement prepareStatement,Object... params ) throws SQLException {
-		if(params == null) {
-			return null;
-		}
-		for (int i=1; i <= params.length;i++) {
-			Object obj = params[i-1];
-			prepareStatement.setObject(i, obj);
-			LOGGER.info("[参数索引:"+i+",值:"+obj+"]");
-		}
-		return null;
-	}
-	
-	/**
-	 * 
-	 * 方法用途: 回调方法<br>
 	 * 操作步骤: TODO<br>
-	 * @param rs
 	 * @param clazz 如果类型不支持，那么值为空，不处理，结果直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
 	 * @return
 	 */
-	default T resultCall(ResultSet rs,Class<T> clazz) {
+	default T resultCall(Class<T> clazz) {
 		try {
 			if(clazz == null) {//fix bug(lcy-2016/2/24)
 				return null;
 			}
-			T t = (T) clazz.newInstance();
+			T t = clazz.newInstance();
 			return t;
 		} catch (InstantiationException e) {
 			/*fix bug(lcy-2016/2/24)

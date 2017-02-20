@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.orm.base.CommonSqlBuilder;
-import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.ISqlDataCallback;
 import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.entity.page.Page;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -39,10 +39,10 @@ public class SearchByMapDao {
 	
 	public List<Map<String,Object>> find(String sql,Object... params) {
 		logger.info(sql);
-		List<Map<String,Object>> tList = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<Map<String,Object>>() {
+		List<Map<String,Object>> tList = SQLExecute.executeQuery(connectionManager,sql, new ISqlDataCallback<Map<String,Object>>() {
 			@Override
 			public Map<String,Object> paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
+				return ISqlDataCallback.super.paramCall(prepareStatement,params);
 			}
 			@Override
 			public Map<String,Object> resultCall(String columnLabel, Object val,Map<String,Object> t) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.entity.IdEntity;
+import com.meizu.simplify.ioc.annotation.DefaultBean;
 
 
 /**
@@ -23,6 +24,7 @@ import com.meizu.simplify.entity.IdEntity;
  * @param <T> 业务实体类型
  * @param <PK> PK类型 ，如：String、Long、Integer 等
  */
+@DefaultBean
 public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Serializable> {
 	
 	/**

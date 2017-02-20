@@ -23,7 +23,7 @@ import com.meizu.simplify.dao.enums.BatchOperator;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
 import com.meizu.simplify.dao.orm.base.CommonSqlBuilder;
-import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.ISqlDataCallback;
 import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.entity.IdEntity;
 import com.meizu.simplify.entity.annotations.Column;
@@ -58,7 +58,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private Class<T> entityClass;
+	protected Class<T> entityClass;
 	
 	/**
 	 * 主键列名
@@ -73,17 +73,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	/**
 	 * columnName=FieldName
 	 */
-	private Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
+	protected Map<String, String> currentColumnFieldNames = new LinkedHashMap<String, String>();
 
 	private Map<String, String> columnsMeta = new LinkedHashMap<String, String>();//create dll sql 使用
 	
-	private SQLBuilder<T> sqlBuilder;
+	protected SQLBuilder<T> sqlBuilder;
 	
 	@Config("system.isMycat")
     private boolean isMycat = false;
 
 	@Resource
-	private ISqlMethodSelector selector;
+	protected ISqlMethodSelector selector;
 	
 	@Resource
 	private ConnectionManager connectionManager;
@@ -258,7 +258,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	//--------------------------------保存操作-----------------------------------------------------------
 	
 	private Integer preSave(String sql,List<T> tList) {
-		Integer key = SQLExecute.executeInsert(connectionManager,sql, new IDataCallback<Integer>() {
+		Integer key = SQLExecute.executeInsert(connectionManager,sql, new ISqlDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement, Object... params) throws SQLException {
 				List<String> cList = null;
@@ -404,7 +404,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		}
 		String sql = sqlBuilder.update(t, currentColumnFieldNames,whereColumn,isAllField);
 		logger.info(sql);
-		return SQLExecute.executeUpdate(connectionManager,sql,new IDataCallback<Integer>() {
+		return SQLExecute.executeUpdate(connectionManager,sql,new ISqlDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				List<String> cList = sqlBuilder.getOtherIdColumns();
@@ -502,10 +502,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	public List<T> find(String sql,Object... params) {
 		logger.info(sql);
-		List<T> tList = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<T>() {
+		List<T> tList = SQLExecute.executeQuery(connectionManager,sql, new ISqlDataCallback<T>() {
 			@Override
 			public T paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
+				return ISqlDataCallback.super.paramCall(prepareStatement,params);
 			}
 			@Override
 			public T resultCall(String columnLabel, Object val,T t) {

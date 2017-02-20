@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.meizu.simplify.dao.datasource.ConnectionManager;
-import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.ISqlDataCallback;
 import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.DataUtil;
@@ -33,10 +33,10 @@ public class CountDao {
 	
 	public static Integer count(ConnectionManager connectionManager,String sql,Object... params) {
 		LOGGER.info(sql);//后续不在这里处理sql日志 TODO
-		List<Integer> list = SQLExecute.executeQuery(connectionManager,sql, new IDataCallback<Integer>() {
+		List<Integer> list = SQLExecute.executeQuery(connectionManager,sql, new ISqlDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
+				return ISqlDataCallback.super.paramCall(prepareStatement,params);
 			}
 
 			@Override

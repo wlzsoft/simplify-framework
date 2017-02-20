@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.dao.Query;
 import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.enums.BatchOperator;
-import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.ISqlDataCallback;
 import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
@@ -70,7 +70,7 @@ public class ExecByTableNameDao {
 			}
 		}
 		String sql = preCreate(tableName,sqlBuilder.toString(),columns.length/2);
-		Integer key = SQLExecute.executeInsert(connectionManager,sql, new IDataCallback<Integer>() {},params.toArray());
+		Integer key = SQLExecute.executeInsert(connectionManager,sql, new ISqlDataCallback<Integer>() {},params.toArray());
 		return key;
 	}
 	

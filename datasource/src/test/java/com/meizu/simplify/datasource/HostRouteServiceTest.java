@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.meizu.simplify.dao.orm.base.IDataCallback;
+import com.meizu.simplify.dao.orm.base.ISqlDataCallback;
 import com.meizu.simplify.dao.orm.base.SQLExecute;
 import com.meizu.simplify.datasource.route.HostRouteService;
 import com.meizu.simplify.ioc.annotation.Bean;
@@ -38,10 +38,10 @@ public class HostRouteServiceTest {
 		try {
 			conn = dsp.getConnection();
 			conn.setAutoCommit(true);
-			List<Map<String,Object>> list = SQLExecute.executeQuery(conn, "select * from test_web", new IDataCallback<Map<String,Object>>() {
+			List<Map<String,Object>> list = SQLExecute.executeQuery(conn, "select * from test_web", new ISqlDataCallback<Map<String,Object>>() {
 				@Override
 				public Map<String,Object> paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-					return IDataCallback.super.paramCall(prepareStatement);
+					return ISqlDataCallback.super.paramCall(prepareStatement);
 				}
 				@Override
 				public Map<String,Object> resultCall(String columnLabel, Object val,Map<String,Object> t) {

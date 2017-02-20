@@ -43,11 +43,11 @@ public class SQLExecute {
 		if(params == null) {
 			return null;
 		}
-		return executeUpdate(connectionManager,sql,new IDataCallback<Integer>() {
+		return executeUpdate(connectionManager,sql,new ISqlDataCallback<Integer>() {
 
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
-				return IDataCallback.super.paramCall(prepareStatement,params);
+				return ISqlDataCallback.super.paramCall(prepareStatement,params);
 			}
 			
 		});
@@ -60,7 +60,7 @@ public class SQLExecute {
 	 * @param callback
 	 * @return
 	 */
-	public static Integer executeUpdate(ConnectionManager connectionManager,String sql,IDataCallback<Integer> callback) {
+	public static Integer executeUpdate(ConnectionManager connectionManager,String sql,ISqlDataCallback<Integer> callback) {
 		PreparedStatement prepareStatement = null;
 		Connection conn = connectionManager.getConnection();
 		try {
@@ -179,7 +179,7 @@ public class SQLExecute {
      *  另外，批处理的数据不是越大越好，因为可能会内存溢出，同时网络传输的过程中也是会进行拆包传输的，由于网络环境这个包的大小是不一定的，有时候打包的效率不一定就会高，这个和数据库的类型，版本都有关系的，所以我们在实践的过程中需要检验的。
 	 *  <br>
 	 */
-	public static void executeBatch(ConnectionManager connectionManager,IDataCallback<Integer> callback,String... sqlArr){
+	public static void executeBatch(ConnectionManager connectionManager,ISqlDataCallback<Integer> callback,String... sqlArr){
 		Connection conn = null;
 		PreparedStatement prepareStatement = null;
 		try{
@@ -226,7 +226,7 @@ public class SQLExecute {
 	 * @param callback
 	 * @return
 	 */
-	public static Integer executeInsert(ConnectionManager connectionManager,String sql,IDataCallback<Integer> callback,Object... params) {
+	public static Integer executeInsert(ConnectionManager connectionManager,String sql,ISqlDataCallback<Integer> callback,Object... params) {
 		PreparedStatement prepareStatement = null;
 		Connection conn = connectionManager.getConnection();
 		try {
@@ -280,7 +280,7 @@ public class SQLExecute {
 	 * @param clazz
 	 * @return
 	 */
-	public static <B> List<B> executeQuery(ConnectionManager connectionManager,String sql,IDataCallback<B> callback,Class<B> clazz) {
+	public static <B> List<B> executeQuery(ConnectionManager connectionManager,String sql,ISqlDataCallback<B> callback,Class<B> clazz) {
 		return executeQuery(connectionManager.getConnection(), sql, callback, clazz);
 	}
 	
@@ -309,7 +309,7 @@ public class SQLExecute {
 	 * @param clazz 如果类型不支持，那么值为空，那么变量b直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
 	 * @return
 	 */
-	public static <B> List<B> executeQuery(Connection conn,String sql,IDataCallback<B> callback,Class<B> clazz) {
+	public static <B> List<B> executeQuery(Connection conn,String sql,ISqlDataCallback<B> callback,Class<B> clazz) {
 		List<B> bList= new ArrayList<B>();
 		PreparedStatement prepareStatement = null;
 		ResultSet rs = null;
@@ -319,7 +319,7 @@ public class SQLExecute {
 			rs = prepareStatement.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			while(rs.next()) {
-				B b = callback.resultCall(rs,clazz);
+				B b = callback.resultCall(clazz);
 				for(int i=1; i <= metaData.getColumnCount(); i++) {
 					String columnLabel = metaData.getColumnLabel(i);
 					b = callback.resultCall(columnLabel,rs.getObject(columnLabel),b);
