@@ -499,6 +499,22 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 //--------------------------------查询操作-----------------------------------------------------------
 	
+	public T setResult(String columnLabel, Object val, T t) {
+		String key = currentColumnFieldNames.get(columnLabel);
+		if(key == null) {
+			return t;
+		}
+		try {
+			if(val != null) {
+				selector.invokeSet(t, key, val,false);
+			}
+		} catch(IllegalArgumentException ex) {
+			throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return t;
+	}
 	
 	public List<T> find(String sql,Object... params) {
 		logger.info(sql);
@@ -509,21 +525,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 			@Override
 			public T resultCall(String columnLabel, Object val,T t) {
-				String key = currentColumnFieldNames.get(columnLabel);
-				if(key == null) {
-					return t;
-				}
-				try {
-					if(val != null) {
-						selector.invokeSet(t, key, val,false);
-					}
-				} catch(IllegalArgumentException ex) {
-					throw new IllegalArgumentException("请检查是否数据库类型和实体类型不匹配，或是字段名和属性名不匹配==>>"+ex.getMessage());
-				} catch(Exception ex) {
-					ex.printStackTrace();
-				}
-				return t;
+				return setResult(columnLabel, val, t);
 			}
+			
 		},this.entityClass);
 		return tList;
 	}

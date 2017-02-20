@@ -15,6 +15,7 @@ import com.meizu.simplify.dao.datasource.ConnectionFactory;
 import com.meizu.simplify.dao.datasource.ConnectionManager;
 import com.meizu.simplify.dao.exception.BaseDaoException;
 import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.ReflectionUtil;
 
 /**
  * <p><b>Title:</b><i>TODO</i></p>
@@ -319,7 +320,8 @@ public class SQLExecute {
 			rs = prepareStatement.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			while(rs.next()) {
-				B b = callback.resultCall(clazz);
+//				clazz 如果类型不支持，那么值为空，不处理，结果直接返回空，不初始化，避免Integer和Map等类型无法初始化而出现异常
+				B b = ReflectionUtil.newInstance(clazz);
 				for(int i=1; i <= metaData.getColumnCount(); i++) {
 					String columnLabel = metaData.getColumnLabel(i);
 					b = callback.resultCall(columnLabel,rs.getObject(columnLabel),b);
