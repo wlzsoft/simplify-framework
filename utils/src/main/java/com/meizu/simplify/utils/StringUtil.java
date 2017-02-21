@@ -446,18 +446,18 @@ public class StringUtil {
 	 * 方法用途: 解析字符串，异常或为空返回默认值<br>
 	 * 操作步骤: TODO<br>
 	 * @param obj 判断对象
-	 * @param rep 替换值
+	 * @param defaultString 替换值
 	 * @return
 	 */
-	public static String parseString(Object obj,String rep) {
+	public static String parseString(Object obj,String defaultString) {
 		if(ObjectUtil.isNull(obj)) {
-			return rep;
+			return defaultString;
 		} 
 		String res = null;
 		try {
 			res = String.valueOf(obj);
 		} catch(Exception e) {
-			return rep;
+			return defaultString;
 		}
 		return res;
 	}
