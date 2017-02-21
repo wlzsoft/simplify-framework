@@ -41,6 +41,7 @@ public class Page<T> implements IPage<T> {
 	private boolean hasPrevPage;
 	private Integer next = 1;// 下一页页码
 	private Integer prev = 1;// 上一页页码
+	
 	private String url;// 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
 	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
 
@@ -48,8 +49,15 @@ public class Page<T> implements IPage<T> {
 	private static int DEFAULT_PAGE_SIZE = 10;
 	private int currentPage = 1;// 当前页码(当前页数) ，默认是第一页
 	private int pageSize = DEFAULT_PAGE_SIZE;// 每页显示的记录数，默认是10
-	private int totalRecord;// 总记录数
-	private int totalPage;// 总页数
+	private int totalRecord;// 总记录数   需要在运行时设置，一般表示检索的记录总数
+	/**
+	 * 总页数
+	 */
+	private int totalPage;
+	/**
+	 * 最大的翻页数,-1时不限制:可以限制翻页范围，而不是对totalPage的范围翻页，如果是-1，那么以totalPage为准
+	 */
+	private int maxPage=-1;
 	private String sortname; // 排序字段
 	private String sortorder; // 排序属性
 	private List<T> results;// 对应的当前页存放记录
@@ -71,6 +79,21 @@ public class Page<T> implements IPage<T> {
 	public Page(int currentPage, int pageSize,int totalRecord) {
 		this(currentPage,pageSize,totalRecord,true);
 	}
+	
+	/**
+	 * 方法用途: 构建总页数<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	private int buildTotalPage(int pageSize,int totalRecord) {
+		if (totalRecord % pageSize > 0) {
+			//加法拥有更高的优先级，所以最后可以不加括号
+			return totalRecord / pageSize + 1;
+		} else {
+			return totalRecord / pageSize;
+		}
+	}
+	
 	/**
 	 * 构造方法
 	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
@@ -84,22 +107,16 @@ public class Page<T> implements IPage<T> {
 
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
-		setTotalRecord(totalRecord);
-		
-		if (totalRecord % pageSize > 0) {
-			totalPage = totalRecord / pageSize + 1;
-		} else {
-			totalPage = totalRecord / pageSize;
-		}
+		this.setTotalRecord(totalRecord);
+		// 在设置总记录数后计算出对应的总页数
+		totalPage = buildTotalPage(pageSize,totalRecord);
 
-		if (currentPage > totalPage ) {//确保如果记录数大于数据库总记录数时[isReturnLastPage为true永远返回数据库最后一页,否则返回下一页空记录]
+		if (this.currentPage > totalPage ) {//确保如果记录数大于数据库总记录数时[isReturnLastPage为true永远返回数据库最后一页,否则返回下一页空记录]
 			if(isReturnLastPage) {
 				this.currentPage = totalPage;
 			} else {
 				this.currentPage = totalPage+1;
 			}
-		} else {
-			this.currentPage = currentPage;
 		}
 
 		if (this.currentPage <= 1) {
@@ -118,8 +135,8 @@ public class Page<T> implements IPage<T> {
 			next = this.currentPage + 1;
 		}
 		
-		hasNextPage = this.getCurrentPage() < this.getTotalPageCount();
-		hasPrevPage = this.getCurrentPage() > 1;
+		hasNextPage = this.currentPage < totalPage;
+		hasPrevPage = this.currentPage > 1;
 		results = new ArrayList<T>();
 
 	}
@@ -245,6 +262,11 @@ public class Page<T> implements IPage<T> {
 	
 	@Override
 	public int getCurrentPage() {
+		if(maxPage>0) {
+			if(currentPage>maxPage) {
+				return maxPage;
+			}
+		}
 		return currentPage;//currentRecord / pageSize + 1
 	}
 	
@@ -264,18 +286,6 @@ public class Page<T> implements IPage<T> {
 		this.pageSize = pageSize;
 	}
 
-	/**
-	 * 方法用途: 取总页数<br>
-	 * 操作步骤: TODO<br>
-	 * @return
-	 */
-	public long getTotalPageCount() {
-		if (totalRecord % pageSize == 0)
-			return totalRecord / pageSize;
-		else
-			return totalRecord / pageSize + 1;
-	}
-
 	/* 
 	 * @see com.meizu.simplify.dao.util.IPage#getTotalRecord()
 	 */
@@ -292,18 +302,30 @@ public class Page<T> implements IPage<T> {
 			throw new UncheckedException("总记录数必须大于等于零！");
 		}
 		this.totalRecord = totalRecord;
-		// 在设置总页数的时候计算出对应的总页数，在下面的三目运算中加法拥有更高的优先级，所以最后可以不加括号。
-		int totalPage = totalRecord % pageSize == 0 ? totalRecord / pageSize : totalRecord / pageSize + 1;
-		this.setTotalPage(totalPage);
 	}
 
 	@Override
 	public int getTotalPage() {
+		if(maxPage>0){
+			if(totalPage > maxPage) {
+				return maxPage;
+			} else {
+				return totalPage;
+			}
+		}
 		return totalPage;
 	}
 
 	public void setTotalPage(int totalPage) {
 		this.totalPage = totalPage;
+	}
+	
+	public int getMaxPage() {
+		return maxPage;
+	}
+	
+	public void setMaxPage(int maxPage) {
+		this.maxPage = maxPage;
 	}
 
 	/* (non-Javadoc)
@@ -346,25 +368,103 @@ public class Page<T> implements IPage<T> {
 	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
 	 * 操作步骤: TODO<br>
 	 * @param currentPage
-	 * @see #getStartOfPage(long,long)
 	 * @return
 	 */
-	protected static long getStartOfPage(long currentPage) {
-		return getStartOfPage(currentPage, DEFAULT_PAGE_SIZE);
+	public Integer getStartOfPage() {
+		return (currentPage - 1) * pageSize;
+	}
+	
+	/**
+	 * 获取任一页最后一条数据在数据集的位置
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentPage
+	 * @return
+	 */
+	public Integer getEndOfPage(){
+		Integer preEndPageNo = getStartOfPage()+pageSize;
+		if(preEndPageNo<totalRecord){
+			return preEndPageNo-1;
+		} else {//如果当前页的最后一条记录超过总页数，那么最后一条记录为总页数减一
+			return totalRecord-1;
+		}
+	}
+	
+	/**
+	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
+	 * 操作步骤: 注意这个是静态工具方法<br>
+	 * @param currentPage
+	 * @see #getStartByPage(long,long)
+	 * @return
+	 */
+	public static Integer getStartByPage(Integer currentPage) {
+		return getStartByPage(currentPage, DEFAULT_PAGE_SIZE);
 	}
 
 	/**
 	 * 
 	 * 方法用途: 获取任一页第一条数据在数据集的位置<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: 注意这个是静态工具方法<br>
 	 * @param currentPage 从1开始的页码
 	 * @param pageSize 每页记录条数
 	 * @return 该页第一条数据
 	 */
-	public static long getStartOfPage(long currentPage, long pageSize) {
+	public static Integer getStartByPage(Integer currentPage, Integer pageSize) {
 		return (currentPage - 1) * pageSize;
 	}
-
+	
+	/**
+	 * 
+	 * 方法用途: 获得翻页导航<br>
+	 * 操作步骤: TODO 带整理，使用场景有限 <br>
+	 * @return
+	 */
+	/*public int [] getNavigation(){
+		int tempTotalPage;
+		if(maxPage<totalPage) {
+			tempTotalPage = maxPage;
+		} else {
+			tempTotalPage = totalPage;
+		}
+		int [] navigationPage = new int[tempTotalPage];
+		int i=0;
+		if(currentPage <= tempTotalPage/2){
+			for(; i<tempTotalPage; i++) {				
+				navigationPage[i] = i+1;
+			}
+		} else {
+			int count = currentPage - tempTotalPage/2 + 1;
+			for(; i+count-1<tempTotalPage; i++) {
+				navigationPage[i] = i+count;
+			}
+		}		
+		return Arrays.copyOfRange(navigationPage,0,i);
+	}*/
+	
+	/*@Override
+	public int hashCode() {	
+		return totalPage
+			^(currentPage<<4)
+			^(pageSize<<8)
+			^(int)totalRecord^0x238F;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(this==obj){
+			return true;
+		}
+		if(obj instanceof Page){
+			@SuppressWarnings("unchecked")
+			Page<T> p = (Page<T>)obj;
+			return totalPage==p.totalPage
+					&&currentPage==p.currentPage
+					&&pageSize==p.pageSize
+					&&totalRecord==p.totalRecord;
+		}
+		return super.equals(obj);
+	}*/
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
