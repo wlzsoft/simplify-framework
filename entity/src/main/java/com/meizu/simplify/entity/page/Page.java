@@ -81,6 +81,15 @@ public class Page<T> implements IPage<T> {
 	}
 	
 	/**
+	 * 不建议直接调用这个构建函数，如果使用，要注意调用init方法,并指定totalRecord
+	 * @param currentPage
+	 * @param pageSize
+	 */
+	public Page(int currentPage, int pageSize) {
+		this(currentPage,pageSize,0,true);
+	}
+	
+	/**
 	 * 方法用途: 构建总页数<br>
 	 * 操作步骤: TODO<br>
 	 * @return
@@ -107,6 +116,12 @@ public class Page<T> implements IPage<T> {
 
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
+		results = new ArrayList<T>();
+		init(pageSize, totalRecord, isReturnLastPage);
+
+	}
+	
+	public void init(int pageSize, int totalRecord, boolean isReturnLastPage) {
 		this.setTotalRecord(totalRecord);
 		// 在设置总记录数后计算出对应的总页数
 		totalPage = buildTotalPage(pageSize,totalRecord);
@@ -137,8 +152,6 @@ public class Page<T> implements IPage<T> {
 		
 		hasNextPage = this.currentPage < totalPage;
 		hasPrevPage = this.currentPage > 1;
-		results = new ArrayList<T>();
-
 	}
 	
 
