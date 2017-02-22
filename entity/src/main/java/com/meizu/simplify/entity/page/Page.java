@@ -32,15 +32,21 @@ public class Page<T> implements IPage<T> {
 
 	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 start
 	// @JsonIgnore
-	private boolean isFirstPage;
+	private boolean isFirstPage = true;
 	// @JsonIgnore
-	private boolean isLastPage;
+	private boolean isLastPage = true;
 	// @JsonIgnore
-	private boolean hasNextPage;
+	private boolean hasNextPage = false;
 	// @JsonIgnore
-	private boolean hasPrevPage;
-	private Integer next = 1;// 下一页页码
-	private Integer prev = 1;// 上一页页码
+	private boolean hasPrevPage = false;
+	/**
+	 * 下一页页码
+	 */
+	private Integer next = 1;
+	/**
+	 * 上一页页码
+	 */
+	private Integer prev = 1;
 	
 	private String url;// 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
 	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
@@ -49,7 +55,7 @@ public class Page<T> implements IPage<T> {
 	private static int DEFAULT_PAGE_SIZE = 10;
 	private int currentPage = 1;// 当前页码(当前页数) ，默认是第一页
 	private int pageSize = DEFAULT_PAGE_SIZE;// 每页显示的记录数，默认是10
-	private int totalRecord;// 总记录数   需要在运行时设置，一般表示检索的记录总数
+	private int totalRecord = 0;// 总记录数   需要在运行时设置，一般表示检索的记录总数
 	/**
 	 * 总页数
 	 */
@@ -117,16 +123,22 @@ public class Page<T> implements IPage<T> {
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
 		results = new ArrayList<T>();
-		init(pageSize, totalRecord, isReturnLastPage);
+		if(totalRecord <= 0) {
+			return;
+		}
+		init(totalRecord, isReturnLastPage);
 
 	}
 	
-	public void init(int pageSize, int totalRecord, boolean isReturnLastPage) {
+	public void init(int totalRecord, boolean isReturnLastPage) {
+		if(totalRecord < 0 ) {
+			throw new UncheckedException("totalRecord:总记录数不能小于0");
+		}
 		this.setTotalRecord(totalRecord);
 		// 在设置总记录数后计算出对应的总页数
 		totalPage = buildTotalPage(pageSize,totalRecord);
 
-		if (this.currentPage > totalPage ) {//确保如果记录数大于数据库总记录数时[isReturnLastPage为true永远返回数据库最后一页,否则返回下一页空记录]
+		if (this.currentPage > totalPage) {//确保如果记录数大于数据库总记录数时[isReturnLastPage为true永远返回数据库最后一页,否则返回下一页空记录]
 			if(isReturnLastPage) {
 				this.currentPage = totalPage;
 			} else {
@@ -225,30 +237,24 @@ public class Page<T> implements IPage<T> {
 	}
 
 	@Override
-	public int getThisPageFirstElementNumber() {
+	public int getCurrentPageFirstRecord() {
 		return currentPage * pageSize - 1;
 	}
 
 	@Override
-	public int getThisPageLastElementNumber() {
+	public int getCurrentPageLastRecord() {
 		return (currentPage + 1) * pageSize - 1;
 
 	}
 
 	@Override
 	public int getNextPageNo() {
-		if (currentPage > totalPage) {
-			return totalPage;
-		}
-		return currentPage + 1;
+		return next;
 	}
 
 	@Override
 	public int getPrevPageNo() {
-		if (currentPage < 1) {
-			return 1;
-		}
-		return currentPage - 1;
+		return prev;
 	}
 	/**
 	 * 
@@ -269,10 +275,6 @@ public class Page<T> implements IPage<T> {
 		return currentRecord;
 	}
 
-	public void setCurrentRecord(int currentRecord) {
-		this.currentRecord = currentRecord;
-	}
-	
 	@Override
 	public int getCurrentPage() {
 		if(maxPage>0) {
@@ -361,22 +363,6 @@ public class Page<T> implements IPage<T> {
 		this.url = url;
 	}
 	
-	public Integer getNext() {
-		return next;
-	}
-
-	public void setNext(Integer next) {
-		this.next = next;
-	}
-
-	public Integer getPrev() {
-		return prev;
-	}
-
-	public void setPrev(Integer prev) {
-		this.prev = prev;
-	}
-
 	/**
 	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
 	 * 操作步骤: TODO<br>

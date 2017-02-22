@@ -75,7 +75,7 @@ public interface IPage<T> extends /*Externalizable,*/Serializable {
 	 * 操作步骤: TODO<br>
 	 * @return 
 	 */
-	int getThisPageFirstElementNumber();
+	int getCurrentPageFirstRecord();
 
 	/**
 	 * 
@@ -83,7 +83,7 @@ public interface IPage<T> extends /*Externalizable,*/Serializable {
 	 * 操作步骤: TODO<br>
 	 * @return 
 	 */
-	int getThisPageLastElementNumber();
+	int getCurrentPageLastRecord();
     
 	/**
 	 * 
