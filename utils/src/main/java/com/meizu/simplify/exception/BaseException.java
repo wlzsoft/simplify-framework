@@ -17,10 +17,9 @@ public class BaseException extends RuntimeException{
 	private static final long serialVersionUID = 877984986571408117L;
 
 	/**
-	 * 错误编码
+	 * 状态码
 	 */
-	private  int errorCode; 
-	
+	private int errorCode; 
 	
 	/**
 	 * 目标异常
@@ -44,10 +43,10 @@ public class BaseException extends RuntimeException{
 	}
 
 	/**
-	 * @param code 状态码：如果是http，那么最终是http状态吗
+	 * @param errorCode 状态码：如果是http，那么最终是http状态吗
 	 */
-	public BaseException(int code) {
-		this.setErrorCode(code);
+	public BaseException(int errorCode) {
+		this.setErrorCode(errorCode);
 	}
 	
 	/**
@@ -98,7 +97,6 @@ public class BaseException extends RuntimeException{
         return target;
     }
 	
-	
 	/*
 	 * 构建更友好的异常信息
 	 * @see java.lang.Throwable#getMessage()
@@ -107,7 +105,6 @@ public class BaseException extends RuntimeException{
 	public String getMessage() {
 		return super.getMessage();
 	}
-
 
 	/**
 	 * 
@@ -145,8 +142,7 @@ public class BaseException extends RuntimeException{
 		}
 		if (cause instanceof BaseException) {
 			return ((BaseException) cause).contains(exType);
-		}
-		else {
+		} else {
 			while (cause != null) {
 				if (exType.isInstance(cause)) {
 					return true;
