@@ -2,8 +2,12 @@ package com.meizu.simplify.webserver;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+
+import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.Server;
+import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
@@ -39,31 +43,36 @@ public class TomcatTaskFactory implements ITaskFactory {//implements IPageTempla
 	public void add(String host,int port,int backlog) throws IOException {
 		Tomcat tomcat = new Tomcat();  
         tomcat.setPort(port);
-//        tomcat.setBaseDir("e:/tmp/tomcat");  
-//        tomcat.getHost().setAutoDeploy(false); 
+//      tomcat.setBaseDir("e:/tmp/tomcat");  
+//      tomcat.getHost().setAutoDeploy(false);
+        tomcat.getHost().setAppBase(".");
+        //--------Server--------
+        Server server = tomcat.getServer();  
+//      server.addLifecycleListener(new FixContextListener());
+        server.addLifecycleListener(new AprLifecycleListener());
         //--------context-------
-        StandardContext context = new StandardContext();  
-        context.setPath("/");  
-//        Context context = tomcat.addContext("", "D:/");
-//        context.addLifecycleListener(new FixContextListener());  
+        Context context = null;
+		try {
+			context = tomcat.addWebapp("/", ".");
+		} catch (ServletException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         //-------filter--------
         FilterDef filterDef = new FilterDef();
-        filterDef.setFilterName("ControllerFilter");
+        filterDef.setFilterName(ControllerFilter.class.getSimpleName());
         filterDef.setFilterClass(ControllerFilter.class.getName());
         context.addFilterDef(filterDef);
         FilterMap filterMap = new FilterMap();
-        filterMap.setFilterName("ControllerFilter");
+        filterMap.setFilterName(ControllerFilter.class.getSimpleName());
         filterMap.addURLPattern("/*");
         context.addFilterMap(filterMap);
         //-------filter--------
-        tomcat.getHost().addChild(context);
-        //-------context--------
         try {
 			tomcat.start();
 		} catch (LifecycleException e) {
 			e.printStackTrace();
 		}   
         tomcat.getServer().await();  
-        
 	}
 }

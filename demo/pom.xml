@@ -114,6 +114,11 @@
 		<artifactId>webserver</artifactId>
 		<version>${project.version}</version>
 	</dependency>
+	<dependency>
+	  	<groupId>com.meizu.simplify</groupId>
+	    <artifactId>webserver-jetty</artifactId>
+	    <version>${project.version}</version>
+	</dependency>
 	<!-- 日志开始-由于dubbo必须依赖log4j模块，否则报错，如果使用dubbo的情况下，那么需引入 -->
 	<dependency>
 		<groupId>org.slf4j</groupId>

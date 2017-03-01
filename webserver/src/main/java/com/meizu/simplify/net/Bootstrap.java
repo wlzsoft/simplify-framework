@@ -7,7 +7,6 @@ import java.util.Properties;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.Startup;
 import com.meizu.simplify.webserver.ITaskFactory;
-import com.meizu.simplify.webserver.JettyTaskFactory;
 import com.meizu.simplify.webserver.ServerStatus;
 
 /**
@@ -62,15 +61,7 @@ public class Bootstrap {
 //		String host = null;//"10.2.70.36";
 		String host = "127.0.0.1";//aio模式必须指定
 		try {
-			ITaskFactory factory = BeanFactory.getBean(JettyTaskFactory.class);
-//			ITaskFactory factory = new TomcatTaskFactory();
-//			ITaskFactory factory = new JettyTaskFactory();
-//			ITaskFactory factory = new NettyTaskFactory();
-//			ITaskFactory factory = new AioTaskFactory();
-//			ITaskFactory factory = new NioTaskFactory();
-//			ITaskFactory factory = new JDKCachedThreadPoolTaskFactory();
-//			ITaskFactory factory = new FixedThreadTaskFactory();
-//			ITaskFactory factory = new BioTaskFactory();
+			ITaskFactory factory = BeanFactory.getBean(TaskFactorySelector.class);
 			factory.add(host,port,backlog);
 		} catch (Exception e) {
 			e.printStackTrace();

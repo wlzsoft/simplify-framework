@@ -93,7 +93,11 @@ public class ControllerFilter implements Filter {
 	 * @return 如果返回false，代表已经框架匹配处理过了，不需要走chain交由servlet容器解析，否则为true，把请求转接给servlet处理
 	 */
 	private boolean filter(HttpServletRequest request, HttpServletResponse response) {
-		String requestUrl = request.getRequestURI().substring(request.getContextPath().length());
+		String contextPath = request.getContextPath();
+		if(contextPath == null) {
+			contextPath = "";
+		}
+		String requestUrl = request.getRequestURI().substring(contextPath.length());
 		int sessionIdIndex=requestUrl.indexOf(";jsessionid");
 		if(sessionIdIndex>0){
 			requestUrl=requestUrl.substring(0,requestUrl.indexOf(";jsessionid"));

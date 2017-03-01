@@ -3,22 +3,18 @@ package com.meizu.simplify.webserver;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.mvc.ControllerFilter;
 import com.meizu.simplify.plugin.annotation.Plugin;
 import com.meizu.simplify.plugin.enums.PluginTypeEnum;
-import com.meizu.simplify.webserver.ITaskFactory;
 
 /**
   * <p><b>Title:</b><i>抽象的Jetty任务工厂</i></p>
- * <p>Desc: TODO</p>
+ * <p>Desc: 非完整版jetty，如果需支持filter，那么需增加依赖相关的jetty的jar包</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -33,6 +29,8 @@ import com.meizu.simplify.webserver.ITaskFactory;
 @Plugin(type=PluginTypeEnum.WEBSERVER,value="jetty")
 public class JettyTaskFactory implements ITaskFactory {
 	
+	private static final ControllerFilter filter = new ControllerFilter();
+	
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
@@ -41,17 +39,11 @@ public class JettyTaskFactory implements ITaskFactory {
 	@Override
 	public void add(String host,int port,int backlog) throws IOException {
 		Server server = new Server(new InetSocketAddress(host, port));
-		server.setHandler(new AbstractHandler() {
-			@Override
-			public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
-					throws IOException, ServletException {
-				response.setContentType("text/html; charset=utf-8");
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.getWriter().println("<h1>Hello World</h1>");
-				// Inform jetty that this request has now been handled
-				baseRequest.setHandled(true);
-			}
-		});
+		ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+		servletContextHandler.setContextPath("/");
+		FilterHolder f = new FilterHolder(filter);
+		servletContextHandler.addFilter(f,"/*",null);     
+		server.setHandler(servletContextHandler);//无session管理
 		try {
 			server.start();
 			server.join();

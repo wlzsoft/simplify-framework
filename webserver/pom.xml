@@ -30,11 +30,11 @@
 	    <artifactId>webserver-api</artifactId>
 	    <version>${project.version}</version>
 	  </dependency>
-	  <dependency>
+	  <!-- <dependency>
 	  	<groupId>com.meizu.simplify</groupId>
-	    <artifactId>webserver-jetty</artifactId>
+	    <artifactId>webserver-tomcat</artifactId>
 	    <version>${project.version}</version>
-	  </dependency>
+	  </dependency> -->
 	  <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

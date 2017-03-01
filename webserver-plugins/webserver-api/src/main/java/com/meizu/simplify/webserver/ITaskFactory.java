@@ -2,6 +2,8 @@ package com.meizu.simplify.webserver;
 
 import java.io.IOException;
 
+import com.meizu.simplify.ioc.annotation.DefaultBean;
+
 /**
   * <p><b>Title:</b><i>执行器接口</i></p>
  * <p>Desc: TODO</p>
@@ -15,6 +17,7 @@ import java.io.IOException;
  * @version Version 0.1
  *
  */
+@DefaultBean
 public interface ITaskFactory {
 	/**
 	 * 方法用途: 添加一个任务<br>
