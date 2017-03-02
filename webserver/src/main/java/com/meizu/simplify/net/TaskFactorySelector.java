@@ -2,6 +2,7 @@ package com.meizu.simplify.net;
 
 import java.io.IOException;
 
+import com.meizu.simplify.exception.StartupErrorException;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.Resource;
 import com.meizu.simplify.webserver.ITaskFactory;
@@ -27,6 +28,9 @@ public class TaskFactorySelector implements ITaskFactory{
 	
 	@Override
 	public void add(String host, int port, int backlog) throws IOException {
+		if(taskFactory == null) {
+			throw new StartupErrorException("taskFactory为空，请检查是否未指定具体的webserver实现");
+		}
 		taskFactory.add(host, port, backlog);
 	}
 

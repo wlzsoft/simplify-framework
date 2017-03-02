@@ -3,6 +3,10 @@ package com.meizu.simplify.webserver;
 import java.io.IOException;
 import java.net.Socket;
 
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.plugin.annotation.Plugin;
+import com.meizu.simplify.plugin.enums.PluginTypeEnum;
+
 /**
   * <p><b>Title:</b><i>任务工厂</i></p>
  * <p>Desc: 未使用连接池</p>
@@ -16,6 +20,8 @@ import java.net.Socket;
  * @version Version 0.1
  *
  */
+@Bean
+@Plugin(type=PluginTypeEnum.WEBSERVER,value="native")
 public class BioTaskFactory extends AbstractBioTaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>

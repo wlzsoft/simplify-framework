@@ -3,7 +3,7 @@ package com.meizu.simplify.webserver.handler;
 import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
-import com.meizu.simplify.webserver.AioTaskFactory;
+import com.meizu.simplify.webserver.BioTaskFactory;
 import com.meizu.simplify.webserver.ITaskFactory;
 
 /**
@@ -25,8 +25,8 @@ public class NativeInterfaceHandler implements IInterfaceHandler{
 
 	@Override
 	public Class<?> handle() {
-		return AioTaskFactory.class;
-//		return BioTaskFactory.class;
+		return BioTaskFactory.class;
+//		return AioTaskFactory.class;
 //		return JDKCachedThreadPoolTaskFactory.class;
 //		return NioTaskFactory.class;
 //		return FixedThreadTaskFactory.class;
