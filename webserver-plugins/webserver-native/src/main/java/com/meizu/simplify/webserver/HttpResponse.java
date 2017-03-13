@@ -25,7 +25,7 @@ public class HttpResponse implements HttpServletResponse{
 
 	private Map<String, String> responseHeader = new HashMap<String, String>();
 
-	private char[] body;
+	private char[] body = new char[]{};
 
 	private PrintWriter bw;
 	private SocketChannel sc;

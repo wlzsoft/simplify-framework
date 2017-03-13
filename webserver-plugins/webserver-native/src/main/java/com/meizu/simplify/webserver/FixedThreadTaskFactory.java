@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
  * @version Version 0.1
  *
  */
+//@Bean
+//@Plugin(type=PluginTypeEnum.WEBSERVER,value="native")
 public class FixedThreadTaskFactory extends AbstractBioTaskFactory{
 	/**
 	 * 方法用途: 添加一个任务<br>
