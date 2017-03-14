@@ -3,6 +3,10 @@ package com.meizu.simplify.webserver;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import com.meizu.simplify.ioc.annotation.Bean;
+import com.meizu.simplify.plugin.annotation.Plugin;
+import com.meizu.simplify.plugin.enums.PluginTypeEnum;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -29,9 +33,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * @version Version 0.1
  *
  */
-//@Bean
-//@Plugin(type=PluginTypeEnum.WEBSERVER,value="netty")
-public class NettyTaskFactory implements ITaskFactory {
+@Bean
+@Plugin(type=PluginTypeEnum.WEBSERVER,value="netty-http")
+public class NettyHttpTaskFactory implements ITaskFactory {
 	
 	/**
 	 * 方法用途: 添加一个任务<br>
