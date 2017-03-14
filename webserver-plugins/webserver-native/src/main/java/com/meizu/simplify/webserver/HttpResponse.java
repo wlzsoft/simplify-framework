@@ -25,7 +25,7 @@ public class HttpResponse implements HttpServletResponse{
 
 	private Map<String, String> responseHeader = new HashMap<String, String>();
 
-	private char[] body = new char[]{};
+	private char[] body;
 
 	private PrintWriter bw;
 	private SocketChannel sc;
@@ -79,14 +79,32 @@ public class HttpResponse implements HttpServletResponse{
 	public void setBody(char[] body) {
 		this.body = body;
 	}
-	public void sendToClient() throws IOException {
-		if(body != null ) {
-			bw = getWriter();
-			bw.write(getBody());
-		}
+	
+	public void prepareHeader() throws IOException {
+			StringBuilder sb = new StringBuilder(); 
+			sb.append(getVersion() + " " + getStatusCode() + " "+ getReason() + "\r\n");
+			sb.append("Date: " + new Date() + "\r\n");
+			sb.append("Server: meizu-server-0.1\r\n");
+			sb.append("Accept-Ranges: bytes\r\n");
+//			Transfer-Encoding: chunked
+//		    if(body != null ) {
+//			    sb.append("Content-Length: " + getBody().length + "\r\n");//TODO 目前是http1.0状态，这个属性可有可无
+//	        }
+			sb.append("Content-Type: text/html\r\n");
+			Set<Entry<String,String>> entryHead = responseHeader.entrySet();
+			for (Entry<String, String> entry : entryHead) {
+				sb.append(entry.getKey()+": "+entry.getValue()+"\r\n");
+			}
+			sb.append("Set-Cookie: "+ getResponseHeader().get("Set-Cookie") + "\r\n");
+			sb.append("\r\n");
+			bw.write(sb.toString());
+	}
+	
+	public void close() throws IOException {
 		bw.flush();
 		bw.close();
 	}
+	
 	public void sendToClientByNio() throws IOException {
 		if(body != null ) {
 			ByteBuffer[] srcs = new ByteBuffer[4];
@@ -124,22 +142,7 @@ public class HttpResponse implements HttpServletResponse{
 	
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		StringBuilder sb = new StringBuilder(); 
-		sb.append(getVersion() + " " + getStatusCode() + " "
-				+ getReason() + "\r\n");
-		sb.append("Date: " + new Date() + "\r\n");
-		sb.append("Server: meizu-server-0.1\r\n");
-		sb.append("Accept-Ranges: bytes\r\n");
-		sb.append("Content-Length: " + getBody().length + "\r\n");//TODO 目前是http1.0状态，这个属性可有可无
-		sb.append("Content-Type: text/html\r\n");
-		Set<Entry<String,String>> entryHead = responseHeader.entrySet();
-		for (Entry<String, String> entry : entryHead) {
-			sb.append(entry.getKey()+": "+entry.getValue()+"\r\n");
-		}
-		sb.append("Set-Cookie: "
-				+ getResponseHeader().get("Set-Cookie") + "\r\n");
-		sb.append("\r\n");
-		return bw.append(sb.toString());
+		return bw;
 	}
 	
 	@Override
@@ -172,7 +175,6 @@ public class HttpResponse implements HttpServletResponse{
 		return responseHeader.get(name);
 	}
 	
-	
 	@Override
 	public void setStatus(int sc) {
 		setStatusCode(String.valueOf(sc));
@@ -190,35 +192,25 @@ public class HttpResponse implements HttpServletResponse{
 		return Integer.parseInt(getStatusCode());
 	}
 	
-	
-	
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-	
-
 	@Override
 	public void setContentLength(int len) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setContentLengthLong(long len) {
 		// TODO Auto-generated method stub
-		
 	}
-
-	
 
 	@Override
 	public void setBufferSize(int size) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -230,13 +222,11 @@ public class HttpResponse implements HttpServletResponse{
 	@Override
 	public void flushBuffer() throws IOException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void resetBuffer() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -248,13 +238,11 @@ public class HttpResponse implements HttpServletResponse{
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setLocale(Locale loc) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -266,7 +254,6 @@ public class HttpResponse implements HttpServletResponse{
 	@Override
 	public void addCookie(Cookie cookie) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -302,56 +289,42 @@ public class HttpResponse implements HttpServletResponse{
 	@Override
 	public void sendError(int sc, String msg) throws IOException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void sendError(int sc) throws IOException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void sendRedirect(String location) throws IOException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setDateHeader(String name, long date) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void addDateHeader(String name, long date) {
 		// TODO Auto-generated method stub
-		
 	}
-
-	
 
 	@Override
 	public void addHeader(String name, String value) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setIntHeader(String name, int value) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void addIntHeader(String name, int value) {
 		// TODO Auto-generated method stub
-		
 	}
-
-	
-
-	
 
 	@Override
 	public Collection<String> getHeaders(String name) {
