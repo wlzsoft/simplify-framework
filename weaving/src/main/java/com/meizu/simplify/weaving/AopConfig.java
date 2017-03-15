@@ -23,9 +23,9 @@ public class AopConfig {
     private static PropertieUtil propertieUtils= null;
      static {
     	Properties  prop = System.getProperties();
-        String config = prop.getProperty("aop.properties");
+        String config = prop.getProperty("properties/aop.properties");
         if(config == null) {
-        	config = "aop.properties";
+        	config = "properties/aop.properties";
         }
         propertieUtils = new PropertieUtil(new File(config));
     }
