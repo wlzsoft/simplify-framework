@@ -27,13 +27,14 @@ public class BioMessageCallable implements Callable<Integer> {
 		HttpResponse response = null;
 		try {
 			response = MessageHandler.parseMessage(socket,null, socket.getInputStream());
+			return 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(response != null) {
 				response.setStatusCode("500");
 			}
 		}
-		return null;
+		return -1;
 	}
 
 }

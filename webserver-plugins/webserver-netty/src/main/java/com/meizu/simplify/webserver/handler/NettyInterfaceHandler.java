@@ -4,7 +4,7 @@ import com.meizu.simplify.ioc.IInterfaceHandler;
 import com.meizu.simplify.ioc.annotation.Bean;
 import com.meizu.simplify.ioc.annotation.HandleInterface;
 import com.meizu.simplify.webserver.ITaskFactory;
-import com.meizu.simplify.webserver.NettyTaskFactory;
+import com.meizu.simplify.webserver.NettyHttpTaskFactory;
 
 /**
   * <p><b>Title:</b><i>netty的实现类选择器</i></p>
@@ -25,7 +25,7 @@ public class NettyInterfaceHandler implements IInterfaceHandler{
 
 	@Override
 	public Class<?> handle() {
-		return NettyTaskFactory.class;
+		return NettyHttpTaskFactory.class;
 	}
 	
 }

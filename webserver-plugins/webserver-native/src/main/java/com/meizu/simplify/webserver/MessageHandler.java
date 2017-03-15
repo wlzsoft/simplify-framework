@@ -101,10 +101,12 @@ public class MessageHandler {
 		request.setSession(session);
 		// cookie的可以为set-cookie，是http协议规定的，请求头上面cookie设为sessionID
 		response.getResponseHeader().put("Set-Cookie","sessionId=" + session.getSessionId());
-		//执行具体业务处理--先是路由选择-路径选择
+		//准备请求头信息
+		response.prepareHeader();
+		//执行具体业务处理--先是路由选择-路径选择-业务处理-写到缓冲中，准备发送到浏览器
 		HttpRoute.route(request, response);
-		//真实的响应动作
-		response.sendToClient();
+		//把缓冲区中的内容刷到浏览器，并关闭连接
+		response.close();
 		if(inputStream != null) {
 			inputStream.close();
 		}
