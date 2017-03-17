@@ -16,18 +16,18 @@
 	<!-- 问题跟踪 -->
 	<issueManagement>
 		<system>redmine</system>
-		<url>http://10.2.67.47:32768/projects/simplify-framework</url>
+		<url>http://172.16.180.92:32768/projects/simplify-framework</url>
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
-		<url>http://10.2.67.47/ros-team/simplify-framework</url>
-		<connection>scm:git:http://10.2.67.47/ros-team/simplify-framework</connection>
-		<developerConnection>scm:git:http://10.2.67.47/ros-team/simplify-framework</developerConnection>
+		<url>http://172.16.180.92/ros-team/simplify-framework</url>
+		<connection>scm:git:http://172.16.180.92/ros-team/simplify-framework</connection>
+		<developerConnection>scm:git:http://172.16.180.92/ros-team/simplify-framework</developerConnection>
 	</scm>
 	<!-- 持续集成 -->
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://10.2.67.40:8082/</url>
+		<url>http://172.16.180.86:8082/</url>
 	</ciManagement>
   	<mailingLists>
     	<mailingList>
@@ -111,20 +111,22 @@
 		<snapshotRepository>
             <id>nexus-snapshots</id>
             <name>User Porject Snapshot</name>
-            <url>http://10.2.67.20:8081/nexus/content/repositories/snapshots/</url>
+            <!-- <url>http://172.16.85.146:8081/repository/maven-snapshots/</url> -->
+            <url>http://172.16.180.84:8081/nexus/content/repositories/snapshots/</url>
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
         <repository>
             <id>nexus-releases</id>
             <name>User Porject Release</name>
-            <url>http://10.2.67.20:8081/nexus/content/repositories/releases/</url>
-            <!-- <url>scp://root@10.2.67.21/nexus/content/repositories/releases/</url> -->
+            <!-- <url>http://172.16.85.146:8081/repository/maven-releases/</url> -->
+            <url>http://172.16.180.84:8081/nexus/content/repositories/releases/</url>
+            <!-- <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> -->
         </repository>
 		<site>
 			<id>simplify-doc</id>
 			<name>simplify-doc</name>
 			<!-- <url>file://D:/site</url> -->
-			<url>scp://root@10.2.67.21/home/simplify-doc</url>
+			<url>scp://root@172.16.180.83/home/simplify-doc</url>
 		</site>
 	</distributionManagement>
 	<repositories>
@@ -135,7 +137,7 @@
 		<!-- <repository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
-	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  		<url>http://172.16.180.84:8081/nexus/content/groups/public</url>
 	  		<snapshots>
 	  			<enabled>true</enabled>
 	  			<checksumPolicy>warn</checksumPolicy>
@@ -163,7 +165,7 @@
 		<!-- <pluginRepository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
-	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  		<url>http://172.16.180.84:8081/nexus/content/groups/public</url>
 		</pluginRepository> -->
 		
 		<!-- <pluginRepository>
@@ -284,7 +286,7 @@
 		  		<checkModificationExclude>*\.project</checkModificationExclude>
 		  		<checkModificationExclude>*\.classpath</checkModificationExclude>
 		  	</checkModificationExcludes>
-		    <tagBase>http://10.2.67.47/ros-team/simplify-framework</tagBase>
+		    <tagBase>http://172.16.180.84/ros-team/simplify-framework</tagBase>
 		    <!-- <tagNameFormat>v@{project.version}</tagNameFormat> -->
 		    <!-- <releaseProfiles>release</releaseProfiles> -->
 		  </configuration>  

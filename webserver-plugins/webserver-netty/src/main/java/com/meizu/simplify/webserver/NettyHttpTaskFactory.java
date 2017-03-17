@@ -8,17 +8,17 @@ import com.meizu.simplify.plugin.annotation.Plugin;
 import com.meizu.simplify.plugin.enums.PluginTypeEnum;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 
 /**
   * <p><b>Title:</b><i>netty任务工厂</i></p>
@@ -47,46 +47,30 @@ public class NettyHttpTaskFactory implements ITaskFactory {
 		// 配置服务端的NIO线程组
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 1024)
+			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
 					.childHandler(new ChannelInitializer<SocketChannel>() {
 						@Override
 						protected void initChannel(SocketChannel socketChannel) throws Exception {
-							socketChannel.pipeline().addLast(new ChannelInboundHandlerAdapter() {
-								
-								@Override
-								public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-									ByteBuf buf = (ByteBuf) msg;
-									byte[] req = new byte[buf.readableBytes()];
-									buf.readBytes(req);
-									String body = new String(req, "UTF-8");
-									System.out.println(body);
-									String currentTime = "QUERY TIME ORDER";
-									ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
-									ctx.write(resp);
-									 // Discard the received data silently.
-//							        ((ByteBuf) msg).release(); 
-								}
-								@Override
-								public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-									ctx.flush();
-									ctx.close();
-								}
-								@Override
-								public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-									super.handlerAdded(ctx);
-								}
-								@Override
-								public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-									super.handlerRemoved(ctx);
-								}
-								@Override
-								public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-									ctx.close();
-								}
-							});
-						}});
+                            // server端接收到的是httpRequest，所以要使用HttpRequestDecoder进行解码  
+							socketChannel.pipeline().addLast("httpRequestDecoder",new HttpRequestDecoder());  
+							socketChannel.pipeline().addLast("httpServerCodec",new HttpServerCodec());//待确认
+							/**usually we receive http message infragment,if we want full http message, 
+							 * we should bundle HttpObjectAggregator and we can get FullHttpRequest
+							 **/  
+							//定义缓冲数据量 ，支持FullHttpRequest
+			                socketChannel.pipeline().addLast("httpObjectAggregator",new HttpObjectAggregator(1024*1024*64));
+			                socketChannel.pipeline().addLast(new HttpServerInboundHandler());  
+			                // server端发送的是httpResponse，所以要使用HttpResponseEncoder进行编码
+			                socketChannel.pipeline().addLast("httpResponseEncoder",new HttpResponseEncoder());  
+							
+							
+							
+							
+						}}).option(ChannelOption.SO_BACKLOG, 1024) //128  
+		            .childOption(ChannelOption.SO_KEEPALIVE, true); 
 			// 绑定端口，同步等待成功
 			ChannelFuture f = b.bind(port).sync();
 			// 等待服务端监听端口关闭
@@ -98,6 +82,7 @@ public class NettyHttpTaskFactory implements ITaskFactory {
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();
 		}
+		
 		while (ServerStatus.isRunning) {
 			try {
 				TimeUnit.SECONDS.sleep(5000);
