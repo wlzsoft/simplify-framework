@@ -89,6 +89,7 @@
     <module>log</module>
     <module>dto</module>
     <module>zookeeper</module>
+    <module>mq-plugins</module>
   </modules>
   <properties>
   	<!-- Plugin的属性start -->
