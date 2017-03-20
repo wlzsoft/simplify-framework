@@ -19,9 +19,19 @@
 		<!-- <repository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
-	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  		<url>http://172.16.180.84:8081/nexus/content/groups/public</url>
 		</repository> -->
-		
+		<!-- 注意：如果是Snapshots的jar包，由于是测试阶段的jar，必须显示指定，否则会导致无法加载依赖 -->
+		<repository>
+			<id>nexus-snapshots</id>
+			<url>http://172.16.180.84:8081/nexus/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<!-- <repository>
             <id>oschina</id>
             <name>Oschina Releases</name>
@@ -42,7 +52,7 @@
 		<!-- <pluginRepository>
 			<id>nexus</id>
 	  		<name>internal nexus repository</name>
-	  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  		<url>http://172.16.180.84:8081/nexus/content/groups/public</url>
 		</pluginRepository> -->
 		
 		<!-- <pluginRepository>
