@@ -13,18 +13,23 @@ import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.utils.UUIDUtil;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.DecoderResult;
 import io.netty.handler.codec.TooLongFrameException;
-import io.netty.handler.codec.http.DefaultHttpResponse;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.util.CharsetUtil;
 
 
 
@@ -33,6 +38,7 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
     private static Logger   logger  = LoggerFactory.getLogger(HttpServerInboundHandler.class);  
     private static final ControllerFilter filter = new ControllerFilter();
     public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
+    HttpResponseImpl responseImpl = null;
     @Override  
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
     	
@@ -41,7 +47,7 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
         }  
         
         HttpRequestImpl request = new HttpRequestImpl();
-        HttpResponseImpl responseImpl = new HttpResponseImpl();
+        responseImpl = new HttpResponseImpl(ctx);
         if (msg instanceof HttpContent) {  
 			HttpContent httpContent = (HttpContent) msg;  
             ByteBuf buf = httpContent.content();  
@@ -71,7 +77,10 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
 			// cookie的可以为set-cookie，是http协议规定的，请求头上面cookie设为sessionID
 			responseImpl.getResponseHeader().put("Set-Cookie","sessionId=" + session.getSessionId());
 			//执行具体业务处理--先是路由选择-路径选择-业务处理-写到缓冲中，准备发送到浏览器
-			filter.doFilter(request, responseImpl, null);
+//			filter.doFilter(request, responseImpl, null);
+			responseImpl.getWriter().write("yellow");
+			responseImpl.getWriter().flush();
+        	responseImpl.getWriter().close();
 			
         }  
     }  
@@ -80,6 +89,10 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {  
         logger.info("HttpServerInboundHandler.channelReadComplete");  
       //把缓冲区中的内容刷到浏览器，并关闭连接
+        if(responseImpl != null) {
+//        	responseImpl.getWriter().flush();
+//        	responseImpl.getWriter().close();
+        }
         ctx.flush();
 //        ctx.disconnect();
         ctx.close();
@@ -107,16 +120,30 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
 		if (ch.isActive()) {
 			sendError(ch, HttpResponseStatus.INTERNAL_SERVER_ERROR,e);
 		}
-		ctx.close();
 	}
 
 	private void sendError(Channel ch, HttpResponseStatus status,Throwable e) {
-		HttpResponse response = new DefaultHttpResponse(HTTP_1_1, status);
-		response.headers().add(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-//		response.setContent(ChannelBuffers.copiedBuffer("Failure: " + status.toString() + "\r\n", CharsetUtil.UTF_8));
-		response.setDecoderResult(DecoderResult.failure(e));
+		
+		String text = "Failure: " + status.toString() + "\r\n";
+		/*ByteBuf byteBuf = Unpooled.buffer();
+        byte[] bytes = text.getBytes("utf-8");
+        byteBuf.writeBytes(bytes);*/
+		ByteBuf byteBuf = Unpooled.copiedBuffer(text.toCharArray(),CharsetUtil.UTF_8);//netty3.x用的是ChannelBuffers.copiedBuffer
+//		ByteBuf byteBuf = Unpooled.wrappedBuffer("I am ok".getBytes());
+//		HttpResponse response = new DefaultHttpResponse(HTTP_1_1, status);
+		DefaultFullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status,byteBuf);
+		HttpHeaders headers = response.headers();
+//		headers.add(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
+		headers.set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
+		headers.set(HttpHeaderNames.CACHE_CONTROL, "no-cache");
+		headers.set(HttpHeaderNames.PRAGMA, "No-cache");
+		headers.set(HttpHeaderNames.SERVER, "Simplify Server");
+		headers.set(HttpHeaderNames.CONTENT_LENGTH, byteBuf.readableBytes());
+		headers.set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
+//		response.setDecoderResult(DecoderResult.failure(e));
 		// Close the connection as soon as the error message is sent.
 		ch.write(response).addListener(ChannelFutureListener.CLOSE);
+//        ch.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
 	}
     
   

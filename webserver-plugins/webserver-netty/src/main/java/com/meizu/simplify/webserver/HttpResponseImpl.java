@@ -1,10 +1,7 @@
 package com.meizu.simplify.webserver;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -14,7 +11,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -31,19 +27,17 @@ public class HttpResponseImpl implements HttpServletResponse{
 
 	private char[] body;
 
-	private PrintWriter bw;
-	private SocketChannel sc;
 	private String charset;
 	private String contentType;
-	
-	public HttpResponseImpl() {
-	}
-	public HttpResponseImpl(Socket socket,SocketChannel sc) throws IOException {
-		if(socket != null) {
-			bw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-			sc = socket.getChannel();
-		}
-		this.sc = sc;
+	private ServletOutputStreamImpl outputStream;
+	public HttpResponseImpl(ChannelHandlerContext ctx) throws IOException {
+		DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);  
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
+        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());  
+        response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
+        outputStream = new ServletOutputStreamImpl(response);
+//		response.replace(Unpooled.wrappedBuffer("I22 am ok".getBytes()));
+		ctx.write(response);
 	}
 
 	public String getVersion() {
@@ -86,18 +80,9 @@ public class HttpResponseImpl implements HttpServletResponse{
 		this.body = body;
 	}
 	
-	public void prepareHeader(ChannelHandlerContext ctx) throws IOException {
-		DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,Unpooled.wrappedBuffer("I am ok".getBytes()));  
-	        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
-	        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());  
-	        response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
-//			response.replace(Unpooled.wrappedBuffer("I22 am ok".getBytes()));
-			ctx.write(response);
-	}
-	
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		return bw;
+		return new PrintWriter(outputStream);
 	}
 	
 	@Override
@@ -149,8 +134,7 @@ public class HttpResponseImpl implements HttpServletResponse{
 	
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return outputStream;
 	}
 
 	@Override
