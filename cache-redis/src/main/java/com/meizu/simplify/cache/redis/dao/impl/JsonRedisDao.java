@@ -23,7 +23,7 @@ import com.meizu.simplify.utils.JsonUtil;
  * @version Version 0.1
  *
  */
-public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCacheDao<VV>{
+public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCacheDao<VV> {
 	
 	private Class<VV> valueClazz;
 
