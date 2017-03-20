@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.meizu.simplify.cache.entity.User;
 import com.meizu.simplify.cache.enums.CacheExpireTimeEnum;
 import com.meizu.simplify.cache.enums.TimeEnum;
 import com.meizu.simplify.cache.redis.dao.impl.ListRedisDao;
@@ -16,26 +15,14 @@ public class ListRedisDaoTest {
 	
 	/**
 	 * 
-	 * 方法用途: 未测试通过，需调整<br>
+	 * 方法用途: 模拟队列弹出操作<br>
 	 * 操作步骤: TODO<br>
 	 */
 	@Test
-	public void testListInsertStress() {
-		StressTestUtils.testAndPrint(100, 1000, new StressTask(){
-			@Override
-			public Object doTask() throws Exception {
-				testListInsert();
-				return null;
-			}
-		});
-	}
-	
-	@Test
-	public void testListGet(){
-		String key = "producer_list1";
+	public void testListGet() {
+		String key = "product_list";
 		long begin = System.currentTimeMillis();
-		List<String> list = client.lrange(key,0,100);
-		client.lpop(key);
+		List<String> list = client.lrange(key,0,20);
 		System.out.println(client.lpop(key));
 		System.out.println(list.size());
 		System.out.println("time:"+(System.currentTimeMillis()-begin));
@@ -43,39 +30,36 @@ public class ListRedisDaoTest {
 	
 	/**
 	 * 
-	 * 方法用途: 未测试通过，需调整<br>
+	 * 方法用途: 模拟入队操作,插入队头<br>
 	 * 操作步骤: TODO<br>
 	 */
 	@Test
-	public  void testListInsert(){
-		
-		String key = "producer_list";
-		User usr = new User("101001","testname");
-		usr.setAddr("sfsdfsfff");
-		usr.setPhone("131321324234324");
-		client.lpush(key, "{'name':'lcy',id:1}");
+	public void testListLpush() {
+		String key = "product_list";
+		client.lpush(key, "{'name':'lcy',id:2}");
 	}
 	
-	
-	
+	/**
+	 * 
+	 * 方法用途: 测试模拟队列的入队和弹出，在限定时间内，如果超过60秒，数据自动删除<br>
+	 * 操作步骤: TODO<br>
+	 */
 	@Test
-	public  void testConnect(){
+	public void testQueuePushAndPopByTime() {
 		client.lpush("test", "test211112223", 60);
 		String value = client.lpop("test");
 		System.out.println(value);
 	}
 	
-	
-	
 	/**
 	 * 
-	 * 方法用途: 未通过测试，需调整<br>
+	 * 方法用途: 压力测试list结构批量入队性能<br>
 	 * 操作步骤: TODO<br>
 	 */
 	@Test
-	public  void testLpushStress(){
+	public void testLpushStress() {
 		long begin = System.currentTimeMillis();
-		StressTestUtils.testAndPrint(100, 10000, new StressTask(){
+		StressTestUtils.testAndPrint(100, 1000, new StressTask() {
 			int i=0;
 			@Override
 			public Object doTask() throws Exception {
@@ -88,5 +72,4 @@ public class ListRedisDaoTest {
 		long end = System.currentTimeMillis();
 		System.out.println(end-begin);
 	}
-
 }

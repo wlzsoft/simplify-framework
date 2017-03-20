@@ -25,7 +25,7 @@ import redis.clients.jedis.BinaryClient.LIST_POSITION;
  * @version Version 0.1
  *
  */
-public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
+public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ListRedisDao.class);
 	
 	public ListRedisDao(String modName) {
@@ -73,7 +73,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 * @param seconds
 	 * @return
 	 */
-	public boolean lpush(String[] keys,String[] values,int seconds){
+	public boolean lpush(String[] keys,String[] values,int seconds) {
 		for(int i=0,len=keys.length;i<len;i++){
 			String value = values[i];
 			CacheExecute.execute(keys[i], (k,jedis) ->  {
@@ -88,7 +88,6 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 			}, modName);
 		}
 		return true;
-		
 	}
 	
 	/**
@@ -100,7 +99,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 * @param seconds
 	 * @return
 	 */
-	public boolean lpush(String key,List<String> values,int seconds){
+	public boolean lpush(String key,List<String> values,int seconds) {
 		if(values == null || values.size() == 0){
 			return true;
 		}
@@ -152,20 +151,20 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	
 	/**
 	 * 
-	 * 方法用途: TODO<br>
+	 * 方法用途: 将一个 value插入到列表key的表尾<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param values
 	 * @param seconds
 	 * @return
 	 */
-	public boolean rpush(String key,List<String> values,int seconds){
+	public boolean rpush(String key,List<String> values,int seconds) {
 		if(values == null || values.size() == 0){
 			return true;
 		}
 		
 		try{
-			for(int i=0,len=values.size();i<len;i++){
+			for(int i=0,len=values.size();i<len;i++) {
 				String value = values.get(i);
 				CacheExecute.execute(key,(k,jedis)->jedis.rpush(key, value),modName);
 			}
@@ -239,8 +238,6 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 	 * @return
 	 */
 	public List<String> lrange(String key, int start, int end) {
-		//long begin = System.currentTimeMillis();
-		//System.out.println("1:"+(System.currentTimeMillis() - begin));
 		try {
 			List<String> list = CacheExecute.execute(key,(k,jedis)->jedis.lrange(key, start, end),modName);
 			return list;
@@ -249,28 +246,6 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 			return null;
 		}
 	}
-//	public List<Object> lrange(String key, int start, int end) {
-//		ShardedJedis jedis = CacheExecute.execute(key,(k,jedis)->jedis;
-//		try {
-//			long begin = System.currentTimeMillis();
-//			List<byte[]> bytesList = CacheExecute.execute(key,(k,jedis)->jedis.lrange(getByteKey(key), start, end);
-//			System.out.println(System.currentTimeMillis()-begin);
-//			List<Object> objList = null;
-//			
-//			begin = System.currentTimeMillis();
-//			if (CollectionUtils.isNotEmpty(bytesList)) {
-//				objList = new ArrayList<Object>();
-//				for (int i = 0; i < bytesList.size(); i++) {
-//					objList.add(codec.decode(bytesList.get(i)));
-//				}
-//			}
-//			System.out.println(System.currentTimeMillis()-begin);
-//			return objList;
-//		} catch (Exception e) {
-//			log.error("lrange error!", e);
-//			return null;
-//		}
-//	}
 
 	/**
 	 * 
@@ -355,7 +330,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao{
 
 	/**
 	 * 
-	 * 方法用途: 将值value插入到列表key当中，位于值pivot之前或之后。
+	 * 方法用途: 将值value插入到列表key当中，位于值pivot之前或之后
 	 * <p/>
 	 * 当pivot不存在于列表key时，不执行任何操作。
 	 * <p/>

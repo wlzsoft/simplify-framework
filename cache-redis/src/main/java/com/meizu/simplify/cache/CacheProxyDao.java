@@ -5,7 +5,7 @@ import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.simplify.cache.redis.dao.impl.JsonRedisDao;
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
+ * <p><b>Title:</b><i>缓存代理工具</i></p>
  * <p>Desc: TODO</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
