@@ -65,6 +65,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 			propertiesMap.put(reloadableResourceValue, propertieUtil);
 			propertieBeanMap.put(reloadableResourceValue, beanObj);
 		}
+		
 		//开始注入到bean对应的带config注解的属性的值
 		for (Object beanObj : containerCollection) {
 			Class<?> beanClass = beanObj.getClass();
@@ -78,6 +79,8 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 				beanClass = parentClass;
 			}
 		}
+		
+		//开始静态注入配置的信息到带config注解的属性上 2017/3/21 by lcy
 		List<Class<?>> staticTypeList = ClassUtil.findClassesByAnnotationClass(StaticType.class, BeanAnnotationResolver.getClasspaths());
 		for (Class<?> staticType : staticTypeList) {
 			injectObjectForConfigAnno(null, staticType);
