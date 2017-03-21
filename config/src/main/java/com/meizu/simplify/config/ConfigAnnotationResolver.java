@@ -16,8 +16,11 @@ import com.meizu.simplify.config.annotation.ReloadableResource;
 import com.meizu.simplify.ioc.BeanContainer;
 import com.meizu.simplify.ioc.BeanFactory;
 import com.meizu.simplify.ioc.annotation.Init;
+import com.meizu.simplify.ioc.annotation.StaticType;
 import com.meizu.simplify.ioc.enums.InitTypeEnum;
+import com.meizu.simplify.ioc.resolver.BeanAnnotationResolver;
 import com.meizu.simplify.ioc.resolver.IAnnotationResolver;
+import com.meizu.simplify.utils.ClassUtil;
 import com.meizu.simplify.utils.DataUtil;
 import com.meizu.simplify.utils.PropertieUtil;
 import com.meizu.simplify.utils.ReflectionUtil;
@@ -47,6 +50,7 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 		BeanContainer container = BeanFactory.getBeanContainer();
 		Map<String, Object> mapContainer = container.getMapContainer();
 		Collection<Object> containerCollection = mapContainer.values();
+		
 		//组装所有的配置文件配置信息
 		for (Object beanObj : containerCollection) {
 			Class<?> beanClass = beanObj.getClass();
@@ -73,6 +77,10 @@ public class ConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 				injectObjectForConfigAnno(beanObj, parentClass);
 				beanClass = parentClass;
 			}
+		}
+		List<Class<?>> staticTypeList = ClassUtil.findClassesByAnnotationClass(StaticType.class, BeanAnnotationResolver.getClasspaths());
+		for (Class<?> staticType : staticTypeList) {
+			injectObjectForConfigAnno(null, staticType);
 		}
 		
 	}

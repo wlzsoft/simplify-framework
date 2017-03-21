@@ -49,12 +49,17 @@ import com.meizu.simplify.view.IPageTemplate;
  *
  */
 @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter")
-//@Bean
 @StaticType
 public class ControllerFilter implements Filter {
 	
-	@Config //后续开启,暂不可用，只能手工控制
-	private static boolean isChain = false;//TODO 通过这个开关来确定是否抛弃容器的404的逻辑，而自定义自己的逻辑，可以另外的定制多视图的404处理，默认未开启
+	/**
+	 * 默认未开启,通过这个开关来确定是否执行容器链条:是否抛弃容器本身的处理机制，而自定义自己的逻辑
+	 * 1.如果是关闭的：会抛弃容器的404的逻辑，而自定义自己的逻辑，可以另外的定制多视图的404处理
+	 * 2.如果开启：可以解析静态资源，jsp，servlet等操作
+	 * 注意：生产环境要设置为false，静态资源走cdn
+	 */
+	@Config("system.isChain") 
+	private static boolean isChain = false;
 	/**
 	 * 静态注入pageTemplate,支持Bean注解和StaticType注解
 	 */
