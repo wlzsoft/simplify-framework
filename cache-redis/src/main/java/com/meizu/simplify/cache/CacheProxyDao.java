@@ -1,8 +1,10 @@
 package com.meizu.simplify.cache;
 
 import com.meizu.simplify.cache.dao.IJsonCacheDao;
+import com.meizu.simplify.cache.dao.IListCacheDao;
 import com.meizu.simplify.cache.redis.dao.impl.CommonRedisDao;
 import com.meizu.simplify.cache.redis.dao.impl.JsonRedisDao;
+import com.meizu.simplify.cache.redis.dao.impl.ListRedisDao;
 
 /**
  * <p><b>Title:</b><i>缓存代理工具</i></p>
@@ -20,6 +22,7 @@ import com.meizu.simplify.cache.redis.dao.impl.JsonRedisDao;
 public class CacheProxyDao {
 	private static final ICacheDao<String, Object> commonRedisDao = new CommonRedisDao<>("redis_ref_hosts");
 	private static final IJsonCacheDao<Object> jsonRedisDao = new JsonRedisDao<>("redis_ref_hosts");
+	private static final IListCacheDao listRedisDao = new ListRedisDao("redis_ref_hosts");
 	
 	public static ICacheDao<String, Object> getCache() {
 		return commonRedisDao;
@@ -27,5 +30,9 @@ public class CacheProxyDao {
 	
 	public static IJsonCacheDao<Object> getJsonCache() {
 		return jsonRedisDao;
+	}
+	
+	public static IListCacheDao getListCache() {
+		return listRedisDao;
 	}
 }

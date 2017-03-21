@@ -18,8 +18,9 @@ import java.util.List;
 public interface IListCacheDao  {
 
 	/**
-	 * 将一个值value插入到列表key的表头。
 	 * 
+	 * 方法用途: 将一个值value插入到列表key的表头<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param value
 	 * @return
@@ -27,8 +28,9 @@ public interface IListCacheDao  {
 	public boolean lpush(String key, String value);
 	
 	/**
-	 * 将一个值value插入到列表key的表头。
 	 * 
+	 * 方法用途: 将一个值value插入到列表key的表头<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param value
 	 * @param seconds
@@ -37,29 +39,31 @@ public interface IListCacheDao  {
 	public boolean lpush(String key, String value,int seconds);
 	
 	/**
-	 * 批量将值value插入到列表key的表头。
 	 * 
-	 * @param key
-	 * @param value
+	 * 方法用途: 批量将值value插入到列表key的表头<br>
+	 * 操作步骤: TODO<br>
+	 * @param keys
+	 * @param values
 	 * @param seconds
 	 * @return
 	 */
 	public boolean lpush(String[] keys,String[] values,int seconds);
 	
 	/**
-	 * 批量将值value插入到列表key的表头。
 	 * 
+	 * 方法用途: 批量将值value插入到列表key的表头<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
-	 * @param value
+	 * @param values
 	 * @param seconds
 	 * @return
 	 */
 	public boolean lpush(String key,List<String> values,int seconds);
 	
-
 	/**
-	 * 将一个 value插入到列表key的表尾。
 	 * 
+	 * 方法用途: 将一个 value插入到列表key的表尾<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param value
 	 * @return
@@ -67,8 +71,9 @@ public interface IListCacheDao  {
 	public boolean rpush(String key, String value);
 	
 	/**
-	 * 将一个 value插入到列表key的表尾。
 	 * 
+	 * 方法用途: 将一个 value插入到列表key的表尾<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param value
 	 * @param seconds
@@ -76,35 +81,48 @@ public interface IListCacheDao  {
 	 */
 	public boolean rpush(String key, String value,int seconds);
 	
+	/**
+	 * 
+	 * 方法用途: 将一个 value插入到列表key的表尾<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param values
+	 * @param seconds
+	 * @return
+	 */
 	public boolean rpush(String key,List<String> values,int seconds);
 
 	/**
-	 * 移除并返回列表key的头元素。 当key不存在时，返回null。
 	 * 
+	 * 方法用途: 移除并返回列表key的头元素。 当key不存在时，返回null<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @return
 	 */
 	public String lpop(String key);
 
 	/**
-	 * 移除并返回列表key的尾元素。 当key不存在时，返回nil。
 	 * 
+	 * 方法用途: 移除并返回列表key的尾元素。 当key不存在时，返回nil<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @return
 	 */
 	public Object rpop(String key);
 
 	/**
-	 * 返回列表key的长度。 如果key不存在，则key被解释为一个空列表，返回0. 如果key不是列表类型，返回一个错误。
 	 * 
+	 * 方法用途: 返回列表key的长度。 如果key不存在，则key被解释为一个空列表，返回0. 如果key不是列表类型，返回一个错误<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @return
 	 */
 	public long llen(String key);
 
 	/**
-	 * 返回列表key中指定区间内的元素，区间以偏移量start和stop指定。
 	 * 
+	 * 方法用途: 返回列表key中指定区间内的元素，区间以偏移量start和stop指定<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param start
 	 * @param end
@@ -112,13 +130,11 @@ public interface IListCacheDao  {
 	 */
 	public List<String> lrange(String key, int start, int end);
 
-
 	/**
-	 * 根据参数count的值，移除列表中与参数value相等的元素。
-	 * <p/>
-	 * count的值可以是以下几种： count > 0: 从表头开始向表尾搜索，移除与value相等的元素，数量为count。 count < 0:
-	 * 从表尾开始向表头搜索，移除与value相等的元素，数量为count的绝对值。 count = 0: 移除表中所有与value相等的值。
 	 * 
+	 * 方法用途: 根据参数count的值，移除列表中与参数value相等的元素<br>
+	 * 操作步骤: count的值可以是以下几种： count > 0: 从表头开始向表尾搜索，移除与value相等的元素，数量为count。 count < 0:
+	 * 从表尾开始向表头搜索，移除与value相等的元素，数量为count的绝对值。 count = 0: 移除表中所有与value相等的值<br>
 	 * @param key
 	 * @param count
 	 * @param value
@@ -127,8 +143,9 @@ public interface IListCacheDao  {
 	public long lrem(String key, int count, String value);
 
 	/**
-	 * 将列表key下标为index的元素的值设置为value。
 	 * 
+	 * 方法用途: 将列表key下标为index的元素的值设置为value<br>
+	 * 操作步骤: TODO<br>
 	 * @param key
 	 * @param index
 	 * @param value
@@ -137,8 +154,9 @@ public interface IListCacheDao  {
 	public boolean lset(String key, int index, String value);
 
 	/**
-	 * 对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
 	 * 
+	 * 方法用途: 对一个列表进行修剪(trim)<br>
+	 * 操作步骤: 就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除<br>
 	 * @param key
 	 * @param start
 	 * @param stop
@@ -147,11 +165,11 @@ public interface IListCacheDao  {
 	public boolean ltrim(String key, int start, int stop);
 
 	/**
-	 * 返回列表key中，下标为index的元素。
-	 * 下标(index)参数start和stop都以0为底，也就是说，以0表示列表的第一个元素，以1表示列表的第二个元素，以此类推。
-	 * <p/>
-	 * 你也可以使用负数下标，以-1表示列表的最后一个元素，-2表示列表的倒数第二个元素，以此类推。
 	 * 
+	 * 方法用途: 返回列表key中，下标为index的元素<br>
+	 * 操作步骤: 下标(index)参数start和stop都以0为底，也就是说，以0表示列表的第一个元素，以1表示列表的第二个元素，以此类推。
+	 * <p/>
+	 * 你也可以使用负数下标，以-1表示列表的最后一个元素，-2表示列表的倒数第二个元素，以此类推<br>
 	 * @param key
 	 * @param index
 	 * @return

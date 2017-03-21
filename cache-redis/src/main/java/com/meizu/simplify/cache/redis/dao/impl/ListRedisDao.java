@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import com.meizu.simplify.cache.dao.IListCacheDao;
 import com.meizu.simplify.cache.redis.CacheExecute;
 import com.meizu.simplify.cache.redis.dao.BaseRedisDao;
+import com.meizu.simplify.exception.UncheckedException;
+import com.meizu.simplify.utils.CollectionUtil;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
@@ -100,18 +102,20 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 * @return
 	 */
 	public boolean lpush(String key,List<String> values,int seconds) {
-		if(values == null || values.size() == 0){
-			return true;
+		
+		if(CollectionUtil.isEmpty(values)){
+			throw new UncheckedException("插入List集合不能为空");
 		}
+		
 		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				for(int i=0,len=values.size();i<len;i++){
-					String value = values.get(i);
-					jedis.lpush(k, value);
-				}
-				if(seconds > 0){
-					jedis.expire(k, seconds);
-				}
-				return true;
+			for(int i=0,len=values.size();i<len;i++){
+				String value = values.get(i);
+				jedis.lpush(k, value);
+			}
+			if(seconds > 0){
+				jedis.expire(k, seconds);
+			}
+			return true;
 		}, modName);
 		return ret;
 	}
@@ -159,18 +163,22 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 * @return
 	 */
 	public boolean rpush(String key,List<String> values,int seconds) {
-		if(values == null || values.size() == 0){
-			return true;
+		
+		if(CollectionUtil.isEmpty(values)){
+			throw new UncheckedException("插入List集合不能为空");
 		}
 		
 		try{
-			for(int i=0,len=values.size();i<len;i++) {
-				String value = values.get(i);
-				CacheExecute.execute(key,(k,jedis)->jedis.rpush(key, value),modName);
-			}
-			if(seconds > 0){
-				CacheExecute.execute(key,(k,jedis)->jedis.expire(key, seconds),modName);
-			}
+			CacheExecute.execute(key, (k, jedis) -> {
+				for (int i = 0, len = values.size(); i < len; i++) {
+					String value = values.get(i);
+					jedis.rpush(k, value);
+				}
+				if(seconds > 0){
+					jedis.expire(k, seconds);
+				}
+				return true;
+			}, modName);
 		}catch(Exception e){
 			LOGGER.error("rpush error!", e);
 			return false;
@@ -188,7 +196,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public String lpop(String key) {
 		try {
-			return CacheExecute.execute(key,(k,jedis)->jedis.lpop(key),modName);
+			return CacheExecute.execute(key, (k, jedis) -> jedis.lpop(k), modName);
 		} catch (Exception e) {
 			LOGGER.error("lpop error!", e);
 			return null;
@@ -204,7 +212,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public Object rpop(String key) {
 		try {
-			return CacheExecute.execute(key,(k,jedis)->jedis.rpop(key),modName);
+			return CacheExecute.execute(key,(k,jedis)->jedis.rpop(k),modName);
 		} catch (Exception e) {
 			LOGGER.error("rpop error!", e);
 			return null;
@@ -220,7 +228,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public long llen(String key) {
 		try {
-			long length = CacheExecute.execute(key,(k,jedis)->jedis.llen(key),modName);
+			long length = CacheExecute.execute(key,(k,jedis)->jedis.llen(k),modName);
 			return length;
 		} catch (Exception e) {
 			LOGGER.error("llen error!", e);
@@ -239,7 +247,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public List<String> lrange(String key, int start, int end) {
 		try {
-			List<String> list = CacheExecute.execute(key,(k,jedis)->jedis.lrange(key, start, end),modName);
+			List<String> list = CacheExecute.execute(key,(k,jedis)->jedis.lrange(k, start, end),modName);
 			return list;
 		} catch (Exception e) {
 			LOGGER.error("lrange error!", e);
@@ -261,7 +269,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public long lrem(String key, int count, String value) {
 		try {
-			long ret = CacheExecute.execute(key,(k,jedis)->jedis.lrem(key, count, value),modName);
+			long ret = CacheExecute.execute(key,(k,jedis)->jedis.lrem(k, count, value),modName);
 			return ret;
 		} catch (Exception e) {
 			LOGGER.error("lrem error!", e);
@@ -280,8 +288,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public boolean lset(String key, int index, String value) {
 		try {
-			String ret = CacheExecute.execute(key,(k,jedis)->jedis
-					.lset(key, index, value),modName);
+			String ret = CacheExecute.execute(key,(k,jedis)->jedis.lset(k, index, value),modName);
 			return ret.equalsIgnoreCase("ok");
 		} catch (Exception e) {
 			LOGGER.error("lset error!", e);
@@ -300,7 +307,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public boolean ltrim(String key, int start, int stop) {
 		try {
-			String ret = CacheExecute.execute(key,(k,jedis)->jedis.ltrim(key, start, stop),modName);
+			String ret = CacheExecute.execute(key,(k,jedis)->jedis.ltrim(k, start, stop),modName);
 			return ret.equalsIgnoreCase("ok");
 		} catch (Exception e) {
 			LOGGER.error("ltrim error!", e);
@@ -321,7 +328,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public Object lindex(String key, int index) {
 		try {
-			return CacheExecute.execute(key,(k,jedis)->jedis.lindex(key, index),modName);
+			return CacheExecute.execute(key,(k,jedis)->jedis.lindex(k, index),modName);
 		} catch (Exception e) {
 			LOGGER.error("lindex error!", e);
 			return null;
@@ -346,7 +353,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 */
 	public long linsert(String key, LIST_POSITION position, String pivot,String value) {
 		try {
-			long length = CacheExecute.execute(key, (k,jedis)->jedis.linsert(key, position,pivot, value), modName);
+			long length = CacheExecute.execute(key, (k,jedis)->jedis.linsert(k, position,pivot, value), modName);
 			return length;
 		} catch (Exception e) {
 			LOGGER.error("linsert error!", e);
