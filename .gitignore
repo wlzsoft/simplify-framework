@@ -16,3 +16,4 @@ build
 *.iml
 .idea/*
 */.externalToolBuilders/*
+.metadata*

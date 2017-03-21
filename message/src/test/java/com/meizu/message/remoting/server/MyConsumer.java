@@ -4,6 +4,7 @@ import com.meizu.message.core.MqConsumerListenner;
 import com.meizu.message.core.MqConsumerMethod;
 
 
+
 public class MyConsumer implements MqConsumerListenner {
 
 	/**
