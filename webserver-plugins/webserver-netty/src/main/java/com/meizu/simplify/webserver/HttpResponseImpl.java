@@ -11,6 +11,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -35,9 +36,8 @@ public class HttpResponseImpl implements HttpServletResponse{
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());  
         response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
-        outputStream = new ServletOutputStreamImpl(response);
+        outputStream = new ServletOutputStreamImpl(response,ctx);
 //		response.replace(Unpooled.wrappedBuffer("I22 am ok".getBytes()));
-		ctx.write(response);
 	}
 
 	public String getVersion() {

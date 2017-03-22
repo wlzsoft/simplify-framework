@@ -210,7 +210,7 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 	 * @param key
 	 * @return
 	 */
-	public Object rpop(String key) {
+	public String rpop(String key) {
 		try {
 			return CacheExecute.execute(key,(k,jedis)->jedis.rpop(k),modName);
 		} catch (Exception e) {

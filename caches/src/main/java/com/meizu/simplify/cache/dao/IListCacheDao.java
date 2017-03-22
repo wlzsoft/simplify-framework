@@ -108,7 +108,7 @@ public interface IListCacheDao  {
 	 * @param key
 	 * @return
 	 */
-	public Object rpop(String key);
+	public String rpop(String key);
 
 	/**
 	 * 
