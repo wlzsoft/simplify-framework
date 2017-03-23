@@ -42,6 +42,18 @@ public interface IBaseController<T extends Model> {
 		//((DelegateController<T>)baseController).process(request, response, requestUrl, requestMethodName,isStatic, urlparams,this);
 	}
 	
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param request
+	 * @param response
+	 * @param cmd 注意cmd是controller方法的名称，而不是@RequestMap注解的path值, TODO 后续统一
+	 * @param model
+	 * @return
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public default boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
 		return true;
 	}
