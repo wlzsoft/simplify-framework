@@ -15,9 +15,16 @@ package com.meizu.simplify.mvc.model;
  */
 public class BaseModel extends Model {
 
-	private Integer order = 0;
-	private Integer currentPage;
-	private Integer pageSize;
+	/**
+	 * 排序字段名
+	 */
+	private String sort;
+	/**
+	 * 是否倒序
+	 */
+	private Boolean isDesc = true;
+	private Integer currentPage = 1;
+	private Integer pageSize = 10;
 	
 	public Integer getCurrentPage() {
 		return currentPage;
@@ -34,12 +41,21 @@ public class BaseModel extends Model {
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
-	
-	public Integer getOrder() {
-		return order;
+
+	public String getSort() {
+		return sort;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
+
+	public Boolean getIsDesc() {
+		return isDesc;
+	}
+
+	public void setIsDesc(Boolean isDesc) {
+		this.isDesc = isDesc;
+	}
+	
 }
