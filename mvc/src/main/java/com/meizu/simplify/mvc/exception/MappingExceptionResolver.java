@@ -108,7 +108,7 @@ public class MappingExceptionResolver {
 				e1.printStackTrace();
 			}
 		} else if(requestUrl.endsWith(".jsonp") || requestUrl.endsWith(".stream")) {//限定了stream数据流处理异常的提示方式，这里固定为jsonp方式，比如文件下载报错，属于这个范畴
-			response.setStatus(200);//特殊情况下，5xx和4xx的状态状态码jsonp是无法处理的，由于不是真的ajax(jQuery框架的实现,自己模拟实现更精细的控制)，使用208来代替错误状态
+			response.setStatus(208);//特殊情况下，5xx和4xx的状态状态码jsonp是无法处理的，由于不是真的ajax(jQuery框架的实现,自己模拟实现更精细的控制)，使用208来代替错误状态
 			try {
 				Model model = new Model() {
 					@Override
