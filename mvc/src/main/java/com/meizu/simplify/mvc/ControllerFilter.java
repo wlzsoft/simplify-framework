@@ -143,7 +143,7 @@ public class ControllerFilter implements Filter {
 		}
 
 		if(!isChain) {//自定义404处理，还有其他未处理的错误状态的处理
-			MappingExceptionResolver.resolverException(request, response, requestUrl, pageTemplate, new MessageException(404, "找不到资源"), config, jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, pageTemplate, new MessageException(404, "找不到资源"), config, jsonResolver, config.getDomain());
 			return false;
 		}
 		return true;

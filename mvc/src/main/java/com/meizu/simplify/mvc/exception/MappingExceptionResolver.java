@@ -62,7 +62,7 @@ public class MappingExceptionResolver {
 	 * @param throwable
 	 */
 	public static void resolverException(HttpServletRequest request, HttpServletResponse response, String requestUrl,
-			IPageTemplate template, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver) {
+			IPageTemplate template, Throwable throwable,PropertiesConfig config,JsonResolver jsonResolver,String domain) {
 		String exceptionMessage = throwable.getMessage();
 		if(exceptionMessage == null) {
 			if(throwable.getClass() == NullPointerException.class) {
@@ -107,8 +107,8 @@ public class MappingExceptionResolver {
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
-		} else if(requestUrl.endsWith(".jsonp")){
-			response.setStatus(208);//特殊情况下，5xx和4xx的状态状态码jsonp是无法处理的，由于不是真的ajax(jQuery框架的实现,自己模拟实现更精细的控制)，使用208来代替错误状态
+		} else if(requestUrl.endsWith(".jsonp") || requestUrl.endsWith(".stream")) {//限定了stream数据流处理异常的提示方式，这里固定为jsonp方式，比如文件下载报错，属于这个范畴
+			response.setStatus(200);//特殊情况下，5xx和4xx的状态状态码jsonp是无法处理的，由于不是真的ajax(jQuery框架的实现,自己模拟实现更精细的控制)，使用208来代替错误状态
 			try {
 				Model model = new Model() {
 					@Override
@@ -119,11 +119,10 @@ public class MappingExceptionResolver {
 					public void setCallback(String call) {
 						super.setCallback(call);
 					}
-					
 				};
 				model.setScript(DataUtil.parseInt(request.getParameter("script")));
 				model.setCallback(request.getParameter("callback"));
-				JsonpView.exe(request, response, ResultFactory.error(exceptionMessage),model,"meizu.com",config,jsonResolver);
+				JsonpView.exe(request, response, ResultFactory.error(exceptionMessage),model,domain,config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}

@@ -36,6 +36,10 @@ public class PropertiesConfig {
 	private String charset = "UTF-8";
 	private String controllerClasspath = Constants.packagePrefix;
 	private String template = "meizu";
+	/**
+	 * 域名
+	 */
+	private String domain;
 
 	/**
 	 * 页面缓存总数[url请求]
@@ -93,6 +97,12 @@ public class PropertiesConfig {
 	}
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+	public String getDomain() {
+		return domain;
+	}
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}
 	public String getDirectives() {
 		return directives;

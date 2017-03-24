@@ -96,9 +96,9 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			end(request, response, model,requestUrl,throwable);
 		} catch ( InvocationTargetException e ) {//所有的异常统一在这处理，这是请求处理的最后一关
 			Throwable throwable = e.getTargetException();
-			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable, config, jsonResolver, config.getDomain());
 		} catch (BaseException throwable) {//由于在反射优化模式下，不是抛InvocationTargetException异常，而会进入到BaseExceptin及其衍生异常,这里独立处理
-			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable,config,jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable, config, jsonResolver, config.getDomain());
 		} catch (IllegalAccessException | IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new UncheckedException(e);
@@ -106,7 +106,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			e.printStackTrace();
 			throw new UncheckedException(e);
 		} catch(Exception ex) {
-			MappingExceptionResolver.resolverException(request, response, requestUrl, template, ex,config,jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, ex,config,jsonResolver, config.getDomain());
 		}
 		
 	}
@@ -122,7 +122,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 	public void end(HttpServletRequest request, HttpServletResponse response, T model,String requestUrl,Throwable throwable){
 //		System.out.println("回收数据库连接到连接池中");
 		if(throwable!= null) {
-			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable, config, jsonResolver);
+			MappingExceptionResolver.resolverException(request, response, requestUrl, template, throwable, config, jsonResolver, config.getDomain());
 			MessageThreadLocal.threadLocal.remove();
 		}
 	}
