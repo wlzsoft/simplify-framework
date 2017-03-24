@@ -112,6 +112,25 @@ public interface IListCacheDao  {
 
 	/**
 	 * 
+	 * 方法用途: 删除，并获得该列表中的第一元素，或阻塞，直到有一个可用<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @return
+	 */
+	public String blpop(String key);
+	
+	/**
+	 * 
+	 * 方法用途: 删除，并获得该列表中的第一元素，或阻塞，直到有一个可用<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param timeout
+	 * @return
+	 */
+	public String blpop(String key,Integer timeout);
+
+	/**
+	 * 
 	 * 方法用途: 返回列表key的长度。 如果key不存在，则key被解释为一个空列表，返回0. 如果key不是列表类型，返回一个错误<br>
 	 * 操作步骤: TODO<br>
 	 * @param key

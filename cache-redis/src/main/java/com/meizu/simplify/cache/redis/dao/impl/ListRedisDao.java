@@ -202,6 +202,31 @@ public class ListRedisDao extends BaseRedisDao<String> implements IListCacheDao 
 			return null;
 		}
 	}
+	
+	@Override
+	public String blpop(String key) {
+		try {
+			return CacheExecute.execute(key, (k, jedis) -> {
+				return jedis.blpop(k).get(1);
+			}, modName);
+		} catch (Exception e) {
+			LOGGER.error("blpop error!", e);
+			return null;
+		}
+	}
+	
+
+	@Override
+	public String blpop(String key,Integer timeout) {
+		try {
+			return CacheExecute.execute(key, (k, jedis) -> {
+				return jedis.blpop(timeout,k).get(1);
+			}, modName);
+		} catch (Exception e) {
+			LOGGER.error("blpop for timeout error!", e);
+			return null;
+		}
+	}
 
 	/**
 	 * 
