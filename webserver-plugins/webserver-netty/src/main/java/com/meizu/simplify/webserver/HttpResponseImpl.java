@@ -11,13 +11,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaderValues;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
 
 public class HttpResponseImpl implements HttpServletResponse{
 	private String version = "HTTP/1.1";// 版本默认值
@@ -80,11 +74,17 @@ public class HttpResponseImpl implements HttpServletResponse{
 		return new PrintWriterImpl(outputStream);
 	}
 	
+	/**
+	 * 设置netty的字符编码
+	 */
 	@Override
 	public void setCharacterEncoding(String charset) {
 		this.charset = charset;
 	}
 	
+	/**
+	 * 设置netty的页面内容格式类型
+	 */
 	@Override
 	public void setContentType(String type) {
 		this.contentType = type;
@@ -100,6 +100,9 @@ public class HttpResponseImpl implements HttpServletResponse{
 		return contentType;
 	}
 	
+	/**
+	 * 设置netty的http头信息
+	 */
 	@Override
 	public void setHeader(String name, String value) {
 		responseHeader.put(name, value);
@@ -110,12 +113,18 @@ public class HttpResponseImpl implements HttpServletResponse{
 		return responseHeader.get(name);
 	}
 	
+	/**
+	 * 设置netty的http状态码
+	 */
 	@Override
 	public void setStatus(int sc) {
 		setStatusCode(String.valueOf(sc));
 		
 	}
 
+	/**
+	 * 设置netty的http状态码和状态信息
+	 */
 	@Override
 	public void setStatus(int sc, String sm) {
 		setStatusCode(String.valueOf(sc));
@@ -222,12 +231,13 @@ public class HttpResponseImpl implements HttpServletResponse{
 
 	@Override
 	public void sendError(int sc, String msg) throws IOException {
-		// TODO Auto-generated method stub
+		setStatus(sc);
+		outputStream.print(msg);
 	}
 
 	@Override
 	public void sendError(int sc) throws IOException {
-		// TODO Auto-generated method stub
+		sendError(sc, "错误");
 	}
 
 	@Override
