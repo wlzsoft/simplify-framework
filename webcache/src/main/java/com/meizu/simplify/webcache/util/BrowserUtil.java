@@ -21,6 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 public class BrowserUtil {
 	
 
+	/**
+	 * 
+	 * 方法用途: 禁用浏览器缓存<br>
+	 * 操作步骤: TODO<br>
+	 * @param response
+	 */
 	public static void disableBrowerCache(HttpServletResponse response) {
 		//不允许浏览器端或缓存服务器缓存当前页面信息。
 		response.setHeader("version","ros2.0");
@@ -35,6 +41,14 @@ public class BrowserUtil {
         
 	}
 
+	/**
+	 * 
+	 * 方法用途: 开启浏览器端缓存<br>
+	 * 操作步骤: 减少或避免浏览器发起请求，只有清除浏览器缓存，或是过期失效，才会重新发起请求，连304请求也可以避免
+	 *           如果不考虑兼容低版本浏览器，这块后续可以考虑html5的新特性来存储，存储的空间相对教大，相对于cookie，或是Cache-Control<br>
+	 * @param response
+	 * @param time
+	 */
 	public static void enableBrowerCache(HttpServletResponse response,long time) {
         //Date date = new Date();    
         Clock clock = Clock.systemDefaultZone();
