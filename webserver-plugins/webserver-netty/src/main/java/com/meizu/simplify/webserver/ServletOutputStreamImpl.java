@@ -1,72 +1,56 @@
 
 package com.meizu.simplify.webserver;
 
-import io.netty.buffer.ByteBufOutputStream;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpResponse;
+import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 
-import java.io.IOException;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 
 public class ServletOutputStreamImpl extends ServletOutputStream {
 
-    private ByteBufOutputStream out;
     private ChannelHandlerContext ctx;
-    private FullHttpResponse response;
-    private boolean flushed = false;
-
-    public ServletOutputStreamImpl(FullHttpResponse response,ChannelHandlerContext ctx) {
+    private StringBuilder body;
+    
+    public ServletOutputStreamImpl(ChannelHandlerContext ctx) {
     	this.ctx = ctx;
-    	this.response = response;
-        this.out = new ByteBufOutputStream(response.content());
+    	body = new StringBuilder();
     }
-
+    
     @Override
-    public void write(int b) throws IOException {
-        this.out.write(b);
-        out.flush();
-    }
-
-    @Override
-    public void write(byte[] b) throws IOException {
-        this.out.write(b);
-    }
-
-    @Override
-    public void write(byte[] b, int offset, int len) throws IOException {
-        this.out.write(b, offset, len);
-    }
+	public void print(String s) throws IOException {
+    	body.append(s);
+	}
 
     @Override
     public void flush() throws IOException {
-//        this.response.setContent(out.buffer());
+    	DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,Unpooled.wrappedBuffer(body.toString().getBytes()));  
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
+        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());  
+        response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
+//		response.replace(Unpooled.wrappedBuffer("test".getBytes()));
     	ctx.write(response);
-        this.flushed = true;
-    }
-
-    public void resetBuffer() {
-        this.out.buffer().clear();
-    }
-
-    public boolean isFlushed() {
-        return flushed;
-    }
-
-    public int getBufferSize() {
-        return this.out.buffer().capacity();
     }
 
 	@Override
 	public boolean isReady() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void setWriteListener(WriteListener writeListener) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("setWriteListener");
+	}
+
+	@Override
+	public void write(int b) throws IOException {
+		System.out.println("write int");
 	}
 }

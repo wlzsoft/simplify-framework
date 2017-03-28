@@ -39,11 +39,37 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
     @Override  
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
     	
+    	HttpRequestImpl request = new HttpRequestImpl();
         if (msg instanceof HttpRequest) {  
-            HttpRequest request = (HttpRequest) msg; 
+            HttpRequest request2 = (HttpRequest) msg; 
+            request.parseRequestLine(request2);
+    		//解析请求头信息
+    		/*String requestHead = null;
+    		while(StringUtil.isNotBlank(requestHead = br.readLine())) {
+    			System.out.println(requestHead);
+    			request.parseRequestHeader(requestHead);
+    		}*/
+    		
+    		//解析请求体信息-请求参数
+    		//post方法请求的参数数据的处理
+    		/*String contentLength = request.getRequestHeader().get("Content-Length");
+    		System.out.println("ContentLength :" + contentLength);
+    		if (contentLength != null) {
+    			int length = Integer.parseInt(contentLength);
+    			char[] buffer = new char[length];
+    			br.read(buffer);
+    			System.out.println("datas : " + new String(buffer));
+    			String postData = new String(buffer);
+    			String[] parameters = postData.split("&");
+    			for (String str : parameters) {
+    				String[] datas = str.split("=");
+    				request.getParameters().put(datas[0], datas[1]);
+    			}
+    			request.setBody(buffer);
+    		}*/
         }  
         
-        HttpRequestImpl request = new HttpRequestImpl();
+        
         responseImpl = new HttpResponseImpl(ctx);
         if (msg instanceof HttpContent) {  
 			HttpContent httpContent = (HttpContent) msg;  
@@ -74,7 +100,7 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
 			// cookie的可以为set-cookie，是http协议规定的，请求头上面cookie设为sessionID
 			responseImpl.getResponseHeader().put("Set-Cookie","sessionId=" + session.getSessionId());
 			//执行具体业务处理--先是路由选择-路径选择-业务处理-写到缓冲中，准备发送到浏览器
-//			filter.doFilter(request, responseImpl, null);
+			filter.doFilter(request, responseImpl, null);
 			responseImpl.getWriter().write("yellow");
 			responseImpl.getWriter().flush();
         	responseImpl.getWriter().close();

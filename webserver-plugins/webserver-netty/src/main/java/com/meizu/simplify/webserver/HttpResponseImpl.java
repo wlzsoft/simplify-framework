@@ -32,12 +32,7 @@ public class HttpResponseImpl implements HttpServletResponse{
 	private String contentType;
 	private ServletOutputStreamImpl outputStream;
 	public HttpResponseImpl(ChannelHandlerContext ctx) throws IOException {
-		DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);  
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());  
-        response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
-        outputStream = new ServletOutputStreamImpl(response,ctx);
-//		response.replace(Unpooled.wrappedBuffer("I22 am ok".getBytes()));
+        outputStream = new ServletOutputStreamImpl(ctx);
 	}
 
 	public String getVersion() {
@@ -82,7 +77,7 @@ public class HttpResponseImpl implements HttpServletResponse{
 	
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		return new PrintWriter(outputStream);
+		return new PrintWriterImpl(outputStream);
 	}
 	
 	@Override

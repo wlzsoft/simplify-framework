@@ -29,6 +29,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 
+import io.netty.handler.codec.http.HttpRequest;
+
 public class HttpRequestImpl implements HttpServletRequest{
 	
 	
@@ -54,6 +56,27 @@ public class HttpRequestImpl implements HttpServletRequest{
 		version = strs[2].trim();
 		//throw new RuntimeException("无效的请求行，必须包含请求方法，请求地址和请求的协议");
 
+		//额外的，如果是url中带有参数，需要做处理，一般是由get携带，当然的method也可以携带参数在url中
+		String[] requestUrlArr = requestURI.split("\\?");
+		if(requestUrlArr.length>1) {
+			requestURI = requestUrlArr[0];
+			String[] parameters = requestUrlArr[1].split("&");
+			for (String str : parameters) {
+				String[] datas = str.split("=");
+				getParameters().put(datas[0], datas[1]);
+			}
+		}
+		
+		
+	}
+	
+	// 解析请求行
+	public void parseRequestLine(HttpRequest request)  {
+		method = request.method().name();
+		requestURI = request.uri();
+		version = request.protocolVersion().text();
+		//throw new RuntimeException("无效的请求行，必须包含请求方法，请求地址和请求的协议");
+		
 		//额外的，如果是url中带有参数，需要做处理，一般是由get携带，当然的method也可以携带参数在url中
 		String[] requestUrlArr = requestURI.split("\\?");
 		if(requestUrlArr.length>1) {
