@@ -11,6 +11,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.meizu.simplify.utils.DateUtil;
+import com.meizu.simplify.utils.enums.DateFormatEnum;
+
 import io.netty.channel.ChannelHandlerContext;
 
 public class HttpResponseImpl implements HttpServletResponse{
@@ -136,6 +139,9 @@ public class HttpResponseImpl implements HttpServletResponse{
 		return Integer.parseInt(getStatusCode());
 	}
 	
+	/**
+	 * netty返回操作的outputstream
+	 */
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
 		return outputStream;
@@ -247,7 +253,7 @@ public class HttpResponseImpl implements HttpServletResponse{
 
 	@Override
 	public void setDateHeader(String name, long date) {
-		// TODO Auto-generated method stub
+		this.responseHeader.put(name, DateUtil.format(date, DateFormatEnum.YEAR_TO_MILLISECOND));
 	}
 
 	@Override
