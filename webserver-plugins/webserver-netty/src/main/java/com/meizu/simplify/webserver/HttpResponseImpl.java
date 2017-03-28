@@ -29,7 +29,7 @@ public class HttpResponseImpl implements HttpServletResponse{
 	private String contentType;
 	private ServletOutputStreamImpl outputStream;
 	public HttpResponseImpl(ChannelHandlerContext ctx) throws IOException {
-        outputStream = new ServletOutputStreamImpl(ctx);
+        outputStream = new ServletOutputStreamImpl(ctx,this);
 	}
 
 	public String getVersion() {

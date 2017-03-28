@@ -18,10 +18,12 @@ public class ServletOutputStreamImpl extends ServletOutputStream {
 
     private ChannelHandlerContext ctx;
     private StringBuilder body;
+    private HttpResponseImpl response;
     
-    public ServletOutputStreamImpl(ChannelHandlerContext ctx) {
+    public ServletOutputStreamImpl(ChannelHandlerContext ctx,HttpResponseImpl response) {
     	this.ctx = ctx;
     	body = new StringBuilder();
+    	this.response = response;
     }
     
     @Override
@@ -31,12 +33,12 @@ public class ServletOutputStreamImpl extends ServletOutputStream {
 
     @Override
     public void flush() throws IOException {
-    	DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,Unpooled.wrappedBuffer(body.toString().getBytes()));  
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());  
-        response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
-//		response.replace(Unpooled.wrappedBuffer("test".getBytes()));
-    	ctx.write(response);
+    	DefaultFullHttpResponse fullHttpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(response.getStatus()),Unpooled.wrappedBuffer(body.toString().getBytes()));  
+    	fullHttpResponse.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/html");  
+    	fullHttpResponse.headers().set(HttpHeaderNames.CONTENT_LENGTH, fullHttpResponse.content().readableBytes());  
+    	fullHttpResponse.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE); 
+//		fullHttpResponse.replace(Unpooled.wrappedBuffer("test".getBytes()));
+    	ctx.write(fullHttpResponse);
     }
 
 	@Override

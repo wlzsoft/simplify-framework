@@ -101,7 +101,6 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
 			responseImpl.getResponseHeader().put("Set-Cookie","sessionId=" + session.getSessionId());
 			//执行具体业务处理--先是路由选择-路径选择-业务处理-写到缓冲中，准备发送到浏览器
 			filter.doFilter(request, responseImpl, null);
-			responseImpl.getWriter().write("yellow");
 			responseImpl.getWriter().flush();
         	responseImpl.getWriter().close();
 			
