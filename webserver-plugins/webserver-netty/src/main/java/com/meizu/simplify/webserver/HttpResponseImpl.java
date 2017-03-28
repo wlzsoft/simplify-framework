@@ -18,7 +18,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 public class HttpResponseImpl implements HttpServletResponse{
 	private String version = "HTTP/1.1";// 版本默认值
-	private String statusCode;
+	private String statusCode = "200";
 	private String reason;// 原因短语
 
 	private Map<String, String> responseHeader = new HashMap<String, String>();

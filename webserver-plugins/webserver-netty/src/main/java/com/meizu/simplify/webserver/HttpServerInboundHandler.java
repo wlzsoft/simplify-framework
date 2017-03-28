@@ -36,14 +36,32 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
     private static final ControllerFilter filter = new ControllerFilter();
     public static Map<String, HttpSessionImplWrapper> sessions = new HashMap<String, HttpSessionImplWrapper>();
     HttpResponseImpl responseImpl = null;
+    HttpRequestImpl request = null;
     @Override  
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
     	
-    	HttpRequestImpl request = new HttpRequestImpl();
         if (msg instanceof HttpRequest) {  
+        	request = new HttpRequestImpl();
             HttpRequest request2 = (HttpRequest) msg; 
+            
+            //解析请求内容
+    		//解析请求行--http1.1中，必须要有的请求line 格式是： [method] [url] [version] 例子： GET /trade/list/bill-list HTTP/1.1
             request.parseRequestLine(request2);
-    		//解析请求头信息
+        }  
+        
+        
+        responseImpl = new HttpResponseImpl(ctx);
+        if (msg instanceof HttpContent) {  
+			HttpContent httpContent = (HttpContent) msg;  
+            ByteBuf buf = httpContent.content();  
+			byte[] req = new byte[buf.readableBytes()];
+			buf.readBytes(req);
+			String body = new String(req, "UTF-8");
+			System.out.println(body);
+//			Discard the received data silently.
+			httpContent.release();  
+			
+			//解析请求头信息
     		/*String requestHead = null;
     		while(StringUtil.isNotBlank(requestHead = br.readLine())) {
     			System.out.println(requestHead);
@@ -67,19 +85,6 @@ public class HttpServerInboundHandler extends ChannelInboundHandlerAdapter {  //
     			}
     			request.setBody(buffer);
     		}*/
-        }  
-        
-        
-        responseImpl = new HttpResponseImpl(ctx);
-        if (msg instanceof HttpContent) {  
-			HttpContent httpContent = (HttpContent) msg;  
-            ByteBuf buf = httpContent.content();  
-			byte[] req = new byte[buf.readableBytes()];
-			buf.readBytes(req);
-			String body = new String(req, "UTF-8");
-			System.out.println(body);
-//			Discard the received data silently.
-			httpContent.release();  
 			
 			//session解析处理
 			String sessionId = request.getCookiesMap().get("sessionId");
