@@ -17,6 +17,14 @@
 	-->
 	<servers>
 		<server>
+			<id>nexus-docker-auth</id>
+			<username>admin</username>
+			<password>admin123</password>
+			<configuration>
+		      <email>luchuangye@meizu.com</email>
+		    </configuration>
+		</server>
+		<server>
 			<id>nexus-snapshots</id>
 			<username>admin</username>
 			<password>admin123</password>
