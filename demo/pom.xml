@@ -66,9 +66,9 @@
 	</pluginRepositories> 
   <dependencies>
     <dependency>
-	  	<groupId>com.meizu</groupId>
+	  	<groupId>com.meizu.simplify</groupId>
 	    <artifactId>simplify-base</artifactId>
-	    <version>1.2.0</version>
+	    <version>${project.version}</version>
 	    <type>pom</type>
 	</dependency>
 	<dependency>
