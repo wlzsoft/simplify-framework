@@ -1,5 +1,5 @@
-FROM 172.16.85.146:8800/centos:7
-#FROM centos7.2
+FROM 172.16.85.146:8800/ubuntu
+#FROM ubuntu:14
 #COPY target/demo /usr/local/tomcat/webapps/ROOT/
 #ADD target/lib /data/lib
 #ADD start.sh /data/
