@@ -1,3 +1,3 @@
-FROM 172.16.85.146:8884/com.meizu.simplify/simplify-base:1.2.1-SNAPSHOT
+FROM tomcat:8.5
 COPY target/demo /usr/local/tomcat/webapps/ROOT/
 CMD ["catalina.sh", "run"]

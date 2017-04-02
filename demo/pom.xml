@@ -11,8 +11,8 @@
   	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
-  	 <!-- 这里是否不应该设置的是私服地址，而是172.16.180.39:6732 -->
 	 <docker.registry>172.16.85.146:8884</docker.registry>
+	 <docker.host>http://172.16.180.39:6732</docker.host>
   </properties>
   <repositories>
 	  	<!-- 仓库地址，从上往下进行查找。 -->
@@ -65,6 +65,12 @@
 		
 	</pluginRepositories> 
   <dependencies>
+    <dependency>
+	  	<groupId>com.meizu</groupId>
+	    <artifactId>simplify-base</artifactId>
+	    <version>1.2.0</version>
+	    <type>pom</type>
+	</dependency>
 	<dependency>
 		<groupId>com.meizu.simplify</groupId>
 		<artifactId>mvc</artifactId>
@@ -576,8 +582,8 @@
                         <version>4.11</version>
                     </dependency>
                 </dependencies>
-			</plugin>	 -->		
-			<plugin>
+		</plugin>	 -->		
+		<plugin>
 			<groupId>com.spotify</groupId>
 			<artifactId>docker-maven-plugin</artifactId>
 			<version>0.4.13</version>
@@ -591,7 +597,7 @@
 			</executions> -->
 			<configuration>
 				<!-- 本机不安装 docker,连接其他主机或虚拟机,需要增加下面两个配置  host 和 certpath 可以在 docker 环境变量中查到，　如果是 docker-machine 创建的虚拟机  同  env 连接的的时候 会显示 -->
-				<dockerHost>http://172.16.180.39:6732</dockerHost>
+				<dockerHost>${docker.host}</dockerHost>
 				<!-- 默认可不设置，会自动使用最新版的，目前是v2的rest api，可以指定了v1等老的registry地址 -->
 				<!-- <registryUrl>http://ip:6732/v2</registryUrl> -->
 				<!--  
@@ -611,7 +617,7 @@
 				<!-- 第一步 docker:build-->
 				<!-- 第一种方式，推荐 -->
 				<dockerDirectory>${project.basedir}/</dockerDirectory>
-				<!-- 第二种方式,集成度太深 -->
+				<!-- 第二种方式,集成度太深,并且指定了dockerDirectory，下面的配置会失效 -->
 				<!-- <baseImage>172.16.85.146:8800/tomcat8.5</baseImage>
 				<entryPoint>["catalina.sh", "run"]</entryPoint> -->
 				<resources>
