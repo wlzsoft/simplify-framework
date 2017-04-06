@@ -110,14 +110,14 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
 	
     <!-- 生成环境不会启用这个记录方式 -->
 	<appender name="file" class="org.apache.log4j.FileAppender">
-		<param name="File" value="/home/log/ros-web/log4j-async.log"/>
+		<param name="File" value="../log/log4j-async.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />  
 		</layout>
 	</appender>	
 	
 	<appender name="rollingFile" class="org.apache.log4j.RollingFileAppender">        
-        <param name="File" value="/home/log/ros-web/log4j-rolling-async.log" /><!-- 设置日志输出文件名 -->     
+        <param name="File" value="../log/log4j-rolling-async.log" /><!-- 设置日志输出文件名 -->     
         <!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->     
         <param name="Append" value="true" />     
         <param name="MaxBackupIndex" value="10" />     
@@ -127,7 +127,7 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
     </appender>     
        
     <appender name="dailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">     
-        <param name="File" value="/home/log/ros-web/log4j-activex.log" />       
+        <param name="File" value="../log/log4j-daily-rolling-async.log" />       
         <!-- <param name="Append" value="true" /> -->
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />       
         <param name="BufferedIO" value="true" />
@@ -137,7 +137,6 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
         	<param name="ConversionPattern" value="[%d{MMdd HH:mm:ss,SSS\} %-5p][%t] %-4rms %l (%X{ip}-%X{userName}):%m%n" />    
         </layout>       
     </appender>
-	
     
 	<!-- additivity指示是否遵循缺省的继承机制，默认是true
 	     level [? child] : 定义该logger的日志级别-->     
