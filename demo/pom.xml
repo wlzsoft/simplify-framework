@@ -11,7 +11,7 @@
   	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
-	 <docker.registry>172.16.85.146:8884</docker.registry>
+	 <!-- <docker.registry>172.16.85.146:8884</docker.registry> -->
 	 <docker.host>http://172.16.180.39:6732</docker.host>
   </properties>
   <repositories>
@@ -632,7 +632,9 @@
 				<!-- <imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${git.commit.id.abbrev}</imageName> -->
 				<!-- 默认tag名latest,可以在imageName后面使用[:version]来指定默认tag的name，一般作为项目版本号 -->
 				<!-- <imageName>${docker.registry}/${project.groupId}/${project.artifactId}</imageName> -->
-				<imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${project.version}</imageName>
+				<!-- <imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${project.version}</imageName> -->
+				<!-- 由于在/etc/sysconfig/docker中设置了全局的私服镜像地址，所以这无需指定全镜像名称 -->
+				<imageName>${project.groupId}/${project.artifactId}:${project.version}</imageName>
 				<!-- 第一步 docker:build-->
 				<!-- 第一种方式，推荐 -->
 				<dockerDirectory>${project.basedir}/</dockerDirectory>
