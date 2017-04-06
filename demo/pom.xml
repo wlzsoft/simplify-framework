@@ -614,14 +614,6 @@
 			<groupId>com.spotify</groupId>
 			<artifactId>docker-maven-plugin</artifactId>
 			<version>0.4.13</version>
-			<!-- <executions>
-			    <execution>
-			        <phase>package</phase>
-			        <goals>
-			            <goal>build</goal>
-			        </goals>
-			    </execution>
-			</executions> -->
 			<configuration>
 				<!-- 本机不安装 docker,连接其他主机或虚拟机,需要增加下面两个配置  host 和 certpath 可以在 docker 环境变量中查到，　如果是 docker-machine 创建的虚拟机  同  env 连接的的时候 会显示 -->
 				<dockerHost>${docker.host}</dockerHost>
@@ -660,7 +652,83 @@
 			       <imageTag>${project.version}</imageTag>
 			       <imageTag>latest</imageTag>
 			    </imageTags> -->
+			    <!-- 集成测试的一些可选项 -->
+			    <!-- <dockerUrl>http://localhost:4243</dockerUrl> -->
+			    <images>
+		            <!-- <image>
+		                <name>dockerfile/cobra-web</name>
+		                <containerConfig>
+		                    <![CDATA[
+		                    {"Hostname":"",
+		                        "PortSpecs":null,
+		                        "User":"",
+		                        "Tty":false,
+		                        "OpenStdin":false,
+		                        "StdinOnce":false,
+		                        "Memory":0,
+		                        "MemorySwap":0,
+		                        "CpuShares":0,
+		                        "AttachStdin":false,
+		                        "AttachStdout":false,
+		                        "AttachStderr":false,
+		                        "Env":null,
+		                        "Cmd":null,
+		                        "Dns":null,
+		                        "Volumes":null,
+		                        "VolumesFrom":"",
+		                        "Entrypoint":[
+		
+		                        ],
+		                        "NetworkDisabled":false,
+		                        "Privileged":false,
+		                        "WorkingDir":"",
+		                        "Domainname":"",
+		                        "ExposedPorts":null,
+		                        "OnBuild":null}
+		                    ]]>
+		                </containerConfig>
+		                <hostConfig>
+		                    <![CDATA[
+		                    {"ContainerIDFile": null, "LxcConf": null, "Links": null, "PortBindings": {
+		                        "6379/tcp": [
+		                            {
+		                                "HostIp": "0.0.0.0",
+		                                "HostPort": "6379"
+		                            }
+		                        ]
+		                    }, "Privileged": false, "PublishAllPorts": false}
+		                    ]]>
+		                </hostConfig>
+		            </image> -->
+		            <!-- <image>
+		                <name>busybox</name>
+		            </image> -->
+		        </images>
+		        <!-- 集成测试的一些可选项 -->
 			</configuration>
+			<!-- 集成测试 -->
+			<!-- <executions>
+			    <execution>
+			        <phase>package</phase>
+			        <goals>
+			            <goal>build</goal>
+			        </goals>
+			    </execution>
+			    <execution>
+		            <id>start-docker</id>
+		            <phase>pre-integration-test</phase>
+		            <goals>
+		                <goal>start</goal>
+		            </goals>
+		        </execution>
+		        <execution>
+		            <id>stop-docker</id>
+		            <phase>post-integration-test</phase>
+		            <goals>
+		                <goal>stop</goal>
+		            </goals>
+		        </execution>
+			</executions> -->
 		</plugin>
     </plugins>
   </build>
