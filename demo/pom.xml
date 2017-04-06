@@ -110,8 +110,8 @@
 		<groupId>com.meizu.simplify</groupId>
 		<artifactId>config-client</artifactId>
 		<version>${project.version}</version>
-	</dependency> -->
-	<!-- <dependency>
+	</dependency>
+	<dependency>
 		<groupId>com.meizu.simplify</groupId>
 		<artifactId>rpc</artifactId>
 		<version>${project.version}</version>
@@ -137,17 +137,27 @@
 	    <artifactId>webserver-netty</artifactId>
 	    <version>${project.version}</version>
 	</dependency>
-	<!-- 日志开始-由于dubbo必须依赖log4j模块，否则报错，如果使用dubbo的情况下，那么需引入 -->
-	<dependency>
+	<!-- 日志开始 -->
+	<!-- 由于有logback和log4j两套日志框架，由于考虑使用logback，但由于部分老的第三方组件使用的log4j的api，有以下三种解决方案：1.推荐使用：直接使用log4j-over-slf4j插件。 
+	     2.不推荐使用:只是同时引入log4j和logback，logback基于slf4j，而log4j不使用slf4j-log4j12桥接。3.最不可靠的处理方式:直接全部切回log4j，使用slf4j-log4j12桥接，移除logback依赖，避免多实现包冲突-->
+	<!-- 不推荐使用 --> 
+	<!-- <dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>1.7.7</version>
+	</dependency>-->
+	<!-- 推荐使用:log4j到slf4j插件，可以使老代码中的log4j的api无需修改，就可以使用slf4j的新实现 -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>log4j-over-slf4j</artifactId>
+		<version>1.7.7</version>
 	</dependency>
+	<!-- 由于dubbo必须依赖log4j模块，否则报错，如果使用dubbo的情况下，那么需引入 -->
 	<dependency>
 		<groupId>log4j</groupId>
 		<artifactId>log4j</artifactId>
 		<version>1.2.17</version>
-	</dependency>
+	</dependency> 
 	<!-- 日志相关 begin -->
 	<!-- slf4j启用彩色日志jansi -->
 	<dependency>
