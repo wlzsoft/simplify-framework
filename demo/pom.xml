@@ -192,6 +192,12 @@
 		<version>3.1.0</version>
 		<scope>provided</scope>
 	</dependency>
+	<!-- 和jstl的规范已经有10年没更新了，并且在tomcat，还不知道jstl的依赖库，导致无法解析，需手动加入依赖 -->
+	<dependency>
+	    <groupId>javax.servlet.jsp.jstl</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>1.2</version>
+	</dependency>
 	<dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
