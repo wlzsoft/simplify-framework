@@ -193,10 +193,21 @@
 		<scope>provided</scope>
 	</dependency>
 	<!-- 和jstl的规范已经有10年没更新了，并且在tomcat，还不知道jstl的依赖库，导致无法解析，需手动加入依赖 -->
-	<dependency>
+	<!-- <dependency>
 	    <groupId>javax.servlet.jsp.jstl</groupId>
 	    <artifactId>jstl</artifactId>
 	    <version>1.2</version>
+	</dependency> -->
+	<!-- 以下是apache特有，除了1.2的jstl规范，还有自己的一些定制 -->
+	<dependency>
+	    <groupId>org.apache.taglibs</groupId>
+	    <artifactId>taglibs-standard-spec</artifactId>
+	    <version>1.2.5</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.taglibs</groupId>
+	    <artifactId>taglibs-standard-impl</artifactId>
+	    <version>1.2.5</version>
 	</dependency>
 	<dependency>
 		<groupId>junit</groupId>
