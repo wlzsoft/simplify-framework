@@ -1,6 +1,6 @@
 # FROM 构建指令，必须在dockefile内容的最前面，注释不算，因为后续指令需要依赖它，他的格式是  FROM [host][:port]/[imageName][:TAG],其中host可以域名和ip，imageName可以是groupId/artifactId；而host,port,TAG都是可选的，当他们为空时，指向的是docker官方的docker.io镜像地址的TAG为latest的镜像
-FROM 172.16.85.146:8884/com.meizu.simplify/simplify-base:1.2.1-SNAPSHOT
-
+#FROM 172.16.85.146:8884/com.meizu.simplify/simplify-base:1.2.1-SNAPSHOT
+FROM tomcat8.5
 # 构建指令，用于将image的制作者信息写入到image中。当我们对该image执行docker inspect命令时，输出中有相应的字段记录该信息.格式：MAINTAINER <name>
 MAINTAINER chuangye lu "547393607@qq.com"
   
@@ -8,7 +8,7 @@ MAINTAINER chuangye lu "547393607@qq.com"
 #RUN <command> (the command is run in a shell - `/bin/sh -c`)  
 #RUN ["executable", "param1", "param2" ... ]  (exec form)
  
-COPY target/demo /usr/local/tomcat/webapps/ROOT/
+COPY / /usr/local/tomcat/webapps/ROOT/
 
 # 多次切换目录(相当于cd命令)，对RUN,CMD,ENTRYPOINT起作用;在 /d1/d2 下执行 vim 1.txt的例子 ：
 #WORKDIR /d1 WORKDIR d2 RUN vim 1.txt
@@ -36,9 +36,17 @@ CMD ["catalina.sh", "run"]
 #ENTRYPOINT ["/usr/bin/ls"]
 
 # USER（设置container容器的用户）设置指令，设置启动容器的用户，默认是root用户
-# 指定memcached的运行用户  
-#ENTRYPOINT ["memcached"]  
-#USER daemon  或 ENTRYPOINT ["memcached", "-u", "daemon"] 
+# 指定tomcat的运行用户  
+#ENTRYPOINT ["catalina.sh", "run"]  
+#RUN useradd noroot -u 1000 -s /bin/bash 
+#USER noroot  
+#或
+#ENTRYPOINT ["catalina.sh", "run", "-u", "noroot"]
+#buid，必须要指定用户：docker build -rm -t norootyygy
+#启动容器：docker run -d --name norootyygy norootyygy
+#查看运行容器：docker inspect -f {{.State.Pid}} norootyygy
+#进入容器中：sudo nsenter --target 9875 --mount --uts --ipc --net --pid
+#查看容器内进程:ps aux
 
 # EXPOSE（指定容器需要映射到宿主机器的端口）设置指令，该指令会将容器中的端口映射成宿主机器中的某个端口。当你需要访问容器的时候，可以不是用容器的IP地址而是使用宿主机器的IP地址和映射后的端口。要完成整个操作需要两个步骤，首先在Dockerfile使用EXPOSE设置需要映射的容器端口，然后在运行容器的时候指定-p选项加上EXPOSE设置的端口，这样EXPOSE设置的端口号会被随机映射成宿主机器中的一个端口号。也可以指定需要映射到宿主机器的那个端口，这时要确保宿主机器上的端口号没有被使用。EXPOSE指令可以一次设置多个端口号，相应的运行容器的时候，可以配套的多次使用-p选项
 # 暴露容器8080端口给宿主机，如果是父级镜像，如tomcat，已经暴露过端口，那么无需下面设置，如果是基于simplify框架的webserver，那么需要以下设置

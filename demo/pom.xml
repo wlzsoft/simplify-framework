@@ -11,7 +11,7 @@
   	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
-	 <!-- <docker.registry>172.16.85.146:8884</docker.registry> -->
+	 <docker.registry>172.16.85.146:8884</docker.registry>
 	 <docker.host>http://172.16.180.39:6732</docker.host>
   </properties>
   <repositories>
@@ -222,7 +222,7 @@
 	</dependency> -->
 </dependencies>
   <build>
-    <finalName>demo</finalName>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
     	<plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
@@ -531,6 +531,13 @@
 								<src path="${project.build.directory}/codegen" />
 								<include name="com/meizu/simplify/codegen/*.java" />
 							</javac>
+							<echo message="********************copy dockerfile and .dockeringnore *************************"/>
+							<mkdir dir="target/${project.artifactId}"/>                                                                                                                                                                                    
+                     		<!-- <copy file="docker/dockerfile"
+                           		  tofile="target/${project.artifactId}" overwrite="true"/> -->
+                       		<copy todir="target/${project.artifactId}" overwrite="true">
+                                <fileset dir="docker"/>
+                            </copy>
 						</target>
 					</configuration>
 				</execution>
@@ -635,13 +642,14 @@
 				<imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${project.version}</imageName>
 				<!-- 第一步 docker:build-->
 				<!-- 第一种方式，推荐 -->
-				<dockerDirectory>${project.basedir}/</dockerDirectory>
+				<dockerDirectory>${project.basedir}/target/${project.artifactId}</dockerDirectory>
+				<!-- <buildDirectory>${project.basedir}/docker</buildDirectory> -->
 				<!-- 第二种方式,集成度太深,并且指定了dockerDirectory，下面的配置会失效 -->
 				<!-- <baseImage>172.16.85.146:8800/tomcat8.5</baseImage>
 				<entryPoint>["catalina.sh", "run"]</entryPoint> -->
 				<resources>
 					<resource>
-						<include>/target/${project.build.finalName}</include>
+						<include>/target/${project.artifactId}</include>
 						<targetPath>/target</targetPath>
 						<directory>${project.build.directory}</directory>
 					</resource>
