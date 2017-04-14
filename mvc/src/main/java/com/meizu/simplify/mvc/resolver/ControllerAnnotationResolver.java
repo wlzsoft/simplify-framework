@@ -2,12 +2,16 @@ package com.meizu.simplify.mvc.resolver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +36,12 @@ import com.meizu.simplify.mvc.annotation.RequestParam;
 import com.meizu.simplify.mvc.controller.IBaseController;
 import com.meizu.simplify.mvc.dto.AnnotationListInfo;
 import com.meizu.simplify.mvc.dto.ControllerAnnotationInfo;
+import com.meizu.simplify.mvc.model.Model;
 import com.meizu.simplify.util.CacheManager;
 import com.meizu.simplify.utils.ClassUtil;
+import com.meizu.simplify.utils.CollectionUtil;
 import com.meizu.simplify.utils.ObjectUtil;
+import com.meizu.simplify.utils.ReflectionUtil;
 import com.meizu.simplify.utils.StringUtil;
 import com.meizu.simplify.webcache.annotation.WebCache;
 import com.meizu.simplify.webcache.web.CacheBase;
@@ -121,6 +128,27 @@ public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?
 							
 							for (Method method : methodArr) {
 								if (method.isAnnotationPresent(RequestMap.class)) {
+									//校验Controller参数是否正确设置正确 start
+									Parameter[] paramterArr = method.getParameters();
+									if(CollectionUtil.isEmpty(paramterArr)) {
+										throw new UncheckedException("Controller方法["+beanClass.getName()+":"+method.getName()+"]参数不能为空，必须以 request,reponse,model 这三个类型的参数开头");
+									}
+									if(paramterArr.length < 3) {
+										throw new UncheckedException("Controller方法["+beanClass.getName()+":"+method.getName()+"]参数个数必须大于等于3，必须以 request,reponse,model 这三个类型的参数开头");
+									}
+									Class<?> param = (Class<?>)paramterArr[0].getParameterizedType();
+									if(!ReflectionUtil.isExtendOrSelfClass(param, HttpServletRequest.class)) {
+										throw new UncheckedException("Controller方法["+beanClass.getName()+":"+method.getName()+"]的第一个参数类型错误，必须是HttpServletRequest接口，结果是"+param.getName()+"。必须遵循以 request,reponse,model 这三个类型的参数开头");
+									}
+									param = (Class<?>)paramterArr[1].getParameterizedType();
+									if(!ReflectionUtil.isExtendOrSelfClass(param, HttpServletResponse.class)) {
+										throw new UncheckedException("Controller方法["+beanClass.getName()+":"+method.getName()+"]的第二个参数类型错误，必须是HttpServletResponse接口，结果是"+param.getName()+"。必须遵循以 request,reponse,model 这三个类型的参数开头");
+									}
+									param = (Class<?>)paramterArr[2].getParameterizedType();
+									if(!ReflectionUtil.isExtendOrSelfClass(param, Model.class)) {
+										throw new UncheckedException("Controller方法["+beanClass.getName()+":"+method.getName()+"]的第三个参数类型错误，必须是Model类或其实现类，结果是"+param.getName()+"。必须遵循以 request,reponse,model 这三个类型的参数开头");
+									}
+									//校验Controller参数是否正确设置正确 end
 									resolverRequestMap(beanClass,method,RequestMap.class,cpath);
 									resolveRequestParam(beanClass, method);
 									resolveAnno(beanClass, method,AjaxAccess.class,annoInfo -> ajaxAccessMap.put(beanClass.getName()+":"+method.getName(), annoInfo));
