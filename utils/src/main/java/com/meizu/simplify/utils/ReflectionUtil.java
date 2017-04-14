@@ -558,4 +558,34 @@ public class ReflectionUtil {
 			getAllField(entityClass.getSuperclass(),fieldList);
 		}
 	}
+	//----------------Class相关的判断校验-----------------//
+	
+	/**
+	 * 
+	 * 方法用途: 判断source Class是否继承自某target Class，或是自己本身<br>
+	 * 操作步骤: TODO<br>
+	 * @param source 待判断的Class
+	 * @param target 指定目标的Class
+	 * @return
+	 */
+	public static boolean isExtendOrSelfClass(Class<?> source,Class<?> target) {
+		
+		if(source == null) {
+			throw new UncheckedException("待判断的Class不能为空");
+		}
+		
+		if(target== null) {
+			throw new UncheckedException("目标Class不能为空");
+		}
+		
+		while(true) {
+			if(source == target) {
+				return true;
+			}
+			if(source == null || source == Object.class) {
+				return false;
+			}
+			source = source.getSuperclass();
+		}
+	}
 }

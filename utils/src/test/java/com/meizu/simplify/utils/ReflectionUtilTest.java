@@ -178,5 +178,15 @@ public class ReflectionUtilTest  {
 		ReflectionUtil.invoke(user, "setName","aa");
 		Assert.assertEquals(user.getName(), "aa");
 	}
+	
+	@Test
+	public void isExtendOrSelfClass(){
+		Assert.assertTrue(ReflectionUtil.isExtendOrSelfClass(TestImpl.class, Test2.class));
+		Assert.assertTrue(ReflectionUtil.isExtendOrSelfClass(Object.class, Object.class));
+		Assert.assertFalse(ReflectionUtil.isExtendOrSelfClass(Object.class, Test2.class));
+		Assert.assertTrue(ReflectionUtil.isExtendOrSelfClass(Test2.class, Object.class));
+		Assert.assertTrue(ReflectionUtil.isExtendOrSelfClass(TestImpl.class, TestImpl.class));
+		Assert.assertTrue(ReflectionUtil.isExtendOrSelfClass(Test2.class, Test2.class));
+	}
 
 }
