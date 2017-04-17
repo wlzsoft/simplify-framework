@@ -636,10 +636,10 @@
 				<pushImage>true</pushImage>
 				<!-- <pushImageTag>true</pushImageTag> -->
 				<!-- https://github.com/ktoso/maven-git-commit-id-plugin 后续集成 -->
-				<!-- <imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${git.commit.id.abbrev}</imageName> -->
+				<!-- <imageName>${docker.registry}/${project.groupId}-${project.artifactId}:${git.commit.id.abbrev}</imageName> -->
 				<!-- 默认tag名latest,可以在imageName后面使用[:version]来指定默认tag的name，一般作为项目版本号 -->
-				<!-- <imageName>${docker.registry}/${project.groupId}/${project.artifactId}</imageName> -->
-				<imageName>${docker.registry}/${project.groupId}/${project.artifactId}:${project.version}</imageName>
+				<!-- <imageName>${docker.registry}/${project.groupId}-${project.artifactId}</imageName> -->
+				<imageName>${docker.registry}/${project.groupId}-${project.artifactId}:${project.version}</imageName>
 				<!-- 第一步 docker:build-->
 				<!-- 第一种方式，推荐 -->
 				<dockerDirectory>${project.basedir}/target/${project.artifactId}</dockerDirectory>
