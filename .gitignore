@@ -17,3 +17,5 @@ build
 .idea/*
 */.externalToolBuilders/*
 .metadata*
+logback*.log
+log4j*.log
