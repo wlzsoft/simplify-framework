@@ -624,8 +624,9 @@
 			<configuration>
 				<!-- 本机不安装 docker,连接其他主机或虚拟机,需要增加下面两个配置  host 和 certpath 可以在 docker 环境变量中查到，　如果是 docker-machine 创建的虚拟机  同  env 连接的的时候 会显示 -->
 				<dockerHost>${docker.host}</dockerHost>
-				<!-- 默认可不设置，会自动使用最新版的，目前是v2的rest api，可以指定了v1等老的registry地址 -->
+				<!-- 默认可不设置,设置了可加速，否则会使用的https://index.docker.com/v1，会自动使用最新版的，目前是v2的rest api，可以指定了v1等老的registry地址 -->
 				<!-- <registryUrl>http://ip:6732/v2</registryUrl> -->
+				<!-- <registryUrl>http://172.16.180.39:6732/v2</registryUrl> -->
 				<!--  
 				curl ——cacert domain.crt  ——basic ——user admin:admin123 https://ip:6732/v2/_catalog{"repositories":["eclipse/webserver-jetty","apache/tomcat8.5"]} 
 				-->
