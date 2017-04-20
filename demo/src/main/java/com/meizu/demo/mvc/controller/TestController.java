@@ -102,7 +102,7 @@ public class TestController extends SystemController<TestModel> {
 		Test test = testService.doSomeThing2(null);
 //		List<Test> testList = new ArrayList<>();
 //		testList.add(test);
-		test.setName("test8");
+		test.setName("test80");
 		return test;
 	}
 	

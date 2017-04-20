@@ -190,7 +190,6 @@
 		<groupId>javax.servlet</groupId>
 		<artifactId>javax.servlet-api</artifactId>
 		<version>3.1.0</version>
-		<scope>provided</scope>
 	</dependency>
 	<!-- 和jstl的规范已经有10年没更新了，并且在tomcat，还不知道jstl的依赖库，导致无法解析，需手动加入依赖 -->
 	<!-- <dependency>
@@ -557,8 +556,8 @@
 			</executions>
 			<configuration>
 				<!-- exec:java 二选一,只执行java命令-->
-				<!-- <mainClass>com.meizu.simplify.net.Bootstrap</mainClass> -->
-				<mainClass>org.h2.tools.Server</mainClass>
+				 <mainClass>com.meizu.simplify.net.Bootstrap</mainClass>
+				<!--<mainClass>org.h2.tools.Server</mainClass>
 				<arguments>
 					<argument>-web</argument>
 					<argument>-webPort</argument>
@@ -566,20 +565,22 @@
 					<argument>-browser</argument>
 					<argument>-properties</argument>
 					<argument>.</argument>
-				</arguments>
+				</arguments>-->
 				<!-- exec:exec 二选一，可执行其他命令-->
 				<!-- 可以执行各种命令，不一定是java程序 -->
 				<!-- 自动生成classpath -->
-				<!-- <executableDependency>
+				 <executableDependency>
 					<groupId>javax.servlet</groupId>
 					<artifactId>javax.servlet-api</artifactId>
 				</executableDependency>
 				<executable>java</executable>
 				<arguments>
+					<!--必须指定，否则会乱码-->
+					<argument>-Dfile.encoding=UTF-8</argument>
 		            <argument>-classpath</argument>
 		            <classpath/> 
 		            <argument>com.meizu.simplify.net.Bootstrap</argument>  
-				</arguments> -->
+				</arguments>
 			</configuration>
 		</plugin>
 		<!-- 代码混淆优化字节码操作工具ProGuard，是ProGuard官方很早以前推荐，现在官方不支持maven的插件，只支持基于maven的gradle

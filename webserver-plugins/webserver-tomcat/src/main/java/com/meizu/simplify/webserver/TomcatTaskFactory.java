@@ -37,7 +37,9 @@ public class TomcatTaskFactory implements ITaskFactory {//implements IPageTempla
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
-	 * @param socket
+	 * @param host
+	 * @param port
+	 * @param backlog
 	 */
 	@Override
 	public void add(String host,int port,int backlog) throws IOException {
@@ -45,6 +47,7 @@ public class TomcatTaskFactory implements ITaskFactory {//implements IPageTempla
         tomcat.setPort(port);
 //      tomcat.setBaseDir("e:/tmp/tomcat");  
 //      tomcat.getHost().setAutoDeploy(false);
+		//appBase在tomcat，是指的应用部署的根目录，这个目录下面的每个文件夹就是一个应用，appbase下面可以有多应用目录，而docBase是其中一个应用的待部署包路径，appbase目录下的应用会被部署
         tomcat.getHost().setAppBase(".");
         //--------Server--------
         Server server = tomcat.getServer();  
@@ -53,11 +56,13 @@ public class TomcatTaskFactory implements ITaskFactory {//implements IPageTempla
         //--------context-------
         Context context = null;
 		try {
+			//通过addWebapp，就把docBase的内容映射为一个contextpath，也就是appBase下面的一个应用，在appBase下面对应contextPath的只的目录，内容是docBase指向目录的内容
 			context = tomcat.addWebapp("/", ".");
 		} catch (ServletException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		//注意：如果设置了appbase和docbase也无效的话，那么先确认是否WEB-INF下面没有lib目录或lib目录里为空，并且Classes目录也为空,这里也确认另外的一件事appbase和docbase的设置不是影响controller加载的问题，classpath才是主根
         //-------filter--------
         FilterDef filterDef = new FilterDef();
         filterDef.setFilterName(ControllerFilter.class.getSimpleName());
