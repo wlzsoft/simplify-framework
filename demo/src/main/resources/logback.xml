@@ -2,36 +2,108 @@
 <configuration debug="true"> 
 
   <conversionRule conversionWord="ip" converterClass="com.meizu.simplify.log.logback.IpConverter" />
-
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> 
+  <!--logback颜色配置方案：https://logback.qos.ch/manual/layouts.html#coloring-->
+  <!-- %-4relative：表示，将输出从程序启动到创建日志记录的时间 进行左对齐 且最小宽度为4
+       %caller{1}  %caller{1, DISP_CALLER_EVAL, OTHER_EVAL_NAME, THIRD_EVAL_NAME}打印调度堆栈-->
+  <property name="CONSOLE_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level)][ %ip-%X{clientIp} ][%boldYellow(%thread)] %cyan(%logger.%method\\(:%L\\)) : %msg%n"/>
+  <property name="FILE_PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level][ %ip- ][%thread] %logger.%method\\(:%L\\) : %msg%n"/>
+  <property name="LOG_PATH" value=".."/>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <!-- <withJansi>true</withJansi> -->
-    <!-- encoders are  by default assigned the type
-         ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
-    <encoder>
-      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ] %ip [%thread] %logger [ - ] : %msg%n</pattern>
-      <!-- <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) ][%thread] %-4rms %cyan(%logger) [%ip-%userName]:%msg%n</pattern> -->
+    <!-- encoders are  by default assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+    <encoder  class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${CONSOLE_PATTERN}</pattern>
+      <!-- <pattern>
+      [%d{yyyy-MM-dd HH:mm:ss.SSS} %-30(%highlight(%-5level)) ] [%ip-%userName][%boldYellow(%thread)] %-4rms %cyan(%logger.%method\\(:%L\\)):%msg%n</pattern> -->
+      <!--是否输出日志模版格式，console下，可以打印，方便调试，打印内容类似如下：
+      #logback.classic pattern: [%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level)][ %ip- ][%boldYellow(%thread)] %cyan(%logger.%method\\(\\):%L) %-4relative %caller{1}: %msg%n-->
+      <outputPatternAsHeader>true</outputPatternAsHeader>
+      <!-- 默认的,如果队列达到80%,则会丢弃TRACT、DEBUG、INFO级别的日志 ,如果为0会不丢失日志-->
+      <!--<discardingThreshold>0</discardingThreshold>-->
+      <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+      <queueSize>512</queueSize>
     </encoder>
     <!-- <target>system.out</target> -->
   </appender>
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
-　　<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
-　　　　<fileNamePattern>../logback.%d{yyyy-MM-dd}.log</fileNamePattern> 
-　　　　<maxHistory>30</maxHistory> 
-　　</rollingPolicy> 
-　　<encoder> 
-　　　　<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ] %ip [%thread] %logger [ - ] : %msg%n</pattern> 
-　　</encoder> 
-　</appender> 
-  
-  <appender name="RPC" class="com.meizu.simplify.log.logback.RpcAppender"> 
+
+  <appender name="RPC" class="com.meizu.simplify.log.logback.RpcAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level][ %ip- ][%thread] %logger{36} : %msg%n</pattern>
     </encoder>
   </appender>
-  
+
+  <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/logback.error.%d{yyyy-MM-dd}.log</fileNamePattern><!--每天生成日志-->
+      <!--日志保留30天-->
+    　<maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+    　　<pattern>${FILE_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/logback.warn.%d{yyyy-MM-dd}.log</fileNamePattern><!--每天生成日志-->
+      <!--日志保留30天-->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      　　<pattern>${FILE_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--<file>${LOG_HOME}/logback.log</file>--><!--全局写入日志文件-->
+    <appender>true</appender><!--默认就是true，也就是启动时如果存在，那么就会叠加，否则false就会被覆盖-->
+    <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">&lt;!&ndash;过来输出某日志级别的日志&ndash;&gt;
+      <level>INFO</level>&lt;!&ndash;INFO会包含ERROR，WARN,INFO&ndash;&gt;
+    </filter>-->
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/logback.info.%d{yyyy-MM-dd}.log</fileNamePattern><!--每天生成日志-->
+      <!--<fileNamePattern>${LOG_PATH}/logback.%d{yyyy-MM-dd-HH}.log</fileNamePattern>--><!--每小时生成日志-->
+      <!--日志保留30天-->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      　　<pattern>${FILE_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/logback.%d{yyyy-MM-dd}.log</fileNamePattern><!--每天生成日志-->
+      <!--<fileNamePattern>${LOG_PATH}/logback.%d{yyyy-MM-dd-HH}.log</fileNamePattern>--><!--每小时生成日志-->
+      <!--日志保留30天-->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      　　<pattern>${FILE_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
   <root level="info">
     <appender-ref ref="STDOUT" />
-    <appender-ref ref="FILE" />
+    <appender-ref ref="FILE_ERROR" />
+    <appender-ref ref="FILE_WARN" />
+    <appender-ref ref="FILE_INFO" />
+    <appender-ref ref="FILE_ALL" />
     <!-- <appender-ref ref="RPC" /> -->
   </root>
 </configuration>

@@ -9,8 +9,6 @@
   <url>http://maven.apache.org</url>
   <properties>
   	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	 <templatePath>${project.parent.basedir}</templatePath>
-  	 <parentsite></parentsite>
 	 <docker.registry>172.16.85.146:8884</docker.registry>
 	 <docker.host>http://172.16.180.39:6732</docker.host>
   </properties>
@@ -159,7 +157,9 @@
 		<version>1.2.17</version>
 	</dependency> 
 	<!-- 日志相关 begin -->
-	<!-- slf4j启用彩色日志jansi -->
+	<!--启用彩色日志可以使用jansi库，如果是实现是logback，那么自带彩色功能,当然使用logback也可以通过withJansi开开启集成jansi，但是需要独立引用这个库,如果是非window机器不需要引入，因为已经自带ansi颜色符号识别
+	     如果是在idea或是eclipse，由于工具支持了ansi颜色字符识别，所以也可以看到颜色，但如果在window控制台就不行了-->
+	<!-- slf4j -->
 	<dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-api</artifactId>
@@ -628,8 +628,8 @@
 				<!-- 默认可不设置,设置了可加速，否则会使用的https://index.docker.com/v1，会自动使用最新版的，目前是v2的rest api，可以指定了v1等老的registry地址 -->
 				<!-- <registryUrl>http://ip:6732/v2</registryUrl> -->
 				<!-- <registryUrl>http://172.16.180.39:6732/v2</registryUrl> -->
-				<!--  
-				curl ——cacert domain.crt  ——basic ——user admin:admin123 https://ip:6732/v2/_catalog{"repositories":["eclipse/webserver-jetty","apache/tomcat8.5"]} 
+				<!--
+				curl ——cacert domain.crt  ——basic ——user admin:admin123 https://ip:6732/v2/_catalog{"repositories":["eclipse/webserver-jetty","apache/tomcat8.5"]}
 				-->
 　　　　　　		<!-- <dockerCertPath>domain.crt</dockerCertPath> -->
 				<!-- using remote dockers ~/.docker/config.json,这个文件如果没有，要创建，或是用docker login创建，但是没有docker命令是做不到的， 不建议使用这个选项，并且要在remote dokcer禁用，使用serverId标签来设置 -->
@@ -687,7 +687,7 @@
 		                        "Volumes":null,
 		                        "VolumesFrom":"",
 		                        "Entrypoint":[
-		
+
 		                        ],
 		                        "NetworkDisabled":false,
 		                        "Privileged":false,
