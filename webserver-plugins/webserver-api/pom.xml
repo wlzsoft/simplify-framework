@@ -17,5 +17,11 @@
 	    <artifactId>mvc</artifactId>
 	    <version>${project.version}</version>
 	  </dependency>
+      <!--代码中没有依赖servlet-api,但是web中会用到，这里加入依赖，在demo中，可以设置scope为provided，后续要考虑删除或剥离-->
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>3.1.0</version>
+      </dependency>
   </dependencies>
 </project>
