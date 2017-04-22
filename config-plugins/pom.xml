@@ -13,6 +13,7 @@
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
+      <siteDirPath>${project.basedir}</siteDirPath>
   </properties>
    <modules>
    	<module>config-api</module>

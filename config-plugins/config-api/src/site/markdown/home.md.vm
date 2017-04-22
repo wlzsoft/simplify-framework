@@ -1,0 +1,13 @@
+
+基于velocity的markdown模版生成
+====================
+
+测试2348${project.artifactId}
+---------------------
+
+> ${project.name}
+> 
+> ${project.version}
+>
+
+

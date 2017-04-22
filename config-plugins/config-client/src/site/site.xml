@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project  name="${project.name}"  xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
+	<body>
+		<menu title="subModules" name="子模块" ref="modules" />
+		<!-- 项目信息报告 inherit表示子模块继承父模块-->
+		<menu inherit="top" />
+	</body>
+</project>

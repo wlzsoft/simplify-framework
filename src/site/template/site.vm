@@ -218,9 +218,13 @@
 #end
 ##
 #macro ( breadcrumbs $breadcrumbs $cssClass )
+
+
   #foreach( $item in $breadcrumbs )
     #set ( $currentItemHref = $PathTool.calculateLink( $item.href, $relativePath ) )
     #set ( $currentItemHref = $currentItemHref.replaceAll( '\\', '/' ) )
+    #*修复链接地址*#
+    #set ( $currentItemHref = $currentItemHref.replaceAll( '../../', '../' ) )
     #if ( ( $currentItemHref == '' ) )
       #set ( $currentItemHref = './' )
     #end
@@ -875,29 +879,38 @@
 #end
     <title>$title</title>
     
-    #set ( $thirdPathTag = '../' ) 
+   #* #set ( $thirdPathTag = '../' )
     #foreach( $menu in $decoration.body.menus )
-      #if($menu.title.equals("subModules")) 
-      	#if ($menu.items.size() > 0) 
-      		#set ( $thirdPathTag = '' ) 
+      #if($menu.title.equals("subModules"))
+      	#if ($menu.items.size() > 0)
+      		#set ( $thirdPathTag = '' )
       		#break
-      	#end 
-      #end 
+      	#end
+      #end
+    #end*#
+
+	#*<link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/bootstrap-2.3.2.css" />*#
+    #set($cssPath = '')
+    #if($project.parent)
+      #set($cssPath = '')
     #end
-    
-	<link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/bootstrap-2.3.2.css" />
-    <link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/maven-base.css" />
-    <link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/maven-theme.css" />
-    <link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/prettify.css" />
-    <link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/site.css" />
-    <link rel="stylesheet" href="${relativePath}./$!{thirdPathTag}css/print.css" media="print" />
+    #if($project.parent.parent)
+      #set($cssPath = '../')
+    #end
+
+    <link rel="stylesheet" href="${relativePath}./$!{cssPath}css/bootstrap-2.3.2.css" />
+    <link rel="stylesheet" href="${relativePath}./$!{cssPath}css/maven-base.css" />
+    <link rel="stylesheet" href="${relativePath}./$!{cssPath}css/maven-theme.css" />
+    <link rel="stylesheet" href="${relativePath}./$!{cssPath}css/prettify.css" />
+    <link rel="stylesheet" href="${relativePath}./$!{cssPath}css/site.css" />
+    <link rel="stylesheet" href="${relativePath}./$!{cssPath}css/print.css" media="print" />
 
     #prjProfile()
 
-    <script type="text/javascript" src="${relativePath}./$!{thirdPathTag}js/jquery-1.11.2.js"></script>
-    <script type="text/javascript" src="${relativePath}./$!{thirdPathTag}js/bootstrap-2.3.2.js"></script>
-    <script type="text/javascript" src="${relativePath}./$!{thirdPathTag}js/fluido.js"></script>
-    <script type="text/javascript" src="${relativePath}./$!{thirdPathTag}js/prettify.js"></script>
+    <script type="text/javascript" src="${relativePath}./$!{cssPath}js/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="${relativePath}./$!{cssPath}js/bootstrap-2.3.2.js"></script>
+    <script type="text/javascript" src="${relativePath}./$!{cssPath}js/fluido.js"></script>
+    <script type="text/javascript" src="${relativePath}./$!{cssPath}js/prettify.js"></script>
 
     #if( $decoration.body.head )
       $render.eval( $decoration.body.head )

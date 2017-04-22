@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project  name="simplify" xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
+<project  name="${project.name}"  xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
 	<!-- <bannerLeft>
 		<name>maven</name>
 		<src>images/title.png</src>
@@ -35,9 +35,9 @@
 		<links>        
 			<item name="资源系统" href="http://ab.meizu.com/" />       
 			<item name="ros系统"  href="http://ros.meizu.com/" />           
-		</links>  
+		</links>
+		<!-- 横条链接 -->
 		<breadcrumbs>
-			<!-- 横条链接 -->
 			<item name="框架" href="index.html" />
 		</breadcrumbs>
 		<!-- <menu ref="parent" />  -->  

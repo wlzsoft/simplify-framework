@@ -10,6 +10,7 @@
   <properties>
   	 <templatePath>${project.parent.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
+      <siteDirPath>${project.basedir}</siteDirPath>
   </properties>
   <dependencies>
   	<dependency>
