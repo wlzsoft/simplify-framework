@@ -3,16 +3,16 @@
   <parent>
     <groupId>com.meizu.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.1</version>
   </parent>
   <artifactId>weaving</artifactId>
   <name>织入组件</name>
   <description>动态字节码生成方式&lt;br&gt;
      以下是javaagent参数读取的weaving.jar所依赖的配置文件，日志的jar可以不提供
-  weaving-1.2.1-SNAPSHOT.jar
+  weaving-1.2.1.jar
   javassist-3.20.0-GA.jar
-  utils-1.2.1-SNAPSHOT.jar 如果缺少这个包会报Caused by: java.lang.NoClassDefFoundError ，因为运行时依赖他
-  aop-1.2.1-SNAPSHOT.jar 如果缺少这个包，在使用aop模块时会报错，无法提前织入逻辑
+  utils-1.2.1.jar 如果缺少这个包会报Caused by: java.lang.NoClassDefFoundError ，因为运行时依赖他
+  aop-1.2.1.jar 如果缺少这个包，在使用aop模块时会报错，无法提前织入逻辑
   //以下日志插件会影响jetty容器输入的日志，考虑废弃掉，或是通过jetty参数设置来控制日志的输出
   //如果废弃掉，那么后续的插件的日志功能会失效，只能用System.out.println代替，还是加上，然后考虑jetty的日志参数设置
   logback-classic-1.1.3.jar

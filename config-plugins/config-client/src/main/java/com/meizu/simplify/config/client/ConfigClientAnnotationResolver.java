@@ -90,7 +90,7 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 			if(StringUtil.isBlank(version)) {
 				throw new StartupErrorException("加载/META-INF/MANIFEST.MF文件的Implementation-Version属性值为空，请检查文件中是否有Implementation-Version属性值");
 			}
-			//appid start  appid格式：com.meizu.simplify:demo:1.2.1-SNAPSHOT-dev
+			//appid start  appid格式：com.meizu.simplify:demo:1.2.1-dev
 			app.setGroupId(groupId);
 			app.setArtifactId(artifactId);
 			app.setVersion(version);
