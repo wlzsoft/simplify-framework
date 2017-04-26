@@ -40,32 +40,33 @@ import com.meizu.simplify.utils.StringUtil;
 public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBeanAnnotationResolver.class);
-	private final ConcurrentMap<String, ReferenceConfig<?>> referenceConfigs = new ConcurrentHashMap<String, ReferenceConfig<?>>();
+	private final ConcurrentMap<String, ReferenceConfig<?>> referenceConfigs = new ConcurrentHashMap<>();
 	
 	@Override
 	public BeanEntity<?> hook(Class<?> clazz){
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, BeanAnnotationResolver.getClasspaths());//扫描ClientBean注解bean
-		if (CollectionUtil.isNotEmpty(entityClasses)) {
-			for (Class<?> entityClass : entityClasses) {
-				if(!clazz.getName().equals(entityClass.getName())){
-					continue;
-				}
-				List<Class<?>> allIpmlClass=ClassUtil.findClassesByParentClass(entityClass, Constants.packagePrefix);
-				Boolean isRemote = false;
-				if (CollectionUtil.isEmpty(allIpmlClass)) {
-					isRemote = true;
-				} else {
-					for (Class<?> implClass : allIpmlClass) {
-						ServerBean serverBean = implClass.getAnnotation(ServerBean.class);
-						if (null != serverBean) {
-							isRemote = false;
-							break;
-						}
+		if (CollectionUtil.isEmpty(entityClasses)) {
+			return null;
+		}
+		for (Class<?> entityClass : entityClasses) {
+			if(!clazz.getName().equals(entityClass.getName())){
+				continue;
+			}
+			List<Class<?>> allIpmlClass=ClassUtil.findClassesByParentClass(entityClass, Constants.packagePrefix);
+			Boolean isRemote = false;
+			if (CollectionUtil.isEmpty(allIpmlClass)) {
+				isRemote = true;
+			} else {
+				for (Class<?> implClass : allIpmlClass) {
+					ServerBean serverBean = implClass.getAnnotation(ServerBean.class);
+					if (null != serverBean) {
+						isRemote = false;
+						break;
 					}
 				}
-				if (isRemote) {
-					return addRemoteBean(entityClass);
-				}
+			}
+			if (isRemote) {
+				return addRemoteBean(entityClass);
 			}
 		}
 		return null;
