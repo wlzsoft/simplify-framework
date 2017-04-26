@@ -59,36 +59,43 @@
 	</licenses>
 	<!-- 项目工程管理  end-->
   <modules>
-    <module>stress-tester</module>
-  	<module>utils</module>
-  	<module>entity</module>
-  	<module>weaving</module>
-  	<module>encrypt</module>
-  	<module>ioc</module>
-  	<module>aop</module>
-  	<module>dao</module>
-  	<module>caches</module>
-  	<module>webcache</module>
-  	<module>mvc</module>
-  	<module>template</module>
-  	<module>config</module>
-  	<module>cache-redis</module>
-  	<module>mongodb</module>
-    <module>message</module>
-    <module>rpc</module>
-    <module>listener</module>
-    <module>authfilter</module>
-    <module>template-plugins</module>
-    <module>view-plugins</module>
-    <module>test</module>
-    <module>simplify-server</module>
-    <module>simplify-base</module>
-    <module>simplify-client</module>
-    <module>config-plugins</module>
-    <module>datasource</module>
-    <module>log</module>
-    <module>dto</module>
-    <module>zookeeper</module>
+	  <module>stress-tester</module>
+	  <module>utils</module>
+	  <module>entity</module>
+	  <module>weaving</module>
+	  <module>encrypt</module>
+	  <module>ioc</module>
+	  <module>aop</module>
+	  <module>dao</module>
+	  <module>caches</module>
+	  <module>webcache</module>
+	  <module>mvc</module>
+	  <module>template</module>
+	  <module>config</module>
+	  <module>cache-redis</module>
+	  <module>mongodb</module>
+	  <module>message</module>
+	  <module>rpc</module>
+	  <module>listener</module>
+	  <module>authfilter</module>
+	  <module>template-plugins</module>
+	  <module>view-plugins</module>
+	  <module>test</module>
+	  <module>simplify-server</module>
+	  <module>simplify-base</module>
+	  <module>simplify-client</module>
+	  <module>config-plugins</module>
+	  <module>datasource</module>
+	  <module>log</module>
+	  <module>dto</module>
+	  <module>zookeeper</module>
+	  <module>boot</module>
+	  <module>assembly-descriptor</module>
+	  <module>webserver</module>
+	  <module>webserver-plugins</module>
+	  <module>plugin-loader</module>
+	  <module>weaving-plugins</module>
+	  <module>net</module>
     <!-- <module>mq-plugins</module> -->
   </modules>
   <properties>
