@@ -15,7 +15,7 @@ public class DefaultLogManager{
 	
     static{
         LogManager.getLogManager().reset(); 
-//        resetFromPropertyFile("/logger.properties");
+//        resetFromPropertyFile("/properties/logger.properties");
         resetFromPropertyFile("");
 	}
 	

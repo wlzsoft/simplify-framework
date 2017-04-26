@@ -35,7 +35,7 @@ public class SingleDataSource implements IDataSource{
 	private DataSource dataSource = null;
 	
 	public SingleDataSource(){
-		PropertieUtil result = new PropertieUtil("jdbc-pool.properties");
+		PropertieUtil result = new PropertieUtil("properties/jdbc.properties");
 		this.dataSource = DataSourceFactory.createDataSource(result.getProps());
 	}
 	

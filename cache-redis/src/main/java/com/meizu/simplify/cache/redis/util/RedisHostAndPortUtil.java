@@ -29,7 +29,7 @@ import redis.clients.jedis.Protocol;
 public class RedisHostAndPortUtil {
 	
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
-	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
+	private static final String REDIS_CONFIG_FILE = "properties/redis-host.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
 	
 	static {
