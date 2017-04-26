@@ -1,7 +1,7 @@
 #!/bin/bash
-echo "./service.sh stop  config-server 1.2.2-SNAPSHOT deamon debug 10.2.67.28"
-echo "./service.sh start config-server 1.2.2-SNAPSHOT no no 10.2.67.28"
-echo "./service.sh start config-server 1.2.2-SNAPSHOT"
+echo "./service.sh stop  config-server $version deamon debug 10.2.67.28"
+echo "./service.sh start config-server $verion no no 10.2.67.28"
+echo "./service.sh start config-server 0.0.9-SNAPSHOT"
 #这个文件处理的方式已经废弃，直接使用maven-jar-plugin插件来生成MANIFEST.MF文件，简化了命令行的长度，更简洁,可以参考config-server的pom文件的配置
 mode=$1
 app_name=$2
