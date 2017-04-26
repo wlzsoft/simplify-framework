@@ -35,7 +35,7 @@ public class ConfigServiceTest {
 		ConfigAppEntity app = new ConfigAppEntity();
 		app.setGroupId("com.meizu.simplify");
 		app.setArtifactId("demo");
-		app.setVersion("1.2.1");
+		app.setVersion("1.2.2-SNAPSHOT");
 		app.setEnvironment("dev");
 		entity.setApp(app);
 		entity.setName("redis-pool.properties");

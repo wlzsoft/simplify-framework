@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.meizu.simplify</groupId>
   <artifactId>simplify-framework</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>精简程序框架</name>
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
@@ -124,7 +124,7 @@
             &lt;!&ndash; <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> &ndash;&gt;
         </repository>-->
 	  <repository>
-		  <id>meizu-release</id>
+		  <id>meizu-releases</id>
 		  <name>local private nexus</name>
 		  <url>http://10.2.81.208:8081/nexus/content/repositories/releases/</url>
 	  </repository>

@@ -45,7 +45,7 @@ allprojects  {
 	def gitUrl = 'http://10.2.67.40/simplify-framework.git' // Git仓库的url
 	install {
 	    repositories.mavenInstaller {
-	    	pom.version = '1.2.1'
+	    	pom.version = '1.2.2-SNAPSHOT'
 	        pom.artifactId = 'simplify-framework'
 	        // This generates POM.xml with proper parameters
 	        pom {

@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.meizu.simplify</groupId>
     <artifactId>config-plugins</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>config-server</artifactId>
   <name>配置服务客户端</name>

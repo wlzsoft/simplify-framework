@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.meizu.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>message</artifactId>
   <name>message 消息模块</name>

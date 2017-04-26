@@ -5,11 +5,11 @@
   <parent>
     <groupId>com.meizu.simplify</groupId>
     <artifactId>mq-plugins</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
   </parent>
   <groupId>com.meizu.simplify</groupId>
   <artifactId>mq-activemq</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2-SNAPSHOT</version>
   <name>mq-activemq</name>
   <url>http://maven.apache.org</url>
   <properties>
