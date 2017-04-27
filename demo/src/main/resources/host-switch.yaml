@@ -1,4 +1,4 @@
-!!HostSwitch
+!!vip.simplify.datasource.config.pojo.HostSwitch
 masterHostList:
 - name: master1
   password: '123456'
