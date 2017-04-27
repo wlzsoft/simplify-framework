@@ -29,7 +29,6 @@ import vip.simplify.utils.CollectionUtil;
  * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
- * @param <T>
  */
 @Bean
 public class SearchByPojoDao {

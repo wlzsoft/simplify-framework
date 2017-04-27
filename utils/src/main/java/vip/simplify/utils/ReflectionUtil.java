@@ -535,7 +535,6 @@ public class ReflectionUtil {
 	 * 方法用途: 获取class的所有属性，包含父类的属性<br>
 	 * 操作步骤: TODO<br>
 	 * @param entityClass
-	 * @param fieldList
 	 * @return
 	 */
 	public static List<Field> getAllField(Class<?> entityClass) {

@@ -22,7 +22,9 @@ public interface ITaskFactory {
 	/**
 	 * 方法用途: 添加一个任务<br>
 	 * 操作步骤: TODO<br>
-	 * @param socket
+	 * @param host
+	 * @param port
+	 * @param backlog
 	 */
 	public void add(String host,int port,int backlog)  throws IOException;
 }

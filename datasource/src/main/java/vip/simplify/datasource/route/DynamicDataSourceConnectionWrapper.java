@@ -64,7 +64,7 @@ public class DynamicDataSourceConnectionWrapper implements Connection{
 	private Connection connection;
 	
 	/**
-	 * @param virtualConnection 虚拟连接
+	 *  虚拟连接
 	 */
 	public DynamicDataSourceConnectionWrapper() {
 		

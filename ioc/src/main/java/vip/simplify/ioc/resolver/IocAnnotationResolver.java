@@ -56,7 +56,7 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	/**
 	 * 方法用途: 解析执行bean实例，并进行依赖注入<br>
 	 * 操作步骤: TODO<br>
-	 * @param beanObj
+	 * @param beanName
 	 */
 	@Override
 	public void resolveBeanObj(String beanName) {

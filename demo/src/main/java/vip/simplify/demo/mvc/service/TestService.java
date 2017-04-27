@@ -41,7 +41,7 @@ public class TestService {
 	 * 
 	 * 方法用途: 不能同时有两个cache相关注解，前者会被后者覆盖<br>
 	 * 操作步骤: TODO<br>
-	 * @param aa
+	 * @param test
 	 * @return
 	 */
 //	@CacheDataAdd(key="bbb")//不可以同时使用两个缓存相关的注解，否则会被覆盖掉,以最后一个为准

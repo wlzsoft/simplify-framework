@@ -127,7 +127,8 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
      * 
      * 方法用途: 事务回滚处理<br>
      * 操作步骤: TODO 后续要调整这个方法的逻辑，和after 的事务提交的逻辑合并公用部分代码，并且独立出异常处理类，在方法级别处理<br>
-     * @param obj
+     * @param methodFullName
+     * @param oldTransactionISO
      */
 	public static boolean transationRollbackResolver(String methodFullName,Integer oldTransactionISO) {
 		Map<String,AnnotationInfo<Transation>> annotationInfoMap = TransationAnnotationResolver.transAnnotationInfoMap;

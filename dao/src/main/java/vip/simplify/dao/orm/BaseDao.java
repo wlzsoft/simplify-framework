@@ -38,7 +38,6 @@ public class BaseDao  {
 	 * 
 	 * 方法用途: 获取基于pojo对象结果集的对应的dao实例<br>
 	 * 操作步骤: TODO不建议使用<br>
-	 * @param className 结果实体类的名称
 	 * @return
 	 */
 	public static SearchByPojoDao getInsPojo () {

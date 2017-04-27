@@ -131,7 +131,7 @@ public class SymmetricBaseEncrypt {
 	 * 操作步骤: 如果使用向量，那么key值作为IV向量值
 	 *           注意：没有缓存Cipher对象，多次调用，效率低 <br>
 	 * @param data 
-	 * @param key 如果是DES必须是8个字节，如果是ascii编码，那么都是8个字符，如果是中文等其他字符，那么在charset是utf-8，是2到3个汉字("中文st"这个key才合法)，如果是gbk，那么是4汉字("中文测试"这个key才合法)
+	 * @param secretKey 如果是DES必须是8个字节，如果是ascii编码，那么都是8个字符，如果是中文等其他字符，那么在charset是utf-8，是2到3个汉字("中文st"这个key才合法)，如果是gbk，那么是4汉字("中文测试"这个key才合法)
 	 *            如果是AES必须是16个字节
 	 * @param charset
 	 * @param useIV
@@ -193,7 +193,7 @@ public class SymmetricBaseEncrypt {
 	 * 方法用途: Base64解码并解密<br>
 	 * 操作步骤: 如果使用向量，那么key值作为IV向量值<br>
 	 * @param data
-	 * @param key des长度8个字节，也就是64位; aes长度16个字节
+	 * @param secretKey des长度8个字节，也就是64位; aes长度16个字节
 	 * @param charset
 	 * @param algorithm 算法名称
 	 * @param algorithmMode 算法模式(加密分割模式)

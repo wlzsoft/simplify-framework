@@ -249,7 +249,6 @@ public class SQLBuilder<T> {
     /**
      * 生成根据ID删除的SQL
      * 
-     * @param id
      * @return
      */
     public <PK> String removeById() {

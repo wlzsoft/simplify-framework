@@ -48,8 +48,7 @@ public interface IHashCacheDao {
     /**
      * 同时将多个field - value(域-值)对设置到哈希表key中。此命令会覆盖哈希表中已存在的域。如果key不存在，一个空哈希表被创建并执行hmset操作。
      * @param key
-     * @param field
-     * @param value
+     * @param hash
      * @param seconds
      * @return
      */

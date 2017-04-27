@@ -118,7 +118,7 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
     /**
      * 方法用途: 根据ids进行批量删除<br>
      * 操作步骤: TODO<br>
-     * @param  待删除的业务实体id列表
+     * @param  ids 待删除的业务实体id列表
      * @return 删除记录数
      */
     Integer remove(List<PK> ids);

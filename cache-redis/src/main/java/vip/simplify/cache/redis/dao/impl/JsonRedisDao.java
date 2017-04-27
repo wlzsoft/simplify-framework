@@ -139,8 +139,8 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
+	 * @param expireTime
 	 * @param value
-	 * @param seconds
 	 * @return
 	 */
 	@Override

@@ -12,7 +12,6 @@ package vip.simplify.message.core;
  * @author <a href="mailto:wanghaibin@meizu.com" >wanghb</a>
  * @version Version 3.0
  *
- * @param <T>
  */
 public interface SendMessageTemplate {
 

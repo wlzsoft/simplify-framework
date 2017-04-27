@@ -37,7 +37,6 @@ public class SQLExecute {
 	 * 
 	 * 方法用途: 执行delete，update 根据param的where条件来更新或是删除<br>
 	 * 操作步骤: TODO<br>
-	 * @param param
 	 * @return
 	 */
 	public static Integer executeUpdate(ConnectionManager connectionManager, String sql, Object... params) {

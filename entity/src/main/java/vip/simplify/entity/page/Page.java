@@ -50,7 +50,6 @@ public class Page<T> implements IPage<T> {
 	
 	private String url;// 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
 	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
-
 	private int currentRecord = 0;// 当前页第一条数据在数据库中位置,从0开始,在mysql limit 中就是第一个参数
 	private static int DEFAULT_PAGE_SIZE = 10;
 	private int currentPage = 1;// 当前页码(当前页数) ，默认是第一页
@@ -260,8 +259,6 @@ public class Page<T> implements IPage<T> {
 	 * 
 	 * 方法用途: 根据页大小（每页数据个数）获取给定页码的第一条数据在总数据中的位置（从1开始）<br>
 	 * 操作步骤: TODO<br>
-	 * @param currentPage 给定的页码
-	 * @param pageSize 页大小（每页数据个数）
 	 * @return 给定页码的第一条数据在总数据中的位置（从1开始）
 	 */
 	public int getCurrentRecord() {
@@ -366,7 +363,6 @@ public class Page<T> implements IPage<T> {
 	/**
 	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
 	 * 操作步骤: TODO<br>
-	 * @param currentPage
 	 * @return
 	 */
 	public Integer getStartOfPage() {
@@ -377,7 +373,6 @@ public class Page<T> implements IPage<T> {
 	 * 获取任一页最后一条数据在数据集的位置
 	 * 方法用途: TODO<br>
 	 * 操作步骤: TODO<br>
-	 * @param currentPage
 	 * @return
 	 */
 	public Integer getEndOfPage(){
@@ -393,7 +388,7 @@ public class Page<T> implements IPage<T> {
 	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
 	 * 操作步骤: 注意这个是静态工具方法<br>
 	 * @param currentPage
-	 * @see #getStartByPage(long,long)
+	 * @see #getStartByPage(Integer,Integer)
 	 * @return
 	 */
 	public static Integer getStartByPage(Integer currentPage) {

@@ -42,8 +42,7 @@ public class DefaultMongoDao{
 	/**
 	 * 方法用途: 数据删除
 	 * 操作步骤: TODO<br>
-	 * @param dbName 数据库名称
-	 * @param collectionName  集合名称
+	 * @param entityClass 实体Class
 	 * @param key 字段名
 	 * @param value 值
 	 * @return
@@ -67,8 +66,7 @@ public class DefaultMongoDao{
 	/**
 	 * 方法用途: 多字段删除<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName 数据库名称
-	 * @param collectionName  集合名称
+	 * @param entityClass 实体Class
 	 * @param deleMap 删除条件（key：字段名，value：对应值）
 	 * @return
 	 */
@@ -95,8 +93,7 @@ public class DefaultMongoDao{
 	/**
 	 * 方法用途: 分页查询<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName 数据库表
-	 * @param collectionName 集合名称（数据表）
+	 * @param entityClass 实体Class
 	 * @param map 查询条件（key：字段名称  vlaue：对应值）
 	 * @param pageSize
 	 * @param currentPage
@@ -129,9 +126,7 @@ public class DefaultMongoDao{
 	/**
 	 * 方法用途: 保存数据<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName
-	 * @param collectionName
-	 * @param t
+	 * @param entity
 	 * @return
 	 */
 	public boolean inSertOne(Object entity) {
@@ -148,8 +143,7 @@ public class DefaultMongoDao{
 	/**
 	 * 方法用途: 判断是数据是否存在<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName
-	 * @param collectionName
+	 * @param entityClass
 	 * @param key
 	 * @param value
 	 * @return
@@ -176,7 +170,7 @@ public class DefaultMongoDao{
 	 * 操作步骤: TODO<br>
 	 * @param key 字段名称
 	 * @param value 字段值
-	 * @param t 需要更新的数据
+	 * @param entityClass 需要更新的数据
 	 * @return
 	 */
 	public boolean update(String key, Object value,Class<?> entityClass) {
@@ -199,7 +193,7 @@ public class DefaultMongoDao{
 	/**
 	 * 方法用途: 构建单个实体<br>
 	 * 操作步骤: TODO<br>
-	 * @param t
+	 * @param entityClass
 	 * @return
 	 */
 	private Document buildDocument(Object entityClass) {

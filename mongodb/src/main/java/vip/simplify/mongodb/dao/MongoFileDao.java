@@ -65,7 +65,7 @@ public class MongoFileDao<T>{
 	/**
 	 * 方法用途: Id查询<br>
 	 * 操作步骤: TODO<br>
-	 * @param id ObjectId
+	 * @param objectId ObjectId
 	 * @return
 	 */
 	public GridFSFile findById(String objectId) {
@@ -123,7 +123,7 @@ public class MongoFileDao<T>{
 	 * 
 	 * 方法用途: 下载文件<br>
 	 * 操作步骤: TODO<br>
-	 * @param name文件名称
+	 * @param name 文件名称
 	 * @return
 	 */
 	public byte[] downloadStreamByName(String name) {
@@ -143,7 +143,7 @@ public class MongoFileDao<T>{
 	 * 
 	 * 方法用途: 下载文件<br>
 	 * 操作步骤: TODO<br>
-	 * @param toke文件名称
+	 * @param toke 文件名称
 	 * @return
 	 */
 	public byte[] downloadStreamByToke(String toke) {

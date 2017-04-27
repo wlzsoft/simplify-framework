@@ -90,7 +90,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	private ConnectionManager connectionManager;
 	
 	/**
-	 * @param clazz  业务实体类
+	 * @param entityClass  业务实体类
 	 */
 	public Dao(Class<T> entityClass) {
 		this.entityClass = entityClass;
@@ -147,7 +147,6 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 方法用途: 无论有多少超类，能递归判断和提取<br>
 	 * 操作步骤: TODO<br>
 	 * @param clazz
-	 * @param trans 
 	 */
 	private void buildFieldInfo(Class<? super T> clazz) {
 		Field[] fields = clazz.getDeclaredFields();
@@ -164,7 +163,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 方法用途: 抽取字段和属性信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param fields
-	 * @param trans
+	 * @param transAnno
 	 */
 	private void getFieldInfo(Field[] fields, List<Transient> transAnno) {
 		List<String> transArr = new ArrayList<String>();

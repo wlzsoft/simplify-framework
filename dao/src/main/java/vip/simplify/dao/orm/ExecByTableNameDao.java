@@ -78,10 +78,9 @@ public class ExecByTableNameDao {
 	/**
      * 生成新增的SQL--预处理方式，prestatement方式
      * 
-     * @param t
-     * @param currentColumnFieldNames
-     * @param values 
-     * @param columns 
+     * @param tableName
+     * @param otherIdColumnsStr
+     * @param otherIdColumnsSize
      * @return
      */
     private String preCreate(String tableName,String otherIdColumnsStr,int otherIdColumnsSize) {
@@ -114,7 +113,9 @@ public class ExecByTableNameDao {
 	/**
      * 生成根据IDs批量删除的SQL
      * 
-     * @param ids
+     * @param tableName
+     * @param columnName
+     * @param idsLength
      * @return
      */
     public String removeOfBatch(String tableName,String columnName,int idsLength) {

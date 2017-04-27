@@ -14,7 +14,6 @@ import vip.simplify.utils.StringUtil;
  * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
- * @param <T>
  */
 public class CommonSqlBuilder {
 	

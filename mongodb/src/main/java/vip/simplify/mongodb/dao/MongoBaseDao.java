@@ -45,8 +45,6 @@ public class MongoBaseDao<T> {
 	/**
 	 * 方法用途: 数据删除
 	 * 操作步骤: TODO<br>
-	 * @param dbName 数据库名称
-	 * @param collectionName  集合名称
 	 * @param key 字段名
 	 * @param value 值
 	 * @return
@@ -69,8 +67,6 @@ public class MongoBaseDao<T> {
 	/**
 	 * 方法用途: 多字段删除<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName 数据库名称
-	 * @param collectionName  集合名称
 	 * @param deleMap 删除条件（key：字段名，value：对应值）
 	 * @return
 	 */
@@ -96,8 +92,6 @@ public class MongoBaseDao<T> {
 	/**
 	 * 方法用途: 分页查询<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName 数据库表
-	 * @param collectionName 集合名称（数据表）
 	 * @param map 查询条件（key：字段名称  vlaue：对应值）
 	 * @param pageSize
 	 * @param currentPage
@@ -130,8 +124,6 @@ public class MongoBaseDao<T> {
 	/**
 	 * 方法用途: 保存数据<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName
-	 * @param collectionName
 	 * @param t
 	 * @return
 	 */
@@ -148,8 +140,6 @@ public class MongoBaseDao<T> {
 	/**
 	 * 方法用途: 判断是数据是否存在<br>
 	 * 操作步骤: TODO<br>
-	 * @param dbName
-	 * @param collectionName
 	 * @param key
 	 * @param value
 	 * @return
