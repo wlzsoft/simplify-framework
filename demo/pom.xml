@@ -312,11 +312,11 @@
 			<configuration>
 				<!-- jvmArgs不起作用 -->
 				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
-				<contextXml>src/test/java/jetty-config.xml</contextXml>
+				<contextXml>src/test/resources/jetty/jetty-config.xml</contextXml>
 				<!--<war>${project.basedir}/${project.build.directory}/${project.artifactId}-${project.version}</war>-->
 				<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
 				<webApp>
-					<defaultsDescriptor>${project.basedir}/src/test/java/webdefault.xml</defaultsDescriptor>
+					<defaultsDescriptor>${project.basedir}/src/test/resources/jetty/webdefault.xml</defaultsDescriptor>
                     <contextPath>/</contextPath>
 					<!--<baseResource>${project.basedir}/src/main/webapp</baseResource>-->
                 </webApp>

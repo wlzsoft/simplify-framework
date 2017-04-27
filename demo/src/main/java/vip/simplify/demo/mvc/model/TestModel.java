@@ -4,6 +4,9 @@ import vip.simplify.demo.mvc.entity.Test;
 import vip.simplify.mvc.model.*;
 import vip.simplify.mvc.model.ModelCharsFilter.Filter;
 
+import static vip.simplify.mvc.model.ValidTypeEnum.NotNull;
+import static vip.simplify.mvc.model.ValidTypeEnum.Number;
+
 public class TestModel extends BaseModel {
 
 
