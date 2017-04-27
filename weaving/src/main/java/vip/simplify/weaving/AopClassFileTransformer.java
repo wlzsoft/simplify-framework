@@ -65,10 +65,10 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 	public ClassPool pool = ClassPool.getDefault();
     final static List<FilterMetaInfo> filterList = new ArrayList<>();
     private String injectionTargetClassPaths = null;
-    private String[] injectionTargetAnnotationArr = {Constants.packagePrefix+".simplify.cache.annotation.CacheDataSearch",
-										    		Constants.packagePrefix+".simplify.cache.annotation.CacheDataDel",
-										    		Constants.packagePrefix+".simplify.cache.annotation.CacheDataAdd",
-										    		Constants.packagePrefix+".simplify.dao.annotations.Transation"};
+    private String[] injectionTargetAnnotationArr = {Constants.packagePrefix+".cache.annotation.CacheDataSearch",
+										    		Constants.packagePrefix+".cache.annotation.CacheDataDel",
+										    		Constants.packagePrefix+".cache.annotation.CacheDataAdd",
+										    		Constants.packagePrefix+".dao.annotations.Transation"};
     
     /**
      * 默认构建方法：javaagent只绑定一个实例,方法只调用一次
@@ -182,7 +182,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 			for (Object object : obj) {
 				Annotation anno = (Annotation) object;
 				String annoName = anno.annotationType().getName();
-				if(annoName.equals(Constants.packagePrefix+".simplify.ioc.annotation.Bean")) {
+				if(annoName.equals(Constants.packagePrefix+".ioc.annotation.Bean")) {
 					return true;
 				}
 			}
@@ -350,7 +350,7 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		//ctmethod.addParameter(type); //添加方法参数，并指定参数类型，可以是自定义类型
 		ctmethod.addLocalVariable("beforeObject",pool.get("java.lang.Object"));
 		//ctmethod.addLocalVariable("beforeObject",ctmethod.getReturnType());
-		ctmethod.addLocalVariable("ir",pool.get(Constants.packagePrefix+".simplify.aop.InterceptResult"));
+		ctmethod.addLocalVariable("ir",pool.get(Constants.packagePrefix+".aop.InterceptResult"));
 		//字节码植入，需要考虑分析 1.返回值转换的问题，2.是否有返回值的问题
 		String returnTypeName = ctmethod.getReturnType().getName();
 		StringBuilder builder = new StringBuilder();
@@ -363,17 +363,17 @@ public class AopClassFileTransformer implements ClassFileTransformer {
 		}
 		ctmethod.insertBefore(builder.toString());
 		ctmethod.insertBefore("startTime = java.time.Instant.now().getNano();");
-		ctmethod.insertAfter(Constants.packagePrefix+".simplify.aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
+		ctmethod.insertAfter(Constants.packagePrefix+".aop.IInterceptor.initAfter(\""+methodFullName+"\",ir,this,$args);");
 		ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
 		ctmethod.insertAfter("System.out.println(\"织入成功后，方法 ["+methodFullName+"] 调用花费的时间:\" +(endTime - startTime)/10000000 +\"毫秒.\");");
 		ctmethod.insertAfter("endTime = java.time.Instant.now().getNano();");
 		//异常捕获处理
 		builder = new StringBuilder();
-		builder.append(Constants.packagePrefix+".simplify.aop.IInterceptor.initException(\""+methodFullName+"\",null,this,$args);");
+		builder.append(Constants.packagePrefix+".aop.IInterceptor.initException(\""+methodFullName+"\",null,this,$args);");
 		builder.append("throw $e;");
 		CtClass ctClassException = ClassPool.getDefault().get("java.lang.Exception");  
 		ctmethod.addCatch(builder.toString(), ctClassException);
-		ctmethod.insertAfter(Constants.packagePrefix+".simplify.aop.IInterceptor.initFinally(\""+methodFullName+"\",null,this,$args);", true);
+		ctmethod.insertAfter(Constants.packagePrefix+".aop.IInterceptor.initFinally(\""+methodFullName+"\",null,this,$args);", true);
 	}
 
     /**

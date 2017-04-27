@@ -29,7 +29,7 @@ public class PageTemplateInterfaceHandler implements IInterfaceHandler {
 	@Override
 	public Class<?> handle() {
 		if(templateType == null) {
-			templateType = Constants.packagePrefix+".simplify.mvc.view.JspTemplate";
+			templateType = Constants.packagePrefix+".mvc.view.JspTemplate";
 		}
 		try {
 			return Class.forName(templateType);

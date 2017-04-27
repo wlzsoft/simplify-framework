@@ -21,8 +21,8 @@ import vip.simplify.ioc.BeanFactory;
 public interface IInterceptor {
 	public  static <T extends Object> T initBefore(String methodFullName,InterceptResult ir,Object o,Object... args ) {
 		Handler handle = BeanFactory.getBean("beforeCacheInterceptor");//CacheInterceptor.getBeforeInstance();
-//		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.aop.log.LogInterceptor"))//业务处理成功后才需要记录日志，这里无需设置日志过滤器
-		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor"));
+//		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".aop.log.LogInterceptor"))//业务处理成功后才需要记录日志，这里无需设置日志过滤器
+		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".dao.TransationInterceptor"));
 //		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);
@@ -34,8 +34,8 @@ public interface IInterceptor {
 	
 	public static Object initAfter(String methodFullName,InterceptResult ir,Object o,Object... args ) {
 		Handler handle = BeanFactory.getBean("afterCacheInterceptor");//CacheInterceptor.getAfterInstance();
-		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.aop.log.LogInterceptor"));
-		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor"));
+		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".aop.log.LogInterceptor"));
+		handle.setNextHandler(BeanFactory.getBean(Constants.packagePrefix+".dao.TransationInterceptor"));
 //		.setNextHandler(handle);//环状，这里暂时不需要环状责任链,可设置，也可以不设置，默认设置上，形成闭环
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);
@@ -52,7 +52,7 @@ public interface IInterceptor {
 		/*for(StackTraceElement ste:throwable.getStackTrace()){
 			System.out.println("异常堆栈异常方法:"+ste.getMethodName());
 		}*/
-		Handler handle = BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor");
+		Handler handle = BeanFactory.getBean(Constants.packagePrefix+".dao.TransationInterceptor");
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);
 		context.setThis(o);
@@ -62,7 +62,7 @@ public interface IInterceptor {
 	}
 	
 	public static Object initFinally(String methodFullName,InterceptResult ir,Object o,Object... args ) {
-		Handler handle = BeanFactory.getBean(Constants.packagePrefix+".simplify.dao.TransationInterceptor");
+		Handler handle = BeanFactory.getBean(Constants.packagePrefix+".dao.TransationInterceptor");
 		Context context = new Context(ir);
 		context.setMethodFullName(methodFullName);
 		context.setThis(o);

@@ -56,7 +56,7 @@ public class CacheSimpleTest {
 			};
 			cai.setAnnotatoionType(cacheDataAdd);
 			cai.setReturnType(Object.class);
-			CacheAnnotationResolver.cacheAnnotationInfoMap.put(Constants.packagePrefix+".simplify.aop.service.TestService:doSomeThing", cai);
+			CacheAnnotationResolver.cacheAnnotationInfoMap.put(Constants.packagePrefix+".aop.service.TestService:doSomeThing", cai);
 			 User bb = new User();
 		        bb.setName("yyyyy");
 //		        类加载冲突 ，后续打开 TODO

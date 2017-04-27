@@ -32,7 +32,7 @@ public  class BeanFactoryTest {
 	}
 	@Test
 	public void getBean() {
-		Object obj = BeanFactory.getBean(Constants.packagePrefix+".simplify.ioc.service.TestService");
+		Object obj = BeanFactory.getBean(Constants.packagePrefix+".ioc.service.TestService");
 		LOGGER.debug(obj+"");
 	}
 	@Test
