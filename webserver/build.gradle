@@ -1,8 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 
-group = 'com.meizu'
-version = '1.2.2-SNAPSHOT'
+group = 'vip.simplify'
+version = '1.2.3-SNAPSHOT'
 tasks.withType(JavaCompile) {
 	   options.encoding = 'UTF-8'
 }
@@ -20,8 +20,8 @@ repositories {
     //maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-    compile 'com.meizu:mvc:1.2.2-SNAPSHOT'
-    compile 'com.meizu:encrypt:1.2.2-SNAPSHOT'
+    compile 'vip.simplify:mvc:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:encrypt:1.2.3-SNAPSHOT'
     compile 'org.slf4j:slf4j-api:1.7.7', 'ch.qos.logback:logback-core:1.1.3', 'ch.qos.logback:logback-classic:1.1.3'
     testCompile 'junit:junit:4.12'
     compileOnly('javax.servlet:javax.servlet-api:3.1.0')

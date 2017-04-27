@@ -5,8 +5,8 @@
 #-dontpreverify
 #-verbose
 #-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-#-keep public class * extends com.meizu.simplify.ioc.resolver.IAnnotationResolver
-#-keep public class com.meizu.simplify.ioc.resolver.IAnnotationResolver
+#-keep public class * extends IAnnotationResolver
+#-keep public class IAnnotationResolver
 #-keepclasseswithmembers class * {
 #    public <init>(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse);
 #}

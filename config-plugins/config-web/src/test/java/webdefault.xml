@@ -47,13 +47,13 @@
   
   <!-- 框架listener加载 -->
   <listener>
-   <listener-class>com.meizu.simplify.listener.StartUpListener</listener-class>
+   <listener-class>StartUpListener</listener-class>
   </listener>
 
   <!-- @WebFilter(urlPatterns="/*",dispatcherTypes={DispatcherType.REQUEST},filterName="ControllerFilter") -->
   <filter>
   	<filter-name>ControllerFilter</filter-name>
-  	<filter-class>com.meizu.simplify.mvc.ControllerFilter</filter-class>
+  	<filter-class>ControllerFilter</filter-class>
   </filter>
   <filter-mapping>
   	<filter-name>ControllerFilter</filter-name>

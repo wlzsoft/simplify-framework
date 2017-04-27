@@ -1,7 +1,7 @@
 @echo off
 title %app_name%
 SET PORT=9998
-SET MAIN_CLASS=com.meizu.simplify.bootstrap.Server
+SET MAIN_CLASS=Server
 
 SET APP_HOME=%~dp0
 SET LOG_DIR=%APP_HOME%logs

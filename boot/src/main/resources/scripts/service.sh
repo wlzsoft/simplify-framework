@@ -54,7 +54,7 @@ LIB_JARS=$LIB_JARS':'$CLASSPATH
 echo 'LIB_JARS='$LIB_JARS	
 
 #主程序入库类,这里在jar包指定，这个不起作用
-MAIN_CLASS_NAME="com.meizu.simplify.bootstrap.Server"
+MAIN_CLASS_NAME="Server"
 echo "MAIN_CLASS_NAME="$MAIN_CLASS_NAME
 
 process_Id=`ps fx | grep java | grep '$app_name' |awk '{print $1}'` 

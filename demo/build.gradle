@@ -4,8 +4,8 @@ apply plugin: 'maven'
 apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin' //代替官方的apply plugin: 'jetty'
 apply plugin: 'war'
 
-group = 'com.meizu'
-version = '1.2.2-SNAPSHOT'
+group = 'vip.simplify'
+version = '1.2.3-SNAPSHOT'
 
 description = """demo Maven Webapp"""
 
@@ -27,13 +27,13 @@ repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-    compile 'com.meizu:mvc:1.2.2-SNAPSHOT'
-    compile 'com.meizu:cache-redis:1.2.2-SNAPSHOT'
-    compile 'com.meizu:webcache:1.2.2-SNAPSHOT'
-    compile 'com.meizu:aop:1.2.2-SNAPSHOT'
-    compile 'com.meizu:dao:1.2.2-SNAPSHOT'
-    compile 'com.meizu:listener:1.2.2-SNAPSHOT'
-    compile 'com.meizu:webserver:1.2.2-SNAPSHOT'
+    compile 'vip.simplify:mvc:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:cache-redis:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:webcache:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:aop:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:dao:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:listener:1.2.3-SNAPSHOT'
+    compile 'vip.simplify:webserver:1.2.3-SNAPSHOT'
     testCompile 'junit:junit:4.12@jar'
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
     //compile gradleApi() //when you are developing custom Gradle tasks or plugins.

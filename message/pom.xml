@@ -3,9 +3,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu.simplify</groupId>
+    <groupId>vip.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>message</artifactId>
   <name>message 消息模块</name>
@@ -18,17 +18,17 @@
   </properties>
   <dependencies>
 	<dependency>
-		<groupId>com.meizu.simplify</groupId>
+		<groupId>vip.simplify</groupId>
 		<artifactId>utils</artifactId>
 		<version>${project.parent.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu.simplify</groupId>
+		<groupId>vip.simplify</groupId>
 		<artifactId>entity</artifactId>
 		<version>${project.parent.version}</version>
 	</dependency>
 	<dependency>
-		<groupId>com.meizu.simplify</groupId>
+		<groupId>vip.simplify</groupId>
 		<artifactId>ioc</artifactId>
 		<version>${project.parent.version}</version>
 	</dependency>

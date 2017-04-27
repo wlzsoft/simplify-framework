@@ -1,8 +1,8 @@
-package com.meizu.simplify.codegen;
+package vip.simplify.codegen;
 
-import com.meizu.simplify.config.info.Message;
-import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.dao.invoke.ISqlMethodSelector;
+import Message;
+import Bean;
+import ISqlMethodSelector;
 <%for(tag in tagList){%>
 import ${tag.clazz};
 <%}%>

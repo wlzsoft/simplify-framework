@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu.simplify</groupId>
+    <groupId>vip.simplify</groupId>
     <artifactId>view-plugins</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>view-httl</artifactId>
   <name>现代模版引擎httl集成view插件</name>
@@ -13,12 +13,12 @@
   </properties>
    <dependencies>
   	<dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>template-httl</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>view-api</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>

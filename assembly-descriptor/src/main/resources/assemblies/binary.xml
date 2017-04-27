@@ -22,7 +22,7 @@
 	      <!-- <includeSubModules>true</includeSubModules> -->
 	      <!-- 只有在simplify-framework这个最父级的项目执行install,以下的includes才有用 -->
 	      <!-- <includes>
-               <include>com.meizu.simplify:boot</include>
+               <include>vip.simplify:boot</include>
           </includes> -->
 	      <sources>
 	      	<includeModuleDirectory>false</includeModuleDirectory>
@@ -56,7 +56,7 @@
 	            <scope>compile</scope>
 	            <useProjectArtifact>false</useProjectArtifact>
 	            <excludes>
-	              <exclude>com.meizu.simplify:*</exclude>
+	              <exclude>vip.simplify:*</exclude>
 	            </excludes> -->
 	          <!-- </dependencySet>
 	        </dependencySets>
@@ -64,7 +64,7 @@
 	    </moduleSet>
 	    <!-- <moduleSet>
             <includes>
-                <include>com.meizu.simplify:*</include>
+                <include>vip.simplify:*</include>
             </includes>
             <binaries />
         </moduleSet> -->
@@ -149,7 +149,7 @@
 			<scope>runtime</scope>
            <!--  <excludes>
               <exclude>ros-report*.jar</exclude>
-              <exclude>com.meizu.simplify:*</exclude>
+              <exclude>vip.simplify:*</exclude>
             </excludes> -->
           </dependencySet>
 	       <!-- 包含provided类型的包，如果是tomcat等容器，是需要这些依赖的，容器自带  -->

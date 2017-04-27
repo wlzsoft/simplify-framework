@@ -16,7 +16,7 @@ allprojects  {
 	apply plugin: 'maven' //提供maven支持，可以兼容maven的配置
 	//apply plugin: 'com.jfrog.bintray' //支持上传到jcenter上面，要提前注册帐号
 
-	group = 'com.meizu'
+	group = 'vip.simplify'
 	version = '$simplify-framework-version'
 	tasks.withType(JavaCompile) {
 	   options.encoding = 'UTF-8'
@@ -27,7 +27,7 @@ allprojects  {
 	    repositories.mavenDeployer {
 	        repository(url: "http://10.2.67.20:8081/nexus/content/repositories/snapshots/") {
 	            authentication(userName: "admin", password: "admin123")
-	            pom.groupId = "com.meizu"
+	            pom.groupId = "vip.simplify"
 	            pom.artifactId = "simplify-framework"
 	        }
 	        pom.project {
@@ -45,7 +45,7 @@ allprojects  {
 	def gitUrl = 'http://10.2.67.40/simplify-framework.git' // Git仓库的url
 	install {
 	    repositories.mavenInstaller {
-	    	pom.version = '1.2.2-SNAPSHOT'
+	    	pom.version = '1.2.3-SNAPSHOT'
 	        pom.artifactId = 'simplify-framework'
 	        // This generates POM.xml with proper parameters
 	        pom {

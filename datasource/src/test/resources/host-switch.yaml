@@ -1,4 +1,4 @@
-!!com.meizu.simplify.datasource.config.pojo.HostSwitch
+!!HostSwitch
 masterHostList:
 - name: master1
   password: '123456'

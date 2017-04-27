@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu.simplify</groupId>
+    <groupId>vip.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>dao</artifactId>
   <name>关系型数据库持久化共用组件</name>
@@ -14,33 +14,33 @@
   </properties>
   <dependencies>
   	<dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>ioc</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>config</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>aop</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>entity</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <!-- 以下4个jar后续要考虑如何删除，不应该出现在dao模块中，开发阶段为了测试，所以加上 -->
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>template</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-		  <groupId>com.meizu.simplify</groupId>
+		  <groupId>vip.simplify</groupId>
 		  <artifactId>template-beetl</artifactId>
 		  <version>${project.parent.version}</version>
 	  </dependency>
@@ -56,7 +56,7 @@
 		<version>5.1.38</version>
 	 </dependency>
 	 <dependency>
-		  <groupId>com.meizu.simplify</groupId>
+		  <groupId>vip.simplify</groupId>
 		  <artifactId>test</artifactId>
 		  <version>${project.parent.version}</version>
 		  <scope>test</scope>

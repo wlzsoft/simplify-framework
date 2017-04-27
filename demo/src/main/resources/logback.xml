@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true"> 
 
-  <conversionRule conversionWord="ip" converterClass="com.meizu.simplify.log.logback.IpConverter" />
+  <conversionRule conversionWord="ip" converterClass="vip.simplify.log.logback.IpConverter" />
   <!--logback颜色配置方案：https://logback.qos.ch/manual/layouts.html#coloring-->
   <!-- %-4relative：表示，将输出从程序启动到创建日志记录的时间 进行左对齐 且最小宽度为4
        %caller{1}  %caller{1, DISP_CALLER_EVAL, OTHER_EVAL_NAME, THIRD_EVAL_NAME}打印调度堆栈-->
@@ -26,7 +26,7 @@
     <!-- <target>system.out</target> -->
   </appender>
 
-  <appender name="RPC" class="com.meizu.simplify.log.logback.RpcAppender">
+  <appender name="RPC" class="vip.simplify.log.logback.RpcAppender">
     <encoder>
       <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level][ %ip- ][%thread] %logger{36} : %msg%n</pattern>
     </encoder>

@@ -58,7 +58,7 @@
 		</layout>
 	</appender>
 
-	<!-- <appender name="rabbitmq" class="com.meizu.message.log.RabbitMQAppender">
+	<!-- <appender name="rabbitmq" claRabbitMQAppendernder">
         <param name="identifier" value="log"/>
         <param name="host" value="10.2.67.41:5672,10.2.67.43:5672,10.2.67.40:5672"/>
         <param name="port" value="5672"/>
@@ -70,7 +70,7 @@
         <param name="durable" value="false"/>
         <param name="queue" value="roswebLog-queue"/>
         <param name="routingKey" value="roswebLog-key"/>
-       <layout class="com.meizu.message.log.JSONLayout" />
+       <layout claJSONLayoutyout" />
     </appender>  -->
 	
 	<root>

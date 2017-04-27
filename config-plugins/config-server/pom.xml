@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu.simplify</groupId>
+    <groupId>vip.simplify</groupId>
     <artifactId>config-plugins</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>config-server</artifactId>
   <name>配置服务的服务后端</name>
@@ -13,28 +13,28 @@
   </properties>
    <dependencies>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>config</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>config-api</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>zookeeper</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <!-- 打包用 -->
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>boot</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>test</artifactId>
 	    <version>${project.parent.version}</version>
 	    <scope>test</scope>
@@ -52,7 +52,7 @@
   </dependencies>
   <build>
   	<plugins>
-  		  <!--第一种启动方式： 不使用插件的的命令行方式启动服务  [mvn exec:java -Dexec.mainClass="com.meizu.simplify.bootstrap.Server"] -->
+  		  <!--第一种启动方式： 不使用插件的的命令行方式启动服务  [mvn exec:java -Dexec.mainClaServerrver"] -->
   		  <!--第二种启动方式：使用以下 exec-maven-plugin插件，那么只需要输入mvc test就可以启动，插件版定了test生命周期 -->
   		  <!--第三种启动方式：直接直接main类，通过eclipse支持的选项:run as java application,这种方式需要手动指定main类，boot项目打开的情况，不能通过项目赛选，只能通过eclipse在所有项目中选择启动的项目及对应的main类，比较繁琐  -->
   		  <!--第四种启动方式：直接通过命令行执行java命令，或是通过定好的shell等批处理方式来启动，生产环境的分发包使用这个方式来处理  -->
@@ -68,7 +68,7 @@
 		      <goal>java</goal>
 		     </goals>
 		     <configuration>
-		      <mainClass>com.meizu.simplify.bootstrap.Server</mainClass>
+		      <mainClass>vip.simplify.bootstrap.Server</mainClass>
 		      <!-- <arguments>
 		       <argument>name</argument>
 		       <argument>path</argument>
@@ -100,8 +100,8 @@
 			              <!-- <classpathLayoutType>custom</classpathLayoutType>
 			              <customClasspathLayout>path</customClasspathLayout> -->
 			              <useUniqueVersions>true</useUniqueVersions>
-                          <!-- <mainClass>com.meizu.simplify.config.server.bootstrap.Server</mainClass> -->
-                          <mainClass>com.meizu.simplify.bootstrap.Server</mainClass>
+                          <!-- <mainClass>vip.simplify.config.server.bootstrap.Server</mainClass> -->
+                          <mainClass>vip.simplify.bootstrap.Server</mainClass>
 			            </manifest>
 						<manifestEntries>
 							<!-- 增加自定义的classpath -->
@@ -139,7 +139,7 @@
 		             <configuration>
 		               <artifactItems>
 		                 <artifactItem>
-							<groupId>com.meizu.simplify</groupId>
+							<groupId>vip.simplify</groupId>
 							<artifactId>boot</artifactId>
 							<version>${project.parent.version}</version>
 		                    <type>jar</type>
@@ -225,7 +225,7 @@
 				</executions>
 			  	<dependencies>
 				  	<dependency>
-			            <groupId>com.meizu.simplify</groupId>
+			            <groupId>vip.simplify</groupId>
 			            <artifactId>assembly-descriptor</artifactId>
 			            <version>${project.parent.version}</version>
 			          </dependency>

@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu.simplify</groupId>
+    <groupId>vip.simplify</groupId>
     <artifactId>config-plugins</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>config-web</artifactId>
   <packaging>war</packaging>
@@ -14,12 +14,12 @@
   </properties>
   <dependencies>
   	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>config-api</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>listener</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
@@ -85,8 +85,8 @@
 		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
 		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
 		<!-- jvmargs:PermGen空间被移除了，取而代之的是Metaspace（JEP 122）。JVM选项-XX:PermSize与-XX:MaxPermSize分别被-XX:MetaSpaceSize与-XX:MaxMetaspaceSize所代替。 -->
-		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.2-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -->
-		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.2-SNAPSHOT.jar -Daop.properties的属性值可选-->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties的属性值可选-->
 		<plugin>
 
 		  <groupId>org.eclipse.jetty</groupId>
@@ -94,7 +94,7 @@
 		  <version>9.3.0.M2</version>
 			<configuration>
 				<!-- jvmArgs不起作用 -->
-				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.2-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
+				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties</jvmArgs> -->
 				<contextXml>src/test/java/jetty-config.xml</contextXml>
 				<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
 				<webApp>
@@ -154,7 +154,7 @@
 	      <configuration>
 	        <!-- <skip>true</skip> -->
 	        <forkMode>pertest</forkMode>
-	        <argLine>-javaagent:${project.basedir}/target/weaving-1.2.2-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
+	        <argLine>-javaagent:${project.basedir}/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
 	        <workingDirectory>${project.basedir}/target</workingDirectory>
 	      </configuration>
 	      <!-- 测试代码进行单元测试和集成测试区分，一般有两种方式： 
@@ -214,20 +214,20 @@
 					<configuration>
 						<target>
 							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
-							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.MethodSelectorGenMain"  args="com.meizu.demo.mvc.controller" append="true" jvm="java"  newenvironment="true">
+							<java classpath="${mvn-classpath}" classname="MethodSelectorGenMain"  args="vip.simplify.demo.mvc.controller" append="true" jvm="java"  newenvironment="true">
 								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
-							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.ModelSelectorGenBuild"  args="com.meizu.demo.mvc.model,com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
+							<java classpath="${mvn-classpath}" classname="ModelSelectorGenBuild"  args="vip.simplify.demo.mvc.model,vip.simplify.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
 							</java>
-							<java classpath="${mvn-classpath}" classname="com.meizu.simplify.codegen.resolver.SqlByDaoEntityGenBuild"  args="com.meizu.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
+							<java classpath="${mvn-classpath}" classname="SqlByDaoEntityGenBuild"  args="vip.simplify.demo.mvc.entity" append="true" jvm="java"  newenvironment="true">
 							</java>
 							<!-- <mkdir dir="${project.build.directory}/classes" /> -->
 							<javac nowarn="false" destdir="${project.build.directory}/classes"  includeantruntime="true">
 								<classpath path="${mvn-classpath}" />
 								<!-- <src path="${project.build.sourceDirectory}" /> -->
 								<src path="${project.build.directory}/codegen" />
-								<include name="com/meizu/simplify/codegen/*.java" />
+								<include name="vip/simplify/codegen/*.java" />
 							</javac>
 						</target>
 					</configuration>

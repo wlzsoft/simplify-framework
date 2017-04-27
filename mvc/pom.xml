@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.meizu.simplify</groupId>
+    <groupId>vip.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>mvc</artifactId>
   <name>mvc简易框架</name>
@@ -14,12 +14,12 @@
   </properties>
    <dependencies>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>utils</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
 	  <dependency>
-	  	<groupId>com.meizu.simplify</groupId>
+	  	<groupId>vip.simplify</groupId>
 	    <artifactId>dto</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
@@ -33,27 +33,27 @@
 		<!-- 以下这些jar后续要删除，不应该出现在mvc模块中，因为都是可选的，不是必须依赖的 -->
 		<!-- dao模块不该在这引入，紧紧为了在异常中使用事务回滚，后续会考虑剥离 TODO -->
 		  <!-- <dependency>
-		  	<groupId>com.meizu.simplify</groupId>
+		  	<groupId>vip.simplify</groupId>
 		  	<artifactId>dao</artifactId>
 		  	<version>${project.parent.version}</version>
 		  </dependency> -->
 		  <dependency>
-		  	<groupId>com.meizu.simplify</groupId>
+		  	<groupId>vip.simplify</groupId>
 		    <artifactId>view-beetl</artifactId>
 		    <version>${project.parent.version}</version>
 		  </dependency> 
 		  <dependency>
-		  	<groupId>com.meizu.simplify</groupId>
+		  	<groupId>vip.simplify</groupId>
 		    <artifactId>view-velocity</artifactId>
 		    <version>${project.parent.version}</version>
 		  </dependency>
 		  <!-- <dependency>
-		  	<groupId>com.meizu.simplify</groupId>
+		  	<groupId>vip.simplify</groupId>
 		    <artifactId>view-httl</artifactId>
 		    <version>${project.parent.version}</version>
 		  </dependency>
 		  <dependency>
-		  	<groupId>com.meizu.simplify</groupId>
+		  	<groupId>vip.simplify</groupId>
 		    <artifactId>view-freemarker</artifactId>
 		    <version>${project.parent.version}</version>
 		  </dependency>-->

@@ -4,9 +4,9 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.meizu.simplify</groupId>
+		<groupId>vip.simplify</groupId>
 		<artifactId>simplify-framework</artifactId>
-		<version>1.2.2-SNAPSHOT</version>
+		<version>1.2.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>authfilter</artifactId>
 	<name>对请求安全认证拦截处理</name>
@@ -19,7 +19,7 @@
   </properties>
 	<dependencies>
 		<dependency>
-		  	<groupId>com.meizu.simplify</groupId>
+		  	<groupId>vip.simplify</groupId>
 		    <artifactId>mvc</artifactId>
 		    <version>${project.parent.version}</version>
 		</dependency>

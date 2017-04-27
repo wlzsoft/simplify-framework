@@ -1,6 +1,6 @@
 #框架功能列表及bug修复情况：
 ###1.连接池的连接的控制，目前是否出现连接泄露，需要监控起来==>>已测试，已通过，案例[druid自带管理后台+相关druid配置调整和连接回收到连接池处理] 2016/2/25
-###2.分页查询的封装==>>已测试，已通过，案例[com.meizu.simplify.dao.DaoTest] 2016/2/25
+###2.分页查询的封装==>>已测试，已通过，案例[DaoTest] 2016/2/25
 ###3.测试一下多表负责查询是否有bug，测试相对复杂点的sql语句==》已测试，已通过，案例[TestController.adoTestSelect2方法] 2016/2/24
 ###4.map方式的查询的处理和实现==》已测试，已通过，案例[TestController.adoTestSelect3方法] 2016/2/24
 ###5.多表复杂查询返回实体的方式需要优化：目前依赖了jpa标准，无法灵活注入，对于查询，其实可以忽略jpa标准的==》已测试，已通过，案例[新增SearchByMapDao,并集成到BaseDao中] 2016/2/24
@@ -148,8 +148,8 @@ http://fishermen.iteye.com/blog/430286
 116.重构：使得能够满足模块化的需要
 117.单元测试提供：ReflectionGenericUtil.getSuperClassGenricType需要提供，严格测试
 118.调整配置文件及读取方式，做到0配置，也就是提供默认配置,并且可以支持在PropertiesConfig(标注了@ReloadableResource的)等配置实体中指定默认值，并且@Config的注入的值也可以使用PropertiesConfig实体的默认值，在@Config的属性没有默认值时，以PropertiesConfig的为准
-119.system.controllerClasspath等path有关的配置，要支持多路径的。多个路径用逗号隔开，可以支持默认com.meizu的大路径扫描，如果对性能要求求，才指定具体路径，并指定多路径，主要为启动加速
-120.减少代码的硬编码的字符串:目前比较多的是com.meizu这样的字符串==>>已测试，已通过 2016/5/27 
+119.system.controllerClasspath等path有关的配置，要支持多路径的。多个路径用逗号隔开，可以支持默认vip.simplify的大路径扫描，如果对性能要求求，才指定具体路径，并指定多路径，主要为启动加速
+120.减少代码的硬编码的字符串:目前比较多的是vip.simplify这样的字符串==>>已测试，已通过 2016/5/27 
 121.fastjson格式化的日期等格式的处理，通过注解的方式来处理
 122.如何做到框架的可测试，是否单元测试就够了，谁来确保，框架是被测试通过的
 123.检查为什么StartupError异常后，服务没有停止掉
@@ -188,7 +188,7 @@ http://fishermen.iteye.com/blog/430286
 153.由于javasist3.20.0-GA 不支持tomcat7,需要tomcat8以上才支持，所以使用weaving模块的时候，至少需要tomcat8的支持
 154.对tomcat8.jetty9.webserver做兼容性测试
 155.配置中心的集成
-156.测试不同方式的项目立项搭建：1.同属com.meizu，2.不属于com.meizu 3.引用不同子模块
+156.测试不同方式的项目立项搭建：1.同属vip.simplify，2.不属于vip.simplify 3.引用不同子模块
 157.和压力测试人员衡量maxThreads，cceptCount 这个两个属性的值的设置,还有具体操作系统的限制，比如linux的openfile的限制
 158.优化权限拦截处理,减少model对请求的影响，model和请求分离
 159.日期处理全部替换成java.time的最新的jdk1.8的实现,实体(entity)中不需要time的地方直接用localDate，而不是date,因为现在部分地方有公用的SimpleDateFormat有线程安全问题,必须解决,务必先优化DateUtil类

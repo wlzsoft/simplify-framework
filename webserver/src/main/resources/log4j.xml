@@ -138,7 +138,7 @@ Log4j建议只使用FATAL ,ERROR ,WARN ,INFO ,DEBUG这五个级别
     
 	<!-- additivity指示是否遵循缺省的继承机制，默认是true
 	     level [? child] : 定义该logger的日志级别-->     
-    <!-- <logger name="com.meizu.log.log4j.activeXLog4j" additivity="false">     
+    <!-- <logger name="vip.simplify.log.log4j.activeXLog4j" additivity="false">
         <priority value ="info"/>       
         <level value="debug" />
         <appender-ref ref="dailyRollingFile" />       

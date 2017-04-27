@@ -1,16 +1,16 @@
-package com.meizu.simplify.codegen;
+package vip.simplify.codegen;
 
 import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.meizu.simplify.config.info.Message;
-import com.meizu.simplify.ioc.annotation.Bean;
-import com.meizu.simplify.ioc.annotation.Resource;
-import com.meizu.simplify.mvc.controller.IBaseController;
-import com.meizu.simplify.mvc.controller.IMethodSelector;
-import com.meizu.simplify.mvc.model.Model;
+import Message;
+import Bean;
+import Resource;
+import IBaseController;
+import vip.simplify.mvc.controller.IMethodSelector;
+import Model;
 
 /**
  * <p><b>Title:</b><i>动态方法选择器</i></p>
@@ -42,10 +42,10 @@ public class GenMethodSelector implements IMethodSelector{
 		try {
 			switch(clazzName+":"+doCmd) {
 				case "TestController:doTestJson":
-					result = testController.doTestJson(request, response, (com.meizu.demo.mvc.model.TestModel)t);
+					result = testController.doTestJson(request, response, (TestModel)t);
 					break;
 				case "TestController:doDemo":
-					result = testController.doDemo(request, response, (com.meizu.demo.mvc.model.TestModel)t,(Integer)parameValue[3],(String)parameValue[4],(String)parameValue[5]);
+					result = testController.doDemo(request, response, (TestModel)t,(Integer)parameValue[3],(String)parameValue[4],(String)parameValue[5]);
 					break;
 			}
 		} catch (Exception e) {
