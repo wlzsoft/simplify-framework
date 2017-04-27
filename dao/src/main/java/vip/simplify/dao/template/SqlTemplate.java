@@ -5,7 +5,7 @@ import java.util.Map;
 
 import vip.simplify.config.annotation.Config;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.utils.StringUtil;
 
@@ -24,7 +24,7 @@ import vip.simplify.utils.StringUtil;
  */
 @Bean
 public class SqlTemplate {
-	@Resource
+	@Inject
 	private ITemplate template;
 	@Config("system.sqlTemplatePath")
 	private String sqlTemplatePath;

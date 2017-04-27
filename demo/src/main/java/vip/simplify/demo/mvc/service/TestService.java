@@ -14,7 +14,7 @@ import vip.simplify.dao.orm.Dao;
 import vip.simplify.dao.template.SqlTemplateFactory;
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.log.Logger;
 
 @Bean
@@ -26,10 +26,10 @@ public class TestService {
 	@Config
 	private boolean unicodeTranscoding = false;
 	
-	@Resource//(name="vip.simplify.demo.mvc.service.TestServiceLog")
+	@Inject//(name="vip.simplify.demo.mvc.service.TestServiceLog")
 	private Logger logger;
 	
-	@Resource
+	@Inject
 	private Dao<Test,Integer> dao;
 	
 	@CacheDataAdd(key="aaa")

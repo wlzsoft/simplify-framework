@@ -23,7 +23,7 @@ import vip.simplify.mvc.model.Model;
  *
  */
 public interface IBaseController<T extends Model> {
-//	@Resource//注入静态变量代替BeanFactory.getBean
+//	@Inject//注入静态变量代替BeanFactory.getBean
 //	public static DelegateController<?> baseController = null;
 	
 	/**

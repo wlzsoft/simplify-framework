@@ -8,14 +8,14 @@ import org.junit.runner.RunWith;
 import vip.simplify.dao.datasource.ConnectionFactory;
 import vip.simplify.dao.datasource.ConnectionManager;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.test.SimplifyJUnit4ClassRunner;
 
 @RunWith(SimplifyJUnit4ClassRunner.class)
 @Bean
 public class DataSourceManagerTest {
 	
-	@Resource
+	@Inject
 	private ConnectionManager connectionManager;
 	
 	@Test

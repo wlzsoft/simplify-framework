@@ -3,7 +3,7 @@ package vip.simplify.net.rest;
 import java.net.URL;
 
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.net.rest.retry.IRetryStrategy;
 
 /**
@@ -22,7 +22,7 @@ import vip.simplify.net.rest.retry.IRetryStrategy;
 @Bean
 public class RestExecute {
 
-	@Resource
+	@Inject
     private IRetryStrategy retryStrategy;
 
     /**

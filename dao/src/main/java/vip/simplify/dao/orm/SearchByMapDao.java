@@ -15,7 +15,7 @@ import vip.simplify.dao.orm.base.ISqlDataCallback;
 import vip.simplify.dao.orm.base.SQLExecute;
 import vip.simplify.entity.page.Page;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
  * <p><b>Title:</b><i>基于map类型结果集的基础dao实现</i></p>
@@ -35,7 +35,7 @@ public class SearchByMapDao {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SearchByMapDao.class);
 	
-	@Resource
+	@Inject
 	private ConnectionManager connectionManager;
 	
 	public List<Map<String,Object>> find(String sql,Object... params) {

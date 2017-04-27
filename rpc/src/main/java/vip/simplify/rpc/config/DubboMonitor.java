@@ -4,7 +4,7 @@ package vip.simplify.rpc.config;
 import com.alibaba.dubbo.config.MonitorConfig;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.utils.StringUtil;
 
 /**
@@ -25,7 +25,7 @@ public class DubboMonitor  extends MonitorConfig{
 	private static final long serialVersionUID = -1091315288158711793L;
 	
 	
-	@Resource
+	@Inject
 	private DubboPropertiesConfig dubboProperties;
 
 	@InitBean

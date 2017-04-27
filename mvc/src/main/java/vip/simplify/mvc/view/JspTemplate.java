@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.template.annotation.TemplateExtend;
 import vip.simplify.template.annotation.TemplateType;
@@ -41,7 +41,7 @@ import vip.simplify.webcache.annotation.WebCache;
 public class JspTemplate implements IPageTemplate,ITemplate{
 	
 	
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	private String extend;
 	public void init() {

@@ -15,7 +15,7 @@ import vip.simplify.encrypt.sign.md5.MD5Encrypt;
 import vip.simplify.exception.BaseException;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.mvc.dto.WebCacheInfo;
 import vip.simplify.mvc.exception.MappingExceptionResolver;
 import vip.simplify.mvc.invoke.IMethodSelector;
@@ -50,19 +50,19 @@ import vip.simplify.webcache.annotation.WebCache;
 @Bean
 public class DelegateController<T extends Model> implements IBaseController<T> {
 	
-	@Resource
+	@Inject
 	private IPageTemplate template;
 	
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	
-	@Resource
+	@Inject
 	private IMethodSelector methodSelector;
 	
-	@Resource
+	@Inject
 	private IModelSelector modelSelector;
 	
-	@Resource
+	@Inject
 	private JsonResolver jsonResolver;	
 	/**
 	 * 

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.utils.FileUtil;
 
@@ -24,7 +24,7 @@ import vip.simplify.utils.FileUtil;
  */
 @Bean
 public class CodeGenUtil {
-	@Resource
+	@Inject
 	private ITemplate template;
 	
 	public CodeGenUtil() {

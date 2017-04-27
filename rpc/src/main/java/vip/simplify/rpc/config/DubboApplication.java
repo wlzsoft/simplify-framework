@@ -3,7 +3,7 @@ package vip.simplify.rpc.config;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
  * <p>dubbo应用配置></p>
@@ -21,7 +21,7 @@ public class DubboApplication  extends ApplicationConfig{
 	
 	private static final long serialVersionUID = -594938967258096101L;
 	
-	@Resource
+	@Inject
 	private DubboPropertiesConfig dubboProperties;
 
 	private String applicationName;

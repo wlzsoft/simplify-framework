@@ -3,7 +3,7 @@ package vip.simplify.dao;
 import vip.simplify.dao.datasource.DataSourceManager;
 import vip.simplify.ioc.IStopRelease;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -21,7 +21,7 @@ import vip.simplify.ioc.annotation.Resource;
 @Bean
 public class DaoStopRelease implements IStopRelease{
 
-	@Resource
+	@Inject
 	private DataSourceManager dataSourceManager;
 	
 	@Override

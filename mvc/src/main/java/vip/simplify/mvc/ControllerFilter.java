@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.config.annotation.Config;
 import vip.simplify.exception.MessageException;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.annotation.StaticType;
 import vip.simplify.mvc.controller.IBaseController;
 import vip.simplify.mvc.dto.ControllerAnnotationInfo;
@@ -61,13 +61,13 @@ public class ControllerFilter implements Filter {
 	/**
 	 * 静态注入pageTemplate,支持Bean注解和StaticType注解
 	 */
-	@Resource
+	@Inject
 	private static IPageTemplate pageTemplate;
 	
-	@Resource
+	@Inject
 	private static PropertiesConfig config;
 	
-	@Resource
+	@Inject
 	private static JsonResolver jsonResolver;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerFilter.class);

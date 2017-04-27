@@ -12,7 +12,7 @@ import org.apache.velocity.app.Velocity;
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.template.annotation.TemplateExtend;
 import vip.simplify.template.velocity.function.EncryptFunctionDirective;
@@ -40,7 +40,7 @@ public class VelocityTemplate  implements ITemplate{
 	
 	public String extend;
 	
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	
 	
@@ -64,7 +64,7 @@ public class VelocityTemplate  implements ITemplate{
 		 * , "0"); Velocity.setProperty("class.resource.loader.path", ".");
 		 */
 		Velocity.setProperty(Velocity.RESOURCE_LOADER, "file");
-		Velocity.setProperty("file.resource.loader.description", " Velocity File Resource Loader");
+		Velocity.setProperty("file.resource.loader.description", " Velocity File Inject Loader");
 		Velocity.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
 		Velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, classPath);
 		Velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, config.getDebug() ? "false" : "true");

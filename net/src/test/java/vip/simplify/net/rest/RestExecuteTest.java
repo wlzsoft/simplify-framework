@@ -9,14 +9,14 @@ import org.junit.runner.RunWith;
 import vip.simplify.dto.Result;
 import vip.simplify.dto.ResultObject;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.test.SimplifyJUnit4ClassRunner;
 
 @Bean
 @RunWith(SimplifyJUnit4ClassRunner.class)
 public class RestExecuteTest {
 	
-	@Resource
+	@Inject
 	private RestExecute restExecute;
 	
 	@Test

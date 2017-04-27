@@ -23,7 +23,7 @@ import vip.simplify.cache.redis.RedisPool;
 import vip.simplify.config.info.Message;
 import vip.simplify.dao.orm.BaseDao;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.mvc.annotation.AjaxAccess;
 import vip.simplify.mvc.annotation.AjaxAccess.Methods;
 import vip.simplify.mvc.annotation.RequestMap;
@@ -53,10 +53,10 @@ import redis.clients.jedis.ShardedJedisPool;
 @RequestMap(path = "/test")
 public class TestController extends SystemController<TestModel> {
 
-//	@Resource //注释掉，目前打开会报错，因为无实现类
+//	@Inject //注释掉，目前打开会报错，因为无实现类
 //	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要 
 	
-	@Resource
+	@Inject
 	private TestService testService;
 	
 	@AjaxAccess(allowOrigin = "http://ab.mezu.com",allowHeaders="X-Requested-With",allowMethods={Methods.Post},maxAge=30)

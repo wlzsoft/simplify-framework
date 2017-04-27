@@ -2,7 +2,7 @@ package vip.simplify.util;
 
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.utils.JsonUtil;
 
 /**
@@ -20,7 +20,7 @@ import vip.simplify.utils.JsonUtil;
  */
 @Bean
 public class JsonResolver {
-	@Resource
+	@Inject
 	private SerializeFilter afterFilter;
 	public String ObjectToString(Object obj ) {
 		if(afterFilter == null) {

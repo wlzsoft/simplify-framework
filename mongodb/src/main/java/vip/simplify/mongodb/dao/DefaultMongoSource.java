@@ -1,10 +1,10 @@
 package vip.simplify.mongodb.dao;
 
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.mongodb.MongoConn;
 import vip.simplify.mongodb.config.MongodbPropertiesConfig;
 import vip.simplify.config.annotation.Config;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
 import vip.simplify.utils.PropertieUtil;
 import com.mongodb.client.MongoDatabase;
 /**
@@ -22,7 +22,7 @@ import com.mongodb.client.MongoDatabase;
 @Bean
 public class DefaultMongoSource extends MongoConn {
 	
-	@Resource
+	@Inject
 	public MongodbPropertiesConfig mongodbPropertiesConfig;
 	private MongoDatabase db;
 	@Config("mongo.host")

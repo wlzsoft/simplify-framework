@@ -1,7 +1,7 @@
 package vip.simplify.ioc.service;
 
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.dao.Dao;
 
 /**
@@ -29,15 +29,15 @@ public class TestService implements ITestService{
 		this.name = name;
 	}
 
-	@Resource
+	@Inject
 	private IDemoService demoService;
 	
-	@Resource(name="test1BaseDao")
+	@Inject(name="test1BaseDao")
 	private Dao dao;
 
 	@Override
 	public IDemoService getDemoService() {
-		System.out.println(dao.getSql()+":Resource(\"test1Dao\")");
+		System.out.println(dao.getSql()+":Inject(\"test1Dao\")");
 		return demoService;
 	}
 

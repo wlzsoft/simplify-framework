@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.mvc.model.Model;
 
 
@@ -28,7 +28,7 @@ import vip.simplify.mvc.model.Model;
 public class BaseController<T extends Model> implements IBaseController<T> {
 	
 	
-	@Resource
+	@Inject
 	private DelegateController<T> delegateController;
 	
 	/**

@@ -3,7 +3,7 @@ package vip.simplify.dao;
 import vip.simplify.aop.Context;
 import vip.simplify.aop.IInterceptor;
 import vip.simplify.dao.dialect.IDialectManager;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
  * 
@@ -23,7 +23,7 @@ import vip.simplify.ioc.annotation.Resource;
  */
 public class SqlInterceptor implements IInterceptor {
 	
-    @Resource
+    @Inject
 	private IDialectManager dialectManager;
     
     /*private Properties properties;

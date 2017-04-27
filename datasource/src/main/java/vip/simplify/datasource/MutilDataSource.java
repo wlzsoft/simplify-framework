@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import vip.simplify.dao.datasource.IDataSource;
 import vip.simplify.datasource.route.DynamicDataSourceConnectionWrapper;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.log.Logger;
 
 /**
@@ -52,7 +52,7 @@ public class MutilDataSource implements IDataSource,DataSource{
 		return null;
 	}
 	
-	@Resource
+	@Inject
 	private Logger LOGGER;
 	
 	@Override

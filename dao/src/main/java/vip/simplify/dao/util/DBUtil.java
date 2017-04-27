@@ -1,6 +1,6 @@
 package vip.simplify.dao.util;
 
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 
 /**
@@ -18,7 +18,7 @@ import vip.simplify.ioc.annotation.Resource;
  */
 public class DBUtil  {
 	
-	@Resource
+	@Inject
 	private static IDBUtilDao dao;
 	
 	/**

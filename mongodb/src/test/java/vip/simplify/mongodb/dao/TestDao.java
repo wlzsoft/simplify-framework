@@ -3,7 +3,7 @@ package vip.simplify.mongodb.dao;
 import vip.simplify.mongodb.DataBase;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 /**
  * <p>dao</p>
  * <p>Desc: TODO</p>
@@ -20,7 +20,7 @@ import vip.simplify.ioc.annotation.Resource;
 @Bean
 public class TestDao extends  MongoFileDao<DataBase>{
 	
-	@Resource
+	@Inject
 	private TestDataSource logDataSource;
 	
 	@InitBean

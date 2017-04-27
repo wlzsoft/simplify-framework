@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  */
 @Target({FIELD})
 @Retention(RUNTIME)
-public @interface Resource {
+public @interface Inject {
     /**
      * 
      * 方法用途: 用于指定具体实现类的实例名<br>

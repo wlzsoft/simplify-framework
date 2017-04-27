@@ -5,7 +5,7 @@ import static vip.simplify.mvc.controller.Controller.get;
 import vip.simplify.demo.mvc.entity.Test;
 import vip.simplify.demo.mvc.service.TestService;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 
 /**
@@ -23,7 +23,7 @@ import vip.simplify.ioc.annotation.Resource;
  */
 @Bean
 public class TestSimpleController {
-	@Resource
+	@Inject
 	private TestService testService;
 {
     get("/test", (req, res) -> {

@@ -10,7 +10,7 @@ import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.BeanEntity;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.BeanPrototypeHook;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.hook.IBeanPrototypeHook;
 import vip.simplify.ioc.resolver.BeanAnnotationResolver;
 import vip.simplify.log.Logger;
@@ -48,9 +48,9 @@ public class LogPrototypeHook implements IBeanPrototypeHook<Logger> {
 		List<Class<?>> beanClasses = ClassUtil.findClassesByAnnotationClass(Bean.class, BeanAnnotationResolver.getClasspaths());//扫描Entity注解的实体，获取实体列表
 		if (CollectionUtil.isNotEmpty(beanClasses)) {
 			for (Class<?> beanClass : beanClasses) {
-				//1.过滤无需添加到Bean容器中的对象-过滤条件是：BeanClass中没有标注@Resource private Logger的属性
+				//1.过滤无需添加到Bean容器中的对象-过滤条件是：BeanClass中没有标注@Inject private Logger的属性
 				//注：这里的过滤会细微增加容器启动时的时间，这里的过滤逻辑和其他地方有重叠，建议合并，后续处理 TODO
-				List<Field> fieldList = ClassUtil.findDeclaredFieldByAnnotation(Resource.class, beanClass);
+				List<Field> fieldList = ClassUtil.findDeclaredFieldByAnnotation(Inject.class, beanClass);
 				for (Field field : fieldList) {
 					if(field.getType().equals(Logger.class)) {
 						//2.构建添加到Bean容器中的对象

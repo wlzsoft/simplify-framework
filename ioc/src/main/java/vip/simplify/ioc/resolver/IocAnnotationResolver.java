@@ -17,7 +17,7 @@ import vip.simplify.ioc.annotation.DefaultBean;
 import vip.simplify.ioc.annotation.HandleInterface;
 import vip.simplify.ioc.annotation.Init;
 import vip.simplify.ioc.annotation.IocHook;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.annotation.StaticType;
 import vip.simplify.ioc.enums.InitTypeEnum;
 import vip.simplify.ioc.hook.IIocHook;
@@ -91,9 +91,9 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	private void injectObjectForResourceAnno(Object beanObj,Class<?> currentBeanClass, Class<?> beanClass) {
 		Field[] fieldArr = beanClass.getDeclaredFields();
 		for (Field field : fieldArr) {
-		    if (field.isAnnotationPresent(Resource.class)) {
-		    	Resource resource = field.getAnnotation(Resource.class);
-		    	String resourceName = resource.name();
+		    if (field.isAnnotationPresent(Inject.class)) {
+		    	Inject inject = field.getAnnotation(Inject.class);
+		    	String resourceName = inject.name();
 		    	if(ObjectUtil.isNull(resourceName)) {
 		    		resourceName = "";
 		    	}

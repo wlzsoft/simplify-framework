@@ -10,7 +10,7 @@ import org.beetl.core.Template;
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.template.annotation.TemplateExtend;
 import vip.simplify.template.beetl.function.BeetlFunctionDirectivePackage;
@@ -34,7 +34,7 @@ import vip.simplify.template.beetl.function.BeetlFunctionDirectivePackage;
 public class BeetlTemplate  implements ITemplate {
 	private GroupTemplate gt = null;
 	public String extend;
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	
 	public BeetlTemplate() {

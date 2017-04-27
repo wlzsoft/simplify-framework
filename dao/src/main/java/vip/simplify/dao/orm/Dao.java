@@ -32,7 +32,7 @@ import vip.simplify.entity.annotations.Table;
 import vip.simplify.entity.annotations.Transient;
 import vip.simplify.entity.page.Page;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.enums.BeanTypeEnum;
 import vip.simplify.utils.ReflectionUtil;
 import vip.simplify.utils.StringUtil;
@@ -83,10 +83,10 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	@Config("system.isMycat")
     private boolean isMycat = false;
 
-	@Resource
+	@Inject
 	protected ISqlMethodSelector selector;
 	
-	@Resource
+	@Inject
 	private ConnectionManager connectionManager;
 	
 	/**
@@ -872,7 +872,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		
 	}
 	
-//	@Resource
+//	@Inject
 //	private BuildInfo<T> buildInfo;
 
 }

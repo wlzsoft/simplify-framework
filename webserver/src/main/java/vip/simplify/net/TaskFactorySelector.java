@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import vip.simplify.exception.StartupErrorException;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.webserver.ITaskFactory;
 
 /**
@@ -23,7 +23,7 @@ import vip.simplify.webserver.ITaskFactory;
 @Bean
 public class TaskFactorySelector implements ITaskFactory {
 	
-	@Resource
+	@Inject
 	private ITaskFactory taskFactory;
 	
 	@Override

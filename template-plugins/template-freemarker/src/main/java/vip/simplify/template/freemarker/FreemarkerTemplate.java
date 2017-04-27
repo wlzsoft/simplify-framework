@@ -7,7 +7,7 @@ import java.util.Map;
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.template.annotation.TemplateExtend;
 
@@ -34,7 +34,7 @@ import freemarker.template.TemplateException;
 public class FreemarkerTemplate  implements ITemplate {
 	public String extend;
 	private Configuration cfg = null; 
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	public FreemarkerTemplate() {
 		extend = getExtend();

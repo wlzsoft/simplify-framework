@@ -22,7 +22,7 @@ public interface IIocHook {
 	 * 操作步骤: TODO<br>
 	 * @param clazz 当前待注入属性的所属的Class对象
 	 * @param field 当前待注入属性元数据Field类型对象
-	 * @return 注入的资源名称：一般是@Resource(name="xxxx")中的xxxx的值
+	 * @return 注入的资源名称：一般是@Inject(name="xxxx")中的xxxx的值
 	 */
 	String hook(Class<?> clazz,Field field);
 }

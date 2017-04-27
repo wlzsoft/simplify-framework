@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import vip.simplify.entity.page.Page;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -36,7 +36,7 @@ import com.mongodb.client.result.UpdateResult;
 public class DefaultMongoDao{
 	
 	private static final Logger logger = LoggerFactory.getLogger(DefaultMongoDao.class);
-	@Resource
+	@Inject
 	private  DefaultMongoSource defaultMongoSource;
 	
 	/**

@@ -24,7 +24,7 @@ import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.Startup;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.Init;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.enums.InitTypeEnum;
 import vip.simplify.ioc.resolver.IAnnotationResolver;
 import vip.simplify.utils.PropertieUtil;
@@ -50,7 +50,7 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 	@Config("rootPath")
 	private String rootPath = "/simplify-config/";
 	
-	@Resource
+	@Inject
 	private IConfigService configService;
 	
 	@Override

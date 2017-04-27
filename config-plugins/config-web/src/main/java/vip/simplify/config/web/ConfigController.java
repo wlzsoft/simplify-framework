@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import vip.simplify.config.api.service.IConfigService;
 import vip.simplify.config.system.SystemController;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.mvc.annotation.RequestMap;
 import vip.simplify.mvc.model.Model;
 
@@ -28,7 +28,7 @@ import vip.simplify.mvc.model.Model;
 @RequestMap(path = "/config")
 public class ConfigController extends SystemController<Model> {
 	
-	@Resource
+	@Inject
 	private IConfigService configService;
 	
 	@RequestMap(path = "/get/")

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.template.annotation.TemplateExtend;
 
@@ -32,7 +32,7 @@ import httl.Template;
 public class HttlTemplate implements ITemplate {
 	private Engine engine = null;
 	public String extend;
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	
 	public void init() {

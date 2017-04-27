@@ -19,7 +19,7 @@ import vip.simplify.dao.enums.ISOEnum;
 import vip.simplify.dao.resolver.TransationAnnotationResolver;
 import vip.simplify.dto.AnnotationInfo;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
  * <p><b>Title:</b><i>事务处理拦截器</i></p>
@@ -41,7 +41,7 @@ public class TransationInterceptor extends Handler implements  IInterceptor{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransationInterceptor.class);
 
-	@Resource
+	@Inject
 	private ConnectionManager connectionManager;
 	
 	@Override

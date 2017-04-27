@@ -3,7 +3,7 @@ package vip.simplify.dao.datasource;
 import vip.simplify.config.annotation.Config;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 
 /**
@@ -25,7 +25,7 @@ public class DataSourceManager {
 	@Config("system.debug")
 	private Boolean debug;
 	
-	@Resource
+	@Inject
 	private IDataSource dataSource;
 	
 	@InitBean

@@ -3,7 +3,7 @@ package vip.simplify.dao.datasource;
 import java.sql.Connection;
 
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 
 /**
@@ -22,7 +22,7 @@ import vip.simplify.ioc.annotation.Resource;
 @Bean
 public class ConnectionManager {
 	
-	@Resource
+	@Inject
 	private IDataSource dataSource;
 	
 	/**

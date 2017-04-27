@@ -12,7 +12,7 @@ import vip.simplify.dao.enums.BatchOperator;
 import vip.simplify.dao.orm.base.ISqlDataCallback;
 import vip.simplify.dao.orm.base.SQLExecute;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
  * <p><b>Title:</b><i>基于表名的基础dao实现</i></p>
@@ -32,7 +32,7 @@ public class ExecByTableNameDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExecByTableNameDao.class);
 	
-	@Resource
+	@Inject
 	private ConnectionManager connectionManager;
 	
 	/**

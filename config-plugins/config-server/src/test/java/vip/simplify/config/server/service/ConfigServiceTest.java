@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import vip.simplify.config.api.entity.ConfigAppEntity;
 import vip.simplify.config.api.entity.ConfigEntity;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.test.SimplifyJUnit4ClassRunner;
 
 /**
@@ -26,7 +26,7 @@ import vip.simplify.test.SimplifyJUnit4ClassRunner;
 @RunWith(SimplifyJUnit4ClassRunner.class)
 public class ConfigServiceTest {
 	
-	@Resource
+	@Inject
 	private ConfigService configService;
 	
 	@Test

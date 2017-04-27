@@ -14,7 +14,7 @@ import vip.simplify.dao.orm.base.ISqlDataCallback;
 import vip.simplify.dao.orm.base.SQLExecute;
 import vip.simplify.datasource.route.HostRouteService;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.log.Logger;
 import vip.simplify.test.SimplifyJUnit4ClassRunner;
 
@@ -22,10 +22,10 @@ import vip.simplify.test.SimplifyJUnit4ClassRunner;
 @Bean
 public class HostRouteServiceTest {
 	
-	@Resource
+	@Inject
 	private Logger logger;
 	
-	@Resource
+	@Inject
 	private MutilDataSource dsp;
 	
 	@Test

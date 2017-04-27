@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.annotation.TemplateType;
 import vip.simplify.template.beetl.BeetlTemplate;
 import vip.simplify.view.IPageTemplate;
@@ -35,9 +35,9 @@ import vip.simplify.webcache.annotation.WebCache;
 @Bean
 @TemplateType("beetl")
 public class BeetlPageTemplate  implements IPageTemplate {
-	@Resource
+	@Inject
 	private PropertiesConfig config;
-	@Resource
+	@Inject
 	private BeetlTemplate beetlTemplate;
 	
 

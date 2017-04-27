@@ -26,7 +26,7 @@ import vip.simplify.ioc.BeanContainer;
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.Init;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.enums.InitTypeEnum;
 import vip.simplify.ioc.resolver.IAnnotationResolver;
 import vip.simplify.mvc.AnnotationResolverCallback;
@@ -64,7 +64,7 @@ import vip.simplify.webcache.web.CacheBase;
 @Init(InitTypeEnum.CONTROL)
 public class ControllerAnnotationResolver implements IAnnotationResolver<Class<?>>{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAnnotationResolver.class);
-	@Resource
+	@Inject
 	private PropertiesConfig config;
 	/**
 	 * <requestMap地址,controller实例>

@@ -3,7 +3,7 @@ package vip.simplify.ioc.service;
 import vip.simplify.dao.entity.Test;
 import vip.simplify.dao.orm.Dao;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -30,10 +30,10 @@ public class TestService implements ITestService{
 		this.name = name;
 	}
 
-	@Resource
+	@Inject
 	private IDemoService demoService;
 	
-	@Resource(name="vip.simplify.dao.entity.TestBaseDao")//bugfix: 修复没有包名情况的冲突问题[注入testBaseDao改成全路径vip.simplify.dao.entity.TestBaseDao] lcy 2016/8/15
+	@Inject(name="vip.simplify.dao.entity.TestBaseDao")//bugfix: 修复没有包名情况的冲突问题[注入testBaseDao改成全路径vip.simplify.dao.entity.TestBaseDao] lcy 2016/8/15
 	private Dao<Test,Integer> dao;
 
 	@Override

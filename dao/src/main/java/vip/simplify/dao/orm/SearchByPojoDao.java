@@ -14,7 +14,7 @@ import vip.simplify.dao.orm.base.ISqlDataCallback;
 import vip.simplify.dao.orm.base.SQLExecute;
 import vip.simplify.entity.page.Page;
 import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.Resource;
+import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.utils.CollectionUtil;
 
 /**
@@ -36,10 +36,10 @@ public class SearchByPojoDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchByMapDao.class);
 	
-	@Resource
+	@Inject
 	private ISqlMethodSelector selector;
 	
-	@Resource
+	@Inject
 	private ConnectionManager connectionManager;
 	
 	/**
