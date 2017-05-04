@@ -94,26 +94,26 @@
 		<artifactId>dao</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<dependency>
+	<!--<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>datasource</artifactId>
 		<version>${project.version}</version>
-	</dependency>
+	</dependency>-->
 	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>log</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<!-- <dependency>
+	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>config-client</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<dependency>
-		<groupId>vip.simplify</groupId>
-		<artifactId>rpc</artifactId>
-		<version>${project.version}</version>
-	</dependency> -->
+	  <!-- <dependency>
+          <groupId>vip.simplify</groupId>
+          <artifactId>rpc</artifactId>
+          <version>${project.version}</version>
+      </dependency> -->
 	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>listener</artifactId>
@@ -318,6 +318,9 @@
 				<webApp>
 					<defaultsDescriptor>${project.basedir}/src/test/resources/jetty/webdefault.xml</defaultsDescriptor>
                     <contextPath>/</contextPath>
+					<!--<descriptor> ${project.basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>-->
+					<!--开启maven的filter功能后，如果web.xml中有变量，需要在重新指定编译后的web.xml文件-->
+					<descriptor>${project.basedir}/target/web.xml</descriptor>
 					<!--<baseResource>${project.basedir}/src/main/webapp</baseResource>-->
                 </webApp>
                 <httpConnector>
@@ -743,5 +746,47 @@
 			</executions> -->
 		</plugin>
     </plugins>
+	  <!--maven开启filters功能后，需要指定以下配置-->
+	  <!--<filters>
+		  <filter>src/main/filters/application.${env}.properties</filter>
+	  </filters>
+	  <resources>
+		  <resource>
+			  <directory>src/main/resources</directory>
+			  <filtering>true</filtering>
+		  </resource>
+		  <resource>
+			  <directory>src/main/webapp/WEB-INF</directory>
+			  <includes>
+				  <include>web.xml</include>
+			  </includes>
+			  <filtering>true</filtering>
+			  <targetPath>${project.basedir}/target/</targetPath>
+		  </resource>
+	  </resources>-->
   </build>
+	<!--maven开启filters功能后，需要指定以下配置-->
+	<!--<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>default</env>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<env>test</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<env>product</env>
+			</properties>
+		</profile>
+	</profiles>-->
 </project>

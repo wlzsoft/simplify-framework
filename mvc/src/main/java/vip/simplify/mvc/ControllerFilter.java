@@ -117,7 +117,7 @@ public class ControllerFilter implements Filter {
 		ControllerAnnotationInfo<IBaseController<?>> controllerAnnotationInfo = ControllerAnnotationResolver.controllerMap.get(requestUrl);
 		if(controllerAnnotationInfo !=null) {
 			analysisAndProcess(request, response, requestUrl, controllerAnnotationInfo, null);
-			return false;// [标示]启用原生 filter的chain,三个地方同时打开注释
+			return isChain;// [标示]启用原生 filter的chain,三个地方同时打开注释
 		} else {
 			//注意：性能问题1：由于正则无法确定具体值的访问，所以也没法比较，为了减少循环次数，所以采用空间换时间的方式，分开两个url映射缓存的map，一个用于存储非正则表达式(采用ConcurrentHashMap)，另外一个用于存储正则表达式(采用遍历速度更快的ConcurrentSkipListMap结构)
 			//      性能问题2: 由于正则表达式解析性能很差，解决方案A.使用普通方式匹配参数路径。解决方案B.缓存正则表达式的编译过程，减少编译的成本。解决方案C.避免使用
@@ -135,12 +135,12 @@ public class ControllerFilter implements Filter {
 					for ( int i = 0; i <= matcher.groupCount(); urlparams[i] = matcher.group(i++) );
 					controllerAnnotationInfo = entrySet.getValue();
 					analysisAndProcess(request, response, requestUrl,controllerAnnotationInfo, urlparams);
-					return false; // [标示]启用原生 filter的chain,三个地方同时打开注释
+					return isChain; // [标示]启用原生 filter的chain,三个地方同时打开注释
 				}
 			}
 		}
 
-		if(!isChain) {//自定义404处理，还有其他未处理的错误状态的处理
+		if(!isChain) {//自定义404处理，还有其他未处理的错误状态的处理,TODO 注意这里使用isChain变量和方法的return只有冲突，后续要考虑是否使用新的变量来控制是否定制404信息
 			MappingExceptionResolver.resolverException(request, response, requestUrl, pageTemplate, new MessageException(404, "找不到资源"), config, jsonResolver, config.getDomain());
 			return false;
 		}
