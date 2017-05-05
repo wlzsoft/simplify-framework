@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import vip.simplify.Constants;
+import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.exception.StartupErrorException;
 import vip.simplify.ioc.BeanEntity;
 import vip.simplify.ioc.BeanFactory;
@@ -22,10 +23,12 @@ import vip.simplify.ioc.hook.IBeanPrototypeHook;
 import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.StringUtil;
+import vip.simplify.utils.clazz.ClassInfo;
+import vip.simplify.utils.clazz.IFindClassCallBack;
 
 /**
-  * <p><b>Title:</b><i>对象创建处理解析器</i></p>
- * <p>Desc: 注意：无法启用容器托管，不允许使用bean注解</p>
+  * <p><b>Title:</b><i>Bean对象创建处理解析器</i></p>
+ * <p>Desc: 注意：该无法启用容器托管，不允许使用bean注解，因为容器需要通过这个类初始化并创建，它先于Bean容器执行</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -40,7 +43,31 @@ import vip.simplify.utils.StringUtil;
 public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanAnnotationResolver.class);
-	
+	private static  List<ClassInfo<BeanMetaDTO>> resolveList;
+	/**
+	 * 方法用途: 获取bean的Class对象列表<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	public static List<ClassInfo<BeanMetaDTO>> getBeanClassList() {
+		if (resolveList == null) {
+			String[] classpathArr = getClasspaths();
+			resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, new IFindClassCallBack<BeanMetaDTO>() {
+				@Override
+				public List<BeanMetaDTO> resolve(Class<?> c) {
+					List<BeanMetaDTO> list = new ArrayList<>();
+					Bean bean = c.getAnnotation(Bean.class);
+					BeanMetaDTO beanMetaDTO = new BeanMetaDTO();
+					beanMetaDTO.setSourceName(Bean.class.getName());
+					beanMetaDTO.setType(bean.type());
+					beanMetaDTO.setValue(bean.value());
+					list.add(beanMetaDTO);
+					return list;
+				}
+			},classpathArr);//提供构建bean的总数据源
+		}
+		return resolveList;
+	}
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		buildAnnotation(Bean.class);
@@ -49,20 +76,26 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	@Override
 	public void resolveBeanObj(String beanName) {
 		Class<?> beanClass = BeanFactory.getBean(beanName).getClass();
-		buildBeanObjAction(Bean.class,beanClass);
+		//多了一层循环，待优化 TODO
+		for (ClassInfo<BeanMetaDTO> beanMetaDTOClassInfo : resolveList) {
+			if(beanClass.equals(beanMetaDTOClassInfo.getClazz())) {
+				buildBeanObjAction(Bean.class,beanMetaDTOClassInfo);
+				return;
+			}
+		}
 	}
 
 	public static <T extends Bean> void buildAnnotation(Class<T> clazzAnno) {
-		String[] classpathArr = getClasspaths();
-		List<Class<?>> resolveList = ClassUtil.findClassesByAnnotationClass(clazzAnno, classpathArr);//提供构建bean的总数据源
-		List<Class<?>> resolvePreCoreList = new ArrayList<>();//提供预先构建bean的数据源
-		List<Class<?>> resolveExtendList = new ArrayList<>();//提供扩展构建bean的数据源
-		for (Class<?> clazz : resolveList) {
-			Annotation[] annoArr = clazz.getAnnotations();
-			if(annoArr.length==1) {//只包含bean注解
-				resolvePreCoreList.add(clazz);
+		getBeanClassList();
+		List<ClassInfo<BeanMetaDTO>> resolvePreCoreList = new ArrayList<>();//提供预先构建bean的数据源
+		List<ClassInfo<BeanMetaDTO>> resolveExtendList = new ArrayList<>();//提供扩展构建bean的数据源
+		for (ClassInfo<BeanMetaDTO> clazzInfo : resolveList) {
+			Class<?> clazz = clazzInfo.getClazz();
+            Annotation[] annoArr = clazz.getAnnotations();
+			if (annoArr.length == 1) {//只包含bean注解
+				resolvePreCoreList.add(clazzInfo);
 			} else {
-				resolveExtendList.add(clazz);
+				resolveExtendList.add(clazzInfo);
 			}
 		}
 		buildAllBeanAction(clazzAnno, resolvePreCoreList);
@@ -100,9 +133,9 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 * @param clazzAnno
 	 * @param resolveList
 	 */
-	private static <T extends Bean> void buildAllBeanAction(Class<T> clazzAnno, List<Class<?>> resolveList) {
-		for (Class<?> clazz : resolveList) {
-			buildBeanObjAction(clazzAnno, clazz);
+	private static <T extends Bean> void buildAllBeanAction(Class<T> clazzAnno, List<ClassInfo<BeanMetaDTO>> resolveList) {
+		for (ClassInfo<BeanMetaDTO> clazzInfo : resolveList) {
+			buildBeanObjAction(clazzAnno, clazzInfo);
 			
 		}
 	}
@@ -111,13 +144,21 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 * 方法用途: 创建指定类型的bean实例<br>
 	 * 操作步骤: TODO<br>
 	 * @param clazzAnno
-	 * @param clazz
+	 * @param clazzInfo
 	 */
-	private static <T extends Bean> void buildBeanObjAction(Class<T> clazzAnno, Class<?> clazz) {
-		LOGGER.info("Bean 开始初始化:{}",clazz.getName());
+	private static <T extends Bean> void buildBeanObjAction(Class<T> clazzAnno, ClassInfo<BeanMetaDTO> clazzInfo) {
+		Class<?> clazz = clazzInfo.getClazz();
+		LOGGER.debug("Bean 开始初始化:{}",clazz.getName());
 		try {
-			T beanAnnotation = clazz.getAnnotation(clazzAnno);
-			if(beanAnnotation.type().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
+			List<BeanMetaDTO> beanMetaDTOList = clazzInfo.getInfoList();
+			BeanMetaDTO beanMetaDTO = null;
+			for (BeanMetaDTO beanMetaDTOTemp : beanMetaDTOList) {//待优化 TODO
+				if (clazzAnno.getName().equals(beanMetaDTOTemp.getSourceName())) {
+					beanMetaDTO = beanMetaDTOTemp;
+					break;
+				}
+			}
+			if(beanMetaDTO.getType().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
 				List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, BeanAnnotationResolver.getClasspaths());
 				for (Class<?> hookClazz : hookList) {
 					BeanPrototypeHook hookBeanAnno = hookClazz.getAnnotation(BeanPrototypeHook.class);
@@ -127,6 +168,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 						@SuppressWarnings({ "unchecked", "rawtypes" })
 						List<BeanEntity<?>> listObj = ((IBeanPrototypeHook)hookObj).hook(clazz);
 						BeanFactory.addBeanList(listObj);
+						LOGGER.info("Bean 已创建:{}(BeanPrototypeHook模式)",clazz.getName());
 					}
 				}
 			} else {//同类型单例处理，只会返回一个实例
@@ -179,11 +221,12 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 					return;
 				}
 				//lcy add 2016/6/3 增加Bean注解的value属性的处理
-				String beanAnnoVal = beanAnnotation.value();
+				String beanAnnoVal = beanMetaDTO.getValue();
 				if(StringUtil.isNotBlank(beanAnnoVal)) {
 					beanName = beanAnnoVal;
 				}
 				BeanFactory.addBean(beanName,beanObj);
+				LOGGER.info("Bean 已创建:{}",clazz.getName());
 			}
 			
 		} catch (InstantiationException e) {

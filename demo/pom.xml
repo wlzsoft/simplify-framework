@@ -89,6 +89,11 @@
 		<artifactId>aop</artifactId>
 		<version>${project.version}</version>
 	</dependency>
+	  <dependency>
+		  <groupId>vip.simplify</groupId>
+		  <artifactId>ioc-plugins</artifactId>
+		  <version>${project.version}</version>
+	  </dependency>
 	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>dao</artifactId>
@@ -104,11 +109,11 @@
 		<artifactId>log</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<dependency>
+	<!--<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>config-client</artifactId>
 		<version>${project.version}</version>
-	</dependency>
+	</dependency>-->
 	  <!-- <dependency>
           <groupId>vip.simplify</groupId>
           <artifactId>rpc</artifactId>
@@ -520,8 +525,9 @@
 					</goals>
 					<configuration>
 						<target>
-							<property name="mvn-classpath" refid="maven.compile.classpath"/>  
-							<java classpath="${mvn-classpath}" classname="vip.simplify.codegen.resolver.MethodSelectorGenMain" args="vip.simplify.demo.mvc.controller" append="true" jvm="java" newenvironment="true">
+							<property name="mvn-classpath" refid="maven.compile.classpath"/>
+							<!--vip.simplify.codegen.resolver.MethodSelectorGenMain的args参数可不指定，建议不指定,设定是为了缩短范围， args="vip.simplify.demo.mvc.controller" -->
+							<java classpath="${mvn-classpath}" classname="vip.simplify.codegen.resolver.MethodSelectorGenMain" args="" append="true" jvm="java" newenvironment="true">
 								<!-- <classpath refid="${mvn-classpath}" /> -->
 								<!-- <bootclasspath  refid="${mvn-classpath}"  /> -->
 							</java>
@@ -636,8 +642,7 @@
 				<!-- <registryUrl>http://172.16.180.39:6732/v2</registryUrl> -->
 				<!--
 				curl ——cacert domain.crt  ——basic ——user admin:admin123 https://ip:6732/v2/_catalog{"repositories":["eclipse/webserver-jetty","apache/tomcat8.5"]}
-				-->
-　　　　　　		<!-- <dockerCertPath>domain.crt</dockerCertPath> -->
+				--><!-- <dockerCertPath>domain.crt</dockerCertPath> -->
 				<!-- using remote dockers ~/.docker/config.json,这个文件如果没有，要创建，或是用docker login创建，但是没有docker命令是做不到的， 不建议使用这个选项，并且要在remote dokcer禁用，使用serverId标签来设置 -->
 				<!-- <useConfigFile>true</useConfigFile> -->
 				<serverId>nexus-docker-auth</serverId>

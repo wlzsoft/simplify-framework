@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import vip.simplify.exception.UncheckedException;
+import vip.simplify.utils.clazz.ClassInfo;
+import vip.simplify.utils.clazz.IFindClassCallBack;
 import vip.simplify.utils.enums.EncodingEnum;
 import vip.simplify.utils.enums.SpecialCharacterEnum;
 
@@ -78,7 +80,7 @@ public class ClassUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * 方法用途: 查找指定包下标注了指定注解的类集合<br>
 	 * 操作步骤: TODO<br>
 	 * @param annotationClass 注解
@@ -94,6 +96,31 @@ public class ClassUtil {
 			}
 		}
 		return classes;
+	}
+
+	/**
+	 * 
+	 * 方法用途: 查找指定包下标注了指定注解的类集合<br>
+	 * 操作步骤: TODO<br>
+	 * @param annotationClass 注解
+	 * @param callBack 回调函数
+	 * @param packageNames 包名
+	 * @return 返回指定包下标注了指定注解的ClassInfo对象集合，包含Class集合和其他额外信息
+	 */
+	public static <T> List<ClassInfo<T>> findClassesByAnnotationClass(
+			Class<? extends Annotation> annotationClass, IFindClassCallBack<T> callBack, String... packageNames) {
+		List<ClassInfo<T>> classInfos = new ArrayList<>();
+		for (Class<?> targetClass : findClasses(packageNames)) {
+			if (targetClass.isAnnotationPresent(annotationClass)) {
+				ClassInfo<T> classInfo = new ClassInfo<>();
+				classInfo.setClazz(targetClass);
+				if(callBack != null) {
+					classInfo.setInfoList(callBack.resolve(targetClass));
+				}
+				classInfos.add(classInfo);
+			}
+		}
+		return classInfos;
 	}
 
 	/**
@@ -131,8 +158,19 @@ public class ClassUtil {
 	 * 方法用途: 获取Class对象集合的缓存记录<br>
 	 * 操作步骤: TODO<br>
 	 */
-	public static Map<String,List<Class<?>>> getClassList() {
+	public static Map<String,List<Class<?>>> getClassListMap() {
 		return classListMap;
+	}
+
+	/**
+	 * 方法用途: 获取Class对象集合的缓存记录<br>
+	 * 操作步骤: TODO<br>
+	 * @param packageNames 包名
+	 * @return 返回指定的Class对象集合
+	 */
+	public static List<Class<?>> getClassList(String... packageNames) {
+		String packageNamesStr = CollectionUtil.listToStringBySplit(packageNames, "", "",",");
+		return classListMap.get(packageNamesStr);
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.LoggerFactory;
 
+import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.BeanEntity;
 import vip.simplify.ioc.annotation.Bean;
@@ -17,6 +18,7 @@ import vip.simplify.log.Logger;
 import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.CollectionUtil;
 import vip.simplify.utils.ReflectionUtil;
+import vip.simplify.utils.clazz.ClassInfo;
 
 /**
  * <p><b>Title:</b><i>Log多例工厂钩子函数</i></p>
@@ -45,9 +47,10 @@ public class LogPrototypeHook implements IBeanPrototypeHook<Logger> {
 			LOGGER.debug("开始初始化SLFJ的Log实例....");
 		}
 		List<BeanEntity<Logger>> list = new ArrayList<>();
-		List<Class<?>> beanClasses = ClassUtil.findClassesByAnnotationClass(Bean.class, BeanAnnotationResolver.getClasspaths());//扫描Entity注解的实体，获取实体列表
+		List<ClassInfo<BeanMetaDTO>> beanClasses = BeanAnnotationResolver.getBeanClassList();//扫描Entity注解的实体，获取实体列表,这里必须直接从缓存中获取
 		if (CollectionUtil.isNotEmpty(beanClasses)) {
-			for (Class<?> beanClass : beanClasses) {
+			for (ClassInfo<BeanMetaDTO> beanClassInfo : beanClasses) {
+				Class<?> beanClass = beanClassInfo.getClazz();
 				//1.过滤无需添加到Bean容器中的对象-过滤条件是：BeanClass中没有标注@Inject private Logger的属性
 				//注：这里的过滤会细微增加容器启动时的时间，这里的过滤逻辑和其他地方有重叠，建议合并，后续处理 TODO
 				List<Field> fieldList = ClassUtil.findDeclaredFieldByAnnotation(Inject.class, beanClass);

@@ -95,6 +95,7 @@
 	  <module>webserver-plugins</module>
 	  <module>plugin-loader</module>
 	  <module>weaving-plugins</module>
+	  <module>ioc-plugins</module>
 	  <module>net</module>
     <!-- <module>mq-plugins</module> -->
   </modules>

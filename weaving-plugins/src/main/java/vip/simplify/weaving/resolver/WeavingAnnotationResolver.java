@@ -102,7 +102,7 @@ public class WeavingAnnotationResolver implements IAnnotationResolver<Class<?>> 
 				if(CollectionUtil.isNotEmpty(clazzList)) {
 					System.out.println("weaving-list:"+clazzList);
 					String packageNamesStr = CollectionUtil.listToStringBySplit(BeanAnnotationResolver.getClasspaths(), "", "",",");
-					List<Class<?>> classAllList = ClassUtil.getClassList().get(packageNamesStr);
+					List<Class<?>> classAllList = ClassUtil.getClassListMap().get(packageNamesStr);
 					CollectionUtil.replace(classAllList, clazzList, new IEqualCallBack<Class<?>, Class<?>>() {
 						@Override
 						public boolean equal(Class<?> clazz, Class<?> weavingClazz) {

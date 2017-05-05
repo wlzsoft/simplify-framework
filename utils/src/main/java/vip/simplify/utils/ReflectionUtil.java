@@ -166,7 +166,48 @@ public class ReflectionUtil {
     public static Object invokeMethod(final Object obj,final  String methodName,final  Class<?>[] parameterTypes,final Object[] args) {
     	return invokeMethod(obj, methodName, parameterTypes, args, false);
     }
-    
+
+	/**
+	 *
+	 * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
+	 * 操作步骤: TODO<br>
+	 * @param obj 对象名
+	 * @param method 方法对象
+	 * @param args 参数值
+	 * @param isSelfParamType 是否是方法自身参数的类型
+	 * @return
+	 */
+	public static Object invokeMethod(final Object obj,Method method,final Object[] args,final boolean isSelfParamType) {
+		String methodName = method.getName();
+		try {
+			if(isSelfParamType) {
+//        		Parameter[] p = method.getParameters();
+				Class<?>[] paramType = method.getParameterTypes();
+				int paramLen = paramType.length;
+				int argsLen = args.length;
+				if(paramLen!=argsLen) {
+					LOGGER.error("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
+					throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
+				}
+				for(int i=0; i<paramLen; i++) {
+					args[i] = MapperTypeUtil.convertOrmType(args[i], paramType[i], false);//没有考虑新旧日期处理问题 TODO
+				}
+			}
+			return method.invoke(obj, args);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			LOGGER.error("方法["+obj.getClass().getName()+":"+methodName+"]的参数类型不匹配！"+e);
+			throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数类型不匹配！"+e);//后续再补充提示信息，指明源数据类型和目录属性类型 TODO
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			LOGGER.error("反射方法调用异常"+method,e.getTargetException());
+			throw new StartupException(e.getTargetException());
+		}
+		return null;
+	}
+
     /**
      * 
      * 方法用途: 直接调用对象方法，忽视private/protected修饰符<br>
@@ -199,33 +240,7 @@ public class ReflectionUtil {
         	}
         	throw new IllegalArgumentException("不能找到对象 [" + obj + "] 的方法 [" + methodName + parameterTypeClsName + "] 请检查方法名和方法调用参数是否指定正确");
         }
-        try {
-        	if(isSelfParamType) {
-//        		Parameter[] p = method.getParameters();
-        		Class<?>[] paramType = method.getParameterTypes();
-        		int paramLen = paramType.length;
-        		int argsLen = args.length;
-        		if(paramLen!=argsLen) {
-        			LOGGER.error("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
-                    throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数个数不匹配：实际参数个数为"+paramLen+",但是传递过来的参数值个数为"+argsLen);
-        		}
-        		for(int i=0; i<paramLen; i++) {
-        			args[i] = MapperTypeUtil.convertOrmType(args[i], paramType[i], false);//没有考虑新旧日期处理问题 TODO
-        		}
-        	}
-        	return method.invoke(obj, args);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            LOGGER.error("方法["+obj.getClass().getName()+":"+methodName+"]的参数类型不匹配！"+e);
-            throw new UncheckedException("方法["+obj.getClass().getName()+":"+methodName+"]的参数类型不匹配！"+e);//后续再补充提示信息，指明源数据类型和目录属性类型 TODO
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            LOGGER.error("反射方法调用异常"+method,e.getTargetException());
-            throw new StartupException(e.getTargetException());
-        }
-        return null;
+        return invokeMethod(obj,method,args,isSelfParamType);
     }
 
     /**

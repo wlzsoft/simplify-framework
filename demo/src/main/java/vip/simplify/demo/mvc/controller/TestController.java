@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import vip.simplify.demo.mvc.entity.Test;
 import vip.simplify.demo.mvc.entity.User;
 import vip.simplify.demo.mvc.model.TestModel;
+import vip.simplify.demo.mvc.service.TestFirstService;
 import vip.simplify.demo.mvc.service.TestService;
+import vip.simplify.demo.mvc.service.outter.TestOutterService;
 import vip.simplify.demo.system.SystemController;
 import vip.simplify.cache.CacheProxyDao;
 import vip.simplify.cache.ICacheDao;
@@ -58,7 +60,13 @@ public class TestController extends SystemController<TestModel> {
 	
 	@Inject
 	private TestService testService;
-	
+
+	@Inject
+	private TestFirstService testFirstService;
+
+	@Inject
+	private TestOutterService testOutterService;
+
 	@AjaxAccess(allowOrigin = "http://ab.mezu.com",allowHeaders="X-Requested-With",allowMethods={Methods.Post},maxAge=30)
 //	@AjaxAccess(allowOrigin = "http://ab.mezu.com")
 	@RequestMap(path = "/testrestajaxjson")
@@ -103,6 +111,8 @@ public class TestController extends SystemController<TestModel> {
 //		List<Test> testList = new ArrayList<>();
 //		testList.add(test);
 		test.setName("test80");
+		testFirstService.test();
+		testOutterService.test();
 		return test;
 	}
 	

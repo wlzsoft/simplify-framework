@@ -22,6 +22,10 @@ public enum InitTypeEnum {
 	 */
 	DATASOURCE(15),
 	/**
+	 *bean初始化插件
+	 */
+	BEAN_PLUGINS(16),
+	/**
 	 * bean初始化
 	 */
 	BEAN(20),
@@ -40,7 +44,7 @@ public enum InitTypeEnum {
 	/**
 	 * 配置服务中心客户端初始化
 	 */
-	CONFIG_CLIENT(51),
+	CONFIG_CLIENT(52),
 	/**
 	 * bean创建成功后，执行ioc操作后会调用这个init方法
 	 */
