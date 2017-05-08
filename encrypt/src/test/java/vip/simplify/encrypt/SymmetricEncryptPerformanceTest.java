@@ -14,6 +14,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import vip.simplify.encrypt.symmetriccryptography.SymmetricBaseEncrypt;
@@ -33,7 +34,7 @@ import vip.simplify.encrypt.symmetriccryptography.SymmetricBaseEncrypt;
 */
 public class SymmetricEncryptPerformanceTest {
 
-	@Test
+	@Before
 	public void init() throws IOException {
 		int size = 1;
 		FileWriter fw = null;

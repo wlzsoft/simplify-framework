@@ -2,6 +2,9 @@ package vip.simplify.dto;
 
 import vip.simplify.ioc.enums.BeanTypeEnum;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 /**
  * <p><b>Title:</b><i>Bean对象元数据信息承载</i></p>
  * <p>Desc: TODO</p>
@@ -20,10 +23,11 @@ public class BeanMetaDTO {
 
     private BeanTypeEnum type = BeanTypeEnum.SINGLE;
 
-
     private String value = "";
 
     private String sourceName;
+
+    private List<AttributeMetaDTO> attributeMetaDTOList;
 
     /**
      *
@@ -65,5 +69,13 @@ public class BeanMetaDTO {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public List<AttributeMetaDTO> getAttributeMetaDTOList() {
+        return attributeMetaDTOList;
+    }
+
+    public void setAttributeMetaDTOList(List<AttributeMetaDTO> attributeMetaDTOList) {
+        this.attributeMetaDTOList = attributeMetaDTOList;
     }
 }

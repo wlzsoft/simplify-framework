@@ -24,5 +24,5 @@ public interface IFindClassCallBack<T> {
      * @param c
      * @return
      */
-    public List<T> resolve(Class<?> c);
+    public T resolve(Class<?> c);
 }

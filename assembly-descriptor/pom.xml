@@ -9,6 +9,10 @@
 	<!--可不依赖parent,只是打包插件使用-->
 	<name>分发包打包公用配置</name>
 	<description>分发包打包方案-maven-assembly-plugin公用descriptor文件</description>
+	<properties>
+		<templatePath>${project.parent.basedir}</templatePath>
+		<parentsite></parentsite>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

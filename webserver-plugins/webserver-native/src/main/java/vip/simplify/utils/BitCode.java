@@ -209,7 +209,7 @@ public class BitCode implements Serializable {
 		if(StringUtil.isBlank(code2)) {
 			throw new UncheckedException("位编码字符串不能为空字符串");
 		}
-		if(code1.length() == code2.length()) {
+		if(code1.length() != code2.length()) {
 			throw new UncheckedException("进行或运算的位编码长度必须一致");
 		}
 
@@ -238,7 +238,7 @@ public class BitCode implements Serializable {
 		if(StringUtil.isBlank(code2)) {
 			throw new UncheckedException("位编码字符串不能为空字符串");
 		}
-		if(code1.length() == code2.length()) {
+		if(code1.length() != code2.length()) {
 			throw new UncheckedException("进行与运算的位编码长度必须一致");
 		}
 		

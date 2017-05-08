@@ -35,7 +35,7 @@ public class DaoSimpleTest {
 	
 	@Before
 	public void s1_insertTest() {
-		Integer id = BaseDao.getTable().transiented("delFlag","deleteflag").save("test_web","name","lcy","createId",1,"updateId",1,"createTime",new Date(),"updateTime",new Date());
+		Integer id = BaseDao.getTable().transiented("delFlag","deleteflag").save("test_web","name","lcysimple","createId",1,"updateId",1,"createTime",new Date(),"updateTime",new Date());
 		System.out.println("saveGenId:"+id);
 		key = id;
 		System.out.println(key);
@@ -43,8 +43,8 @@ public class DaoSimpleTest {
 	
 	/*@Test
 	public void s2_findUniqueTest() {
-		Assert.assertEquals("lcy", "lcy");
-		BaseDao.getTable().findUnique("name","lcy");//.getName();
+		Assert.assertEquals("lcysimple", "lcysimple");
+		BaseDao.getTable().findUnique("name","lcysimple");//.getName();
 	}*/
 	
 	/*
@@ -59,11 +59,11 @@ public class DaoSimpleTest {
 	}
 	@Test
 	public void s2_findByMutilTest() {
-		List<Test> list = BaseDao.getIns(Test.class).findByMutil("name","lcy");
+		List<Test> list = BaseDao.getIns(Test.class).findByMutil("name","lcysimple");
 		for (Test test : list) {
 			System.out.println(test.getFid()+test.getName());
 		}
-		Assert.assertTrue(BaseDao.getIns(Test.class).findByMutil("name","lcy").size()>0);
+		Assert.assertTrue(BaseDao.getIns(Test.class).findByMutil("name","lcysimple").size()>0);
 	}
 	
 	@Test
@@ -78,42 +78,42 @@ public class DaoSimpleTest {
 	@Test
 	public void s2_findPageSqlTest() {
 		@SuppressWarnings("deprecation")
-		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"createTime",true,"select * from test_web where name=?","lcy");
+		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"createTime",true,"select * from test_web where name=?","lcysimple");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSqlTest() {
 		@SuppressWarnings("deprecation")
-		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp","lcy");
+		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"createTime",true,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?) as temp","lcysimple");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSql2Test() {
-		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc) as temp","lcy");
+		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"select * from (select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime desc) as temp","lcysimple");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageMutilSql3Test() {
-		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcy");
+		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=? order by createTime asc","lcysimple");
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageTest() {
 		Test t = new Test();
-		t.setName("lcy");
+		t.setName("lcysimple");
 		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,t);
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findPageOderByTest() {
 		Test t = new Test();
-		t.setName("lcy");
+		t.setName("lcysimple");
 		Page<Test> page = BaseDao.getIns(Test.class).findPage(1,10,"createTime",true,t);
 		Assert.assertEquals(page.getTotalRecord(), page.getResults().size());
 	}
 	@Test
 	public void s2_findByTest() {
-		Assert.assertTrue(BaseDao.getIns(Test.class).findBy("name","lcy").size()>0);
+		Assert.assertTrue(BaseDao.getIns(Test.class).findBy("name","lcysimple").size()>0);
 	}
 	*/
 	@Test
@@ -125,14 +125,14 @@ public class DaoSimpleTest {
 	@Test
 	public void s6_updateTest() {
 		Test t = new Test();
-		t.setName("lcycc1");
+		t.setName("lcysimplecc1");
 		t.setFid(1);
 		System.out.println("update==============================="+BaseDao.getIns(Test.class).update(t));
 	}
 	@Test
 	public void s6_update2Test() {
 		Test t = new Test();
-		t.setName("lcycc2");
+		t.setName("lcysimplecc2");
 		t.setFid(1);
 		System.out.println("update2==============================="+BaseDao.getIns(Test.class).update(t,false));
 	}*/
@@ -149,19 +149,19 @@ public class DaoSimpleTest {
 	
 	@Test
 	public void s8_countTest() {
-		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","lcy"));
+		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","lcysimple"));
 	}
 	
 	@Test
 	public void s9_countTest() {
 		Test t = new Test();
-		t.setName("lcy");
+		t.setName("lcysimple");
 		System.out.println("count============================="+BaseDao.getIns(Test.class).count(t));
 	}
 	@Test
 	public void s10_findByTest() {
 		Test t = new Test();
-		t.setName("lcy");
+		t.setName("lcysimple");
 		List<Test> list = BaseDao.getIns(Test.class).findBy(t);
 		for (Test test : list) {
 			System.out.println(test.getFid()+test.getName());

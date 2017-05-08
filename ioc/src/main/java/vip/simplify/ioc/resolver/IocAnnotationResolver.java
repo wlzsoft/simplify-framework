@@ -1,28 +1,25 @@
 package vip.simplify.ioc.resolver;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import vip.simplify.dto.AttributeMetaDTO;
+import vip.simplify.dto.BeanMetaDTO;
+import vip.simplify.exception.UncheckedException;
+import vip.simplify.ioc.BeanContainer;
+import vip.simplify.ioc.BeanFactory;
+import vip.simplify.ioc.IInterfaceHandler;
+import vip.simplify.ioc.annotation.*;
+import vip.simplify.ioc.enums.InitTypeEnum;
+import vip.simplify.ioc.hook.IIocHook;
+import vip.simplify.utils.ClassUtil;
+import vip.simplify.utils.ObjectUtil;
+import vip.simplify.utils.clazz.ClassInfo;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import vip.simplify.exception.UncheckedException;
-import vip.simplify.ioc.BeanContainer;
-import vip.simplify.ioc.BeanFactory;
-import vip.simplify.ioc.IInterfaceHandler;
-import vip.simplify.ioc.annotation.DefaultBean;
-import vip.simplify.ioc.annotation.HandleInterface;
-import vip.simplify.ioc.annotation.Init;
-import vip.simplify.ioc.annotation.IocHook;
-import vip.simplify.ioc.annotation.Inject;
-import vip.simplify.ioc.annotation.StaticType;
-import vip.simplify.ioc.enums.InitTypeEnum;
-import vip.simplify.ioc.hook.IIocHook;
-import vip.simplify.utils.ClassUtil;
-import vip.simplify.utils.ObjectUtil;
 
 /**
   * <p><b>Title:</b><i>依赖注入解析器</i></p>
@@ -48,9 +45,10 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		for (String beanName : containerCollection) {
 			resolveBeanObj(beanName);
 		}
-		List<Class<?>> staticTypeList = ClassUtil.findClassesByAnnotationClass(StaticType.class, BeanAnnotationResolver.getClasspaths());
-		for (Class<?> staticType : staticTypeList) {
-			resolveInject(null,staticType);
+
+		for (Map.Entry<Class<?>,ClassInfo<BeanMetaDTO>> clazzInfoEntry : ClassMetaResolver.getStaticTypeClassInfoMap().entrySet()) {
+			ClassInfo<BeanMetaDTO> staticTypeClassInfo = clazzInfoEntry.getValue();
+			injectObjectForResourceAnno(null,staticTypeClassInfo);
 		}
 	}
 	/**
@@ -61,22 +59,10 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	@Override
 	public void resolveBeanObj(String beanName) {
 		Object beanObj = BeanFactory.getBean(beanName);
-		resolveInject(beanObj,beanObj.getClass());
-	}
-	
-	public void resolveInject(Object beanObj,Class<?> beanClass) {
-		
-		Class<?> tempBeanClass = beanClass;
-		Class<?> currentBeanClass = beanClass;
-		injectObjectForResourceAnno(beanObj,currentBeanClass, currentBeanClass);
-		
-		Class<?>  parentClass = null;
-		while((parentClass = tempBeanClass.getSuperclass()) != null) {
-			if(parentClass == Class.class) {
-				break;
-			}
-			injectObjectForResourceAnno(beanObj,currentBeanClass, parentClass);
-			tempBeanClass = parentClass;
+		Class<?> beanClass = beanObj.getClass();
+		ClassInfo<BeanMetaDTO> beanMetaDTOClassInfo = ClassMetaResolver.getBeanClassMap().get(beanClass);
+		if(beanMetaDTOClassInfo != null) { //不带Bean注解的父类，也会执行，所以需要过来掉
+			injectObjectForResourceAnno(beanObj,beanMetaDTOClassInfo);
 		}
 	}
 	
@@ -85,12 +71,16 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	 * 方法用途: 为指定Resource的注解指定属性注入对象<br>
 	 * 操作步骤: TODO<br>
 	 * @param beanObj
-	 * @param currentBeanClass 
-	 * @param beanClass 这个属性在非父类的情况下和currentBeanClass等价
+	 * @param classInfo 这个属性在包含本类和所有父类的属性
 	 */
-	private void injectObjectForResourceAnno(Object beanObj,Class<?> currentBeanClass, Class<?> beanClass) {
-		Field[] fieldArr = beanClass.getDeclaredFields();
-		for (Field field : fieldArr) {
+	private void injectObjectForResourceAnno(Object beanObj,ClassInfo<BeanMetaDTO> classInfo) {
+		List<AttributeMetaDTO> attributeMetaDTOList = classInfo.getInfo().getAttributeMetaDTOList();
+		if(attributeMetaDTOList == null) {
+			return;
+		}
+		Class<?> currentBeanClass = classInfo.getClazz();
+		for (AttributeMetaDTO attributeMetaDTO : attributeMetaDTOList) {
+			Field field = attributeMetaDTO.getField();
 		    if (field.isAnnotationPresent(Inject.class)) {
 		    	Inject inject = field.getAnnotation(Inject.class);
 		    	String resourceName = inject.name();
@@ -108,9 +98,9 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 	    		if(hookClazz!= null) {//定义钩子执行
 					try {
 						Object hookObj = hookClazz.newInstance();
-						resourceName  = ((IIocHook)hookObj).hook(beanClass,field);
+						resourceName  = ((IIocHook)hookObj).hook(field.getDeclaringClass(),field);
 						if (null == resourceName) {
-							LOGGER.error(beanClass.getName()+"依赖注入类型["+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]返回空，注入失败");
+							LOGGER.error(field.getDeclaringClass().getName()+"依赖注入类型["+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]返回空，注入失败");
 							continue;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {

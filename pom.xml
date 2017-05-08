@@ -73,7 +73,7 @@
 	  <module>template</module>
 	  <module>config</module>
 	  <module>cache-redis</module>
-	  <module>mongodb</module>
+	  <!--<module>mongodb</module>-->
 	  <module>message</module>
 	  <module>rpc</module>
 	  <module>listener</module>

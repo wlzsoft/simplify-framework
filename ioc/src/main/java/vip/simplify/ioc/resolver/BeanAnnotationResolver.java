@@ -1,12 +1,7 @@
 package vip.simplify.ioc.resolver;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import vip.simplify.Constants;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.exception.StartupErrorException;
@@ -24,7 +19,11 @@ import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.StringUtil;
 import vip.simplify.utils.clazz.ClassInfo;
-import vip.simplify.utils.clazz.IFindClassCallBack;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
   * <p><b>Title:</b><i>Bean对象创建处理解析器</i></p>
@@ -43,31 +42,7 @@ import vip.simplify.utils.clazz.IFindClassCallBack;
 public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanAnnotationResolver.class);
-	private static  List<ClassInfo<BeanMetaDTO>> resolveList;
-	/**
-	 * 方法用途: 获取bean的Class对象列表<br>
-	 * 操作步骤: TODO<br>
-	 * @return
-	 */
-	public static List<ClassInfo<BeanMetaDTO>> getBeanClassList() {
-		if (resolveList == null) {
-			String[] classpathArr = getClasspaths();
-			resolveList = ClassUtil.findClassesByAnnotationClass(Bean.class, new IFindClassCallBack<BeanMetaDTO>() {
-				@Override
-				public List<BeanMetaDTO> resolve(Class<?> c) {
-					List<BeanMetaDTO> list = new ArrayList<>();
-					Bean bean = c.getAnnotation(Bean.class);
-					BeanMetaDTO beanMetaDTO = new BeanMetaDTO();
-					beanMetaDTO.setSourceName(Bean.class.getName());
-					beanMetaDTO.setType(bean.type());
-					beanMetaDTO.setValue(bean.value());
-					list.add(beanMetaDTO);
-					return list;
-				}
-			},classpathArr);//提供构建bean的总数据源
-		}
-		return resolveList;
-	}
+
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
 		buildAnnotation(Bean.class);
@@ -76,20 +51,15 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	@Override
 	public void resolveBeanObj(String beanName) {
 		Class<?> beanClass = BeanFactory.getBean(beanName).getClass();
-		//多了一层循环，待优化 TODO
-		for (ClassInfo<BeanMetaDTO> beanMetaDTOClassInfo : resolveList) {
-			if(beanClass.equals(beanMetaDTOClassInfo.getClazz())) {
-				buildBeanObjAction(Bean.class,beanMetaDTOClassInfo);
-				return;
-			}
-		}
+		ClassInfo<BeanMetaDTO> beanMetaDTOClassInfo = ClassMetaResolver.getBeanClassMap().get(beanClass);
+		buildBeanObjAction(Bean.class,beanMetaDTOClassInfo);
 	}
 
 	public static <T extends Bean> void buildAnnotation(Class<T> clazzAnno) {
-		getBeanClassList();
 		List<ClassInfo<BeanMetaDTO>> resolvePreCoreList = new ArrayList<>();//提供预先构建bean的数据源
 		List<ClassInfo<BeanMetaDTO>> resolveExtendList = new ArrayList<>();//提供扩展构建bean的数据源
-		for (ClassInfo<BeanMetaDTO> clazzInfo : resolveList) {
+		for (Map.Entry<Class<?>,ClassInfo<BeanMetaDTO>> clazzInfoEntry : ClassMetaResolver.getBeanClassMap().entrySet()) {
+			ClassInfo<BeanMetaDTO> clazzInfo = clazzInfoEntry.getValue();
 			Class<?> clazz = clazzInfo.getClazz();
             Annotation[] annoArr = clazz.getAnnotations();
 			if (annoArr.length == 1) {//只包含bean注解
@@ -150,14 +120,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 		Class<?> clazz = clazzInfo.getClazz();
 		LOGGER.debug("Bean 开始初始化:{}",clazz.getName());
 		try {
-			List<BeanMetaDTO> beanMetaDTOList = clazzInfo.getInfoList();
-			BeanMetaDTO beanMetaDTO = null;
-			for (BeanMetaDTO beanMetaDTOTemp : beanMetaDTOList) {//待优化 TODO
-				if (clazzAnno.getName().equals(beanMetaDTOTemp.getSourceName())) {
-					beanMetaDTO = beanMetaDTOTemp;
-					break;
-				}
-			}
+			BeanMetaDTO beanMetaDTO = clazzInfo.getInfo();
 			if(beanMetaDTO.getType().equals(BeanTypeEnum.PROTOTYPE)) {//同类型多例处理
 				List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanPrototypeHook.class, BeanAnnotationResolver.getClasspaths());
 				for (Class<?> hookClazz : hookList) {
@@ -268,4 +231,5 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 		}
 		return null;
 	}
+
 }

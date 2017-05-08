@@ -3,11 +3,8 @@ package vip.simplify.ioc.resolver;
 import org.junit.Test;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.ioc.BeanFactory;
-import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.clazz.ClassInfo;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,8 +24,8 @@ public class BeanConfigAnnotationResolverTest {
     @Test
     public void resolve() {
         new BeanConfigAnnotationResolver().resolve(null);
-        List<ClassInfo<BeanMetaDTO>> beanClasses = BeanAnnotationResolver.getBeanClassList();
-        beanClasses.forEach(v -> {
+        Map<Class<?>,ClassInfo<BeanMetaDTO>> beanClassMap = ClassMetaResolver.getBeanClassMap();
+        beanClassMap.forEach((k,v) -> {
             System.out.println("name="+v.getClazz().getName());
         });
         Map<String,Object> map = BeanFactory.getBeanContainer().getMapContainer();

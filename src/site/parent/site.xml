@@ -40,6 +40,9 @@
 		<breadcrumbs>
 			<item name="框架" href="index.html" />
 		</breadcrumbs>
+		<menu name="文档" inherit="top">
+			<item href="home.html" name="快速入门" />
+		</menu>
 		<!-- <menu ref="parent" />  -->  
 		<menu ref="modules" /> 
 		<!-- 项目信息报告 inherit表示子模块继承父模块-->

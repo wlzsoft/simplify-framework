@@ -1,24 +1,22 @@
 package vip.simplify.log.hook;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.LoggerFactory;
-
+import vip.simplify.dto.AttributeMetaDTO;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.BeanEntity;
-import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.BeanPrototypeHook;
-import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.hook.IBeanPrototypeHook;
-import vip.simplify.ioc.resolver.BeanAnnotationResolver;
+import vip.simplify.ioc.resolver.ClassMetaResolver;
 import vip.simplify.log.Logger;
-import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.CollectionUtil;
 import vip.simplify.utils.ReflectionUtil;
 import vip.simplify.utils.clazz.ClassInfo;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p><b>Title:</b><i>Log多例工厂钩子函数</i></p>
@@ -47,15 +45,16 @@ public class LogPrototypeHook implements IBeanPrototypeHook<Logger> {
 			LOGGER.debug("开始初始化SLFJ的Log实例....");
 		}
 		List<BeanEntity<Logger>> list = new ArrayList<>();
-		List<ClassInfo<BeanMetaDTO>> beanClasses = BeanAnnotationResolver.getBeanClassList();//扫描Entity注解的实体，获取实体列表,这里必须直接从缓存中获取
-		if (CollectionUtil.isNotEmpty(beanClasses)) {
-			for (ClassInfo<BeanMetaDTO> beanClassInfo : beanClasses) {
+		Map<Class<?>,ClassInfo<BeanMetaDTO>> beanClassMap = ClassMetaResolver.getBeanClassMap();//扫描Entity注解的实体，获取实体列表,这里必须直接从缓存中获取
+		if (CollectionUtil.isNotEmpty(beanClassMap)) {
+			for (Map.Entry<Class<?>,ClassInfo<BeanMetaDTO>> beanClassInfoEntry : beanClassMap.entrySet()) {
+				ClassInfo<BeanMetaDTO> beanClassInfo = beanClassInfoEntry.getValue();
 				Class<?> beanClass = beanClassInfo.getClazz();
+				BeanMetaDTO beanMetaDTO = beanClassInfo.getInfo();
 				//1.过滤无需添加到Bean容器中的对象-过滤条件是：BeanClass中没有标注@Inject private Logger的属性
-				//注：这里的过滤会细微增加容器启动时的时间，这里的过滤逻辑和其他地方有重叠，建议合并，后续处理 TODO
-				List<Field> fieldList = ClassUtil.findDeclaredFieldByAnnotation(Inject.class, beanClass);
-				for (Field field : fieldList) {
-					if(field.getType().equals(Logger.class)) {
+				List<AttributeMetaDTO> attributeMetaDTOList = beanMetaDTO.getAttributeMetaDTOList();
+				for (AttributeMetaDTO attributeMetaDTO : attributeMetaDTOList) {
+					if(attributeMetaDTO.getField().getType().equals(Logger.class)) {
 						//2.构建添加到Bean容器中的对象
 						String beanName = beanClass.getName();
 						beanName = beanName + "Log";

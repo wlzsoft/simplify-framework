@@ -16,15 +16,15 @@ import java.util.List;
  *
  */
 public class ClassInfo<T> {
-    private List<T> infoList;
+    private T info;
     private Class<?> clazz;
 
-    public List<T> getInfoList() {
-        return infoList;
+    public T getInfo() {
+        return info;
     }
 
-    public void setInfoList(List<T> infoList) {
-        this.infoList = infoList;
+    public void setInfo(T info) {
+        this.info = info;
     }
 
     public Class<?> getClazz() {

@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -107,20 +108,20 @@ public class ClassUtil {
 	 * @param packageNames 包名
 	 * @return 返回指定包下标注了指定注解的ClassInfo对象集合，包含Class集合和其他额外信息
 	 */
-	public static <T> List<ClassInfo<T>> findClassesByAnnotationClass(
+	public static <T> Map<Class<?>,ClassInfo<T>> findClassesByAnnotationClass(
 			Class<? extends Annotation> annotationClass, IFindClassCallBack<T> callBack, String... packageNames) {
-		List<ClassInfo<T>> classInfos = new ArrayList<>();
+		ConcurrentMap<Class<?>,ClassInfo<T>> classInfoMap = new ConcurrentHashMap<>();
 		for (Class<?> targetClass : findClasses(packageNames)) {
 			if (targetClass.isAnnotationPresent(annotationClass)) {
 				ClassInfo<T> classInfo = new ClassInfo<>();
 				classInfo.setClazz(targetClass);
 				if(callBack != null) {
-					classInfo.setInfoList(callBack.resolve(targetClass));
+					classInfo.setInfo(callBack.resolve(targetClass));
 				}
-				classInfos.add(classInfo);
+				classInfoMap.put(targetClass,classInfo);
 			}
 		}
-		return classInfos;
+		return classInfoMap;
 	}
 
 	/**

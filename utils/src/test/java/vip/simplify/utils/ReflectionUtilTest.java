@@ -158,7 +158,7 @@ public class ReflectionUtilTest  {
 	public void getTypeToken() {
 		Type userListType = ReflectionGenericUtil.getSuperClassGenricType(new ReflectionGenericUtil.TypeToken<List<User>>() {
 		});
-		Assert.assertEquals("java.util.List<User>",userListType.getTypeName());
+		Assert.assertEquals("java.util.List<vip.simplify.utils.entity.User>",userListType.getTypeName());
 
 	}
 	
