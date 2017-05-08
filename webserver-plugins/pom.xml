@@ -7,7 +7,7 @@
   </parent>
   <artifactId>webserver-plugins</artifactId>
   <packaging>pom</packaging>
-  <name>web服务器插件集成</name>
+  <name>(${project.artifactId})web服务器插件集成</name>
   <description>
   </description>
   <properties>

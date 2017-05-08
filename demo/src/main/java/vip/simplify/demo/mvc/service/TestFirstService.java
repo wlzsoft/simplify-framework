@@ -4,6 +4,6 @@ public class TestFirstService {
     private TestSubService testSubService;
 
     public void test() {
-//        System.out.println(testSubService.getName());
+        System.out.println(testSubService.getName()+"hahah");
     }
 }

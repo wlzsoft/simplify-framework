@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>weaving</artifactId>
-  <name>织入组件</name>
+  <name>(${project.artifactId})织入组件</name>
   <description>动态字节码生成方式&lt;br&gt;
      以下是javaagent参数读取的weaving.jar所依赖的配置文件，日志的jar可以不提供
   weaving-1.2.3-SNAPSHOT.jar

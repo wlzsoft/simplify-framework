@@ -9,7 +9,7 @@
 		<version>1.2.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>authfilter</artifactId>
-	<name>对请求安全认证拦截处理</name>
+	<name>(${project.artifactId})对请求安全认证拦截处理</name>
 	<description>1、interfaceFilter 是用来处理接口请求的安全认证拦截
                2、webFilter 用户处理web应用的请求安全人间拦截
   </description>

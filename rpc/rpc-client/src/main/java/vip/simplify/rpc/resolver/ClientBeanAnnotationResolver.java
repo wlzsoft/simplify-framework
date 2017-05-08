@@ -13,7 +13,6 @@ import com.alibaba.dubbo.config.MonitorConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import vip.simplify.rpc.annotations.ClientBean;
-import vip.simplify.rpc.annotations.ServerBean;
 import vip.simplify.Constants;
 import vip.simplify.exception.StartupErrorException;
 import vip.simplify.ioc.BeanEntity;
@@ -43,35 +42,23 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 	private final ConcurrentMap<String, ReferenceConfig<?>> referenceConfigs = new ConcurrentHashMap<>();
 	
 	@Override
-	public BeanEntity<?> hook(Class<?> clazz){
+	public BeanEntity<?> hook(Class<?> clazz) {
 		List<Class<?>> entityClasses = ClassUtil.findClassesByAnnotationClass(ClientBean.class, BeanAnnotationResolver.getClasspaths());//扫描ClientBean注解bean
 		if (CollectionUtil.isEmpty(entityClasses)) {
 			return null;
 		}
 		for (Class<?> entityClass : entityClasses) {
-			if(!clazz.getName().equals(entityClass.getName())){
+			if(!clazz.getName().equals(entityClass.getName())) {
 				continue;
 			}
 			List<Class<?>> allIpmlClass=ClassUtil.findClassesByParentClass(entityClass, Constants.packagePrefix);
-			Boolean isRemote = false;
 			if (CollectionUtil.isEmpty(allIpmlClass)) {
-				isRemote = true;
-			} else {
-				for (Class<?> implClass : allIpmlClass) {
-					ServerBean serverBean = implClass.getAnnotation(ServerBean.class);
-					if (null != serverBean) {
-						isRemote = false;
-						break;
-					}
-				}
-			}
-			if (isRemote) {
 				return addRemoteBean(entityClass);
-			}
+			} 
 		}
 		return null;
 	}
-	private BeanEntity<?> addRemoteBean(Class<?> entityClass ){
+	private BeanEntity<?> addRemoteBean(Class<?> entityClass ) {
 		try{
 			ClientBean beanAnnotation = entityClass.getAnnotation(ClientBean.class);
 			PropertieUtil propertieUtil=new PropertieUtil("properties/dubbo.properties");
@@ -85,7 +72,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 				RegistryConfig registry = new RegistryConfig();
 				registry.setAddress(propertieUtil.getString("dubbo.registry.address"));
 				String filePath=propertieUtil.getString("dubbo.registry.file");
-				if(StringUtil.isNotBlank(filePath)){
+				if (StringUtil.isNotBlank(filePath)) {
 					registry.setFile(System.getProperty("user.home")+filePath);
 				}
 //				registry.setGroup(group);
@@ -99,7 +86,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 				reference.setInterface(entityClass);
 				reference.setVersion(beanAnnotation.version());
 				reference.setCheck(beanAnnotation.check());
-				if(StringUtil.isNotBlank(beanAnnotation.url())){
+				if (StringUtil.isNotBlank(beanAnnotation.url())) {
 					reference.setUrl(beanAnnotation.url());
 				}
 				reference.setRetries(0);
@@ -116,14 +103,12 @@ public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
 			resultEntity.setBeanObj(obj);
 			referenceConfigs.putIfAbsent(key, reference);
 			return resultEntity;
-		}catch(Exception e){
+		} catch(Exception e) {
 			LOGGER.error("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
 			throw new StartupErrorException("连接dubbo服务异常！请检查"+entityClass.getName()+"服务是否启用！"+e.getMessage());
-		}finally{
-			
 		}
 	}
-//	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil){
+//	private List<RegistryConfig> buildRegistryAdress(PropertieUtil propertieUtil) {
 //		String addresss = propertieUtil.getString("dubbo.registry.address");
 //		List<RegistryConfig> registries=new ArrayList<RegistryConfig>();
 //		if (StringUtil.isNotBlank(addresss)) {

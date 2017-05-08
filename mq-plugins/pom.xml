@@ -8,7 +8,7 @@
   </parent>
   <artifactId>mq-plugins</artifactId>
   <packaging>pom</packaging>
-  <name>消息服务&amp;队列</name>
+  <name>(${project.artifactId})消息服务&amp;队列</name>
   <modules>
     <module>mq-activemq</module>
   </modules>

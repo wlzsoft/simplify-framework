@@ -2,15 +2,20 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>vip.simplify</groupId>
-    <artifactId>simplify-framework</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
-  </parent>
-  <artifactId>rpc</artifactId>
-  <name>RPC远程服务调用 模块</name>
-  <description>RPC远程服务调用 模块 </description>
-  <properties>
+	<parent>
+		<groupId>vip.simplify</groupId>
+		<artifactId>simplify-framework</artifactId>
+		<version>1.2.3-SNAPSHOT</version>
+	</parent>
+	<artifactId>rpc</artifactId>
+	<packaging>pom</packaging>
+	<name>(${project.artifactId})远程服务调用模块</name>
+	<description>远程服务调用模块</description>
+	<modules>
+		<module>rpc-client</module>
+		<module>rpc-server</module>
+	</modules>
+	<properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
   </properties>

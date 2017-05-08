@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>zookeeper</artifactId>
-  <name>zookeeper接口封装</name>
+  <name>(${project.artifactId})zookeeper接口封装</name>
   <description>目前用于存储和监控配置信息</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

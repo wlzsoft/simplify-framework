@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>config-server</artifactId>
-  <name>配置服务的服务后端</name>
+  <name>(${project.artifactId})配置服务的服务后端</name>
   <properties>
   	 <templatePath>${project.parent.parent.basedir}</templatePath>
   	 <parentsite></parentsite>

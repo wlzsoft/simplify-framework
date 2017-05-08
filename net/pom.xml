@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>net</artifactId>
-  <name>网络通讯框架</name>
+  <name>(${project.artifactId})网络通讯框架</name>
   <description>可作为datasource模块，webserver模块等等的基础模块</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

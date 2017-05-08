@@ -9,7 +9,7 @@
 		<version>1.2.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>listener</artifactId>
-	<name>启动监听器</name>
+	<name>(${project.artifactId})启动监听器</name>
 	<description>只应用于web服务，并且是符合servlet3.0标准的容器
   </description>
   <properties>

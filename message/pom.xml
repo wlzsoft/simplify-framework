@@ -8,7 +8,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>message</artifactId>
-  <name>message 消息模块</name>
+  <name>(${project.artifactId})消息模块</name>
   <description>消息 模块 </description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

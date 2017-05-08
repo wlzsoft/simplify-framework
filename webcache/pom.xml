@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>webcache</artifactId>
-  <name>页面缓存组件</name>
+  <name>(${project.artifactId})页面缓存组件</name>
   <description>支持页面级别缓存，可以与web相关特性功能集成，需依赖浏览器机制</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

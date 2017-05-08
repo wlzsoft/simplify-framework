@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>webserver-api</artifactId>
-  <name>webserver插件的接口api</name>
+  <name>(${project.artifactId})webserver插件的接口api</name>
   <properties>
   	 <templatePath>${project.parent.parent.basedir}</templatePath>
   	 <parentsite></parentsite>

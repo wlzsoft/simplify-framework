@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>log</artifactId>
-  <name>日志模块</name>
+  <name>(${project.artifactId})日志模块</name>
   <description>1.封装基于slf4j和common-log等日志框架的功能，提供统一入口</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

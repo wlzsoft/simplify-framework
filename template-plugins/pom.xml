@@ -7,7 +7,7 @@
   </parent>
   <artifactId>template-plugins</artifactId>
   <packaging>pom</packaging>
-  <name>模版引擎插件集成</name>
+  <name>(${project.artifactId})模版引擎插件集成</name>
   <description>具体模版引擎集成插件：实现模版引擎基础封装：1.用于html页面模版
   									 2.用于xml模版
   									 3.用于java代码模版

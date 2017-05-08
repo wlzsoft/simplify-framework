@@ -7,7 +7,7 @@
   </parent>
   <artifactId>ioc</artifactId>
   
-  <name>依赖注入组件</name>
+  <name>(${project.artifactId})依赖注入组件</name>
   <url>http://simplify.ros.meizu.com/ioc</url>
   <description>bean容器管理及依赖注入</description>
   <properties>

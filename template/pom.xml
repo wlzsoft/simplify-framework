@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>template</artifactId>
-  <name>模版引擎</name>
+  <name>(${project.artifactId})模版引擎</name>
   <description>实现模版引擎基础封装：1.用于html页面模版
   									 2.用于xml模版
   									 3.用于java代码模版

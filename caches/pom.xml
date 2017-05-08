@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>caches</artifactId>
-  <name>缓存组件</name>
+  <name>(${project.artifactId})缓存组件</name>
   <description>定义一套缓存操作通用api，并考虑jvm缓存方案，并考虑可拆卸集成redis，优先使用本地jvm缓存</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

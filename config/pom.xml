@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>config</artifactId>
-  <name>配置解析模块</name>
+  <name>(${project.artifactId})配置解析模块</name>
   <description>实现配置文件的管理：1.配置文件和实体的映射，2.配置文件属性的注入。3.配置文件的热加载。4.配置文件公用工具的实现
   </description>
   <properties>

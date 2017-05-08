@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>plugin-loader</artifactId>
-  <name>插件加载器</name>
+  <name>(${project.artifactId})插件加载器</name>
   <description>实现框架插件的自动动态加载功能</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

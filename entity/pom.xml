@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>entity</artifactId>
-  <name>通用实体</name>
+  <name>(${project.artifactId})通用实体</name>
   <description>pojo类,dto类，page类等等，从dao模块和其他模块中分离处理，避免api会依赖dao等模块
   </description>
   <properties>

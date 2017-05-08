@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>dao</artifactId>
-  <name>关系型数据库持久化共用组件</name>
+  <name>(${project.artifactId})关系型数据库持久化共用组件</name>
   <description>封装数据库操作相关api，及通用实现</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

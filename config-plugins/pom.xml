@@ -7,7 +7,7 @@
   </parent>
   <artifactId>config-plugins</artifactId>
   <packaging>pom</packaging>
-  <name>配置解析插件</name>
+  <name>(${project.artifactId})配置解析插件</name>
   <description>实现配置文件的管理：配置服务，配置中心，分布式配置平台 的api
   </description>
   <properties>

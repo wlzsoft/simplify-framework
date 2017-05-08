@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>view-velocity</artifactId>
-  <name>现代模版引擎velocity集成view插件</name>
+  <name>(${project.artifactId})现代模版引擎velocity集成view插件</name>
   <properties>
   	 <templatePath>${project.parent.parent.basedir}</templatePath>
   	 <parentsite></parentsite>

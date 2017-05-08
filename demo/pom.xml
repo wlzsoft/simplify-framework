@@ -5,7 +5,7 @@
   <artifactId>demo</artifactId>
   <packaging>war</packaging>
   <version>1.2.3-SNAPSHOT</version>
-  <name>demo Maven Webapp</name>
+  <name>(${project.artifactId})基于web的示例模块</name>
   <url>http://maven.apache.org</url>
   <properties>
   	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

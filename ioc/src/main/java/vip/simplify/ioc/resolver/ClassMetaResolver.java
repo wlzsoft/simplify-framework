@@ -59,8 +59,7 @@ public final class ClassMetaResolver {
 					beanMetaDTO.setType(bean.type());
 					beanMetaDTO.setValue(bean.value());
 					List<Field> fieldList = ReflectionUtil.getAllField(c);
-					List<AttributeMetaDTO> attributeMetaDTOList = new ArrayList<>();
-					resolverFieldMeta(fieldList, attributeMetaDTOList);
+					List<AttributeMetaDTO> attributeMetaDTOList = resolverFieldMeta(fieldList);
 					beanMetaDTO.setAttributeMetaDTOList(attributeMetaDTOList);
 					return beanMetaDTO;
 				}
@@ -74,14 +73,14 @@ public final class ClassMetaResolver {
 			BeanMetaDTO beanMetaDTO = new BeanMetaDTO();
 			beanMetaDTO.setSourceName(StaticType.class.getName());
 			List<Field> fieldList = ReflectionUtil.getAllField(c);
-			List<AttributeMetaDTO> attributeMetaDTOList = new ArrayList<>();
-			resolverFieldMeta(fieldList, attributeMetaDTOList);
+			List<AttributeMetaDTO> attributeMetaDTOList = resolverFieldMeta(fieldList);
 			beanMetaDTO.setAttributeMetaDTOList(attributeMetaDTOList);
 			return beanMetaDTO;
 		}
 	}, BeanAnnotationResolver.getClasspaths());
 
-	private static void resolverFieldMeta(List<Field> fieldList, List<AttributeMetaDTO> attributeMetaDTOList) {
+	public static List<AttributeMetaDTO> resolverFieldMeta(List<Field> fieldList) {
+		List<AttributeMetaDTO> attributeMetaDTOList = new ArrayList<>();
 		for (Field field : fieldList) {
             if (field.isAnnotationPresent(Inject.class)) {
                 Inject inject = field.getAnnotation(Inject.class);
@@ -93,6 +92,7 @@ public final class ClassMetaResolver {
                 attributeMetaDTOList.add(attributeMetaDTO);
             }
         }
+        return attributeMetaDTOList;
 	}
 
 	public static Map<Class<?>,ClassInfo<BeanMetaDTO>> getStaticTypeClassInfoMap() {

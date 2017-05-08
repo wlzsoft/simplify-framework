@@ -7,7 +7,7 @@
   </parent>
   <artifactId>view-plugins</artifactId>
   <packaging>pom</packaging>
-  <name>视图插件集成</name>
+  <name>(${project.artifactId})视图插件集成</name>
   <description>
   </description>
   <properties>

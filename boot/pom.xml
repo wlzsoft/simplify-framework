@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>boot</artifactId>
-  <name>启动引导器</name>
+  <name>(${project.artifactId})启动引导器</name>
   <description>程序启动入口相关功能</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

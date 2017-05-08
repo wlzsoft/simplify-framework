@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>utils</artifactId>
-  <name>工具集</name>
+  <name>(${project.artifactId})工具集</name>
   <description>通用操作工具集，只针对非web容器的相关工具类</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

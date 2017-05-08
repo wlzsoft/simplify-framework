@@ -8,7 +8,10 @@ import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.BeanContainer;
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.IInterfaceHandler;
-import vip.simplify.ioc.annotation.*;
+import vip.simplify.ioc.annotation.DefaultBean;
+import vip.simplify.ioc.annotation.HandleInterface;
+import vip.simplify.ioc.annotation.Init;
+import vip.simplify.ioc.annotation.IocHook;
 import vip.simplify.ioc.enums.InitTypeEnum;
 import vip.simplify.ioc.hook.IIocHook;
 import vip.simplify.utils.ClassUtil;
@@ -81,74 +84,71 @@ public final class IocAnnotationResolver implements IAnnotationResolver<Class<?>
 		Class<?> currentBeanClass = classInfo.getClazz();
 		for (AttributeMetaDTO attributeMetaDTO : attributeMetaDTOList) {
 			Field field = attributeMetaDTO.getField();
-		    if (field.isAnnotationPresent(Inject.class)) {
-		    	Inject inject = field.getAnnotation(Inject.class);
-		    	String resourceName = inject.name();
-		    	if(ObjectUtil.isNull(resourceName)) {
-		    		resourceName = "";
-		    	}
-		    	
-		    	Class<?> iocType = field.getType();
-		    	String message = "依赖注入属性初始化: "+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]";
-		    	if(!resourceName.trim().equals("")) {
-		    		message+="==>>注入多例中的["+resourceName+"]实例";
-		    	}
-		    	Object iocBean = null;
-		    	Class<?> hookClazz = getIocHook(iocType);
-	    		if(hookClazz!= null) {//定义钩子执行
-					try {
-						Object hookObj = hookClazz.newInstance();
-						resourceName  = ((IIocHook)hookObj).hook(field.getDeclaringClass(),field);
-						if (null == resourceName) {
-							LOGGER.error(field.getDeclaringClass().getName()+"依赖注入类型["+field.getDeclaringClass().getTypeName()+"["+iocType.getTypeName()+":"+field.getName()+"]返回空，注入失败");
-							continue;
-						}
-					} catch (InstantiationException | IllegalAccessException e) {
-						e.printStackTrace();
+			String resourceName = attributeMetaDTO.getName();
+			if (ObjectUtil.isNull(resourceName)) {
+				resourceName = "";
+			}
+
+			Class<?> iocType = field.getType();
+			String message = "依赖注入属性初始化: " + field.getDeclaringClass().getTypeName() + "[" + iocType.getTypeName() + ":" + field.getName() + "]";
+			if (!resourceName.trim().equals("")) {
+				message += "==>>注入多例中的[" + resourceName + "]实例";
+			}
+			Object iocBean = null;
+			Class<?> hookClazz = getIocHook(iocType);
+			if (hookClazz != null) {//定义钩子执行
+				try {
+					Object hookObj = hookClazz.newInstance();
+					resourceName = ((IIocHook) hookObj).hook(field.getDeclaringClass(), field);
+					if (null == resourceName) {
+						LOGGER.error(field.getDeclaringClass().getName() + "依赖注入类型[" + field.getDeclaringClass().getTypeName() + "[" + iocType.getTypeName() + ":" + field.getName() + "]返回空，注入失败");
 						continue;
 					}
-	    		} else {//正常注入流程执行
-	    			if(iocType.isInterface()||Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
-	    				List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType,BeanAnnotationResolver.getClasspaths());
-	    				int clazzSize = clazzList.size();
-	    				if(clazzSize>1) {
-	    					DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
-	    					if(defaultBean == null) {
-	    						throw new UncheckedException("接口："+iocType.getName()+"不允许有多个实现类，如果需要多个实现类并存，请使用@DefaultBean注解");
-	    					}
-	    					iocType = getDefaultBean(iocType,defaultBean);
-	    				} else if(clazzSize<1) {
-	    					LOGGER.debug("接口："+iocType.getName()+"无实现类，无法注入bean");
-	    					//throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
-	    				} else {
-	    					iocType = clazzList.get(0);
-	    				}
-	    				
-	    			}
-	    		}
-		    	if(!resourceName.trim().equals("")) {
-		    		iocBean = BeanFactory.getBean(resourceName);
-		    	} else {
-		    		iocBean = BeanFactory.getBean(iocType);
-		    	}
-		    	try {
-		    		field.setAccessible(true);
-		    		//下面的beanObj 可以为null，前提是field是static的
+				} catch (InstantiationException | IllegalAccessException e) {
+					e.printStackTrace();
+					continue;
+				}
+			} else {//正常注入流程执行
+				if (iocType.isInterface() || Modifier.isAbstract(iocType.getModifiers())) {//FIXED author:lcy date:2016/5/20 desc:增加抽象类支持
+					List<Class<?>> clazzList = ClassUtil.findClassesByParentClass(iocType, BeanAnnotationResolver.getClasspaths());
+					int clazzSize = clazzList.size();
+					if (clazzSize > 1) {
+						DefaultBean defaultBean = iocType.getAnnotation(DefaultBean.class);
+						if (defaultBean == null) {
+							throw new UncheckedException("接口：" + iocType.getName() + "不允许有多个实现类，如果需要多个实现类并存，请使用@DefaultBean注解");
+						}
+						iocType = getDefaultBean(iocType, defaultBean);
+					} else if (clazzSize < 1) {
+						LOGGER.debug("接口：" + iocType.getName() + "无实现类，无法注入bean");
+						//throw new UncheckedException("接口："+iocType.getName()+"无实现类，无法注入bean");
+					} else {
+						iocType = clazzList.get(0);
+					}
+
+				}
+			}
+			if (!resourceName.trim().equals("")) {
+				iocBean = BeanFactory.getBean(resourceName);
+			} else {
+				iocBean = BeanFactory.getBean(iocType);
+			}
+			try {
+				field.setAccessible(true);
+				//下面的beanObj 可以为null，前提是field是static的
 //		    		int modifyValue = field.getModifiers();
 //		    		if(Modifier.isStatic(modifyValue)||Modifier.isFinal(modifyValue)) {
 //		    			field.set(null, iocBean);
 //		    		} else {
-		    			field.set(beanObj, iocBean);//注意，不同的ClassLoader实例所load的class，是属于不同的类型,这里会注入失败，异常。
+				field.set(beanObj, iocBean);//注意，不同的ClassLoader实例所load的class，是属于不同的类型,这里会注入失败，异常。
 //		    		}
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					//下面不能使用beanClass参数，需要通过beanObj.getClass()获取，因为beanClass有可能是bean的parent Class
-					if(currentBeanClass.getClassLoader() != iocBean.getClass().getClassLoader()) {//相同的ClassLoader才可以注入，避免java.lang.IllegalArgumentException: Can not set vip.simplify.xxx(UnsafeFieldAccessorImpl)异常
-						LOGGER.error("注入失败：参数无效异常==>>不能设置"+currentBeanClass.getName()+"对象的"+iocBean.getClass().getName()+":"+field.getName()+"属性的值，因为将要设置的值的ClassLoader:"+iocBean.getClass().getClassLoader()+"和目标对象的ClassLoader:"+currentBeanClass.getClassLoader()+"不是同一个对象，要求必须是同一个ClassLoader类型并且是同一个对象，否则认为是不同的类型");
-					}
-					e.printStackTrace();
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				//下面不能使用beanClass参数，需要通过beanObj.getClass()获取，因为beanClass有可能是bean的parent Class
+				if (currentBeanClass.getClassLoader() != iocBean.getClass().getClassLoader()) {//相同的ClassLoader才可以注入，避免java.lang.IllegalArgumentException: Can not set vip.simplify.xxx(UnsafeFieldAccessorImpl)异常
+					LOGGER.error("注入失败：参数无效异常==>>不能设置" + currentBeanClass.getName() + "对象的" + iocBean.getClass().getName() + ":" + field.getName() + "属性的值，因为将要设置的值的ClassLoader:" + iocBean.getClass().getClassLoader() + "和目标对象的ClassLoader:" + currentBeanClass.getClassLoader() + "不是同一个对象，要求必须是同一个ClassLoader类型并且是同一个对象，否则认为是不同的类型");
 				}
-		    	LOGGER.debug(message);
-		    }
+				e.printStackTrace();
+			}
+			LOGGER.debug(message);
 		}
 	}
 	

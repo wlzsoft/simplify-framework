@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>webserver-netty</artifactId>
-  <name>webserver netty插件</name>
+  <name>(${project.artifactId})webserver netty插件</name>
   <properties>
   	 <templatePath>${project.parent.parent.basedir}</templatePath>
   	 <parentsite></parentsite>

@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>datasource</artifactId>
-  <name>数据库数据源处理模块</name>
+  <name>(${project.artifactId})数据库数据源处理模块</name>
   <description>包含 一主多从，水平切分，主备等分布式数据库扩展功能的实现
   </description>
   <properties>

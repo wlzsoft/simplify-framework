@@ -7,7 +7,7 @@
   </parent>
   <artifactId>encrypt</artifactId>
   <packaging>jar</packaging>
-  <name>加密模块</name>
+  <name>(${project.artifactId})加密模块</name>
   <description>封装相关加密算法及表字段加密，自定义加密，通讯加密，防篡改，签名算法</description>
   <url>http://maven.apache.org</url>
   <properties>

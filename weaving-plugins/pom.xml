@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>weaving-plugins</artifactId>
-  <name>织入组件桥接插件</name>
+  <name>(${project.artifactId})织入组件桥接插件</name>
   <description></description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

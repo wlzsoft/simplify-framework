@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>dto</artifactId>
-  <name>通用dto</name>
+  <name>(${project.artifactId})通用dto</name>
   <description>pojo类,dto类
   </description>
   <properties>

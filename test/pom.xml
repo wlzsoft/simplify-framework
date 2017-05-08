@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>test</artifactId>
-  <name>测试模块</name>
+  <name>(${project.artifactId})测试模块</name>
   <description>实现单元测试的集成封装</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

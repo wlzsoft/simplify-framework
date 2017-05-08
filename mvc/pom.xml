@@ -6,7 +6,7 @@
     <version>1.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>mvc</artifactId>
-  <name>mvc简易框架</name>
+  <name>(${project.artifactId})mvc简易框架</name>
   <description>实现基本mvc功能</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>
