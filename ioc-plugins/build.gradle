@@ -1,0 +1,5 @@
+
+description = '依赖注入组件桥接插件'
+dependencies {
+	compile project(':ioc')
+}

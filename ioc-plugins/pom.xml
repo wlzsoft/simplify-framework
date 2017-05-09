@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>vip.simplify</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>1.2.3-SNAPSHOT</version>
+  </parent>
+  <artifactId>ioc-plugins</artifactId>
+  
+  <name>(${project.artifactId})依赖注入组件桥接插件</name>
+  <url>http://simplify.ros.meizu.com/ioc-plugins</url>
+  <description>第三方bean的管理，比如未知的rpc远程实例，第三方jar包中的普通类转bean类并加入托管等等</description>
+  <properties>
+  	 <templatePath>${project.parent.basedir}</templatePath>
+  	 <parentsite></parentsite>
+  </properties>
+  <dependencies>
+  	<dependency>
+  		<groupId>vip.simplify</groupId>
+  		<artifactId>ioc</artifactId>
+  		<version>${project.parent.version}</version>
+  	</dependency>
+  </dependencies>
+</project>
