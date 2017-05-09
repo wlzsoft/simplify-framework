@@ -38,8 +38,4 @@ public class DubboRegistry extends RegistryConfig{
 		}
 //		this.setGroup(dubboProperties.getProp().getString("dubbo.registry.group"));
 	}
-
-	public DubboRegistry() {
-	}
-	
 }

@@ -613,4 +613,29 @@ public class StringUtil {
 	public static String[] split(String sourceString,String targetChar) {
 		return split(sourceString, targetChar, null);
 	}
+
+	/**
+	 *
+	 * 方法用途: 把驼峰标识的字符串转换成其他格式的字符串，并且大写字母必须转换成小写<br>
+	 * 操作步骤: 类似格式：UserName ==>> _user_name       replaceString变量的值是“_”
+	 *                     UserName ==>> .user.name       replaceString变量的值是“.”
+	 *                     userName ==>> user.name        replaceString变量的值是“.”
+	 * <br>
+	 * @param targetString 待转换目标字符串
+	 * @param replaceString 大写字母转换小写字符需添加的字符前缀
+	 * @return  转换后的字符串格式，不影响原字符串的值
+	 */
+	public static String changeUpperCase(String targetString,String replaceString) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < targetString.length(); i++) {
+			char c = targetString.charAt(i);
+			boolean isUpperCase = Character.isUpperCase(c);
+			if (isUpperCase) {
+				stringBuilder.append(replaceString);
+				c = Character.toLowerCase(c);
+			}
+			stringBuilder.append(c);
+		}
+		return stringBuilder.toString();
+	}
 }

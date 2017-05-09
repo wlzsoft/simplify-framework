@@ -197,7 +197,8 @@
 	
   <dependencies>
 		<!-- 日志相关 begin -->
-		<!-- slf4j启用彩色日志jansi -->
+	    <!--启用彩色日志可以使用jansi库，如果是实现是logback，那么自带彩色功能,当然使用logback也可以通过withJansi开开启集成jansi，但是需要独立引用这个库,如果是非window机器不需要引入，因为已经自带ansi颜色符号识别
+         如果是在idea或是eclipse，由于工具支持了ansi颜色字符识别，所以也可以看到颜色，但如果在window控制台就不行了-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -211,9 +212,6 @@
 		    <scope>provided</scope>
 		</dependency> 
 		<!-- logback日志end -->
-		
-		
-		<!-- 日志相关 end -->
 	    <!-- 测试相关start -->
 	    <!-- 单元测试 -->
   		<dependency>

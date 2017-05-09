@@ -29,6 +29,22 @@ public class BeanMetaDTO {
 
     private List<AttributeMetaDTO> attributeMetaDTOList;
 
+    private Class<?>[] annotationArr;
+
+    /**
+     *
+     * 方法用途: BeanClass所携带的注解信息，包含多个<br>
+     * 操作步骤: TODO<br>
+     * @return
+     */
+    public Class<?>[] getAnnotationArr() {
+        return annotationArr;
+    }
+
+    public void setAnnotationArr(Class<?>[] annotationArr) {
+        this.annotationArr = annotationArr;
+    }
+
     /**
      *
      * 方法用途: 元数据来源：注解，配置(xml.json.yml,properties等等)，类对象<br>

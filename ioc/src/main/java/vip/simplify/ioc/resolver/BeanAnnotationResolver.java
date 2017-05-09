@@ -137,7 +137,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 			} else {//同类型单例处理，只会返回一个实例
 				Object beanObj = null;
 				String beanName = null;
-				Class<?> hookClazz = getSingleHook(clazz);
+				Class<?> hookClazz = getSingleHook(clazz,beanMetaDTO);
 				if(hookClazz == null) {
 					beanObj = clazz.newInstance();
 					beanName = clazz.getName();
@@ -217,14 +217,25 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 * 操作步骤: TODO<br>
 	 * @param clazz
 	 */
-	private static Class<?> getSingleHook(Class<?> clazz) {
+	private static Class<?> getSingleHook(Class<?> clazz,BeanMetaDTO beanMetaDTO) {
 		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, BeanAnnotationResolver.getClasspaths());
 		for (Class<?> hookClazz : hookList) {
 			BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
 			Class<?> annoClass = hookBeanAnno.value();
 			Annotation[] annos = clazz.getAnnotations();
+			//1.针对正归流程(Bean类上注解的解析)  ,后续1和2合并，只保留2
 			for (Annotation anno : annos) {
-				if(annoClass.equals(anno.annotationType())) {
+				if (annoClass.equals(anno.annotationType())) {
+					return hookClazz;
+				}
+			}
+			//2.针对BeanConfig注解的处理
+			Class<?>[] beanAnnoArr = beanMetaDTO.getAnnotationArr();
+			if (beanAnnoArr == null) {
+				return null;
+			}
+			for (Class<?> annoType : beanAnnoArr) {
+				if (annoClass.equals(annoType)) {
 					return hookClazz;
 				}
 			}

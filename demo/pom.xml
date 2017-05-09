@@ -109,16 +109,21 @@
 		<artifactId>log</artifactId>
 		<version>${project.version}</version>
 	</dependency>
-	<!--<dependency>
+	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>config-client</artifactId>
 		<version>${project.version}</version>
-	</dependency>-->
-	  <!-- <dependency>
+	</dependency>
+	   <dependency>
           <groupId>vip.simplify</groupId>
-          <artifactId>rpc</artifactId>
+          <artifactId>rpc-client</artifactId>
           <version>${project.version}</version>
-      </dependency> -->
+      </dependency>
+	  <dependency>
+		  <groupId>vip.simplify</groupId>
+		  <artifactId>rpc-client-plugin</artifactId>
+		  <version>${project.version}</version>
+	  </dependency>
 	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>listener</artifactId>
@@ -155,12 +160,12 @@
 		<artifactId>log4j-over-slf4j</artifactId>
 		<version>1.7.7</version>
 	</dependency>
-	<!-- 由于dubbo必须依赖log4j模块，否则报错，如果使用dubbo的情况下，那么需引入 -->
-	<dependency>
+	<!-- 由于dubbo必须依赖log4j模块，否则报错，如果使用dubbo的情况下，那么需引入,如果使用了log4j-over-slf4j 可不引入 -->
+	<!--<dependency>
 		<groupId>log4j</groupId>
 		<artifactId>log4j</artifactId>
 		<version>1.2.17</version>
-	</dependency> 
+	</dependency>-->
 	<!-- 日志相关 begin -->
 	<!--启用彩色日志可以使用jansi库，如果是实现是logback，那么自带彩色功能,当然使用logback也可以通过withJansi开开启集成jansi，但是需要独立引用这个库,如果是非window机器不需要引入，因为已经自带ansi颜色符号识别
 	     如果是在idea或是eclipse，由于工具支持了ansi颜色字符识别，所以也可以看到颜色，但如果在window控制台就不行了-->
@@ -221,11 +226,16 @@
 		<version>4.12</version>
 		<scope>test</scope>
 	</dependency>
-	<!-- <dependency>
-	  <groupId>com.spotify</groupId>
-	  <artifactId>docker-client</artifactId>
-	  <version>8.3.1</version>
-	</dependency> -->
+	  <dependency>
+		  <groupId>vip.simplify</groupId>
+		  <artifactId>rpc-client-plugin</artifactId>
+		  <version>1.2.3-SNAPSHOT</version>
+	  </dependency>
+	  <!-- <dependency>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-client</artifactId>
+        <version>8.3.1</version>
+      </dependency> -->
 </dependencies>
   <build>
     <finalName>${project.artifactId}</finalName>

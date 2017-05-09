@@ -73,7 +73,13 @@ public class PropertieUtil {
 	}
 
 	public Object get(String name) {
-		return props.get(name);
+		Object value = props.get(name);
+		//如果value值为空，那么考虑二级匹配：把驼峰标识的名字转换成“.”,并重新搜索
+		if (value == null) {
+			name = StringUtil.changeUpperCase(name,".");
+			value = props.get(name);
+		}
+		return value;
 	}
 	
 	public String getProperty(String name) {

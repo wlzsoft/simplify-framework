@@ -5,7 +5,7 @@
         <artifactId>rpc</artifactId>
         <version>1.2.3-SNAPSHOT</version>
     </parent>
-    <artifactId>rpc-client</artifactId>
+    <artifactId>rpc-client-plugin</artifactId>
     <name>(${project.artifactId})远程方法调用客户端api</name>
     <properties>
         <templatePath>${project.parent.parent.basedir}</templatePath>
@@ -15,7 +15,12 @@
     <dependencies>
         <dependency>
             <groupId>vip.simplify</groupId>
-            <artifactId>rpc-core</artifactId>
+            <artifactId>rpc-client</artifactId>
+            <version>1.2.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>vip.simplify</groupId>
+            <artifactId>ioc-plugins</artifactId>
             <version>1.2.3-SNAPSHOT</version>
         </dependency>
     </dependencies>

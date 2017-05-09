@@ -15,7 +15,7 @@
   <dependencies>
   	<dependency>
   		<groupId>vip.simplify</groupId>
-  		<artifactId>rpc</artifactId>
+  		<artifactId>rpc-client</artifactId>
   		<version>${project.version}</version>
   	</dependency>
   </dependencies>

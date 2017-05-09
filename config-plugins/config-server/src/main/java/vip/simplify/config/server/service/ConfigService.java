@@ -36,6 +36,9 @@ public class ConfigService implements IConfigService{
 	
 	@Config("rootPath")
 	private String rootPath = "/simplify-config/";
+
+	@Config("config.registry.address")
+	private String registryAddress = "127.0.0.1:2181";
 	
 	private ZookeeperConnectionManager connectionManager = new ZookeeperConnectionManager();
 	private ZookeeperExecute execute;
@@ -43,7 +46,7 @@ public class ConfigService implements IConfigService{
 	@InitBean
 	public void init() {
 		try {
-			connectionManager.connect("127.0.0.1:2181", new ZookeeperConnectionWatcher());
+			connectionManager.connect(registryAddress, new ZookeeperConnectionWatcher());
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}

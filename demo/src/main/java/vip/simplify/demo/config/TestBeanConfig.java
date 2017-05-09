@@ -1,10 +1,12 @@
 package vip.simplify.demo.config;
 
+import vip.simplify.config.api.service.IConfigService;
 import vip.simplify.demo.mvc.service.TestFirstService;
 import vip.simplify.demo.mvc.service.TestSubService;
 import vip.simplify.demo.mvc.service.outter.TestOutterService;
 import vip.simplify.demo.mvc.service.outter.TestOutterSubService;
 import vip.simplify.ioc.annotation.BeanConfig;
+import vip.simplify.rpc.annotations.ClientBeanConfig;
 
 /**
  * <p><b>Title:</b><i>基于BeanConfig来标识Bean类</i></p>
@@ -27,6 +29,9 @@ public class TestBeanConfig {
 
     @BeanConfig
     public TestSubService testSubService;
+
+    @BeanConfig(annoType = ClientBeanConfig.class)
+    public IConfigService configService;
 
     //以下方式暂不建议使用
     @BeanConfig

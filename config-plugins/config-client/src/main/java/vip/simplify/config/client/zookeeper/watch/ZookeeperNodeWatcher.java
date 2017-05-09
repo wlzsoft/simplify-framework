@@ -33,11 +33,11 @@ public class ZookeeperNodeWatcher implements Watcher {
      */
     private String configPath;
     ZookeeperConnectionWatcher watcher = new ZookeeperConnectionWatcher();
-    public ZookeeperNodeWatcher(String watchPath,String configPath) {
+    public ZookeeperNodeWatcher(String watchPath,String configPath,String address) {
     	this.configPath = configPath;
         connectionManager = new ZookeeperConnectionManager();
         try {
-			connectionManager.connect("127.0.0.1:2181", watcher);
+			connectionManager.connect(address, watcher);
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}

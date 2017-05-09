@@ -52,7 +52,7 @@ public class ServerBeanAnnotationResolver implements IAnnotationResolver<Class<?
  		DubboProtocol protocol = BeanFactory.getBean(DubboProtocol.class);
 		DubboRegistry registry = BeanFactory.getBean(DubboRegistry.class);
 		DubboMonitor monitor = BeanFactory.getBean(DubboMonitor.class);
-		DubboPropertiesConfig dubboProperties=BeanFactory.getBean(DubboPropertiesConfig.class);;
+		DubboPropertiesConfig dubboProperties = BeanFactory.getBean(DubboPropertiesConfig.class);
 //		List<DubboRegistry> registryList=new ArrayList<DubboRegistry>();
 //		List<Object> beanList=new ArrayList<Object>();
 		Set<Entry<String, Object>>  resoveBean = BeanFactory.getBeanContainer().getMapContainer().entrySet();

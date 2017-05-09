@@ -49,7 +49,10 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 	
 	@Config("rootPath")
 	private String rootPath = "/simplify-config/";
-	
+
+	@Config("config.registry.address")
+	private String registryAddress = "127.0.0.1:2181";
+
 	@Inject
 	private IConfigService configService;
 	
@@ -148,6 +151,6 @@ public class ConfigClientAnnotationResolver implements IAnnotationResolver<Class
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		new ZookeeperNodeWatcher(rootPath+entity.getAppid()+"/"+entity.getName(),configPath).watch(valueStr);
+		new ZookeeperNodeWatcher(rootPath+entity.getAppid()+"/"+entity.getName(),configPath,registryAddress).watch(valueStr);
 	}
 }

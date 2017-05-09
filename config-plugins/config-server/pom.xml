@@ -22,6 +22,11 @@
 	    <artifactId>config-api</artifactId>
 	    <version>${project.parent.version}</version>
 	  </dependency>
+	   <dependency>
+		   <groupId>vip.simplify</groupId>
+		   <artifactId>rpc-server</artifactId>
+		   <version>${project.parent.version}</version>
+	   </dependency>
 	  <dependency>
 	  	<groupId>vip.simplify</groupId>
 	    <artifactId>zookeeper</artifactId>
@@ -39,16 +44,6 @@
 	    <version>${project.parent.version}</version>
 	    <scope>test</scope>
 	  </dependency>
-	  <dependency>
-		<groupId>org.slf4j</groupId>
-		<artifactId>slf4j-log4j12</artifactId>
-		<version>1.7.7</version>
-	</dependency>
-	<dependency>
-		<groupId>log4j</groupId>
-		<artifactId>log4j</artifactId>
-		<version>1.2.17</version>
-	</dependency>
   </dependencies>
   <build>
   	<plugins>
@@ -61,19 +56,19 @@
 		   <groupId>org.codehaus.mojo</groupId>
 		   <artifactId>exec-maven-plugin</artifactId>
 		   <version>1.5.0</version>
+			  <configuration>
+				  <mainClass>vip.simplify.bootstrap.Server</mainClass>
+				  <!-- <arguments>
+				   <argument>name</argument>
+				   <argument>path</argument>
+				  </arguments> -->
+			  </configuration>
 		   <executions>
 		    <execution>
 		     <phase>test</phase>
 		     <goals>
 		      <goal>java</goal>
 		     </goals>
-		     <configuration>
-		      <mainClass>vip.simplify.bootstrap.Server</mainClass>
-		      <!-- <arguments>
-		       <argument>name</argument>
-		       <argument>path</argument>
-		      </arguments> -->
-		     </configuration>
 		    </execution>
 		   </executions>
 		  </plugin>

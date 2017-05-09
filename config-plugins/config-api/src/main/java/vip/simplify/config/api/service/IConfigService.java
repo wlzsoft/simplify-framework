@@ -18,8 +18,8 @@ import vip.simplify.ioc.annotation.Bean;
  * @version Version 0.1
  *
  */
-@Bean
-@ClientBean
+//@Bean
+//@ClientBean
 public interface IConfigService {
 
 	/**
