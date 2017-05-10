@@ -34,6 +34,7 @@ Simplfiy框架快速入门
   </dependency>
 ```
 > 3.创建一个Controller类名为TestController,并补充基础代码，如下：
+
 ```java
    package vip.simplify.demo;
    import vip.simplify.mvc.model.Model;
