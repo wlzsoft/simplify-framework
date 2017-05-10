@@ -1,6 +1,7 @@
 package vip.simplify.rpc.resolver;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,18 +44,18 @@ import vip.simplify.utils.clazz.ClassInfo;
  *
  */
 @BeanHook(ClientBean.class)
-public class ClientBeanAnnotationResolver implements IBeanHook ,AutoCloseable{
+public class ClientBeanAnnotationResolver implements IBeanHook<ClientBean> ,AutoCloseable{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBeanAnnotationResolver.class);
 	private static final ConcurrentMap<String, ReferenceConfig<?>> referenceConfigs = new ConcurrentHashMap<>();
 	
 	@Override
-	public BeanEntity<?> hook(Class<?> clazz) {
+	public BeanEntity<?> hook(Class<?> clazz,ClientBean annotation) {
 		List<Class<?>> allIpmlClass = ClassUtil.findClassesByParentClass(clazz, Constants.packagePrefix);
 		if (CollectionUtil.isNotEmpty(allIpmlClass)) {
 			return null;
 		}
-		ClientBean beanAnnotation = clazz.getAnnotation(ClientBean.class);
+		ClientBean beanAnnotation = (ClientBean)annotation;
 		return addRemoteBean(clazz,beanAnnotation.version(),beanAnnotation.check(),beanAnnotation.url());
 	}
 	

@@ -2,6 +2,7 @@ package vip.simplify.dto;
 
 import vip.simplify.ioc.enums.BeanTypeEnum;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class BeanMetaDTO {
 
     private List<AttributeMetaDTO> attributeMetaDTOList;
 
-    private Class<?>[] annotationArr;
+    private Annotation[] annotationArr;
 
     /**
      *
@@ -37,18 +38,18 @@ public class BeanMetaDTO {
      * 操作步骤: TODO<br>
      * @return
      */
-    public Class<?>[] getAnnotationArr() {
+    public Annotation[] getAnnotationArr() {
         return annotationArr;
     }
 
-    public void setAnnotationArr(Class<?>[] annotationArr) {
+    public void setAnnotationArr(Annotation[] annotationArr) {
         this.annotationArr = annotationArr;
     }
 
     /**
      *
      * 方法用途: 元数据来源：注解，配置(xml.json.yml,properties等等)，类对象<br>
-     * 操作步骤: TODO<br>
+     * 操作步骤: TODO 暂未使用，预留<br>
      * @return
      */
     public String getSourceName() {

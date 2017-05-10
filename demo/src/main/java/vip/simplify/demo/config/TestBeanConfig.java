@@ -1,12 +1,16 @@
 package vip.simplify.demo.config;
 
 import vip.simplify.config.api.service.IConfigService;
+import vip.simplify.demo.mvc.service.ITestRemoteService;
 import vip.simplify.demo.mvc.service.TestFirstService;
 import vip.simplify.demo.mvc.service.TestSubService;
 import vip.simplify.demo.mvc.service.outter.TestOutterService;
 import vip.simplify.demo.mvc.service.outter.TestOutterSubService;
+import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.BeanConfig;
-import vip.simplify.rpc.annotations.ClientBeanConfig;
+import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.annotation.Injects;
+import vip.simplify.rpc.annotations.ClientBean;
 
 /**
  * <p><b>Title:</b><i>基于BeanConfig来标识Bean类</i></p>
@@ -24,17 +28,19 @@ import vip.simplify.rpc.annotations.ClientBeanConfig;
 @BeanConfig
 public class TestBeanConfig {
 
-    @BeanConfig(attributes = TestSubService.class)
+    @Bean
+    @Injects(@Inject(type = TestSubService.class))
     public TestFirstService testFirstService;
 
-    @BeanConfig
+    @ClientBean(version = "1.0.0",check = false)
+    @Bean
+    private ITestRemoteService testRemoteService;
+
+    @Bean
     public TestSubService testSubService;
 
-    @BeanConfig(annoType = ClientBeanConfig.class)
-    public IConfigService configService;
-
     //以下方式暂不建议使用
-    @BeanConfig
+    @Bean
     public TestOutterService testSubService() {
         TestOutterService testOutterService = new TestOutterService();
         //这种方式设置会导致创建多实例，并且这个实例非Bean容器托管的，后续需要特殊处理
@@ -42,7 +48,7 @@ public class TestBeanConfig {
         return testOutterService;
     }
 
-    @BeanConfig
+    @Bean
     public TestOutterSubService testOutterSubService() {
         return new TestOutterSubService();
     }

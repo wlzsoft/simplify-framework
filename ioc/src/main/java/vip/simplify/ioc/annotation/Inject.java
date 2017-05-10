@@ -17,6 +17,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  */
 @Target({FIELD})
 @Retention(RUNTIME)
+@Documented
 public @interface Inject {
     /**
      * 

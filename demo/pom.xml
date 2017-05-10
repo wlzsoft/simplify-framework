@@ -119,11 +119,6 @@
           <artifactId>rpc-client</artifactId>
           <version>${project.version}</version>
       </dependency>
-	  <dependency>
-		  <groupId>vip.simplify</groupId>
-		  <artifactId>rpc-client-plugin</artifactId>
-		  <version>${project.version}</version>
-	  </dependency>
 	<dependency>
 		<groupId>vip.simplify</groupId>
 		<artifactId>listener</artifactId>
@@ -226,11 +221,6 @@
 		<version>4.12</version>
 		<scope>test</scope>
 	</dependency>
-	  <dependency>
-		  <groupId>vip.simplify</groupId>
-		  <artifactId>rpc-client-plugin</artifactId>
-		  <version>1.2.3-SNAPSHOT</version>
-	  </dependency>
 	  <!-- <dependency>
         <groupId>com.spotify</groupId>
         <artifactId>docker-client</artifactId>

@@ -1,6 +1,10 @@
 package vip.simplify.ioc.hook;
 
+import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.ioc.BeanEntity;
+import vip.simplify.utils.clazz.ClassInfo;
+
+import java.lang.annotation.Annotation;
 
 /**
   * <p><b>Title:</b><i>bean单例钩子处理</i></p>
@@ -14,14 +18,16 @@ import vip.simplify.ioc.BeanEntity;
  * @author <a href="mailto:luchuangye@meizu.com" >luchuangye</a>
  * @version Version 0.1
  *
+ * @param <T> 指定注解类型
  */
-public interface IBeanHook {
+public interface IBeanHook<T extends Annotation> {
 	/**
 	 * 
 	 * 方法用途: bean初始化钩子方法<br>
 	 * 操作步骤: TODO<br>
 	 * @param clazz
+	 * @param annotation
 	 * @return
 	 */
-	BeanEntity<?> hook(Class<?> clazz);
+	BeanEntity<?> hook(Class<?> clazz,T annotation);
 }

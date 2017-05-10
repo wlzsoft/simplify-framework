@@ -4,6 +4,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -23,8 +24,9 @@ import vip.simplify.ioc.enums.BeanTypeEnum;
  * @version Version 0.1
  *
  */
-@Target({METHOD,FIELD,TYPE})
+@Target({TYPE})
 @Retention(RUNTIME)
+@Documented
 public @interface BeanConfig {
 
 	/**
@@ -33,7 +35,7 @@ public @interface BeanConfig {
 	 * 操作步骤: 目前有单例和多例两种方式<br>
 	 * @return
 	 */
-	BeanTypeEnum type() default BeanTypeEnum.SINGLE;
+//	BeanTypeEnum type() default BeanTypeEnum.SINGLE;
 
 	/**
 	 * 
@@ -41,16 +43,8 @@ public @interface BeanConfig {
 	 * 操作步骤: 创建bean的时候标识起来，可用于获取bean对象<br>
 	 * @return
 	 */
-	String value() default "";
+//	String value() default "";
 
-	Class<?>[] attributes() default Object.class;
-
-	/**
-	 *
-	 * 方法用途: 指定携带注解类型<br>
-	 * 操作步骤: 目前主要用于自定义Bean(BeanHook注解)的解析<br>
-	 * @return
-	 */
-	Class<?>[] annoType() default Object.class;
+//	Class<?>[] attributes() default Object.class;
 
 }

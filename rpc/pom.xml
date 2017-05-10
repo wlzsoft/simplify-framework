@@ -15,7 +15,6 @@
 		<module>rpc-client</module>
 		<module>rpc-server</module>
 		<module>rpc-core</module>
-		<module>rpc-client-plugin</module>
 	</modules>
 	<properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

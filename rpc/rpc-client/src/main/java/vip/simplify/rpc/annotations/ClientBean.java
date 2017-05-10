@@ -1,4 +1,5 @@
 package vip.simplify.rpc.annotations;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -17,7 +18,7 @@ import java.lang.annotation.Target;
  * @version Version 3.0
  *
  */
-@Target(TYPE)
+@Target({TYPE,FIELD})
 @Retention(RUNTIME)
 public @interface ClientBean {
 

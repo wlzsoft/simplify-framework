@@ -1,7 +1,8 @@
 package vip.simplify.rpc.client.service.config;
 
+import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.BeanConfig;
-import vip.simplify.rpc.annotations.ClientBeanConfig;
+import vip.simplify.rpc.annotations.ClientBean;
 import vip.simplify.rpc.client.service.TestService;
 import vip.simplify.rpc.client.service.TestSubService;
 import vip.simplify.rpc.client.service.outter.TestOutterService;
@@ -23,18 +24,19 @@ import vip.simplify.rpc.client.service.outter.TestOutterSubService;
 @BeanConfig
 public class TestBeanConfig {
 
-    @BeanConfig(annoType = ClientBeanConfig.class)
+    @ClientBean(version = "1.0.0",check = false)
+    @Bean
     public TestService testServiceClass;
 
-    @BeanConfig
+    @Bean
     public TestSubService testSubServiceClass;
 
-    @BeanConfig
+    @Bean
     public TestOutterService testSubService() {
         return new TestOutterService();
     }
 
-    @BeanConfig
+    @Bean
     public TestOutterSubService testOutterSubService() {
         return new TestOutterSubService();
     }

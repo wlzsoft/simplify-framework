@@ -61,6 +61,8 @@ public final class ClassMetaResolver {
 					List<Field> fieldList = ReflectionUtil.getAllField(c);
 					List<AttributeMetaDTO> attributeMetaDTOList = resolverFieldMeta(fieldList);
 					beanMetaDTO.setAttributeMetaDTOList(attributeMetaDTOList);
+					Annotation[] annoArr = c.getAnnotations();
+					beanMetaDTO.setAnnotationArr(annoArr);
 					return beanMetaDTO;
 				}
 			}, BeanAnnotationResolver.getClasspaths());//提供构建bean的总数据源
@@ -75,6 +77,8 @@ public final class ClassMetaResolver {
 			List<Field> fieldList = ReflectionUtil.getAllField(c);
 			List<AttributeMetaDTO> attributeMetaDTOList = resolverFieldMeta(fieldList);
 			beanMetaDTO.setAttributeMetaDTOList(attributeMetaDTOList);
+			Annotation[] annoArr = c.getAnnotations();
+			beanMetaDTO.setAnnotationArr(annoArr);
 			return beanMetaDTO;
 		}
 	}, BeanAnnotationResolver.getClasspaths());

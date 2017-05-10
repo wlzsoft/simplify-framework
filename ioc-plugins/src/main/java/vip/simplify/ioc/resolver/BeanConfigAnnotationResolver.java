@@ -5,15 +5,13 @@ import org.slf4j.LoggerFactory;
 import vip.simplify.dto.AttributeMetaDTO;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.ioc.BeanFactory;
-import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.ioc.annotation.BeanConfig;
-import vip.simplify.ioc.annotation.Init;
-import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.annotation.*;
 import vip.simplify.ioc.enums.InitTypeEnum;
 import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.ReflectionUtil;
 import vip.simplify.utils.clazz.ClassInfo;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class BeanConfigAnnotationResolver implements IAnnotationResolver<Class<?>>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BeanConfigAnnotationResolver.class);
-	public static final Map<Class<?>,BeanConfig> beanConfigClassMap = new ConcurrentHashMap<>();
+	public static final Map<Class<?>,Bean> beanConfigClassMap = new ConcurrentHashMap<>();
 
 	@Override
 	public void resolve(List<Class<?>> resolveList) {
@@ -51,21 +49,22 @@ public final class BeanConfigAnnotationResolver implements IAnnotationResolver<C
 			List<Field> fieldList = ReflectionUtil.getAllField(beanConfigClass);
 			for (Field field : fieldList) {
 				//4.解析带BeanConfig注解的属性，并提取对应Class对象
-				BeanConfig beanConfig = field.getAnnotation(BeanConfig.class);
-				if(beanConfig != null) {
+				Bean bean = field.getAnnotation(Bean.class);
+				if(bean != null) {
 					Class<?> fieldClazz = field.getType();
+					Injects injects = field.getAnnotation(Injects.class);
 					//5.添加提取的beanClass到Bean的类集合中，等待BeanAnnotationResover类的解析,由于BeanConfig目前没有携带其他信息，所以不会复杂注入操作，后续会为BeanConfig增加更多的配置,另外要处理Bean和BeanConfig注解信息重叠的问题
-					ClassInfo<BeanMetaDTO> classInfo = buildBeanMeta(fieldClazz, beanConfig);
+					ClassInfo<BeanMetaDTO> classInfo = buildBeanMeta(beanConfigClass.getName(),fieldClazz, bean,field.getAnnotations(),injects);
 					beanClassMap.put(classInfo.getClazz(),classInfo);
-					beanConfigClassMap.put(classInfo.getClazz(),beanConfig);
+					beanConfigClassMap.put(classInfo.getClazz(),bean);
 				}
 			}
 			List<Method> methodList = ReflectionUtil.getAllMethod(beanConfigClass);
 			Object beanObj = ReflectionUtil.newInstance(beanConfigClass);
 			for (Method method : methodList) {
-				//4.解析带BeanConfig注解的方法
-				BeanConfig beanConfig = method.getAnnotation(BeanConfig.class);
-				if(beanConfig != null) {
+				//4.解析带Bean注解的方法
+				Bean bean = method.getAnnotation(Bean.class);
+				if(bean != null) {
 					Object obj = ReflectionUtil.invokeMethod(beanObj,method,null,false);
 					if(obj == null) {
 						//该bean配置无效，bean实例为null
@@ -73,10 +72,11 @@ public final class BeanConfigAnnotationResolver implements IAnnotationResolver<C
 						continue;
 					}
 					if(obj instanceof Class) {
+						Injects injects = method.getAnnotation(Injects.class);
 						//5.添加提取的beanClass到Bean的类集合中，等待BeanAnnotationResover类的解析,由于BeanConfig目前没有携带其他信息，所以不会复杂注入操作，后续会为BeanConfig增加更多的配置,另外要处理Bean和BeanConfig注解信息重叠的问题
-						ClassInfo<BeanMetaDTO> classInfo = buildBeanMeta((Class) obj, beanConfig);
+						ClassInfo<BeanMetaDTO> classInfo = buildBeanMeta(beanConfigClass.getName(),(Class) obj, bean,method.getAnnotations(),injects);
 						beanClassMap.put(classInfo.getClazz(),classInfo);
-						beanConfigClassMap.put(classInfo.getClazz(),beanConfig);
+						beanConfigClassMap.put(classInfo.getClazz(),bean);
 					} else {
 						//5.直接添加到Bean容器中，跳过了BeanAnnotationResover类的解析,解析和注入的过程，在Bean配置类中就已经完成
 						BeanFactory.addBean(obj);
@@ -86,31 +86,39 @@ public final class BeanConfigAnnotationResolver implements IAnnotationResolver<C
 		}
 	}
 
-	private ClassInfo<BeanMetaDTO> buildBeanMeta(Class<?> clazz, BeanConfig beanConfig) {
+	private ClassInfo<BeanMetaDTO> buildBeanMeta(String beanConfigName,Class<?> clazz, Bean bean, Annotation[] annotations, Injects injects) {
 		BeanMetaDTO beanMetaDTO = new BeanMetaDTO();
 		beanMetaDTO.setSourceName(Bean.class.getName());
-		beanMetaDTO.setType(beanConfig.type());
-		beanMetaDTO.setValue(beanConfig.value());
+		beanMetaDTO.setType(bean.type());
+		beanMetaDTO.setValue(bean.value());
 //		attribute start
 		List<AttributeMetaDTO> attributeMetaDTOList = new ArrayList<>();
-		List<Field> fieldList = ReflectionUtil.getAllField(clazz);
-		for (Field field : fieldList) {
-			for (Class<?> fieldClass : beanConfig.attributes()) {
-				if (field.getType() == fieldClass) {
-					AttributeMetaDTO attributeMetaDTO = new AttributeMetaDTO();
-					attributeMetaDTO.setName("");
-					attributeMetaDTO.setType(fieldClass);//BeanConfig方式只支持类型Type注入
-					attributeMetaDTO.setDesc("");
-					attributeMetaDTO.setField(field);
-					attributeMetaDTOList.add(attributeMetaDTO);
-					break;
+		if (injects != null) {
+			Inject[] attributes =  injects.value();
+			List<Field> fieldList = ReflectionUtil.getAllField(clazz);
+			for (Inject inject : attributes) {
+				if (inject.type() == Object.class) {
+					LOGGER.error(beanConfigName+"的BeanConfig配置中：标注了@Bean注解的名为"+clazz.getName()+"的附属属性的@Inject注解的type属性为具体的注入实现类型");
+					continue;
+				}
+				for (Field field : fieldList) {
+					boolean isContainParent = ClassUtil.isContainParent(field.getType(),inject.type(),true);
+					if (isContainParent) {
+						AttributeMetaDTO attributeMetaDTO = new AttributeMetaDTO();
+						attributeMetaDTO.setName(inject.name());
+						attributeMetaDTO.setType(inject.type());
+						attributeMetaDTO.setDesc(inject.desc());
+						attributeMetaDTO.setField(field);
+						attributeMetaDTOList.add(attributeMetaDTO);
+						break;
+					}
 				}
 			}
 		}
-//		attribute end
 		beanMetaDTO.setAttributeMetaDTOList(attributeMetaDTOList);
+//		attribute end
 		//增加注解信息，目前主要用于BeanHook解析匹配
-		beanMetaDTO.setAnnotationArr(beanConfig.annoType());
+		beanMetaDTO.setAnnotationArr(annotations);
 		ClassInfo<BeanMetaDTO> classInfo = new ClassInfo<>();
 		classInfo.setClazz(clazz);
 		classInfo.setInfo(beanMetaDTO);

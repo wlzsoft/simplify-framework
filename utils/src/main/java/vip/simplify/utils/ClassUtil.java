@@ -44,6 +44,29 @@ public class ClassUtil {
 	
     private ClassUtil() {
     }
+
+	/**
+	 * 方法用途: 判断sourceClass实现或继承的父级Classs是否包含targetClass<br>
+	 * 操作步骤: TODO<br>
+	 * @param sourceClass 待判断class
+	 * @param targetClass 指定判断的Class类型
+	 * @param isSelf 是否包含判断自身，true为判断自身：这里含义是如果如果sourceClass == targetClass结果也会返回true
+	 */
+	public static boolean isContainParent(Class<?> sourceClass,Class<?> targetClass, boolean isSelf) {
+		//1.判断是否包含自身
+		if ((sourceClass == targetClass) && isSelf) {
+			return true;
+		}
+		//2.判断是否包含父类
+		do {
+			sourceClass = sourceClass.getSuperclass();
+			if (sourceClass == targetClass) {
+				return true;
+			}
+		} while (sourceClass != Object.class && sourceClass != null);
+		return  false;
+	}
+
 //    ===========================查找类相关的===================================
 	/**
 	 * 
