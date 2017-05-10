@@ -1,8 +1,14 @@
 package vip.simplify.ioc.resolver;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.ioc.BeanFactory;
+import vip.simplify.ioc.annotation.Bean;
+import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.config.service.TestService;
+import vip.simplify.ioc.config.service.outter.TestOutterService;
+import vip.simplify.test.SimplifyJUnit4ClassRunner;
 import vip.simplify.utils.clazz.ClassInfo;
 
 import java.util.Map;
@@ -20,7 +26,14 @@ import java.util.Map;
  * @version Version 0.1
  *
  */
+@Bean
+@RunWith(SimplifyJUnit4ClassRunner.class)
 public class BeanConfigAnnotationResolverTest {
+    @Inject
+    private TestService testService;
+
+    @Inject
+    private TestOutterService testOutterService;
     @Test
     public void resolve() {
         new BeanConfigAnnotationResolver().resolve(null);
@@ -32,5 +45,10 @@ public class BeanConfigAnnotationResolverTest {
         map.forEach((k,v) -> {
             System.out.println(k+","+v);
         });
+    }
+    @Test
+    public void test() {
+        testService.getName();
+        testOutterService.test();
     }
 }

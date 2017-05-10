@@ -2,6 +2,8 @@ package vip.simplify.ioc.config;
 
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.BeanConfig;
+import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.annotation.Injects;
 import vip.simplify.ioc.config.service.TestService;
 import vip.simplify.ioc.config.service.TestSubService;
 import vip.simplify.ioc.config.service.outter.TestOutterService;
@@ -24,6 +26,7 @@ import vip.simplify.ioc.config.service.outter.TestOutterSubService;
 public class TestBeanConfig {
 
     @Bean
+    @Injects(@Inject(type = TestSubService.class))
     public TestService testServiceClass;
 
     @Bean
@@ -31,7 +34,9 @@ public class TestBeanConfig {
 
     @Bean
     public TestOutterService testSubService() {
-        return new TestOutterService();
+        TestOutterService testOutterService = new TestOutterService();
+        testOutterService.setTestOutterSubService(testOutterSubService());
+        return testOutterService;
     }
 
     @Bean

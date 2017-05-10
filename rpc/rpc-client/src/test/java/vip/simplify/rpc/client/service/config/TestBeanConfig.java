@@ -2,7 +2,10 @@ package vip.simplify.rpc.client.service.config;
 
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.BeanConfig;
+import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.annotation.Injects;
 import vip.simplify.rpc.annotations.ClientBean;
+import vip.simplify.rpc.client.service.ITestRemoteService;
 import vip.simplify.rpc.client.service.TestService;
 import vip.simplify.rpc.client.service.TestSubService;
 import vip.simplify.rpc.client.service.outter.TestOutterService;
@@ -24,16 +27,22 @@ import vip.simplify.rpc.client.service.outter.TestOutterSubService;
 @BeanConfig
 public class TestBeanConfig {
 
+    @Bean
+    @Injects(@Inject(type = TestSubService.class))
+    public TestService testFirstService;
+
     @ClientBean(version = "1.0.0",check = false)
     @Bean
-    public TestService testServiceClass;
+    private ITestRemoteService testRemoteService;
 
     @Bean
     public TestSubService testSubServiceClass;
 
     @Bean
     public TestOutterService testSubService() {
-        return new TestOutterService();
+        TestOutterService testOutterService = new TestOutterService();
+        testOutterService.setTestOutterSubService(testOutterSubService());
+        return testOutterService;
     }
 
     @Bean
