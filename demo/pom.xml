@@ -235,6 +235,8 @@
 	        <artifactId>maven-war-plugin</artifactId>
 	        <version>2.6</version>
 	        <configuration>
+                <!--是否必须包含web.xml文件，如果是用servelt3.0全注解方式，可以设置为false-->
+				<!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
 	        	<archive>
 					<addMavenDescriptor>false</addMavenDescriptor>
 					<compress>true</compress>
