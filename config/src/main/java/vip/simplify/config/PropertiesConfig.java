@@ -9,6 +9,7 @@ import vip.simplify.config.annotation.Reload;
 import vip.simplify.config.annotation.ReloadableResource;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.utils.PropertieUtil;
+import vip.simplify.utils.StringUtil;
 
 
 /**
@@ -35,6 +36,7 @@ public class PropertiesConfig {
 	 */
 	private String charset = "UTF-8";
 	private String controllerClasspath = Constants.packagePrefix;
+	private String classpaths;
 	private String template = "meizu";
 	/**
 	 * 域名
@@ -87,8 +89,20 @@ public class PropertiesConfig {
 		this.charset = charset;
 	}
 	public String getControllerClasspath() {
+		if (controllerClasspath.equals(Constants.packagePrefix) && StringUtil.isNotBlank(classpaths)) {
+			controllerClasspath = classpaths.replace(Constants.packagePrefix,"")+","+Constants.packagePrefix;
+		}
 		return controllerClasspath;
 	}
+
+	public String getClasspaths() {
+		return classpaths;
+	}
+
+	public void setClasspaths(String classpaths) {
+		this.classpaths = classpaths;
+	}
+
 	public void setControllerClasspath(String controllerClasspath) {
 		this.controllerClasspath = controllerClasspath;
 	}
