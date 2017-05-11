@@ -90,7 +90,17 @@ public class PropertiesConfig {
 	}
 	public String getControllerClasspath() {
 		if (controllerClasspath.equals(Constants.packagePrefix) && StringUtil.isNotBlank(classpaths)) {
-			controllerClasspath = classpaths.replace(Constants.packagePrefix,"")+","+Constants.packagePrefix;
+			controllerClasspath = classpaths;
+		}
+		boolean hasSystemPath = false;
+		for (String classpath : controllerClasspath.split(",")) {
+			  if (classpath.equals(Constants.packagePrefix)) {
+				  hasSystemPath = true;
+				  break;
+			  }
+		}
+		if(!hasSystemPath) {
+			controllerClasspath = Constants.packagePrefix+","+controllerClasspath;
 		}
 		return controllerClasspath;
 	}

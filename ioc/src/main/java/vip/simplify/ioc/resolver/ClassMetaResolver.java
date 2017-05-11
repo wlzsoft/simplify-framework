@@ -1,22 +1,12 @@
 package vip.simplify.ioc.resolver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import vip.simplify.Constants;
 import vip.simplify.dto.AttributeMetaDTO;
 import vip.simplify.dto.BeanMetaDTO;
-import vip.simplify.exception.StartupErrorException;
-import vip.simplify.ioc.BeanEntity;
-import vip.simplify.ioc.BeanFactory;
-import vip.simplify.ioc.annotation.*;
-import vip.simplify.ioc.enums.BeanTypeEnum;
-import vip.simplify.ioc.enums.InitTypeEnum;
-import vip.simplify.ioc.hook.IBeanHook;
-import vip.simplify.ioc.hook.IBeanPrototypeHook;
+import vip.simplify.ioc.annotation.Bean;
+import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.annotation.StaticType;
 import vip.simplify.utils.ClassUtil;
-import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.ReflectionUtil;
-import vip.simplify.utils.StringUtil;
 import vip.simplify.utils.clazz.ClassInfo;
 import vip.simplify.utils.clazz.IFindClassCallBack;
 
