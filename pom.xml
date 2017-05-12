@@ -148,53 +148,6 @@
 			<url>scp://root@172.16.180.83/home/simplify-doc</url>
 		</site>
 	</distributionManagement>
-	<repositories>
-	  	<!-- 仓库地址，从上往下进行查找。 -->
-	
-		<!-- 如有私服,打开私服地址-->
-		<!-- always(实时更新) daily（每天更新） interval:xxx（隔xxx分钟更新一次）  never（从不更新） 默认为daily -->
-		<!-- <repository>
-			<id>nexus</id>
-	  		<name>internal nexus repository</name>
-	  		<url>http://172.16.180.84:8081/nexus/content/groups/public</url>
-	  		<snapshots>
-	  			<enabled>true</enabled>
-	  			<checksumPolicy>warn</checksumPolicy>
-	  			<updatePolicy>always</updatePolicy>
-	  		</snapshots>
-		</repository> -->
-		
-		<!-- <repository>
-            <id>oschina</id>
-            <name>Oschina Releases</name>
-            <url>http://maven.oschina.net/content/groups/public</url>
-        </repository> -->
-        
-		<!-- <repository> 
-			<id>simpleify</id> 
-			<name>simpleify beta</name>
-			<url>https://raw.github.com/simpleify/repository/master</url>
-		</repository> -->
-		
-	</repositories>
-	
-	<pluginRepositories> 
-	
-		<!-- 如有私服,打开私服地址-->
-		<!-- <pluginRepository>
-			<id>nexus</id>
-	  		<name>internal nexus repository</name>
-	  		<url>http://172.16.180.84:8081/nexus/content/groups/public</url>
-		</pluginRepository> -->
-		
-		<!-- <pluginRepository>
-            <id>oschina</id>
-            <name>Oschina Releases</name>
-            <url>http://maven.oschina.net/content/groups/public</url>
-        </pluginRepository> -->
-		
-	</pluginRepositories> 
-	
   <dependencies>
 		<!-- 日志相关 begin -->
 	    <!--启用彩色日志可以使用jansi库，如果是实现是logback，那么自带彩色功能,当然使用logback也可以通过withJansi开开启集成jansi，但是需要独立引用这个库,如果是非window机器不需要引入，因为已经自带ansi颜色符号识别

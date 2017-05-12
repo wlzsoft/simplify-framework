@@ -83,6 +83,9 @@
 			<!-- repositories 无论是全局的或是某个项目pom中指定的，都会覆盖掉全局mirror的配置 -->
 			<!-- repository 和 mirror的区别是： mirror会映射到一个远程仓库服务器，可以包含多个仓库，配置比repository简单，没有详细的设置-->
 			<repositories>
+				<!-- 仓库地址，从上往下进行查找。 -->
+				<!-- 如有私服,打开私服地址-->
+				<!-- always(实时更新) daily（每天更新） interval:xxx（隔xxx分钟更新一次）  never（从不更新） 默认为daily -->
 				<repository>
 					<id>nexus</id>
 	  				<name>internal nexus repository</name>
@@ -97,8 +100,25 @@
 						<updatePolicy>always</updatePolicy>
 					</snapshots>
 				</repository>
+				<!-- 以下仓库默认不需要打开，这些仓库的维护，应该在私服中去配置就行，但是当你没有私服的管理员权限时，但是你又急于测试，那么打开，最终要通过管理配置到私服中，统一管理，这样其他开发人员后续，就可以使用私服缓存的构建了 -->
+				<!-- <repository>
+		            <id>aliyun</id>
+		            <name>aliyun Releases</name>
+		            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		        </repository> -->
+				<!-- <repository>
+		            <id>oschina</id>
+		            <name>Oschina Releases</name>
+		            <url>http://maven.oschina.net/content/groups/public</url>
+		        </repository> -->
+		        <!-- <repository> 
+					<id>simpleify</id> 
+					<name>simpleify beta</name>
+					<url>https://raw.github.com/simpleify/repository/master</url>
+				</repository> -->
 			</repositories>
 			<pluginRepositories>
+				<!-- 如有私服,打开私服地址-->
 				<pluginRepository>
 					<id>nexus</id>
 			  		<name>internal nexus repository</name>
@@ -109,6 +129,11 @@
 						<updatePolicy>always</updatePolicy>
 					</snapshots>
 				</pluginRepository>
+				<!-- <pluginRepository>
+		            <id>oschina</id>
+		            <name>Oschina Releases</name>
+		            <url>http://maven.oschina.net/content/groups/public</url>
+		        </pluginRepository> -->
 			</pluginRepositories>
 		</profile>
 	</profiles> 
