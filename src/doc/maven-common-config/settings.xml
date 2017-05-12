@@ -59,14 +59,14 @@
 	    </server>
 	</servers>
 	<!-- 注意：mirrors只包含非 SNAPSHOT版本的库，不包含开发中的库 -->
-	<mirrors>
+	<!-- <mirrors>
 		<mirror>
 			<id>nexus</id>
 			<name>nexus</name>
 			<url>http://10.2.67.20:8081/nexus/content/groups/public/</url>
 			<mirrorOf>central</mirrorOf>
 		</mirror>
-	</mirrors>
+	</mirrors> -->
 	<profiles>
 		<profile>
 			<!-- <activation>
@@ -81,9 +81,11 @@
 				<repository>
 					<id>nexus</id>
 	  				<name>internal nexus repository</name>
-	  				<!-- 这里使用了具体可以更新snapshots的仓库，而下面注释的地址包含的其他第三方可能存在的snapshot的模块不被纳入 -->
-	  				<url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
-	  				<!-- <url>http://10.2.67.20:8081/nexus/content/groups/public</url> -->
+	  				<!-- 这里使用了具体可以更新snapshots的仓库，而下面注释的地址包含的其他第三方可能存在的snapshot的模块不被纳入
+	  				因为配置了repositorys会覆盖掉mirror的配置，所以仓库地址必须配全 -->
+	  				<!-- <url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url> -->
+	  				<!-- 建议开启使用以下地址 -->
+	  				<url>http://10.2.81.208:8081/nexus/content/groups/public</url>
 					<snapshots>
 						<enabled>true</enabled>
 						<checksumPolicy>warn</checksumPolicy>
@@ -95,7 +97,7 @@
 				<pluginRepository>
 					<id>nexus</id>
 			  		<name>internal nexus repository</name>
-			  		<url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
+			  		<url>http://10.2.81.208:8081/nexus/content/groups/public</url>
 					<snapshots>
 						<enabled>true</enabled>
 						<checksumPolicy>warn</checksumPolicy>
