@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>vip.simplify</groupId>
+    <artifactId>simplify-framework</artifactId>
+    <version>1.2.3-SNAPSHOT</version>
+  </parent>
+  <artifactId>archetype</artifactId>
+  <packaging>pom</packaging>
+  <name>(${project.artifactId})项目原型模版</name>
+  <description>自定义框架的标准骨架，统一项目目录结构，简化配置，加速项目搭建</description>
+  <modules>
+  	<module>archetype-webapp</module>
+  </modules>
+</project>

@@ -35,6 +35,7 @@ Simplfiy框架快速入门
 - 1.创建基于maven的web项目
      > `Archetype`选择官方的：`org.apache.maven.archetype:maven-archetype-webapp`
      > 如果`Archetype`选择本地自定义的，那么只需 按 第4步的补充代码步骤，写完代码，就可以jetty:run启动了，其他步骤掠过
+     > 自定义的archetype地址：http://10.2.81.208:8081/nexus/content/groups/public/archetype-catalog.xml，这是私服的地址，里面包含自己自定义的，还有大量非maven官方的archetype模版，如果是SNAPSHOT的，注解勾选包含SNAPSHOT才能看到自己定义的
 
 - 2.在pom.xml中增加以下配置：
     - 设置jdk编译版本

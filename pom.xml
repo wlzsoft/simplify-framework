@@ -98,8 +98,9 @@
 	  <module>weaving-plugins</module>
 	  <module>ioc-plugins</module>
 	  <module>net</module>
+	  <module>archetype</module>
     <!-- <module>mq-plugins</module> -->
-    <module>archetype-webapp</module>
+    
   </modules>
   <properties>
   	<!-- Plugin的属性start -->
