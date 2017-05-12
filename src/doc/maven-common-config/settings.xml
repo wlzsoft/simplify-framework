@@ -59,8 +59,8 @@
 	    </server>
 	</servers>
 	<!-- 注意：mirrors和repositories配置不当，或导致部分artifact找不到，比如框架的vip.simplfiy:simplify-framework:pom:1.2.3-SNAPSHOT找不到 -->
-	<!-- 注意：mirrorOf的值为central只包含而不包含snapshots仓库，这里一般配置*就可以了,这样包含了snapshots仓库 -->
-	<!-- mirrors设置比repository简单，建议使用 -->
+	<!-- 注意：mirrorOf的值为central，这里一般配置*就可以了,这样包含了所有非snapshot类型的仓库 -->
+	<!-- 注意：mirrors设置比repository简单，但是mirrors不会包含snapshot的仓库artifact，实际开发，不建议配置mirror-->
 	<mirrors>
 		<mirror>
 			<id>nexus</id>
@@ -81,7 +81,7 @@
 			<!-- 1.这里可以配置非maven官方的仓库 。2.主要针对开发中的snapshots的特殊指定-->
 			<!-- 以下repositories 的所有内容可拷贝到具体项目的pom文件中，针对项目起作用 -->
 			<!-- repositories 无论是全局的或是某个项目pom中指定的，都会覆盖掉全局mirror的配置 -->
-			<!-- repository 和 mirror的区别是： mirror会映射到一个远程仓库服务器，可以包含多个仓库，配置比repository简单，没有详细的设置-->
+			<!-- repository 和 mirror的区别是： mirror会映射到一个远程仓库服务器，可以包含多个仓库，但是无法下载snapshot仓库的artifact，配置比repository简单-->
 			<repositories>
 				<!-- 仓库地址，从上往下进行查找。 -->
 				<!-- 如有私服,打开私服地址-->
@@ -139,7 +139,7 @@
 	</profiles> 
 <!-- <proxies /> -->
 	<!-- 默认激活的profile，这样对所有项目起作用了，是全局的,如果这里不指定，默认dev环境不生效，需要在在ide中指定，目前eclipse只能通过命令行指定，idea有很好的控制 -->
-	<!-- <activeProfiles>
+	<activeProfiles>
 		<activeProfile>dev</activeProfile>
-	</activeProfiles> -->
+	</activeProfiles>
 </settings>
