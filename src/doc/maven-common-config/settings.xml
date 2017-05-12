@@ -28,6 +28,9 @@
 			<id>nexus-snapshots</id>
 			<username>admin</username>
 			<password>admin123</password>
+			<configuration>
+            	<timeout>3000</timeout> <!-- 3秒 -->
+            </configuration>
 		</server>
 		<server>
 			<id>nexus-releases</id>
@@ -94,6 +97,9 @@
 	  				<!-- <url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url> -->
 	  				<!-- 建议开启使用以下地址 -->
 	  				<url>http://10.2.81.208:8081/nexus/content/groups/public</url>
+	  				<!-- <releases>
+	  					<enabled>true</enabled>
+	  				</releases> -->
 					<snapshots>
 						<enabled>true</enabled>
 						<checksumPolicy>warn</checksumPolicy>
