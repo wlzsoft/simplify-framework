@@ -58,15 +58,18 @@
 	        </configuration> -->
 	    </server>
 	</servers>
-	<!-- 注意：mirrors只包含非 SNAPSHOT版本的库，不包含开发中的库 -->
-	<!-- <mirrors>
+	<!-- 注意：mirrors和repositories配置不当，或导致部分artifact找不到，比如框架的vip.simplfiy:simplify-framework:pom:1.2.3-SNAPSHOT找不到 -->
+	<!-- 注意：mirrorOf的值为central只包含而不包含snapshots仓库，这里一般配置*就可以了,这样包含了snapshots仓库 -->
+	<!-- mirrors设置比repository简单，建议使用 -->
+	<mirrors>
 		<mirror>
 			<id>nexus</id>
 			<name>nexus</name>
 			<url>http://10.2.67.20:8081/nexus/content/groups/public/</url>
-			<mirrorOf>central</mirrorOf>
+			<!-- <mirrorOf>central</mirrorOf> -->
+			<mirrorOf>*</mirrorOf>
 		</mirror>
-	</mirrors> -->
+	</mirrors>
 	<profiles>
 		<profile>
 			<!-- <activation>
@@ -77,6 +80,8 @@
 			<!-- <properties><settings></settings></properties> -->
 			<!-- 1.这里可以配置非maven官方的仓库 。2.主要针对开发中的snapshots的特殊指定-->
 			<!-- 以下repositories 的所有内容可拷贝到具体项目的pom文件中，针对项目起作用 -->
+			<!-- repositories 无论是全局的或是某个项目pom中指定的，都会覆盖掉全局mirror的配置 -->
+			<!-- repository 和 mirror的区别是： mirror会映射到一个远程仓库服务器，可以包含多个仓库，配置比repository简单，没有详细的设置-->
 			<repositories>
 				<repository>
 					<id>nexus</id>
@@ -108,8 +113,8 @@
 		</profile>
 	</profiles> 
 <!-- <proxies /> -->
-	<activeProfiles>
-		<!-- 默认激活的profile，这样对所有项目起作用了，是全局的,如果这里不指定，默认dev环境不生效，需要在在ide中指定，目前eclipse只能通过命令行指定，idea有很好的控制 -->
+	<!-- 默认激活的profile，这样对所有项目起作用了，是全局的,如果这里不指定，默认dev环境不生效，需要在在ide中指定，目前eclipse只能通过命令行指定，idea有很好的控制 -->
+	<!-- <activeProfiles>
 		<activeProfile>dev</activeProfile>
-	</activeProfiles>
+	</activeProfiles> -->
 </settings>
