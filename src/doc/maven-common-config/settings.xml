@@ -58,6 +58,7 @@
 	        </configuration> -->
 	    </server>
 	</servers>
+	<!-- 注意：mirrors只包含非 SNAPSHOT版本的库，不包含开发中的库 -->
 	<mirrors>
 		<mirror>
 			<id>nexus</id>
@@ -74,11 +75,15 @@
 			</activation> -->
 			<id>dev</id>
 			<!-- <properties><settings></settings></properties> -->
+			<!-- 1.这里可以配置非maven官方的仓库 。2.主要针对开发中的snapshots的特殊指定-->
+			<!-- 以下repositories 的所有内容可拷贝到具体项目的pom文件中，针对项目起作用 -->
 			<repositories>
 				<repository>
 					<id>nexus</id>
 	  				<name>internal nexus repository</name>
-	  				<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+	  				<!-- 这里使用了具体可以更新snapshots的仓库，而下面注释的地址包含的其他第三方可能存在的snapshot的模块不被纳入 -->
+	  				<url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
+	  				<!-- <url>http://10.2.67.20:8081/nexus/content/groups/public</url> -->
 					<snapshots>
 						<enabled>true</enabled>
 						<checksumPolicy>warn</checksumPolicy>
@@ -90,7 +95,7 @@
 				<pluginRepository>
 					<id>nexus</id>
 			  		<name>internal nexus repository</name>
-			  		<url>http://10.2.67.20:8081/nexus/content/groups/public</url>
+			  		<url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
 					<snapshots>
 						<enabled>true</enabled>
 						<checksumPolicy>warn</checksumPolicy>
@@ -100,6 +105,9 @@
 			</pluginRepositories>
 		</profile>
 	</profiles> 
-<!-- <proxies /> 
-	 <activeProfiles /> -->
+<!-- <proxies /> -->
+	<activeProfiles>
+		<!-- 默认激活的profile，这样对所有项目起作用了，是全局的,如果这里不指定，默认dev环境不生效，需要在在ide中指定，目前eclipse只能通过命令行指定，idea有很好的控制 -->
+		<activeProfile>dev</activeProfile>
+	</activeProfiles>
 </settings>
