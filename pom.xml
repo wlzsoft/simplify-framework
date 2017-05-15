@@ -186,7 +186,7 @@
   </dependencies>
   <build>
     <extensions>
-      <!-- Enabling the use of SSH -->
+      <!-- Enabling the use of SSH 必须配置settings.xml文件中的mirrors节点，否则会到maven官方地址下载-->
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
          <artifactId>wagon-ssh-external</artifactId>

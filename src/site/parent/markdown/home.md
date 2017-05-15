@@ -91,22 +91,22 @@ Simplfiy框架快速入门
     - 添加日志依赖
         > 日志基于SLF4J,这里选择Logback作为日志实现
         
-       ```xml
-           <dependency> 
-               <groupId>ch.qos.logback</groupId> 
-               <artifactId>logback-classic</artifactId> 
-               <version>1.1.3</version> 
-           </dependency> 
-       ``` 
+   ```xml
+       <dependency> 
+           <groupId>ch.qos.logback</groupId> 
+           <artifactId>logback-classic</artifactId> 
+           <version>1.1.3</version> 
+       </dependency> 
+   ``` 
     
 - 4.开始编写示例代码
 
     - 按照maven标准目录结构，在 src 目录下 创建 java目录
     - 创建一个Controller类名为 `TestController`，包名为 `com.example.demo`
     - `src\main\resources` 下增加 `properties`目录，并添加`config.properties`文件,内容如下：
-      ```
-      system.classpaths=com.example.demo
-      ```
+	  ```
+	  system.classpaths=com.example.demo
+	  ```
     - 补充完基础代码，如下：
 ```java
    package com.example.demo;
@@ -129,36 +129,35 @@ Simplfiy框架快速入门
 - 5.启动系统
 
     - 使用tomcat启动
-        > 建议下载tomcat的zip格式二进制包，解压直接使用
+       > 建议下载tomcat的zip格式二进制包，解压直接使用
        > tomcat版本必须8.0及以上
        > 项目部署到tomcat
        > 启动tomcat ，访问 http://127.0.0.1:8080
        
     - 使用jetty启动
-        > 可以使用和tomcat一样的部署和启动方式
+       > 可以使用和tomcat一样的部署和启动方式
        > jetty版本必须9.2及以上
     
     - 开发环境maven的jetty插件的使用
-        > 为了快速开发调试，统一环境
-        
-        > `注意： jetty 8 ~ 9.1.6.v20160112 这些版本支持Servlet3.0的注解解析,但是框架需要jetty 9.2及以上版本,所以需要手动指定Fitler和Listener，配置中，多了一个defaultsDescriptor配置，就是做这个用的`
+       > 为了快速开发调试，统一环境
+       > `注意： jetty 8 ~ 9.1.6.v20160112 这些版本支持Servlet3.0的注解解析,但是框架需要jetty 9.2及以上版本,所以需要手动指定Fitler和Listener，配置中，多了一个defaultsDescriptor配置，就是做这个用的`
        >  webdefault.xml 文件可以从框架源码中的demo模块中获取到
        
-        > 增加如下jetty插件配置如下：
+       > 增加如下jetty插件配置如下：
           
-      ```xml
-       <plugin>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.3.18.v20170406</version>
-            <configuration>
-                <webApp>
-                  <defaultsDescriptor>${project.basedir}/src/test/resources/jetty/webdefault.xml</defaultsDescriptor>
-                  <contextPath>/</contextPath>
-                </webApp>
-            </configuration>
-        </plugin>
-      ```
+  ```xml
+   <plugin>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-maven-plugin</artifactId>
+      <version>9.3.18.v20170406</version>
+        <configuration>
+            <webApp>
+              <defaultsDescriptor>${project.basedir}/src/test/resources/jetty/webdefault.xml</defaultsDescriptor>
+              <contextPath>/</contextPath>
+            </webApp>
+        </configuration>
+    </plugin>
+  ```
           
        > 启动命令 `jetty:run`
 
