@@ -98,7 +98,7 @@
 	  <module>weaving-plugins</module>
 	  <module>ioc-plugins</module>
 	  <module>net</module>
-	  <module>archetype</module>
+	  <!-- <module>archetype</module> -->
     <!-- <module>mq-plugins</module> -->
     
   </modules>
