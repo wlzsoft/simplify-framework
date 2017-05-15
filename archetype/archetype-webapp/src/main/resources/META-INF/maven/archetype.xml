@@ -1,15 +1,13 @@
 <archetype>
   <id>archetype-webapp</id>
-  <sources>
+  <!-- <sources>
     <source>src/main/java/TestController.java</source>
-    <!-- <source>src/main/resources/properties/config.properties</source> -->
   </sources>
   <testSources>
     <source>src/test/java/AppTest.java</source>
-    <!-- <source>src/test/resources/jetty/webdefault.xml</source> -->
   </testSources>
   <resources>
     <resource>src/main/webapp/index.jsp</resource>
     <resource>src/main/webapp/WEB-INF/web.xml</resource>
-  </resources>
+  </resources> -->
 </archetype>
