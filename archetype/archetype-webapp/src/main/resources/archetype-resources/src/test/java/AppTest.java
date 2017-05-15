@@ -1,38 +1,21 @@
-package $vip.simplify.archetype;
+package $package;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.*;
+import org.junit.runner.RunWith;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+import vip.simplify.ioc.annotation.Bean;
+import vip.simplify.test.SimplifyJUnit4ClassRunner;
+
+@Bean
+@RunWith(SimplifyJUnit4ClassRunner.class)
+public class AppTest {
+	
+	@Before
+    public void init( String testName ) {
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+	@Test
+    public void testApp() {
+        Assert.assertTrue( true );
     }
 }
