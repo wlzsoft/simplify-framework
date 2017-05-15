@@ -45,6 +45,7 @@
         <groupId>vip.simplify</groupId>
         <artifactId>test</artifactId>
         <version>${simplify.version}</version>
+        <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
