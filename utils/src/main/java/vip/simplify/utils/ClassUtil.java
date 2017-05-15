@@ -159,7 +159,7 @@ public class ClassUtil {
 		} catch (ClassNotFoundException e) {
 			LOGGER.warn("通过[" + className + "]获取对应的Class对象时发生异常。", e);
 		} catch (java.lang.NoClassDefFoundError e) {
-			LOGGER.warn("通过[" + className + "]获取对应的Class对象时发生异常。可能导致的问题1：程序运行时引用了单元测试环境的类，而运行时环境的classpath非测试环境的classpath(编译时,test-Classes有类，classes中可以引用到，运行时不会扫描和加载test-Classes的类，所以导致异常)", e);
+			LOGGER.warn("通过[" + className + "]获取对应的Class对象时发生异常，没有发现类定义，编译时有，运行时无，比如依赖了测试类。可能导致发生问题的原因1：程序运行时引用了单元测试环境的类，而运行时环境的classpath非测试环境的classpath(编译时,test-Classes有类，classes中可以引用到，运行时不会扫描和加载test-Classes的类，所以导致异常)。可能到导致发生问题的原因2：测试相关的类库，没有指定scope为test，间接导致运行时加载这个类库，但是类库底层依赖了另一位一个scope为test的库，导致错误产生", e);
 		}
 		return null;
 	}
