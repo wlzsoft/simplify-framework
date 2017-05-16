@@ -315,11 +315,13 @@
 
 		  <groupId>org.eclipse.jetty</groupId>
 		  <artifactId>jetty-maven-plugin</artifactId>
-		  <version>9.3.0.M2</version>
+		  <version>9.3.18.v20170406</version>
 			<configuration>
+			    <!-- 开启https需要下面配置 -->
+			    <!-- <jettyXml>${project.basedir}/src/test/resources/jetty/jetty.xml,${project.basedir}/src/test/resources/jetty/jetty-ssl.xml,${project.basedir}/src/test/resources/jetty/jetty-https.xml</jettyXml> -->
 				<!--jvm参数中的-Djavax.net.debug=ssl用于调试证书信息-->
 				<!-- jvmArgs不起作用 -->
-				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -Djavax.net.debug=ssl</jvmArgs> -->
+				<!-- <jvmArgs>-javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-${simplify.version}.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -Djavax.net.debug=ssl</jvmArgs> -->
 				<contextXml>src/test/resources/jetty/jetty-config.xml</contextXml>
 				<!--<war>${project.basedir}/${project.build.directory}/${project.artifactId}-${project.version}</war>-->
 				<webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
