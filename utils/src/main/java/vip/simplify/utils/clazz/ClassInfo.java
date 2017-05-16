@@ -1,7 +1,5 @@
 package vip.simplify.utils.clazz;
 
-import java.util.List;
-
 /**
  * <p><b>Title:</b><i>Class对象相关的信息</i></p>
  * <p>Desc: TODO</p>

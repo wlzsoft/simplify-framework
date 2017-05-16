@@ -1,6 +1,5 @@
 package vip.simplify.demo.config;
 
-import vip.simplify.config.api.service.IConfigService;
 import vip.simplify.demo.mvc.service.ITestRemoteService;
 import vip.simplify.demo.mvc.service.TestFirstService;
 import vip.simplify.demo.mvc.service.TestSubService;

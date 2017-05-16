@@ -1,14 +1,10 @@
 package vip.simplify.ioc.annotation;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import vip.simplify.ioc.enums.BeanTypeEnum;
 
 /**
  * <p><b>Title:</b><i>基于BeanConfig来标识Bean类</i></p>

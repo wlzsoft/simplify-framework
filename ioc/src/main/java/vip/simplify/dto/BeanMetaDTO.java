@@ -1,10 +1,9 @@
 package vip.simplify.dto;
 
-import vip.simplify.ioc.enums.BeanTypeEnum;
-
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.List;
+
+import vip.simplify.ioc.enums.BeanTypeEnum;
 
 /**
  * <p><b>Title:</b><i>Bean对象元数据信息承载</i></p>

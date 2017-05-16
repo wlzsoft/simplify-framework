@@ -1,16 +1,5 @@
 package vip.simplify.ioc.resolver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import vip.simplify.dto.AttributeMetaDTO;
-import vip.simplify.dto.BeanMetaDTO;
-import vip.simplify.ioc.BeanFactory;
-import vip.simplify.ioc.annotation.*;
-import vip.simplify.ioc.enums.InitTypeEnum;
-import vip.simplify.utils.ClassUtil;
-import vip.simplify.utils.ReflectionUtil;
-import vip.simplify.utils.clazz.ClassInfo;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -18,6 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import vip.simplify.dto.AttributeMetaDTO;
+import vip.simplify.dto.BeanMetaDTO;
+import vip.simplify.ioc.BeanFactory;
+import vip.simplify.ioc.annotation.Bean;
+import vip.simplify.ioc.annotation.BeanConfig;
+import vip.simplify.ioc.annotation.Init;
+import vip.simplify.ioc.annotation.Inject;
+import vip.simplify.ioc.annotation.Injects;
+import vip.simplify.ioc.enums.InitTypeEnum;
+import vip.simplify.utils.ClassUtil;
+import vip.simplify.utils.ReflectionUtil;
+import vip.simplify.utils.clazz.ClassInfo;
 
 /**
   * <p><b>Title:</b><i>基于BeanConfig注解的Bean对象创建处理解析器</i></p>
@@ -74,7 +79,7 @@ public final class BeanConfigAnnotationResolver implements IAnnotationResolver<C
 					if(obj instanceof Class) {
 						Injects injects = method.getAnnotation(Injects.class);
 						//5.添加提取的beanClass到Bean的类集合中，等待BeanAnnotationResover类的解析,由于BeanConfig目前没有携带其他信息，所以不会复杂注入操作，后续会为BeanConfig增加更多的配置,另外要处理Bean和BeanConfig注解信息重叠的问题
-						ClassInfo<BeanMetaDTO> classInfo = buildBeanMeta(beanConfigClass.getName(),(Class) obj, bean,method.getAnnotations(),injects);
+						ClassInfo<BeanMetaDTO> classInfo = buildBeanMeta(beanConfigClass.getName(),(Class<?>) obj, bean,method.getAnnotations(),injects);
 						beanClassMap.put(classInfo.getClazz(),classInfo);
 						beanConfigClassMap.put(classInfo.getClazz(),bean);
 					} else {

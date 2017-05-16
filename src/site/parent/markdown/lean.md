@@ -1,6 +1,8 @@
 Sample Markdown Cheat Sheet
 =========================== 
 
+简单使用说明文档 地址 http://www.appinn.com/markdown/
+
 This is a sample markdown file to help you write Markdown quickly :)
 
 If you use the fabulous [Sublime Text 2/3 editor][ST] along with the [Markdown Preview plugin][MarkdownPreview], open your ST2 Palette with `CMD+⇧+P` then choose `Markdown Preview in browser` to see the result in your browser.

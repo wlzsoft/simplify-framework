@@ -1,7 +1,13 @@
 package vip.simplify.ioc.resolver;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import vip.simplify.Constants;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.exception.StartupErrorException;
@@ -19,11 +25,6 @@ import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.StringUtil;
 import vip.simplify.utils.clazz.ClassInfo;
-
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
   * <p><b>Title:</b><i>Bean对象创建处理解析器</i></p>
@@ -137,7 +138,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 			} else {//同类型单例处理，只会返回一个实例
 				Object beanObj = null;
 				String beanName = null;
-				BeanHookDTO beanHookDTO = getSingleHook(beanMetaDTO);
+				BeanHookDTO<?> beanHookDTO = getSingleHook(beanMetaDTO);
 				Class<?> hookClazz = null;
 				if (beanHookDTO != null) {
 					hookClazz = beanHookDTO.getHookClazz();

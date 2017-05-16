@@ -1,8 +1,6 @@
 
 package vip.simplify.utils.clazz;
 
-import java.util.List;
-
 /**
  * <p><b>Title:</b><i>Class查找结果回调接口</i></p>
  * <p>Desc: TODO</p>

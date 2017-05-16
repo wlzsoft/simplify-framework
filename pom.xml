@@ -74,7 +74,6 @@
 	  <module>template</module>
 	  <module>config</module>
 	  <module>cache-redis</module>
-	  <!--<module>mongodb</module>-->
 	  <module>message</module>
 	  <module>rpc</module>
 	  <module>listener</module>
@@ -99,6 +98,7 @@
 	  <module>ioc-plugins</module>
 	  <module>net</module>
 	  <!-- <module>archetype</module> -->
+	  <!--<module>mongodb</module>-->
     <!-- <module>mq-plugins</module> -->
     
   </modules>

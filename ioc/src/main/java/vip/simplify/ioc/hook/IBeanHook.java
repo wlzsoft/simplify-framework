@@ -1,10 +1,8 @@
 package vip.simplify.ioc.hook;
 
-import vip.simplify.dto.BeanMetaDTO;
-import vip.simplify.ioc.BeanEntity;
-import vip.simplify.utils.clazz.ClassInfo;
-
 import java.lang.annotation.Annotation;
+
+import vip.simplify.ioc.BeanEntity;
 
 /**
   * <p><b>Title:</b><i>bean单例钩子处理</i></p>
