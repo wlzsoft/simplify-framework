@@ -14,14 +14,14 @@
   </modules>
   <distributionManagement>
 	  <repository>
-		  <id>nexus-releases</id>
-		  <name>local private nexus</name>
-		  <url>http://10.2.81.208:8081/nexus/content/repositories/releases/</url>
-	  </repository>
-	  <snapshotRepository>
-		  <id>nexus-snapshots</id>
-		  <name>local private nexus</name>
-		  <url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
-	  </snapshotRepository>
+          <id>${distRepoId}</id>
+          <name>${distRepoName}</name>
+          <url>${distRepoUrl}</url>
+      </repository>
+      <snapshotRepository>
+          <id>${distSnapId}</id>
+          <name>${distSnapName}</name>
+          <url>${distSnapUrl}</url>
+      </snapshotRepository>
 	</distributionManagement>
 </project>

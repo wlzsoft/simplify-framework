@@ -80,7 +80,14 @@
 				<jdk>1.8</jdk>
 			</activation> -->
 			<id>dev</id>
-			<!-- <properties><settings></settings></properties> -->
+			<properties>
+              <distRepoId>nexus-releases</distRepoId>
+              <distRepoName>local private nexus</distRepoName>
+              <distRepoUrl>http://10.2.81.208:8081/nexus/content/repositories/releases/</distRepoUrl>
+              <distSnapId>nexus-snapshots</distSnapId>
+              <distSnapName>local private nexus</distSnapName>
+              <distSnapUrl>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</distSnapUrl>
+            </properties>
 			<!-- 1.这里可以配置非maven官方的仓库 。2.主要针对开发中的snapshots的特殊指定-->
 			<!-- 以下repositories 的所有内容可拷贝到具体项目的pom文件中，针对项目起作用 -->
 			<!-- repositories 无论是全局的或是某个项目pom中指定的，都会覆盖掉全局mirror的配置 -->

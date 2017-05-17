@@ -122,28 +122,19 @@
     <!-- 依赖库版本号定义end -->
   </properties>
   <distributionManagement>
-		<!--<snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>User Porject Snapshot</name>
-            <url>http://172.16.180.84:8081/nexus/content/repositories/snapshots/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-        <repository>
-            <id>nexus-releases</id>
-            <name>User Porject Release</name>
-            <url>http://172.16.180.84:8081/nexus/content/repositories/releases/</url>
-            &lt;!&ndash; <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> &ndash;&gt;
-        </repository>-->
 	  <repository>
-		  <id>nexus-releases</id>
-		  <name>local private nexus</name>
-		  <url>http://10.2.81.208:8081/nexus/content/repositories/releases/</url>
-	  </repository>
-	  <snapshotRepository>
-		  <id>nexus-snapshots</id>
-		  <name>local private nexus</name>
-		  <url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
-	  </snapshotRepository>
+          <id>${distRepoId}</id>
+          <name>${distRepoName}</name>
+          <url>${distRepoUrl}</url>
+          <!-- <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> -->
+      </repository>
+      <snapshotRepository>
+          <id>${distSnapId}</id>
+          <name>${distSnapName}</name>
+          <url>${distSnapUrl}</url>
+          <!-- 是否为Snapshot版本分配一个包含时间戳的构建号 -->
+          <uniqueVersion>true</uniqueVersion>
+      </snapshotRepository>
 		<site>
 			<id>simplify-doc</id>
 			<name>simplify-doc</name>
