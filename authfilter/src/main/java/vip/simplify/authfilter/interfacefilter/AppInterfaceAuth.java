@@ -40,7 +40,7 @@ public class AppInterfaceAuth <T extends Model> extends BaseController<T> {
 	@Config
 	private Boolean isAuth;
 	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model)
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd,String requestUrl, T model)
 			throws ServletException, IOException {
 	    String url=	request.getRequestURI();
 		

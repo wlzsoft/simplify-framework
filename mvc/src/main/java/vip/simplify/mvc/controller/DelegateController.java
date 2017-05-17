@@ -90,7 +90,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
 			}
 			Throwable throwable = null;
-			if (iBaseController.checkPermission(request, response,requestMethodName, model)) {
+			if (iBaseController.checkPermission(request, response,requestMethodName,requestUrl, model)) {
 				throwable = execute(request, response,requestMethodName,isStatic, model,requestUrl,iBaseController);
 			}
 			end(request, response, model,requestUrl,throwable);

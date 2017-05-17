@@ -63,7 +63,7 @@ public class BaseController<T extends Model> implements IBaseController<T> {
 	 * @throws IOException
 	 */
 	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String requestMethodName, T model) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String requestMethodName, String requestUrl, T model) throws ServletException, IOException {
 		return true;
 	}
 	

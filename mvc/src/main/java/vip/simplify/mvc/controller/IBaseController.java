@@ -54,7 +54,7 @@ public interface IBaseController<T extends Model> {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public default boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
+	public default boolean checkPermission(HttpServletRequest request, HttpServletResponse response, String cmd, String requestUrl, T model) throws ServletException, IOException {
 		return true;
 	}
 }
