@@ -59,6 +59,12 @@
 		</license>
 	</licenses>
 	<!-- 项目工程管理  end-->
+	<!-- 1.指定构建模块需要使用 命令：  -pl vip.simplify:archetype clean install deploy -pl archetype clean install deploy 或是 ——projects archetype clean install deploy -->
+	<!-- 2. -am 选项可以同时构建所列模块的依赖模块,命令:执行 clean install -pl utils -am 后会得到如下模块：父级的simplify-framework模块和引用的stress-tester模块
+         3. -amd 选项可以同时构建依赖于所列模块的模块，命令：clean install -pl rpc -amd 后会得到如下模块：rpc,rpc-core,rpc-client,rpc-server,simplify-server,simplify-client,config-api,config-client
+         4. -rf 选项可以在完整的反应堆构建顺序基础上，指定从哪个模块开始构建，命令：clean install -rf rpc-client ，由于rpc-client位于第三，它之后有rpc-server，因此会得到如下输出模块：rpc-client,rpc-server
+         5.在-pl -am或者-pl -amd的基础上，还能应用-rf参数，以对裁剪后的反应堆再次裁剪,命令：  clean install -pl rpc -amd -rf rpc-client
+                        其中，-pl 和 -amd参数会得到：rpc,rpc-core,rpc-client,rpc-server,simplify-server,simplify-client,config-api,config-client模块，在此基础上 -rf参数制定从rpc-client开始构建，于是会得到：rpc-client,rpc-server -->
   <modules>
 	  <module>stress-tester</module>
 	  <module>utils</module>
@@ -97,7 +103,7 @@
 	  <module>weaving-plugins</module>
 	  <module>ioc-plugins</module>
 	  <module>net</module>
-	  <!-- <module>archetype</module> -->
+	  <module>archetype</module>
 	  <!--<module>mongodb</module>-->
     <!-- <module>mq-plugins</module> -->
     
