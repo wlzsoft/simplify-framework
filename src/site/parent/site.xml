@@ -4,7 +4,7 @@
 		<name>maven</name>
 		<src>images/title.png</src>
 		<alt>项目logo</alt>    
-		<href>http://ros.meizu.com</href>
+		<href>http://simplify.xxx</href>
 		<border>1</border>
 		<width>20</width>
 		<height>20</height>
@@ -15,7 +15,7 @@
 		<name>ros</name>
 		<src>http://ros.res.meizu.com/img/dengluyelog.png</src> 
 		<alt>框架logo</alt>    
-		<href>http://ros.meizu.com</href>
+		<href>http://simplify.xxx</href>
 		<border>1</border>
 		<width>20</width>
 		<height>20</height>
@@ -27,14 +27,14 @@
 	<!-- 版本信息放在右边 -->
 	<version position="right" />
 	<poweredBy><!-- 技术支持 -->
-		<logo name="ros平台" href="http://ros.meizu.com/" img="http://ros.res.meizu.com/img/dengluyelog.png" position="left" alt="" border="1" width="20" height="20" target="" title="" />
+		<logo name="平台" href="http://www.demo.com/" img="http://ros.res.meizu.com/img/dengluyelog.png" position="left" alt="" border="1" width="20" height="20" target="" title="" />
 	</poweredBy>
 	
 	<body>     
 		<head> <![CDATA[<!--<title>精简框架22</title>-->]]></head>
 		<links>        
-			<item name="资源系统" href="http://ab.meizu.com/" />       
-			<item name="ros系统"  href="http://ros.meizu.com/" />           
+			<item name="资源系统" href="http://www.demo.com/" />       
+			<item name="业务系统"  href="http://www.demo2.com/" />           
 		</links>
 		<!-- 横条链接 -->
 		<breadcrumbs>

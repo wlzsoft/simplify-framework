@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <name>精简程序框架</name>
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
-  <url>http://simplify.ros.meizu.com</url>
+  <url>http://simplify.xxx</url>
   <!-- 项目工程管理 start -->
 	<inceptionYear>2016</inceptionYear>
   	<organization>
@@ -21,9 +21,9 @@
 	</issueManagement>
   	<!-- 版本控制 -->
 	<scm>
-		<url>http://172.16.180.92/ros-team/simplify-framework</url>
-		<connection>scm:git:http://172.16.180.92/ros-team/simplify-framework</connection>
-		<developerConnection>scm:git:http://172.16.180.92/ros-team/simplify-framework</developerConnection>
+		<url>http://172.16.180.92/dev-team/simplify-framework</url>
+		<connection>scm:git:http://172.16.180.92/dev-team/simplify-framework</connection>
+		<developerConnection>scm:git:http://172.16.180.92/dev-team/simplify-framework</developerConnection>
 	</scm>
 	<!-- 持续集成 -->
 	<ciManagement>
@@ -135,12 +135,12 @@
             &lt;!&ndash; <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> &ndash;&gt;
         </repository>-->
 	  <repository>
-		  <id>meizu-releases</id>
+		  <id>nexus-releases</id>
 		  <name>local private nexus</name>
 		  <url>http://10.2.81.208:8081/nexus/content/repositories/releases/</url>
 	  </repository>
 	  <snapshotRepository>
-		  <id>meizu-snapshots</id>
+		  <id>nexus-snapshots</id>
 		  <name>local private nexus</name>
 		  <url>http://10.2.81.208:8081/nexus/content/repositories/snapshots/</url>
 	  </snapshotRepository>
@@ -259,7 +259,7 @@
 		  		<checkModificationExclude>*\.project</checkModificationExclude>
 		  		<checkModificationExclude>*\.classpath</checkModificationExclude>
 		  	</checkModificationExcludes>
-		    <tagBase>http://172.16.180.84/ros-team/simplify-framework</tagBase>
+		    <tagBase>http://172.16.180.84/dev-team/simplify-framework</tagBase>
 		    <!-- <tagNameFormat>v@{project.version}</tagNameFormat> -->
 		    <!-- <releaseProfiles>release</releaseProfiles> -->
 		  </configuration>  
@@ -364,7 +364,7 @@
 			    </executions>   -->      
 		   	</plugin>
 			<!-- site插件：site:stage 用于生成所有模块的site，site:run 用于生成和运行site，用于查看文档 ,后续增加site插件的详细配置-->
-			<!--文档创建： archetype:create -DgroupId=vip.simplify.ros -DartifactId=ros-app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
+			<!--文档创建： archetype:create -DgroupId=vip.simplify -DartifactId=app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
 			<!-- maven的site文档生成，使用的是Doxia来处理和解析文档的 -->
 			<!-- clean site site:stage -DstagingDirectory=file://D:/site #可以指定生成的路径 -->
 			<!-- 生成过慢的解决方法  clean site site:stage -Ddependency.locations.enabled=false-->

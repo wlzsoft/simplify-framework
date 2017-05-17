@@ -19,7 +19,7 @@
 		<src>http://maven.apache.org/images/maven-small.gif</src> 
 		<!--<src>images/java_logo.jpg</src>-->
 		<alt>框架logo2</alt>    
-		<href>http://ros.meizu.com</href>
+		<href>http://www.demo.com</href>
 		<border>1</border>
 		<width>20</width>
 		<height>20</height>

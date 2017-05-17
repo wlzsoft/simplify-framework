@@ -8,7 +8,7 @@
   <artifactId>ioc-plugins</artifactId>
   
   <name>(${project.artifactId})依赖注入组件桥接插件</name>
-  <url>http://simplify.ros.meizu.com/ioc-plugins</url>
+  <url>http://simplify.xxx/ioc-plugins</url>
   <description>第三方bean的管理，比如未知的rpc远程实例，第三方jar包中的普通类转bean类并加入托管等等</description>
   <properties>
   	 <templatePath>${project.parent.basedir}</templatePath>

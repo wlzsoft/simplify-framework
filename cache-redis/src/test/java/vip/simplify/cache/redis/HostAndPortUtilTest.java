@@ -27,7 +27,7 @@ import vip.simplify.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
 public class HostAndPortUtilTest {
 	@Test
 	public  void test() {
-//		redis_ref_hosts=192.168.168.208:6379:foobared,192.168.1.218:6379:foobared,192.168.168.208:6379:foobared,ros.meizu.com:6379:foobared
+//		redis_ref_hosts=192.168.168.208:6379:foobared,192.168.1.218:6379:foobared,192.168.168.208:6379:foobared,www.demo.com:6379:foobared
 		Map<String, List<HostAndPort>> map =RedisHostAndPortUtil.getRedisServers();
 		Set<Entry<String, List<HostAndPort>>> set = map.entrySet();
 		for (Entry<String, List<HostAndPort>> entry : set) {
