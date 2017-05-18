@@ -2,6 +2,9 @@ package vip.simplify.net.rest;
 
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.net.rest.retry.IRetryStrategy;
@@ -22,6 +25,8 @@ import vip.simplify.net.rest.retry.IRetryStrategy;
 @Bean
 public class RestExecute {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(RestExecute.class);
+	
 	@Inject
     private IRetryStrategy retryStrategy;
 
@@ -37,8 +42,9 @@ public class RestExecute {
      */
     public <T> T get(Class<T> clazz, RestAddressInfo remoteUrl, int retryTimes, int retrySleepSeconds) {
         for (URL url : remoteUrl.getUrls()) {
+        	LOGGER.info("远程请求地址："+url.toString());
         	RestCallBack<T> callback = new RestCallBack<T>(clazz, url);
-                return retryStrategy.retry(callback, retryTimes, retrySleepSeconds);
+            return retryStrategy.retry(callback, retryTimes, retrySleepSeconds);
         }
 		return null;
     }
