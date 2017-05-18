@@ -25,7 +25,7 @@ public class RestCallBack<T>  {
     	this.url = url;
     }
 
-    public T call() throws Exception{
+    public T call() throws Exception {
     	String content = "";
     	HttpURLConnection conn = null;
     	InputStream inputStream = null;
@@ -54,7 +54,7 @@ public class RestCallBack<T>  {
 				conn.disconnect();
 			}*/
 		}
-    	System.out.println(content);
+		LOGGER.debug("["+url.toString()+"]的请求结果："+content);
     	T result = JSON.parseObject(content, clazz);
         return result;
     }

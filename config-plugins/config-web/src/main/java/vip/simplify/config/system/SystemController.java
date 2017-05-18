@@ -26,7 +26,7 @@ import vip.simplify.mvc.model.Model;
 public class SystemController<T extends Model> extends BaseController<T> {
 	
 	@Override
-	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, T model) throws ServletException, IOException {
+	public boolean checkPermission(HttpServletRequest request, HttpServletResponse response,String cmd, String requestUrl, T model) throws ServletException, IOException {
 		return true;
 	}
 }
