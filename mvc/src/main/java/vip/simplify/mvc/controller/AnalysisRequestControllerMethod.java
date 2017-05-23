@@ -177,6 +177,9 @@ public class AnalysisRequestControllerMethod {
 		if (!StringUtil.isEmpty(ajaxAccess.allowHeaders())) {
 			response.addHeader("Access-Control-Allow-Headers", ajaxAccess.allowHeaders());
 		}
+		if (ajaxAccess.allowCredentials()) {
+			response.addHeader("Access-Control-Allow-Credentials", String.valueOf(ajaxAccess.allowCredentials()));
+		}
 		response.addHeader("Access-Control-Max-Age", String.valueOf(ajaxAccess.maxAge()));
 		if (ajaxAccess.allowMethods() != null) {
 			StringBuffer allowMethodSb = new StringBuffer();
