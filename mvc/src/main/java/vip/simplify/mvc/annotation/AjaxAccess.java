@@ -56,6 +56,7 @@ public @interface AjaxAccess {
 	 * 
 	 * 方法用途: 设置reponse头信息Access-Control-Allow-Credentials基于http1.1协议<br>
 	 * 操作步骤: 使用 Access-Control-Allow-Credentials 来控制跨域访问，支持跨域发送cookies
+	 *           这里针对两种情况：1.有相同父域名，需读取父域名cookie。2.完全不同的域名(这个方式未测试)
 	 *           Ajax访问中js库，比如jquery需要设置 xhrFields:{withCredentials: true}和crossDomain:true这两个属性
 	 *           jquery使用样例：$.ajax({url:"http://www.xxx.com/list.json",async:true,xhrFields:{withCredentials: true},crossDomain:true});
 	 *           原生js使用方式：var xhr = new XMLHttpRequest();xhr.open("POST", "http://www.xxx.com/list.json", true);xhr.withCredentials = true;xhr.send();<br>
