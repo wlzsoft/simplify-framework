@@ -19,7 +19,7 @@ public class ErrorResult extends ResultObject<String> {
 		super(message);
 //		Message.error("500", message);
 		super.setSuccess(false);
-		super.setStatusCode("500");
+		super.setCode(500);
 	}
 	
 }

@@ -24,19 +24,24 @@ public class Result {
 	/**
 	 * 状态码
 	 */
-	private String statusCode;
+	private Integer code;
 	
 	/**
 	 * 时间撮
 	 */
 	private long dateline = System.currentTimeMillis();
 	
-	public String getStatusCode() {
-		return statusCode;
+
+	public Integer getCode() {
+		return code;
 	}
 
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
+	public void setCode(Integer code) {
+		this.code = code;
+	}
+
+	public void setDateline(long dateline) {
+		this.dateline = dateline;
 	}
 
 	public boolean isSuccess() {
@@ -53,7 +58,7 @@ public class Result {
 	
 	@Override
 	public String toString() {
-		return "Result [success=" + success + ", statusCode=" + statusCode + ", dateline="
+		return "Result [success=" + success + ", code=" + code + ", dateline="
 				+ dateline + "]";
 	}
 }
