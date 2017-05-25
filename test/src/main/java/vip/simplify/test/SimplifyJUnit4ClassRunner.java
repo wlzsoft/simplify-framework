@@ -8,6 +8,7 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.Startup;
 
@@ -32,7 +33,7 @@ public class SimplifyJUnit4ClassRunner extends BlockJUnit4ClassRunner {
 	 */
 	public SimplifyJUnit4ClassRunner(Class<?> clazz) throws InitializationError {
 		super(clazz);
-		if (LOGGER.isDebugEnabled()) {
+		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("基于Simplify框架的单元测试类[" + clazz + "]开始执行，会使用框架上下文环境");
 		}
 	}
@@ -60,6 +61,11 @@ public class SimplifyJUnit4ClassRunner extends BlockJUnit4ClassRunner {
 		Startup.start();
 		Class<?> testClass= super.getTestClass().getJavaClass();
 		Object testInstance = BeanFactory.getBean(testClass);
+		if (testInstance == null) {
+			String errorMessage = "基于Simplify框架的单元测试类[" + testClass + "]的Bean未被创建，请检查是否system.classpaths配置有问题，或是测试类的包名有误";
+			LOGGER.info(errorMessage);
+			throw new UncheckedException(errorMessage);
+		}
 		return testInstance;
 	}
 
