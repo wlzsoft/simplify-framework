@@ -138,8 +138,8 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 			} else {//同类型单例处理，只会返回一个实例
 				Object beanObj = null;
 				String beanName = null;
-				BeanHookDTO<?> beanHookDTO = getSingleHook(beanMetaDTO);
-				Class<?> hookClazz = null;
+				BeanHookDTO<Annotation> beanHookDTO = getSingleHook(beanMetaDTO);
+				Class<IBeanHook<Annotation>> hookClazz = null;
 				if (beanHookDTO != null) {
 					hookClazz = beanHookDTO.getHookClazz();
 				}
@@ -147,8 +147,8 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 					beanObj = clazz.newInstance();
 					beanName = clazz.getName();
 				} else {//三种情况会异常：1.BeanEntity的beanName为空  2.BeanEntity的beanName和interfaceName不一致 3.bean的class列表中的clazz的name和interfaceName不一致
-					Object hookObj = hookClazz.newInstance();
-					BeanEntity<?> beanObjBean = ((IBeanHook)hookObj).hook(clazz,beanHookDTO.getAnnotation());
+					IBeanHook<Annotation> beanHook = hookClazz.newInstance();
+					BeanEntity<?> beanObjBean = beanHook.hook(clazz,beanHookDTO.getAnnotation());
 					if (null == beanObjBean) {
 						LOGGER.error(clazz.getName()+"实例处理返回空，没有生成注入到容器中的bean对象");
 						return;
@@ -225,7 +225,9 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	private static BeanHookDTO<Annotation> getSingleHook(BeanMetaDTO beanMetaDTO) {
 		List<Class<?>> hookList = ClassUtil.findClassesByAnnotationClass(BeanHook.class, BeanAnnotationResolver.getClasspaths());
 		for (Class<?> hookClazz : hookList) {
-			BeanHook hookBeanAnno = hookClazz.getAnnotation(BeanHook.class);
+			@SuppressWarnings("unchecked")
+			Class<IBeanHook<Annotation>> hookClazzChange = (Class<IBeanHook<Annotation>>) hookClazz;
+			BeanHook hookBeanAnno = hookClazzChange.getAnnotation(BeanHook.class);
 			Class<?> annoClass = hookBeanAnno.value();
 			Annotation[] beanAnnoArr = beanMetaDTO.getAnnotationArr();
 			if (beanAnnoArr == null) {
@@ -234,7 +236,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 			for (Annotation beanAnno : beanAnnoArr) {
 				if (annoClass.equals(beanAnno.annotationType())) {
 					BeanHookDTO<Annotation> beanHookDTO = new BeanHookDTO<>();
-					beanHookDTO.setHookClazz(hookClazz);
+					beanHookDTO.setHookClazz(hookClazzChange);
 					beanHookDTO.setAnnotation(beanAnno);
 					return beanHookDTO;
 				}
@@ -244,14 +246,14 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	}
 
 	static class BeanHookDTO<T extends Annotation> {
-		private Class<?> hookClazz;
+		private Class<IBeanHook<T>> hookClazz;
 		private T annotation;
 
-		public Class<?> getHookClazz() {
+		public Class<IBeanHook<T>> getHookClazz() {
 			return hookClazz;
 		}
 
-		public void setHookClazz(Class<?> hookClazz) {
+		public void setHookClazz(Class<IBeanHook<T>> hookClazz) {
 			this.hookClazz = hookClazz;
 		}
 
