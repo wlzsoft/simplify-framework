@@ -1,9 +1,7 @@
 package vip.simplify.rpc.resolver;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -14,22 +12,17 @@ import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.MonitorConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
-import vip.simplify.dto.BeanMetaDTO;
-import vip.simplify.ioc.BeanFactory;
-import vip.simplify.ioc.resolver.ClassMetaResolver;
-import vip.simplify.rpc.annotations.ClientBean;
+
 import vip.simplify.Constants;
 import vip.simplify.exception.StartupErrorException;
 import vip.simplify.ioc.BeanEntity;
 import vip.simplify.ioc.annotation.BeanHook;
 import vip.simplify.ioc.hook.IBeanHook;
-import vip.simplify.ioc.resolver.BeanAnnotationResolver;
-import vip.simplify.rpc.config.DubboPropertiesConfig;
+import vip.simplify.rpc.annotations.ClientBean;
 import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.CollectionUtil;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.StringUtil;
-import vip.simplify.utils.clazz.ClassInfo;
 
 /**
  * <p>clientBean注解解析</p>

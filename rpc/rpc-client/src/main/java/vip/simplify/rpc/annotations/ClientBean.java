@@ -24,9 +24,27 @@ public @interface ClientBean {
 
 	String value() default "";
 	
-	String version() default "1.0.0";//服务版本，与服务提供者的版本一致
+	/**
+	 * 
+	 * 方法用途: 服务版本，与服务提供者的版本一致<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	String version() default "1.0.0";
 	
-	boolean check() default false;//启动时检查提供者是否存在，true报错，false忽略
+	/**
+	 * 
+	 * 方法用途: 启动时检查提供者是否存在，true报错，false忽略<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	boolean check() default false;
 	
-	String url() default "";//直连服务路径,服务绕过注册中心，仅开发测试使用
+	/**
+	 * 
+	 * 方法用途: 直连服务路径,服务绕过注册中心，仅开发测试使用<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	String url() default "";
 }

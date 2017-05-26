@@ -23,11 +23,29 @@ public @interface ServerBean {
 
 	String value() default "";
 	
-	String version() default "1.0.0";//服务版本，建议使用两位或以上数字版本
+	/**
+	 * 
+	 * 方法用途: 服务版本，建议使用两位或以上数字版本<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	String version() default "1.0.0";
 	
-	int timeout() default 5000;//远程服务调用超时时间(毫秒)
+	/**
+	 * 
+	 * 方法用途: 远程服务调用超时时间(毫秒)<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	int timeout() default 5000;
 	
-	int connections() default 100;//对每个提供者的最大连接数
+	/**
+	 * 
+	 * 方法用途: 对每个提供者的最大连接数<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 */
+	int connections() default 100;
 	
 	//TODO 配置文件获取
 //	LoadbalanceEnum loadbalance() default LoadbalanceEnum.RANDOM;//负载均衡策略
