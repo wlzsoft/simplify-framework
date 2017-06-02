@@ -1,5 +1,6 @@
 package vip.simplify.utils;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -706,5 +707,20 @@ public class DateUtil {
 		cale.add(Calendar.MONTH, -1);
 		cale.set(Calendar.DAY_OF_MONTH, cale.getActualMaximum(Calendar.DAY_OF_MONTH));  
 		return cale.getTime();
+	}
+	
+	/**
+	 * 
+	 * 方法用途: Long转Date对象<br>
+	 * 操作步骤: TODO<br>
+	 * @param time
+	 * @return
+	 * @author wanglizong
+	 */
+	public static Date getLongToDate(long time){
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+        Date date = new Date(time * 1000);  
+        Date str = parse(sdf.format(date));  
+		return str ;
 	}
 }
