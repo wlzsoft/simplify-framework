@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
-import vip.simplify.config.PropertiesConfig;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.InitBean;
 import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.template.ITemplate;
 import vip.simplify.template.annotation.TemplateExtend;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 
 /**
@@ -35,7 +33,7 @@ public class FreemarkerTemplate  implements ITemplate {
 	public String extend;
 	private Configuration cfg = null; 
 	@Inject
-	private PropertiesConfig config;
+	private FreemarkerConfig freemarkerConfig;
 	public FreemarkerTemplate() {
 		extend = getExtend();
 	}
@@ -43,7 +41,20 @@ public class FreemarkerTemplate  implements ITemplate {
 	public void init() {
 		// 创建一个FreeMarker实例  
         cfg = new Configuration(Configuration.VERSION_2_3_24);  
-        cfg.setClassForTemplateLoading(FreemarkerTemplate.class,"/");       
+        cfg.setClassForTemplateLoading(FreemarkerTemplate.class,"/");
+        cfg.setNumberFormat(freemarkerConfig.getNumberFormat());
+        cfg.setBooleanFormat(freemarkerConfig.getBooleanFormat());
+        cfg.setDateFormat(freemarkerConfig.getDateFormat());
+        cfg.setTimeFormat(freemarkerConfig.getTimeFormat());
+        cfg.setDateTimeFormat(freemarkerConfig.getDateTimeFormat());
+        cfg.setDefaultEncoding(freemarkerConfig.getDefaultEncoding());
+//        cfg.setAutoImports(map);freemarkerConfig.getAutoImport();
+//        cfg.setLocale(locale);freemarkerConfig.getLocale();
+        Integer templateUpdateDelay = freemarkerConfig.getTemplateUpdateDelay();
+        if (templateUpdateDelay != null) {
+        	cfg.setTemplateUpdateDelayMilliseconds(templateUpdateDelay*1000);
+        }
+        cfg.setURLEscapingCharset(freemarkerConfig.getUrlEscapingCharset());
 	}
 	
 	public Configuration getConfiguration() {
