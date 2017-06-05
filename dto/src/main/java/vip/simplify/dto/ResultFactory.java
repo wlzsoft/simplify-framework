@@ -100,4 +100,17 @@ public class ResultFactory {
 		result.setSuccess(true);
 		return result;
 	}
+
+	/**
+	 * 方法用途：自定义错误提示，可传code<br>
+	 * 操作步骤: TODO<br>
+	 * @param code
+	 * @param message
+	 * @return
+	 */
+	public static  Result error(Integer code,Object message){
+		Result result = new ResultObject<Object>(message);
+		result.setCode(code);
+		return result;
+	}
 }
