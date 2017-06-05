@@ -1,6 +1,7 @@
 package vip.simplify.mvc.invoke;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +9,7 @@ import vip.simplify.ioc.annotation.DefaultBean;
 import vip.simplify.mvc.controller.AnalysisRequestControllerModel;
 import vip.simplify.mvc.model.ModelSkip;
 import vip.simplify.utils.DataUtil;
+import vip.simplify.utils.ReflectionGenericUtil;
 
 /**
   * <p><b>Title:</b><i>controller表单对象选择器</i></p>
@@ -46,6 +48,9 @@ public interface IModelSelector {
 		// 将值进行格式化后注入
 		if (type.isArray()) {// 目前只为 params 而使用，内嵌的一个属性
 			return null;
+		} else if (type.equals(List.class)) {// TODO 待处理
+			Class<?> clazz = ReflectionGenericUtil.getGenricType(method, 0);
+			System.out.println(clazz);
 		} else if (!AnalysisRequestControllerModel.isBaseType(type)) {
 			value = setRequestModel(request, type);
 		} else {

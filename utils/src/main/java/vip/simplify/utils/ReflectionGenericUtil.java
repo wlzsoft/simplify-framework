@@ -1,5 +1,6 @@
 package vip.simplify.utils;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -57,6 +58,30 @@ public class ReflectionGenericUtil {
         if (!(params[index] instanceof Class)) {
             LOGGER.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
             throw new UncheckedException(clazz.getSimpleName() + " 超类的泛型参数没有指定具体类类型"); 
+        }
+
+        return (Class<T>) params[index];
+    }
+    
+    /**
+     * 
+     * 方法用途: 获取方法的泛型参数<br>
+     * 操作步骤: TODO 待增加单元测试 <br>
+     * @param method
+     * @param index
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public static <T> Class<T> getGenricType(Method method, final int index) {
+    	String name = method.getName();
+    	Type[] params = method.getGenericParameterTypes();
+		if (index >= params.length || index < 0) {
+            LOGGER.warn("Index: " + index + ", Size of " + name + "'s Parameterized Type: "  + params.length);
+            throw new UncheckedException("你输入的索引" + (index < 0 ? "不能小于0" : "超出了参数的总数")); 
+        }
+        if (!(params[index] instanceof Class)) {
+            LOGGER.warn(name + " not set the actual class on method generic parameter");
+            throw new UncheckedException(name + " 方法的泛型参数没有指定具体类类型"); 
         }
 
         return (Class<T>) params[index];
