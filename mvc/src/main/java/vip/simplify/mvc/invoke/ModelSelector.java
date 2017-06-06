@@ -25,7 +25,7 @@ import vip.simplify.ioc.annotation.Bean;
 public class ModelSelector implements IModelSelector{
 	
 	@Override
-	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass)  {
+	public <T> T setRequestModel(HttpServletRequest request, Class<T> modelClass, String perParamName)  {
 		T model = null;
 		try {
 			model = modelClass.newInstance();
@@ -37,7 +37,7 @@ public class ModelSelector implements IModelSelector{
 		for (int i = 0; i < modelMethodArr.length; i++) {
 			Method method = modelMethodArr[i];
 			String methodName = method.getName();
-			Object value = setModelPropertie(request, method, methodName);
+			Object value = setModelPropertie(request, method, methodName, perParamName);
 			if(value == null) {
 				continue;
 			}

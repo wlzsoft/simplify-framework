@@ -65,26 +65,36 @@ public class ReflectionGenericUtil {
     
     /**
      * 
-     * 方法用途: 获取方法的泛型参数<br>
+     * 方法用途: 读取方法的泛型参数类型信息<br>
      * 操作步骤: TODO 待增加单元测试 <br>
      * @param method
      * @param index
      * @return
      */
     @SuppressWarnings("unchecked")
-	public static <T> Class<T> getGenricType(Method method, final int index) {
+	public static <T> Class<T> getGenricTypeParam(Method method, final int paramIndex, final int paramGenericIndex) {
     	String name = method.getName();
     	Type[] params = method.getGenericParameterTypes();
-		if (index >= params.length || index < 0) {
-            LOGGER.warn("Index: " + index + ", Size of " + name + "'s Parameterized Type: "  + params.length);
-            throw new UncheckedException("你输入的索引" + (index < 0 ? "不能小于0" : "超出了参数的总数")); 
+		if (paramIndex >= params.length || paramIndex < 0) {
+            LOGGER.warn("Index: " + paramIndex + ", Size of " + name + "'s Method Param Type: "  + params.length);
+            throw new UncheckedException("你输入的索引" + (paramIndex < 0 ? "不能小于0" : "超出了"+name+"方法参数的总数")); 
         }
-        if (!(params[index] instanceof Class)) {
-            LOGGER.warn(name + " not set the actual class on method generic parameter");
-            throw new UncheckedException(name + " 方法的泛型参数没有指定具体类类型"); 
+        if (!(params[paramIndex] instanceof ParameterizedType)) {
+            LOGGER.warn(name + "'s param not ParameterizedType");
+            throw new UncheckedException(name + " 方法的泛型参数没有指定ParameterizedType类型"); 
         }
-
-        return (Class<T>) params[index];
+        ParameterizedType parameterizedType = (ParameterizedType) params[paramIndex];
+        Type[] paramGeneric = parameterizedType.getActualTypeArguments();
+        if (paramGenericIndex >= paramGeneric.length || paramGenericIndex < 0) {
+            LOGGER.warn("Index: " + paramGenericIndex + ", Size of " + name + "'s Parameterized Type: "
+                    + paramGeneric.length);
+            throw new UncheckedException("你输入的索引" + (paramGenericIndex < 0 ? "不能小于0" : "超出了参数的总数")); 
+        }
+        if (!(paramGeneric[paramGenericIndex] instanceof Class)) {
+            LOGGER.warn(name + " not set the actual class on method param generic parameter");
+            throw new UncheckedException(name + " 方法的泛型参数没有指定具体泛型的类型"); 
+        }
+        return (Class<T>) paramGeneric[paramGenericIndex];
     }
 
 	/**

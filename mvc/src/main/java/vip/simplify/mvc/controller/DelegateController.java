@@ -86,7 +86,7 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			Class<T> entityClass = (Class<T>) ControllerAnnotationResolver.pojoParamMap.get(iBaseController.getClass().getName()+":"+requestMethodName);
 			T model = null;
 			if(entityClass != null) {
-				model = modelSelector.setRequestModel(request, entityClass);
+				model = modelSelector.setRequestModel(request, entityClass, null);
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
 			}
 			Throwable throwable = null;
