@@ -710,6 +710,36 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 方法用途: 获取上月第一天  【日期格式为：yyyy-MM-dd HH:mm:ss】<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 * @author wanglizong
+	 */
+	public Date getFirstPreMonthSecond(){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		String time = format.format(calendar.getTime());
+		return parse(time);
+	}
+
+	/**
+	 * 方法用途: 获取上月最后一天  【日期格式为：yyyy-MM-dd HH:mm:ss】<br>
+	 * 操作步骤: TODO<br>
+	 * @return
+	 * @author wanglizong
+	 */
+	public Date getLastPreMonthSecond(){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_MONTH, 1); 
+		calendar.add(Calendar.DATE, -1);
+		String time = format.format(calendar.getTime());
+		return parse(time);
+	}
+	
+	/**
 	 * 
 	 * 方法用途: Long转Date对象<br>
 	 * 操作步骤: TODO<br>

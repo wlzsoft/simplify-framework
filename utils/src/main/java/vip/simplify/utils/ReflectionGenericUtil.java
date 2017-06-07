@@ -1,5 +1,6 @@
 package vip.simplify.utils;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -60,6 +61,40 @@ public class ReflectionGenericUtil {
         }
 
         return (Class<T>) params[index];
+    }
+    
+    /**
+     * 
+     * 方法用途: 读取方法的泛型参数类型信息<br>
+     * 操作步骤: TODO 待增加单元测试 <br>
+     * @param method
+     * @param index
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public static <T> Class<T> getGenricTypeParam(Method method, final int paramIndex, final int paramGenericIndex) {
+    	String name = method.getName();
+    	Type[] params = method.getGenericParameterTypes();
+		if (paramIndex >= params.length || paramIndex < 0) {
+            LOGGER.warn("Index: " + paramIndex + ", Size of " + name + "'s Method Param Type: "  + params.length);
+            throw new UncheckedException("你输入的索引" + (paramIndex < 0 ? "不能小于0" : "超出了"+name+"方法参数的总数")); 
+        }
+        if (!(params[paramIndex] instanceof ParameterizedType)) {
+            LOGGER.warn(name + "'s param not ParameterizedType");
+            throw new UncheckedException(name + " 方法的泛型参数没有指定ParameterizedType类型"); 
+        }
+        ParameterizedType parameterizedType = (ParameterizedType) params[paramIndex];
+        Type[] paramGeneric = parameterizedType.getActualTypeArguments();
+        if (paramGenericIndex >= paramGeneric.length || paramGenericIndex < 0) {
+            LOGGER.warn("Index: " + paramGenericIndex + ", Size of " + name + "'s Parameterized Type: "
+                    + paramGeneric.length);
+            throw new UncheckedException("你输入的索引" + (paramGenericIndex < 0 ? "不能小于0" : "超出了参数的总数")); 
+        }
+        if (!(paramGeneric[paramGenericIndex] instanceof Class)) {
+            LOGGER.warn(name + " not set the actual class on method param generic parameter");
+            throw new UncheckedException(name + " 方法的泛型参数没有指定具体泛型的类型"); 
+        }
+        return (Class<T>) paramGeneric[paramGenericIndex];
     }
 
 	/**
