@@ -276,7 +276,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 						Object value = selector.invoke(t, columnName);
 						if (isAllField || value != null) {
 							prepareStatement.setObject(index + cList.size() * j, value);
-//							prepareStatement.setDate(i,new Date(System.currentTimeMillis()));//这里通用处理，无需单独处理日期
+//							prepareStatement.setDate(i,new Date(System.nanoTime()));//这里通用处理，无需单独处理日期
 							LOGGER.info("[参数索引:" + i + ",值:" + value + "]");
 							index++;
 						}

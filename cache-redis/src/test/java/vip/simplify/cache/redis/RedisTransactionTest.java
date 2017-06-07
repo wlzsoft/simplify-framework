@@ -39,25 +39,25 @@ public class RedisTransactionTest {
 
 	@Test
 	public  void test() {
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 		new RedisTransactionTest().noTransactionNoPipeline();
-		System.out.println("noTransactionNoPipeline use " + (System.currentTimeMillis() - start) / 1000);
+		System.out.println("noTransactionNoPipeline use " + (System.nanoTime() - start) / 1000);
 
 		pool = new JedisPool(new JedisPoolConfig(), host);
-		start = System.currentTimeMillis();
+		start = System.nanoTime();
 		new RedisTransactionTest().pipelineWithoutTransaction();
-		System.out.println("pipelineWithoutTransaction use " + (System.currentTimeMillis() - start) / 1000);
+		System.out.println("pipelineWithoutTransaction use " + (System.nanoTime() - start) / 1000);
 
 		pool = new JedisPool(new JedisPoolConfig(), host);
-		start = System.currentTimeMillis();
+		start = System.nanoTime();
 		new RedisTransactionTest().pipelineWithTransaction();
-		System.out.println("pipelineWithTransaction use " + (System.currentTimeMillis() - start) / 1000);
+		System.out.println("pipelineWithTransaction use " + (System.nanoTime() - start) / 1000);
 
 		pool = new JedisPool(new JedisPoolConfig(), host);
-		start = System.currentTimeMillis();
+		start = System.nanoTime();
 		new RedisTransactionTest().transactionNoPipeline();
-		System.out.println("transactionNoPipeline use " + (System.currentTimeMillis() - start) / 1000);
-		System.out.println(System.currentTimeMillis()-start);
+		System.out.println("transactionNoPipeline use " + (System.nanoTime() - start) / 1000);
+		System.out.println(System.nanoTime()-start);
 
 	}
 

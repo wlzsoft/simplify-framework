@@ -62,7 +62,7 @@ public class ThrowExceptionTest {
 
 		@Override
 		public Boolean call() throws Exception {
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			for (int i = 0; i < LOOP; i++) {
 				try {
 					exception();
@@ -71,7 +71,7 @@ public class ThrowExceptionTest {
 					//
 				}
 			}
-			tryCatchTimes.add(System.currentTimeMillis() - start);
+			tryCatchTimes.add(System.nanoTime() - start);
 			return true;
 		}
 
@@ -85,14 +85,14 @@ public class ThrowExceptionTest {
 
 		@Override
 		public Boolean call() throws Exception {
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			for (int i = 0; i < LOOP; i++) {
 				Exception e = exception();
 				if (e instanceof ExtCustomException) {
 					//
 				}
 			}
-			ifElseTimes.add(System.currentTimeMillis() - start);
+			ifElseTimes.add(System.nanoTime() - start);
 			return true;
 		}
 

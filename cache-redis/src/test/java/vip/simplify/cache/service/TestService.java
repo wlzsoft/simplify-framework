@@ -20,12 +20,12 @@ public class TestService {
 
 
     public static void main(String[] args) {
-    	long start = System.currentTimeMillis();
+    	long start = System.nanoTime();
         TestService h = new TestService();
         User bb = new User();
         bb.setName("yyyyy");
         h.doSomeThing(bb);
-        System.out.println(System.currentTimeMillis()-start);
+        System.out.println(System.nanoTime()-start);
     }
 
 }

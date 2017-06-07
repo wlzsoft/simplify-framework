@@ -36,9 +36,9 @@ public class AopTest {
 		InterceptResult ir = new InterceptResult();
     	System.out.println("AOP：对方法["+methodFullName+"]进行逻辑切入");
         	IInterceptor.initBefore(methodFullName,ir,this);
-        	long startTime = System.currentTimeMillis();
+        	long startTime = System.nanoTime();
         	IInterceptor.initAfter(methodFullName,ir,this);
-        	long endTime = System.currentTimeMillis();
-        	System.out.println("方法 ["+methodFullName+"] 调用花费的时间:" +(endTime - startTime) +"ms.");
+        	long endTime = System.nanoTime();
+        	System.out.println("方法 ["+methodFullName+"] 调用花费的时间:" +(endTime - startTime) +"ns.");
 	}
 }

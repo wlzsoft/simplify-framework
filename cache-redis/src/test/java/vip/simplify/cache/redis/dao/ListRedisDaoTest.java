@@ -21,11 +21,11 @@ public class ListRedisDaoTest {
 	@Test
 	public void testListGet() {
 		String key = "product_list";
-		long begin = System.currentTimeMillis();
+		long begin = System.nanoTime();
 		List<String> list = client.lrange(key,0,20);
 		System.out.println(client.lpop(key));
 		System.out.println(list.size());
-		System.out.println("time:"+(System.currentTimeMillis()-begin));
+		System.out.println("time(ns):"+(System.nanoTime()-begin));
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class ListRedisDaoTest {
 	 */
 	@Test
 	public void testLpushStress() {
-		long begin = System.currentTimeMillis();
+		long begin = System.nanoTime();
 		StressTestUtils.testAndPrint(100, 1000, new StressTask() {
 			int i=0;
 			@Override
@@ -69,7 +69,7 @@ public class ListRedisDaoTest {
 			}
 			
 		});
-		long end = System.currentTimeMillis();
+		long end = System.nanoTime();
 		System.out.println(end-begin);
 	}
 }

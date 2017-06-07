@@ -64,10 +64,10 @@ public class SymmetricEncryptPerformanceTest {
             dataFIS.read(b);
 
             Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher("sdferest".getBytes(), null, "DES", "ECB", "PKCS5Padding");
-            long t1 = System.currentTimeMillis();
+            long t1 = System.nanoTime();
     		//System.out.println(ByteHexUtil.bytes2Hex(cipher.doFinal(b)));
             cipher.doFinal(b);
-            System.out.println(System.currentTimeMillis() - t1);
+            System.out.println(System.nanoTime() - t1);
 
             size *= 10;
             dataFIS.close();
@@ -86,9 +86,9 @@ public class SymmetricEncryptPerformanceTest {
             dataFIS.read(b);
 
             Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher("sdferestsdferest".getBytes(), null, "AES", "ECB", "PKCS5Padding");
-            long t1 = System.currentTimeMillis();
+            long t1 = System.nanoTime();
     		cipher.doFinal(b);
-            System.out.println(System.currentTimeMillis() - t1);
+            System.out.println(System.nanoTime() - t1);
 
             size *= 10;
             dataFIS.close();
@@ -107,9 +107,9 @@ public class SymmetricEncryptPerformanceTest {
             dataFIS.read(b);
             
             Cipher cipher = SymmetricBaseEncrypt.getEncryptCipher("sdferestsdferest".getBytes(), null, "Blowfish", "ECB", "PKCS5Padding");
-            long t1 = System.currentTimeMillis();
+            long t1 = System.nanoTime();
             cipher.doFinal(b);
-            System.out.println(System.currentTimeMillis() - t1);
+            System.out.println(System.nanoTime() - t1);
 
             size *= 10;
             dataFIS.close();
