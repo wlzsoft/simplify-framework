@@ -66,11 +66,11 @@ public class NewExceptionTest {
 
 		@Override
 		public Boolean call() throws Exception {
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			for (int i = 0; i < LOOP; i++) {
 				new CustomObject("");
 			}
-			newObjectTimes.add(System.currentTimeMillis() - start);
+			newObjectTimes.add(System.nanoTime() - start);
 			return true;
 		}
 
@@ -80,11 +80,11 @@ public class NewExceptionTest {
 
 		@Override
 		public Boolean call() throws Exception {
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			for (int i = 0; i < LOOP; i++) {
 				new CustomException("");
 			}
-			newExceptionTimes.add(System.currentTimeMillis() - start);
+			newExceptionTimes.add(System.nanoTime() - start);
 			return true;
 		}
 
@@ -94,11 +94,11 @@ public class NewExceptionTest {
 
 		@Override
 		public Boolean call() throws Exception {
-			long start = System.currentTimeMillis();
+			long start = System.nanoTime();
 			for (int i = 0; i < LOOP; i++) {
 				new ExtCustomException("");
 			}
-			newExtExceptionTimes.add(System.currentTimeMillis() - start);
+			newExtExceptionTimes.add(System.nanoTime() - start);
 			return true;
 		}
 

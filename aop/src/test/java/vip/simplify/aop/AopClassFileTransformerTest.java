@@ -9,7 +9,7 @@ public class AopClassFileTransformerTest {
 	@Test
 	public void testAll() {
 		Startup.start();
-		long start = System.currentTimeMillis();
-		System.out.println((System.currentTimeMillis()-start)+"ms");
+		long start = System.nanoTime();
+		System.out.println((System.nanoTime()-start)+"ms");
 	}
 }

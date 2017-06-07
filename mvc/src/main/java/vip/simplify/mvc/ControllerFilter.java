@@ -159,15 +159,15 @@ public class ControllerFilter implements Filter {
 	 */
 	private void analysisAndProcess(HttpServletRequest request, HttpServletResponse response, String requestUrl,ControllerAnnotationInfo<IBaseController<?>> controllerAnnotationInfo,
 			String[] urlparams) {
-		long time = System.currentTimeMillis();
+		long time = System.nanoTime();
 		Statistics.getReadMap().put(requestUrl, 0);
 		String requestMethodName = controllerAnnotationInfo.getMethod();
 		boolean isStatic = controllerAnnotationInfo.getIsStatic();
 		IBaseController<?> bs = controllerAnnotationInfo.getObj();
 		String sessionId = request.getSession().getId();
 		bs.process(request, response,requestUrl,requestMethodName,isStatic,urlparams);
-		long readtime = System.currentTimeMillis() - time;
-		LOGGER.info(StringUtil.format("{0} 耗时:{1}毫秒", requestUrl, (readtime))+"sessionId:"+sessionId);
+		long readtime = System.nanoTime() - time;
+		LOGGER.info(StringUtil.format("{0} 耗时:{1}纳秒秒", requestUrl, (readtime))+"sessionId:"+sessionId);
 		// 记录统计信息
 		Statistics.incReadcount();
 		Statistics.setReadMaxTime(readtime, requestUrl);

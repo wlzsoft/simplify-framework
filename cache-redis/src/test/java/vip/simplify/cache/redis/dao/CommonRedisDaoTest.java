@@ -16,13 +16,13 @@ import vip.simplify.stresstester.core.StressTask;
 		StressTestUtils.testAndPrint(10, 100, new StressTask(){
 			@Override
 			public Object doTask() throws Exception {
-				long start = System.currentTimeMillis();
+				long start = System.nanoTime();
 				CacheExecute.execute("age", (k, jedis)->{
 					jedis.set("age", "3");
 					System.out.println(jedis.get("age"));
 					return "3";
 				}, "redis_ref_hosts");
-				System.out.println((System.currentTimeMillis()-start)+"ms");
+				System.out.println((System.nanoTime()-start)+"ns");
 				return null;
 			}
 		});

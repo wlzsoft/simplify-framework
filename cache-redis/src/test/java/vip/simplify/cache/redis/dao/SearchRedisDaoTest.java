@@ -24,7 +24,7 @@ import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
 public class SearchRedisDaoTest {
 	public static void testBinarySearch(){
-		long begin = System.currentTimeMillis();
+		long begin = System.nanoTime();
 		String key = "test";
 		CacheExecute.execute(key, (k,jedis)->{
 			for(int i=0;i<20;i++){
@@ -52,7 +52,7 @@ public class SearchRedisDaoTest {
 			return null;
 		}, "redis_ref_hosts");
 		
-		System.out.println("SearchRedisDaoTest.testBinarySearch消耗时间"+(System.currentTimeMillis()-begin));
+		System.out.println("SearchRedisDaoTest.testBinarySearch消耗时间"+(System.nanoTime()-begin));
 	}
 		
 	public static void testPushListCache(){

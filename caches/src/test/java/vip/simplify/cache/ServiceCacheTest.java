@@ -25,19 +25,19 @@ public class ServiceCacheTest {
 	@Test
 	public void testMvc() {
 		Startup.start();
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 		User bb = new User();
 		bb.setName("yyyyy");
 		BeanFactory.getBean(UserService.class).doSomeThing(bb);
-		System.out.println((System.currentTimeMillis() - start) + "ms");
+		System.out.println((System.nanoTime() - start) + "ns");
 	}
 	@Test
 	public  void testCache() {
-    	long start = System.currentTimeMillis();
+    	long start = System.nanoTime();
     	UserService h = new UserService();
         User bb = new User();
         bb.setName("yyyyy");
         h.doSomeThing(bb);
-        System.out.println(System.currentTimeMillis()-start);
+        System.out.println(System.nanoTime()-start);
     }
 }

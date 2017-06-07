@@ -20,7 +20,7 @@ public class CacheSimpleTest {
 	public void test() throws InstantiationException, IllegalAccessException, CannotCompileException {
 //		CtClass cc = new AopClassFileTransformer().buildClazz("vip/simplify/aop/service/TestService");
 //		new AopClassFileTransformer().transformInit("vip/simplify/aop/service/TestService");
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 			AnnotationInfo<Annotation> cai = new AnnotationInfo<>();
 			CacheDataAdd cacheDataAdd = new CacheDataAdd() {
 				
@@ -62,6 +62,6 @@ public class CacheSimpleTest {
 //		        类加载冲突 ，后续打开 TODO
 //		        TestService testService = (TestService)(cc.toClass().newInstance());
 //		        testService.doSomeThing(bb);
-		System.out.println(System.currentTimeMillis()-start);
+		System.out.println(System.nanoTime()-start);
 	}
 }

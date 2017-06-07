@@ -57,9 +57,9 @@ public class SqlInterceptor implements IInterceptor {
         BoundSql boundSql = mappedStatement.getBoundSql(parameter);
         Configuration configuration = mappedStatement.getConfiguration();
         Object returnValue = null;
-        long start = System.currentTimeMillis();
+        long start = System.nanoTime();
         returnValue = invocation.proceed();
-        long end = System.currentTimeMillis();
+        long end = System.nanoTime();
         long time = (end - start);
         if (time > 1) {
             String sql = getSql(configuration, boundSql, sqlId, time);
@@ -77,7 +77,7 @@ public class SqlInterceptor implements IInterceptor {
         str.append(sql);
         str.append("; time:");
         str.append(time);
-        str.append("ms");
+        str.append("ns");
         return str.toString();
     }
 
