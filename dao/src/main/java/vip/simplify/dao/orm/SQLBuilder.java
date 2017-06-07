@@ -158,20 +158,36 @@ public class SQLBuilder<T> {
     /**
      * 生成新增的SQL--预处理方式，prestatement方式
      * 
-     * @param isAutoPk 是否提供主键自增字段 
+     * @param isAutoPk 是否提供主键自增字段
+     * @param t
+     * @param  currentColumnFieldNames
+     * @param isAllField 是否全字段
      * @return
      */
-    public String preCreate(boolean isAutoPk) {
+    public String preCreate(boolean isAutoPk,T t,  Map<String, String> currentColumnFieldNames,boolean isAllField) {
     	int size = 0;
         StringBuilder sqlBuild = new StringBuilder();
         sqlBuild.append("INSERT INTO ").append(tableName).append("(");
-        if(isAutoPk) {
-        	sqlBuild.append(otherIdColumnsStr);
-        	size = otherIdColumns.size();
-        } else {
-        	sqlBuild.append(columnsStr);
-        	size = columns.size();
+
+        String values = "";
+        for (int i=0; i < otherIdColumns.size();i++) {
+            String column = otherIdColumns.get(i);
+            Object value = ReflectionUtil.obtainFieldValue(t,currentColumnFieldNames.get(column));
+            if(isAllField || value != null) {
+//              values += ","+column + "=" + handleValue(value);
+                values += ","+column ;
+                size++;
+            }
         }
+        values = values.substring(1);
+
+
+
+        if(!isAutoPk) { //没有自增列，加上主键字段
+            sqlBuild.append(pkName).append(",");
+            size ++;
+        }
+        sqlBuild.append(values);
         sqlBuild.append(") values(");
         String sql = sqlBuild.toString();
         String charValue="";

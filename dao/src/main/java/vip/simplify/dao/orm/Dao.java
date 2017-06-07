@@ -257,7 +257,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	//--------------------------------保存操作-----------------------------------------------------------
 	
-	private Integer preSave(String sql,List<T> tList) {
+	private Integer preSave(String sql,List<T> tList,boolean isAllField) {
 		Integer key = SQLExecute.executeInsert(connectionManager,sql, new ISqlDataCallback<Integer>() {
 			@Override
 			public Integer paramCall(PreparedStatement prepareStatement, Object... params) throws SQLException {
@@ -269,12 +269,17 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 				for (int j = 0; j < tList.size(); j++) {
 					T t = tList.get(j);
+					int index =1;
 					for (int i = 1; i <= cList.size(); i++) {
+
 						String columnName = cList.get(i - 1);
 						Object value = selector.invoke(t, columnName);
-						prepareStatement.setObject(i + cList.size() * j, value);
-//						prepareStatement.setDate(i,new Date(System.currentTimeMillis()));//这里通用处理，无需单独处理日期
-						LOGGER.info("[参数索引:" + i + ",值:" + value + "]");
+						if (isAllField || value != null) {
+							prepareStatement.setObject(index + cList.size() * j, value);
+//							prepareStatement.setDate(i,new Date(System.currentTimeMillis()));//这里通用处理，无需单独处理日期
+							LOGGER.info("[参数索引:" + i + ",值:" + value + "]");
+							index++;
+						}
 					}
 				}
 				return null;
@@ -282,14 +287,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		});
 		return key;
 	}
+	@Override
+	public  boolean save(T t){
+		return save(t,true);
+	}
 	
 	@Override
-	public boolean save(T t) {
+	public boolean save(T t,boolean isAllField) {
 //		buildInfo.buildId(t);//TODO 慎重考虑createId，等字段的值的自动设置
-		String sql = sqlBuilder.preCreate(isAutoPk);
+		String sql = sqlBuilder.preCreate(isAutoPk,t,currentColumnFieldNames,isAllField);
 		List<T> tList = new ArrayList<>();
 		tList.add(t);
-		Integer key = preSave(sql,tList);
+		Integer key = preSave(sql,tList,isAllField);
 		if(key == null || key<1) {
 			return false;
 		}
@@ -324,7 +333,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				return true;
 			}
 		} else {
-			return save(t);
+			return save(t,isAllField);
 		}
 	}
 	
@@ -338,7 +347,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			T t = list.get(i);
 			temp.add(t);
 			if (i > 0 && i % BatchOperator.FLUSH_CRITICAL_VAL.getSize() == 0) {
-				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),isAutoPk, isMycat),temp);
+				int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),isAutoPk, isMycat),temp,true);
 				for (T t2 : temp) {
 					t2.setFid(maxkey++);//此处需要严格并发测试TODO
 				}
@@ -347,7 +356,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 			}
 		}
 		if(temp.size()>0) {
-			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),isAutoPk, isMycat),temp);
+			int maxkey = preSave(sqlBuilder.createOfBatch(temp.size(),isAutoPk, isMycat),temp,true);
 			for (T t2 : temp) {
 				t2.setFid(maxkey++);//此处需要严格并发测试TODO
 			}

@@ -77,6 +77,17 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @return 是否插入成功
 	 */
 	boolean save(T ob);
+
+	/**
+	 *
+	 * 方法用途: 新增记录(会将序列生成的ID,注入)<br>
+	 * 操作步骤: 保存（持久化）对象<br>
+	 * @param ob  要持久化的对象
+	 * @param isAllField 是否全字段
+	 * @return 是否插入成功
+	 */
+	boolean save(T ob,boolean isAllField);
+
     /**
      * 方法用途: 批量新增记录(会将序列生成的ID,注入)<br>
      * 操作步骤: TODO<br>
