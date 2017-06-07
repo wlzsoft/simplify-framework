@@ -753,4 +753,11 @@ public class DateUtil {
         Date str = parse(sdf.format(date));  
 		return str ;
 	}
+	
+	public static void main(String[] args ){
+		long time = Long.valueOf("1496717546").longValue();
+		System.out.println(getLongToDate(time));
+	}
+	
+	
 }
