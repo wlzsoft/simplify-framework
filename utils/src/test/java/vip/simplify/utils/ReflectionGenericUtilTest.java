@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import vip.simplify.utils.model.UserModel;
+
 /**
  * <p><b>Title:</b><i>泛型反射测试类</i></p>
  * <p>Desc: TODO</p>
@@ -33,6 +35,18 @@ public class ReflectionGenericUtilTest {
 	@Test
 	public void getSuperClassGenricTypeForFirstTest() throws Exception {
 		Object entityClazz = ReflectionGenericUtil.getSuperClassGenricTypeForFirst(InnerImpl.class);
+		System.out.println(entityClazz);
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 读取方法的泛型参数类型信息<br>
+	 * 操作步骤: TODO<br>
+	 * @throws Exception
+	 */
+	@Test
+	public void getGenricParamByMethodForFirstTest() throws Exception {
+		Object entityClazz = ReflectionGenericUtil.getGenricTypeParam(UserModel.class.getMethods()[0], 0, 0);
 		System.out.println(entityClazz);
 	}
 	
