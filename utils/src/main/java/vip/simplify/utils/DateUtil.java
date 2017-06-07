@@ -754,9 +754,40 @@ public class DateUtil {
 		return str ;
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 获取上个月【yyyy-MM】<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static String getAfterMonth(Date date){
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM");  
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -1);
+		String time = format.format(calendar.getTime());
+		return time;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取下个月【yyyy-MM】<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static String getNextMonth(Date date){
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM");  
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, 1);
+		String time = format.format(calendar.getTime());
+		return time;
+	}
+	
+	
 	public static void main(String[] args ){
-		long time = Long.valueOf("1496717546").longValue();
-		System.out.println(getLongToDate(time));
+		String time = getNextMonth(new Date());
+		System.out.println(time);
 	}
 	
 	
