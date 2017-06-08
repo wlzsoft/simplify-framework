@@ -715,7 +715,7 @@ public class DateUtil {
 	 * @return
 	 * @author wanglizong
 	 */
-	public Date getFirstPreMonthSecond(){
+	public static Date getFirstPreMonthSecond(){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, -1);
@@ -730,7 +730,7 @@ public class DateUtil {
 	 * @return
 	 * @author wanglizong
 	 */
-	public Date getLastPreMonthSecond(){
+	public static Date getLastPreMonthSecond(){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.DAY_OF_MONTH, 1); 
@@ -769,6 +769,37 @@ public class DateUtil {
 		return time;
 	}
 	
+	
+	/**
+	 * 
+	 * 方法用途: 获取当月【yyyy-MM】<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static String getCurrentMonth(Date date){
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM");  
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, 0);
+		String time = format.format(calendar.getTime());
+		return time;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 获取当月【yyyy-MM】的某一天<br>
+	 * 操作步骤: TODO<br>
+	 * @param date
+	 * @return
+	 */
+	public static String getCurrentDateMonth(Date date,String todate){
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM"+"-"+todate);  
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, 0);
+		String time = format.format(calendar.getTime());
+		return time;
+	}
+	
 	/**
 	 * 
 	 * 方法用途: 获取下个月【yyyy-MM】<br>
@@ -786,8 +817,8 @@ public class DateUtil {
 	
 	
 	public static void main(String[] args ){
-		String time = getNextMonth(new Date());
-		System.out.println(time);
+		int date = DateUtil.compareDate(DateUtil.parse(DateUtil.getCurrentDateMonth(new Date(),"15")), new Date());
+		System.out.println(date);
 	}
 	
 	
