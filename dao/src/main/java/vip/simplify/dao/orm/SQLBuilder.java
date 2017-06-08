@@ -82,7 +82,7 @@ public class SQLBuilder<T> {
         
     	List<Object> values = new LinkedList<Object>();
         String whereName = "";
-        for (String column : otherIdColumns) {
+        for (String column : columns) {
             Field field = ReflectionUtil.getField(t,currentColumnFieldNames.get(column));
             
             try {
