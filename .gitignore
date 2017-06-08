@@ -19,3 +19,4 @@ build
 .metadata*
 logback*.log
 log4j*.log
+.vscode*
