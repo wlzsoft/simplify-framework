@@ -429,7 +429,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 				}
 				Object value = selector.invoke(t, whereColumn);
 				prepareStatement.setObject(count+1,value);
-				LOGGER.info("[条件参数索引:" + (count+1) + ",值:" + t.getFid() + "]");
+				LOGGER.info("[条件参数索引:" + (count+1) + ",值:" + value + "]");
 				return null;
 			}
 			
