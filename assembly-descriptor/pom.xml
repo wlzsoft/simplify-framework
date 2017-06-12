@@ -1,18 +1,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-	<parent>
 		<groupId>vip.simplify</groupId>
+<!-- 	<parent>
 		<artifactId>simplify-framework</artifactId>
-		<version>1.2.3-SNAPSHOT</version>
 	</parent>
+ -->		<version>1.2.3-SNAPSHOT</version>
 	<artifactId>assembly-descriptor</artifactId>
 	<!--可不依赖parent,只是打包插件使用-->
+	<!-- 注意：依赖parent会导致打包时bin目录没生成，里面的文件也丢失，估计是resoures过滤掉的原因，但是无法重现出来，如果不依赖parent就不会有这个问题，但是不依赖parent会导致site生成站点会出错，无法正常生成这个项目的站点信息 ,后续处理 TODO-->
 	<name>(${project.artifactId})分发包打包公用配置</name>
 	<description>分发包打包方案-maven-assembly-plugin公用descriptor文件</description>
 	<properties>
 		<templatePath>${project.parent.basedir}</templatePath>
 		<parentsite></parentsite>
 	</properties>
+	<distributionManagement>
+      <repository>
+          <id>${distRepoId}</id>
+          <name>${distRepoName}</name>
+          <url>${distRepoUrl}</url>
+          <!-- <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> -->
+      </repository>
+      <snapshotRepository>
+          <id>${distSnapId}</id>
+          <name>${distSnapName}</name>
+          <url>${distSnapUrl}</url>
+          <!-- 是否为Snapshot版本分配一个包含时间戳的构建号 -->
+          <uniqueVersion>true</uniqueVersion>
+      </snapshotRepository>
+    </distributionManagement>
 	<build>
 		<plugins>
 			<plugin>

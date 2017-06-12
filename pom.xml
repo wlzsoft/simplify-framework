@@ -553,10 +553,10 @@
 				<include>**/*.xml</include>
 				<include>**/*.properties</include>
 				<include>**/*.template</include>
-				<!-- boot模块包含这些类型配置，如果不打开，同时assembly-desccriptor模块设置了simplify-framework:pom为父级，会导致文件拷贝失效，被忽略了 -->
-				<include>**/*.sh</include>
+				<!-- boot模块包含这些类型配置，如果不打开，同时assembly-desccriptor模块设置了simplify-framework:pom为父级，会导致文件拷贝失效，被忽略了,并位验证成功 -->
+				<!-- <include>**/*.sh</include>
 				<include>**/*.bat</include>
-				<include>**/*.vmoptions</include>
+				<include>**/*.vmoptions</include> -->
 			</includes>
 			<filtering>true</filtering>
 		</resource>
