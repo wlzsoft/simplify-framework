@@ -77,15 +77,13 @@ public class ResultFactory {
 	}
 	
 	/**
-	 * 方法用途: 自定义错误提示信息<br>
+	 * 方法用途: 500错误：自定义错误提示信息,服务器端异常，非业务异常<br>
 	 * 操作步骤: TODO<br>
 	 * @param message
 	 * @return
 	 */
 	public static Result error(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
-		Result result = new ResultObject<Object>(message);
-		result.setCode(HttpStatusEnum.MULTIPLE_CHOICES.value());
-		return result;
+		return error(HttpStatusEnum.INTERNAL_SERVER_ERROR.value(),message);
 	}
 	
 	/**
