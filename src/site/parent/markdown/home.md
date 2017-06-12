@@ -172,9 +172,23 @@ Simplfiy框架快速入门
 
 #### 单web应用改造开发
 
+-原来的demo-web项目拆分如下：创建类型为pom的maven父级项目，并创建三个模块，项目分别是demo demo-api demo-server demo-web
+
 #### rpc客户端api库开发
 
 #### rpc服务端应用开发
+ -1.创建类型为jar的maven项目，或是基于指定的archetype来创建，那么后续的步骤可以忽略
+ -2.创建config.properties文件，增加类路径扫描设置，配置如下
+ -3.创建dubbo.properties文件，具体配置如下
+ -4.pom文件增加相关依赖配置项
+ -5.开始编写业务代码
+ -6.开始编写单元测试
+ -7.接下来需要测试启动服务是否正常，并配置发布环境，最终打包给生产和测试环境用
+     a.增加logback.xml的配置
+     b.增加META-INF来描述打包的信息
+     c.pom文件增加打包和启动测试的插件信息
+     d.使用exec:java启动服务，并通过客户端测试
+     e.使用install deploy打包发布，生成发布包
 
 
 
