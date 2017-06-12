@@ -63,14 +63,15 @@
 				   <argument>path</argument>
 				  </arguments> -->
 			  </configuration>
-		   <executions>
+			  <!-- 会导致install deploy的时候，执行exec:java，导致进程无法关闭,后续考虑在集成测试中处理,类似jetty插件 -->
+		   <!-- <executions>
 		    <execution>
 		     <phase>test</phase>
 		     <goals>
 		      <goal>java</goal>
 		     </goals>
 		    </execution>
-		   </executions>
+		   </executions> -->
 		  </plugin>
   		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
