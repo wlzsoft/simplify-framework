@@ -137,7 +137,7 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	/**
 	 * 
 	 * 方法用途: TODO<br>
-	 * 操作步骤: TODO<br>
+	 * 操作步骤: BeanFactory.getBean(JsonResolver.class).ObjectToString(value) 后续使用 JsonUtil.objectToString 方法来处理，当前类使用BeanConfig注入方式 TODO<br>
 	 * @param key
 	 * @param expireTime
 	 * @param value

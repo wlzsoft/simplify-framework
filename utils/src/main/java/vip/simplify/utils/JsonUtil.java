@@ -47,25 +47,38 @@ public class JsonUtil {
 	/**
 	 * 
 	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
-	 * 操作步骤: TODO <br>
+	 * 操作步骤: 注意：这个方法后面要重构并废弃掉  因为依赖的fastJson库 需要定义出JSONFitlerFacade接口来处理，以集成其他的JSON库 TODO <br>
 	 * @param obj
 	 * @param afterFilter
 	 * @return
 	 */
-	public static String objectToString(Object obj,SerializeFilter afterFilter){
-    	return JSON.toJSONString(obj,afterFilter);
+	public static String objectToString(Object obj,SerializeFilter afterFilter,SerializerFeature...features){
+    	return JSON.toJSONString(obj,afterFilter,features);
     }
 
 	/**
 	 *
 	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
-	 * 操作步骤: TODO <br>
+	 * 操作步骤: 注意：这个方法后面要重构并废弃掉  因为依赖的fastJson库 需要定义出JSONFitlerFacade接口来处理，以集成其他的JSON库 TODO <br>
 	 * @param obj
 	 * @param serializeConfig
 	 * @return
 	 */
-	public static String objectToString(Object obj,SerializeConfig serializeConfig){
-		return JSON.toJSONString(obj,serializeConfig);
+	public static String objectToString(Object obj,SerializeConfig serializeConfig,SerializerFeature...features){
+		return JSON.toJSONString(obj,serializeConfig,features);
+	}
+	
+	/**
+	 *
+	 * 方法用途: pojo对象转换成json字符串-不带元数据信息<br>
+	 * 操作步骤: 注意：这个方法后面要重构并废弃掉  因为依赖的fastJson库 需要定义出JSONFitlerFacade接口来处理，以集成其他的JSON库 TODO <br>
+	 * @param obj
+	 * @param serializeConfig
+	 * @param afterFilter
+	 * @return
+	 */
+	public static String objectToString(Object obj,SerializeConfig serializeConfig, SerializeFilter afterFilter,SerializerFeature...features){
+		return JSON.toJSONString(obj,serializeConfig,afterFilter,features);
 	}
     
 	/**
