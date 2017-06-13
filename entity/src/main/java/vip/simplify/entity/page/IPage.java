@@ -91,7 +91,7 @@ public interface IPage<T> extends /*Externalizable,*/Serializable {
 	 * 操作步骤: TODO<br>
 	 * @return 
 	 */
-	int getNextPageNo();
+	int getNextPage();
 
 	/**
 	 * 
@@ -99,7 +99,7 @@ public interface IPage<T> extends /*Externalizable,*/Serializable {
 	 * 操作步骤: TODO<br>
 	 * @return 
 	 */
-	int getPrevPageNo();
+	int getPrevPage();
 
 	/**
 	 * 

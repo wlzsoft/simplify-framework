@@ -25,7 +25,7 @@ public class PageTest {
 		Page<Map<String,String>> page = new Page<>(1,20);//等同于Page<Map<String,String>> page = new Page<>(1,20,0);
 		Assert.assertEquals(1, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 				+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
 		Assert.assertEquals(true, page.isFirstPage());
 		Assert.assertEquals(true, page.isLastPage());
@@ -38,7 +38,7 @@ public class PageTest {
 		page.init(5, false);
 		Assert.assertEquals(1, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 				+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
 		Assert.assertEquals(true, page.isFirstPage());
 		Assert.assertEquals(true, page.isLastPage());
@@ -50,10 +50,10 @@ public class PageTest {
 		Page<Map<String,String>> page = new Page<>(1,20,5);
 		Assert.assertEquals(1, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-		+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+		+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 		+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
-		Assert.assertEquals(1, page.getNextPageNo());
-		Assert.assertEquals(1, page.getPrevPageNo());
+		Assert.assertEquals(1, page.getNextPage());
+		Assert.assertEquals(1, page.getPrevPage());
 		Assert.assertEquals(true, page.isFirstPage());
 		Assert.assertEquals(true, page.isLastPage());
 		Assert.assertEquals(false, page.isHasPrevPage());
@@ -64,10 +64,10 @@ public class PageTest {
 		Page<Map<String,String>> page = new Page<>(1,20,20);
 		Assert.assertEquals(1, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 				+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
-		Assert.assertEquals(1, page.getNextPageNo());
-		Assert.assertEquals(1, page.getPrevPageNo());
+		Assert.assertEquals(1, page.getNextPage());
+		Assert.assertEquals(1, page.getPrevPage());
 		Assert.assertEquals(true, page.isFirstPage());
 		Assert.assertEquals(true, page.isLastPage());
 		Assert.assertEquals(false, page.isHasPrevPage());
@@ -78,10 +78,10 @@ public class PageTest {
 		Page<Map<String,String>> page = new Page<>(1,20,25);
 		Assert.assertEquals(1, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 				+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
-		Assert.assertEquals(2, page.getNextPageNo());
-		Assert.assertEquals(1, page.getPrevPageNo());
+		Assert.assertEquals(2, page.getNextPage());
+		Assert.assertEquals(1, page.getPrevPage());
 		Assert.assertEquals(true, page.isFirstPage());
 		Assert.assertEquals(false, page.isLastPage());
 		Assert.assertEquals(false, page.isHasPrevPage());
@@ -92,10 +92,10 @@ public class PageTest {
 		Page<Map<String,String>> page = new Page<>(2,20,25);
 		Assert.assertEquals(2, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 				+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
-		Assert.assertEquals(2, page.getNextPageNo());
-		Assert.assertEquals(1, page.getPrevPageNo());
+		Assert.assertEquals(2, page.getNextPage());
+		Assert.assertEquals(1, page.getPrevPage());
 		Assert.assertEquals(false, page.isFirstPage());
 		Assert.assertEquals(true, page.isLastPage());
 		Assert.assertEquals(true, page.isHasPrevPage());
@@ -106,10 +106,10 @@ public class PageTest {
 		Page<Map<String,String>> page = new Page<>(2,20,63);
 		Assert.assertEquals(2, page.getCurrentPage());
 		System.out.println("|lastPageNo="
-				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPageNo()+"|getNextPageNo="+page.getNextPageNo()+"|isFirstPage="+page.isFirstPage()
+				+page.getLastPageNo()+"|getPrevPageNo="+page.getPrevPage()+"|getNextPageNo="+page.getNextPage()+"|isFirstPage="+page.isFirstPage()
 				+"|isLastPage="+page.isLastPage()+"|isHasNextPage="+page.isHasNextPage()+"|isHasPrevPage="+page.isHasPrevPage());
-		Assert.assertEquals(3, page.getNextPageNo());
-		Assert.assertEquals(1, page.getPrevPageNo());
+		Assert.assertEquals(3, page.getNextPage());
+		Assert.assertEquals(1, page.getPrevPage());
 		Assert.assertEquals(false, page.isFirstPage());
 		Assert.assertEquals(false, page.isLastPage());
 		Assert.assertEquals(true, page.isHasPrevPage());

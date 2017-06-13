@@ -42,11 +42,11 @@ public class Page<T> implements IPage<T> {
 	/**
 	 * 下一页页码
 	 */
-	private Integer next = 1;
+	private Integer nextPage = 1;
 	/**
 	 * 上一页页码
 	 */
-	private Integer prev = 1;
+	private Integer prevPage = 1;
 	
 	private String url;// 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
 	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
@@ -147,18 +147,18 @@ public class Page<T> implements IPage<T> {
 
 		if (this.currentPage <= 1) {
 			isFirstPage = true;
-			prev = this.currentPage;
+			prevPage = this.currentPage;
 		} else {
 			isFirstPage = false;
-			prev = this.currentPage - 1;
+			prevPage = this.currentPage - 1;
 		}
 
 		if (this.currentPage >= totalPage) {
 			isLastPage = true;
-			next = this.currentPage;
+			nextPage = this.currentPage;
 		} else {
 			isLastPage = false;
-			next = this.currentPage + 1;
+			nextPage = this.currentPage + 1;
 		}
 		
 		hasNextPage = this.currentPage < totalPage;
@@ -247,13 +247,13 @@ public class Page<T> implements IPage<T> {
 	}
 
 	@Override
-	public int getNextPageNo() {
-		return next;
+	public int getNextPage() {
+		return nextPage;
 	}
 
 	@Override
-	public int getPrevPageNo() {
-		return prev;
+	public int getPrevPage() {
+		return prevPage;
 	}
 	/**
 	 * 
