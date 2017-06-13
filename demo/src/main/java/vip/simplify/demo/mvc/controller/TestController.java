@@ -347,7 +347,11 @@ public class TestController extends SystemController<TestModel> {
 	 */
 	@RequestMap(path = "/testDownloadFile.stream")
 	public byte[] testDownloadFile(HttpServletRequest request, HttpServletResponse response, TestModel model)    {
-		File file = new File(ClassPathUtil.getClassPath()+"test.jpg");
+		File file = new File(ClassPathUtil.getClassPath()+"test.xlsx");
+		response.setContentType("application/msexcel");//封装以枚举方式存储，多个类型选择
+		String fileName = "testDownloadFile";
+		String extension= "xlsx";//封装以枚举方式存储，多个类型选择，并且通过路径输入扩展名，提供更简便的使用方式,后续需要重构多视图的处理
+		response.setHeader("Content-disposition","inline; filename="+fileName+"."+extension);
 		try {
 //			Message.error("download test");
 			//以下代码重点用于测试下载功能，不能做正式代码参考，因为没做兼容考虑，一旦文件较大，会导致流截断，因为空间只有1024*80
