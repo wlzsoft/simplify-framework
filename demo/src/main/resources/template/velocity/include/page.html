@@ -1,0 +1,12 @@
+#if($result.totalPage>0)
+  <ul class="pagination">
+    <li #if($result.hasPrevPage) #else class="disabled" #end><a href="?orderCode=$!{formData.payInfoEntity.orderCode}&pageSize=$!{formData.pageSize}&currentPage=$!{result.prev}">&laquo;</a></li>
+      #foreach($index in [1..5])
+          #set($currentPage=$result.currentPage+$velocityCount - 3) 
+            #if($currentPage>0 && $currentPage <= $result.totalPage)
+    <li #if($result.currentPage == $currentPage) class="active" #end><a href="?orderCode=$!{formData.payInfoEntity.orderCode}&pageSize=$!{formData.pageSize}&currentPage=$!{currentPage}">$!{currentPage}</a></li>
+            #end
+      #end
+    <li #if($result.hasNextPage) #else class="disabled" #end><a href="?orderCode=$!{formData.payInfoEntity.orderCode}&pageSize=$!{formData.pageSize}&currentPage=$!{result.next}">&raquo;</a></li>
+  </ul>
+#end
