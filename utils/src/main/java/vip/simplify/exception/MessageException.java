@@ -18,13 +18,32 @@ package vip.simplify.exception;
  */
 public class MessageException extends BaseException{
 	private static final long serialVersionUID = -8437206478990172399L;
-	public MessageException(int errorCode, String message, Throwable target) {
-		super(errorCode, message, target);
+	/**
+	 * 外层业务状态码
+	 */
+	private int code;
+	public MessageException(int httpCode, String message, Throwable target) {
+		super(httpCode, message, target);
+	}
+	
+	public MessageException(int httpCode, String message) {
+		super(httpCode, message);
+	}
+	
+
+	public MessageException(int httpCode,int code, String message) {
+		this(httpCode, message);
+		this.code = code;
+	}
+	
+	public int getCode() {
+		return code;
 	}
 
-	public MessageException(int errorCode, String message) {
-		super(errorCode, message);
+	public void setCode(int code) {
+		this.code = code;
 	}
+
 	/**
 	 * 优化A. 不填充堆栈信息，减少性能消耗。带来问题：丢失堆栈信息。解决方法：业务堆栈信息用不到，无需解决
 	 * 优化B： 不使用同步，减少线程排队，提高信息。带来问题：如果堆栈多个线程公用的话，会信息不一致问题。解决方法：信息不保存到异常对象中即可，可考虑使用ThreadLocal来解决

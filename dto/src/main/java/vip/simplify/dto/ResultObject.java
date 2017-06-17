@@ -26,6 +26,11 @@ public class ResultObject<T> extends Result {
 		this.value = value;
 	}
 	
+	public ResultObject(int code,T value) {
+		this.setCode(code);
+		this.value = value;
+	}
+	
 	public ResultObject() {
 		
 	}

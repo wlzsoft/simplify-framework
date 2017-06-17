@@ -19,7 +19,7 @@ public class BaseException extends RuntimeException{
 	/**
 	 * 状态码
 	 */
-	private int errorCode; 
+	private int httpCode; 
 	
 	/**
 	 * 目标异常
@@ -43,31 +43,31 @@ public class BaseException extends RuntimeException{
 	}
 
 	/**
-	 * @param errorCode 状态码：如果是http，那么最终是http状态吗
+	 * @param httpCode 状态码：如果是http，那么最终是http状态吗
 	 */
-	public BaseException(int errorCode) {
-		this.setErrorCode(errorCode);
+	public BaseException(int httpCode) {
+		this.setHttpCode(httpCode);
 	}
 	
 	/**
 	 * 构造一个基本异常
-	 * @param errorCode 错误编码
+	 * @param httpCode 错误编码
 	 * @param message 异常信息
 	 */
-	public BaseException(int errorCode,String message) {
+	public BaseException(int httpCode,String message) {
 		super(message);
-		this.setErrorCode(errorCode);
+		this.setHttpCode(httpCode);
 	}
 	
 	/**
 	 * 构造一个基本异常
-	 * @param errorCode 错误编码
+	 * @param httpCode 错误编码
 	 * @param message 异常信息
 	 * @param target target
 	 */
-	public BaseException(int errorCode,String message,Throwable target) {
+	public BaseException(int httpCode,String message,Throwable target) {
 		super(message, target);
-		this.setErrorCode(errorCode);
+		this.setHttpCode(httpCode);
 	}
 	
 	/**
@@ -79,12 +79,12 @@ public class BaseException extends RuntimeException{
 		super(message, target);
 	}
 
-	public int getErrorCode() {
-		return errorCode;
+	public int getHttpCode() {
+		return httpCode;
 	}
 
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
+	public void setHttpCode(int httpCode) {
+		this.httpCode = httpCode;
 	}
 	
 	/**

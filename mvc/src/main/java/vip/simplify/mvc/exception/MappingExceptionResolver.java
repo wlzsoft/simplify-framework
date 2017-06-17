@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.dto.HttpStatusEnum;
-import vip.simplify.dto.ResultFactory;
+import vip.simplify.dto.Result;
+import vip.simplify.dto.ResultObject;
 import vip.simplify.exception.BaseException;
 import vip.simplify.exception.MessageException;
 import vip.simplify.exception.UncheckedException;
@@ -69,18 +70,20 @@ public class MappingExceptionResolver {
 				exceptionMessage = "空指针异常";
 			}
 		}
+		int code = 0;
 		if(throwable instanceof MessageException) {
-			BaseException baseException = ((BaseException)throwable);
+			MessageException baseException = ((MessageException)throwable);
 			if(baseException.getTargetException() != null) {
 				throwable = baseException.getTargetException();
 			}
-			int statuscode = baseException.getErrorCode();
-			response.setStatus(statuscode);
+			int httpCode = baseException.getHttpCode();
+			code = baseException.getCode();
+			response.setStatus(httpCode);
 //	                      设置日志输出级别，不定义则默认不输出警告等错误日志信息
 //			setWarnLogCategory(MappingExceptionResolver.class.getName());
-			if(statuscode==208) {
+			if(httpCode==208) {
 				LOGGER.info("message:"+exceptionMessage);
-			} else if(statuscode == HttpStatusEnum.MULTIPLE_CHOICES.value()) {
+			} else if(httpCode == HttpStatusEnum.MULTIPLE_CHOICES.value()) {
 				LOGGER.warn("message:"+exceptionMessage);
 			} else {
 				LOGGER.error("message:"+exceptionMessage);// TODO 分析出业务数据，展现更个性化的日志信息，可以配合  解析LogByMethod的信息
@@ -103,7 +106,8 @@ public class MappingExceptionResolver {
 //			不同请求风格的异常处理-通过请求后缀来处理不同的请求风格的异常视图start
 		if(requestUrl.endsWith(".json")) {
 			try {
-				JsonView.exe(request, response, ResultFactory.error(exceptionMessage),config,jsonResolver);
+				Result result = new ResultObject<Object>(code,exceptionMessage);
+				JsonView.exe(request, response, result,config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
@@ -122,7 +126,8 @@ public class MappingExceptionResolver {
 				};
 				model.setScript(DataUtil.parseInt(request.getParameter("script")));
 				model.setCallback(request.getParameter("callback"));
-				JsonpView.exe(request, response, ResultFactory.error(exceptionMessage),model,domain,config,jsonResolver);
+				Result result = new ResultObject<Object>(code,exceptionMessage);
+				JsonpView.exe(request, response, result,model,domain,config,jsonResolver);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}

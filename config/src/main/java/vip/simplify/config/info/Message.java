@@ -2,6 +2,7 @@ package vip.simplify.config.info;
 
 import vip.simplify.exception.MessageException;
 import vip.simplify.ioc.BeanFactory;
+import vip.simplify.utils.JsonUtil;
 import vip.simplify.utils.StringUtil;
 
 /**
@@ -29,13 +30,13 @@ public class Message {
 	 * 待测试 TODO
 	 * 方法用途: 获取配置文件中的提示信息<br>
 	 * 操作步骤: TODO<br>
-	 * @param code 信息编码
+	 * @param messageCode 信息编码
 	 * @param values 信息变量，可以有多个 
 	 * @return
 	 */
-	public static String get(String code, Object... values) {
+	public static String get(String messageCode, Object... values) {
 		MessageConfig messageConfig = BeanFactory.getBean(MessageConfig.class);
-		String message = (String) messageConfig.getProp().get(code);
+		String message = (String) messageConfig.getProp().get(messageCode);
 		message = StringUtil.format(message, values);
 		return message;
 	}
@@ -44,31 +45,44 @@ public class Message {
 	 *
 	 * 方法用途: 正常提示信息<br>
 	 * 操作步骤: TODO<br>
-	 * @param code 信息编码
+	 * @param messageCode 信息编码
 	 * @param values  信息变量，可以有多个
 	 */
-	public static void info(String code, Object... values) {
-		info(get(code, values));
+	public static void info(String messageCode, Object... values) {
+		info(get(messageCode, values));
 	}
+	
+	/**
+	 *
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 业务状态码
+	 * @param messageCode 信息编码
+	 * @param values  信息变量，可以有多个
+	 */
+	public static void show(int code,String messageCode, Object... values) {
+		show(code,get(messageCode, values));
+	}
+	
 	/**
 	 *
 	 * 方法用途: 警告信息<br>
 	 * 操作步骤: TODO<br>
-	 * @param code 信息编码
+	 * @param messageCode 信息编码
 	 * @param values  信息变量，可以有多个
 	 */
-	public static void warn(String code, Object... values) {
-		warn(get(code, values));
+	public static void warn(String messageCode, Object... values) {
+		warn(get(messageCode, values));
 	}
 	/**
 	 *
 	 * 方法用途: 错误提示信息<br>
 	 * 操作步骤: TODO<br>
-	 * @param code 信息编码
+	 * @param messageCode 信息编码
 	 * @param values  信息变量，可以有多个
 	 */
-	public static void error(String code, Object... values) {
-		error(get(code, values));
+	public static void error(String messageCode, Object... values) {
+		error(get(messageCode, values));
 	}
 
 	///异常处理方式
@@ -78,11 +92,11 @@ public class Message {
 	 * 方法用途: 错误提示信息<br>
 	 * 操作步骤: TODO<br>
 	 * @param ex 异常对象
-	 * @param code 信息编码
+	 * @param messageCode 信息编码
 	 * @param values  信息变量，可以有多个 
 	 */
-	public static void error(Throwable ex, String code, Object... values) {
-		MessageException messageException = new MessageException(500,get(code, values),ex);
+	public static void error(Throwable ex, String messageCode, Object... values) {
+		MessageException messageException = new MessageException(500,get(messageCode, values),ex);
 		throw messageException;
 	}
 	/**
@@ -95,6 +109,31 @@ public class Message {
 		MessageException messageException = new MessageException(208,message);
 		throw messageException;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 业务状态码
+	 * @param message 字符串类型信息
+	 */
+	public static void show(int code,String message) {
+		MessageException messageException = new MessageException(200,code,message);
+		throw messageException;
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 正常提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param code 业务状态码
+	 * @param value 任何类型信息
+	 */
+	public static void show(int code,Object value) {
+		String message = JsonUtil.objectToString(value);
+		show(code, message);
+	}
+	
 	/**
 	 * 
 	 * 方法用途: 警告信息<br>
@@ -116,28 +155,17 @@ public class Message {
 		throw messageException;
 	}
 	
-	/**
-	 * 方法用途: 警告信息<br>
-	 * 操作步骤: TODO<br>
-	 * @param statusCode 自定义的状态码-http协议的状态码
-	 * @param message 错误信息
-	 */
-	public static void error(Integer statusCode,String message) {
-		MessageException messageException = new MessageException(statusCode,message);
-		throw messageException;
-	}
-
 	///ThreadLocal处理方式
 	/**
 	 *
 	 * 方法用途: 错误提示信息<br>
 	 * 操作步骤: 调用这个方法后，必须return<br>
 	 * @param ex 异常对象
-	 * @param code 信息编码
+	 * @param messageCode 信息编码
 	 * @param values  信息变量，可以有多个
 	 */
-	public static void errorT(Throwable ex, String code, Object... values) {
-		MessageException messageException = new MessageException(500,get(code, values),ex);
+	public static void errorT(Throwable ex, String messageCode, Object... values) {
+		MessageException messageException = new MessageException(500,get(messageCode, values),ex);
 		MessageThreadLocal.threadLocal.set(messageException);
 	}
 	/**

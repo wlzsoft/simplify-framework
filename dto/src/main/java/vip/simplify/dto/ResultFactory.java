@@ -56,8 +56,8 @@ public class ResultFactory {
 		if(timeoutResult != null) {
 			return timeoutResult;
 		}
-		timeoutResult = new ResultObject<String>("会话超时，请重新登录。");
-		timeoutResult.setCode(HttpStatusEnum.MOVED_PERMANENTLY.value());
+		timeoutResult = new ResultObject<String>("服务已经超时。");
+		timeoutResult.setCode(HttpStatusEnum.TIME_OUT.value());
 		return timeoutResult;
 	}
 	
@@ -72,7 +72,7 @@ public class ResultFactory {
 			return loginResult;
 		}
 		loginResult = new ResultObject<String>("请登录。");
-		loginResult.setCode(HttpStatusEnum.MOVED_PERMANENTLY.value());
+		loginResult.setCode(HttpStatusEnum.UNAUTHORIZED.value());
 		return loginResult;
 	}
 	
@@ -83,7 +83,9 @@ public class ResultFactory {
 	 * @return
 	 */
 	public static Result error(Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
-		return error(HttpStatusEnum.INTERNAL_SERVER_ERROR.value(),message);
+		Result result = new ResultObject<Object>(message);
+		result.setCode(HttpStatusEnum.INTERNAL_SERVER_ERROR.value());
+		return result;
 	}
 	
 	/**
@@ -99,16 +101,4 @@ public class ResultFactory {
 		return result;
 	}
 
-	/**
-	 * 方法用途：自定义错误提示，可传code<br>
-	 * 操作步骤: TODO<br>
-	 * @param code
-	 * @param message
-	 * @return
-	 */
-	public static  Result error(Integer code,Object message){
-		Result result = new ResultObject<Object>(message);
-		result.setCode(code);
-		return result;
-	}
 }
