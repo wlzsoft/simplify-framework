@@ -39,6 +39,7 @@
   			<groupId>vip.simplify</groupId>
   			<artifactId>rpc</artifactId>
   			<version>${project.parent.version}</version>
+  			<type>pom</type>
   		</dependency>
   		<dependency>
   			<groupId>vip.simplify</groupId>
