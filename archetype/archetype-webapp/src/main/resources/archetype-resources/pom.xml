@@ -10,7 +10,7 @@
   <properties>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <argLine>-Dfile.encoding=UTF-8</argLine>
-    <simplify.version>1.2.3-SNAPSHOT</simplify.version>
+    <simplify.version>1.2.4-SNAPSHOT</simplify.version>
   </properties>
   <dependencies>
 	<dependency>

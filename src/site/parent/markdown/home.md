@@ -64,7 +64,7 @@ Simplfiy框架快速入门
      <dependency>
         <groupId>vip.simplify</groupId>
         <artifactId>listener</artifactId>
-        <version>1.2.3-SNAPSHOT</version>
+        <version>1.2.4-SNAPSHOT</version>
      </dependency>
     ```
     
@@ -86,7 +86,7 @@ Simplfiy框架快速入门
     <dependency>
     	<groupId>vip.simplify</groupId>
     	<artifactId>mvc</artifactId>
-    	<version>1.2.3-SNAPSHOT</version>
+    	<version>1.2.4-SNAPSHOT</version>
     </dependency>
     ```
 

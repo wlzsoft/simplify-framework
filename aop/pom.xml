@@ -3,7 +3,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <artifactId>aop</artifactId>
   <name>(${project.artifactId})切面组件</name>

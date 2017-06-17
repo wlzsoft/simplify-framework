@@ -35,7 +35,7 @@ public class ConfigServiceTest {
 		ConfigAppEntity app = new ConfigAppEntity();
 		app.setGroupId("vip.simplify");
 		app.setArtifactId("demo");
-		app.setVersion("1.2.3-SNAPSHOT");
+		app.setVersion("1.2.4-SNAPSHOT");
 		app.setEnvironment("dev");
 		entity.setApp(app);
 		entity.setName("redis-pool.properties");

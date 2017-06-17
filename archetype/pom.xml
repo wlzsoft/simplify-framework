@@ -4,7 +4,7 @@
 <!--   <parent>
     <artifactId>simplify-framework</artifactId>
   </parent>
- -->    <version>1.2.3-SNAPSHOT</version>
+ -->    <version>1.2.4-SNAPSHOT</version>
   <artifactId>archetype</artifactId>
   <packaging>pom</packaging>
   <name>(${project.artifactId})项目原型模版</name>

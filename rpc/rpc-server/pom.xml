@@ -3,7 +3,7 @@
     <parent>
         <groupId>vip.simplify</groupId>
         <artifactId>rpc</artifactId>
-        <version>1.2.3-SNAPSHOT</version>
+        <version>1.2.4-SNAPSHOT</version>
     </parent>
     <artifactId>rpc-server</artifactId>
     <name>(${project.artifactId})远程方法调用服务端api</name>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>vip.simplify</groupId>
             <artifactId>rpc-core</artifactId>
-            <version>1.2.3-SNAPSHOT</version>
+            <version>1.2.4-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

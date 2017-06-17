@@ -5,7 +5,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>archetype</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <artifactId>archetype-webapp</artifactId>
   <name>(${project.artifactId})web项目模版</name>

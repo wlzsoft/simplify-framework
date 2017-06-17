@@ -4,7 +4,7 @@
   <groupId>vip.simplify</groupId>
   <artifactId>demo</artifactId>
   <packaging>war</packaging>
-  <version>1.2.3-SNAPSHOT</version>
+  <version>1.2.4-SNAPSHOT</version>
   <name>(${project.artifactId})基于web的示例模块</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -309,8 +309,8 @@
 		<!-- jetty9 极其以上版本用  -Djetty.http.port=9999 jetty:run 来指定端口 -->
 		<!--注意：jetty:run jetty:run-exploded的区别是：eclipse中run-exploded支持热部署-->
 		<!-- jvmargs:PermGen空间被移除了，取而代之的是Metaspace（JEP 122）。JVM选项-XX:PermSize与-XX:MaxPermSize分别被-XX:MetaSpaceSize与-XX:MaxMetaspaceSize所代替。 -->
-		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -->
-		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties的属性值可选  -verbose:class的值可选-->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.4-SNAPSHOT.jar -Daop.properties=E:/workspace-git/simplify-framework/demo/src/main/resources/aop.properties -->
+		<!-- -javaagent:E:/workspace-git/simplify-framework/weaving/target/weaving-1.2.4-SNAPSHOT.jar -Daop.properties的属性值可选  -verbose:class的值可选-->
 		<plugin>
 
 		  <groupId>org.eclipse.jetty</groupId>
@@ -447,7 +447,7 @@
 	      <configuration>
 	        <!-- <skip>true</skip> -->
 	        <forkMode>pertest</forkMode>
-	        <argLine>-javaagent:${project.basedir}/target/weaving-1.2.3-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
+	        <argLine>-javaagent:${project.basedir}/target/weaving-1.2.4-SNAPSHOT.jar -Daop.properties=${project.basedir}/resources/aop.properties</argLine>
 	        <workingDirectory>${project.basedir}/target</workingDirectory>
 	      </configuration>
 	      <!-- 测试代码进行单元测试和集成测试区分，一般有两种方式： 

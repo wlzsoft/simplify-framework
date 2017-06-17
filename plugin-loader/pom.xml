@@ -3,7 +3,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <artifactId>plugin-loader</artifactId>
   <name>(${project.artifactId})插件加载器</name>

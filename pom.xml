@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vip.simplify</groupId>
   <artifactId>simplify-framework</artifactId>
-  <version>1.2.3-SNAPSHOT</version>
+  <version>1.2.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>精简程序框架</name>
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
