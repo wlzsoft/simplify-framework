@@ -1,7 +1,6 @@
 package vip.simplify.webserver;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -95,13 +94,6 @@ public class NettyTaskFactory implements ITaskFactory {
 			// 优雅退出，释放线程池资源
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();
-		}
-		while (ServerStatus.isRunning) {
-			try {
-				TimeUnit.SECONDS.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }

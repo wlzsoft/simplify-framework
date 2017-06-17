@@ -1,11 +1,10 @@
 package vip.simplify.net;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.Startup;
+import vip.simplify.utils.PropertieUtil;
 import vip.simplify.webserver.ITaskFactory;
 import vip.simplify.webserver.ServerStatus;
 
@@ -33,15 +32,9 @@ public class Bootstrap {
 	public static void run() {
 		Startup.start();
 		//配置加载开始
-		Properties props = new Properties();
-		InputStream is = Bootstrap.class.getClassLoader().getResourceAsStream("web.properties");
-		try {
-			props.load(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		PropertieUtil propertiesUtil = new PropertieUtil("properties/web.properties");
 		//配置加载结束
-		boolean isStart = start();
+		boolean isStart = start(propertiesUtil.getString("host"),propertiesUtil.getInteger("port"),propertiesUtil.getInteger("backlog"));
 		if(!ServerStatus.isRunning&&isStart) {
 			System.out.println("服务器正常关闭");
 		} else {
@@ -52,14 +45,13 @@ public class Bootstrap {
 	/**
 	 * 方法用途: 服务启动入口<br>
 	 * 操作步骤: TODO<br>
+	 * @param host aio模式必须指定host
+	 * @param port 
+	 * @param backlog 连接等待队列
 	 * @return
 	 */
-	public static boolean start() {
-		System.out.println("开始启动服务器...");
-		int backlog = 5;//连接等待队列
-		int port = 8060;
-//		String host = null;//"10.2.70.36";
-		String host = "127.0.0.1";//aio模式必须指定
+	public static boolean start(String host,int port,int backlog) {
+		System.out.println("开始启动服务器... 主机："+host+",端口："+port+",backlog："+backlog);
 		try {
 			ITaskFactory factory = BeanFactory.getBean(TaskFactorySelector.class);
 			factory.add(host,port,backlog);
@@ -67,6 +59,14 @@ public class Bootstrap {
 			e.printStackTrace();
 			return false;
 		} 
+		System.out.println("服务已启动 ");
+		while (ServerStatus.isRunning) {
+			try {
+				TimeUnit.SECONDS.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return true;
 	}
 	

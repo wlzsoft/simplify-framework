@@ -1,11 +1,6 @@
 package vip.simplify.webserver;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.plugin.annotation.Plugin;
-import vip.simplify.plugin.enums.PluginTypeEnum;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -19,6 +14,9 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
+import vip.simplify.ioc.annotation.Bean;
+import vip.simplify.plugin.annotation.Plugin;
+import vip.simplify.plugin.enums.PluginTypeEnum;
 
 /**
   * <p><b>Title:</b><i>netty任务工厂</i></p>
@@ -83,14 +81,6 @@ public class NettyHttpTaskFactory implements ITaskFactory {
 			// 优雅退出，释放线程池资源
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();
-		}
-		
-		while (ServerStatus.isRunning) {
-			try {
-				TimeUnit.SECONDS.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }

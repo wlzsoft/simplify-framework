@@ -90,12 +90,5 @@ public class AioTaskFactory implements ITaskFactory {
 				}
 			}
 		});
-		while(ServerStatus.isRunning) {
-			try {
-				TimeUnit.SECONDS.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 }
