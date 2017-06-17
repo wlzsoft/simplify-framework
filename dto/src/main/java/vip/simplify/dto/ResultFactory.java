@@ -89,6 +89,18 @@ public class ResultFactory {
 	}
 	
 	/**
+	 * 方法用途: 自定义业务提示信息<br>
+	 * 操作步骤: TODO<br>
+	 * @param message
+	 * @return
+	 */
+	public static Result message(int code,Object message) {//TODO map存储结果，可设置有效期，定期从map中移除
+		Result result = new ResultObject<Object>(message);
+		result.setCode(code);
+		return result;
+	}
+	
+	/**
 	 * 方法用途: 自定义成功提示<br>
 	 * 操作步骤: TODO<br>
 	 * @param message
