@@ -133,6 +133,7 @@ public class AnalysisRequestControllerMethod {
 			String paramValue = request.getParameter(name);
 			if (!StringUtil.isEmpty(paramValue)) {//表单参数获取并设置,格式 http://url/?a=1&b=2，获取参数1和2
 				value = paramValue;
+//				if (!"json"&&!"stream"!"jsonp")//不满足这些视图才需要做以下设置，只有模版引擎才需要用到 TODO 后续独立多视图功能需要重构这里,目前使用判断方式不够优雅
 				request.setAttribute(name,value);//提供表单注解获取功能 检测到会和formData冲突，不建议formData.xxx这种写法
 			} else if (index>0) {//url的rest风格的参数获取并设置,格式 http://url/1/2  获取参数1和2
 				if(model!=null && model.getParams() != null && model.getParams().length > 0 && index < model.getParams().length) {
