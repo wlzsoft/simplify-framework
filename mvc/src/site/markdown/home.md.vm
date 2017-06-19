@@ -1,0 +1,19 @@
+
+mvc模块使用文档
+====================
+
+${project.artifactId}
+---------------------
+
+> ${project.name}
+> 
+> ${project.version}
+
+### 表单功能相关
+
+- 表单注入功能
+ - 注入方式：直接 @RequestParam注入和Model注入两种方式，另外可以通过非框架支持的传统的request.getParameter("xxx") 获取
+ - 注入后提供的功能：1.自动转换数据类型 2.解决空指针异常，3处理默认值，4.简化使用api，5.减少代码编写
+ - 对模版引擎的支持：可以在jsp和freemarker等模版引擎中通过类似${formData.xxx}来获取Model业务表单对象的值  2.@RequestParma(name="demo")方式的表单数据，模版中这样编写${demo}
+ - 对json和xml等非模版引擎的处理，避免生成formData对象，因为数据输出就是结构化的json和xml数据，不需要获取formData的数据
+
