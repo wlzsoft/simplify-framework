@@ -20,6 +20,7 @@ import vip.simplify.mvc.dto.WebCacheInfo;
 import vip.simplify.mvc.exception.MappingExceptionResolver;
 import vip.simplify.mvc.invoke.IMethodSelector;
 import vip.simplify.mvc.invoke.IModelSelector;
+import vip.simplify.mvc.model.BaseModel;
 import vip.simplify.mvc.model.Model;
 import vip.simplify.mvc.resolver.ControllerAnnotationResolver;
 import vip.simplify.mvc.view.JsonView;
@@ -88,6 +89,13 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 			if(entityClass != null) {
 				model = modelSelector.setRequestModel(request, entityClass, null);
 				model = AnalysisRequestControllerModel.setBaseModel(entityClass, urlparams, model);
+				String queryString = request.getQueryString();
+				if (queryString != null) {
+					if (model instanceof BaseModel) {//设置查询字符串，针对get请求
+						BaseModel baseModel = (BaseModel)model;
+						baseModel.setUrlParam(queryString.replace("currentPage", "c"));
+					}
+				}
 			}
 			Throwable throwable = null;
 			if (iBaseController.checkPermission(request, response,requestMethodName,requestUrl, model)) {

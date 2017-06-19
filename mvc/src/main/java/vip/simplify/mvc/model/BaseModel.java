@@ -25,6 +25,10 @@ public class BaseModel extends Model {
 	private Boolean isDesc = true;
 	private Integer currentPage = 1;
 	private Integer pageSize = 10;
+	/**
+	 * 当前请求表单的地址参数:可用于分页地址，获取其他需要携带上次请求地址参数的其他功能,一般用于模版页面中
+	 */
+	private String urlParam;
 	
 	public Integer getCurrentPage() {
 		return currentPage;
@@ -56,6 +60,14 @@ public class BaseModel extends Model {
 
 	public void setIsDesc(Boolean isDesc) {
 		this.isDesc = isDesc;
+	}
+
+	public String getUrlParam() {
+		return urlParam;
+	}
+
+	public void setUrlParam(String urlParam) {
+		this.urlParam = urlParam;
 	}
 	
 }
