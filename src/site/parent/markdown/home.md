@@ -191,5 +191,21 @@ Simplfiy框架快速入门
      e.使用install deploy打包发布，生成发布包
 
 
+### 框架常见问题
 
+#### 打包问题
 
+   - 1.没有发现类定义错误 : (java.lang.NoClassDefFoundError：org/apache/commons/pool2/impl/EvictionConfig)，比如:20-Jun-2017 11:46:34.176 INFO [commons-pool-EvictionTimer]  Illegal access: this web application instance has been stopped already. Could not load [org.apache.commons.pool2.impl.EvictionConfig]
+Exception in thread "commons-pool-EvictionTimer" java.lang.NoClassDefFoundError: org/apache/commons/pool2/impl/EvictionConfig
+
+     > 问题现象分析：1.初步判断是因为类没被加载导致，导致这个问题的原因，a.可能是由于jar包丢失，所以被没加载，那么检测服务器的对应报错类的jar包是否存储，发现不存在，判断是jar包冲突，这是需要检查是否有不同版本的jar被引入，先检查开发环境，发现正常，没有重复jar包，或是不同版本的重复jar，开发环境也没上面错误，那么检查是否服务器环境冲突，看看给服务器的war包是否有问题，检查发现war包中包含了不同版本的jar包，导致服务器上问题发生。
+     > 原因：这是由于打包时，没使用clean install，而是直接install，导致旧的包和新的包一起被打包到war中，导致包冲突。
+
+### 中文乱码问题
+
+   - 1.中文表单post提交后，业务请求端请求数据异常，但是后台出现乱码
+     > 问题现象分析：中文到后台通过request.getParameter("userName")获取后得到的数据是这样" é<99><88>å<95><9f>æ<9b> " 的特殊字符，无法获取正常中文值,变成iso8859-1编码的值。这个问题可能会引发其他一些问题，比如导致JsonUtil做Json转换，由于特殊字符，JsonUtil会把这个表单乱码的数据转换成unicode编码"é\u0099\u0088å\u0095\u009Fæ\u009B´"，导致问题被隐藏，误以为是JsonUtil转换导致的乱码
+     > 原因：由于tomcat容器导致的，tomcat在linux会有如上错误，window没测试，window使用jetty测试，jetty在window没有这个问题
+     > 解决方法：通过request.setCharacterEncoding("UTF-8")来解决，但是不起作用。那么需要只能通过执行
+                 new String(userName.getBytes("ISO-8859-1"),"UTF-8") 来解决，为了完全解决这个问题需要在框架中全局设置
+     > 注意考虑的点：会不会影响到其他容器的编码，比如改好了tomcat的，影响了jetty和其他容器的编码，因为编码最好只转一次，转多了容易出乱码
