@@ -40,8 +40,8 @@ public class JsonUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String objectToString(Object obj){
-    	return JSON.toJSONString(obj);
+	public static String objectToString(Object obj,SerializerFeature...features){
+    	return JSON.toJSONString(obj,features);
     }
 	
 	/**

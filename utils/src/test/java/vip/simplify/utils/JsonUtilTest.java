@@ -12,6 +12,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
 import com.alibaba.fastjson.JSONWriter;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
+import vip.simplify.utils.entity.User;
 
 /**
   * <p><b>Title:</b><i>测试fastjson基于stream的api对于超大文本的处理速度</i></p>
@@ -106,5 +109,12 @@ public class JsonUtilTest {
 		System.out.println(jo.toJSONString());
 		JSONObject o = JsonUtil.stringToJSONObject(jo.toJSONString());
 		System.out.println(o);
+	}
+	
+	@Test
+	public void testUnicode() {
+		User user = new User();
+		user.setName("卢创业");
+		System.out.println(JsonUtil.objectToString(user,SerializerFeature.BrowserCompatible));
 	}
 }
