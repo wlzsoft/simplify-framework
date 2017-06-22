@@ -339,7 +339,8 @@ public class TestController extends SystemController<TestModel> {
 	
 	/**
 	 * 方法用途: 注意，这个例子的代码的文件下载，不能是大文件的下载，大文件下载不能一次性flush一个超大的byte数组，而是每次flush这个byte数组的一部分<br>
-	 * 操作步骤: TODO <br>
+	 * 操作步骤: 说明：这个controller除了演示下载还有以下功能：1.演示了下载后的文件类型，文件扩展名的设置。2.演示了使用js和iframe控制下载出错，当前页面不刷新的功能，页面js例子参考download.ftl。后续做进一步封装，减少使用成本 
+	 * 另外后续要增加请求连接的后缀处理方式，避免只有stream这个后缀，防止有特殊需求，需要用到其他后缀<br>
 	 * @param request
 	 * @param response
 	 * @param model
