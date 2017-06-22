@@ -4,7 +4,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.alibaba.fastjson.TypeReference;
+
 import vip.simplify.cache.dao.IJsonCacheDao;
+import vip.simplify.cache.entity.Goods;
 import vip.simplify.cache.entity.User;
 import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.dao.impl.JsonRedisDao;
@@ -27,6 +30,8 @@ import vip.simplify.ioc.Startup;
 public class JsonRedisDaoTest {
 	
 	IJsonCacheDao<User> dao = new JsonRedisDao<>("redis_ref_hosts",User.class);
+	@SuppressWarnings("rawtypes")
+	IJsonCacheDao<Goods> godosDao = new JsonRedisDao<>("redis_ref_hosts",Goods.class);
 	
 	@BeforeClass
 	public static void before() {
@@ -53,6 +58,31 @@ public class JsonRedisDaoTest {
 		user.setName("lcy2");
 		User userResult = dao.getAndSet("simplify_test2", user);//数据不存在的情况下，第一次调用这个方法，会返回null
 		Assert.assertEquals(userResult.getName(),"lcy2");
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 支持泛型转换<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void testSetByGenric() {
+		User user = new User();
+		user.setName("lcy234");
+		Goods<User> goods = new Goods<>();
+		goods.setT(user);
+		Assert.assertTrue(godosDao.set("simplify_test1_Genric",CacheExpireTimeEnum.CACHE_EXP_SENDCOND_60.timesanmp(), goods));
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 支持泛型转换<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void testGetByGenric() {
+		Goods<User> goodsResult = godosDao.get("simplify_test1_Genric", new TypeReference<Goods<User>>() {} );//数据不存在的情况下，第一次调用这个方法，会返回null
+		Assert.assertEquals(goodsResult.getT().getName(),"lcy234");
 	}
 	
 	@Test

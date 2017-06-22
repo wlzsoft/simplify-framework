@@ -1,5 +1,7 @@
 package vip.simplify.cache.redis.dao.impl;
 
+import com.alibaba.fastjson.TypeReference;
+
 import vip.simplify.cache.dao.IJsonCacheDao;
 import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.CacheExecute;
@@ -95,7 +97,27 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	public VV get(String key) {
 		return get(key,valueClazz);
 	}
-	
+	/**
+	 * 
+	 * 方法用途: TODO<br>
+	 * 操作步骤: TODO<br>
+	 * @param key
+	 * @param typeReference
+	 * @return
+	 */
+	@Override
+	public <V> V get(String key,TypeReference<V> typeReference) {
+		V result =  CacheExecute.execute(key, (k,jedis) ->  {
+				String valueStr =  jedis.get(k);
+				if(valueStr != null && valueStr.length() > 0){
+					if(typeReference != null) {
+						return JsonUtil.jsonToObject(valueStr,typeReference);
+					} 
+				}
+				return null;
+		}, modName);
+		return result;
+	}
 	/**
 	 * 
 	 * 方法用途: TODO<br>

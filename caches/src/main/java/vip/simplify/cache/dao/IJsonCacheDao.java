@@ -1,5 +1,7 @@
 package vip.simplify.cache.dao;
 
+import com.alibaba.fastjson.TypeReference;
+
 /**
  * <p><b>Title:</b><i>以JSON字符缓存操作类</i></p>
  * <p>Desc: TODO</p>
@@ -27,6 +29,25 @@ public interface IJsonCacheDao<VV>  {
 	public <V> V getAndSet(String key, V value, Class<V> clazz);
 
 	public VV get(String key);
+	
+	/**
+	 * 
+	 * 方法用途: 支持泛型对象转换转换<br>
+	 * 操作步骤: 多个Class类型指定<br>
+	 * @param key
+	 * @param typeReference
+	 * @return
+	 */
+	public <V> V get(String key, TypeReference<V> typeReference);
+	
+	/**
+	 * 
+	 * 方法用途: 不支持泛型的指定Class对象转换<br>
+	 * 操作步骤: 单个Class类型指定<br>
+	 * @param key
+	 * @param clazz
+	 * @return
+	 */
 	public <V> V get(String key, Class<V> clazz);
 
 	public boolean set(String key, VV value);
@@ -69,4 +90,5 @@ public interface IJsonCacheDao<VV>  {
 	 * @return 删除成功为TRUE失败为FALSE
 	 */
 	public boolean delete(String key);
+	
 }
