@@ -3,6 +3,7 @@ package vip.simplify.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -30,7 +31,7 @@ public class JsonUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String objectToStringAndContainMeta(Object obj){
+	public static String objectToStringAndContainMeta(Object obj) {
     	return JSON.toJSONString(obj, SerializerFeature.WriteClassName);
     }
 	
@@ -40,7 +41,7 @@ public class JsonUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static String objectToString(Object obj,SerializerFeature...features){
+	public static String objectToString(Object obj,SerializerFeature... features) {
     	return JSON.toJSONString(obj,features);
     }
 	
@@ -52,7 +53,7 @@ public class JsonUtil {
 	 * @param afterFilter
 	 * @return
 	 */
-	public static String objectToString(Object obj,SerializeFilter afterFilter,SerializerFeature...features){
+	public static String objectToString(Object obj,SerializeFilter afterFilter,SerializerFeature... features) {
     	return JSON.toJSONString(obj,afterFilter,features);
     }
 
@@ -64,7 +65,7 @@ public class JsonUtil {
 	 * @param serializeConfig
 	 * @return
 	 */
-	public static String objectToString(Object obj,SerializeConfig serializeConfig,SerializerFeature...features){
+	public static String objectToString(Object obj,SerializeConfig serializeConfig,SerializerFeature... features) {
 		return JSON.toJSONString(obj,serializeConfig,features);
 	}
 	
@@ -77,7 +78,7 @@ public class JsonUtil {
 	 * @param afterFilter
 	 * @return
 	 */
-	public static String objectToString(Object obj,SerializeConfig serializeConfig, SerializeFilter afterFilter,SerializerFeature...features){
+	public static String objectToString(Object obj,SerializeConfig serializeConfig, SerializeFilter afterFilter,SerializerFeature... features) {
 		return JSON.toJSONString(obj,serializeConfig,afterFilter,features);
 	}
     
@@ -88,7 +89,7 @@ public class JsonUtil {
 	 * @param str
 	 * @return
 	 */
-    public static Object jsonToObject(String str){
+    public static Object jsonToObject(String str) {
     	return JSON.parse(str);
     }
     
@@ -98,7 +99,7 @@ public class JsonUtil {
 	 * @param str
 	 * @return
 	 */
-    public static JSONArray stringToJSONArray(String str){
+    public static JSONArray stringToJSONArray(String str) {
     	return JSON.parseArray(str);
     }
     /**
@@ -107,7 +108,7 @@ public class JsonUtil {
 	 * @param str
 	 * @return
 	 */
-    public static JSONObject stringToJSONObject(String str){
+    public static JSONObject stringToJSONObject(String str) {
     	try {
     		return JSON.parseObject(str);
     	} catch(Exception ex) {
@@ -123,7 +124,19 @@ public class JsonUtil {
 	 * @author geny
 	 * @return
 	 */
-    public static <T> T jsonToObject(String str, Class<T> cls){
+    public static <T> T jsonToObject(String str, Class<T> cls) {
     	return JSON.parseObject(str, cls);
+    }
+    
+    /**
+     * 方法用途: json字符串转相应class对象实例<br>
+     * 操作步骤: TODO<br>
+     * @param str
+     * @param typeReference
+     * @return
+     */
+    
+    public static <T> T jsonToObject(String str, TypeReference<T> typeReference) {
+    	return JSON.parseObject(str, typeReference);
     }
 }

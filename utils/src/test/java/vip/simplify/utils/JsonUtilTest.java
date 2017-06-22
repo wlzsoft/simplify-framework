@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,8 +13,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
 import com.alibaba.fastjson.JSONWriter;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import vip.simplify.utils.entity.Goods;
 import vip.simplify.utils.entity.User;
 
 /**
@@ -116,5 +119,14 @@ public class JsonUtilTest {
 		User user = new User();
 		user.setName("卢创业");
 		System.out.println(JsonUtil.objectToString(user,SerializerFeature.BrowserCompatible));
+	}
+	
+	@Test
+	public void testByGenric() {
+		User user = new User();
+		user.setName("卢创业");
+		Goods<User> goods = new Goods<>();
+		goods.setT(user);
+		Assert.assertEquals("卢创业",JsonUtil.jsonToObject(JsonUtil.objectToString(goods),new TypeReference<Goods<User>>(){}).getT().getName());
 	}
 }
