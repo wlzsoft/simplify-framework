@@ -42,7 +42,7 @@ public class DefaultCacheDao<K,V> implements ICacheDao<K,V> {
 	}
 
 	@Override
-	public void add(K key, CacheExpireTimeEnum export, V value) {
+	public void add(K key, int expireTime, V value) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -54,7 +54,7 @@ public class DefaultCacheDao<K,V> implements ICacheDao<K,V> {
 	}
 
 	@Override
-	public boolean set(K key, CacheExpireTimeEnum export, V value) {
+	public boolean set(K key, int expireTime, V value) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -78,19 +78,19 @@ public class DefaultCacheDao<K,V> implements ICacheDao<K,V> {
 	}
 
 	@Override
-	public boolean isMutex(K key, CacheExpireTimeEnum export) {
+	public boolean isMutex(K key, CacheExpireTimeEnum expireTime) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public long expire(String key, CacheExpireTimeEnum export, TimeEnum seconds) {
+	public long expire(String key, int expireTime, TimeEnum seconds) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public long expire(byte[] key, CacheExpireTimeEnum export, TimeEnum seconds) {
+	public long expire(byte[] key, int expireTime, TimeEnum seconds) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

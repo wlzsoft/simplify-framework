@@ -1,7 +1,5 @@
 package vip.simplify.cache.dao;
 
-import vip.simplify.cache.enums.CacheExpireTimeEnum;
-
 /**
  * <p><b>Title:</b><i>以JSON字符缓存操作类</i></p>
  * <p>Desc: TODO</p>
@@ -36,10 +34,10 @@ public interface IJsonCacheDao<VV>  {
 	 * 方法用途: 添加值
 	 * 操作步骤: 通过SET添加数据时会替换掉以前的键对应的值<br>
 	 * @param key 保存键
-	 * @param export 超时时间 妙
+	 * @param expireTime 超时时间 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param value 对象值
 	 */
-	public boolean set(String key, CacheExpireTimeEnum export, VV value);
+	public boolean set(String key, int expireTime, VV value);
 	
 	  
     /**

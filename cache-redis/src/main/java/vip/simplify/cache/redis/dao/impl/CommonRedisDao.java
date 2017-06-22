@@ -109,7 +109,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public void add(K key, V value) throws UncheckedException {
-		add(key, CacheExpireTimeEnum.CACHE_EXP_DAY, value);
+		add(key, CacheExpireTimeEnum.CACHE_EXP_DAY.timesanmp(), value);
 	}
 	
 	/** 
@@ -120,7 +120,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @param value 对象值
 	 */
 	@Override
-	public void add(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
+	public void add(K key, int export,  V value) throws UncheckedException {
 		set(key, export,value);
 	}
 	
@@ -132,7 +132,7 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean set(K key, V value) throws UncheckedException {
-		return set(key, CacheExpireTimeEnum.CACHE_EXP_DAY, value);
+		return set(key, CacheExpireTimeEnum.CACHE_EXP_DAY.timesanmp(), value);
 	}
 	
   
@@ -141,16 +141,16 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * 方法用途: 添加值
 	 * 操作步骤: 通过SET添加数据时会替换掉以前的键对应的值<br>
 	 * @param key 保存键
-	 * @param export 超时时间 妙
+	 * @param exportTime 超时时间 妙
 	 * @param value 对象值
 	 */
 	@Override
-	public boolean set(K key, CacheExpireTimeEnum export,  V value) throws UncheckedException {
+	public boolean set(K key, int exportTime,  V value) throws UncheckedException {
 		
 		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
   				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
-  	            if(export.timesanmp() > 0){
-  	            	jedis.expire(SerializeUtil.serialize(k), export.timesanmp());
+  	            if(exportTime > 0){
+  	            	jedis.expire(SerializeUtil.serialize(k), exportTime);
   			    }
 			    return result.equalsIgnoreCase("OK");
   		},modName);
@@ -264,6 +264,5 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 		return ret;
 		
 	}
-
 	
 }

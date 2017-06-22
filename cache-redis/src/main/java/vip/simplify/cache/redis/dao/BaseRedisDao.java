@@ -2,7 +2,6 @@ package vip.simplify.cache.redis.dao;
 
 import java.io.Serializable;
 
-import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.enums.TimeEnum;
 import vip.simplify.cache.redis.CacheExecute;
 
@@ -32,13 +31,13 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 * 方法用途: 指定key设置过期时间<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
-	 * @param export
+	 * @param expireTime 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param seconds
 	 * @return
 	 */
-	public long expire(String key, CacheExpireTimeEnum export, TimeEnum seconds) {
+	public long expire(String key, int expireTime, TimeEnum seconds) {
 		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
-  			return jedis.expire(k, export.timesanmp());
+  			return jedis.expire(k, expireTime);
   		},modName);
 		return ret;
 	}
@@ -47,16 +46,17 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 * 方法用途: 指定key设置过期时间<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
-	 * @param export
+	 * @param expireTime 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param seconds
 	 * @return
 	 */
-	public long expire(byte[] key, CacheExpireTimeEnum export, TimeEnum seconds) {
+	public long expire(byte[] key, int expireTime, TimeEnum seconds) {
 		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
-  			return jedis.expire(k, export.timesanmp());
+  			return jedis.expire(k, expireTime);
   		},modName);
 		return ret;
 	}
+	
 	/**
 	 * 
 	 * 方法用途: 获取指定key的剩余过期时间<br>
@@ -68,4 +68,6 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	public long getExpire(K key, TimeEnum seconds) {
 		return 0L;
 	}
+
+	
 }

@@ -64,7 +64,7 @@ public class ListRedisDaoTest {
 			@Override
 			public Object doTask() throws Exception {
 				client.lpush("test", "test"+i++);
-				client.expire("test", CacheExpireTimeEnum.CACHE_EXP_SENDCONDs,TimeEnum.SECONDS);
+				client.expire("test", CacheExpireTimeEnum.CACHE_EXP_SENDCONDs.timesanmp(),TimeEnum.SECONDS);
 				return null;
 			}
 			

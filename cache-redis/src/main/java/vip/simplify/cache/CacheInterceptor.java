@@ -138,9 +138,9 @@ public class CacheInterceptor extends Handler implements  IInterceptor{
 		//TODO　这块的操作要控制的2ms以内
 		boolean isOk = false;
 		if(cacheFormat.equals(CacheFormatEnum.BINARY)) {
-			isOk = data.set(key,expireTime, args[0]);//后续增加缓存有效时间的控制TODO
+			isOk = data.set(key,expireTime.timesanmp(), args[0]);//后续增加缓存有效时间的控制TODO
 		} else {
-			isOk = jsonData.set(key,expireTime, args[0]);//后续增加缓存有效时间的控制 TODO
+			isOk = jsonData.set(key,expireTime.timesanmp(), args[0]);//后续增加缓存有效时间的控制 TODO
 		}
 		if(isOk) {
 			LOGGER.info("成功:缓存切面切入：["+methodFullName+"]方法之后切入,添加 key:"+key+"]");

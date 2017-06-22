@@ -37,7 +37,7 @@ public class JsonRedisDaoTest {
 	public void testSet() {
 		User user = new User();
 		user.setName("lcy");
-		Assert.assertTrue(dao.set("simplify_test",CacheExpireTimeEnum.CACHE_EXP_SENDCOND_60, user));
+		Assert.assertTrue(dao.set("simplify_test",CacheExpireTimeEnum.CACHE_EXP_SENDCOND_60.timesanmp(), user));
 		String name = dao.get("simplify_test").getName();
 		System.out.println(name);
 		Assert.assertEquals("lcy",name);

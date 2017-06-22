@@ -246,7 +246,7 @@ public class TestController extends SystemController<TestModel> {
 			throw new NullPointerException("null");
 		}*/
 		testService.addTest(null);
-		cachedDao.set("test22", expire, "ioisoeijfsdjfsd");//测试连接泄漏的问题，在expire起作用后，会出问题
+		cachedDao.set("test22", expire.timesanmp(), "ioisoeijfsdjfsd");//测试连接泄漏的问题，在expire起作用后，会出问题
 //		Test test = testService.doSomeThing2(null);
 //		request.setAttribute("userName", test.getName());
 		ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");

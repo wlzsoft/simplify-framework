@@ -131,7 +131,7 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public boolean set(String key, VV value) {
-		return set(key, CacheExpireTimeEnum.CACHE_EXP_FOREVER, value);
+		return set(key, CacheExpireTimeEnum.CACHE_EXP_FOREVER.timesanmp(), value);
 	}
 
 	/**
@@ -139,17 +139,17 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 * 方法用途: TODO<br>
 	 * 操作步骤: BeanFactory.getBean(JsonResolver.class).ObjectToString(value) 后续使用 JsonUtil.objectToString 方法来处理，当前类使用BeanConfig注入方式 TODO<br>
 	 * @param key
-	 * @param expireTime
+	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param value
 	 * @return
 	 */
 	@Override
-	public boolean set(String key,CacheExpireTimeEnum expireTime, VV value) {
+	public boolean set(String key,int expireTime, VV value) {
 		
 		Boolean isSuccess = CacheExecute.execute(key, (k,jedis) -> {
 				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				if(expireTime.timesanmp() > 0){
-					jedis.expire(k, expireTime.timesanmp());
+				if(expireTime > 0){
+					jedis.expire(k, expireTime);
 				}
 				return result.equalsIgnoreCase("OK");
 		}, modName);

@@ -54,10 +54,10 @@ public interface ICacheDao<K,V> {
 	 * 方法用途: 添加值
 	 * 操作步骤: 通过ADD添加数据时不允许相同键值<br>
 	 * @param key 保存键
-	 * @param export 超时时间
+	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param value 对象值
 	 */
-	public void add(K key, CacheExpireTimeEnum export, V value);
+	public void add(K key, int expireTime, V value);
 	
 	/** 
 	 * 方法用途: 添加值
@@ -71,10 +71,10 @@ public interface ICacheDao<K,V> {
 	 * 方法用途: 添加值
 	 * 操作步骤: 通过SET添加数据时会替换掉以前的键对应的值<br>
 	 * @param key 保存键
-	 * @param export 超时时间 妙
+	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param value 对象值
 	 */
-	public boolean set(K key, CacheExpireTimeEnum export,  V value);
+	public boolean set(K key, int expireTime,  V value);
 	 
 	
 	/** 
@@ -99,31 +99,31 @@ public interface ICacheDao<K,V> {
 	 * 方法用途: 冲突判定
 	 * 操作步骤: <br>
 	 * @param key 保存键
-	 * @param export 超时时间
+	 * @param expireTime 超时事件 单位是秒
 	 * @return 有冲突为TRUE无为FALSE
 	 */
-    public boolean isMutex(K key, CacheExpireTimeEnum export);
+    public boolean isMutex(K key, CacheExpireTimeEnum expireTime);
     
     /**
 	 * 
 	 * 方法用途: 指定key设置过期时间<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
-	 * @param export
+	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param seconds
 	 * @return
 	 */
-	public long expire(String key, CacheExpireTimeEnum export, TimeEnum seconds);
+	public long expire(String key, int expireTime, TimeEnum seconds);
 	/**
 	 * 
 	 * 方法用途: 指定key设置过期时间<br>
 	 * 操作步骤: TODO<br>
 	 * @param key
-	 * @param export
+	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param seconds
 	 * @return
 	 */
-	public long expire(byte[] key, CacheExpireTimeEnum export, TimeEnum seconds);
+	public long expire(byte[] key, int expireTime, TimeEnum seconds);
 	/**
 	 * 
 	 * 方法用途: 获取指定key的剩余过期时间<br>
