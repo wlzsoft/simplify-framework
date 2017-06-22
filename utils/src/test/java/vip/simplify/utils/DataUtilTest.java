@@ -34,4 +34,19 @@ public class DataUtilTest {
 		LocalTime LocalTime = DataUtil.convertType(LocalTime.class, "21:09:08", false);
 		System.out.println(LocalTime);
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 可作为基础面试题或基础培训题<br>
+	 * 操作步骤: TODO<br>
+	 */
+	@Test
+	public void testNumberEqual() {
+		Integer obj = 1;
+		Object obj2 = "1";
+		System.out.println(obj == 1);
+		System.out.println(obj.equals(1));
+		System.out.println(obj2.equals("1"));
+		System.out.println(obj2=="1");
+	}
 }

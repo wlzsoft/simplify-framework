@@ -28,8 +28,6 @@ public class StringUtilTest {
     public ExpectedException thrown= ExpectedException.none();  
 	private String capitalizeExpectMessage = "字符串为空，无法转换为第一个字母为大写";
 	
-	
-	
 	@Test
 	public void isEmpty() {
 		Assert.assertTrue(StringUtil.isEmpty(""));

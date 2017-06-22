@@ -160,7 +160,17 @@ public class DataUtil {
 			}
 		} else if(classType == double.class) {
 			return (T) parseDouble(value);
-		} else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3
+		} else if(classType == Boolean.class || classType == boolean.class) {//fixd whb 2016/4/3 fixd lcy 2017/6/22
+			//针对0和1的字符串和数字的兼容处理
+			Boolean returnValue = false;
+			if ("1".equals(value) || value.equals(1)) {
+				returnValue = true;
+				return (T)returnValue;
+			} else if ("0".equals(value)  || value.equals(0)) {
+				returnValue = false;
+				return (T)returnValue;
+			}
+			//通用处理
 			return (T) parseBoolean(value);
 		} else if(classType == Date.class) {
 			return (T) DateUtil.parse(String.valueOf(value));

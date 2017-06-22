@@ -38,15 +38,25 @@ public class ObjectUtilTest {
 	}
 	
 	@Test
-	public void isBooleanByZero() {
+	public void isBooleanByZeroStr() {
 		String str = "0";
 		Assert.assertFalse(ObjectUtil.isBoolean(str));
 	}
 	
 	@Test
-	public void isBooleanByOne() {
+	public void isBooleanByOneStr() {
 		String str = "1";
 		Assert.assertFalse(ObjectUtil.isBoolean(str));
+	}
+	
+	@Test
+	public void isBooleanByOne() {
+		Assert.assertFalse(ObjectUtil.isBoolean(1));
+	}
+	
+	@Test
+	public void isBooleanByZero() {
+		Assert.assertFalse(ObjectUtil.isBoolean(0));
 	}
 	
 	@Test
