@@ -42,11 +42,11 @@ public class Page<T> implements IPage<T> {
 	/**
 	 * 下一页页码
 	 */
-	private Integer nextPage = 1;
+	private int nextPage = 1;
 	/**
 	 * 上一页页码
 	 */
-	private Integer prevPage = 1;
+	private int prevPage = 1;
 	
 	private String url;// 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
 	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
@@ -306,7 +306,13 @@ public class Page<T> implements IPage<T> {
 		return totalRecord;
 	}
 
-	private void setTotalRecord(Integer totalRecord) {
+	/**
+	 * 
+	 * 方法用途: 该方法只可用于内部调用<br>
+	 * 操作步骤: 这里的访问权限是public，主要是用于Json转换需要使用到set方法，所以才提供<br>
+	 * @param totalRecord
+	 */
+	public void setTotalRecord(Integer totalRecord) {
 		if (totalRecord == null) {
 			totalRecord = 0;
 		}
@@ -407,6 +413,24 @@ public class Page<T> implements IPage<T> {
 		return (currentPage - 1) * pageSize;
 	}
 	
+	
+//	这里提供的set方法，主要是用于Json转换，所以才提供，正常使用过程中，不应该调用这些方法 start
+	public void setHasNextPage(boolean hasNextPage) {
+		this.hasNextPage = hasNextPage;
+	}
+	public void setHasPrevPage(boolean hasPrevPage) {
+		this.hasPrevPage = hasPrevPage;
+	}
+	public void setNextPage(int nextPage) {
+		this.nextPage = nextPage;
+	}
+	public void setPrevPage(int prevPage) {
+		this.prevPage = prevPage;
+	}
+	public void setCurrentRecord(int currentRecord) {
+		this.currentRecord = currentRecord;
+	}
+//	 end
 	/**
 	 * 
 	 * 方法用途: 获得翻页导航<br>

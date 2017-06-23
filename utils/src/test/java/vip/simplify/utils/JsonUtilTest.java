@@ -127,6 +127,9 @@ public class JsonUtilTest {
 		user.setName("卢创业");
 		Goods<User> goods = new Goods<>();
 		goods.setT(user);
-		Assert.assertEquals("卢创业",JsonUtil.jsonToObject(JsonUtil.objectToString(goods),new TypeReference<Goods<User>>(){}).getT().getName());
+		goods.setTitle("哈哈");
+		goods.setTotalRecord(10);
+		Goods<User> goodsResult = JsonUtil.jsonToObject(JsonUtil.objectToString(goods),new TypeReference<Goods<User>>(){});
+		Assert.assertEquals("卢创业",goodsResult.getT().getName());
 	}
 }

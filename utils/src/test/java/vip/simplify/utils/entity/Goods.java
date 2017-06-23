@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 public class Goods<T> implements Serializable{
 	private static final long serialVersionUID = -3417769368460253266L;
-	
+	private int totalRecord = 0;
 	private String title;
 	private T t;
 	public String getTitle() {
@@ -32,5 +32,10 @@ public class Goods<T> implements Serializable{
 	public void setT(T t) {
 		this.t = t;
 	}
-	
+	public int getTotalRecord() {
+		return totalRecord;
+	}
+	public void setTotalRecord(int totalRecord) {
+		this.totalRecord = totalRecord;
+	}
 }

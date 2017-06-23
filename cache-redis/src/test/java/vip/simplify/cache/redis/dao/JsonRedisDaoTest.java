@@ -137,4 +137,5 @@ public class JsonRedisDaoTest {
 		boolean isDelete = dao.delete("FINDSALEPOINTBYFID");
 		Assert.assertTrue(isDelete);
 	}
+	
 }
