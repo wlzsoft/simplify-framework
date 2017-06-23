@@ -1,11 +1,15 @@
 package vip.simplify.cache.redis.dao;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.alibaba.fastjson.TypeReference;
 
+import vip.simplify.cache.CacheProxyDao;
 import vip.simplify.cache.dao.IJsonCacheDao;
 import vip.simplify.cache.entity.Goods;
 import vip.simplify.cache.entity.User;
@@ -86,8 +90,36 @@ public class JsonRedisDaoTest {
 	}
 	
 	@Test
-	public void testDelete() {
-//		boolean isDelete = dao.delete("FINDSALEPOINTBYFID");
-//		Assert.assertTrue(isDelete);
+	public void testGetKeys() {
+		CacheProxyDao.getJsonCache().set("testGetKeys1","lcy1");
+		CacheProxyDao.getJsonCache().set("testGetKeys2","lcy12");
+		Set<String> keySet = CacheProxyDao.getJsonCache().keys("testGetKeys*");
+		System.out.println("sss:"+ keySet);
+	}
+	
+	@Test
+	public void testGetKeysAndDelete() {
+		CacheProxyDao.getJsonCache().set("testGetKeysAndDelete1","lcy13");
+		CacheProxyDao.getJsonCache().set("testGetKeysAndDelete2","lcy123");
+		Set<String> keySet = CacheProxyDao.getJsonCache().keys("testGetKeysAndDelete*");
+		System.out.println("testGetKeysAndDelete_keySet:"+ keySet);
+		Assert.assertEquals(2, keySet.size());
+		System.out.println("testGetKeysAndDelete_deleteCount:"+CacheProxyDao.getJsonCache().delete(keySet));
+		Set<String> hitKeySet = CacheProxyDao.getJsonCache().keys("testGetKeysAndDelete*");
+		Assert.assertArrayEquals(new String[]{},hitKeySet.toArray(new String[hitKeySet.size()]));
+	}
+	
+	@Test
+	public void testDeleteByKeys() {
+		Set<String> keySet  = new HashSet<>();
+		keySet.add("testGetKeys1");
+		keySet.add("testGetKeys2");
+		System.out.println("testDeleteByKeys:"+CacheProxyDao.getJsonCache().delete(keySet));
+	}
+	
+	@Test
+	public void testDeletebyKey() {
+		boolean isDelete = dao.delete("FINDSALEPOINTBYFID");
+		Assert.assertTrue(isDelete);
 	}
 }

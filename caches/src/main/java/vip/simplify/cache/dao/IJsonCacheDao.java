@@ -1,5 +1,7 @@
 package vip.simplify.cache.dao;
 
+import java.util.Set;
+
 import com.alibaba.fastjson.TypeReference;
 
 /**
@@ -86,9 +88,46 @@ public interface IJsonCacheDao<VV>  {
     /** 
 	 * 方法用途: 删除值
 	 * 操作步骤: <br>
-	 * @param key 保存键
+	 * @param key 指定要删除的键，只能指定一个
 	 * @return 删除成功为TRUE失败为FALSE
 	 */
 	public boolean delete(String key);
+	
+	/** 
+	 * 方法用途: 删除多个值
+	 * 操作步骤: 注意：这里会删除所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现<br>
+	 * @param keys 指定要删除的多个键,这里指定字符串数组形式
+	 * @return 删除成功,返回删除的记录数
+	 */
+	public Long delete(String[] keys);
+	
+	/** 
+	 * 方法用途: 删除多个值
+	 * 操作步骤: 注意：这里会删除所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现<br><br>
+	 * @param keys 指定要删除的多个键
+	 * @return 删除成功,返回删除的记录数
+	 */
+	public Long delete(Set<String> keys);
+	
+	/**
+	 * 
+	 * 方法用途: 左边前缀模糊匹配key<br>
+	 * 操作步骤: 注意：1.这里会查询所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现
+	 *           2.这里对keys命令做了限制，只能左边前缀匹配，为了避免误删和影响性能
+	 *           另外，尽管这样，也要尽量避免调用这个方法，特别数据量大的情况下，可以使用list结构或set结构代替，直接通过key完全删除list或set<br>
+	 * @param key 待查询key前缀
+	 * @return
+	 */
+	public Set<String> keys(String key);
+	
+	/** 
+	 * 方法用途: 删除查询到的所有结果
+	 * 操作步骤: 注意：1.这里会删除所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现
+	 *                2.这里查询和删除分两步操作redis
+	 *                3.这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO<br>
+	 * @param key 待查询key前缀
+	 * @return 删除成功,返回删除的记录数
+	 */
+	public Long searchAndDelete(String key);
 	
 }

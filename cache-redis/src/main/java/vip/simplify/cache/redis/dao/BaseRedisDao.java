@@ -68,6 +68,5 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	public long getExpire(K key, TimeEnum seconds) {
 		return 0L;
 	}
-
 	
 }

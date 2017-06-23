@@ -1,7 +1,12 @@
 package vip.simplify.cache.redis.dao.impl;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.alibaba.fastjson.TypeReference;
 
+import redis.clients.jedis.Jedis;
 import vip.simplify.cache.dao.IJsonCacheDao;
 import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.CacheExecute;
@@ -220,7 +225,7 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	/** 
 	 * 方法用途: 删除值
 	 * 操作步骤: 注意：这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO<br>
-	 * @param key 保存键
+	 * @param key 指定要删除的键
 	 * @return 删除成功为TRUE失败为FALSE
 	 */
 	@Override
@@ -234,5 +239,70 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
   		      	 }
   		},modName);
 		return result;
+	}
+	
+	/** 
+	 * 方法用途: 删除多个值
+	 * 操作步骤: 注意：这里会删除所有切片上的值，需要遍历所有切片，无法路由到有数据的切片这里会查询所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现<br>
+	 *            这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO
+	 * <br>
+	 * @param keys 指定要删除的多个键
+	 * @return 删除成功,返回删除的记录数
+	 */
+	@Override
+	public Long delete(String[] keys) {
+		Long result = CacheExecute.execute(keys, (k,jedis) -> {
+			Long delCount = 0L;
+			Collection<Jedis> jedisSet = jedis.getAllShards();
+			for (Jedis singleJedis : jedisSet) {
+				delCount += singleJedis.del(keys);
+			}
+			return delCount;
+  		},modName);
+		return result;
+	}
+	
+	/** 
+	 * 方法用途: 删除多个值
+	 * 操作步骤: 注意：这里会删除所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现
+	 *                这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO<br>
+	 * @param keys 指定要删除的多个键
+	 * @return 删除成功,返回删除的记录数
+	 */
+	@Override
+	public Long delete(Set<String> keys)  {
+		return delete(keys.toArray(new String[keys.size()]));
+	}
+	
+	/** 
+	 * 方法用途: 删除查询到的所有结果
+	 * 操作步骤: 注意：1.这里会删除所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现
+	 *                2.这里查询和删除分两步操作redis
+	 *                3.这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO<br>
+	 * @param key 待查询key前缀
+	 * @return 删除成功,返回删除的记录数
+	 */
+	@Override
+	public Long searchAndDelete(String key)  {
+		return delete(keys(key));
+	}
+	
+	/**
+	 * 
+	 * 方法用途: 左边前缀模糊匹配key<br>
+	 * 操作步骤: 注意：这里会查询所有切片上的值，需要遍历所有切片，无法路由到有数据的切片，尽管部分切片上没有需要的数据，考虑是否需要调优，使用jedis自带的路由api，哈希一致性算法来实现<br>
+	 * @param key 待查询key前缀
+	 * @return
+	 */
+	public Set<String> keys(String key) {
+		Set<String> hitKeySet = CacheExecute.execute(key,(k,jedis) ->  {
+			Set<String> keySet = new HashSet<>(); 
+			Collection<Jedis> jedisCollecion = jedis.getAllShards();
+			for (Jedis singleRedis : jedisCollecion) {
+				keySet.addAll(singleRedis.keys(key));
+			}
+			return keySet;
+  		},modName);
+		return hitKeySet;
 	}
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @version Version 0.1
  *
  */
-public class Goods<T> implements Serializable{
+public class Goods<T> implements Serializable {
 	private static final long serialVersionUID = -3417769368460253266L;
 	
 	private String title;
