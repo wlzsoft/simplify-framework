@@ -295,6 +295,9 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 * @return
 	 */
 	public Set<String> keys(String key) {
+		if (key.startsWith("*")) {
+			throw new UncheckedException("只允许左边前缀匹配key");
+		}
 		Set<String> hitKeySet = CacheExecute.execute(key,(k,jedis) ->  {
 			Set<String> keySet = new HashSet<>(); 
 			Collection<Jedis> jedisCollecion = jedis.getAllShards();

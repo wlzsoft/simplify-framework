@@ -15,6 +15,7 @@ import vip.simplify.cache.entity.Goods;
 import vip.simplify.cache.entity.User;
 import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.dao.impl.JsonRedisDao;
+import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.Startup;
 
 /**
@@ -95,6 +96,20 @@ public class JsonRedisDaoTest {
 		CacheProxyDao.getJsonCache().set("testGetKeys2","lcy12");
 		Set<String> keySet = CacheProxyDao.getJsonCache().keys("testGetKeys*");
 		System.out.println("sss:"+ keySet);
+	}
+	
+	@Test
+	public void testGetKeysExcepion() {
+		CacheProxyDao.getJsonCache().set("testGetKeys1","lcy1");
+		CacheProxyDao.getJsonCache().set("testGetKeys2","lcy12");
+		try {
+			Set<String> keySet = CacheProxyDao.getJsonCache().keys("*testGetKeys");
+			System.out.println("sss:"+ keySet);
+		} catch (UncheckedException e) {
+			if (e.getMessage().equals("只允许左边前缀匹配key") ) {
+				Assert.assertTrue(true);
+			}
+		}
 	}
 	
 	@Test
