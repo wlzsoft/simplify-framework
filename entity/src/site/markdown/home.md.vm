@@ -1,0 +1,22 @@
+
+entity模块使用文档
+====================
+
+${project.artifactId}
+---------------------
+
+> ${project.name}
+> 
+> ${project.version}
+
+### 分页实体Page类功能相关
+
+- 创建Page类注意事项：
+ > 建议通过 Page(int currentPage, int pageSize,int totalRecord) 来创建Page对象，一开始就设置totalRecord和pageSize，尽量避免使用Page() 构造函数
+ > Page() 构造方法为公有的原因，是由于RPC或JSON转换过程中需要使用到，非对开发者开放的，部分本身不该开放的set方法现在也提供了，也是这个原因
+ 
+- 限定最大翻页数的方法
+ > 通过调用 setMaxPage 方法设置，这是目前主要对外开放的api之一：默认值为-1，-1 时不限制，并以totalPage为基准计算翻页。非-1可以限制翻页范围，并以maxPage的范围为基准计算翻页
+
+- 设置当前分页数据集
+ > setResults 也是主要对外开放的api之一

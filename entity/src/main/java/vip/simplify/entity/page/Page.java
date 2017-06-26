@@ -24,13 +24,14 @@ public class Page<T> implements IPage<T> {
 
 	private static final long serialVersionUID = 528967450281022746L;
 
-	//为了安全，考虑到order by 无法使用预处理，这里使用正则过滤特殊的字符 start
+//为了安全，考虑到order by 无法使用预处理，这里使用正则过滤特殊的字符 start
 	static String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|"
 			+ "(\\b(and|exec|execute|insert|select|delete|update|count|drop|\\*|%|chr|mid|master|truncate|char|declare|sitename|net user|xp_cmdshell|;|or|-|\\+|,|like'|and|exec|execute|insert|create|drop|table|from|grant|use|group_concat|column_name|information_schema.columns|table_schema|union|where|select|delete|update|order|by|count|chr|mid|master|truncate|char|declare|or|;|-|--|,|like|//|/|%|#)\\b)";
 	static Pattern sqlPattern = Pattern.compile(reg, Pattern.CASE_INSENSITIVE);
-	//为了安全，考虑到order by 无法使用预处理，这里使用正则过滤特殊的字符 end
+//为了安全，考虑到order by 无法使用预处理，这里使用正则过滤特殊的字符 end
 
-	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 start
+// 	以下属性 ：js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 start
+	
 	// @JsonIgnore
 	private boolean isFirstPage = true;
 	// @JsonIgnore
@@ -39,33 +40,69 @@ public class Page<T> implements IPage<T> {
 	private boolean hasNextPage = false;
 	// @JsonIgnore
 	private boolean hasPrevPage = false;
+	
 	/**
 	 * 下一页页码
 	 */
 	private int nextPage = 1;
+	
 	/**
 	 * 上一页页码
 	 */
 	private int prevPage = 1;
 	
-	private String url;// 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
-	// js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
-	private int currentRecord = 0;// 当前页第一条数据在数据库中位置,从0开始,在mysql limit 中就是第一个参数
+	/**
+	 * 请求URL，如果是ajax的话，可以不必要带上url，会增加服务端负担，虽说可以开发
+	 */
+	private String url;
+	
+//	以上属性：js grid控件中不会用到,需要seo优化的存html的表格页面上会用到,需要页面跳转 end
+	
+	/**
+	 * 当前页第一条数据在数据库中位置,从0开始,在mysql limit 中就是第一个参数
+	 */
+	private int currentRecord = 0;
+	
 	private static int DEFAULT_PAGE_SIZE = 10;
-	private int currentPage = 1;// 当前页码(当前页数) ，默认是第一页
-	private int pageSize = DEFAULT_PAGE_SIZE;// 每页显示的记录数，默认是10
-	private int totalRecord = 0;// 总记录数   需要在运行时设置，一般表示检索的记录总数
+	/**
+	 * 当前页码(当前页数) ，默认是第一页
+	 */
+	private int currentPage = 1;
+	
+	/**
+	 * 每页显示的记录数，默认是10
+	 */
+	private int pageSize = DEFAULT_PAGE_SIZE; 
+	
+	/**
+	 * 总记录数   需要在运行时设置，一般表示检索的记录总数
+	 */
+	private int totalRecord = 0;
+	
 	/**
 	 * 总页数
 	 */
 	private int totalPage;
+	
 	/**
-	 * 最大的翻页数,-1时不限制:可以限制翻页范围，而不是对totalPage的范围翻页，如果是-1，那么以totalPage为准
+	 * 最大的翻页数: 默认值为-1，-1 时不限制，并以totalPage为基准计算翻页。非-1可以限制翻页范围，并以maxPage的范围为基准计算翻页
 	 */
 	private int maxPage=-1;
-	private String sortname; // 排序字段
-	private String sortorder; // 排序属性
-	private List<T> results;// 对应的当前页存放记录
+	
+	/**
+	 * 排序字段名：配合Dao一起使用，相当于Dao类中 方法的 sortName参数
+	 */
+	private String sortName;
+	
+	/**
+	 * 排序类型，是否倒序：配合Dao一起使用 ,相当于 isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]  sort order by 
+	 */
+	private Boolean isDesc; 
+	
+	/**
+	 * 对应的当前页存放记录
+	 */
+	private List<T> results;
 	
 	/**
 	 * 该无参构造方法紧用于序列化的时候需要调用：1.比如远程方法调用时候会用到序列化
@@ -129,6 +166,13 @@ public class Page<T> implements IPage<T> {
 
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 外部不建议直接调用这个方法，如果使用，要注意调用init方法,并指定totalRecord<br>
+	 * 操作步骤: TODO<br>
+	 * @param totalRecord
+	 * @param isReturnLastPage
+	 */
 	public void init(int totalRecord, boolean isReturnLastPage) {
 		if(totalRecord < 0 ) {
 			throw new UncheckedException("totalRecord:总记录数不能小于0");
@@ -177,31 +221,26 @@ public class Page<T> implements IPage<T> {
 		return (Page<E>) page;
 	}
 
-	public String getSortname() {
-		return sortname;
+	public String getSortName() {
+		return sortName;
 	}
 
-	public void setSortname(String sortname) {
-		if (sqlPattern.matcher(sortname).find()) {
-			this.sortname = "";
+	public void setSortName(String sortName) {
+		if (sqlPattern.matcher(sortName).find()) {
+			this.sortName = "";
 		} else {
-			this.sortname = sortname;
+			this.sortName = sortName;
 		}
 	}
 
-	public String getSortorder() {
-		return sortorder;
-	}
-
-	public void setSortorder(String sortorder) {
-		if (sqlPattern.matcher(sortorder).find()) {
-			this.sortorder = "";
-		} else {
-			this.sortorder = sortorder;
-		}
+	public Boolean getIsDesc() {
+		return isDesc;
 	}
 	
-
+	public void setIsDesc(Boolean isDesc) {
+		this.isDesc = isDesc;
+	}
+	
 	@Override
 	public boolean isFirstPage() {
 		return isFirstPage;
@@ -342,6 +381,12 @@ public class Page<T> implements IPage<T> {
 		return maxPage;
 	}
 	
+	/**
+	 * 
+	 * 方法用途: 设置最大的翻页数: 默认值为-1，-1 时不限制，并以totalPage为基准计算翻页。非-1可以限制翻页范围，并以maxPage的范围为基准计算翻页<br>
+	 * 操作步骤: TODO<br>
+	 * @param maxPage
+	 */
 	public void setMaxPage(int maxPage) {
 		this.maxPage = maxPage;
 	}
@@ -415,22 +460,58 @@ public class Page<T> implements IPage<T> {
 	
 	
 //	这里提供的set方法，主要是用于Json转换，所以才提供，正常使用过程中，不应该调用这些方法 start
+	
+	/**
+	 * 
+	 * 方法用途: 这个set方法主要是用于Json转换注入，所以才提供，非对用户开放api，正常使用过程中，不应该调用这些方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param hasNextPage
+	 */
 	public void setHasNextPage(boolean hasNextPage) {
 		this.hasNextPage = hasNextPage;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 这个set方法主要是用于Json转换注入，所以才提供，非对用户开放api，正常使用过程中，不应该调用这些方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param hasPrevPage
+	 */
 	public void setHasPrevPage(boolean hasPrevPage) {
 		this.hasPrevPage = hasPrevPage;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 这个set方法主要是用于Json转换注入，所以才提供，非对用户开放api，正常使用过程中，不应该调用这些方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param nextPage
+	 */
 	public void setNextPage(int nextPage) {
 		this.nextPage = nextPage;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 这个set方法主要是用于Json转换注入，所以才提供，非对用户开放api，正常使用过程中，不应该调用这些方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param prevPage
+	 */
 	public void setPrevPage(int prevPage) {
 		this.prevPage = prevPage;
 	}
+	
+	/**
+	 * 
+	 * 方法用途: 这个set方法主要是用于Json转换注入，所以才提供，非对用户开放api，正常使用过程中，不应该调用这些方法<br>
+	 * 操作步骤: TODO<br>
+	 * @param currentRecord
+	 */
 	public void setCurrentRecord(int currentRecord) {
 		this.currentRecord = currentRecord;
 	}
 //	 end
+	
 	/**
 	 * 
 	 * 方法用途: 获得翻页导航<br>

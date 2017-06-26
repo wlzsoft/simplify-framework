@@ -623,9 +623,9 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param param where条件参数
 	 */
 	@Override
-	public List<T> findBy(T param, String sort, boolean isDesc) {
+	public List<T> findBy(T param, String sortName, boolean isDesc) {
 		SqlDTO dto = sqlBuilder.whereValue(param, currentColumnFieldNames);
-		String endSearchSql = CommonSqlBuilder.buildEndSearchSql(null, null, sort, isDesc).toString();
+		String endSearchSql = CommonSqlBuilder.buildEndSearchSql(null, null, sortName, isDesc).toString();
 		return find(sqlBuilder.findBy(dto.getWhereName())+endSearchSql,dto.getWhereValues());
 	}
 	
@@ -650,18 +650,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 操作步骤: TODO<br>
 	 * @param currentRecord
 	 * @param pageSize
-	 * @param sort
+	 * @param sortName
 	 * @param isDesc
 	 * @param params
 	 * @return
 	 */
-	public List<? extends IdEntity<Serializable,Integer>> query(int currentRecord,int pageSize,String sort, boolean isDesc,T params) {
+	public List<? extends IdEntity<Serializable,Integer>> query(int currentRecord,int pageSize,String sortName, boolean isDesc,T params) {
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
 		Query<T> query = createQuery(sql, dto.getWhereValues());
 		query.add(WhereDTO.eq("1", "1"));//
 		
-		List<? extends IdEntity<Serializable,Integer>> list = query.setSortName(sort).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
+		List<? extends IdEntity<Serializable,Integer>> list = query.setSortName(sortName).setSortMethod(isDesc).setCurrentRecord(currentRecord).setPageSize(pageSize).list();
 		return list;
 		
 	}
@@ -679,24 +679,24 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 操作步骤: TODO<br>
 	 * @param currentRecord
 	 * @param pageSize
-	 * @param sort
+	 * @param sortName
 	 * @param isDesc
 	 * @param params
 	 * @return
 	 */
-	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,T params) {
+	public List<T> find(Integer currentRecord,Integer pageSize,String sortName, Boolean isDesc,T params) {
 		if(params == null) {//FIXED lcy 2016/5/27 风险提醒：这个分支会导致拖死数据库，但是又有这样的业务场景(考虑说服用户-企业用户)-如果是针对个人的系统，不建议使用,需要考虑更好的方案,如果有提供分页，可以考虑放开  TODO 整合块3
-			return find(currentRecord,pageSize,sort,isDesc,sqlBuilder.findAll());
+			return find(currentRecord,pageSize,sortName,isDesc,sqlBuilder.findAll());
 		}
 		SqlDTO dto = sqlBuilder.whereValue(params, currentColumnFieldNames);
 		String sql = sqlBuilder.findBy(dto.getWhereName());
-		List<T> list = find(currentRecord,pageSize,sort,isDesc,sql,dto.getWhereValues());
+		List<T> list = find(currentRecord,pageSize,sortName,isDesc,sql,dto.getWhereValues());
 		return list;
 	}
 	
-	public List<T> find(Integer currentRecord,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
+	public List<T> find(Integer currentRecord,Integer pageSize,String sortName, Boolean isDesc,String sql,Object... params) {
 		
-		StringBuilder type = CommonSqlBuilder.buildEndSearchSql(currentRecord, pageSize, sort, isDesc);
+		StringBuilder type = CommonSqlBuilder.buildEndSearchSql(currentRecord, pageSize, sortName, isDesc);
 		
 		List<T> list = find(sql +type,params);
 		return list;
@@ -734,18 +734,18 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 操作步骤: TODO<br>
 	 * @param currentPage 当前页码
 	 * @param pageSize 每页数据个数
-	 * @param sort 排序字段名
+	 * @param sortName 排序字段名
 	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
 	 * @param params 查询参数
 	 * @param isReturnLastPage 是否返回最后一页
 	 * @return 查询结果分页数据
 	 */
-	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,boolean isReturnLastPage,T params) {
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sortName, Boolean isDesc,boolean isReturnLastPage,T params) {
 		if(pageSize == null || pageSize == 0) {//bug修复，避免忘传pageSize导致的错误
 			pageSize = 20;
 		}
 		Page<T> page = new Page<T>(currentPage,pageSize,count(params), isReturnLastPage);
-		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,params);
+		List<T> list = find(page.getCurrentRecord(),pageSize,sortName,isDesc,params);
 		page.setResults(list);
 		return page;
 	}
@@ -755,13 +755,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 操作步骤: TODO<br>
 	 * @param currentPage 当前页码
 	 * @param pageSize 每页数据个数
-	 * @param sort 排序字段名
+	 * @param sortName 排序字段名
 	 * @param isDesc 是否降序 [排序方式（升序(asc)或降序(desc)]
 	 * @param params 查询参数
 	 * @return 查询结果分页数据
 	 */
-	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,T params) {
-		return findPage(currentPage, pageSize, sort, isDesc, true, params);
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sortName, Boolean isDesc,T params) {
+		return findPage(currentPage, pageSize, sortName, isDesc, true, params);
 	}
 	
 	/**
@@ -771,16 +771,16 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * 注意：方法不是很灵活<br>
 	 * @param currentPage
 	 * @param pageSize
-	 * @param sort
+	 * @param sortName
 	 * @param isDesc
 	 * @param sql
 	 * @param params
 	 * @return
 	 */
 	@Deprecated
-	public Page<T> findPage(Integer currentPage,Integer pageSize,String sort, Boolean isDesc,String sql,Object... params) {
+	public Page<T> findPage(Integer currentPage,Integer pageSize,String sortName, Boolean isDesc,String sql,Object... params) {
 		Page<T> page = new Page<T>(currentPage,pageSize,CountDao.count(connectionManager,sql.replace("select * from", "select count(1) from"), params), true);
-		List<T> list = find(page.getCurrentRecord(),pageSize,sort,isDesc,sql,params);
+		List<T> list = find(page.getCurrentRecord(),pageSize,sortName,isDesc,sql,params);
 		page.setResults(list);
 		return page;
 	}
