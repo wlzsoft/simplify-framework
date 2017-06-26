@@ -271,18 +271,11 @@ public class Page<T> implements IPage<T> {
 
 	@Override
 	public int getLastPageNo() {
-		return this.getTotalPage();
-	}
-
-	@Override
-	public int getCurrentPageFirstRecord() {
-		return currentPage * pageSize - 1;
-	}
-
-	@Override
-	public int getCurrentPageLastRecord() {
-		return (currentPage + 1) * pageSize - 1;
-
+		int lastPage = this.getTotalPage();
+		if (lastPage == 0) {
+			return 1;
+		}
+		return lastPage;
 	}
 
 	@Override
@@ -412,22 +405,23 @@ public class Page<T> implements IPage<T> {
 	}
 	
 	/**
-	 * 方法用途: 获取任一页第一条数据在数据集的位置，每页条数使用默认值<br>
+	 * 方法用途: 获取当前页第一条数据在所有数据记录的位置编号，即当前页范围上限 <br>
 	 * 操作步骤: TODO<br>
 	 * @return
 	 */
-	public Integer getStartOfPage() {
+	@Override
+	public int getStartOfPage() {
 		return (currentPage - 1) * pageSize;
 	}
 	
 	/**
-	 * 获取任一页最后一条数据在数据集的位置
-	 * 方法用途: TODO<br>
+	 * 方法用途: 获取当前页最后一条数据在所有数据记录的位置编号，即当前页范围下限 <br>
 	 * 操作步骤: TODO<br>
-	 * @return
+	 * @return 返回-1 说明 totalRecord 为0,返回记录数为空
 	 */
-	public Integer getEndOfPage(){
-		Integer preEndPageNo = getStartOfPage()+pageSize;
+	@Override
+	public int getEndOfPage(){
+		int preEndPageNo = getStartOfPage()+pageSize;
 		if(preEndPageNo<totalRecord){
 			return preEndPageNo-1;
 		} else {//如果当前页的最后一条记录超过总页数，那么最后一条记录为总页数减一

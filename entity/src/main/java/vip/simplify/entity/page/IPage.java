@@ -69,21 +69,20 @@ public interface IPage<T> extends /*Externalizable,*/Serializable {
 	 * @return 
 	 */
 	int getTotalRecord();
+	
 	/**
-	 * 
-	 * 方法用途: 获取当前页第一条记录在所有记录的编号，即数据项范围上标<br>
+	 * 方法用途: 获取当前页第一条数据在所有数据记录的位置编号，即当前页范围上限 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 
+	 * @return
 	 */
-	int getCurrentPageFirstRecord();
+	int getStartOfPage();
 
 	/**
-	 * 
-	 * 方法用途: 获取当前页最后一条记录在所有记录的编号 <br>
+	 * 方法用途: 获取当前页最后一条数据在所有数据记录的位置编号，即当前页范围下限 <br>
 	 * 操作步骤: TODO<br>
-	 * @return 
+	 * @return 返回-1 说明 totalRecord 为0,返回记录数为空
 	 */
-	int getCurrentPageLastRecord();
+	int getEndOfPage();
     
 	/**
 	 * 
