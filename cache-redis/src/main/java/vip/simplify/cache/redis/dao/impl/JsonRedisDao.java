@@ -271,6 +271,9 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public Long delete(Set<String> keys)  {
+		if (keys.size() == 0) {
+			return 0L;
+		}
 		return delete(keys.toArray(new String[keys.size()]));
 	}
 	

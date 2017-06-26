@@ -138,4 +138,12 @@ public class JsonRedisDaoTest {
 		Assert.assertTrue(isDelete);
 	}
 	
+	@Test
+	public void testSearchAndDelete() {
+		CacheProxyDao.getJsonCache().set("testSearchAndDelete1","lcy13");
+		CacheProxyDao.getJsonCache().set("testSearchAndDelete2","lcy123");
+		Long deleteCount = dao.searchAndDelete("testSearchAndDelete*");
+		Assert.assertEquals(2, deleteCount.intValue());
+	}
+	
 }
