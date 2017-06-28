@@ -1,13 +1,7 @@
 package vip.simplify.ioc.resolver;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import vip.simplify.Constants;
 import vip.simplify.dto.BeanMetaDTO;
 import vip.simplify.exception.StartupErrorException;
@@ -25,6 +19,11 @@ import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.StringUtil;
 import vip.simplify.utils.clazz.ClassInfo;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
   * <p><b>Title:</b><i>Bean对象创建处理解析器</i></p>
@@ -80,7 +79,7 @@ public final class BeanAnnotationResolver implements IAnnotationResolver<Class<?
 	 */
 	public static String[] getClasspaths() {
 		String[] classpathArr = new String[]{Constants.packagePrefix};
-		PropertieUtil propertieUtil = new PropertieUtil("properties/config.properties",false);
+		PropertieUtil propertieUtil = new PropertieUtil("config.properties",false);
 		String classpaths = propertieUtil.getString("system.classpaths");
 		if(StringUtil.isNotBlank(classpaths)) {
 			boolean hasSystemPath = false;

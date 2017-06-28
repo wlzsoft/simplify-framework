@@ -2,7 +2,6 @@ package vip.simplify.mongodb.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import vip.simplify.config.annotation.DymaicProperties;
 import vip.simplify.config.annotation.Reload;
 import vip.simplify.config.annotation.ReloadableResource;
@@ -21,7 +20,7 @@ import vip.simplify.utils.PropertieUtil;
  *
  */
 @Bean
-@ReloadableResource(value="properties/mongo.properties",prefix="mongo")
+@ReloadableResource(value="mongo.properties",prefix="mongo")
 public class MongodbPropertiesConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MongodbPropertiesConfig.class);

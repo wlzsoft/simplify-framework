@@ -16,7 +16,7 @@ public class MqConnection {
 	}
 	
 	public static Connection getConnection(){
-		PropertieUtil propertieUtil = new PropertieUtil("properties/rabbitmq.properties");
+		PropertieUtil propertieUtil = new PropertieUtil("rabbitmq.properties");
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(propertieUtil.getString("rabbitmq.host"));
 		factory.setPort(propertieUtil.getInteger("rabbitmq.port"));
@@ -41,7 +41,7 @@ public class MqConnection {
 
 	public static Connection getConnectionUrl() {
 		try {
-			PropertieUtil propertieUtil = new PropertieUtil("properties/rabbitmq.properties");
+			PropertieUtil propertieUtil = new PropertieUtil("rabbitmq.properties");
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setUri(propertieUtil.getString("rabbitmq.url"));
 			conn=factory.newConnection();

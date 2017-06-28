@@ -4,7 +4,7 @@
 <!-- 	<parent>
 		<artifactId>simplify-framework</artifactId>
 	</parent>
- -->		<version>1.2.4-SNAPSHOT</version>
+ -->		<version>1.2.5-SNAPSHOT</version>
 	<artifactId>assembly-descriptor</artifactId>
 	<!--可不依赖parent,只是打包插件使用-->
 	<!-- 注意：依赖parent会导致打包时bin目录没生成，里面的文件也丢失，估计是resoures过滤掉的原因，但是无法重现出来，如果不依赖parent就不会有这个问题，但是不依赖parent会导致site生成站点会出错，无法正常生成这个项目的站点信息 ,后续处理 TODO-->

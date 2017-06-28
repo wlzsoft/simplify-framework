@@ -1,13 +1,12 @@
 package vip.simplify.cache.redis.util;
 
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import vip.simplify.cache.redis.properties.RedisPoolProperties;
 import vip.simplify.utils.PropertieUtil;
+
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * <p><b>Title:</b><i>redis连接池工具类</i></p>
@@ -25,7 +24,7 @@ import vip.simplify.utils.PropertieUtil;
 public class RedisPoolUtil {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisPoolUtil.class);
-	private static final String REDIS_CONFIG_FILE = "properties/redis-pool.properties";
+	private static final String REDIS_CONFIG_FILE = "redis-pool.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE,false);
 	private static RedisPoolProperties redisPoolProperties = null;
 	static {

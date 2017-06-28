@@ -64,7 +64,7 @@ Simplfiy框架快速入门
      <dependency>
         <groupId>vip.simplify</groupId>
         <artifactId>listener</artifactId>
-        <version>1.2.4-SNAPSHOT</version>
+        <version>1.2.5-SNAPSHOT</version>
      </dependency>
     ```
     
@@ -86,7 +86,7 @@ Simplfiy框架快速入门
     <dependency>
     	<groupId>vip.simplify</groupId>
     	<artifactId>mvc</artifactId>
-    	<version>1.2.4-SNAPSHOT</version>
+    	<version>1.2.5-SNAPSHOT</version>
     </dependency>
     ```
 
@@ -202,7 +202,7 @@ Exception in thread "commons-pool-EvictionTimer" java.lang.NoClassDefFoundError:
      > 原因：这是由于打包时，没使用clean install，而是直接install，导致旧的包和新的包一起被打包到war中，导致包冲突。
    - 2.RPC服务端打包注意实现：
      > 在修改服务端软件版本的同时，记得修改  src/main/resources/META-INF/MANIFEST.MF 文件,主要用于jps，java -jar 用于识别元数据信息。
-     > 另外一个重要的问题，用于dubbo识别软件版本，如果服务端的Implementation-Version 的版本对不上，会导致dubbo客户端注册失败，无法成功连接到dubbo服务端（待确认是否dubbo的问题，就算版本对不上，应该可以注册成功，只是多了一个版本信息，不匹配而已，现在是直接看不到客户端的注册信息，而且后台也注册成功，没报错，导致问题排查麻烦）
+     > 另外一个重要的问题，用于dubbo识别软件版本，如果服务端的Implementation-Version 的版本（需和dubbo的revision匹配，待确认）对不上，会导致dubbo客户端注册失败，无法成功连接到dubbo服务端（待确认是否dubbo的问题，就算版本对不上，应该可以注册成功，只是多了一个版本信息，不匹配而已，现在是直接看不到客户端的注册信息，而且后台也注册成功，没报错，导致问题排查麻烦）
    
 ### 中文乱码问题
 

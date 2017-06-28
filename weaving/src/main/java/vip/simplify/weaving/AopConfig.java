@@ -1,9 +1,9 @@
 package vip.simplify.weaving;
  
+import vip.simplify.utils.PropertieUtil;
+
 import java.io.File;
 import java.util.Properties;
-
-import vip.simplify.utils.PropertieUtil;
 
 /**
  * <p><b>Title:</b><i>aop javaagent专用配置信息加载</i></p>
@@ -23,9 +23,9 @@ public class AopConfig {
     private static PropertieUtil propertieUtils= null;
      static {
     	Properties  prop = System.getProperties();
-        String config = prop.getProperty("properties/aop.properties");
+        String config = prop.getProperty("aop.properties");
         if(config == null) {
-        	config = "properties/aop.properties";
+        	config = "aop.properties";
         }
         propertieUtils = new PropertieUtil(new File(config));
     }

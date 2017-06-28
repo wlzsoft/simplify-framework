@@ -21,7 +21,7 @@ import vip.simplify.utils.PropertieUtil;
  *
  */
 @Bean
-@ReloadableResource(value="properties/dubbo.properties",prefix="dubbo")
+@ReloadableResource(value="dubbo.properties",prefix="dubbo")
 public class DubboPropertiesConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DubboPropertiesConfig.class);

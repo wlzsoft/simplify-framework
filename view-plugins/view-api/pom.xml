@@ -3,7 +3,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>view-plugins</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.5-SNAPSHOT</version>
   </parent>
   <artifactId>view-api</artifactId>
   <name>(${project.artifactId})视图view插件的接口api</name>

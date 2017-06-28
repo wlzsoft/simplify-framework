@@ -24,7 +24,7 @@ import vip.simplify.utils.PropertieUtil;
  *
  */
 @Bean
-@ReloadableResource(value="properties/message.properties",prefix="")
+@ReloadableResource(value="message.properties",prefix="")
 public class MessageConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MessageConfig.class);

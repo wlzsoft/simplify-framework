@@ -26,7 +26,7 @@ import vip.simplify.utils.StringUtil;
  *
  */
 @Bean
-@ReloadableResource(value="properties/config.properties",prefix="system")
+@ReloadableResource(value="config.properties",prefix="system")
 public class PropertiesConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesConfig.class);

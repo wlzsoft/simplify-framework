@@ -1,12 +1,12 @@
 package vip.simplify.mongodb.dao;
 
+import com.mongodb.client.MongoDatabase;
+import vip.simplify.config.annotation.Config;
+import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.mongodb.MongoConn;
 import vip.simplify.mongodb.config.MongodbPropertiesConfig;
-import vip.simplify.config.annotation.Config;
-import vip.simplify.ioc.annotation.Bean;
 import vip.simplify.utils.PropertieUtil;
-import com.mongodb.client.MongoDatabase;
 /**
  * <p>Desc:默认数据源 </p>
  * <p>source folder:{@docRoot}</p>
@@ -33,7 +33,7 @@ public class DefaultMongoSource extends MongoConn {
 	private String url;
 
 	public DefaultMongoSource() {
-		PropertieUtil propertieUtil = new PropertieUtil("properties/mongo.properties");
+		PropertieUtil propertieUtil = new PropertieUtil("mongo.properties");
 		host = propertieUtil.getString("mongo.host");
 		dbName = propertieUtil.getString("mongo.databaseName");
 		url = propertieUtil.getString("mongo.url");

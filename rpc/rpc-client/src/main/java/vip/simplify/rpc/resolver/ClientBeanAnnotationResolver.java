@@ -1,18 +1,11 @@
 package vip.simplify.rpc.resolver;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.MonitorConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import vip.simplify.Constants;
 import vip.simplify.exception.StartupErrorException;
 import vip.simplify.ioc.BeanEntity;
@@ -23,6 +16,11 @@ import vip.simplify.utils.ClassUtil;
 import vip.simplify.utils.CollectionUtil;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.utils.StringUtil;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * <p>clientBean注解解析</p>
@@ -55,7 +53,7 @@ public class ClientBeanAnnotationResolver implements IBeanHook<ClientBean> ,Auto
 	public static BeanEntity<?> addRemoteBean(Class<?> clientBeanClass,String version,boolean check,String url) {
 		String clientBeanName = clientBeanClass.getName();
 		try{
-			PropertieUtil propertieUtil=new PropertieUtil("properties/dubbo.properties");
+			PropertieUtil propertieUtil=new PropertieUtil("dubbo.properties");
 //			String group=propertieUtil.getString("dubbo.registry.group");
 			String key =  clientBeanName + ":" + version;
 			ReferenceConfig<?> reference =referenceConfigs.get(key);

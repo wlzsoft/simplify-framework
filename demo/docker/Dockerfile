@@ -1,5 +1,5 @@
 # FROM 构建指令，必须在dockefile内容的最前面，注释不算，因为后续指令需要依赖它，他的格式是  FROM [host][:port]/[imageName][:TAG],其中host可以域名和ip，imageName可以是groupId/artifactId；而host,port,TAG都是可选的，当他们为空时，指向的是docker官方的docker.io镜像地址的TAG为latest的镜像
-#FROM 172.16.85.146:8884/vip.simplify/simplify-base:1.2.4-SNAPSHOT
+#FROM 172.16.85.146:8884/vip.simplify/simplify-base:1.2.5-SNAPSHOT
 FROM tomcat8.5
 # 构建指令，用于将image的制作者信息写入到image中。当我们对该image执行docker inspect命令时，输出中有相应的字段记录该信息.格式：MAINTAINER <name>
 MAINTAINER chuangye lu "547393607@qq.com"

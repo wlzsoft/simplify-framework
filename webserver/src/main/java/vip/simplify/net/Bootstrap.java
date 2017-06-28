@@ -1,12 +1,12 @@
 package vip.simplify.net;
 
-import java.util.concurrent.TimeUnit;
-
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.Startup;
 import vip.simplify.utils.PropertieUtil;
 import vip.simplify.webserver.ITaskFactory;
 import vip.simplify.webserver.ServerStatus;
+
+import java.util.concurrent.TimeUnit;
 
 /**
   * <p><b>Title:</b><i>引导启动</i></p>
@@ -32,7 +32,7 @@ public class Bootstrap {
 	public static void run() {
 		Startup.start();
 		//配置加载开始
-		PropertieUtil propertiesUtil = new PropertieUtil("properties/web.properties");
+		PropertieUtil propertiesUtil = new PropertieUtil("web.properties");
 		//配置加载结束
 		boolean isStart = start(propertiesUtil.getString("host"),propertiesUtil.getInteger("port"),propertiesUtil.getInteger("backlog"));
 		if(!ServerStatus.isRunning&&isStart) {

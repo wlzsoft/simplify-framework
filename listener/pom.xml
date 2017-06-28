@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>vip.simplify</groupId>
 		<artifactId>simplify-framework</artifactId>
-		<version>1.2.4-SNAPSHOT</version>
+		<version>1.2.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>listener</artifactId>
 	<name>(${project.artifactId})启动监听器</name>

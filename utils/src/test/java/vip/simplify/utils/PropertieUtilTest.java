@@ -1,9 +1,9 @@
 package vip.simplify.utils;
 
+import org.junit.Test;
+
 import java.util.Iterator;
 import java.util.Set;
-
-import org.junit.Test;
 
 
 /**
@@ -30,7 +30,7 @@ public class PropertieUtilTest {
 	@Test
 //	@Category(PropertieUtilTests.class)
 	public void test(){
-		PropertieUtil util = new PropertieUtil("properties/redis.properties");
+		PropertieUtil util = new PropertieUtil("redis.properties");
 		Set<String> set = util.stringPropertyNames();
 		for(Iterator<String> it = set.iterator();it.hasNext();){
 			System.out.println(it.next());

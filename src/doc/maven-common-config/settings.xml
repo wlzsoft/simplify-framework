@@ -61,7 +61,7 @@
 	        </configuration> -->
 	    </server>
 	</servers>
-	<!-- 注意：mirrors和repositories配置不当，或导致部分artifact找不到，比如框架的vip.simplfiy:simplify-framework:pom:1.2.4-SNAPSHOT找不到 -->
+	<!-- 注意：mirrors和repositories配置不当，或导致部分artifact找不到，比如框架的vip.simplfiy:simplify-framework:pom:1.2.5-SNAPSHOT找不到 -->
 	<!-- 注意：mirrorOf的值为central，这里一般配置*就可以了,这样包含了所有非snapshot类型的仓库 -->
 	<!-- 注意：mirrors设置比repository简单，但是mirrors不会包含snapshot的仓库artifact，但mirrors也要配置，因为必须build->extension和插件中其他方式的依赖jar，需要通过mirrors来下载-->
 	<mirrors>

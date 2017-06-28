@@ -1,16 +1,12 @@
 package vip.simplify.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import vip.simplify.exception.StartupErrorException;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-
-import vip.simplify.exception.StartupErrorException;
 
 
 /**
@@ -31,6 +27,11 @@ public class PropertieUtil {
 	
 	private Properties props = new Properties();
 	private InputStream inputStream = null;
+	/**
+	 * 默认读取的properties配置文件的目录前缀，这里默认值为空
+	 */
+	//private static final String configPrefix = "properties/";
+	private static final String configPrefix = "";
 
 	/**
 	 * 构造方法：默认如果文件不存在，会抛致命异常，服务无法启动
@@ -46,7 +47,7 @@ public class PropertieUtil {
 	 */
 	public PropertieUtil(String fileName,boolean isError) {
 		try {
-			inputStream = PropertieUtil.class.getClassLoader().getResourceAsStream(fileName);
+			inputStream = PropertieUtil.class.getClassLoader().getResourceAsStream(configPrefix+fileName);
 			if(inputStream == null) {
 				String message = "配置文件["+fileName+"]不存在";
 				System.err.println(message);

@@ -27,7 +27,7 @@ public class TestDataSource extends MongoConn {
 	private MongoDatabase db;
 
 	public TestDataSource() {
-		PropertieUtil propertieUtil = new PropertieUtil("properties/mongo.properties");
+		PropertieUtil propertieUtil = new PropertieUtil("mongo.properties");
 		host = propertieUtil.getString("mongo.host");
 		dbName = propertieUtil.getString("mongo.log_databaseName");
 		url = propertieUtil.getString("mongo.url");

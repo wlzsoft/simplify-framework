@@ -1,18 +1,16 @@
 package vip.simplify.dao.datasource;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidPooledConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import vip.simplify.ioc.annotation.Bean;
+import vip.simplify.utils.PropertieUtil;
+
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
-
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.pool.DruidPooledConnection;
-import vip.simplify.ioc.annotation.Bean;
-import vip.simplify.utils.PropertieUtil;
 
 /**
  * <p><b>Title:</b><i>单数据源实现</i></p>
@@ -35,7 +33,7 @@ public class SingleDataSource implements IDataSource{
 	private DataSource dataSource = null;
 	
 	public SingleDataSource(){
-		PropertieUtil result = new PropertieUtil("properties/jdbc.properties");
+		PropertieUtil result = new PropertieUtil("jdbc.properties");
 		this.dataSource = DataSourceFactory.createDataSource(result.getProps());
 	}
 	

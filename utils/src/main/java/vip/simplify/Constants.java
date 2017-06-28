@@ -13,6 +13,6 @@ package vip.simplify;
  *
  */
 public class Constants {
-	public static final String version = "v1.2.4-SNAPSHOT";
+	public static final String version = "v1.2.5-SNAPSHOT";
 	public static final String packagePrefix = "vip.simplify";
 }

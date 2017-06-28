@@ -3,7 +3,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>simplify-framework</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.5-SNAPSHOT</version>
   </parent>
   <artifactId>entity</artifactId>
   <name>(${project.artifactId})通用实体</name>

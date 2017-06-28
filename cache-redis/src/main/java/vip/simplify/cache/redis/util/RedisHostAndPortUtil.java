@@ -1,17 +1,16 @@
 package vip.simplify.cache.redis.util;
 
+import redis.clients.jedis.Protocol;
+import vip.simplify.utils.AssertUtil;
+import vip.simplify.utils.PropertieUtil;
+import vip.simplify.utils.StringUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import vip.simplify.utils.AssertUtil;
-import vip.simplify.utils.PropertieUtil;
-import vip.simplify.utils.StringUtil;
-
-import redis.clients.jedis.Protocol;
 
 /**
  * <p><b>Title:</b><i>redis分片服务信息配置工具</i></p>
@@ -29,7 +28,7 @@ import redis.clients.jedis.Protocol;
 public class RedisHostAndPortUtil {
 	
 	private static Map<String, List<HostAndPort>> hostAndPortMap = new ConcurrentHashMap<String, List<HostAndPort>>();
-	private static final String REDIS_CONFIG_FILE = "properties/redis-host.properties";
+	private static final String REDIS_CONFIG_FILE = "redis-host.properties";
 	private static final PropertieUtil propertieUtils = new PropertieUtil(REDIS_CONFIG_FILE);
 	
 	static {

@@ -5,7 +5,7 @@ apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.p
 apply plugin: 'war'
 
 group = 'vip.simplify'
-version = '1.2.4-SNAPSHOT'
+version = '1.2.5-SNAPSHOT'
 
 description = """demo Maven Webapp"""
 
@@ -27,13 +27,13 @@ repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
-    compile 'vip.simplify:mvc:1.2.4-SNAPSHOT'
-    compile 'vip.simplify:cache-redis:1.2.4-SNAPSHOT'
-    compile 'vip.simplify:webcache:1.2.4-SNAPSHOT'
-    compile 'vip.simplify:aop:1.2.4-SNAPSHOT'
-    compile 'vip.simplify:dao:1.2.4-SNAPSHOT'
-    compile 'vip.simplify:listener:1.2.4-SNAPSHOT'
-    compile 'vip.simplify:webserver:1.2.4-SNAPSHOT'
+    compile 'vip.simplify:mvc:1.2.5-SNAPSHOT'
+    compile 'vip.simplify:cache-redis:1.2.5-SNAPSHOT'
+    compile 'vip.simplify:webcache:1.2.5-SNAPSHOT'
+    compile 'vip.simplify:aop:1.2.5-SNAPSHOT'
+    compile 'vip.simplify:dao:1.2.5-SNAPSHOT'
+    compile 'vip.simplify:listener:1.2.5-SNAPSHOT'
+    compile 'vip.simplify:webserver:1.2.5-SNAPSHOT'
     testCompile 'junit:junit:4.12@jar'
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
     //compile gradleApi() //when you are developing custom Gradle tasks or plugins.

@@ -3,7 +3,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>config-plugins</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.5-SNAPSHOT</version>
   </parent>
   <artifactId>config-server</artifactId>
   <name>(${project.artifactId})配置服务的服务后端</name>

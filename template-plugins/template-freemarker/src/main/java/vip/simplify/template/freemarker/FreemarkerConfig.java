@@ -23,7 +23,7 @@ import vip.simplify.utils.PropertieUtil;
  *
  */
 @Bean
-@ReloadableResource(value="properties/freemarker.properties",prefix="freemarker")
+@ReloadableResource(value="freemarker.properties",prefix="freemarker")
 public class FreemarkerConfig {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerConfig.class);

@@ -1,26 +1,24 @@
 package vip.simplify.cache.redis;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import vip.simplify.cache.redis.exception.RedisException;
-import vip.simplify.cache.redis.properties.RedisPoolProperties;
-import vip.simplify.cache.redis.util.RedisHostAndPortUtil;
-import vip.simplify.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
-import vip.simplify.cache.redis.util.RedisPoolUtil;
-
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.Hashing;
+import vip.simplify.cache.redis.exception.RedisException;
+import vip.simplify.cache.redis.properties.RedisPoolProperties;
+import vip.simplify.cache.redis.util.RedisHostAndPortUtil;
+import vip.simplify.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
+import vip.simplify.cache.redis.util.RedisPoolUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -95,12 +93,18 @@ public class RedisPool {
 		if (hostAndPortMap.isEmpty()) {
 			throw new RuntimeException(" redis config error !!! ");
 		}
-		
+
+		//1.支持主从集群设置 TODO
+		//2.以下是分布式集群切片设置
+
 		final StringBuilder strb = new StringBuilder("redis集群节点信息 被启用列表 : ");
+		// 添加的切片顺序有意义
 		for (Entry<String, List<HostAndPort>> entry : hostAndPortMap.entrySet()) {
 			String key = entry.getKey();
 			List<HostAndPort> hostList = entry.getValue();
-			List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
+			//这里的集合创建可使用google的guava集合库
+			//List<JedisShardInfo> shards = com.google.common.collect.Lists.newArrayList();
+			List<JedisShardInfo> shards = new ArrayList<>();
 			strb.append("\n切片集群组[").append(key).append("]==>>");
 			for (int i = 0; i < hostList.size(); i++) {
 				HostAndPort hnp = hostList.get(i);
@@ -113,7 +117,13 @@ public class RedisPool {
 				shards.add(jedisShardInfo);
 				strb.append("}");
 			}
+
+			/**
+			 * Jedis 驱动库实现的分布式切片,其中List<JedisShardInfo>中JedisShardInfo添加的顺序和key，来算出具体执行哪个切片（哪台redis切片）
+			 * 在线上准备好新切片时，可支持Pre-Sharding（在线扩容），前提是需要配合配置中心，做到配置在线自动更新
+			 */
 			ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH);
+			//ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH,Sharded.DEFAULT_KEY_TAG_PATTERN);// TODO DEFAULT_KEY_TAG_PATTERN 的作用
 			redisPools.put(key, pool);
 			
 		}

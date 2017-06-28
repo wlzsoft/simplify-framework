@@ -21,7 +21,7 @@ public class DubboRegistryHook /*implements IBeanPrototypeHook*/{
 	public List<BeanEntity<?>> hook(Class<?> clazz) {
 		List<BeanEntity<?>> list = new ArrayList<BeanEntity<?>>();
 		LOGGER.debug("开始初始化Rpc多个注册中心实例....");
-		PropertieUtil propertieUtil = new PropertieUtil("properties/dubbo.properties");
+		PropertieUtil propertieUtil = new PropertieUtil("dubbo.properties");
 		String addresss = propertieUtil.getString("dubbo.registry.address");
 		if (StringUtil.isNotBlank(addresss)) {
 			String[] addressArry = addresss.split(",");

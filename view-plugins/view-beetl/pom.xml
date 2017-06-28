@@ -3,7 +3,7 @@
   <parent>
     <groupId>vip.simplify</groupId>
     <artifactId>view-plugins</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.5-SNAPSHOT</version>
   </parent>
   <artifactId>view-beetl</artifactId>
   <name>(${project.artifactId})现代模版引擎beetl集成view插件</name>
