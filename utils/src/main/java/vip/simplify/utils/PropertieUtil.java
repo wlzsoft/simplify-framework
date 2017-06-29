@@ -28,10 +28,19 @@ public class PropertieUtil {
 	private Properties props = new Properties();
 	private InputStream inputStream = null;
 	/**
-	 * 默认读取的properties配置文件的目录前缀，这里默认值为空
+	 * 默认读取的properties配置文件的目录前缀，这里默认值为空,可调用这个属性的set方法设置其他前缀
 	 */
 	//private static final String configPrefix = "properties/";
-	private static final String configPrefix = "";
+	private static String configPrefix = "";
+
+	/**
+	 * 方法用途: 调用这个属性的set方法设置其他前缀<br>
+	 * 操作步骤: TODO <br>
+	 * @param configPrefix
+	 */
+	public static void setConfigPrefix(String configPrefix) {
+		PropertieUtil.configPrefix = configPrefix;
+	}
 
 	/**
 	 * 构造方法：默认如果文件不存在，会抛致命异常，服务无法启动

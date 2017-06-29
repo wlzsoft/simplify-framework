@@ -54,7 +54,6 @@ public class ClientBeanAnnotationResolver implements IBeanHook<ClientBean> ,Auto
 		String clientBeanName = clientBeanClass.getName();
 		try{
 			PropertieUtil propertieUtil=new PropertieUtil("dubbo.properties");
-//			String group=propertieUtil.getString("dubbo.registry.group");
 			String key =  clientBeanName + ":" + version;
 			ReferenceConfig<?> reference =referenceConfigs.get(key);
 			if (reference == null) {
@@ -67,7 +66,11 @@ public class ClientBeanAnnotationResolver implements IBeanHook<ClientBean> ,Auto
 				if (StringUtil.isNotBlank(filePath)) {
 					registry.setFile(System.getProperty("user.home")+filePath);
 				}
-//				registry.setGroup(group);
+				String group=propertieUtil.getString("dubbo.registry.group");
+				if (StringUtil.isBlank(group)) {
+					group = "dubbo"; //由于group没有设置的时候，默认使用dubbo，在zookeeper中注册的节点前缀是/dubbo/com.xxx.xxService
+				}
+				registry.setGroup(group);
 //				registry.setProtocol(propertieUtil.getString("dubbo.protocol.name"));
 				// 引用远程服务
 				reference = new ReferenceConfig<>();

@@ -212,3 +212,28 @@ Exception in thread "commons-pool-EvictionTimer" java.lang.NoClassDefFoundError:
      > 解决方法：通过request.setCharacterEncoding("UTF-8")来解决，但是不起作用。那么需要只能通过执行
                  new String(userName.getBytes("ISO-8859-1"),"UTF-8") 来解决，为了完全解决这个问题需要在框架中全局设置
      > 注意考虑的点：会不会影响到其他容器的编码，比如改好了tomcat的，影响了jetty和其他容器的编码，因为编码最好只转一次，转多了容易出乱码
+     
+     
+ ## RPC 问题
+    - 1.dubbo服务无法注册到zookeeper中的问题，有可能是客户端，也可能是服务端，偶尔又注册成功，偶尔不行，注册成功，调用又失败 
+      > 现象一：在框架版本是1.2.4-SNAPSHOT的时候，dubbo服务在 测试环境，本地开发环境，都可以正常使用，但是当集成spring后，就会导致无法注册到zookeeper中（1，有可能是和spring冲突。2，group导致的问题，在zookeeper有两个节点，一个dubbo，一个dev，之前配置文件的group值为dev，注册的时候会注册到group为dubbo的节点，查询是group为dev的节点，有可能是框架问题，待测试）
+      > 现象二：框架版本从 1.2.4-SNAPSHOT升级到1.2.5-SNAPSHOT后，导致dubbo服务无法注册到zookeeper中，后面来回调整dubbo配置文件，
+      > 启动日志中，没有任何报错信息，只能看到empty://这样的空协议，并且还比较隐蔽，另外一个现象就是 注册的zookeeper节点地址 有些是 /dev/com.xxxx,有些是/dubbo/com.xxxx
+      > dubbo admin中，有时能看到注册信息，有时看不到，特别不同的机器，不通框架版本，不同的环境
+      > 当dubbo admin 两边都能看到提供者和消费者的注册信息时，访问也会com.alibaba.dubbo.rpc.RpcException: Forbid consumer 10.0.53.69 access service com.xxxxService from registry 10.0.50.150:2181 use dubbo version 2.5.3, Please check registry access list (whitelist/blacklist).
+      > dubbo代码中是RegistryDirectory类的 public List<Invoker<T>> doList(Invocation invocation) 这个方法报错
+      > 解决的办法是：1.由于dubbo admin看不到注册信息的详细情况，所有打算从数据源查起，也就是zookeeper数据，但是线上的zookeeper连不上，并且注册信息过多，容易隐藏错误，增加排查效率
+      > 2.所以本地通过telnet连上线上zookeeper，分析zookeeper版本，在telnet使用zookeeper提供的 ruok，dump,conf,kill,cons,envi reqs,wchs,wchp等命令查看到zookeeper的版本等信息 
+      > 3.下载zookeeper官方相关的版本2.4.6
+      > 4.本地的dubbo配置全改成本地的zookeeper
+      > 5.通过zookeeper的zkCli.cmd 的相关命令 "ls /" 和"ls2 /" 来分析节点情况，通过 get和set来查看具体节点信息
+      > 结果是：分析本地zookeeper时，发现有dubbo和zookeeper，dev等三个根节点，而且dubbo这个节点后面才出来的，一开始没有，这个就是问题所在了
+      > dubbo注册的时候，应该只会写到dev这个组里，怎么会产生dubbo这个能，所以把group的配置也改成dubbo，问题解决
+      > 问题的本质是这样的：从1.2.4-SNAPSHOT切换到1.2.5-SNAPSHOT的会出现问题的原因在于三个方法：
+      > 第一个方面是：由于新版的1.2.5-SNAPSHOT版本，把dubbo.properties配置文件移到外层的classpath的根目录下面,
+      >  而dubbo的jar包默认会读取classpath下面名字为dubbo.properties的文件，不管集成的时候，RPC模块是否有设置group的值，dubbo框架都是自动设置，但是RPC模块这是如果也设置group的值，就不会导致这个问题了，刚好RPC模块没有设置，
+      >  所以导致了部分设置了group为dev，而部分没有，才用group为dubbo的值，所以不紧紧是group这个值会受到影响，dubbo.properties的其他属性也要收到影响，所以既然dubbo.properties已经配置了属性，那么RPC模块也一定要设置
+      >  dubbo框架中自动读取dubbo.properties的源码位置[com.alibaba.dubbo.common.utils.ConfigUtils] 读取dubbo.properties证据所在
+      > 第二个方面是：是由于RPC模块没有设置group的值，但是dubbo.properties中又提供了
+      > 第三个方面是：集成spring后，会出现连接不上zookeeper的问题，待确认
+      > 最终解决的方法是:  把dubbo.properties移动到底层目录，或是RPC模块对dubbo。properties中的属性都做相应设置，没有的选项，就注释掉

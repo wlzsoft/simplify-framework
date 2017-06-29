@@ -36,6 +36,10 @@ public class DubboRegistry extends RegistryConfig{
 		if(StringUtil.isNotBlank(filePath)){
 			this.setFile(System.getProperty("user.home")+filePath);
 		}
-//		this.setGroup(dubboProperties.getProp().getString("dubbo.registry.group"));
+		String group = dubboProperties.getProp().getString("dubbo.registry.group");
+		if (StringUtil.isBlank(group)) {
+			group = "dubbo";
+		}
+		this.setGroup(group);
 	}
 }
