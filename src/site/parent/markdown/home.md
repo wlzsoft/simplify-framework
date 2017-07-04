@@ -215,7 +215,8 @@ Exception in thread "commons-pool-EvictionTimer" java.lang.NoClassDefFoundError:
      
      
  ## RPC 问题
-    - 1.dubbo服务无法注册到zookeeper中的问题，有可能是客户端，也可能是服务端，偶尔又注册成功，偶尔不行，注册成功，调用又失败 
+ 
+   - 1.dubbo服务无法注册到zookeeper中的问题，有可能是客户端，也可能是服务端，偶尔又注册成功，偶尔不行，注册成功，调用又失败 
       > 现象一：在框架版本是1.2.4-SNAPSHOT的时候，dubbo服务在 测试环境，本地开发环境，都可以正常使用，但是当集成spring后，就会导致无法注册到zookeeper中（1，有可能是和spring冲突。2，group导致的问题，在zookeeper有两个节点，一个dubbo，一个dev，之前配置文件的group值为dev，注册的时候会注册到group为dubbo的节点，查询是group为dev的节点，有可能是框架问题，待测试）
       > 现象二：框架版本从 1.2.4-SNAPSHOT升级到1.2.5-SNAPSHOT后，导致dubbo服务无法注册到zookeeper中，后面来回调整dubbo配置文件，
       > 启动日志中，没有任何报错信息，只能看到empty://这样的空协议，并且还比较隐蔽，另外一个现象就是 注册的zookeeper节点地址 有些是 /dev/com.xxxx,有些是/dubbo/com.xxxx
@@ -237,3 +238,11 @@ Exception in thread "commons-pool-EvictionTimer" java.lang.NoClassDefFoundError:
       > 第二个方面是：是由于RPC模块没有设置group的值，但是dubbo.properties中又提供了
       > 第三个方面是：集成spring后，会出现连接不上zookeeper的问题，待确认
       > 最终解决的方法是:  把dubbo.properties移动到底层目录，或是RPC模块对dubbo。properties中的属性都做相应设置，没有的选项，就注释掉
+      
+ ## IOC注入问题
+   - 1.由于部分属性注入失败，导致BaseController中的属性也注入失败，出现空指针问题，
+     > 比如这个注入失败 @Inject private ICacheDao<String, Object> cachedDao = CacheProxyDao.getCache();,ICacheDao有多个实现类，所以报错；另外这里不应该注入，因为已经有赋值了
+     > 会有以下错误BaseController类中的 @Inject private DelegateController<T> delegateController;属性也注入失败，为空指针
+     
+ ## 缓存问题
+   - 1.ICacheDao处理复杂带泛型的对象，会导致无法存储的问题，并框架没报错，如果发现这个问题，可以使用IJsonCacheDao先代替，这个复制对象处理的功能后续解决
