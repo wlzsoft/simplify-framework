@@ -1,14 +1,5 @@
 package vip.simplify.mvc.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import vip.simplify.config.PropertiesConfig;
 import vip.simplify.config.info.MessageThreadLocal;
 import vip.simplify.encrypt.sign.md5.MD5Encrypt;
@@ -32,6 +23,14 @@ import vip.simplify.utils.StringUtil;
 import vip.simplify.view.IPageTemplate;
 import vip.simplify.view.MessageView;
 import vip.simplify.webcache.annotation.WebCache;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -247,7 +246,13 @@ public class DelegateController<T extends Model> implements IBaseController<T> {
 						template.render(request, response, webCache, staticName, templateUrl);
 						break;
 					case "redirect":
-						RedirectView.exe(request, response, webCache, staticName, templateUrl);
+						//重定向没有设备适配的问题 start  fixed lcy 2017/7/10
+						String redirectUrl = "";
+						if(uriArr.length>1) {
+							redirectUrl = uriArr[1];
+						}
+						// end
+						RedirectView.exe(request, response, webCache, staticName, redirectUrl);
 						break;
 					default :
 						//messageView和ITemplate的综合处理不优雅，并且会导致一个大的文本对象用于匹配Template的key值 TODO

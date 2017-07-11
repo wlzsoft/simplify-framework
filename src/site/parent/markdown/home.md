@@ -246,3 +246,7 @@ Exception in thread "commons-pool-EvictionTimer" java.lang.NoClassDefFoundError:
      
  ## 缓存问题
    - 1.ICacheDao处理复杂带泛型的对象，会导致无法存储的问题，并框架没报错，如果发现这个问题，可以使用IJsonCacheDao先代替，这个复制对象处理的功能后续解决
+   - redis模块增加  redis cluster的处理  ，具体开启，需要在 redis-pool.properties中设置officialCluster=true，并且需要指定cluster模式特有的几个配置项
+   connectionTimeout=1000
+   soTimeout=1000
+   maxAttempts=100
