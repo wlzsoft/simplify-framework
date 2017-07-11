@@ -1,14 +1,9 @@
 package vip.simplify.cache.redis.dao;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.alibaba.fastjson.TypeReference;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.alibaba.fastjson.TypeReference;
-
 import vip.simplify.cache.CacheProxyDao;
 import vip.simplify.cache.dao.IJsonCacheDao;
 import vip.simplify.cache.entity.Goods;
@@ -17,6 +12,10 @@ import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.dao.impl.JsonRedisDao;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.Startup;
+import vip.simplify.utils.PropertieUtil;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -40,9 +39,10 @@ public class JsonRedisDaoTest {
 	
 	@BeforeClass
 	public static void before() {
+		PropertieUtil.setConfigPrefix("properties/");
 		Startup.start();
 	}
-	
+
 	@Test
 	public void testSet() {
 		User user = new User();

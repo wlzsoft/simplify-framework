@@ -2,10 +2,7 @@ package vip.simplify.cache.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.JedisShardInfo;
-import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.ShardedJedisPool;
+import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.util.Hashing;
 import vip.simplify.cache.redis.exception.RedisException;
@@ -14,9 +11,7 @@ import vip.simplify.cache.redis.util.RedisHostAndPortUtil;
 import vip.simplify.cache.redis.util.RedisHostAndPortUtil.HostAndPort;
 import vip.simplify.cache.redis.util.RedisPoolUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,7 +33,8 @@ public class RedisPool {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisPool.class);
 	private static Map<String, List<HostAndPort>> hostAndPortMap;
-	private static Map<String, ShardedJedisPool> redisPools = new ConcurrentHashMap<String, ShardedJedisPool>();
+	private static Map<String, ShardedJedisPool> redisPools = new ConcurrentHashMap<>();
+	private static Map<String, JedisCluster> redisClusterPools = new ConcurrentHashMap<>();
 	public static String redisInfo;
 	static {
 
@@ -102,31 +98,66 @@ public class RedisPool {
 		for (Entry<String, List<HostAndPort>> entry : hostAndPortMap.entrySet()) {
 			String key = entry.getKey();
 			List<HostAndPort> hostList = entry.getValue();
+
+			//A.本地客户端切片集群设置
 			//这里的集合创建可使用google的guava集合库
 			//List<JedisShardInfo> shards = com.google.common.collect.Lists.newArrayList();
 			List<JedisShardInfo> shards = new ArrayList<>();
+
+			//B.官方redis cluster设置
+			Set<redis.clients.jedis.HostAndPort> hostAndPortSet = new HashSet<>();
+			String password = "";
+
 			strb.append("\n切片集群组[").append(key).append("]==>>");
 			for (int i = 0; i < hostList.size(); i++) {
 				HostAndPort hnp = hostList.get(i);
-				JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
 				strb.append("{节点地址").append(i+1).append(":[").append(hnp.host).append(":").append(hnp.port).append("],");
 				if(hnp.pwd != null && hnp.pwd.length() > 0){
 					strb.append("密码:").append("******");
-					jedisShardInfo.setPassword(hnp.pwd);
 				}
-				shards.add(jedisShardInfo);
+				if (redisPoolProperties.getOfficialCluster()) {
+					//b.
+					redis.clients.jedis.HostAndPort hostAndPort = new redis.clients.jedis.HostAndPort(hnp.host,hnp.port);
+					//TODO 暂时没有设置密码权限
+					hostAndPortSet.add(hostAndPort);
+				} else {
+					//a.
+					JedisShardInfo jedisShardInfo = new JedisShardInfo(hnp.host,hnp.port);
+					if(hnp.pwd != null && hnp.pwd.length() > 0){
+						jedisShardInfo.setPassword(hnp.pwd);
+						password = hnp.pwd;//最后一个密码为准，后续优化
+					}
+					shards.add(jedisShardInfo);
+				}
+
 				strb.append("}");
 			}
 
-			/**
-			 * Jedis 驱动库实现的分布式切片,其中List<JedisShardInfo>中JedisShardInfo添加的顺序和key，来算出具体执行哪个切片（哪台redis切片）
-			 * 在线上准备好新切片时，可支持Pre-Sharding（在线扩容），前提是需要配合配置中心，做到配置在线自动更新
-			 */
-			ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH);
-			//ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH,Sharded.DEFAULT_KEY_TAG_PATTERN);// TODO DEFAULT_KEY_TAG_PATTERN 的作用
-			redisPools.put(key, pool);
-			
+			if (redisPoolProperties.getOfficialCluster()) {
+				//b.
+				JedisCluster jedisCluster = null;
+				Integer connectionTimeout = redisPoolProperties.getConnectionTimeout();
+				Integer soTimeout = redisPoolProperties.getSoTimeout();
+				Integer maxAttempts = redisPoolProperties.getMaxAttempts();
+				if ("".equals(password)) {
+					jedisCluster = new JedisCluster(hostAndPortSet,connectionTimeout,soTimeout,maxAttempts,config);
+				} else {
+					jedisCluster = new JedisCluster(hostAndPortSet,connectionTimeout,soTimeout,maxAttempts,password,config);
+				}
+				redisClusterPools.put(key, jedisCluster);
+			} else {
+				//a.
+				/**
+				 * Jedis 驱动库实现的分布式切片,其中List<JedisShardInfo>中JedisShardInfo添加的顺序和key，来算出具体执行哪个切片（哪台redis切片）
+				 * 在线上准备好新切片时，可支持Pre-Sharding（在线扩容），前提是需要配合配置中心，做到配置在线自动更新
+				 */
+				ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH);
+				//ShardedJedisPool pool = new ShardedJedisPool(config, shards, Hashing.MURMUR_HASH,Sharded.DEFAULT_KEY_TAG_PATTERN);// TODO DEFAULT_KEY_TAG_PATTERN 的作用
+				redisPools.put(key, pool);
+			}
 		}
+
+
 		redisInfo = strb.toString();
 
 	}
@@ -137,14 +168,20 @@ public class RedisPool {
 	 * 操作步骤: TODO<br>
 	 */
 	public static void initCachePool() {
-		ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
-		for(int i=0; i<10; i++) {
+		RedisPoolProperties redisPoolProperties= RedisPoolUtil.getRedisPoolProperties();
+		if (redisPoolProperties.getOfficialCluster()) {
+			JedisCluster jedisCluster = RedisPool.getClusterConnection("redis_ref_hosts");
+			LOGGER.info("当前redis连接池状态：启用redis cluster模式，无需关心连接池");
+		} else {
+			ShardedJedisPool pool = RedisPool.init("redis_ref_hosts");
+			for(int i=0; i<10; i++) {
 //			RedisPool.getConnection("redis_ref_hosts");//请求后已经返回连接池中，这时候逻辑连接，应该为0，物理连接为10
-			ShardedJedis jedis = pool.getResource();
-//			jedis.close();
-			pool.returnResourceObject(jedis);
+				ShardedJedis jedis = pool.getResource();
+				jedis.close();//redis3.0后建议使用
+				//pool.returnResourceObject(jedis);//redis 3.0后废弃
+			}
+			LOGGER.info("当前redis连接池状态：NumActive(当前激活数):"+pool.getNumActive()+"-NumIdle(当前空闲数):"+pool.getNumIdle()+"-NumWaiters(当前等待数):"+pool.getNumWaiters());
 		}
-		LOGGER.info("当前redis连接池状态：NumActive(当前激活数):"+pool.getNumActive()+"-NumIdle(当前空闲数):"+pool.getNumIdle()+"-NumWaiters(当前等待数):"+pool.getNumWaiters());
 	}
 	
 	private RedisPool() {
@@ -182,6 +219,11 @@ public class RedisPool {
 			throw new RedisException("无法从连接池中获取连接，请确认是否redis服务是否正常",ex);
 		}
 		return jedis;
+	}
+
+	static JedisCluster getClusterConnection(String modName) {
+		JedisCluster  cluster = redisClusterPools.get(modName);
+		return cluster;
 	}
 
 }

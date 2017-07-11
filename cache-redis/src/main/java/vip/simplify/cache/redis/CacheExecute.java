@@ -2,17 +2,16 @@ package vip.simplify.cache.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import vip.simplify.cache.exception.CacheException;
-import vip.simplify.cache.redis.dao.ICacheExecuteCallbak;
-import vip.simplify.cache.redis.dao.impl.CommonRedisDao;
-import vip.simplify.cache.redis.exception.RedisException;
-
+import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
+import vip.simplify.cache.exception.CacheException;
+import vip.simplify.cache.redis.dao.ICacheExecuteCallbak;
+import vip.simplify.cache.redis.dao.IClusterCacheExecuteCallbak;
+import vip.simplify.cache.redis.exception.RedisException;
 
 /**
   * <p><b>Title:</b><i>TODO</i></p>
@@ -28,7 +27,7 @@ import redis.clients.jedis.exceptions.JedisException;
  *
  */
 public class CacheExecute {
-	private static final Logger LOGGER = LoggerFactory.getLogger(CommonRedisDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CacheExecute.class);
 	
 	
 	/**
@@ -64,8 +63,51 @@ public class CacheExecute {
 			try {
 				ShardedJedisPool pool = RedisPool.init(modName);
 				if (!pool.isClosed()&&jedis!=null) {
-//					jedis.close();
-					pool.returnResourceObject(jedis);
+					jedis.close();
+					//pool.returnResourceObject(jedis);
+				}
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 方法用途: 返回值 <br>
+	 * 操作步骤: 用法 <code><br>
+	 * CacheExecute.execute(key, (k,jedis) -> {
+	 *<br>&nbsp;&nbsp;&nbsp;&nbsp;V value = null;
+	 *<br>&nbsp;&nbsp;&nbsp;&nbsp;return value;
+	 *<br>},modName);</code>
+	 * <br>
+	 * @param key 缓存键
+	 * @return 缓存值
+	 */
+	public static <KK,VV> VV executeCluster(KK key, IClusterCacheExecuteCallbak<KK,VV> callback, String modName) {
+
+		JedisCluster jedis = RedisPool.getClusterConnection(modName);
+		try {
+			return callback.call(key,jedis);
+//		} catch (TimeoutException e) {
+//			LOGGER.error("获取 redis 缓存超时", e);
+		} catch (JedisConnectionException e) {
+			LOGGER.error("并发导致连接异常被服务端丢弃和重置!", e);
+			throw new RedisException(e);
+		} catch (JedisDataException e) {
+			LOGGER.warn("获取 redis 缓存被中断", e);
+			throw new RedisException(e);
+		} catch (JedisException e) {
+			LOGGER.warn("获取 redis 缓存错误", e);
+			throw new RedisException(e);
+		} catch (Exception e) {
+			LOGGER.error("error!", e);
+			throw new CacheException(e.getMessage());
+		} finally {
+			try {
+				if (jedis!=null) {
+					//jedis.close(); //jedisCluster不应该关闭，会关闭整个连接池
+					//pool.returnResourceObject(jedis);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());

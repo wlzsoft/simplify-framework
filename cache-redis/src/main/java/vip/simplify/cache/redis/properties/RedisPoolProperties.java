@@ -13,14 +13,26 @@ package vip.simplify.cache.redis.properties;
  *
  */
 public class RedisPoolProperties {
+	private Boolean officialCluster = false;
 	private Integer maxWaitMillis = 10000;
 	private Integer maxIdle = 1000;
 	private Integer maxTotal = 5000;
 	private Integer minIdle = 20;
 	private Boolean testOnBorrow = true;
 	private Boolean testWhileIdle = false;
+	//jedisCluster特有的属性
+	private Integer connectionTimeout = 1000;
+	private Integer soTimeout = 1000;
+	private Integer maxAttempts = 100;
 //	private Integer timeBetweenEvictionRunsMillis = 30000;
 //	private Integer numTestsPerEvictionRun= 10000;
+
+	public Boolean getOfficialCluster() {
+		return officialCluster;
+	}
+	public void setOfficialCluster(Boolean officialCluster) {
+		this.officialCluster = officialCluster;
+	}
 	public Integer getMaxWaitMillis() {
 		return maxWaitMillis;
 	}
@@ -57,10 +69,32 @@ public class RedisPoolProperties {
 	public void setMinIdle(Integer minIdle) {
 		this.minIdle = minIdle;
 	}
+	public Integer getConnectionTimeout() {
+		return connectionTimeout;
+	}
+	public void setConnectionTimeout(Integer connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
+	}
+	public Integer getSoTimeout() {
+		return soTimeout;
+	}
+
+	public Integer getMaxAttempts() {
+		return maxAttempts;
+	}
+
+	public void setSoTimeout(Integer soTimeout) {
+		this.soTimeout = soTimeout;
+	}
+
+	public void setMaxAttempts(Integer maxAttempts) {
+		this.maxAttempts = maxAttempts;
+	}
 	@Override
 	public String toString() {
 		return "[maxWaitMillis=" + maxWaitMillis + ", maxIdle=" + maxIdle + ", maxTotal=" + maxTotal
-				+ ", minIdle=" + minIdle + ", testOnBorrow=" + testOnBorrow + ", testWhileIdle=" + testWhileIdle + "]";
+				+ ", minIdle=" + minIdle + ", testOnBorrow=" + testOnBorrow + ", testWhileIdle=" + testWhileIdle
+				+",officialCluster="+officialCluster+" | jedisCluster: connectionTimeout="+connectionTimeout+ ",soTimeout="+soTimeout+",maxAttempts="+maxAttempts+"]";
 	}
 
 }
