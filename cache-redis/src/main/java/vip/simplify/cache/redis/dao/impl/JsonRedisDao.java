@@ -1,20 +1,20 @@
 package vip.simplify.cache.redis.dao.impl;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.alibaba.fastjson.TypeReference;
-
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import vip.simplify.cache.dao.IJsonCacheDao;
 import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.CacheExecute;
 import vip.simplify.cache.redis.dao.BaseRedisDao;
+import vip.simplify.cache.redis.properties.RedisPoolProperties;
+import vip.simplify.cache.redis.util.RedisPoolUtil;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.util.JsonResolver;
 import vip.simplify.utils.JsonUtil;
+
+import java.util.*;
 
 
 /**
@@ -31,7 +31,8 @@ import vip.simplify.utils.JsonUtil;
  *
  */
 public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCacheDao<VV> {
-	
+
+	RedisPoolProperties redisPoolProperties = RedisPoolUtil.getRedisPoolProperties();
 	private Class<VV> valueClazz;
 
 	public JsonRedisDao(String modName,Class<VV> valueClazz) {
@@ -76,8 +77,9 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public <V> V getAndSet(String key, V value,Class<V> clazz) {
-		@SuppressWarnings("unchecked")
-		V result = CacheExecute.execute(key, (k, jedis) ->  {
+		if (redisPoolProperties.getOfficialCluster()) {
+			@SuppressWarnings("unchecked")
+			V result = CacheExecute.executeCluster(key, (k, jedis) ->  {
 				String valueStr = jedis.getSet(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				if(valueStr != null && valueStr.length() > 0){
 					if(clazz != null) {
@@ -87,8 +89,24 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 					}
 				}
 				return null;
-		}, modName);
-		return result;
+			}, modName);
+			return result;
+		} else {
+			@SuppressWarnings("unchecked")
+			V result = CacheExecute.execute(key, (k, jedis) ->  {
+				String valueStr = jedis.getSet(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				if(valueStr != null && valueStr.length() > 0){
+					if(clazz != null) {
+						return JsonUtil.jsonToObject(valueStr,clazz);
+					} else {
+						return (V)JsonUtil.jsonToObject(valueStr);
+					}
+				}
+				return null;
+			}, modName);
+			return result;
+		}
+
 	}
 
 	/**
@@ -112,16 +130,30 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public <V> V get(String key,TypeReference<V> typeReference) {
-		V result =  CacheExecute.execute(key, (k,jedis) ->  {
+		if (redisPoolProperties.getOfficialCluster()) {
+			V result =  CacheExecute.executeCluster(key, (k,jedis) ->  {
 				String valueStr =  jedis.get(k);
 				if(valueStr != null && valueStr.length() > 0){
 					if(typeReference != null) {
 						return JsonUtil.jsonToObject(valueStr,typeReference);
-					} 
+					}
 				}
 				return null;
-		}, modName);
-		return result;
+			}, modName);
+			return result;
+		} else {
+			V result =  CacheExecute.execute(key, (k,jedis) ->  {
+				String valueStr =  jedis.get(k);
+				if(valueStr != null && valueStr.length() > 0){
+					if(typeReference != null) {
+						return JsonUtil.jsonToObject(valueStr,typeReference);
+					}
+				}
+				return null;
+			}, modName);
+			return result;
+		}
+
 	}
 	/**
 	 * 
@@ -133,8 +165,9 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public <V> V get(String key,Class<V> clazz) {
-		@SuppressWarnings("unchecked")
-		V result =  CacheExecute.execute(key, (k,jedis) ->  {
+		if (redisPoolProperties.getOfficialCluster()) {
+			@SuppressWarnings("unchecked")
+			V result =  CacheExecute.executeCluster(key, (k,jedis) ->  {
 				String valueStr =  jedis.get(k);
 				if(valueStr != null && valueStr.length() > 0){
 					if(clazz != null) {
@@ -144,8 +177,24 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 					}
 				}
 				return null;
-		}, modName);
-		return result;
+			}, modName);
+			return result;
+		} else {
+			@SuppressWarnings("unchecked")
+			V result =  CacheExecute.execute(key, (k,jedis) ->  {
+				String valueStr =  jedis.get(k);
+				if(valueStr != null && valueStr.length() > 0){
+					if(clazz != null) {
+						return JsonUtil.jsonToObject(valueStr,clazz);
+					} else {
+						return (V)JsonUtil.jsonToObject(valueStr);
+					}
+				}
+				return null;
+			}, modName);
+			return result;
+		}
+
 	}
 	
 	/**
@@ -172,15 +221,26 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public boolean set(String key,int expireTime, VV value) {
-		
-		Boolean isSuccess = CacheExecute.execute(key, (k,jedis) -> {
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean isSuccess = CacheExecute.executeCluster(key, (k,jedis) -> {
 				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				if(expireTime > 0){
 					jedis.expire(k, expireTime);
 				}
 				return result.equalsIgnoreCase("OK");
-		}, modName);
-		return isSuccess;
+			}, modName);
+			return isSuccess;
+		} else {
+			Boolean isSuccess = CacheExecute.execute(key, (k,jedis) -> {
+				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				if(expireTime > 0){
+					jedis.expire(k, expireTime);
+				}
+				return result.equalsIgnoreCase("OK");
+			}, modName);
+			return isSuccess;
+		}
+
 	}
 	  
 	
@@ -196,11 +256,20 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
      */
 	@Override
     public boolean setnx(String key, VV value) {
-    	Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
-				 long result = jedis.setnx(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-		         return result > 0;
-		}, modName);
-        return isSuccess;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean isSuccess = CacheExecute.executeCluster(key, (k,jedis) ->  {
+				long result = jedis.setnx(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				return result > 0;
+			}, modName);
+			return isSuccess;
+		} else {
+			Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
+				long result = jedis.setnx(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				return result > 0;
+			}, modName);
+			return isSuccess;
+		}
+
     }
 
     /**
@@ -215,11 +284,20 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
      */
 	@Override
     public boolean setex(String key, int seconds, VV value) {
-    	Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean isSuccess = CacheExecute.executeCluster(key, (k,jedis) ->  {
 				String result = jedis.setex(k, seconds, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-	            return result.equalsIgnoreCase("OK");
-		}, modName);
-        return isSuccess;
+				return result.equalsIgnoreCase("OK");
+			}, modName);
+			return isSuccess;
+		} else {
+			Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
+				String result = jedis.setex(k, seconds, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				return result.equalsIgnoreCase("OK");
+			}, modName);
+			return isSuccess;
+		}
+
     }
 	
 	/** 
@@ -230,15 +308,28 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public boolean delete(String key) throws UncheckedException {
-		Boolean result = CacheExecute.execute(key, (k,jedis) -> {
-  				 Long res = jedis.del(k);
-  		      	 if(res==0) {
-  		      		 return true;
-  		      	 } else {
-  		      		 return false;
-  		      	 }
-  		},modName);
-		return result;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean result = CacheExecute.executeCluster(key, (k,jedis) -> {
+				Long res = jedis.del(k);
+				if(res==0) {
+					return true;
+				} else {
+					return false;
+				}
+			},modName);
+			return result;
+		} else {
+			Boolean result = CacheExecute.execute(key, (k,jedis) -> {
+				Long res = jedis.del(k);
+				if(res==0) {
+					return true;
+				} else {
+					return false;
+				}
+			},modName);
+			return result;
+		}
+
 	}
 	
 	/** 
@@ -251,15 +342,24 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	 */
 	@Override
 	public Long delete(String[] keys) {
-		Long result = CacheExecute.execute(keys, (k,jedis) -> {
-			Long delCount = 0L;
-			Collection<Jedis> jedisSet = jedis.getAllShards();
-			for (Jedis singleJedis : jedisSet) {
-				delCount += singleJedis.del(keys);
-			}
-			return delCount;
-  		},modName);
-		return result;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Long result = CacheExecute.executeCluster(keys, (k,jedis) -> {
+				Long delCount = jedis.del(keys);
+				return delCount;
+			},modName);
+			return result;
+		} else {
+			Long result = CacheExecute.execute(keys, (k,jedis) -> {
+				Long delCount = 0L;
+				Collection<Jedis> jedisSet = jedis.getAllShards();
+				for (Jedis singleJedis : jedisSet) {
+					delCount += singleJedis.del(keys);
+				}
+				return delCount;
+			},modName);
+			return result;
+		}
+
 	}
 	
 	/** 
@@ -301,14 +401,30 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 		if (key.startsWith("*")) {
 			throw new UncheckedException("只允许左边前缀匹配key");
 		}
-		Set<String> hitKeySet = CacheExecute.execute(key,(k,jedis) ->  {
-			Set<String> keySet = new HashSet<>(); 
-			Collection<Jedis> jedisCollecion = jedis.getAllShards();
-			for (Jedis singleRedis : jedisCollecion) {
-				keySet.addAll(singleRedis.keys(key));
-			}
-			return keySet;
-  		},modName);
-		return hitKeySet;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Set<String> hitKeySet = CacheExecute.executeCluster(key,(k,jedis) ->  {
+				Set<String> keySet = new HashSet<>();
+				Map<String, JedisPool> clusterNodes = jedis.getClusterNodes();
+				for(Map.Entry<String, JedisPool> entry : clusterNodes.entrySet()){
+					JedisPool jedisPool = entry.getValue();
+					Jedis connection = jedisPool.getResource();
+					keySet.addAll(connection.keys(key));
+				}
+				return keySet;
+
+			},modName);
+			return hitKeySet;
+		} else {
+			Set<String> hitKeySet = CacheExecute.execute(key,(k,jedis) ->  {
+				Set<String> keySet = new HashSet<>();
+				Collection<Jedis> jedisCollecion = jedis.getAllShards();
+				for (Jedis singleRedis : jedisCollecion) {
+					keySet.addAll(singleRedis.keys(key));
+				}
+				return keySet;
+			},modName);
+			return hitKeySet;
+		}
+
 	}
 }

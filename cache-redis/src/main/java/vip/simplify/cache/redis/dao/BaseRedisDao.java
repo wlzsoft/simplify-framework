@@ -1,9 +1,11 @@
 package vip.simplify.cache.redis.dao;
 
-import java.io.Serializable;
-
 import vip.simplify.cache.enums.TimeEnum;
 import vip.simplify.cache.redis.CacheExecute;
+import vip.simplify.cache.redis.properties.RedisPoolProperties;
+import vip.simplify.cache.redis.util.RedisPoolUtil;
+
+import java.io.Serializable;
 
 /**
  * <p><b>Title:</b><i>缓存操作基类</i></p>
@@ -20,7 +22,7 @@ import vip.simplify.cache.redis.CacheExecute;
  * @param <K>
  */
 public abstract class BaseRedisDao<K extends Serializable>  {
-	
+	RedisPoolProperties redisPoolProperties = RedisPoolUtil.getRedisPoolProperties();
 	public String modName;
 	public BaseRedisDao(String modName) {
 		this.modName = modName;
@@ -36,9 +38,12 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 * @return
 	 */
 	public long expire(String key, int expireTime, TimeEnum seconds) {
-		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
-  			return jedis.expire(k, expireTime);
-  		},modName);
+		Long ret = null;
+		if (redisPoolProperties.getOfficialCluster()) {
+			ret = CacheExecute.executeCluster(key,(k,jedis) -> jedis.expire(k,expireTime),modName);
+		} else {
+			ret = CacheExecute.execute(key,(k,jedis) -> jedis.expire(k, expireTime),modName);
+		}
 		return ret;
 	}
 	/**
@@ -51,9 +56,12 @@ public abstract class BaseRedisDao<K extends Serializable>  {
 	 * @return
 	 */
 	public long expire(byte[] key, int expireTime, TimeEnum seconds) {
-		Long ret = CacheExecute.execute(key,(k,jedis) ->  {
-  			return jedis.expire(k, expireTime);
-  		},modName);
+		Long ret = null;
+		if (redisPoolProperties.getOfficialCluster()) {
+			ret = CacheExecute.executeCluster(key,(k,jedis) ->  jedis.expire(k, expireTime),modName);
+		} else {
+			ret = CacheExecute.execute(key,(k,jedis) ->  jedis.expire(k, expireTime),modName);
+		}
 		return ret;
 	}
 	

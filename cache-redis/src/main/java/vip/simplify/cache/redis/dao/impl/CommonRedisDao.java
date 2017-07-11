@@ -1,13 +1,15 @@
 package vip.simplify.cache.redis.dao.impl;
 
-import java.io.Serializable;
-
 import vip.simplify.cache.ICacheDao;
 import vip.simplify.cache.enums.CacheExpireTimeEnum;
 import vip.simplify.cache.redis.CacheExecute;
 import vip.simplify.cache.redis.dao.BaseRedisDao;
+import vip.simplify.cache.redis.properties.RedisPoolProperties;
+import vip.simplify.cache.redis.util.RedisPoolUtil;
 import vip.simplify.exception.UncheckedException;
 import vip.simplify.utils.SerializeUtil;
+
+import java.io.Serializable;
 
 
 /**
@@ -28,7 +30,8 @@ import vip.simplify.utils.SerializeUtil;
  */
 //@Bean(type=BeanTypeEnum.PROTOTYPE)
 public class CommonRedisDao<K extends Serializable,V,T extends Serializable> extends BaseRedisDao<K> implements ICacheDao<K,V>{
-	
+
+	RedisPoolProperties redisPoolProperties = RedisPoolUtil.getRedisPoolProperties();
 	public CommonRedisDao(String modName) {
 		super(modName);
 	}
@@ -42,9 +45,11 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean exists(K key) {
-		Boolean result = CacheExecute.execute(key, (k, jedis) -> jedis.exists(k.toString()),modName);
-		return result;
-			
+		if (redisPoolProperties.getOfficialCluster()) {
+			return CacheExecute.executeCluster(key, (k, jedis) -> jedis.exists(k.toString()),modName);
+		} else {
+			return CacheExecute.execute(key, (k, jedis) -> jedis.exists(k.toString()),modName);
+		}
 	}
   
 	/**
@@ -55,16 +60,25 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public V get(K key) {
-
-		return CacheExecute.execute(key, (k,jedis) ->  {
+		if (redisPoolProperties.getOfficialCluster()) {
+			return CacheExecute.executeCluster(key, (k,jedis) ->  {
 				byte[] ret = jedis.get(SerializeUtil.serialize(k));
 				if (ret != null && ret.length > 0) {
 					return SerializeUtil.unserialize(ret);
 				}
 				return null;
-		},modName);
+			},modName);
+		} else {
+			return CacheExecute.execute(key, (k,jedis) ->  {
+				byte[] ret = jedis.get(SerializeUtil.serialize(k));
+				if (ret != null && ret.length > 0) {
+					return SerializeUtil.unserialize(ret);
+				}
+				return null;
+			},modName);
+		}
 	}
-	
+
 	/**
 	 * 方法用途: 返回值 <br>
 	 * 操作步骤: <br>
@@ -72,11 +86,11 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return 缓存保存的对象
 	 */
 	public byte[] getBytes(byte[] key) {
-
-		return CacheExecute.execute(key, (k,jedis) ->  {
-				byte[] ret = jedis.get(k);
-				return ret;
-		},modName);
+		if (redisPoolProperties.getOfficialCluster()) {
+			return CacheExecute.executeCluster(key, (k,jedis) ->  jedis.get(k) ,modName);
+		} else {
+			return CacheExecute.execute(key, (k,jedis) ->  jedis.get(k) ,modName);
+		}
 	}
 	
 	/**
@@ -88,7 +102,8 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public  V get(K key, Class<V> type) {
-		return CacheExecute.execute(key, (k,jedis) -> {
+		if (redisPoolProperties.getOfficialCluster()) {
+			return CacheExecute.executeCluster(key, (k,jedis) -> {
 				byte[] ret = jedis.get(SerializeUtil.serialize(k));
 				if (ret != null && ret.length > 0) {
 					V value = SerializeUtil.unserialize(ret);
@@ -98,7 +113,20 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 					return value;
 				}
 				return null;
-		},modName);
+			},modName);
+		} else {
+			return CacheExecute.execute(key, (k,jedis) -> {
+				byte[] ret = jedis.get(SerializeUtil.serialize(k));
+				if (ret != null && ret.length > 0) {
+					V value = SerializeUtil.unserialize(ret);
+					if (type != null && !type.isInstance(value)) {
+						throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + value);
+					}
+					return value;
+				}
+				return null;
+			},modName);
+		}
 	  }
 	
 	/** 
@@ -146,15 +174,25 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean set(K key, int exportTime,  V value) throws UncheckedException {
-		
-		Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-  				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
-  	            if(exportTime > 0){
-  	            	jedis.expire(SerializeUtil.serialize(k), exportTime);
-  			    }
-			    return result.equalsIgnoreCase("OK");
-  		},modName);
-        return ret;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean ret = CacheExecute.executeCluster(key, (k,jedis) ->  {
+				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				if(exportTime > 0){
+					jedis.expire(SerializeUtil.serialize(k), exportTime);
+				}
+				return result.equalsIgnoreCase("OK");
+			},modName);
+			return ret;
+		} else {
+			Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
+				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				if(exportTime > 0){
+					jedis.expire(SerializeUtil.serialize(k), exportTime);
+				}
+				return result.equalsIgnoreCase("OK");
+			},modName);
+			return ret;
+		}
 	}
 	
    /**
@@ -166,14 +204,23 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public Object getAndSet(K key, Object value) {
-
-		return CacheExecute.execute(key, (k,jedis) -> {
+		if (redisPoolProperties.getOfficialCluster()) {
+			return CacheExecute.executeCluster(key, (k, jedis) -> {
 				byte[] bytes = jedis.getSet(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
 				if (bytes != null && bytes.length > 0) {
 					return SerializeUtil.unserialize(bytes);
 				}
 				return null;
-		},modName);
+			}, modName);
+		} else {
+			return CacheExecute.execute(key, (k, jedis) -> {
+				byte[] bytes = jedis.getSet(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				if (bytes != null && bytes.length > 0) {
+					return SerializeUtil.unserialize(bytes);
+				}
+				return null;
+			}, modName);
+		}
 		
 	}
 	
@@ -185,15 +232,27 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 */
 	@Override
 	public boolean delete(K key) throws UncheckedException {
-		Boolean result = CacheExecute.execute(key, (k,jedis) -> {
-  				 Long res = jedis.del(SerializeUtil.serialize(k));
-  		      	 if(res==0) {
-  		      		 return true;
-  		      	 } else {
-  		      		 return false;
-  		      	 }
-  		},modName);
-		return result;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean result = CacheExecute.executeCluster(key, (k,jedis) -> {
+				Long res = jedis.del(SerializeUtil.serialize(k));
+				if(res==0) {
+					return true;
+				} else {
+					return false;
+				}
+			},modName);
+			return result;
+		} else {
+			Boolean result = CacheExecute.execute(key, (k,jedis) -> {
+				Long res = jedis.del(SerializeUtil.serialize(k));
+				if(res==0) {
+					return true;
+				} else {
+					return false;
+				}
+			},modName);
+			return result;
+		}
 	}
 	
   @Override  
@@ -237,12 +296,20 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public boolean setnx(K key, V value) {
-		
-		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
-  				long result = jedis.setnx(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
-  				return result > 0;
-  		},modName);
-		return ret;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean ret = CacheExecute.executeCluster(key, (k,jedis) -> {
+				long result = jedis.setnx(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				return result > 0;
+			},modName);
+			return ret;
+		} else {
+			Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
+				long result = jedis.setnx(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				return result > 0;
+			},modName);
+			return ret;
+		}
+
 		
 	}
 
@@ -257,11 +324,20 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	 * @return
 	 */
 	public boolean setex(K key, int seconds, V value) {
-		Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
-  				String result = jedis.setex(SerializeUtil.serialize(k), seconds, SerializeUtil.serialize(value));
-  				return result.equalsIgnoreCase("OK");
-  		},modName);
-		return ret;
+		if (redisPoolProperties.getOfficialCluster()) {
+			Boolean ret = CacheExecute.executeCluster(key, (k,jedis) -> {
+				String result = jedis.setex(SerializeUtil.serialize(k), seconds, SerializeUtil.serialize(value));
+				return result.equalsIgnoreCase("OK");
+			},modName);
+			return ret;
+		} else {
+			Boolean ret = CacheExecute.execute(key, (k,jedis) -> {
+				String result = jedis.setex(SerializeUtil.serialize(k), seconds, SerializeUtil.serialize(value));
+				return result.equalsIgnoreCase("OK");
+			},modName);
+			return ret;
+		}
+
 		
 	}
 	
