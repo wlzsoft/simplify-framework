@@ -176,18 +176,23 @@ public class CommonRedisDao<K extends Serializable,V,T extends Serializable> ext
 	public boolean set(K key, int exportTime,  V value) throws UncheckedException {
 		if (redisPoolProperties.getOfficialCluster()) {
 			Boolean ret = CacheExecute.executeCluster(key, (k,jedis) ->  {
-				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				String result = null;
 				if(exportTime > 0){
-					jedis.expire(SerializeUtil.serialize(k), exportTime);
+					//jedis.expire(SerializeUtil.serialize(k), exportTime);
+					result = jedis.setex(SerializeUtil.serialize(k), exportTime, SerializeUtil.serialize(value));
+				} else {
+					result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
 				}
 				return result.equalsIgnoreCase("OK");
 			},modName);
 			return ret;
 		} else {
 			Boolean ret = CacheExecute.execute(key, (k,jedis) ->  {
-				String result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
+				String result = null;
 				if(exportTime > 0){
-					jedis.expire(SerializeUtil.serialize(k), exportTime);
+					result = jedis.setex(SerializeUtil.serialize(k), exportTime, SerializeUtil.serialize(value));
+				} else {
+					result = jedis.set(SerializeUtil.serialize(k), SerializeUtil.serialize(value));
 				}
 				return result.equalsIgnoreCase("OK");
 			},modName);
