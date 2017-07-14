@@ -1,8 +1,8 @@
 package vip.simplify.cache.dao;
 
-import java.util.Set;
-
 import com.alibaba.fastjson.TypeReference;
+
+import java.util.Set;
 
 /**
  * <p><b>Title:</b><i>以JSON字符缓存操作类</i></p>
@@ -20,9 +20,8 @@ import com.alibaba.fastjson.TypeReference;
 public interface IJsonCacheDao<VV>  {
 
 	/**
-	 * 方法用途: <p>将给定key的值设为value，并返回key的旧值。 </p>
-	 * 操作步骤:<p>当key存在但不是字符串类型时，返回一个错误。 </p>
-	 * 
+	 * 方法用途: 将给定key的值设为value，并返回key的旧值 <br>
+	 * 操作步骤: 当key存在但不是字符串类型时，返回一个错误 <br>
 	 * @param key
 	 * @param value
 	 * @return
@@ -53,38 +52,28 @@ public interface IJsonCacheDao<VV>  {
 	public <V> V get(String key, Class<V> clazz);
 
 	public boolean set(String key, VV value);
+
 	/** 
 	 * 方法用途: 添加值
 	 * 操作步骤: 通过SET添加数据时会替换掉以前的键对应的值<br>
 	 * @param key 保存键
 	 * @param expireTime 超时时间 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
 	 * @param value 对象值
+	 *
 	 */
 	public boolean set(String key, int expireTime, VV value);
 	
 	  
     /**
-     * 方法用途: <p>将key的值设为value，当且仅当key不存在。   </p>
-     * 操作步骤:<p>若给定的key已经存在，则SETNX不做任何动作。    </p>
-     * <p>SETNX是”SET if Not eXists”(如果不存在，则SET)的简写。</p>
-     *
+     * 方法用途: 将key的值设为value，当且仅当key不存在 <br>
+     * 操作步骤: 若给定的key已经存在，则SETNX不做任何动作<br>
+     *  SETNX是”SET if Not eXists”(如果不存在，则SET)的简写<br>
      * @param key
      * @param value
      * @return
      */
     public boolean setnx(String key, VV value);
 
-    /**
-     * 方法用途: <p>将值value关联到key，并将key的生存时间设为seconds(以秒为单位) </p>
-     * 操作步骤:<p>如果key 已经存在，SETEX命令将覆写旧值。   原子性(atomic)操作 <p/>
-     *
-     * @param key
-     * @param seconds
-     * @param value
-     * @return
-     */
-    public boolean setex(String key, int seconds, VV value);
-    
     /** 
 	 * 方法用途: 删除值
 	 * 操作步骤: <br>

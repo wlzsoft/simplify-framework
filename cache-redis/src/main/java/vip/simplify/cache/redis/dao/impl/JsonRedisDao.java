@@ -211,11 +211,11 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	}
 
 	/**
-	 * 
-	 * 方法用途: TODO<br>
-	 * 操作步骤: BeanFactory.getBean(JsonResolver.class).ObjectToString(value) 后续使用 JsonUtil.objectToString 方法来处理，当前类使用BeanConfig注入方式 TODO<br>
+	 * 方法用途: 将值value关联到key，并将key的生存时间设为seconds(以秒为单位) <br>
+	 * 操作步骤: 如果key 已经存在，SETEX命令将覆盖旧值，原子性(atomic)操作
+	 * BeanFactory.getBean(JsonResolver.class).ObjectToString(value) 后续使用 JsonUtil.objectToString 方法来处理，当前类使用BeanConfig注入方式 TODO<br>
 	 * @param key
-	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间
+	 * @param expireTime 超时事件 单位是秒,出自定义失效事件外，可通过 CacheExpireTimeEnum.timesanmp() 来获取常用的枚举的时间,如果需要精确到毫秒级，可以使用psetex
 	 * @param value
 	 * @return
 	 */
@@ -223,18 +223,25 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	public boolean set(String key,int expireTime, VV value) {
 		if (redisPoolProperties.getOfficialCluster()) {
 			Boolean isSuccess = CacheExecute.executeCluster(key, (k,jedis) -> {
-				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				if(expireTime > 0){
-					jedis.expire(k, expireTime);
+				String result = null;
+				if(expireTime > 0) {
+					//jedis.expire(k, expireTime);
+					//精确到毫秒级，可以使用psetex
+					//result = jedis.psetex(k, expireTime*1000,BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+					result = jedis.setex(k, expireTime,BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				} else {
+					result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				}
 				return result.equalsIgnoreCase("OK");
 			}, modName);
 			return isSuccess;
 		} else {
 			Boolean isSuccess = CacheExecute.execute(key, (k,jedis) -> {
-				String result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				if(expireTime > 0){
-					jedis.expire(k, expireTime);
+				String result = null;
+				if(expireTime > 0) {
+					result = jedis.setex(k, expireTime, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
+				} else {
+					result = jedis.set(k, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
 				}
 				return result.equalsIgnoreCase("OK");
 			}, modName);
@@ -272,34 +279,6 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 
     }
 
-    /**
-     * 
-     * 方法用途: <p>将值value关联到key，并将key的生存时间设为seconds(以秒为单位) </p>
-     * <p>如果key 已经存在，SETEX命令将覆写旧值。   原子性(atomic)操作 <p/><br>
-     * 操作步骤: TODO<br>
-     * @param key
-     * @param seconds
-     * @param value
-     * @return
-     */
-	@Override
-    public boolean setex(String key, int seconds, VV value) {
-		if (redisPoolProperties.getOfficialCluster()) {
-			Boolean isSuccess = CacheExecute.executeCluster(key, (k,jedis) ->  {
-				String result = jedis.setex(k, seconds, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				return result.equalsIgnoreCase("OK");
-			}, modName);
-			return isSuccess;
-		} else {
-			Boolean isSuccess = CacheExecute.execute(key, (k,jedis) ->  {
-				String result = jedis.setex(k, seconds, BeanFactory.getBean(JsonResolver.class).ObjectToString(value));
-				return result.equalsIgnoreCase("OK");
-			}, modName);
-			return isSuccess;
-		}
-
-    }
-	
 	/** 
 	 * 方法用途: 删除值
 	 * 操作步骤: 注意：这个方法和CommonRedisDao的delete方法重复，后续要做整合 TODO<br>
@@ -344,7 +323,8 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 	public Long delete(String[] keys) {
 		if (redisPoolProperties.getOfficialCluster()) {
 			Long result = CacheExecute.executeCluster(keys, (k,jedis) -> {
-				Long delCount = jedis.del(keys);
+				//No way to dispatch this command to Redis Cluster because keys have different slots. jedisCluster不支持批处理
+				Long delCount = jedis.del(k);
 				return delCount;
 			},modName);
 			return result;
@@ -353,7 +333,7 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 				Long delCount = 0L;
 				Collection<Jedis> jedisSet = jedis.getAllShards();
 				for (Jedis singleJedis : jedisSet) {
-					delCount += singleJedis.del(keys);
+					delCount += singleJedis.del(k);
 				}
 				return delCount;
 			},modName);
@@ -408,7 +388,7 @@ public class JsonRedisDao<VV> extends BaseRedisDao<String> implements IJsonCache
 				for(Map.Entry<String, JedisPool> entry : clusterNodes.entrySet()){
 					JedisPool jedisPool = entry.getValue();
 					Jedis connection = jedisPool.getResource();
-					keySet.addAll(connection.keys(key));
+					keySet.addAll(connection.keys(key));//keys指令在 jedis cluster中被禁用，可以使用scan 代替
 				}
 				return keySet;
 

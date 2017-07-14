@@ -17,8 +17,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>reids连接池工具类</i></p>
+ * <p>Desc: jedis库使用注意事项
+ * 1.cluster方式的slave不接受任何读写操作
+ * 2.cluster方式不支持keys操作，可以使用scan，但是没办法完全替代，其实keys很低效，也的确尽量不用，同时也不支持select dbNum操作，只有db:select 0 可以用
+ * 3.不支持批量处理，比如批量删除，会报错误：No way to dispatch this command to Redis Cluster because keys have different slots. jedisCluster
+ * 4.info等之前非cluster下可以用的函数，都会报错：No way to dispatch this command to Redis Cluster
+ * </p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>

@@ -1,10 +1,10 @@
 package vip.simplify.entity.page;
 
+import vip.simplify.exception.UncheckedException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import vip.simplify.exception.UncheckedException;
 
 /**
  * <p><b>Title:</b><i>分页实体</i></p>
@@ -65,6 +65,10 @@ public class Page<T> implements IPage<T> {
 	
 	private static int DEFAULT_PAGE_SIZE = 10;
 	/**
+	 * 最大PageSize，不能超过这个值，避免接口被刷导致性能瓶颈,默认60
+	 */
+	public int maxPageSize  = 60;
+	/**
 	 * 当前页码(当前页数) ，默认是第一页
 	 */
 	private int currentPage = 1;
@@ -110,6 +114,7 @@ public class Page<T> implements IPage<T> {
 	 */
 	public Page(){
 	}
+
 	/**
 	 * 构造方法
 	 * 通过指定记录总数、当前页数、每页记录数来构造一个分页对象
@@ -155,6 +160,10 @@ public class Page<T> implements IPage<T> {
 	 * @param isReturnLastPage TODO 注意：为了兼容移动端和pc端多种风格的分页，提供一个控制参数，来指定是否需要返回最后一页记录
 	 */
 	public Page(int currentPage, int pageSize,int totalRecord,boolean isReturnLastPage) {
+
+		if (pageSize > maxPageSize) {
+			throw new UncheckedException("pageSize不能大于"+maxPageSize);
+		}
 
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
@@ -287,6 +296,7 @@ public class Page<T> implements IPage<T> {
 	public int getPrevPage() {
 		return prevPage;
 	}
+
 	/**
 	 * 
 	 * 方法用途: 根据页大小（每页数据个数）获取给定页码的第一条数据在总数据中的位置（从1开始）<br>
@@ -326,7 +336,22 @@ public class Page<T> implements IPage<T> {
 		return pageSize;
 	}
 
+	/**
+	 *
+	 * 方法用途: 设置pagesize的上限<br>
+	 * 操作步骤: 一般无需调用这个方法，特殊需求需要设置时使用，使用要谨慎，避免使用带来的性能问题<br>
+	 * @param maxPageSize
+	 */
+	public void setMaxPageSize(int maxPageSize) {
+		this.maxPageSize = maxPageSize;
+	}
+
 	public void setPageSize(int pageSize) {
+
+		if (pageSize > maxPageSize) {
+			throw new UncheckedException("pageSize不能大于"+maxPageSize);
+		}
+
 		this.pageSize = pageSize;
 	}
 
