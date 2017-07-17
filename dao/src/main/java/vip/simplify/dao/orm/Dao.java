@@ -1,19 +1,7 @@
 package vip.simplify.dao.orm;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import vip.simplify.config.annotation.Config;
 import vip.simplify.dao.Query;
 import vip.simplify.dao.datasource.ConnectionManager;
@@ -36,6 +24,13 @@ import vip.simplify.ioc.annotation.Inject;
 import vip.simplify.ioc.enums.BeanTypeEnum;
 import vip.simplify.utils.ReflectionUtil;
 import vip.simplify.utils.StringUtil;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 
@@ -570,8 +565,13 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	}
 	
 	@Override
+	public T findUnique(String name, boolean isMutilLineExcpetion, Object value) {
+		return findOne(sqlBuilder.findByProperties(name, "?"), isMutilLineExcpetion, value);
+	}
+
+	@Override
 	public T findUnique(String name, Object value) {
-		return findOne(sqlBuilder.findByProperties(name, "?"), value);
+		return findUnique(name, true, value);
 	}
 	
 	/*

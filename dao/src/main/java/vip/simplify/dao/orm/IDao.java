@@ -216,7 +216,18 @@ public interface IDao<T extends IdEntity<Serializable,Integer>, PK extends Seria
 	 * @return
 	 */
 	List<T> findByMutil(String name, String values);
+
 	/**
+	 * 方法用途: 根据属性的值查找唯一的业务实体。<br>
+	 * 操作步骤: TODO<br>
+	 * @param name  属性名
+	 * @param isMutilLineExcpetion 是否抛出异常的形式：如果数据集中有多行记录
+	 * @param value 属性值
+	 * @return 返回指定唯一的业务实体，如果没有找到则返回null。
+	 */
+    T findUnique(String name, boolean isMutilLineExcpetion, Object value);
+
+    /**
 	 * 方法用途: 根据属性的值查找唯一的业务实体。<br>
 	 * 操作步骤: TODO<br>
 	 * @param name  属性名
