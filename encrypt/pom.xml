@@ -14,6 +14,16 @@
   	 <templatePath>${project.parent.basedir}</templatePath>
   	 <parentsite></parentsite>
   </properties>
+    <dependencies>
+        <!--http://www.mindrot.org/projects/jBCrypt/-->
+        <!--后续使用到正式库中-->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
    <build>
 		<finalName>meizu-encrypt</finalName>
 	</build>
