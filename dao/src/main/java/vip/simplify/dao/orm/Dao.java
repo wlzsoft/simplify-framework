@@ -535,9 +535,26 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		},this.entityClass);
 		return tList;
 	}
-	
-	public T findOne(String sql,Object... params) {
+
+	public T findOne(String sql,Object params) {
 		return findOne(sql,true,params);
+	}
+
+	public T findOne(String sql,Object[] params) {
+		return findOne(sql,true,params);
+	}
+
+	/**
+	 *
+	 * 方法用途: 查询唯一记录结果集<br>
+	 * 操作步骤: TODO<br>
+	 * @param sql
+	 * @param isMutilLineExcpetion 是否抛出异常的形式：如果数据集中有多行记录
+	 * @param params
+	 * @return
+	 */
+	public T findOne(String sql,boolean isMutilLineExcpetion,Object params) {
+		return findOne(sql,isMutilLineExcpetion,new Object[] {params});
 	}
 	
 	/**
@@ -549,7 +566,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	 * @param params
 	 * @return
 	 */
-	public T findOne(String sql,boolean isMutilLineExcpetion,Object... params) {
+	public T findOne(String sql,boolean isMutilLineExcpetion,Object[] params) {
 		List<T> list = find(sql,params);
 		if(list != null && list.size()==1) {
 			return list.get(0);
@@ -566,12 +583,14 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 	
 	@Override
 	public T findUnique(String name, boolean isMutilLineExcpetion, Object value) {
-		return findOne(sqlBuilder.findByProperties(name, "?"), isMutilLineExcpetion, value);
+		String sql = sqlBuilder.findByProperties(name, "?");
+		return findOne(sql,isMutilLineExcpetion, value);
 	}
 
 	@Override
 	public T findUnique(String name, Object value) {
-		return findUnique(name, true, value);
+		String sql = sqlBuilder.findByProperties(name, "?");
+		return findOne(sql, value);
 	}
 	
 	/*
