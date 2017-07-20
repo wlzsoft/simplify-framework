@@ -32,6 +32,6 @@ public class TestSimpleController {
         req.getParameter("test");
         return test;
     });
-    
+
     get("/test/simple", (req,res)-> testService.doSomeThing2(null));
 }}

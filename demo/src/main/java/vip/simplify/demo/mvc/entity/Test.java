@@ -24,7 +24,7 @@ import vip.simplify.entity.annotations.Transient;
 public class Test extends BaseEntity {
 
 	private static final long serialVersionUID = 246628316050179125L;
-	
+
 	private String name;
 	@Transient
 	private String createName;

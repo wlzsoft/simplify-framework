@@ -59,5 +59,5 @@ public class TestModel extends BaseModel {
 	public void setTest(Test test) {
 		this.test = test;
 	}
-	
+
 }
