@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.xml.internal.rngom.parse.host.Base;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,6 +19,7 @@ import vip.simplify.dao.orm.BaseDao;
 import vip.simplify.entity.page.Page;
 import vip.simplify.ioc.BeanFactory;
 import vip.simplify.ioc.Startup;
+import vip.simplify.utils.PropertieUtil;
 
 /**
   * <p><b>Title:</b><i>针对entity实体对应的dao的测试</i></p>
@@ -38,9 +40,10 @@ public class DaoTest {
 	private static Integer key;
 	@BeforeClass
 	public static void before() {
+        PropertieUtil.setConfigPrefix("properties/");
 		Startup.start();
 	}
-	
+
 	@Before
 	public void s1_insertTest() {
 		vip.simplify.dao.entity.Test t = new vip.simplify.dao.entity.Test();
@@ -54,12 +57,20 @@ public class DaoTest {
 		System.out.println("saveGenId:"+t.getFid());
 		key = t.getFid();
 	}
-	
+
+	@Test
+    public void findByBitTypeTest() {
+        List<vip.simplify.dao.entity.Test> testList = BaseDao.getIns(vip.simplify.dao.entity.Test.class).find("select * from test_web where `status` = 0");
+        for (vip.simplify.dao.entity.Test test : testList) {
+            System.out.println(test.getName()+"=status:"+test.getStatus()+",type="+test.getType()[0]);
+        }
+    }
+
 	@Test
 	public void getIdNameTest() {
 		Assert.assertEquals("fid", BaseDao.getIns(vip.simplify.dao.entity.Test.class).getIdName());
 	}
-	
+
 	@Test
 	public void getIdValTest() {
 		vip.simplify.dao.entity.Test t = new vip.simplify.dao.entity.Test();
@@ -74,12 +85,12 @@ public class DaoTest {
 		System.out.println(key);
 		Assert.assertTrue(key>0);
 	}
-	
+
 	@Test
 	public void s2_findUniqueTest() {
 		Assert.assertEquals("lcy", BaseDao.getIns(vip.simplify.dao.entity.Test.class).findUnique("name","lcy").getName());
 	}
-	
+
 	@Test
 	public void s2_findByIdsTest() {
 		Integer[] ids = new Integer[]{1,2,3};
@@ -97,7 +108,7 @@ public class DaoTest {
 		}
 		Assert.assertTrue(BaseDao.getIns(vip.simplify.dao.entity.Test.class).findByMutil("name","lcy").size()>0);
 	}
-	
+
 	@Test
 	public void s2_findByIdTest() {
 		System.out.println("aa:"+key);
@@ -177,28 +188,28 @@ public class DaoTest {
 	public void s2_findByTest() {
 		Assert.assertTrue(BaseDao.getIns(vip.simplify.dao.entity.Test.class).findBy("name","lcy").size()>0);
 	}
-	
+
 	@Test
 	public void s3_deleteTest() {
 		System.out.println("delete============================="+BaseDao.getIns(vip.simplify.dao.entity.Test.class).remove(key));
 	}
-	
+
 	@Test
 	public void s4_deleteTest() {
 		vip.simplify.dao.entity.Test t = new vip.simplify.dao.entity.Test();
 		t.setFid(918);
 		System.out.println("delete============================="+BaseDao.getIns(vip.simplify.dao.entity.Test.class).remove(t));
 	}
-	
+
 	@Test
 	public void s5_deleteTest() {
 		//中文编码问题，无法正常删除-->已经解决：由于jdbc的连接的编码属性设置有问题，修改jdbc驱动连接的配置信息就可以了。
 		System.out.println("delete============================="+BaseDao.getIns(vip.simplify.dao.entity.Test.class).remove("url", "卢创业test"));
 	}
-	
+
 	@Test
 	public void s6_insertTest() {
-		
+
 		List<vip.simplify.dao.entity.Test> testList = new ArrayList<>();
 		for(int i=0; i<4; i++) {
 			vip.simplify.dao.entity.Test t = new vip.simplify.dao.entity.Test();
@@ -231,20 +242,20 @@ public class DaoTest {
 		Integer[] ids = new Integer[] {901,902,903,904,905};
 		System.out.println("delete============================="+BaseDao.getIns(vip.simplify.dao.entity.Test.class).remove(ids));
 	}
-	
+
 	@Test
 	public void s8_countTest2() {
 		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","awsesdf"));
 	}
-	
+
 	@Test
 	public void s8_countTest() {
 		System.out.println("count============================="+BaseDao.getInsMap().count("select count(*) from test_web where name=?","lcy"));
 	}
-	
+
 	@Test
 	public void s9_countTest() {
-		
+
 		SingleDataSource dataSource = BeanFactory.getBean(SingleDataSource.class);
 		dataSource.print();
 		vip.simplify.dao.entity.Test t = new vip.simplify.dao.entity.Test();
@@ -265,7 +276,7 @@ public class DaoTest {
 		vip.simplify.dao.entity.Test test = BaseDao.getInsPojo().find(vip.simplify.dao.entity.Test.class, "select fid,name from test_web").get(0);
 		System.out.println(test.getName());
 	}
-	
+
 	@Test
 	public void s11_insertUserTest() {
 		TestUser t = new TestUser();

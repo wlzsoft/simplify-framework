@@ -22,27 +22,29 @@ import vip.simplify.entity.annotations.Transient;
  */
 public class BaseEntity extends IdEntity<Serializable, Integer> {
 	private static final long serialVersionUID = -6176797953739560746L;
-	
+
+	//`createId`  int(11) UNSIGNED NULL DEFAULT NULL ,一般表设计，要指定为 无符号整形，增加值范围，因为负数对id无意义
 	@Column(value = "createId")
 	public Integer createId;
-	
+
 	@Column(value = "createTime")
 	@JSONField (format="yyyy-MM-dd HH:mm:ss")
 	public Date createTime;
-	
+
+	//类型同createId
 	@Column(value = "updateId")
 	public Integer updateId;
-	
+
 	@Column(value = "updateTime")
 	@JSONField (format="yyyy-MM-dd HH:mm:ss")
 	public Date updateTime;
-	
+
 	@Column(value = "remark")
 	public String remark;
-	
+
 	@Column(value = "deleteflag")
 	public Boolean deleteflag;
-	
+
 	@Transient
 	public String createName;
 	@Transient
@@ -79,7 +81,7 @@ public class BaseEntity extends IdEntity<Serializable, Integer> {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	
+
 	public void setDeleteflag(Boolean deleteflag) {
 		this.deleteflag = deleteflag;
 	}
