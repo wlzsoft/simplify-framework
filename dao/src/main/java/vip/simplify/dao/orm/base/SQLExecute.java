@@ -18,8 +18,9 @@ import vip.simplify.exception.UncheckedException;
 import vip.simplify.utils.ReflectionUtil;
 
 /**
- * <p><b>Title:</b><i>TODO</i></p>
- * <p>Desc: TODO</p>
+ * <p><b>Title:</b><i>sql执行器</i></p>
+ * <p>Desc: 注意:mysql中的整形类型和浮点类型是可以区分有符号和无符号的，而java只有“有符号的数值类型”，所以mysql中的有符号int可以映射到java中的
+ * 有符号int，但是一定设置mysql的int类型为无符号的类型，那么在java的jdbc驱动中，就会被转换成Long类型，而mysql的无符号数值行的好处，是同样的类型的，可以存储更大的正数</p>
  * <p>source folder:{@docRoot}</p>
  * <p>Copyright:Copyright(c)2014</p>
  * <p>Company:meizu</p>
@@ -31,10 +32,10 @@ import vip.simplify.utils.ReflectionUtil;
  *
  */
 public class SQLExecute {
-	
+
 	public static final Logger LOGGER = LoggerFactory.getLogger(SQLExecute.class);
 	/**
-	 * 
+	 *
 	 * 方法用途: 执行delete，update 根据param的where条件来更新或是删除<br>
 	 * 操作步骤: TODO<br>
 	 * @return
@@ -49,10 +50,10 @@ public class SQLExecute {
 			public Integer paramCall(PreparedStatement prepareStatement,Object... obj) throws SQLException {
 				return ISqlDataCallback.super.paramCall(prepareStatement,params);
 			}
-			
+
 		});
 	}
-	
+
 	/**
 	 * 方法用途: 可执行insert和delete，update语句,支持预处理<br>
 	 * 操作步骤: TODO<br>
@@ -87,7 +88,7 @@ public class SQLExecute {
 			}
 		}
 	}
-	
+
 	/**
 	 * 未测试
 	 * 方法用途: 可执行insert和delete，update语句,不支持预处理<br>
@@ -121,7 +122,7 @@ public class SQLExecute {
 			}
 		}
 	}
-	
+
 	/**
 	 * 方法用途: 释放资源<br>
 	 * 操作步骤: 注意：关闭PreparedStatement和ResultSet有性能消耗，没必要关闭，因为连接有连接池管理，但是另外两个确没有，并且跟着连接走，所以没必要关闭
@@ -144,7 +145,7 @@ public class SQLExecute {
 				if(preparedStatement != null ) {
 //					if(!preparedStatement.isCloseOnCompletion()){
 //						preparedStatement.close();
-//					} else 
+//					} else
 					if(!preparedStatement.isClosed()) {
 						preparedStatement.close();
 //						System.out.println("preparedStatement非正常关闭");
@@ -167,15 +168,15 @@ public class SQLExecute {
 				}
 			}
 		}
-					
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * 方法用途: 批量数据处理<br>
-	 * 操作步骤: 暂未启用 TODO 
+	 * 操作步骤: 暂未启用 TODO
 	 *  方式1:JDBC通用方式，可用于批处理inset和update等不同sql语句的集合，使用PreparedStatement.addBatch来实现。也可以专注于某个sql的批量数据处理 ，比如{语法语句：[insert into table(id,name) values(?,?);]}
-	 *  注意：建立一个连接和执行一个sql语句的是很耗时间，特别是创建连接，所以才需要有连接池，那么执行sql语句的优化方法，就是批处理  
+	 *  注意：建立一个连接和执行一个sql语句的是很耗时间，特别是创建连接，所以才需要有连接池，那么执行sql语句的优化方法，就是批处理
      *  另外，批处理的数据不是越大越好，因为可能会内存溢出，同时网络传输的过程中也是会进行拆包传输的，由于网络环境这个包的大小是不一定的，有时候打包的效率不一定就会高，这个和数据库的类型，版本都有关系的，所以我们在实践的过程中需要检验的。
 	 *  <br>
 	 */
@@ -217,9 +218,9 @@ public class SQLExecute {
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * 方法用途: 可执行insert,支持预处理<br>
 	 * 操作步骤: 可支持方式2的批量插入，mysql特有的语法，语法语句:[insert into table(id,name) values (?,?),(?,?),(?,?),...;]<br>
 	 * @param sql
@@ -269,9 +270,9 @@ public class SQLExecute {
 		System.err.println("注意：sql执行正常，但是无法获取主键的自增id的值，请确认是否设置数据库中指定表的主键");
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * 方法用途: 执行查询<br>
 	 * 操作步骤: TODO<br>
 	 * @param connectionManager
@@ -283,9 +284,9 @@ public class SQLExecute {
 	public static <B> List<B> executeQuery(ConnectionManager connectionManager,String sql,ISqlDataCallback<B> callback,Class<B> clazz) {
 		return executeQuery(connectionManager.getConnection(), sql, callback, clazz);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * 方法用途: 执行查询<br>
 	 * 操作步骤: <pre>
 	System.out.println("请求sql的列名ColumnLabel:"+metaData.getColumnLabel(i));
@@ -295,12 +296,12 @@ public class SQLExecute {
 	System.out.println("数据库中列的类型的名字ColumnTypeName:"+metaData.getColumnTypeName(i));
 	System.out.println("整个数值长度ColumnDisplaySize:"+metaData.getColumnDisplaySize(i));
 	System.out.println("整数长度Precision:"+metaData.getPrecision(i));
-	
+
 	System.out.println("表名TableName:"+metaData.getTableName(i));
 	System.out.println("数据库名CatalogName:"+metaData.getCatalogName(i));
-	
+
 	System.out.println("小数长度Scale:"+metaData.getScale(i));
-	
+
 	System.out.println("列的模式SchemaName:"+metaData.getSchemaName(i)+"==》end");
 	System.out.println("========================");</pre><br>
 	 * @param conn
@@ -347,6 +348,6 @@ public class SQLExecute {
 		}
 		return bList;
 	}
-	
-	
+
+
 }

@@ -56,8 +56,8 @@ import redis.clients.jedis.ShardedJedisPool;
 public class TestController extends SystemController<TestModel> {
 
 //	@Inject //注释掉，目前打开会报错，因为无实现类
-//	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要 
-	
+//	private HttpServletRequest request;//TODO：暂未实现，正考虑是否实现的必要
+
 	@Inject
 	private TestService testService;
 
@@ -76,7 +76,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		return testList;
 	}
-	
+
 	@RequestMap(path = "/ajaxjsonptest")
 	public String ajaxjsonptest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
@@ -86,7 +86,7 @@ public class TestController extends SystemController<TestModel> {
 		request.setAttribute("testList", testList);
 		return "beetl:ajaxjsonptest";
 	}
-	
+
 	@RequestMap(path = "/testvoidjson")
 	public void doVoidJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
@@ -95,7 +95,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		request.setAttribute("testList", testList);
 	}
-	
+
 	@RequestMap(path = "/testrestjson")
 	public List<Test> doRestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
@@ -104,7 +104,7 @@ public class TestController extends SystemController<TestModel> {
 		testList.add(test);
 		return testList;
 	}
-	
+
 	@RequestMap(path = "/testjson.json")
 	public Test doTestJson(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
@@ -115,10 +115,10 @@ public class TestController extends SystemController<TestModel> {
 		testOutterService.test();
 		return test;
 	}
-	
+
 	@RequestMap(path = "/testbeetl/")
 	public String doTestBeetl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		
+
 		User user = new User();
 		user.setName("lcyc123");
 		List<Test> testList = new ArrayList<>();
@@ -130,10 +130,10 @@ public class TestController extends SystemController<TestModel> {
 		request.setAttribute("tests", testList);
 		return "beetl:pagefunction";
 	}
-	
+
 	@RequestMap(path = "/testhttl/")
 	public String doTestHttl(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
-		 
+
 		User user = new User();
 		user.setName("lcy");
 		List<Test> testList = new ArrayList<>();
@@ -146,17 +146,17 @@ public class TestController extends SystemController<TestModel> {
 		return "httl:tests";
 	}
 	@RequestMap(path = "/testredirect/")
-	public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
+    public String doTestRedirect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
 		System.out.println(test.getName());
 		return "redirect:/index";
 	}
-	
+
 	@RequestMap(path = "/testredirect2/")
 	public String doTestRedirect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 //		Test test = testService.doSomeThing2();
 		if (request.getMethod().equals("GET")) {
-			
+
 		}
 		return "redirect:/test/testjson.json";
 	}
@@ -169,6 +169,7 @@ public class TestController extends SystemController<TestModel> {
 //			Message.info("数据为空");//1.直接错误信息方式
 //			Message.info("success","数据为空");//1.读取配置文件信息方式
 //			Message.warn("success","数据为空");
+
 		}
 		return "velocity:login";
 	}
@@ -203,7 +204,7 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "velocity:login";
 	}
-	
+
 	@RequestMap(path = "/testfreemarker/")
 	public String doTestFreemarker(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
@@ -214,32 +215,32 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "freemarker:login";
 	}
-	
+
 	@RequestMap(path = "/testwebsocket/")
 	public String doTestWebsocket(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
 		request.setAttribute("userName", test.getName());
 		return "velocity:websocket";
 	}
-	
+
 //	@WebSocket
 	@RequestMap(path = "/websocket/notice")
 	public String doTestWebsocketNotice(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.doSomeThing2(null);
 		request.setAttribute("userName", test.getName());
 		return "{id:1,name:'"+test.getName()+"'}";
-	}	
-	
+	}
+
 	@RequestMap(path = "/testmessage/")
 	public String doTestMessage(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		Test test = testService.addTest(null);
 		return "{id:1,name:'"+test.getName()+"'}";
 	}
-	
+
 	ICacheDao<String, Object> cachedDao = CacheProxyDao.getCache();
 
 	private CacheExpireTimeEnum expire = CacheExpireTimeEnum.CACHE_EXP_HOUR;
-	
+
 	@RequestMap(path = "/testvoid/")
 	public String doTestVoid(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		/*if(true) {
@@ -253,7 +254,7 @@ public class TestController extends SystemController<TestModel> {
 		System.out.println("当前redis连接池状态：NumActive(当前激活数):"+pool.getNumActive()+"-NumIdle(当前空闲数):"+pool.getNumIdle()+"-NumWaiters(当前等待数):"+pool.getNumWaiters());
 		return "jsp:/index";
 	}
-	
+
 	@RequestMap(path = "/test/")
 	public String doTest(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		testService.addTestObj(null);
@@ -263,21 +264,21 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "uri:/index";
 	}
-	
+
 	@RequestMap(path = "/testSelect/")
 	public String doTestSelect(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select * from test_web where name=?", "lcy");
 		request.setAttribute("testList", test);
 		return "jsp:/testList";
 	}
-	
+
 	@RequestMap(path = "/testSelect2/")
 	public String adoTestSelect2(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Test> test = BaseDao.getIns(Test.class).find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
 		request.setAttribute("testList", test);
 		return "jsp:/testList";
 	}
-	
+
 	@RequestMap(path = "/testSelect3/")
 	public String adoTestSelect3(HttpServletRequest request, HttpServletResponse response, TestModel model)  {
 		List<Map<String,Object>> test = BaseDao.getInsMap().find("select test_web.*,user.name as createName from test_web inner join user on test_web.createId=user.id where test_web.name=?","lcy");
@@ -294,7 +295,7 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return "beetl:ajaxjsonptest";
 	}
-	
+
 	/**
 	 *  不支持下列方法的写法
 	 *  Test参数，要使用TestModel代替，TestModel中包含Test属性即可
@@ -313,15 +314,15 @@ public class TestController extends SystemController<TestModel> {
 	}
 	@RequestMap(path = {"/(.+)/(.+)/demo/(.+)$","/(.+)/(.+)/demo2$","/demo/demo_(.+).html$","/demo/demo.html$","/demo/$","/demo/(.+)/(.+)$"})
 	public String testUrlRestParam(HttpServletRequest request, HttpServletResponse response, TestModel model, /*@RequestParam(defaultValue = "0", index = 0) String enc,*/ @RequestParam(defaultValue = "0", index = 1) Integer business, @RequestParam(defaultValue = "0", index = 2) String operation, @RequestParam(defaultValue = "0", index = 3) String data)  {
- 
+
 		Test test = model.getTest();
 		if(test!= null) {
 			System.out.println("测试类名称:"+test.getName());
 		}
 		// 检查是否operation为空
 		if (StringUtil.isEmpty(operation)) return StringUtil.format("{0}", "operation:null");
-		
-		// 存在脚本生成地址，无法使用加密 
+
+		// 存在脚本生成地址，无法使用加密
 		//if (!enc.equalsIgnoreCase(MD5.calcMD5(StringUtil.format("{0}{1}", Pointers.getKey(business), operation)))) return new ErrorView(getMsg("VERIFY.FAILED"));
 
 //		HttpServletRequest request= HttpRequestPool.getRequest();//TODO 获取当前请求(request池中获取request对象，而无需传参的方式 ),通过ThreadLocal来保留request变量
@@ -330,16 +331,16 @@ public class TestController extends SystemController<TestModel> {
 //		String sDomain = request.getServerName();
 //		if(sDomain.indexOf("meizu.com") > 0)  {
 //		}
-		
+
 //		String isflag = request.getParameter("isflag");
 		String result = "business:"+business+",operation:"+operation+",data:"+data;//json字符串
 //		result = result.replaceAll("\r\n", "<br/>").replaceAll("\\s", "&nbsp;");
 		return result;
 	}
-	
+
 	/**
 	 * 方法用途: 注意，这个例子的代码的文件下载，不能是大文件的下载，大文件下载不能一次性flush一个超大的byte数组，而是每次flush这个byte数组的一部分<br>
-	 * 操作步骤: 说明：这个controller除了演示下载还有以下功能：1.演示了下载后的文件类型，文件扩展名的设置。2.演示了使用js和iframe控制下载出错，当前页面不刷新的功能，页面js例子参考download.ftl。后续做进一步封装，减少使用成本 
+	 * 操作步骤: 说明：这个controller除了演示下载还有以下功能：1.演示了下载后的文件类型，文件扩展名的设置。2.演示了使用js和iframe控制下载出错，当前页面不刷新的功能，页面js例子参考download.ftl。后续做进一步封装，减少使用成本
 	 * 另外后续要增加请求连接的后缀处理方式，避免只有stream这个后缀，防止有特殊需求，需要用到其他后缀<br>
 	 * @param request
 	 * @param response
@@ -366,7 +367,7 @@ public class TestController extends SystemController<TestModel> {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 方法用途: 注意，这个例子的代码的文件下载，支持大文件下载，每次读取流中的一部分字节，然后写出并flush到客户端<br>
 	 * 操作步骤: TODO <br>

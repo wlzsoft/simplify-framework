@@ -1,0 +1,44 @@
+# http://editorconfig.org
+
+root = true
+
+# 对所有文件生效
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+#在不同的操作系统会需要设置不同值，有三个值，对应mac(cr)，linux(lf)，window(crlf)
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+#未必支持idea和eclipse，但支持vim等
+max_line_length=500
+
+# 对后缀名为 md 的文件生效
+[*.md]
+trim_trailing_whitespace = false
+max_line_length=off
+
+#[*.js]
+#single-》单引号，double-》双引号，auto-》自动选择
+#quote_type = double
+
+[*.java]
+#如果有多个classpath，那么使用“:”冒号分隔，只支持java语言
+#java_class_path=c:\java\classpath
+#表示是否对括号左边的部分应在下一行或不,支持大部分语言
+curly_bracket_next_line=true
+#指示在算术运算符和布尔运算符周围是否应该存在空格,有true,false,hybrid三个值
+spaces_around_operators=true
+#有none,inside,outside,both可选值 Denotes how spaces should be around brackets and parentheses: no space, only inside the brackets, only outside the brackets, or at the both side of brackets
+spaces_around_brackets=both
+#使用的代码风格：K&R java 默认使用这种风格
+#indent_brace_style=K&R
+#表示在多个导入自动折叠到通配符之前所需的导入数量（或通配符将自动扩展为显式导入）,目前支持eclipse和intellij idea
+#Number of imports required for '*'=5
+#目前支持intellij idea，不支持eclipse 表示连续缩进大小。有助于区分代码块和连续行
+#continuation_indent_size=5
+#block_comment=*
+#line_comment=//
+#block_comment_start=/*
+#block_comment_end=*/

@@ -1,0 +1,13 @@
+#相比于jenins，travis和github强关联，且是收费的，对语言有要求，定制性差
+
+# using docker container
+sudo: false
+
+language: java
+
+jdk:
+  - openjdk8
+  - oraclejdk8
+
+before_script:
+    - export QINIU_TEST_ENV="travis"
