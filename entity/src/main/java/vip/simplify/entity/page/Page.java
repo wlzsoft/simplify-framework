@@ -67,7 +67,7 @@ public class Page<T> implements IPage<T> {
 	/**
 	 * 最大PageSize，不能超过这个值，避免接口被刷导致性能瓶颈,默认60
 	 */
-	public int maxPageSize  = 60;
+	public int maxPageSize  = 100;
 	/**
 	 * 当前页码(当前页数) ，默认是第一页
 	 */
