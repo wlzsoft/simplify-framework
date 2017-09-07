@@ -540,7 +540,7 @@ public class Dao<T extends IdEntity<Serializable,Integer>, PK extends Serializab
 		return findOne(sql,true,params);
 	}
 
-	public T findOne(String sql,Object[] params) {
+	public T findOne(String sql,Object... params) {
 		return findOne(sql,true,params);
 	}
 
