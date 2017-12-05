@@ -57,6 +57,9 @@ public  class  JsonpView {
 			}
 //		} else if (model.getScript() == 2) {//通过js 的 document.write 来实现wiget
 		} else {
+			if(null==model.getCallback()||model.getCallback().equals("")){
+				model.setCallback("jsonp");
+			}
 			message = StringUtil.format("{0}({1})", model.getCallback(), message);
 		}
 		response.setCharacterEncoding(config.getCharset());
