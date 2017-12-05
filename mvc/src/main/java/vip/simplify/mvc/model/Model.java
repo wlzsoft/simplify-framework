@@ -27,7 +27,7 @@ public class Model {
 	 */ 
 	private Integer script = 0;
 	
-	private String callback = "callback";
+	private String callback ;
 
 	
 	public String getCallback() {
