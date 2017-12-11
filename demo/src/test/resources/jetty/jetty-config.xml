@@ -7,9 +7,9 @@
 		<Arg>.*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$
 		</Arg>
 	</Call>
-	<Call class="java.lang.System" name="setProperty">  
-         <Arg>org.eclipse.jetty.server.Request.maxFormContentSize</Arg>  
-        <Arg>-1</Arg> 
+	<Call class="java.lang.System" name="setProperty">
+         <Arg>org.eclipse.jetty.server.Request.maxFormContentSize</Arg>
+        <Arg>1000000</Arg>
    </Call>
 	<!--<init-param>
 		<param-name>useFileMappedBuffer</param-name>
