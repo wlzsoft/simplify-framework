@@ -61,7 +61,8 @@ public  class  JsonpView {
 				model.setCallback("jsonp");
 			}
 			//message = StringUtil.format("{0}({1})", model.getCallback(), message);
-			message = StringUtil.format("<script>{0}({1});</script>", model.getCallback(), message);
+			//String callback = model.getCallback().replaceAll("script", "");
+			//message = StringUtil.format("<script>{0}({1});</script>", model.getCallback(), message);
 		}
 		response.setCharacterEncoding(config.getCharset());
 		response.setContentType("text/html; charset=" + config.getCharset());
