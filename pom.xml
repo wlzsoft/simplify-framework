@@ -26,10 +26,10 @@
 		<developerConnection>scm:git:http://172.16.180.92/dev-team/simplify-framework</developerConnection>
 	</scm> -->
 	<!-- 持续集成 -->
-<!-- 	<ciManagement>
+ 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://172.16.180.86:8082/</url>
-	</ciManagement> -->
+		<url>http://172.16.180.88:8082/</url>
+	</ciManagement>
   	<mailingLists>
     	<mailingList>
       		<name>开发人员列表</name>
@@ -38,12 +38,6 @@
   	</mailingLists>
   <!-- 开发成员列表 -->
   <developers>
-		<developer>
-			<id>lcy</id>
-			<name>lcy</name>
-			<email>luchuangye@meizu.com</email>
-			<timezone>8</timezone>
-		</developer>
 		<developer>
 			<id>wlz</id>
 			<name>wlz</name>
@@ -128,20 +122,6 @@
     <!-- 依赖库版本号定义end -->
   </properties>
   <distributionManagement>
-<!-- 	  <repository>
-          <id>${distRepoId}</id>
-          <name>${distRepoName}</name>
-          <url>${distRepoUrl}</url>
-          <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url>
-      </repository>
-      <snapshotRepository>
-          <id>${distSnapId}</id>
-          <name>${distSnapName}</name>
-          <url>${distSnapUrl}</url>
-          是否为Snapshot版本分配一个包含时间戳的构建号
-          <uniqueVersion>true</uniqueVersion>
-      </snapshotRepository> -->
-      
         <repository>
             <id>nexus-releases</id>
             <name>maven-releases</name>
@@ -153,13 +133,6 @@
             <url>http://172.16.180.88:8081/nexus/content/repositories/snapshots/</url>
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
-      
-<!-- 		<site>
-			<id>simplify-doc</id>
-			<name>simplify-doc</name>
-			<url>file://D:/site</url>
-			<url>scp://root@172.16.180.83/home/simplify-doc</url>
-		</site> -->
 	</distributionManagement>
   <dependencies>
 		<!-- 日志相关 begin -->
@@ -188,11 +161,6 @@
 		</dependency>
 		
 		<!-- 测试相关end -->
-		<!-- <dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-jaxrs</artifactId>
-			<version>1.5.8</version>
-		</dependency> -->
   </dependencies>
   <build>
     <extensions>
@@ -229,12 +197,9 @@
 				<execution>
 					<!-- 编译阶段打包源文件 -->
 					<id>attach-sources</id>
-					<!-- <phase>package</phase> -->
-					<!-- <phase>verify</phase> -->
 					<phase>compile</phase>
 					<goals>
 						<goal>jar</goal>
-						<!-- <goal>jar-no-fork</goal> -->
 					</goals>
 				</execution>
 			</executions>
@@ -244,16 +209,6 @@
 		  <groupId>org.apache.maven.plugins</groupId>  
 		  <artifactId>maven-release-plugin</artifactId>  
 		  <version>2.5.3</version>
-		  <!-- This version is necessary for use with git version 1.8.5 -->
-		  <!-- <dependencies>
-            <dependency>
-               <groupId>org.apache.maven.scm</groupId>
-               <artifactId>maven-scm-provider-gitexe</artifactId>
-               <version>1.8.1</version>
-            </dependency>
-         </dependencies> -->
-		  <!-- <username>lcy</username>
-    	  <password>lcy</password> --> 
 		  <configuration>  
 		  	<!-- <mavenHome>D:\apache-maven-3.3.9</mavenHome> -->
 		  	<arguments>-Dmaven.test.skip=true</arguments>
@@ -270,8 +225,6 @@
 		  		<checkModificationExclude>*\.classpath</checkModificationExclude>
 		  	</checkModificationExcludes>
 		    <tagBase>http://172.16.180.84/dev-team/simplify-framework</tagBase>
-		    <!-- <tagNameFormat>v@{project.version}</tagNameFormat> -->
-		    <!-- <releaseProfiles>release</releaseProfiles> -->
 		  </configuration>  
 		</plugin>  
 		<!-- 解决maven test命令时console出现中文乱码乱码 -->
@@ -293,13 +246,6 @@
  					<excludes>  
 	                  <exclude>**/TestAll.java</exclude>  
 	                </excludes> 
- 					<!-- cobertura统计单元测试覆盖率 -->
-					<!-- <systemProperties>
-						<property>
-							<name>net.sourceforge.cobertura.datafile</name>
-							<value>target/cobertura/cobertura.ser</value>
-						</property>
-					</systemProperties> -->
 				</configuration>
 			</plugin>
 			<!--命令行 pdf:pdf -->
@@ -326,13 +272,6 @@
 			      </configuration>
 			    </execution>
 			  </executions>
-			  <!-- <dependencies>
-			  	<dependency>
-				    <groupId>com.itextpdf</groupId>
-				    <artifactId>itextpdf</artifactId>
-				    <version>5.5.10</version>
-				</dependency>
-			  </dependencies> -->
 			</plugin>
 			<!-- 设置以下环境变量 -->
 		   <!-- JAVA_TOOL_OPTIONS   
@@ -360,18 +299,8 @@
 			                <!-- head不写，使用的name属性的值，并保持默认格式，如果写了，可以有更好的展现效果 -->
 			                <head>标题</head>  
 			            </tag>  
-			        </tags>
-			        <!-- <reportOutputDirectory>../reportDir</reportOutputDirectory>  
-    							<destDir>apidoc</destDir>-->                    
-		   		</configuration>        
-		   		<!-- <executions>
-			     <execution>
-			      <id>attach-javadocs</id>
-			      <goals>
-			       <goal>jar</goal>
-			      </goals>
-			     </execution>
-			    </executions>   -->      
+			        </tags>                  
+		   		</configuration>            
 		   	</plugin>
 			<!-- site插件：site:stage 用于生成所有模块的site，site:run 用于生成和运行site，用于查看文档 ,后续增加site插件的详细配置-->
 			<!--文档创建： archetype:create -DgroupId=vip.simplify -DartifactId=app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
@@ -486,17 +415,7 @@
 							                <head>标题</head>  
 							            </tag>  
 							        </tags>
-							        <!-- <reportOutputDirectory>../reportDir</reportOutputDirectory>  
-        							<destDir>apidoc</destDir>-->                    
-						   		</configuration>        
-						   		<!-- <executions>
-							     <execution>
-							      <id>attach-javadocs</id>
-							      <goals>
-							       <goal>jar</goal>
-							      </goals>
-							     </execution>
-							    </executions>   -->      
+						   		</configuration>            
 						   	</plugin>
 					</reportPlugins>
                 </configuration>
@@ -507,56 +426,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
   				<version>1.4.1</version>
-  				<executions>
-                    <execution>
-                        <!-- 单独执行enforcer:enforce时，id必须是default-cli -->
-                        <id>default-cli</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <rules>
-                            	<!-- <requireUpperBoundDeps>true</requireUpperBoundDeps> -->
-                                <requireMavenVersion>
-                                    <message>
-                                        <![CDATA[你使用的maven版本过老，版本号必须是${maven.version}或之上]]>
-                                    </message>
-                                    <version>[${maven.version},)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <message>
-                                        <![CDATA[你使用的JDK版本过老，版本号必须是 ${java.version}或之上]]>
-                                    </message>
-                                    <version>[${java.version}.0,)</version>
-                                </requireJavaVersion>
-                                <bannedDependencies>
-                                    <!--是否检查传递性依赖(间接依赖)-->
-                                    <searchTransitive>true</searchTransitive>
-                                    <excludes>
-                                        <!--格式：groupId[:artifactId][:version][:type][:scope][:classifier]--> 
-                                        <exclude>org.testng:testng</exclude>
-                                        <exclude>commons-logging</exclude>
-                                    </excludes>
-                                    <message>不能使用 TestNG测试,必须使用 JUnit</message>
-                                </bannedDependencies>
-                                <!-- <requireOS>
-                                    <name>window 10</name>
-                                    <family>window</family>
-                                    <arch>x86_64</arch>
-                                    <version>10</version>
-                                </requireOS> -->
-                                <requireProperty>
-                                    <property>project.version</property>
-                                    <message>"project.version 必须指定"</message>
-                                    <regex>.*(\d|-SNAPSHOT)$</regex>
-                                    <regexMessage>"project.version 必须是 数字或-SNAPSHOT结尾"</regexMessage>
-                                </requireProperty>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
 			</plugin>
     </plugins>
     <resources>
@@ -566,10 +435,6 @@
 				<include>**/*.xml</include>
 				<include>**/*.properties</include>
 				<include>**/*.template</include>
-				<!-- boot模块包含这些类型配置，如果不打开，同时assembly-desccriptor模块设置了simplify-framework:pom为父级，会导致文件拷贝失效，被忽略了,并位验证成功 -->
-				<!-- <include>**/*.sh</include>
-				<include>**/*.bat</include>
-				<include>**/*.vmoptions</include> -->
 			</includes>
 			<filtering>true</filtering>
 		</resource>
@@ -582,25 +447,5 @@
 			<filtering>true</filtering>
 		</resource>
 	</resources>
-	<!-- <testResources>
-		<testResource>
-			<directory>src/test/java</directory>
-			<includes>
-				<include>**/*</include>
-			</includes>
-			<filtering>true</filtering>
-		</testResource>
-	</testResources> -->
-    
   </build>
-  
-	<!-- <reporting>      
-		<plugins> -->
-           <!-- <plugin> 
-               <groupId>org.codehaus.mojo</groupId>                                      
-               <artifactId>dashboard-maven-plugin</artifactId>                                      
-               <version>1.0.0-beta-1</version>                             
-           </plugin> -->
-	   <!-- </plugins>    
-   </reporting> -->
 </project>
