@@ -41,7 +41,16 @@ public class EncryptTest {
 		num = Encrypt.numEncrypt(num);
 		print("加密=" + num);
 	}
-	
+	@Test
+    public void testMD5(){
+        String A="appid=wxd930ea5d5a258f4f&body=test&device_info=1000&mch_id=10000100&nonce_str=ibuaiVcKdpRxkhJA";
+        String SignTemp=A+"&key=192006250b4c09247ec02edce69f6a2d";//注：key为商户平台设置的密钥key
+        String passwordEncrtyed=MD5Encrypt.signToUpperCase(SignTemp);
+        print("密码加密结果1：" + passwordEncrtyed);
+       // sign=MD5(stringSignTemp).toUpperCase()="9A0A8659F005D6984697E2CA0A9CF3B7" //注：MD5签名方式
+
+    }
+
 	@Test
 	public void testFieldEncryptAndPassword() {
 
@@ -76,7 +85,7 @@ public class EncryptTest {
 		print("秘钥=" + key);
 		Keys.setNo(no);
 		Keys.setKey(key);
-		
+
 		print("=================================");
 		print("=============文件加解密===========");
 		String file1 = "/EncryptTest.txt";
