@@ -8,50 +8,14 @@
   <name>精简程序框架</name>
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
   <url>http://simplify.xxx</url>
-  <!-- 项目工程管理 start -->
-	<inceptionYear>2016</inceptionYear>
-  	<organization>
-		<name>meizu inc.</name>
-		<url>http://www.meizu.com/</url>
-	</organization>
-	<!-- 问题跟踪 -->
-<!-- 	<issueManagement>
-		<system>redmine</system>
-		<url>http://172.16.180.92:32768/projects/simplify-framework</url>
-	</issueManagement> -->
-  	<!-- 版本控制 -->
-<!-- 	<scm>
-		<url>http://172.16.180.92/dev-team/simplify-framework</url>
-		<connection>scm:git:http://172.16.180.92/dev-team/simplify-framework</connection>
-		<developerConnection>scm:git:http://172.16.180.92/dev-team/simplify-framework</developerConnection>
-	</scm> -->
+
 	<!-- 持续集成 -->
  	<ciManagement>
 		<system>Jenkins</system>
 		<url>http://172.16.180.88:8082/</url>
 	</ciManagement>
-  	<mailingLists>
-    	<mailingList>
-      		<name>开发人员列表</name>
-	  		<subscribe>mailto:users-subscribe@meizu.com</subscribe>
-    	</mailingList>
-  	</mailingLists>
-  <!-- 开发成员列表 -->
-  <developers>
-		<developer>
-			<id>wlz</id>
-			<name>wlz</name>
-			<email>wanglizong@meizu.com</email>
-			<timezone>8</timezone>
-		</developer>
-	</developers>
-	<!-- 项目授权 -->
-	<licenses>
-		<license>
-			<name>Apache License,Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-		</license>
-	</licenses>
+
+
 	<!-- 项目工程管理  end-->
 	<!-- 1.指定构建模块需要使用 命令：  -pl vip.simplify:archetype clean install deploy -pl archetype clean install deploy 或是 ——projects archetype clean install deploy -->
 	<!-- 2. -am 选项可以同时构建所列模块的依赖模块,命令:执行 clean install -pl utils -am 后会得到如下模块：父级的simplify-framework模块和引用的stress-tester模块
@@ -114,7 +78,7 @@
 	<siteDirPath>${templatePath}</siteDirPath>
     <!-- 自定site相关变量end -->
     <java.version>1.8</java.version>
-    <maven.version>3.1.0</maven.version>
+    <maven.version>3.5.2</maven.version>
     <!-- 依赖库版本号定义start -->
     <simplify.version>${project.version}</simplify.version>
     <mongo-java-driver>3.1.0</mongo-java-driver>
@@ -162,334 +126,68 @@
 		
 		<!-- 测试相关end -->
   </dependencies>
-  <build>
-    <extensions>
-      <!-- Enabling the use of SSH 必须配置settings.xml文件中的mirrors节点，否则会到maven官方地址下载-->
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-         <artifactId>wagon-ssh-external</artifactId>
-         <version>2.10</version>
-      </extension>
-    </extensions>
-    <plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.5.1</version>
-			<configuration>
-				<!--可以直接在properties中执行 maven.compiler.source,maven.compiler.target，但是无法指定插件版本，不建议 -->
-				<source>1.8</source>
-				<target>1.8</target>
-			</configuration>
-		</plugin>
-		<!-- mvn source:jar -->
-		<!-- 使用持续构建工具，在linux平台下打包，可以解决这个问题，前提是linux系统的内部编码要设置成utf-8，目前打包虽然不乱码，但是打包后的整个jar文件是gbk的，eclipse等工具会解析整个文件为gbk编码，其实jar包内部存的是utf8编码的文件 -->
-		<!-- bug https://issues.jenkins-ci.org/browse/JENKINS-27372 暂未修复 -->
-		<plugin>
-			<artifactId>maven-source-plugin</artifactId>
-			<version>2.4</version>
-			<configuration>
-				<attach>true</attach>
-				<!-- <encoding>utf-8</encoding> --><!-- 未测试 -->
-				<argLine>-Dfile.encoding=UTF-8</argLine> <!-- 注意设置，否则生成的jar会是默认编码，也就是gbk，那么eclipse等ide识别就出现乱码,debug调试时就很麻烦了 --> 
-			</configuration>
-			<executions>
-				<execution>
-					<!-- 编译阶段打包源文件 -->
-					<id>attach-sources</id>
-					<phase>compile</phase>
-					<goals>
-						<goal>jar</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-		<!-- 版本管理插件 -->
-		<plugin>  
-		  <groupId>org.apache.maven.plugins</groupId>  
-		  <artifactId>maven-release-plugin</artifactId>  
-		  <version>2.5.3</version>
-		  <configuration>  
-		  	<!-- <mavenHome>D:\apache-maven-3.3.9</mavenHome> -->
-		  	<arguments>-Dmaven.test.skip=true</arguments>
-		  	<useReleaseProfile>false</useReleaseProfile>
-		  	<checkModificationExcludes>
-		  		<checkModificationExclude>target</checkModificationExclude>
-		  		<checkModificationExclude>.settings</checkModificationExclude>
-		  		<checkModificationExclude>.project</checkModificationExclude>
-		  		<checkModificationExclude>.classpath</checkModificationExclude>
-		  		<checkModificationExclude>.svn</checkModificationExclude>
-		  		<checkModificationExclude>*\target</checkModificationExclude>
-		  		<checkModificationExclude>*\.settings</checkModificationExclude>
-		  		<checkModificationExclude>*\.project</checkModificationExclude>
-		  		<checkModificationExclude>*\.classpath</checkModificationExclude>
-		  	</checkModificationExcludes>
-		    <tagBase>http://172.16.180.84/dev-team/simplify-framework</tagBase>
-		  </configuration>  
-		</plugin>  
-		<!-- 解决maven test命令时console出现中文乱码乱码 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<configuration>
-					<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest” -->
-					<!-- pretest： 每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归
-						 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。
-						 always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5 -->
-					<runOrder>alphabetical</runOrder><!-- 方法排序,按字母排序,无效 -->
-					<forkMode>once</forkMode>
-					<parallel>methods</parallel>
-					<threadCount>4</threadCount>
-					<!-- <argLine>-Xmx1024m -Xss8192k[线程栈大小，另外的说话，是线程创建占用的内存空间,8192k和linux线程栈大小一致] -XX:MetaSpaceSize=256m -XX:MaxMetaspaceSize=256m</argLine> -->
- 					<argLine>-Dfile.encoding=UTF-8</argLine> 
- 					<excludes>  
-	                  <exclude>**/TestAll.java</exclude>  
-	                </excludes> 
-				</configuration>
-			</plugin>
-			<!--命令行 pdf:pdf -->
-			<!--  -Dimplementation=itext pdf:pdf 这个方式需要加入itext的依赖jar库 -->
-			<plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-pdf-plugin</artifactId>
-	          <version>1.3</version>
-	          <!-- <configuration>
-		          <locales>zh_CN,en</locales>
-		      </configuration> -->
-			  <executions>
-			    <execution>
-			      <id>pdf</id>
-			      <phase>site</phase>
-			      <goals>
-			        <goal>pdf</goal>
-			      </goals>
-			      <configuration>
-			      	<aggregate>true</aggregate>
-			      	<locales>zh_CN,en</locales>
-			        <!-- <outputDirectory>${project.reporting.outputDirectory}</outputDirectory> -->
-			        <includeReports>true</includeReports>
-			      </configuration>
-			    </execution>
-			  </executions>
-			</plugin>
-			<!-- 设置以下环境变量 -->
-		   <!-- JAVA_TOOL_OPTIONS   
-		   -Dfile.encoding=UTF-8 -->
-		   <plugin>                             
-		   		<groupId>org.apache.maven.plugins</groupId>                            
-		   		<artifactId>maven-javadoc-plugin</artifactId>                            
-		   		<version>2.10.3</version>  
-		   		<configuration>  
-		   			<!-- <failOnError>false</failOnError> -->     
-		   		    <additionalJOption>-J-Dfile.encoding=UTF-8</additionalJOption>
-		   		    <additionalparam>-Xdoclint:none</additionalparam><!-- java1.8 特有功能 -->
-		   		    <!-- aggregate 开启多模块项目javadoc支持 -->
-		   			<aggregate>true</aggregate>                          
-		   			<!-- <stylesheetfile>${templatePath}/src/site/stylesheet.css</stylesheetfile>   -->                        
-		   			<charset>UTF-8</charset>           
-		   			<encoding>UTF-8</encoding>                                        
-		   			<docencoding>UTF-8</docencoding>    
-		   			<tags>  
-			            <tag>  
-			            	<!-- 注释中自定义注解名称 -->
-			                <name>title</name>  
-			                <!-- placement有8种(方法、字段、类）等等，用于把上面的注解放到JavaDoc中 -->
-			                <placement>title</placement>  
-			                <!-- head不写，使用的name属性的值，并保持默认格式，如果写了，可以有更好的展现效果 -->
-			                <head>标题</head>  
-			            </tag>  
-			        </tags>                  
-		   		</configuration>            
-		   	</plugin>
-			<!-- site插件：site:stage 用于生成所有模块的site，site:run 用于生成和运行site，用于查看文档 ,后续增加site插件的详细配置-->
-			<!--文档创建： archetype:create -DgroupId=vip.simplify -DartifactId=app -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-site -->
-			<!-- maven的site文档生成，使用的是Doxia来处理和解析文档的 -->
-			<!-- clean site site:stage -DstagingDirectory=file://D:/site #可以指定生成的路径 -->
-			<!-- 生成过慢的解决方法  clean site site:stage -Ddependency.locations.enabled=false-->
-			<!-- jenkins 完整构建命令： mvn -DskipTests=true clean install site site:stage -Ddependency.locations.enabled=false deploy site:deploy -->
-			<plugin>  
-                <!-- 站点生成插件 -->  
-                <groupId>org.apache.maven.plugins</groupId>  
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.5</version>
-                <dependencies>
-                	<dependency><!-- add support for ssh/scp -->              
-                		<groupId>org.apache.maven.wagon</groupId>              
-                		<artifactId>wagon-ssh</artifactId>              
-                		<version>2.10</version>            
-                	</dependency>
-					<!--支持markdown-->
-					<dependency>
-						<groupId>org.apache.maven.doxia</groupId>
-						<artifactId>doxia-module-markdown</artifactId>
-						<version>1.7</version>
-					</dependency>
-                </dependencies>
-                <configuration>  
-                    <!-- 支持国际化 -->  
-                    <locales>zh_CN</locales>
-                    <templateFile>${templatePath}/src/site/${parentsite}/template/site.vm</templateFile>
-                    <siteDirectory>${siteDirPath}/src/site/${parentsiteDir}</siteDirectory>
-
-					<!--本地快速预览，建议不启用-->
-					<!--<port>9000</port>
-					<tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>-->
-                    <reportPlugins>
-						<plugin>
-							<!-- 源码查看生成 -->
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jxr-plugin</artifactId>
-							<version>2.5</version>
-							<configuration>
-								<!-- 多模块聚合 -->
-								<aggregate>true</aggregate>
-							</configuration>
-					        <reportSets>
-					          <reportSet>
-					            <id>aggregate</id>
-					            <!-- <inherited>false</inherited> -->
-					            <reports>
-					              <report>aggregate</report>
-					            </reports>
-					          </reportSet>
-					        </reportSets>
-					      </plugin>
-					      <!-- 项目信息过滤-index一定要生成,否则链接问题 -->
-						   <plugin>          
-							    <groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-project-info-reports-plugin</artifactId>
-								<version>2.9</version>   
-								<configuration>
-									<aggregate>true</aggregate>
-									<customBundle>${templatePath}/src/site/custom/project-info-reports.properties</customBundle>
-								</configuration>    
-							    <reportSets>           
-								   <reportSet>          
-									   <reports>   
-											<report>index</report>
-											<report>dependencies</report>
-											<report>dependency-convergence</report>
-											<report>dependency-info</report>
-											<report>dependency-management</report>
-											<report>distribution-management</report>
-											<report>project-team</report>
-											<report>issue-tracking</report>
-											<report>license</report>
-											<report>scm</report>
-										    <report>mailing-list</report>               
-											<report>cim</report>
-											<report>modules</report>
-											<report>plugin-management</report>
-											<report>plugins</report>
-											<!-- <report>help</report> -->
-											<report>summary</report>         
-									   </reports>           
-								   </reportSet>         
-							   </reportSets>
-						   </plugin>
-						   <!-- 设置以下环境变量 -->
-						   <!-- JAVA_TOOL_OPTIONS   
-						   -Dfile.encoding=UTF-8 -->
-						   <plugin>                             
-						   		<groupId>org.apache.maven.plugins</groupId>                            
-						   		<artifactId>maven-javadoc-plugin</artifactId>                            
-						   		<version>2.10.3</version>  
-						   		<configuration>  
-						   			<!-- <failOnError>false</failOnError> -->     
-						   		    <additionalJOption>-J-Dfile.encoding=UTF-8</additionalJOption>
-						   		    <additionalparam>-Xdoclint:none</additionalparam><!-- java1.8 特有功能 -->
-						   		    <!-- aggregate 开启多模块项目javadoc支持 -->
-						   			<aggregate>true</aggregate>                          
-						   			<!-- <stylesheetfile>${templatePath}/src/site/stylesheet.css</stylesheetfile>   -->                        
-						   			<charset>UTF-8</charset>           
-						   			<encoding>UTF-8</encoding>                                        
-						   			<docencoding>UTF-8</docencoding>    
-						   			<tags>  
-							            <tag>  
-							            	<!-- 注释中自定义注解名称 -->
-							                <name>title</name>  
-							                <!-- placement有8种(方法、字段、类）等等，用于把上面的注解放到JavaDoc中 -->
-							                <placement>title</placement>  
-							                <!-- head不写，使用的name属性的值，并保持默认格式，如果写了，可以有更好的展现效果 -->
-							                <head>标题</head>  
-							            </tag>  
-							        </tags>
-						   		</configuration>            
-						   	</plugin>
-					</reportPlugins>
+   <build>
+	   <resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.template</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+  		<plugins>
+  		   <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19</version>
+                <configuration>
+                    <skip>true</skip>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-            <!-- 定义properties中的规则。同时避免隐性传递依赖，有多版本冲突时，插件会提醒；另外插件中定义<requireUpperBoundDeps/>会保证以最高版本为准,而不是默认的最近最先原则（如果可以精细控制引入的jar，那么这个插件在解决依赖方面起不到实际作用） -->
-            <!-- enforcer:display-info 或是 enforcer:enforce-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-  				<version>1.4.1</version>
-  				<executions>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
                     <execution>
-                        <!-- 单独执行enforcer:enforce时，id必须是default-cli -->
-                        <id>default-cli</id>
+                        <id>install</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>enforce</goal>
+                            <goal>sources</goal>
                         </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <rules>
-                            	<!-- <requireUpperBoundDeps>true</requireUpperBoundDeps> -->
-                                <requireMavenVersion>
-                                    <message>
-                                        <![CDATA[你使用的maven版本过老，版本号必须是${maven.version}或之上]]>
-                                    </message>
-                                    <version>[${maven.version},)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <message>
-                                        <![CDATA[你使用的JDK版本过老，版本号必须是 ${java.version}或之上]]>
-                                    </message>
-                                    <version>[${java.version}.0,)</version>
-                                </requireJavaVersion>
-                                <bannedDependencies>
-                                    <!--是否检查传递性依赖(间接依赖)-->
-                                    <searchTransitive>true</searchTransitive>
-                                    <excludes>
-                                        <!--格式：groupId[:artifactId][:version][:type][:scope][:classifier]--> 
-                                        <exclude>org.testng:testng</exclude>
-                                        <exclude>commons-logging</exclude>
-                                    </excludes>
-                                    <message>不能使用 TestNG测试,必须使用 JUnit</message>
-                                </bannedDependencies>
-                                <requireProperty>
-                                    <property>project.version</property>
-                                    <message>"project.version 必须指定"</message>
-                                    <regex>.*(\d|-SNAPSHOT)$</regex>
-                                    <regexMessage>"project.version 必须是 数字或-SNAPSHOT结尾"</regexMessage>
-                                </requireProperty>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
                     </execution>
                 </executions>
-			</plugin>
-    </plugins>
-    <resources>
-		<resource>
-			<directory>src/main/resources</directory>
-			<includes>
-				<include>**/*.xml</include>
-				<include>**/*.properties</include>
-				<include>**/*.template</include>
-			</includes>
-			<filtering>true</filtering>
-		</resource>
-		<resource>
-			<directory>src/main/java</directory>
-			<includes>
-				<include>**/*.xml</include>
-				<include>**/*.properties</include>
-			</includes>
-			<filtering>true</filtering>
-		</resource>
-	</resources>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+  		    <!--引入JDK 版本插件 -->
+  		   <plugin>
+ 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>utf-8</encoding>
+				</configuration> 		   
+  		   </plugin>
+  		</plugins>
   </build>
 </project>
