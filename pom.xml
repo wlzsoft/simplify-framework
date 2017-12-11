@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vip.simplify</groupId>
   <artifactId>simplify-framework</artifactId>
-  <version>1.2.5-SNAPSHOT</version>
+  <version>1.2.5-releases</version>
   <packaging>pom</packaging>
   <name>精简程序框架</name>
   <description>精简的程序框架，可以用于简化web和服务端程序的开发</description>
@@ -15,21 +15,21 @@
 		<url>http://www.meizu.com/</url>
 	</organization>
 	<!-- 问题跟踪 -->
-	<issueManagement>
+<!-- 	<issueManagement>
 		<system>redmine</system>
 		<url>http://172.16.180.92:32768/projects/simplify-framework</url>
-	</issueManagement>
+	</issueManagement> -->
   	<!-- 版本控制 -->
-	<scm>
+<!-- 	<scm>
 		<url>http://172.16.180.92/dev-team/simplify-framework</url>
 		<connection>scm:git:http://172.16.180.92/dev-team/simplify-framework</connection>
 		<developerConnection>scm:git:http://172.16.180.92/dev-team/simplify-framework</developerConnection>
-	</scm>
+	</scm> -->
 	<!-- 持续集成 -->
-	<ciManagement>
+<!-- 	<ciManagement>
 		<system>Jenkins</system>
 		<url>http://172.16.180.86:8082/</url>
-	</ciManagement>
+	</ciManagement> -->
   	<mailingLists>
     	<mailingList>
       		<name>开发人员列表</name>
@@ -96,7 +96,7 @@
 	  <module>dto</module>
 	  <module>zookeeper</module>
 	  <module>boot</module>
-	  <module>assembly-descriptor</module>
+<!-- 	  <module>assembly-descriptor</module> -->
 	  <module>webserver</module>
 	  <module>webserver-plugins</module>
 	  <module>plugin-loader</module>
@@ -120,7 +120,7 @@
 	<siteDirPath>${templatePath}</siteDirPath>
     <!-- 自定site相关变量end -->
     <java.version>1.8</java.version>
-    <maven.version>3.3.3</maven.version>
+    <maven.version>3.1.0</maven.version>
     <!-- 依赖库版本号定义start -->
     <simplify.version>${project.version}</simplify.version>
     <mongo-java-driver>3.1.0</mongo-java-driver>
@@ -128,25 +128,38 @@
     <!-- 依赖库版本号定义end -->
   </properties>
   <distributionManagement>
-	  <repository>
+<!-- 	  <repository>
           <id>${distRepoId}</id>
           <name>${distRepoName}</name>
           <url>${distRepoUrl}</url>
-          <!-- <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url> -->
+          <url>scp://root@172.16.180.84/nexus/content/repositories/releases/</url>
       </repository>
       <snapshotRepository>
           <id>${distSnapId}</id>
           <name>${distSnapName}</name>
           <url>${distSnapUrl}</url>
-          <!-- 是否为Snapshot版本分配一个包含时间戳的构建号 -->
+          是否为Snapshot版本分配一个包含时间戳的构建号
           <uniqueVersion>true</uniqueVersion>
-      </snapshotRepository>
-		<site>
+      </snapshotRepository> -->
+      
+        <repository>
+            <id>nexus-releases</id>
+            <name>maven-releases</name>
+            <url>http://172.16.180.88:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://172.16.180.88:8081/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+      
+<!-- 		<site>
 			<id>simplify-doc</id>
 			<name>simplify-doc</name>
-			<!-- <url>file://D:/site</url> -->
+			<url>file://D:/site</url>
 			<url>scp://root@172.16.180.83/home/simplify-doc</url>
-		</site>
+		</site> -->
 	</distributionManagement>
   <dependencies>
 		<!-- 日志相关 begin -->
