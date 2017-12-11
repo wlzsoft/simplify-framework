@@ -503,61 +503,6 @@
             </plugin>
             <!-- 定义properties中的规则。同时避免隐性传递依赖，有多版本冲突时，插件会提醒；另外插件中定义<requireUpperBoundDeps/>会保证以最高版本为准,而不是默认的最近最先原则（如果可以精细控制引入的jar，那么这个插件在解决依赖方面起不到实际作用） -->
             <!-- enforcer:display-info 或是 enforcer:enforce-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-  				<version>1.4.1</version>
-  				<executions>
-                    <execution>
-                        <!-- 单独执行enforcer:enforce时，id必须是default-cli -->
-                        <id>default-cli</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <phase>validate</phase>
-                        <configuration>
-                            <rules>
-                            	<!-- <requireUpperBoundDeps>true</requireUpperBoundDeps> -->
-                                <requireMavenVersion>
-                                    <message>
-                                        <![CDATA[你使用的maven版本过老，版本号必须是${maven.version}或之上]]>
-                                    </message>
-                                    <version>[${maven.version},)</version>
-                                </requireMavenVersion>
-                                <requireJavaVersion>
-                                    <message>
-                                        <![CDATA[你使用的JDK版本过老，版本号必须是 ${java.version}或之上]]>
-                                    </message>
-                                    <version>[${java.version}.0,)</version>
-                                </requireJavaVersion>
-                                <bannedDependencies>
-                                    <!--是否检查传递性依赖(间接依赖)-->
-                                    <searchTransitive>true</searchTransitive>
-                                    <excludes>
-                                        <!--格式：groupId[:artifactId][:version][:type][:scope][:classifier]--> 
-                                        <exclude>org.testng:testng</exclude>
-                                        <exclude>commons-logging</exclude>
-                                    </excludes>
-                                    <message>不能使用 TestNG测试,必须使用 JUnit</message>
-                                </bannedDependencies>
-                                <!-- <requireOS>
-                                    <name>window 10</name>
-                                    <family>window</family>
-                                    <arch>x86_64</arch>
-                                    <version>10</version>
-                                </requireOS> -->
-                                <requireProperty>
-                                    <property>project.version</property>
-                                    <message>"project.version 必须指定"</message>
-                                    <regex>.*(\d|-SNAPSHOT)$</regex>
-                                    <regexMessage>"project.version 必须是 数字或-SNAPSHOT结尾"</regexMessage>
-                                </requireProperty>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
-			</plugin>
     </plugins>
     <resources>
 		<resource>
