@@ -167,7 +167,10 @@ public class ControllerFilter implements Filter {
 		String sessionId = request.getSession().getId();
 		bs.process(request, response,requestUrl,requestMethodName,isStatic,urlparams);
 		long readtime = System.nanoTime() - time;
-		LOGGER.info(StringUtil.format("{0} 耗时:{1}纳秒秒", requestUrl, (readtime))+"sessionId:"+sessionId);
+		if(!requestUrl.equals("/health/check.json")){
+			LOGGER.info(StringUtil.format("{0} 耗时:{1}纳秒秒", requestUrl, (readtime))+"sessionId:"+sessionId);
+		}
+		
 		// 记录统计信息
 		Statistics.incReadcount();
 		Statistics.setReadMaxTime(readtime, requestUrl);
